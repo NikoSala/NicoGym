@@ -3,565 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NICO GYM OS v85 - Barcelona</title>
+    <title>NICO GYM OS v86</title>
     <link rel="manifest" href="data:application/manifest+json,{
         \"name\": \"NICO GYM\",
         \"short_name\": \"NICOGYM\",
         \"start_url\": \".\",
         \"display\": \"standalone\",
         \"theme_color\": \"#ff6600\",
-        \"background_color\": \"#000000\",
-        \"icons\": [{
-            \"src\": \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ff6600'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white'%3E🏋️%3C/text%3E%3C/svg%3E\",
-            \"sizes\": \"any\"
-        }]
+        \"background_color\": \"#000000\"
     }">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        function hacerConfeti() {
-            try {
-                if (typeof canvasConfetti !== 'undefined') {
-                    canvasConfetti({ particleCount: 300, spread: 100, origin: { y: 0.6 }, startVelocity: 25 });
-                    setTimeout(() => {
-                        if (typeof canvasConfetti !== 'undefined') {
-                            canvasConfetti({ particleCount: 150, spread: 70, origin: { y: 0.5, x: 0.2 }, startVelocity: 20 });
-                        }
-                    }, 150);
-                    setTimeout(() => {
-                        if (typeof canvasConfetti !== 'undefined') {
-                            canvasConfetti({ particleCount: 150, spread: 70, origin: { y: 0.5, x: 0.8 }, startVelocity: 20 });
-                        }
-                    }, 300);
-                }
-            } catch(e) {}
-        }
-    </script>
-    <style>
-        :root { 
-            --bg: #000; 
-            --card: #111; 
-            --primary: #ff6600; 
-            --text: #fff; 
-            --accent: #32d74b; 
-            --danger: #ff3b30;
-            --menu-bg: #0a0a0a;
-        }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 80px; }
-        
-        header { 
-            height: 60px; 
-            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
-            border-bottom: 2px solid var(--primary); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 0 15px; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
-        }
-        .logo {
-            font-weight: 900;
-            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-size: 1.3rem;
-        }
-        
-        #menu-lat { 
-            position: fixed; 
-            left: -100%; 
-            top: 0; 
-            width: 280px; 
-            height: 100%; 
-            background: var(--menu-bg); 
-            transition: 0.3s ease; 
-            z-index: 2000; 
-            border-right: 2px solid var(--primary); 
-            overflow-y: auto; 
-            box-shadow: 2px 0 20px rgba(0,0,0,0.8);
-        }
-        #menu-lat.open { left: 0; }
-        #overlay { 
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.85); 
-            display: none; 
-            z-index: 1500; 
-            backdrop-filter: blur(3px);
-        }
-        
-        .nav-btn { 
-            padding: 18px; 
-            border-bottom: 1px solid #222; 
-            color: #fff; 
-            display: block; 
-            font-weight: bold; 
-            text-decoration: none; 
-            cursor: pointer; 
-            transition: 0.2s;
-        }
-        .nav-btn:hover { background: #1a1a1a; padding-left: 25px; }
-        
-        .submenu-btn {
-            background: #0f0f0f;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px;
-            border-bottom: 1px solid #222;
-            font-weight: bold;
-        }
-        .submenu-btn span:first-child { flex: 1; }
-        .submenu-btn .arrow {
-            transition: 0.3s;
-            font-size: 0.8rem;
-        }
-        .submenu-btn.open .arrow {
-            transform: rotate(180deg);
-        }
-        .submenu-items {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            background: #050505;
-        }
-        .submenu-items.show {
-            max-height: 400px;
-        }
-        .sub-link { 
-            padding: 12px 35px; 
-            color: #aaa; 
-            font-size: 0.9rem; 
-            border-bottom: 1px solid #111; 
-            display: block; 
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .sub-link:hover { background: #1a1a1a; color: var(--primary); padding-left: 45px; }
-        
-        .debug-btn {
-            margin-top: 30px;
-            padding: 10px;
-            background: transparent;
-            color: #333;
-            border: 1px solid #222;
-            border-radius: 8px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            text-align: center;
-        }
-        .debug-btn:hover {
-            background: #1a1a1a;
-            color: #666;
-        }
-        
-        .notif-btn {
-            margin-top: 10px;
-            padding: 12px;
-            background: var(--primary);
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-        }
-        .notif-btn:hover { opacity: 0.9; }
-        
-        .seccion { display: none; padding: 15px; animation: fadeIn 0.3s; }
-        .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        .card { 
-            background: var(--card); 
-            border-radius: 12px; 
-            padding: 15px; 
-            margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(255,102,0,0.15);
-            transition: transform 0.2s;
-        }
-        .card:active { transform: scale(0.98); }
-        
-        .stats-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        .stat-card {
-            flex: 1;
-            background: var(--card);
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(255,102,0,0.15);
-            min-width: 100px;
-        }
-        .stat-card h2 {
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-        .stat-card small {
-            font-size: 0.7rem;
-            color: #aaa;
-        }
-        .stat-card.progreso h2 { color: var(--primary); }
-        .stat-card.racha h2 { color: var(--primary); }
-        .stat-card.nosmoke h2 { color: #66bb6a; }
-        .stat-card.nosmoke small { color: #66bb6a; font-size: 0.65rem; }
-        
-        .ex-title { font-weight: bold; color: var(--primary); font-size: 1.1rem; display: block; }
-        .ex-reps { color: var(--accent); font-weight: bold; font-size: 0.9rem; }
-        
-        .ex-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .calc-icon {
-            background: var(--primary);
-            color: #000;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .calc-icon:hover { transform: scale(1.05); background: #ff884d; }
-        
-        .descanso-icon {
-            background: #2e7d32;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .descanso-icon:hover { transform: scale(1.05); background: #43a047; }
-        
-        .calc-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #1a1a1a;
-            border: 2px solid var(--primary);
-            border-radius: 15px;
-            padding: 20px;
-            z-index: 4000;
-            width: 90%;
-            max-width: 320px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-        }
-        .calc-modal.show { display: block; }
-        .calc-modal h3 { color: var(--primary); margin-bottom: 15px; text-align: center; }
-        .calc-modal .close-calc {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: #aaa;
-        }
-        
-        .descanso-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #1a1a1a;
-            border: 2px solid var(--accent);
-            border-radius: 15px;
-            padding: 25px;
-            z-index: 4000;
-            width: 90%;
-            max-width: 300px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-        }
-        .descanso-modal.show { display: block; }
-        .descanso-modal h3 { color: var(--accent); margin-bottom: 15px; }
-        .descanso-tiempos {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        .tiempo-btn {
-            background: #333;
-            border: none;
-            color: #fff;
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .tiempo-btn:hover { background: var(--accent); transform: scale(1.05); }
-        .descanso-cerrar {
-            margin-top: 15px;
-            background: #222;
-            color: #aaa;
-            border: none;
-            padding: 8px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        
-        .detalles { display: none; background: #050505; padding: 10px; border-radius: 8px; margin-top: 10px; border-left: 3px solid var(--primary); }
-        .detalles.show { display: block; }
-        
-        .ex-img { 
-            width: 100%; 
-            max-width: 200px;
-            height: auto;
-            border-radius: 8px; 
-            margin: 10px auto; 
-            border: 1px solid #333; 
-            display: block;
-        }
-        
-        .btn-main { 
-            width: 100%; 
-            padding: 12px; 
-            background: #222; 
-            color: var(--primary); 
-            border: 1px solid var(--primary); 
-            border-radius: 8px; 
-            font-weight: bold; 
-            margin: 10px 0; 
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-main:hover { background: var(--primary); color: #000; }
-        
-        .check-box { 
-            width: 35px; 
-            height: 35px; 
-            accent-color: var(--accent);
-            transform: scale(1.1);
-            cursor: pointer;
-        }
-        .input-nota { 
-            width: 100%; 
-            padding: 10px; 
-            background: #000; 
-            border: 1px solid #333; 
-            color: #fff; 
-            margin-top: 8px; 
-            border-radius: 6px;
-            font-size: 0.9rem;
-        }
-        .input-nota:focus { outline: none; border-color: var(--primary); }
-        
-        .peso-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #222; }
-        .btn-del { background: none; border: none; color: var(--danger); font-size: 1.2rem; cursor: pointer; padding: 5px; }
-        
-        .calc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 15px 0; }
-        .calc-btn { 
-            background: #333; 
-            border: none; 
-            color: #fff; 
-            padding: 12px 0; 
-            border-radius: 8px; 
-            font-size: 0.9rem; 
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            position: relative;
-        }
-        .calc-btn:hover { background: var(--primary); }
-        .badge { 
-            position: absolute; 
-            top: -8px; 
-            right: -5px; 
-            background: var(--primary); 
-            font-size: 0.8rem; 
-            padding: 2px 8px; 
-            border-radius: 20px;
-            font-weight: bold;
-        }
-        .calc-reset {
-            width: 100%;
-            padding: 10px;
-            background: #222;
-            color: var(--danger);
-            border: 1px solid var(--danger);
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        
-        #timer-box { 
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.95); 
-            z-index: 3000; 
-            display: none; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-        
-        #descanso-box {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 3500;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-        .descanso-timer-num {
-            font-size: 8rem;
-            color: var(--accent);
-            font-weight: bold;
-            font-family: monospace;
-        }
-        
-        #float-t { 
-            position: fixed; 
-            bottom: 20px; 
-            right: 20px; 
-            width: 60px; 
-            height: 60px; 
-            background: linear-gradient(135deg, var(--primary), #ff884d);
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            z-index: 900; 
-            font-size: 1.5rem; 
-            border: none; 
-            color: white; 
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255,102,0,0.4);
-        }
-        
-        .today-card {
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            border: 2px solid var(--primary);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .today-card:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(255,102,0,0.3); }
-        .today-day { font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-bottom: 8px; }
-        .today-routine { font-size: 1rem; color: #ccc; margin-bottom: 10px; }
-        .today-btn { background: var(--primary); color: #000; padding: 8px 20px; border-radius: 20px; display: inline-block; font-weight: bold; margin-top: 8px; }
-        
-        .sunday-card {
-            background: linear-gradient(135deg, #1a0a2e, #0a0a1a);
-            border: 2px solid #8b5cf6;
-            border-radius: 20px;
-            padding: 40px 20px;
-            text-align: center;
-            margin-top: 30px;
-        }
-        .sunday-emoji { font-size: 5rem; animation: float 3s ease-in-out infinite; }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-        .sunday-title { font-size: 2rem; color: #8b5cf6; margin: 20px 0; font-weight: bold; }
-        .sunday-text { color: #aaa; font-size: 1.1rem; }
-        .sunday-tips { background: rgba(139,92,246,0.1); border-radius: 15px; padding: 20px; margin-top: 20px; }
-        
-        .toast-msg {
-            position: fixed;
-            bottom: 100px;
-            left: 20px;
-            right: 20px;
-            background: var(--primary);
-            color: #000;
-            padding: 12px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: bold;
-            z-index: 5000;
-            animation: fadeInOut 3s ease-in-out;
-        }
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(20px); }
-            15% { opacity: 1; transform: translateY(0); }
-            85% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-20px); }
-        }
-        
-        .notif-config {
-            background: #1a1a1a;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        .notif-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #333;
-        }
-        .notif-item:last-child { border-bottom: none; }
-        .notif-label { font-size: 0.85rem; }
-        .toggle-switch {
-            width: 50px;
-            height: 24px;
-            background: #333;
-            border-radius: 12px;
-            position: relative;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .toggle-switch.active {
-            background: var(--accent);
-        }
-        .toggle-switch::after {
-            content: "";
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 10px;
-            position: absolute;
-            top: 2px;
-            left: 3px;
-            transition: 0.2s;
-        }
-        .toggle-switch.active::after {
-            left: 27px;
-        }
-    </style>
+    <script>function hacerConfeti(){if(typeof canvasConfetti!=='undefined'){canvasConfetti({particleCount:300,spread:100,origin:{y:0.6},startVelocity:25});setTimeout(()=>{canvasConfetti({particleCount:150,spread:70,origin:{y:0.5,x:0.2},startVelocity:20})},150);setTimeout(()=>{canvasConfetti({particleCount:150,spread:70,origin:{y:0.5,x:0.8},startVelocity:20})},300);}}</script>
+    <style>*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#000;color:#fff;padding-bottom:80px}header{height:60px;background:linear-gradient(135deg,#000 0%,#1a1a1a 100%);border-bottom:2px solid #f60;display:flex;justify-content:space-between;align-items:center;padding:0 15px;position:sticky;top:0;z-index:1000}.logo{font-weight:900;background:linear-gradient(135deg,#fff 0%,#f60 100%);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.3rem}.menu-icon,.home-icon{font-size:1.8rem;cursor:pointer}.home-icon{font-size:1.5rem}#menu-lat{position:fixed;left:-100%;top:0;width:280px;height:100%;background:#0a0a0a;transition:.3s ease;z-index:2000;border-right:2px solid #f60;overflow-y:auto;box-shadow:2px 0 20px rgba(0,0,0,0.8)}#menu-lat.open{left:0}#overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;z-index:1500;backdrop-filter:blur(3px)}.nav-btn{padding:18px;border-bottom:1px solid #222;color:#fff;display:block;font-weight:bold;cursor:pointer;transition:.2s}.nav-btn:hover{background:#1a1a1a;padding-left:25px}.submenu-btn{background:#0f0f0f;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:18px;border-bottom:1px solid #222;font-weight:bold}.submenu-btn .arrow{transition:.3s;font-size:.8rem}.submenu-btn.open .arrow{transform:rotate(180deg)}.submenu-items{max-height:0;overflow:hidden;transition:max-height .3s ease-out;background:#050505}.submenu-items.show{max-height:400px}.sub-link{padding:12px 35px;color:#aaa;font-size:.9rem;border-bottom:1px solid #111;display:block;cursor:pointer;transition:.2s}.sub-link:hover{background:#1a1a1a;color:#f60;padding-left:45px}.debug-btn{margin-top:30px;padding:10px;background:transparent;color:#333;border:1px solid #222;border-radius:8px;font-size:.7rem;cursor:pointer;text-align:center}.seccion{display:none;padding:15px;animation:fadeIn .3s}.seccion.active{display:block}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.card{background:#111;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:0 2px 8px rgba(255,102,0,0.15);transition:transform .2s}.card:active{transform:scale(0.98)}.stats-row{display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap}.stat-card{flex:1;background:#111;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(255,102,0,0.15);min-width:100px}.stat-card h2{font-size:1.3rem;font-weight:bold}.stat-card small{font-size:.7rem;color:#aaa}.stat-card.progreso h2{color:#f60}.stat-card.racha h2{color:#f60}.stat-card.nosmoke h2{color:#6b6}.ex-title{font-weight:bold;color:#f60;font-size:1.1rem}.ex-reps{color:#2d7;font-weight:bold;font-size:.9rem}.ex-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;flex-wrap:wrap;gap:8px}.calc-icon{background:#f60;color:#000;padding:5px 10px;border-radius:20px;font-size:.7rem;font-weight:bold;cursor:pointer}.descanso-icon{background:#2e7d32;color:#fff;padding:5px 10px;border-radius:20px;font-size:.7rem;font-weight:bold;cursor:pointer}.calc-modal,.descanso-modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a1a;border:2px solid #f60;border-radius:15px;padding:20px;z-index:4000;width:90%;max-width:320px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.8)}.descanso-modal{border-color:#2d7}.calc-modal.show,.descanso-modal.show{display:block}.close-calc{position:absolute;top:10px;right:15px;cursor:pointer;font-size:1.5rem;color:#aaa}.descanso-tiempos{display:flex;justify-content:center;gap:12px;margin:20px 0;flex-wrap:wrap}.tiempo-btn{background:#333;border:none;color:#fff;padding:10px 15px;border-radius:10px;font-size:1rem;font-weight:bold;cursor:pointer}.detalles{display:none;background:#050505;padding:10px;border-radius:8px;margin-top:10px;border-left:3px solid #f60}.detalles.show{display:block}.ex-img{width:100%;max-width:200px;height:auto;border-radius:8px;margin:10px auto;border:1px solid #333;display:block}.btn-main{width:100%;padding:12px;background:#222;color:#f60;border:1px solid #f60;border-radius:8px;font-weight:bold;margin:10px 0;cursor:pointer}.check-box{width:35px;height:35px;accent-color:#2d7;transform:scale(1.1);cursor:pointer}.input-nota{width:100%;padding:10px;background:#000;border:1px solid #333;color:#fff;margin-top:8px;border-radius:6px}.peso-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #222}.btn-del{background:0 0;border:none;color:#f33;font-size:1.2rem;cursor:pointer;padding:5px}.calc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:15px 0}.calc-btn{background:#333;border:none;color:#fff;padding:12px 0;border-radius:8px;font-size:.9rem;font-weight:bold;cursor:pointer;position:relative}.badge{position:absolute;top:-8px;right:-5px;background:#f60;font-size:.7rem;padding:2px 6px;border-radius:20px}.calc-reset{width:100%;padding:10px;background:#222;color:#f33;border:1px solid #f33;border-radius:8px;cursor:pointer;margin-top:10px}#timer-box,#descanso-box{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:3000;display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px)}#descanso-box{z-index:3500}.descanso-timer-num,#t-num{font-size:8rem;font-weight:bold;font-family:monospace}#t-num{color:#f60}.descanso-timer-num{color:#2d7}#float-t{position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:linear-gradient(135deg,#f60,#f84);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:900;font-size:1.5rem;border:none;color:#fff;cursor:pointer;box-shadow:0 4px 15px rgba(255,102,0,0.4)}.today-card{background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid #f60;border-radius:15px;padding:20px;margin-bottom:20px;text-align:center;cursor:pointer;transition:.3s}.today-day{font-size:1.5rem;font-weight:bold;color:#f60;margin-bottom:8px}.today-btn{background:#f60;color:#000;padding:8px 20px;border-radius:20px;display:inline-block;font-weight:bold;margin-top:8px}.sunday-card{background:linear-gradient(135deg,#1a0a2e,#0a0a1a);border:2px solid #8b5cf6;border-radius:20px;padding:40px 20px;text-align:center;margin-top:30px}.sunday-emoji{font-size:5rem;animation:float 3s ease-in-out infinite}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}.sunday-title{font-size:2rem;color:#8b5cf6;margin:20px 0;font-weight:bold}.toast-msg{position:fixed;bottom:100px;left:20px;right:20px;background:#f60;color:#000;padding:12px;border-radius:10px;text-align:center;font-weight:bold;z-index:5000;animation:fadeInOut 3s ease-in-out}@keyframes fadeInOut{0%{opacity:0;transform:translateY(20px)}15%{opacity:1;transform:translateY(0)}85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-20px)}}.notif-config{background:#1a1a1a;border-radius:12px;padding:15px;margin-bottom:15px}.notif-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #333}.notif-item:last-child{border-bottom:none}.notif-label{font-size:.85rem}.toggle-switch{width:50px;height:24px;background:#333;border-radius:12px;position:relative;cursor:pointer;transition:.2s}.toggle-switch.active{background:#2d7}.toggle-switch::after{content:"";width:20px;height:20px;background:#fff;border-radius:10px;position:absolute;top:2px;left:3px;transition:.2s}.toggle-switch.active::after{left:27px}.notif-btn{margin-top:10px;padding:12px;background:#f60;color:#000;border:none;border-radius:8px;font-weight:bold;cursor:pointer;text-align:center}</style>
 </head>
 <body>
-
 <div id="overlay" onclick="closeMenu()"></div>
-
 <nav id="menu-lat">
     <div class="nav-btn" onclick="go('home')">🏠 INICIO</div>
-    <div class="submenu-btn" onclick="toggleSubmenu(this)">
-        <span>📅 RUTINA SEMANAL</span>
-        <span class="arrow">▼</span>
-    </div>
+    <div class="submenu-btn" onclick="toggleSubmenu(this)"><span>📅 RUTINA SEMANAL</span><span class="arrow">▼</span></div>
     <div class="submenu-items">
         <div class="sub-link" onclick="go('lunes')">📆 Lunes: Espalda / Bíceps</div>
         <div class="sub-link" onclick="go('martes')">🏃 Martes: Cardio / Abs</div>
@@ -575,19 +34,83 @@
     <div class="nav-btn" onclick="go('notificaciones')">🔔 NOTIFICACIONES</div>
     <div class="debug-btn" onclick="borrarTodo()">⚙️ Reset (debug)</div>
 </nav>
-
-<header>
-    <div onclick="openMenu()" style="font-size:1.8rem; cursor:pointer">☰</div>
-    <div class="logo">NICO <span style="color:var(--primary)">GYM</span> v85</div>
-    <div onclick="go('home')" style="font-size:1.5rem; cursor:pointer">🏠</div>
-</header>
-
+<header><div class="menu-icon" onclick="openMenu()">☰</div><div class="logo">NICO <span style="color:#f60">GYM</span> v86</div><div class="home-icon" onclick="go('home')">🏠</div></header>
 <div id="home" class="seccion active">
-    <div class="today-card" id="todayCard" onclick="goTodayRoutine()">
-        <div class="today-day" id="todayDay">Cargando...</div>
-        <div class="today-routine" id="todayRoutine">...</div>
-        <div class="today-btn">👉 ENTRENAR HOY 👈</div>
+    <div class="today-card" onclick="goTodayRoutine()"><div class="today-day" id="todayDay">Cargando...</div><div class="today-routine" id="todayRoutine">...</div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div>
+    <div class="stats-row"><div class="stat-card progreso"><h2 id="perc">0%</h2><small>PROGRESO SEMANAL</small></div><div class="stat-card racha"><h2 id="racha">18</h2><small>🔥 RACHA GYM</small></div><div class="stat-card nosmoke"><h2 id="diasSinFumar">0</h2><small id="mesesSinFumar"></small></div></div>
+    <div class="card" style="height:220px"><canvas id="grafico"></canvas></div>
+    <div class="notif-btn" onclick="solicitarPermisoNotificaciones()">🔔 ACTIVAR NOTIFICACIONES</div>
+</div>
+<div id="notificaciones" class="seccion">
+    <h2>🔔 CONFIGURAR NOTIFICACIONES</h2>
+    <div class="notif-config">
+        <div class="notif-item"><span class="notif-label">🌞 Buenos días (08:00)</span><div class="toggle-switch" id="toggle-buenosdias" onclick="toggleNotificacion('buenosdias')"></div></div>
+        <div class="notif-item"><span class="notif-label">💪 Recordatorio 1 (18:30)</span><div class="toggle-switch" id="toggle-recordatorio1" onclick="toggleNotificacion('recordatorio1')"></div></div>
+        <div class="notif-item"><span class="notif-label">⏰ Recordatorio 2 (19:00)</span><div class="toggle-switch" id="toggle-recordatorio2" onclick="toggleNotificacion('recordatorio2')"></div></div>
+        <div class="notif-item"><span class="notif-label">🚭 Tabaco (10:00)</span><div class="toggle-switch" id="toggle-tabaco" onclick="toggleNotificacion('tabaco')"></div></div>
+        <div class="notif-item"><span class="notif-label">📊 Resumen semanal (Domingo 20:00)</span><div class="toggle-switch" id="toggle-resumen" onclick="toggleNotificacion('resumen')"></div></div>
+        <div class="notif-item"><span class="notif-label">⚠️ Sin entrenar (21:00)</span><div class="toggle-switch" id="toggle-sinentrenar" onclick="toggleNotificacion('sinentrenar')"></div></div>
     </div>
-    
-    <div class="stats-row">
-        <div c
+    <div class="notif-btn" onclick="programarTodasNotificaciones()">✅ GUARDAR Y ACTIVAR</div>
+    <div class="notif-btn" style="background:#222; margin-top:10px;" onclick="testNotificacion()">🔔 PROBAR NOTIFICACIÓN</div>
+</div>
+<div id="lunes" class="seccion"><h2>📆 ESPALDA / BÍCEPS</h2><div id="list-lunes"></div></div>
+<div id="martes" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-martes"></div></div>
+<div id="miercoles" class="seccion"><h2>💪 PECHO / TRÍCEPS</h2><div id="list-miercoles"></div></div>
+<div id="jueves" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-jueves"></div></div>
+<div id="viernes" class="seccion"><h2>🦵 PIERNA / HOMBRO</h2><div id="list-viernes"></div></div>
+<div id="sabado" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-sabado"></div></div>
+<div id="domingo" class="seccion"><div class="sunday-card"><div class="sunday-emoji">🔋✨😴✨💪</div><div class="sunday-title">DÍA DE RECARGA</div><div class="sunday-text">Tu cuerpo necesita descansar para crecer más fuerte</div><div class="sunday-tips"><p>💧 Hidrátate bien</p><p>🍗 Come proteína de calidad</p><p>🧘‍♂️ Haz estiramientos suaves</p><p>😴 Duerme 7-8 horas</p></div></div></div>
+<div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso en kg" style="flex:1; padding:12px; background:#000; color:#fff; border:1px solid #444; border-radius:8px"><button onclick="addPeso()" style="padding:10px 20px; background:#f60; border:none; font-weight:bold; color:#fff; border-radius:8px; cursor:pointer">AÑADIR</button></div><div id="hist-peso"></div></div>
+<div id="calcModal" class="calc-modal"><span class="close-calc" onclick="closeCalcModal()">&times;</span><h3>🏋️ CALCULADORA DE DISCOS</h3><div style="margin-bottom:10px; font-size:.8rem; color:#aaa">Kit hasta 20kg | Máx 4 discos</div><div class="calc-grid"><button class="calc-btn" onclick="addDiscoModal(1.25)">+1.25kg <span class="badge" id="modal-badge-1.25">0</span></button><button class="calc-btn" onclick="addDiscoModal(1.5)">+1.5kg <span class="badge" id="modal-badge-1.5">0</span></button><button class="calc-btn" onclick="addDiscoModal(2)">+2kg <span class="badge" id="modal-badge-2">0</span></button></div><div style="margin:10px 0">PESO TOTAL: <strong id="modal-total" style="color:#f60; font-size:1.5rem">0</strong> kg</div><button class="calc-reset" onclick="resetDiscoModal()">🗑️ RESET</button></div>
+<div id="descansoSelector" class="descanso-modal"><h3>⏱️ DESCANSO ENTRE SERIES</h3><div class="descanso-tiempos"><button class="tiempo-btn" onclick="iniciarDescanso(30)">30s</button><button class="tiempo-btn" onclick="iniciarDescanso(45)">45s</button><button class="tiempo-btn" onclick="iniciarDescanso(60)">60s</button><button class="tiempo-btn" onclick="iniciarDescanso(90)">90s</button></div><button class="descanso-cerrar" onclick="cerrarSelectorDescanso()">❌ CERRAR</button></div>
+<div id="descanso-box"><h1 style="color:#2d7; margin-bottom:20px">💪 DESCANSA</h1><div class="descanso-timer-num" id="descanso-num">00</div><button onclick="cancelarDescanso()" style="margin-top:30px; background:#222; color:#fff; border:none; padding:12px 30px; border-radius:10px; cursor:pointer">❌ CANCELAR</button></div>
+<div id="timer-box"><h1 id="t-num">60</h1><button onclick="startT()" style="width:75%; padding:20px; background:#2d7; border:none; border-radius:10px; font-weight:bold; margin:10px; color:#fff; cursor:pointer">INICIAR</button><button onclick="hideT()" style="width:75%; padding:20px; background:#222; color:#fff; border:none; border-radius:10px; cursor:pointer">CERRAR</button></div>
+<button id="float-t" onclick="showT()">⏱️</button>
+<script>
+const diasMap={'lunes':'Lunes','martes':'Martes','miercoles':'Miércoles','jueves':'Jueves','viernes':'Viernes','sabado':'Sábado','domingo':'Domingo'};
+const data={lunes:[{t:"Dominadas / Negativas",r:"3 x Fallo",e:"1. Salta o súbete a la barra.\n2. Baja MUY LENTO 5 segundos.",p:"Saca pecho y junta escápulas.",w:"Peso corporal",hasWeight:false},{t:"Remo con Barra",r:"4 x 12",e:"1. Sujeta barra al ancho de hombros.\n2. Tira hacia el ombligo.",p:"Espalda recta SIEMPRE.",w:"~16 kg",hasWeight:true},{t:"Remo a una mano",r:"3 x 12",e:"1. Apoya rodilla y mano en banco.\n2. Tira hacia la cadera.",p:"Tira con el codo",w:"~6.5 kg",hasWeight:true},{t:"Curl de Bíceps",r:"3 x 12",e:"1. Codos pegados a costillas.\n2. Sube hacia el hombro.",p:"No balancees el cuerpo.",w:"~3 kg",hasWeight:true}],martes:[{t:"Cardio",r:"30 min",e:"Mantén ritmo constante.",p:"Hidrátate bien.",w:"Intensidad media",hasWeight:false},{t:"Elevación de piernas",r:"4 x 15",e:"Tumbado, eleva piernas a 90°.",p:"Lumbar pegada al suelo.",w:"Peso corporal",hasWeight:false},{t:"Plancha",r:"3 x 45 seg",e:"Cuerpo en línea recta.",p:"No hundas la cadera.",w:"Peso corporal",hasWeight:false}],miercoles:[{t:"Press Banca",r:"4 x 12",e:"Baja hacia el pecho, codos a 45°.",p:"Hazlo en el suelo si eres novato.",w:"~9.5 kg",hasWeight:true},{t:"Fondos",r:"3 x 10",e:"Baja hasta 90°.",p:"Apoya un pie en suelo si es difícil.",w:"Peso corporal",hasWeight:false},{t:"Press Francés",r:"3 x 12",e:"Baja hacia las sienes.",p:"Poco peso.",w:"~3 kg",hasWeight:true},{t:"Extensión Nuca",r:"3 x 12",e:"Mancuerna detrás de la cabeza.",p:"No abuses del peso.",w:"~5.5 kg",hasWeight:true}],jueves:[{t:"Cardio",r:"30 min",e:"Caminata con inclinación.",p:"Ritmo constante.",w:"Intensidad media",hasWeight:false},{t:"Crunch",r:"4 x 20",e:"Eleva solo hombros.",p:"Movimiento pequeño.",w:"Peso corporal",hasWeight:false},{t:"Toques talón",r:"3 x 20",e:"Alterna tocando talones.",p:"Muévete rápido.",w:"Peso corporal",hasWeight:false}],viernes:[{t:"Sentadillas",r:"4 x 12",e:"Baja como sentarte.",p:"Empieza sin peso.",w:"~20 kg",hasWeight:true},{t:"Peso Muerto Rumano",r:"4 x 15",e:"Baja el trasero hacia atrás.",p:"Movimiento de cadera.",w:"~5.5 kg",hasWeight:true},{t:"Press Militar",r:"4 x 10",e:"Sube por encima cabeza.",p:"Usa respaldo.",w:"~6.5 kg",hasWeight:true},{t:"Elevaciones Laterales",r:"3 x 15",e:"Sube hasta hombros.",p:"MUY POCO PESO.",w:"~3 kg",hasWeight:true}],sabado:[{t:"Cardio",r:"30 min",e:"Actividad libre.",p:"Disfruta.",w:"Moderado",hasWeight:false},{t:"Escaladores",r:"3 x 30 seg",e:"Alterna rodillas al pecho rápido.",p:"Ve a tope.",w:"Peso corporal",hasWeight:false},{t:"V-Ups Alternos",r:"3 x 15",e:"Toca pie con mano contraria.",p:"Dobla rodilla al principio.",w:"Peso corporal",hasWeight:false}]};
+let v_checks=JSON.parse(localStorage.getItem('v86_c'))||{};let v_notas=JSON.parse(localStorage.getItem('v86_n'))||{};let v_pesos=JSON.parse(localStorage.getItem('v86_p'))||[{v:82,d:'20/04'}];let v_racha=parseInt(localStorage.getItem('v86_r'))||18;let lastRachaDate=localStorage.getItem('v86_last_racha_date')||'';let lastResetDate=localStorage.getItem('v86_last_reset_date')||'';let completedDays=JSON.parse(localStorage.getItem('v86_completed_days'))||[];const fechaDejarFumar=new Date(2026,1,22);let modalDiscos={1.25:0,1.5:0,2:0};let currentExerciseId=null;let t_int_descanso=null;let notificationPermission=false;let notificacionesActivas={buenosdias:true,recordatorio1:true,recordatorio2:true,tabaco:true,resumen:true,sinentrenar:true};let intervalosNotificaciones=[];const offsetBarcelona=2;
+function calcularTiempoSinFumar(){const hoy=new Date();let años=hoy.getFullYear()-fechaDejarFumar.getFullYear();let meses=hoy.getMonth()-fechaDejarFumar.getMonth();let dias=hoy.getDate()-fechaDejarFumar.getDate();if(dias<0){meses--;const mesAnterior=new Date(hoy.getFullYear(),hoy.getMonth(),0);dias+=mesAnterior.getDate()}if(meses<0){años--;meses+=12}const totalDias=Math.floor((hoy-fechaDejarFumar)/(1000*60*60*24));let texto="";if(años>0)texto+=`${años} año${años!==1?'s':''} `;if(meses>0||años>0)texto+=`${meses} mes${meses!==1?'es':''} `;texto+=`${dias} día${dias!==1?'s':''}`;return{totalDias:totalDias>=0?totalDias:0,texto}}
+function actualizarDiasSinFumar(){const{totalDias,texto}=calcularTiempoSinFumar();document.getElementById('diasSinFumar').innerHTML=`${totalDias}<span style="font-size:0.8rem;"> días</span>`;document.getElementById('mesesSinFumar').innerHTML=`🚭 ${texto}`;}
+function solicitarPermisoNotificaciones(){if('Notification' in window){Notification.requestPermission().then(perm=>{if(perm==='granted'){notificationPermission=true;showToast("✅ Notificaciones activadas");programarTodasNotificaciones()}else showToast("❌ Permiso denegado")})}else showToast("❌ No soportado")}
+function enviarNotificacion(titulo,mensaje){if(notificationPermission&&document.visibilityState==='visible'){new Notification(titulo,{body:mensaje,icon:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ff6600'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white'%3E🏋️%3C/text%3E%3C/svg%3E"})}}
+function testNotificacion(){if(notificationPermission)new Notification("🔔 PRUEBA",{body:"¡Notificación funcionando!"});else showToast("❌ Activa notificaciones primero")}
+function toggleNotificacion(tipo){const toggle=document.getElementById(`toggle-${tipo}`);notificacionesActivas[tipo]=!notificacionesActivas[tipo];if(notificacionesActivas[tipo])toggle.classList.add('active');else toggle.classList.remove('active');localStorage.setItem('notificacionesActivas',JSON.stringify(notificacionesActivas))}
+function getDiaSemana(){return['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()]}
+function getRutinaHoy(){const dia=getDiaSemana();const rutinas={'lunes':'Espalda/Bíceps','martes':'Cardio/Abs','miercoles':'Pecho/Tríceps','jueves':'Cardio/Abs','viernes':'Pierna/Hombro','sabado':'Cardio/Abs','domingo':'Descanso'};return rutinas[dia]||'Descanso'}
+function programarNotificacion(mensaje,hora,minutos,diasSemana){const ahora=new Date();const horaNotif=new Date();horaNotif.setHours(hora-offsetBarcelona,minutos,0,0);if(horaNotif<=ahora)horaNotif.setDate(horaNotif.getDate()+1);const timeoutId=setTimeout(()=>{if(diasSemana.includes(getDiaSemana()))enviarNotificacion("NICO GYM",mensaje);programarNotificacion(mensaje,hora,minutos,diasSemana)},horaNotif-ahora);intervalosNotificaciones.push(timeoutId)}
+function programarTodasNotificaciones(){if(!notificationPermission)return;intervalosNotificaciones.forEach(id=>clearTimeout(id));intervalosNotificaciones=[];const{texto}=calcularTiempoSinFumar();const rutinaHoy=getRutinaHoy();const diaHoy=getDiaSemana();programarNotificacion("🔔 PRUEBA","¡Notificación funcionando! Son las 19:00.",19,0,['lunes','martes','miercoles','jueves','viernes','sabado','domingo']);if(notificacionesActivas.buenosdias)programarNotificacion(`🌞 Buenos días Nico. Hoy ${diaHoy}: ${rutinaHoy}`,8,0,['lunes','martes','miercoles','jueves','viernes']);if(notificacionesActivas.recordatorio1)programarNotificacion(`¡Hora de entrenar! Hoy: ${rutinaHoy}`,18,30,['lunes','martes','miercoles','jueves','viernes']);if(notificacionesActivas.recordatorio2)programarNotificacion(`⏰ ${texto} sin fumar. ¿Has entrenado?`,19,0,['lunes','martes','miercoles','jueves','viernes']);if(notificacionesActivas.tabaco)programarNotificacion(`🚭 Llevas ${texto} sin fumar, ¡eres increíble!`,10,0,['lunes','martes','miercoles','jueves','viernes','sabado','domingo']);if(notificacionesActivas.resumen)programarNotificacion(`📊 Resumen semanal: Racha ${v_racha} días`,20,0,['domingo']);if(notificacionesActivas.sinentrenar)programarNotificacion(`⚠️ Aún no has entrenado hoy.`,21,0,['lunes','martes','miercoles','jueves','viernes']);showToast("✅ Notificaciones activadas")}
+function borrarTodo(){if(confirm("¿Borrar todos los datos?")){localStorage.clear();location.reload()}}
+function showToast(msg){const t=document.createElement('div');t.className='toast-msg';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000)}
+function sumarRacha(dia){const today=new Date().toDateString();if(lastRachaDate===today){showToast(`🎉 Ya sumaste racha hoy`);return false}if(completedDays.includes(dia))return false;v_racha++;lastRachaDate=today;completedDays.push(dia);localStorage.setItem('v86_r',v_racha);localStorage.setItem('v86_last_racha_date',lastRachaDate);localStorage.setItem('v86_completed_days',JSON.stringify(completedDays));renderHome();hacerConfeti();showToast(`🎉🔥 +1 RACHA! ${v_racha} días 🔥🎉`);return true}
+function abrirSelectorDescanso(){document.getElementById('descansoSelector').classList.add('show')}
+function cerrarSelectorDescanso(){document.getElementById('descansoSelector').classList.remove('show')}
+function iniciarDescanso(seg){cerrarSelectorDescanso();const box=document.getElementById('descanso-box');const num=document.getElementById('descanso-num');num.innerText=seg;box.style.display='flex';if(t_int_descanso)clearInterval(t_int_descanso);t_int_descanso=setInterval(()=>{seg--;num.innerText=seg;if(seg<=0){clearInterval(t_int_descanso);box.style.display='none';if('vibrate' in navigator)navigator.vibrate([200,100,200]);showToast("⏰ ¡DESCANSO TERMINADO!")}},1000)}
+function cancelarDescanso(){if(t_int_descanso)clearInterval(t_int_descanso);document.getElementById('descanso-box').style.display='none'}
+function toggleSubmenu(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('show')}
+function openMenu(){document.getElementById('menu-lat').classList.add('open');document.getElementById('overlay').style.display='block'}
+function closeMenu(){document.getElementById('menu-lat').classList.remove('open');document.getElementById('overlay').style.display='none'}
+function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='home')renderHome();window.scrollTo(0,0);closeMenu()}
+function goTodayRoutine(){const today=getTodayKey();if(today&&today!=='domingo')go(today);else go('domingo')}
+function getTodayKey(){return['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()]}
+function updateTodayCard(){const todayKey=getTodayKey();const todayName=diasMap[todayKey];let routineText={'lunes':'Espalda/Bíceps','martes':'Cardio/Abs','miercoles':'Pecho/Tríceps','jueves':'Cardio/Abs','viernes':'Pierna/Hombro','sabado':'Cardio/Abs','domingo':'Descanso'}[todayKey]||'';document.getElementById('todayDay').innerHTML=`📅 HOY ES ${todayName.toUpperCase()}`;document.getElementById('todayRoutine').innerHTML=routineText}
+function openCalcModal(id){currentExerciseId=id;const saved=localStorage.getItem(`calc_${id}`);if(saved)modalDiscos=JSON.parse(saved);else modalDiscos={1.25:0,1.5:0,2:0};updateModalDisplay();document.getElementById('calcModal').classList.add('show')}
+function closeCalcModal(){document.getElementById('calcModal').classList.remove('show')}
+function addDiscoModal(w){if(modalDiscos[w]<4){modalDiscos[w]++;updateModalDisplay();if(currentExerciseId)localStorage.setItem(`calc_${currentExerciseId}`,JSON.stringify(modalDiscos))}else showToast(`Máximo 4 discos de ${w}kg`)}
+function resetDiscoModal(){modalDiscos={1.25:0,1.5:0,2:0};updateModalDisplay();if(currentExerciseId)localStorage.setItem(`calc_${currentExerciseId}`,JSON.stringify(modalDiscos))}
+function updateModalDisplay(){const total=(modalDiscos[1.25]*1.25)+(modalDiscos[1.5]*1.5)+(modalDiscos[2]*2);document.getElementById('modal-total').innerText=total.toFixed(2);document.getElementById('modal-badge-1.25').innerText=modalDiscos[1.25];document.getElementById('modal-badge-1.5').innerText=modalDiscos[1.5];document.getElementById('modal-badge-2').innerText=modalDiscos[2]}
+function addPeso(){const v=document.getElementById('in-peso').value;if(v&&!isNaN(v)){v_pesos.push({v:parseFloat(v),d:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})});savePesoData();document.getElementById('in-peso').value='';renderHome();renderPHist();showToast(`✅ Peso registrado: ${v}kg`)}}
+function deletePeso(i){if(confirm("¿Borrar?")){v_pesos.splice(i,1);savePesoData();renderHome();renderPHist()}}
+function savePesoData(){localStorage.setItem('v86_p',JSON.stringify(v_pesos))}
+function renderPHist(){const h=document.getElementById('hist-peso');if(!h)return;h.innerHTML=[...v_pesos].reverse().map((p,i)=>`<div class="peso-item"><span>${p.d}: <b>${p.v}kg</b></span><button class="btn-del" onclick="deletePeso(${i})">🗑️</button></div>`).join('')}
+function renderRutinas(){for(let dia in data){const list=document.getElementById('list-'+dia);if(!list)continue;list.innerHTML=data[dia].map((ex,i)=>{const id=dia+'-'+i;return`<div class="card"><div style="display:flex; justify-content:space-between"><div><div class="ex-header"><span class="ex-title">${ex.t}</span><div style="display:flex; gap:6px;">${ex.hasWeight?`<span class="calc-icon" onclick="openCalcModal('${id}')">🏋️</span>`:''}<span class="descanso-icon" onclick="abrirSelectorDescanso()">⏱️ DESCANSAR</span></div></div><span class="ex-reps">${ex.r}</span></div><input type="checkbox" class="check-box" ${v_checks[id]?'checked':''} onchange="saveCheck('${dia}',${i},this.checked)"></div><input type="number" class="input-nota" step="0.5" placeholder="Peso real (kg)..." value="${v_notas[id]||''}" onchange="saveNota('${id}',this.value)"><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}"><div style="padding:8px; background:#0a0a0a; border-radius:8px; margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.e.replace(/\n/g,'<br>')}</div><p style="color:#2d7">💡 CONSEJO: ${ex.p}</p><p style="color:#f60">⚖️ ${ex.w}</p></div></div>`}).join('')}}
+function saveCheck(dia,i,val){const id=dia+'-'+i;v_checks[id]=val;localStorage.setItem('v86_c',JSON.stringify(v_checks));const allChecked=data[dia].every((_,idx)=>v_checks[dia+'-'+idx]===true);if(allChecked){hacerConfeti();sumarRacha(dia)}renderHome()}
+function saveNota(id,val){if(val&&val!=='')v_notas[id]=val;else delete v_notas[id];localStorage.setItem('v86_n',JSON.stringify(v_notas))}
+function renderHome(){document.getElementById('racha').innerText=v_racha;actualizarDiasSinFumar();const total=Object.values(data).reduce((s,d)=>s+d.length,0);const realizados=Object.values(v_checks).filter(x=>x).length;const porcentaje=Math.min(Math.round((realizados/total)*100),100);document.getElementById('perc').innerText=porcentaje+"%";const ctx=document.getElementById('grafico').getContext('2d');if(window.myC)window.myC.destroy();window.myC=new Chart(ctx,{type:'line',data:{labels:v_pesos.map(p=>p.d),datasets:[{data:v_pesos.map(p=>p.v),borderColor:'#f60',borderWidth:3,tension:0.3,fill:true,backgroundColor:'rgba(255,102,0,0.1)',pointBackgroundColor:'#f60',pointBorderColor:'#fff',pointRadius:4}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'#333'}},x:{grid:{color:'#333'}}}}})}
+let t_int_ejercicio;function showT(){document.getElementById('timer-box').style.display='flex'}function hideT(){clearInterval(t_int_ejercicio);document.getElementById('timer-box').style.display='none'}function startT(){let s=60;document.getElementById('t-num').innerText=s;clearInterval(t_int_ejercicio);t_int_ejercicio=setInterval(()=>{s--;document.getElementById('t-num').innerText=s;if(s<=0){clearInterval(t_int_ejercicio);hideT();showToast("⏰ ¡TIEMPO!")}},1000)}
+const savedNotif=localStorage.getItem('notificacionesActivas');if(savedNotif)notificacionesActivas=JSON.parse(savedNotif);
+window.onload=()=>{renderRutinas();renderHome();renderPHist();updateTodayCard();for(let t in notificacionesActivas){const toggle=document.getElementById(`toggle-${t}`);if(toggle&&notificacionesActivas[t])toggle.classList.add('active')}if('Notification' in window&&Notification.permission==='granted'){notificationPermission=true;programarTodasNotificaciones()}};
+</script>
+</body>
+</html>
