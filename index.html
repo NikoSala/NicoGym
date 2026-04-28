@@ -1,380 +1,590 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>NICO GYM - Definitivo</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:#000;color:#fff;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;padding-bottom:80px}
-header{height:60px;background:linear-gradient(135deg,#000 0%,#1a1a1a 100%);border-bottom:2px solid #ff6600;display:flex;justify-content:space-between;align-items:center;padding:0 15px;position:sticky;top:0;z-index:1000}
-.logo{font-weight:900;background:linear-gradient(135deg,#fff,#ff6600);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.3rem}
-.menu-icon,.home-icon{font-size:1.8rem;cursor:pointer}
-.home-icon{font-size:1.5rem}
-#menu-lat{position:fixed;left:-280px;top:0;width:280px;height:100%;background:#0a0a0a;transition:.3s ease;z-index:2000;border-right:2px solid #ff6600;overflow-y:auto;box-shadow:2px 0 20px rgba(0,0,0,0.8)}
-#menu-lat.open{left:0}
-#overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;z-index:1500}
-.nav-btn{padding:18px;border-bottom:1px solid #222;color:#fff;display:block;font-weight:bold;cursor:pointer}
-.submenu-btn{background:#0f0f0f;display:flex;justify-content:space-between;align-items:center;padding:18px;border-bottom:1px solid #222;font-weight:bold;cursor:pointer}
-.submenu-btn .arrow{transition:.3s;font-size:.8rem}
-.submenu-btn.open .arrow{transform:rotate(180deg)}
-.submenu-items{max-height:0;overflow:hidden;transition:max-height .3s ease-out;background:#050505}
-.submenu-items.show{max-height:400px}
-.sub-link{padding:12px 35px;color:#aaa;font-size:.9rem;border-bottom:1px solid #111;display:block;cursor:pointer}
-.debug-btn{margin-top:30px;padding:10px;background:transparent;color:#333;border:1px solid #222;border-radius:8px;font-size:.7rem;text-align:center;cursor:pointer}
-.seccion{display:none;padding:15px}
-.seccion.active{display:block}
-.card{background:#111;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:0 2px 8px rgba(255,102,0,0.15)}
-.stats-row{display:flex;gap:10px;margin-bottom:15px}
-.stat-card{flex:1;background:#111;border-radius:12px;padding:12px;text-align:center}
-.stat-card h2{font-size:1.6rem;font-weight:bold}
-.stat-card.progreso h2{color:#ff6600}
-.stat-card.racha h2{color:#ff6600}
-.stat-card.nosmoke h2{color:#66bb6a}
-.stat-card small{font-size:.7rem;color:#aaa}
-.ex-title{font-weight:bold;color:#ff6600;font-size:1.1rem;display:block}
-.ex-reps{color:#32d74b;font-weight:bold;font-size:.9rem}
-.ex-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.ex-buttons{display:flex;gap:8px}
-.calc-icon{background:#ff6600;color:#000;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:bold;cursor:pointer}
-.descanso-icon{background:#2e7d32;color:#fff;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:bold;cursor:pointer}
-.calc-modal,.descanso-modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a1a;border:2px solid #ff6600;border-radius:15px;padding:20px;z-index:4000;width:90%;max-width:320px;text-align:center}
-.descanso-modal{border-color:#32d74b}
-.calc-modal.show,.descanso-modal.show{display:block}
-.close-calc{position:absolute;top:10px;right:15px;cursor:pointer;font-size:1.5rem;color:#aaa}
-.descanso-tiempos{display:flex;justify-content:center;gap:12px;margin:20px 0;flex-wrap:wrap}
-.tiempo-btn{background:#333;border:none;color:#fff;padding:10px 15px;border-radius:10px;font-size:1rem;cursor:pointer}
-.descanso-cerrar{margin-top:15px;background:#222;color:#aaa;border:none;padding:8px;border-radius:8px;cursor:pointer}
-.detalles{display:none;background:#050505;padding:10px;border-radius:8px;margin-top:10px;border-left:3px solid #ff6600}
-.detalles.show{display:block}
-.ex-img{width:100%;max-width:200px;border-radius:8px;margin:10px auto;display:block}
-.btn-main{width:100%;padding:10px;background:#222;color:#ff6600;border:1px solid #ff6600;border-radius:8px;font-weight:bold;margin:10px 0;cursor:pointer}
-.check-box{width:35px;height:35px;accent-color:#32d74b;cursor:pointer}
-.input-nota{width:100%;padding:10px;background:#000;border:1px solid #333;color:#fff;border-radius:6px;margin-top:8px}
-.peso-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #222}
-.btn-del{background:0;border:none;color:#ff3b30;font-size:1.2rem;cursor:pointer}
-.calc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:15px 0}
-.calc-btn{background:#333;border:none;color:#fff;padding:12px;border-radius:8px;cursor:pointer;position:relative}
-.badge{position:absolute;top:-8px;right:-5px;background:#ff6600;font-size:.7rem;padding:2px 6px;border-radius:20px}
-.calc-reset{width:100%;padding:10px;background:#222;color:#ff3b30;border:1px solid #ff3b30;border-radius:8px;cursor:pointer;margin-top:10px}
-#timer-box,#descanso-box{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:3000;display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
-#descanso-box{z-index:3500}
-.descanso-timer-num,#t-num{font-size:8rem;font-weight:bold;font-family:monospace}
-#t-num{color:#ff6600}
-.descanso-timer-num{color:#32d74b}
-#float-t{position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:linear-gradient(135deg,#ff6600,#ff884d);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:900;font-size:1.5rem;border:none;color:#fff;cursor:pointer;box-shadow:0 4px 15px rgba(255,102,0,0.4)}
-.today-card{background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid #ff6600;border-radius:15px;padding:20px;margin-bottom:20px;text-align:center;cursor:pointer}
-.today-day{font-size:1.5rem;font-weight:bold;color:#ff6600;margin-bottom:8px}
-.today-btn{background:#ff6600;color:#000;padding:8px 20px;border-radius:20px;display:inline-block;font-weight:bold;margin-top:8px}
-.sunday-card{background:linear-gradient(135deg,#1a0a2e,#0a0a1a);border:2px solid #8b5cf6;border-radius:20px;padding:40px 20px;text-align:center;margin-top:30px}
-.sunday-emoji{font-size:5rem;animation:float 3s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
-.sunday-title{font-size:2rem;color:#8b5cf6;margin:20px 0}
-.toast-msg{position:fixed;bottom:100px;left:20px;right:20px;background:#ff6600;color:#000;padding:12px;border-radius:10px;text-align:center;font-weight:bold;z-index:5000;animation:fadeInOut 3s ease-in-out}
-@keyframes fadeInOut{0%{opacity:0;transform:translateY(20px)}15%{opacity:1;transform:translateY(0)}85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-20px)}}
-.notif-config{background:#1a1a1a;border-radius:12px;padding:15px;margin-bottom:15px}
-.notif-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #333}
-.toggle-switch{width:50px;height:24px;background:#333;border-radius:12px;position:relative;cursor:pointer}
-.toggle-switch.active{background:#32d74b}
-.toggle-switch::after{content:"";width:20px;height:20px;background:#fff;border-radius:10px;position:absolute;top:2px;left:3px;transition:.2s}
-.toggle-switch.active::after{left:27px}
-.notif-btn{margin-top:10px;padding:12px;background:#ff6600;color:#000;border-radius:8px;font-weight:bold;text-align:center;cursor:pointer}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NICO GYM OS v84 - Notificaciones</title>
+    <link rel="manifest" href="data:application/manifest+json,{
+        \"name\": \"NICO GYM\",
+        \"short_name\": \"NICOGYM\",
+        \"start_url\": \".\",
+        \"display\": \"standalone\",
+        \"theme_color\": \"#ff6600\",
+        \"background_color\": \"#000000\",
+        \"icons\": [{
+            \"src\": \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ff6600'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white'%3E🏋️%3C/text%3E%3C/svg%3E\",
+            \"sizes\": \"any\"
+        }]
+    }">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function hacerConfeti() {
+            try {
+                if (typeof canvasConfetti !== 'undefined') {
+                    canvasConfetti({ particleCount: 300, spread: 100, origin: { y: 0.6 }, startVelocity: 25 });
+                    setTimeout(() => {
+                        if (typeof canvasConfetti !== 'undefined') {
+                            canvasConfetti({ particleCount: 150, spread: 70, origin: { y: 0.5, x: 0.2 }, startVelocity: 20 });
+                        }
+                    }, 150);
+                    setTimeout(() => {
+                        if (typeof canvasConfetti !== 'undefined') {
+                            canvasConfetti({ particleCount: 150, spread: 70, origin: { y: 0.5, x: 0.8 }, startVelocity: 20 });
+                        }
+                    }, 300);
+                }
+            } catch(e) {}
+        }
+    </script>
+    <style>
+        :root { 
+            --bg: #000; 
+            --card: #111; 
+            --primary: #ff6600; 
+            --text: #fff; 
+            --accent: #32d74b; 
+            --danger: #ff3b30;
+            --smoke: #66bb6a;
+            --menu-bg: #0a0a0a;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 80px; }
+        
+        header { 
+            height: 60px; 
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            border-bottom: 2px solid var(--primary); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 15px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+        }
+        .logo {
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.3rem;
+        }
+        
+        #menu-lat { 
+            position: fixed; 
+            left: -100%; 
+            top: 0; 
+            width: 280px; 
+            height: 100%; 
+            background: var(--menu-bg); 
+            transition: 0.3s ease; 
+            z-index: 2000; 
+            border-right: 2px solid var(--primary); 
+            overflow-y: auto; 
+            box-shadow: 2px 0 20px rgba(0,0,0,0.8);
+        }
+        #menu-lat.open { left: 0; }
+        #overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.85); 
+            display: none; 
+            z-index: 1500; 
+            backdrop-filter: blur(3px);
+        }
+        
+        .nav-btn { 
+            padding: 18px; 
+            border-bottom: 1px solid #222; 
+            color: #fff; 
+            display: block; 
+            font-weight: bold; 
+            text-decoration: none; 
+            cursor: pointer; 
+            transition: 0.2s;
+        }
+        .nav-btn:hover { background: #1a1a1a; padding-left: 25px; }
+        
+        .submenu-btn {
+            background: #0f0f0f;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px;
+            border-bottom: 1px solid #222;
+            font-weight: bold;
+        }
+        .submenu-btn span:first-child { flex: 1; }
+        .submenu-btn .arrow {
+            transition: 0.3s;
+            font-size: 0.8rem;
+        }
+        .submenu-btn.open .arrow {
+            transform: rotate(180deg);
+        }
+        .submenu-items {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: #050505;
+        }
+        .submenu-items.show {
+            max-height: 400px;
+        }
+        .sub-link { 
+            padding: 12px 35px; 
+            color: #aaa; 
+            font-size: 0.9rem; 
+            border-bottom: 1px solid #111; 
+            display: block; 
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .sub-link:hover { background: #1a1a1a; color: var(--primary); padding-left: 45px; }
+        
+        .debug-btn {
+            margin-top: 30px;
+            padding: 10px;
+            background: transparent;
+            color: #333;
+            border: 1px solid #222;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            text-align: center;
+        }
+        .debug-btn:hover {
+            background: #1a1a1a;
+            color: #666;
+        }
+        
+        .notif-btn {
+            margin-top: 10px;
+            padding: 12px;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+        .notif-btn:hover { opacity: 0.9; }
+        
+        .seccion { display: none; padding: 15px; animation: fadeIn 0.3s; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .card { 
+            background: var(--card); 
+            border-radius: 12px; 
+            padding: 15px; 
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(255,102,0,0.15);
+            transition: transform 0.2s;
+        }
+        .card:active { transform: scale(0.98); }
+        
+        .stats-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            flex: 1;
+            background: var(--card);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(255,102,0,0.15);
+            min-width: 100px;
+        }
+        .stat-card h2 {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        .stat-card small {
+            font-size: 0.7rem;
+            color: #aaa;
+        }
+        .stat-card.progreso h2 { color: var(--primary); }
+        .stat-card.racha h2 { color: var(--primary); }
+        .stat-card.nosmoke h2 { color: #66bb6a; }
+        .stat-card.nosmoke small { color: #66bb6a; font-size: 0.65rem; }
+        
+        .ex-title { font-weight: bold; color: var(--primary); font-size: 1.1rem; display: block; }
+        .ex-reps { color: var(--accent); font-weight: bold; font-size: 0.9rem; }
+        
+        .ex-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .calc-icon {
+            background: var(--primary);
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .calc-icon:hover { transform: scale(1.05); background: #ff884d; }
+        
+        .descanso-icon {
+            background: #2e7d32;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .descanso-icon:hover { transform: scale(1.05); background: #43a047; }
+        
+        .calc-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1a;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            z-index: 4000;
+            width: 90%;
+            max-width: 320px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+        .calc-modal.show { display: block; }
+        .calc-modal h3 { color: var(--primary); margin-bottom: 15px; text-align: center; }
+        .calc-modal .close-calc {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #aaa;
+        }
+        
+        .descanso-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1a;
+            border: 2px solid var(--accent);
+            border-radius: 15px;
+            padding: 25px;
+            z-index: 4000;
+            width: 90%;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+        .descanso-modal.show { display: block; }
+        .descanso-modal h3 { color: var(--accent); margin-bottom: 15px; }
+        .descanso-tiempos {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .tiempo-btn {
+            background: #333;
+            border: none;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .tiempo-btn:hover { background: var(--accent); transform: scale(1.05); }
+        .descanso-cerrar {
+            margin-top: 15px;
+            background: #222;
+            color: #aaa;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .detalles { display: none; background: #050505; padding: 10px; border-radius: 8px; margin-top: 10px; border-left: 3px solid var(--primary); }
+        .detalles.show { display: block; }
+        
+        .ex-img { 
+            width: 100%; 
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px; 
+            margin: 10px auto; 
+            border: 1px solid #333; 
+            display: block;
+        }
+        
+        .btn-main { 
+            width: 100%; 
+            padding: 12px; 
+            background: #222; 
+            color: var(--primary); 
+            border: 1px solid var(--primary); 
+            border-radius: 8px; 
+            font-weight: bold; 
+            margin: 10px 0; 
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-main:hover { background: var(--primary); color: #000; }
+        
+        .check-box { 
+            width: 35px; 
+            height: 35px; 
+            accent-color: var(--accent);
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+        .input-nota { 
+            width: 100%; 
+            padding: 10px; 
+            background: #000; 
+            border: 1px solid #333; 
+            color: #fff; 
+            margin-top: 8px; 
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        .input-nota:focus { outline: none; border-color: var(--primary); }
+        
+        .peso-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #222; }
+        .btn-del { background: none; border: none; color: var(--danger); font-size: 1.2rem; cursor: pointer; padding: 5px; }
+        
+        .calc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 15px 0; }
+        .calc-btn { 
+            background: #333; 
+            border: none; 
+            color: #fff; 
+            padding: 12px 0; 
+            border-radius: 8px; 
+            font-size: 0.9rem; 
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+        .calc-btn:hover { background: var(--primary); }
+        .badge { 
+            position: absolute; 
+            top: -8px; 
+            right: -5px; 
+            background: var(--primary); 
+            font-size: 0.8rem; 
+            padding: 2px 8px; 
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .calc-reset {
+            width: 100%;
+            padding: 10px;
+            background: #222;
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        #timer-box { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.95); 
+            z-index: 3000; 
+            display: none; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        #descanso-box {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 3500;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        .descanso-timer-num {
+            font-size: 8rem;
+            color: var(--accent);
+            font-weight: bold;
+            font-family: monospace;
+        }
+        
+        #float-t { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            width: 60px; 
+            height: 60px; 
+            background: linear-gradient(135deg, var(--primary), #ff884d);
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 900; 
+            font-size: 1.5rem; 
+            border: none; 
+            color: white; 
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255,102,0,0.4);
+        }
+        
+        .today-card {
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .today-card:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(255,102,0,0.3); }
+        .today-day { font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-bottom: 8px; }
+        .today-routine { font-size: 1rem; color: #ccc; margin-bottom: 10px; }
+        .today-btn { background: var(--primary); color: #000; padding: 8px 20px; border-radius: 20px; display: inline-block; font-weight: bold; margin-top: 8px; }
+        
+        .sunday-card {
+            background: linear-gradient(135deg, #1a0a2e, #0a0a1a);
+            border: 2px solid #8b5cf6;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .sunday-emoji { font-size: 5rem; animation: float 3s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        .sunday-title { font-size: 2rem; color: #8b5cf6; margin: 20px 0; font-weight: bold; }
+        .sunday-text { color: #aaa; font-size: 1.1rem; }
+        .sunday-tips { background: rgba(139,92,246,0.1); border-radius: 15px; padding: 20px; margin-top: 20px; }
+        
+        .toast-msg {
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: #000;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            z-index: 5000;
+            animation: fadeInOut 3s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            15% { opacity: 1; transform: translateY(0); }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+        
+        .notif-config {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .notif-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-label { font-size: 0.85rem; }
+        .notif-time { color: var(--primary); font-family: monospace; font-weight: bold; }
+        .toggle-switch {
+            width: 50px;
+            height: 24px;
+            background: #333;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .toggle-switch.active {
+            background: var(--accent);
+        }
+        .toggle-switch::after {
+            content: "";
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 10px;
+            position: absolute;
+            top: 2px;
+            left: 3px;
+            transition: 0.2s;
+        }
+        .toggle-switch.active::after {
+            left: 27px;
+        }
+    </style>
 </head>
 <body>
+
 <div id="overlay" onclick="closeMenu()"></div>
+
 <nav id="menu-lat">
-<div class="nav-btn" onclick="go('home')">🏠 INICIO</div>
-<div class="submenu-btn" onclick="toggleSubmenu(this)"><span>📅 RUTINA SEMANAL</span><span class="arrow">▼</span></div>
-<div class="submenu-items">
-<div class="sub-link" onclick="go('lunes')">📆 Lunes: Espalda / Bíceps</div>
-<div class="sub-link" onclick="go('martes')">🏃 Martes: Cardio / Abs</div>
-<div class="sub-link" onclick="go('miercoles')">💪 Miércoles: Pecho / Tríceps</div>
-<div class="sub-link" onclick="go('jueves')">🏃 Jueves: Cardio / Abs</div>
-<div class="sub-link" onclick="go('viernes')">🦵 Viernes: Pierna / Hombro</div>
-<div class="sub-link" onclick="go('sabado')">🏃 Sábado: Cardio / Abs</div>
-<div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso</div>
-</div>
-<div class="nav-btn" onclick="go('peso')">⚖️ PESO CORPORAL</div>
-<div class="nav-btn" onclick="go('notificaciones')">🔔 NOTIFICACIONES</div>
-<div class="debug-btn" onclick="borrarTodo()">⚙️ Reset</div>
+    <div class="nav-btn" onclick="go('home')">🏠 INICIO</div>
+    <div class="submenu-btn" onclick="toggleSubmenu(this)">
+        <span>📅 RUTINA SEMANAL</span>
+        <span class="arrow">▼</span>
+    </div>
+    <div class="submenu-items">
+        <div class="sub-link" onclick="go('lunes')">📆 Lunes: Espalda / Bíceps</div>
+        <div class="sub-link" onclick="go('martes')">🏃 Martes: Cardio / Abs</div>
+        <div class="sub-link" onclick="go('miercoles')">💪 Miércoles: Pecho / Tríceps</div>
+        <div class="sub-link" onclick="go('jueves')">🏃 Jueves: Cardio / Abs</div>
+        <div class="sub-link" onclick="go('viernes')">🦵 Viernes: Pierna / Hombro</div>
+        <div class="sub-link" onclick="go('sabado')">🏃 Sábado: Cardio / Abs</div>
+        <div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso</div>
+    </div>
+    <div class="nav-btn" onclick="go('peso')">⚖️ PESO CORPORAL</div>
+    <div class="nav-btn" onclick="go('notificaciones')">🔔 NOTIFICACIONES</div>
+    <div class="debug-btn" onclick="borrarTodo()">⚙️ Reset (debug)</div>
 </nav>
-<header><span class="menu-icon" onclick="openMenu()">☰</span><span class="logo">NICO <span style="color:#ff6600">GYM</span></span><span class="home-icon" onclick="go('home')">🏠</span></header>
+
+<header>
+    <div onclick="openMenu()" style="font-size:1.8rem; cursor:pointer">☰</div>
+    <div class="logo">NICO <span style="color:var(--primary)">GYM</span> v84</div>
+    <div onclick="go('home')" style="font-size:1.5rem; cursor:pointer">🏠</div>
+</header>
+
 <div id="home" class="seccion active">
-<div class="today-card" onclick="goToday()"><div class="today-day" id="todayDay">Cargando...</div><div id="todayRoutine" style="color:#aaa;margin-bottom:10px"></div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div>
-<div class="stats-row"><div class="stat-card progreso"><h2 id="perc">0%</h2><small>PROGRESO</small></div><div class="stat-card racha"><h2 id="racha">18</h2><small>RACHA GYM</small></div><div class="stat-card nosmoke"><h2 id="diasSinFumar">0</h2><small id="mesesSinFumar"></small></div></div>
-<div class="card" style="height:220px"><canvas id="grafico"></canvas></div>
-<div class="notif-btn" onclick="activarNotificaciones()">🔔 ACTIVAR NOTIFICACIONES</div>
-<div class="notif-btn" style="background:#222;margin-top:10px" onclick="testNotificacion()">🔔 PROBAR NOTIFICACIÓN</div>
-</div>
-<div id="notificaciones" class="seccion"><h2>🔔 NOTIFICACIONES</h2><div class="notif-config">
-<div class="notif-item"><span>🌞 Buenos días (08:00)</span><div class="toggle-switch" id="toggle-bd" onclick="toggleNotif('bd')"></div></div>
-<div class="notif-item"><span>💪 Recordatorio 1 (18:30)</span><div class="toggle-switch" id="toggle-r1" onclick="toggleNotif('r1')"></div></div>
-<div class="notif-item"><span>⏰ Recordatorio 2 (19:00)</span><div class="toggle-switch" id="toggle-r2" onclick="toggleNotif('r2')"></div></div>
-<div class="notif-item"><span>🚭 Racha sin fumar (10:00)</span><div class="toggle-switch" id="toggle-tab" onclick="toggleNotif('tab')"></div></div>
-<div class="notif-item"><span>📊 Resumen semanal (Dom 20:00)</span><div class="toggle-switch" id="toggle-res" onclick="toggleNotif('res')"></div></div>
-<div class="notif-item"><span>⚠️ Sin entrenar (21:00)</span><div class="toggle-switch" id="toggle-se" onclick="toggleNotif('se')"></div></div>
-</div><div class="notif-btn" onclick="programarNotificaciones()">✅ GUARDAR</div></div>
-<div id="lunes" class="seccion"><h2>📆 ESPALDA / BÍCEPS</h2><div id="list-lunes"></div></div>
-<div id="martes" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-martes"></div></div>
-<div id="miercoles" class="seccion"><h2>💪 PECHO / TRÍCEPS</h2><div id="list-miercoles"></div></div>
-<div id="jueves" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-jueves"></div></div>
-<div id="viernes" class="seccion"><h2>🦵 PIERNA / HOMBRO</h2><div id="list-viernes"></div></div>
-<div id="sabado" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-sabado"></div></div>
-<div id="domingo" class="seccion"><div class="sunday-card"><div class="sunday-emoji">🔋✨😴✨💪</div><div class="sunday-title">DÍA DE RECARGA</div><div style="margin-top:20px"><p>💧 Hidrátate</p><p>🍗 Come proteína</p><p>🧘‍♂️ Estiramientos</p><p>😴 Duerme 7-8h</p></div></div></div>
-<div id="peso" class="seccion"><h2>⚖️ MI PESO</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso en kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div></div>
-<div id="calcModal" class="calc-modal"><span class="close-calc" onclick="cerrarCalc()">&times;</span><h3>🏋️ CALCULAR DISCOS</h3><div style="font-size:12px;margin-bottom:10px">Kit 20kg | Máx 4 discos</div><div class="calc-grid"><button class="calc-btn" onclick="sumarDisco(1.25)">+1.25kg <span class="badge" id="badge125">0</span></button><button class="calc-btn" onclick="sumarDisco(1.5)">+1.5kg <span class="badge" id="badge15">0</span></button><button class="calc-btn" onclick="sumarDisco(2)">+2kg <span class="badge" id="badge2">0</span></button></div><div>PESO TOTAL: <strong id="totalDisco" style="color:#ff6600;font-size:24px">0</strong> kg</div><button class="calc-reset" onclick="resetearDiscos()">🗑️ RESET</button></div>
-<div id="descansoSelector" class="descanso-modal"><h3>⏱️ DESCANSO</h3><div class="descanso-tiempos"><button class="tiempo-btn" onclick="iniciarDescanso(30)">30s</button><button class="tiempo-btn" onclick="iniciarDescanso(45)">45s</button><button class="tiempo-btn" onclick="iniciarDescanso(60)">60s</button><button class="tiempo-btn" onclick="iniciarDescanso(90)">90s</button></div><button class="descanso-cerrar" onclick="cerrarSelectorDescanso()">❌ CERRAR</button></div>
-<div id="descanso-box"><h1 style="color:#32d74b;margin-bottom:20px">💪 DESCANSA</h1><div class="descanso-timer-num" id="descansoTimer">00</div><button onclick="cancelarDescanso()" style="margin-top:30px;background:#222;color:#fff;border:none;padding:12px 30px;border-radius:10px">CANCELAR</button></div>
-<div id="timer-box"><h1 id="t-num">60</h1><button onclick="iniciarTimer()" style="background:#32d74b;border:none;padding:12px 30px;border-radius:10px;color:#fff;font-weight:bold">INICIAR</button><button onclick="cerrarTimer()" style="background:#222;border:none;padding:12px 30px;border-radius:10px;color:#fff;margin-top:10px">CERRAR</button></div>
-<button id="float-t" onclick="abrirTimer()">⏱️</button>
-<script>
-// DATOS COMPLETOS DE EJERCICIOS
-const ejercicios = {
-lunes: [
-{nombre:"Dominadas / Negativas", series:"3 x Fallo", instrucciones:"1. Colócate debajo de la barra con agarre prono (palmas hacia afuera).\n2. Activa los hombros hacia abajo y atrás.\n3. Sube llevando el pecho a la barra.\n4. Baja de forma CONTROLADA y LENTA (4-5 segundos).\n5. Si no puedes subir, haz solo la fase negativa.", consejo:"Escápulas juntas, pecho afuera. No balancees el cuerpo.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/3c194808-73c8-4d75-a2d9-cf85dd42fbeb", tienePeso:false},
-{nombre:"Remo con Barra", series:"4 x 12", instrucciones:"1. Sujeta la barra con agarre prono, manos al ancho de hombros.\n2. Inclina el torso 45° con espalda RECTA.\n3. Tira de la barra hacia el ombligo.\n4. Aprieta las escapulas al final.\n5. Baja controladamente.", consejo:"Espalda recta SIEMPRE. No redondees.", peso:"~16 kg", imagen:"https://api.smartworkout.app/asset/image/be04fca7-9dc1-4b64-a7b4-d05217eaecda", tienePeso:true},
-{nombre:"Remo a una mano", series:"3 x 12", instrucciones:"1. Apoya rodilla y mano en un banco.\n2. Espalda paralela al suelo, RECTA.\n3. Tira la mancuerna hacia la cadera.\n4. Codo pegado al cuerpo.\n5. Baja despacio.", consejo:"Tira con el codo, no con el bíceps.", peso:"~6.5 kg", imagen:"https://api.smartworkout.app/asset/image/55720d63-1744-4bf8-9917-8eafd30740f5", tienePeso:true},
-{nombre:"Curl de Bíceps", series:"3 x 12", instrucciones:"1. De pie, codos PEGADOS a las costillas.\n2. Sube la mancuerna hacia el hombro.\n3. Gira ligeramente la muñeca.\n4. Aprieta arriba.\n5. Baja CONTROLADO.", consejo:"No balancees el cuerpo.", peso:"~3 kg", imagen:"https://api.smartworkout.app/asset/image/303b810b-f875-42eb-8b26-cc79b18b6865", tienePeso:true}
-],
-martes: [
-{nombre:"Cardio", series:"30 min", instrucciones:"1. Calienta 5 min suave.\n2. Mantén ritmo constante.\n3. Controla la respiración.\n4. Enfría 5 min.", consejo:"Hidrátate bien.", peso:"Intensidad media", tienePeso:false},
-{nombre:"Elevación de piernas", series:"4 x 15", instrucciones:"1. Tumbado, manos bajo glúteos.\n2. Piernas estiradas, eleva a 90°.\n3. Baja sin tocar suelo.", consejo:"Lumbar pegada al suelo.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/336b57e7-bcea-4e65-a54f-3a3519729f7e", tienePeso:false},
-{nombre:"Plancha", series:"3 x 45 seg", instrucciones:"1. Apoyo en antebrazos y puntas pies.\n2. Cuerpo en línea RECTA.\n3. Aprieta abdomen y glúteos.", consejo:"No hundas la cadera.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/606defc2-dc68-41d8-bea0-41a8d68aaa71", tienePeso:false}
-],
-miercoles: [
-{nombre:"Press Banca", series:"4 x 12", instrucciones:"1. Tumbado, mancuernas sobre el pecho.\n2. Baja hacia el pecho.\n3. Codas a 45°.\n4. Sube apretando pecho.", consejo:"Hazlo en el suelo si eres novato.", peso:"~9.5 kg", imagen:"https://api.smartworkout.app/asset/image/567ae9ad-b584-4d53-b400-82b0117a7ce1", tienePeso:true},
-{nombre:"Fondos", series:"3 x 10", instrucciones:"1. Usa dos sillas fuertes.\n2. Baja hasta 90°.\n3. Sube con fuerza.", consejo:"Apoya un pie en suelo si es difícil.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030", tienePeso:false},
-{nombre:"Press Francés", series:"3 x 12", instrucciones:"1. Tumbado, mancuernas sobre cara.\n2. Baja hacia las sienes.\n3. Codas al techo.", consejo:"Poco peso, es delicado.", peso:"~3 kg", imagen:"https://api.smartworkout.app/asset/image/deff1b63-c052-42b3-a3e4-aad93db0159f", tienePeso:true},
-{nombre:"Extensión Nuca", series:"3 x 12", instrucciones:"1. Sentado, mancuerna a dos manos.\n2. Sube y baja detrás de la nuca.\n3. Codas pegados a orejas.", consejo:"No abuses del peso.", peso:"~5.5 kg", imagen:"https://api.smartworkout.app/asset/image/6a79a439-417e-4fe9-8d83-0079e565389a", tienePeso:true}
-],
-jueves: [
-{nombre:"Cardio", series:"30 min", instrucciones:"Caminata con inclinación.", consejo:"Ritmo constante.", peso:"Intensidad media", tienePeso:false},
-{nombre:"Crunch", series:"4 x 20", instrucciones:"1. Tumbado, rodillas flexionadas.\n2. Manos tras cabeza.\n3. Eleva SOLO hombros.", consejo:"Movimiento pequeño.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/85e37877-a9d0-4fb6-93d1-e8c0931caed9", tienePeso:false},
-{nombre:"Toques talón", series:"3 x 20", instrucciones:"1. Tumbado, rodillas flexionadas.\n2. Eleva hombros.\n3. Alterna tocando talones.", consejo:"Muévete rápido.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/bc90a160-cf28-49ff-ab43-60a01086d62f", tienePeso:false}
-],
-viernes: [
-{nombre:"Sentadillas", series:"4 x 12", instrucciones:"1. Barra en trapecios.\n2. Baja como sentarte.\n3. Pecho arriba, espalda recta.\n4. Sube apretando glúteos.", consejo:"Empieza sin peso.", peso:"~20 kg", imagen:"https://api.smartworkout.app/asset/image/7937ce6b-b8cd-418c-a71c-aa8f4ecb3635", tienePeso:true},
-{nombre:"Peso Muerto Rumano", series:"4 x 15", instrucciones:"1. Mancuernas a los lados.\n2. Baja el trasero hacia atrás.\n3. Siente isquios.\n4. Sube apretando glúteos.", consejo:"Movimiento de cadera.", peso:"~5.5 kg", imagen:"https://api.smartworkout.app/asset/image/7fa791dd-b202-4a33-a55b-ede33ac9ba8f", tienePeso:true},
-{nombre:"Press Militar", series:"4 x 10", instrucciones:"1. Sentado con respaldo.\n2. Sube por encima cabeza.\n3. Aprieta hombros.", consejo:"Usa respaldo.", peso:"~6.5 kg", imagen:"https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89", tienePeso:true},
-{nombre:"Elevaciones Laterales", series:"3 x 15", instrucciones:"1. De pie, mancuernas a los lados.\n2. Sube hasta hombros.\n3. Baja controlado.", consejo:"MUY POCO PESO.", peso:"~3 kg", imagen:"https://api.smartworkout.app/asset/image/32c6f15d-63ef-4bd6-ae6b-0056c26157fc", tienePeso:true}
-],
-sabado: [
-{nombre:"Cardio", series:"30 min", instrucciones:"Actividad libre.", consejo:"Disfruta.", peso:"Moderado", tienePeso:false},
-{nombre:"Escaladores", series:"3 x 30 seg", instrucciones:"1. Plancha alta.\n2. Alterna rodillas al pecho rápido.\n3. Cadera baja.", consejo:"Ve a tope.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/5571abe1-227c-4fff-b7b6-9a365284a50d", tienePeso:false},
-{nombre:"V-Ups", series:"3 x 15", instrucciones:"1. Tumbado, brazos atrás.\n2. Sube pierna y brazo contrario.\n3. Toca pie con mano.", consejo:"Dobla rodilla al principio.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/902e6c32-2f9a-4466-9e42-cc8a3c9eb498", tienePeso:false}
-]
-};
-// VARIABLES GLOBALES
-let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
-let notas = JSON.parse(localStorage.getItem('nico_notas')) || {};
-let pesosRegistrados = JSON.parse(localStorage.getItem('nico_pesos')) || [{valor:82, fecha:'20/04'}];
-let rachaActual = parseInt(localStorage.getItem('nico_racha')) || 18;
-let ultimaFechaRacha = localStorage.getItem('nico_ultima_fecha_racha') || '';
-let ultimoResetSemana = localStorage.getItem('nico_ultimo_reset') || '';
-let rachaDiasCompletados = JSON.parse(localStorage.getItem('nico_dias_completados')) || [];
-let notificacionesActivas = {bd:true, r1:true, r2:true, tab:true, res:true, se:true};
-let permisosNotificaciones = false;
-let intervalosNotificaciones = [];
-let intervalDescanso = null;
-let discosActuales = {d125:0, d15:0, d2:0};
-let ejercicioDiscoActual = null;
-let timerInterval = null;
-const fechaDejarFumar = new Date(2026, 1, 22);
-// DÍAS SIN FUMAR
-function calcularDiasSinFumar() {
-const hoy = new Date();
-let meses = hoy.getMonth() - fechaDejarFumar.getMonth();
-let dias = hoy.getDate() - fechaDejarFumar.getDate();
-if (dias < 0) { meses--; const mesAnterior = new Date(hoy.getFullYear(), hoy.getMonth(), 0); dias += mesAnterior.getDate(); }
-if (meses < 0) meses += 12;
-const totalDias = Math.floor((hoy - fechaDejarFumar) / (1000 * 60 * 60 * 24));
-let texto = "";
-if (meses > 0) texto += `${meses} mes${meses !== 1 ? 'es' : ''} `;
-texto += `${dias} día${dias !== 1 ? 's' : ''}`;
-return { total: totalDias >= 0 ? totalDias : 0, texto: texto };
-}
-function actualizarDiasSinFumar() {
-const { total, texto } = calcularDiasSinFumar();
-document.getElementById('diasSinFumar').innerHTML = total;
-document.getElementById('mesesSinFumar').innerHTML = `🚭 ${texto}`;
-}
-// RACHA
-function sumarRachaSiCorresponde(dia) {
-const hoy = new Date().toDateString();
-if (ultimaFechaRacha === hoy) { mostrarToast(`🎉 ¡Completaste ${dia}! Ya sumaste racha hoy.`); return false; }
-if (rachaDiasCompletados.includes(dia)) return false;
-rachaActual++;
-ultimaFechaRacha = hoy;
-rachaDiasCompletados.push(dia);
-localStorage.setItem('nico_racha', rachaActual);
-localStorage.setItem('nico_ultima_fecha_racha', ultimaFechaRacha);
-localStorage.setItem('nico_dias_completados', JSON.stringify(rachaDiasCompletados));
-if (typeof canvasConfetti !== 'undefined') {
-canvasConfetti({ particleCount: 300, spread: 100, origin: { y: 0.6 } });
-setTimeout(() => canvasConfetti({ particleCount: 150, spread: 70, origin: { y: 0.5, x: 0.2 } }), 150);
-setTimeout(() => canvasConfetti({ particleCount: 150, spread: 70, origin: { y: 0.5, x: 0.8 } }), 300);
-}
-mostrarToast(`🎉🔥 +1 RACHA! Ahora tienes ${rachaActual} días 🔥🎉`);
-actualizarHome();
-return true;
-}
-// NOTIFICACIONES
-function activarNotificaciones() {
-if (!('Notification' in window)) { mostrarToast("❌ Tu navegador no soporta notificaciones"); return; }
-Notification.requestPermission().then(permiso => {
-if (permiso === 'granted') { permisosNotificaciones = true; mostrarToast("✅ Notificaciones activadas"); programarNotificaciones(); }
-else mostrarToast("❌ Permiso denegado");
-});
-}
-function enviarNotificacion(tit, msg) { if (permisosNotificaciones) new Notification(tit, { body: msg, icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ff6600'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white'%3E🏋️%3C/text%3E%3C/svg%3E" }); }
-function testNotificacion() { if (permisosNotificaciones) { new Notification("🔔 PRUEBA", { body: "¡Notificación funcionando!" }); mostrarToast("✅ Prueba enviada"); } else mostrarToast("❌ Activa notificaciones primero"); }
-function programarNotificacion(msg, h, m, dias, repetir = true) {
-const ahora = new Date();
-const objetivo = new Date();
-objetivo.setHours(h - 2, m, 0, 0);
-if (objetivo <= ahora) objetivo.setDate(objetivo.getDate() + 1);
-const id = setTimeout(() => {
-const diaActual = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()];
-if (dias.includes(diaActual)) enviarNotificacion("NICO GYM", msg);
-if (repetir) programarNotificacion(msg, h, m, dias, repetir);
-}, objetivo - ahora);
-return id;
-}
-function programarNotificaciones() {
-if (!permisosNotificaciones) return;
-intervalosNotificaciones.forEach(id => clearTimeout(id));
-intervalosNotificaciones = [];
-const { texto } = calcularDiasSinFumar();
-const rutina = getRutinaHoy();
-const dia = getDiaNombre().toLowerCase();
-intervalosNotificaciones.push(programarNotificacion("🔔 PRUEBA - ¡Notificación funcionando!", 20, 0, ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'], false));
-if (notificacionesActivas.bd) intervalosNotificaciones.push(programarNotificacion(`🌞 Buenos días. Hoy: ${getRutinaHoy()}`, 8, 0, ['lunes','martes','miercoles','jueves','viernes']));
-if (notificacionesActivas.r1) intervalosNotificaciones.push(programarNotificacion(`💪 ¡Hora de entrenar! Hoy: ${rutina}`, 18, 30, ['lunes','martes','miercoles','jueves','viernes']));
-if (notificacionesActivas.r2) intervalosNotificaciones.push(programarNotificacion(`⏰ ${texto} sin fumar. ¿Entrenaste?`, 19, 0, ['lunes','martes','miercoles','jueves','viernes']));
-if (notificacionesActivas.tab) intervalosNotificaciones.push(programarNotificacion(`🚭 ${texto} sin fumar, ¡eres increíble!`, 10, 0, ['lunes','martes','miercoles','jueves','viernes','sabado','domingo']));
-if (notificacionesActivas.res) intervalosNotificaciones.push(programarNotificacion(`📊 Resumen semanal: Racha ${rachaActual} días`, 20, 0, ['domingo']));
-if (notificacionesActivas.se) intervalosNotificaciones.push(programarNotificacion(`⚠️ Aún no has entrenado hoy`, 21, 0, ['lunes','martes','miercoles','jueves','viernes']));
-mostrarToast("✅ Notificaciones programadas");
-}
-function toggleNotif(tipo) {
-const toggle = document.getElementById(`toggle-${tipo}`);
-notificacionesActivas[tipo] = !notificacionesActivas[tipo];
-toggle.classList.toggle('active', notificacionesActivas[tipo]);
-localStorage.setItem('nico_notif_activas', JSON.stringify(notificacionesActivas));
-programarNotificaciones();
-}
-// UTILIDADES
-function mostrarToast(m) { const t = document.createElement('div'); t.className = 'toast-msg'; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
-function getDiaNombre() { return ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date().getDay()]; }
-function getRutinaHoy() { const dia = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()]; const r = { lunes:'Espalda/Bíceps', martes:'Cardio/Abs', miercoles:'Pecho/Tríceps', jueves:'Cardio/Abs', viernes:'Pierna/Hombro', sabado:'Cardio/Abs', domingo:'Descanso' }; return r[dia] || 'Descanso'; }
-function toggleSubmenu(b) { b.classList.toggle('open'); b.nextElementSibling.classList.toggle('show'); }
-function openMenu() { document.getElementById('menu-lat').classList.add('open'); document.getElementById('overlay').style.display = 'block'; }
-function closeMenu() { document.getElementById('menu-lat').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
-function go(id) { document.querySelectorAll('.seccion').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); if (id === 'home') actualizarHome(); window.scrollTo(0,0); closeMenu(); }
-function goToday() { const hoy = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()]; if (hoy !== 'domingo') go(hoy); else go('domingo'); }
-function actualizarHome() {
-document.getElementById('racha').innerText = rachaActual;
-actualizarDiasSinFumar();
-const total = Object.values(ejercicios).reduce((s,d) => s + d.length, 0);
-const hechos = Object.values(checks).filter(v => v === true).length;
-const pct = Math.min(Math.round((hechos / total) * 100), 100);
-document.getElementById('perc').innerText = pct + "%";
-const ctx = document.getElementById('grafico').getContext('2d');
-if (window.miGrafico) window.miGrafico.destroy();
-window.miGrafico = new Chart(ctx, { type:'line', data:{ labels:pesosRegistrados.map(p => p.fecha), datasets:[{ data:pesosRegistrados.map(p => p.valor), borderColor:'#ff6600', borderWidth:3, tension:0.3, fill:true, backgroundColor:'rgba(255,102,0,0.1)', pointBackgroundColor:'#ff6600', pointRadius:4 }] }, options:{ maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ y:{ grid:{ color:'#333' } }, x:{ grid:{ color:'#333' } } } } });
-document.getElementById('todayDay').innerHTML = `📅 HOY ES ${getDiaNombre().toUpperCase()}`;
-document.getElementById('todayRoutine').innerHTML = getRutinaHoy();
-}
-function borrarTodo() { if (confirm("¿Borrar todos los datos?")) { localStorage.clear(); location.reload(); } }
-// TEMPORIZADORES
-function abrirTimer() { document.getElementById('timer-box').style.display = 'flex'; }
-function cerrarTimer() { if (timerInterval) clearInterval(timerInterval); document.getElementById('timer-box').style.display = 'none'; }
-function iniciarTimer() { let s = 60; document.getElementById('t-num').innerText = s; if (timerInterval) clearInterval(timerInterval); timerInterval = setInterval(() => { s--; document.getElementById('t-num').innerText = s; if (s <= 0) { clearInterval(timerInterval); cerrarTimer(); mostrarToast("⏰ ¡TIEMPO!"); } }, 1000); }
-function abrirSelectorDescanso() { document.getElementById('descansoSelector').classList.add('show'); }
-function cerrarSelectorDescanso() { document.getElementById('descansoSelector').classList.remove('show'); }
-function iniciarDescanso(seg) { cerrarSelectorDescanso(); const box = document.getElementById('descanso-box'); const num = document.getElementById('descansoTimer'); num.innerText = seg; box.style.display = 'flex'; if (intervalDescanso) clearInterval(intervalDescanso); intervalDescanso = setInterval(() => { seg--; num.innerText = seg; if (seg <= 0) { clearInterval(intervalDescanso); box.style.display = 'none'; mostrarToast("⏰ DESCANSO TERMINADO"); } }, 1000); }
-function cancelarDescanso() { if (intervalDescanso) clearInterval(intervalDescanso); document.getElementById('descanso-box').style.display = 'none'; }
-// CALCULADORA DISCOS
-function abrirCalc(id) { ejercicioDiscoActual = id; const g = localStorage.getItem(`discos_${id}`); if (g) discosActuales = JSON.parse(g); else discosActuales = { d125:0, d15:0, d2:0 }; actualizarMostrarDiscos(); document.getElementById('calcModal').classList.add('show'); }
-function cerrarCalc() { document.getElementById('calcModal').classList.remove('show'); }
-function sumarDisco(p) { const clave = p === 1.25 ? 'd125' : (p === 1.5 ? 'd15' : 'd2'); if (discosActuales[clave] < 4) { discosActuales[clave]++; actualizarMostrarDiscos(); if (ejercicioDiscoActual) localStorage.setItem(`discos_${ejercicioDiscoActual}`, JSON.stringify(discosActuales)); } else mostrarToast(`Máximo 4 discos de ${p}kg`); }
-function resetearDiscos() { discosActuales = { d125:0, d15:0, d2:0 }; actualizarMostrarDiscos(); if (ejercicioDiscoActual) localStorage.setItem(`discos_${ejercicioDiscoActual}`, JSON.stringify(discosActuales)); }
-function actualizarMostrarDiscos() { const total = (discosActuales.d125 * 1.25) + (discosActuales.d15 * 1.5) + (discosActuales.d2 * 2); document.getElementById('totalDisco').innerText = total.toFixed(2); document.getElementById('badge125').innerText = discosActuales.d125; document.getElementById('badge15').innerText = discosActuales.d15; document.getElementById('badge2').innerText = discosActuales.d2; }
-// PESO CORPORAL
-function agregarPeso() { const v = document.getElementById('in-peso').value; if (v && !isNaN(v)) { pesosRegistrados.push({ valor: parseFloat(v), fecha: new Date().toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit' }) }); localStorage.setItem('nico_pesos', JSON.stringify(pesosRegistrados)); document.getElementById('in-peso').value = ''; actualizarHome(); mostrarHistorialPeso(); mostrarToast(`✅ Peso: ${v}kg`); } }
-function eliminarPeso(i) { if (confirm("¿Borrar?")) { pesosRegistrados.splice(i,1); localStorage.setItem('nico_pesos', JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); } }
-function mostrarHistorialPeso() { const h = document.getElementById('hist-peso'); if (!h) return; h.innerHTML = [...pesosRegistrados].reverse().map((p,i) => `<div class="peso-item"><span>${p.fecha}: <b>${p.valor}kg</b></span><button class="btn-del" onclick="eliminarPeso(${i})">🗑️</button></div>`).join(''); }
-// RENDERIZAR RUTINAS
-function renderizarRutinas() {
-for (const dia in ejercicios) {
-const lista = document.getElementById(`list-${dia}`);
-if (!lista) continue;
-lista.innerHTML = ejercicios[dia].map((ex, idx) => {
-const id = `${dia}-${idx}`;
-return `
-<div class="card">
-<div style="display:flex; justify-content:space-between; align-items:center">
-<div style="flex:1">
-<div class="ex-header">
-<span class="ex-title">${ex.nombre}</span>
-<div class="ex-buttons">
-${ex.tienePeso ? `<span class="calc-icon" onclick="abrirCalc('${id}')">🏋️ CALCULAR</span>` : ''}
-<span class="descanso-icon" onclick="abrirSelectorDescanso()">⏱️ DESCANSAR</span>
-</div>
-</div>
-<span class="ex-reps">${ex.series}</span>
-</div>
-<input type="checkbox" class="check-box" ${checks[id] ? 'checked' : ''} onchange="marcarCheck('${dia}', ${idx}, this.checked)">
-</div>
-<input type="number" class="input-nota" step="0.5" placeholder="Peso real (kg)..." value="${notas[id] || ''}" onchange="guardarNota('${id}', this.value)">
-<button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button>
-<div class="detalles" id="det-${id}">
-${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}
-<div style="background:#0a0a0a; padding:8px; border-radius:8px; margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div>
-<p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p>
-<p style="color:#ff6600">⚖️ ${ex.peso}</p>
-</div>
-</div>`;
-}).join('');
-}
-}
-function marcarCheck(dia, idx, valor) {
-const id = `${dia}-${idx}`;
-checks[id] = valor;
-localStorage.setItem('nico_checks', JSON.stringify(checks));
-const todos = ejercicios[dia].every((_, i) => checks[`${dia}-${i}`] === true);
-if (todos) sumarRachaSiCorresponde(dia);
-actualizarHome();
-}
-function guardarNota(id, valor) { if (valor && valor !== '') notas[id] = valor; else delete notas[id]; localStorage.setItem('nico_notas', JSON.stringify(notas)); }
-// RESET SEMANAL AUTO
-function resetSemanalAuto() {
-const hoy = new Date();
-const numSemana = `${hoy.getFullYear()}-${Math.floor((hoy - new Date(hoy.getFullYear(), 0, 1)) / 86400000 / 7)}`;
-if (hoy.getDay() === 1 && ultimoResetSemana !== numSemana) {
-checks = {};
-rachaDiasCompletados = [];
-localStorage.setItem('nico_checks', JSON.stringify(checks));
-localStorage.setItem('nico_dias_completados', JSON.stringify(rachaDiasCompletados));
-ultimoResetSemana = numSemana;
-localStorage.setItem('nico_ultimo_reset', ultimoResetSemana);
-renderizarRutinas();
-actualizarHome();
-mostrarToast("🔄 LUNES - Nueva semana lista para entrenar!");
-}
-}
-// INICIALIZACIÓN
-const notifGuardadas = localStorage.getItem('nico_notif_activas');
-if (notifGuardadas) notificacionesActivas = JSON.parse(notifGuardadas);
-for (let t in notificacionesActivas) {
-const toggle = document.getElementById(`toggle-${t}`);
-if (toggle && notificacionesActivas[t]) toggle.classList.add('active');
-}
-if ('Notification' in window && Notification.permission === 'granted') { permisosNotificaciones = true; programarNotificaciones(); }
-window.onload = () => { resetSemanalAuto(); renderizarRutinas(); actualizarHome(); mostrarHistorialPeso(); };
-</script>
-</body>
-</html>
+    <div class="today-card" id="todayCard" onclick="goTodayRoutine()">
+        <div class="today-day" id="todayDay">Cargando...</div>
+        <div class="today-routine" id="todayRoutine"
