@@ -4,45 +4,91 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>NICO GYM</title>
-<link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-<script src="script.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bottom:80px}
+header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom:2px solid #ff6600;display:flex;justify-content:space-between;align-items:center;padding:0 15px;position:sticky;top:0;z-index:1000}
+.logo{font-weight:900;background:linear-gradient(135deg,#fff,#ff6600);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.3rem}
+.menu-icon{font-size:1.8rem;cursor:pointer}
+.home-icon{font-size:1.5rem;cursor:pointer}
+#menu-lat{position:fixed;left:-280px;top:0;width:280px;height:100%;background:#0a0a0a;transition:.3s;z-index:2000;border-right:2px solid #ff6600;overflow-y:auto}
+#menu-lat.open{left:0}
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;z-index:1500}
+.nav-btn{padding:18px;border-bottom:1px solid #222;color:#fff;display:block;font-weight:bold;cursor:pointer}
+.submenu-btn{background:#0f0f0f;display:flex;justify-content:space-between;padding:18px;border-bottom:1px solid #222;font-weight:bold;cursor:pointer}
+.submenu-btn .arrow{transition:.3s;font-size:.8rem}
+.submenu-btn.open .arrow{transform:rotate(180deg)}
+.submenu-items{max-height:0;overflow:hidden;transition:max-height .3s;background:#050505}
+.submenu-items.show{max-height:400px}
+.sub-link{padding:12px 35px;color:#aaa;font-size:.9rem;border-bottom:1px solid #111;display:block;cursor:pointer}
+.debug-btn{margin-top:30px;padding:10px;background:0;color:#333;border:1px solid #222;border-radius:8px;font-size:.7rem;text-align:center;cursor:pointer}
+.seccion{display:none;padding:15px}
+.seccion.active{display:block}
+.card{background:#111;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:0 2px 8px rgba(255,102,0,0.15)}
+.stats-row{display:flex;gap:10px;margin-bottom:15px}
+.stat-card{flex:1;background:#111;border-radius:12px;padding:12px;text-align:center}
+.stat-card h2{font-size:1.6rem;font-weight:bold}
+.stat-card.progreso h2{color:#ff6600}
+.stat-card.racha h2{color:#ff6600}
+.stat-card.nosmoke h2{color:#66bb6a}
+.stat-card small{font-size:.7rem;color:#aaa}
+.ex-title{font-weight:bold;color:#ff6600;font-size:1.1rem;display:block}
+.ex-reps{color:#32d74b;font-weight:bold;font-size:.9rem}
+.ex-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.ex-buttons{display:flex;gap:8px}
+.calc-icon{background:#ff6600;color:#000;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:bold;cursor:pointer}
+.descanso-icon{background:#2e7d32;color:#fff;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:bold;cursor:pointer}
+.calc-modal,.descanso-modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a1a;border:2px solid #ff6600;border-radius:15px;padding:20px;z-index:4000;width:90%;max-width:320px;text-align:center}
+.descanso-modal{border-color:#32d74b}
+.calc-modal.show,.descanso-modal.show{display:block}
+.close-calc{position:absolute;top:10px;right:15px;cursor:pointer;font-size:1.5rem;color:#aaa}
+.descanso-tiempos{display:flex;justify-content:center;gap:12px;margin:20px 0;flex-wrap:wrap}
+.tiempo-btn{background:#333;border:none;color:#fff;padding:10px 15px;border-radius:10px;font-size:1rem;cursor:pointer}
+.descanso-cerrar{margin-top:15px;background:#222;color:#aaa;border:none;padding:8px;border-radius:8px;cursor:pointer}
+.detalles{display:none;background:#050505;padding:10px;border-radius:8px;margin-top:10px;border-left:3px solid #ff6600}
+.detalles.show{display:block}
+.ex-img{width:100%;max-width:200px;border-radius:8px;margin:10px auto;display:block}
+.btn-main{width:100%;padding:10px;background:#222;color:#ff6600;border:1px solid #ff6600;border-radius:8px;font-weight:bold;margin:10px 0;cursor:pointer}
+.check-box{width:35px;height:35px;accent-color:#32d74b;cursor:pointer}
+.input-nota{width:100%;padding:10px;background:#000;border:1px solid #333;color:#fff;border-radius:6px;margin-top:8px}
+.peso-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #222}
+.btn-del{background:0;border:none;color:#ff3b30;font-size:1.2rem;cursor:pointer}
+.calc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:15px 0}
+.calc-btn{background:#333;border:none;color:#fff;padding:12px;border-radius:8px;cursor:pointer;position:relative}
+.badge{position:absolute;top:-8px;right:-5px;background:#ff6600;font-size:.7rem;padding:2px 6px;border-radius:20px}
+.calc-reset{width:100%;padding:10px;background:#222;color:#ff3b30;border:1px solid #ff3b30;border-radius:8px;cursor:pointer;margin-top:10px}
+#timer-box,#descanso-box{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:3000;display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+#descanso-box{z-index:3500}
+.descanso-timer-num,#t-num{font-size:8rem;font-weight:bold;font-family:monospace}
+#t-num{color:#ff6600}
+.descanso-timer-num{color:#32d74b}
+#float-t{position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:linear-gradient(135deg,#ff6600,#ff884d);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:900;font-size:1.5rem;border:none;color:#fff;cursor:pointer;box-shadow:0 4px 15px rgba(255,102,0,0.4)}
+.today-card{background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid #ff6600;border-radius:15px;padding:20px;margin-bottom:20px;text-align:center;cursor:pointer}
+.today-day{font-size:1.5rem;font-weight:bold;color:#ff6600;margin-bottom:8px}
+.today-btn{background:#ff6600;color:#000;padding:8px 20px;border-radius:20px;display:inline-block;font-weight:bold;margin-top:8px}
+.sunday-card{background:linear-gradient(135deg,#1a0a2e,#0a0a1a);border:2px solid #8b5cf6;border-radius:20px;padding:40px 20px;text-align:center;margin-top:30px}
+.sunday-emoji{font-size:5rem;animation:float 3s infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.sunday-title{font-size:2rem;color:#8b5cf6;margin:20px 0}
+.toast-msg{position:fixed;bottom:100px;left:20px;right:20px;background:#ff6600;color:#000;padding:12px;border-radius:10px;text-align:center;font-weight:bold;z-index:5000;animation:fadeInOut 3s}
+@keyframes fadeInOut{0%{opacity:0;transform:translateY(20px)}15%{opacity:1;transform:translateY(0)}85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-20px)}}
+.notif-config{background:#1a1a1a;border-radius:12px;padding:15px;margin-bottom:15px}
+.notif-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #333}
+.toggle-switch{width:50px;height:24px;background:#333;border-radius:12px;position:relative;cursor:pointer}
+.toggle-switch.active{background:#32d74b}
+.toggle-switch::after{content:"";width:20px;height:20px;background:#fff;border-radius:10px;position:absolute;top:2px;left:3px;transition:.2s}
+.toggle-switch.active::after{left:27px}
+.notif-btn{margin-top:10px;padding:12px;background:#ff6600;color:#000;border-radius:8px;font-weight:bold;text-align:center;cursor:pointer}
+</style>
 </head>
 <body>
 <div id="overlay" onclick="closeMenu()"></div>
-<nav id="menu-lat">
-<div class="nav-btn" onclick="go('home')">🏠 INICIO</div>
-<div class="submenu-btn" onclick="toggleSubmenu(this)"><span>📅 RUTINA SEMANAL</span><span class="arrow">▼</span></div>
-<div class="submenu-items">
-<div class="sub-link" onclick="go('lunes')">📆 Lunes: Espalda / Bíceps</div>
-<div class="sub-link" onclick="go('martes')">🏃 Martes: Cardio / Abs</div>
-<div class="sub-link" onclick="go('miercoles')">💪 Miércoles: Pecho / Tríceps</div>
-<div class="sub-link" onclick="go('jueves')">🏃 Jueves: Cardio / Abs</div>
-<div class="sub-link" onclick="go('viernes')">🦵 Viernes: Pierna / Hombro</div>
-<div class="sub-link" onclick="go('sabado')">🏃 Sábado: Cardio / Abs</div>
-<div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso</div>
-</div>
-<div class="nav-btn" onclick="go('peso')">⚖️ PESO CORPORAL</div>
-<div class="nav-btn" onclick="go('notificaciones')">🔔 NOTIFICACIONES</div>
-<div class="debug-btn" onclick="borrarTodo()">⚙️ Reset</div>
-</nav>
+<nav id="menu-lat"><div class="nav-btn" onclick="go('home')">🏠 INICIO</div><div class="submenu-btn" onclick="toggleSubmenu(this)"><span>📅 RUTINA SEMANAL</span><span class="arrow">▼</span></div><div class="submenu-items"><div class="sub-link" onclick="go('lunes')">📆 Lunes: Espalda / Bíceps</div><div class="sub-link" onclick="go('martes')">🏃 Martes: Cardio / Abs</div><div class="sub-link" onclick="go('miercoles')">💪 Miércoles: Pecho / Tríceps</div><div class="sub-link" onclick="go('jueves')">🏃 Jueves: Cardio / Abs</div><div class="sub-link" onclick="go('viernes')">🦵 Viernes: Pierna / Hombro</div><div class="sub-link" onclick="go('sabado')">🏃 Sábado: Cardio / Abs</div><div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso</div></div><div class="nav-btn" onclick="go('peso')">⚖️ PESO CORPORAL</div><div class="nav-btn" onclick="go('notificaciones')">🔔 NOTIFICACIONES</div><div class="debug-btn" onclick="borrarTodo()">⚙️ Reset</div></nav>
 <header><span class="menu-icon" onclick="openMenu()">☰</span><span class="logo">NICO <span style="color:#ff6600">GYM</span></span><span class="home-icon" onclick="go('home')">🏠</span></header>
-<div id="home" class="seccion active">
-<div class="today-card" onclick="goToday()"><div class="today-day" id="todayDay">Cargando...</div><div id="todayRoutine" style="color:#aaa;margin-bottom:10px"></div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div>
-<div class="stats-row"><div class="stat-card progreso"><h2 id="perc">0%</h2><small>PROGRESO</small></div><div class="stat-card racha"><h2 id="racha">18</h2><small>RACHA GYM</small></div><div class="stat-card nosmoke"><h2 id="diasSinFumar">0</h2><small id="mesesSinFumar"></small></div></div>
-<div class="card" style="height:220px"><canvas id="grafico"></canvas></div>
-<div class="notif-btn" onclick="activarNotificaciones()">🔔 ACTIVAR NOTIFICACIONES</div>
-<div class="notif-btn" style="background:#222;margin-top:10px" onclick="testNotificacion()">🔔 PROBAR NOTIFICACIÓN</div>
-</div>
-<div id="notificaciones" class="seccion"><h2>🔔 NOTIFICACIONES</h2><div class="notif-config">
-<div class="notif-item"><span>🌞 Buenos días (08:00)</span><div class="toggle-switch" id="toggle-bd" onclick="toggleNotif('bd')"></div></div>
-<div class="notif-item"><span>💪 Recordatorio 1 (18:30)</span><div class="toggle-switch" id="toggle-r1" onclick="toggleNotif('r1')"></div></div>
-<div class="notif-item"><span>⏰ Recordatorio 2 (19:00)</span><div class="toggle-switch" id="toggle-r2" onclick="toggleNotif('r2')"></div></div>
-<div class="notif-item"><span>🚭 Racha sin fumar (10:00)</span><div class="toggle-switch" id="toggle-tab" onclick="toggleNotif('tab')"></div></div>
-<div class="notif-item"><span>📊 Resumen semanal (Dom 20:00)</span><div class="toggle-switch" id="toggle-res" onclick="toggleNotif('res')"></div></div>
-<div class="notif-item"><span>⚠️ Sin entrenar (21:00)</span><div class="toggle-switch" id="toggle-se" onclick="toggleNotif('se')"></div></div>
-</div><div class="notif-btn" onclick="programarNotificaciones()">✅ GUARDAR</div></div>
+<div id="home" class="seccion active"><div class="today-card" onclick="goToday()"><div class="today-day" id="todayDay">Cargando...</div><div id="todayRoutine" style="color:#aaa;margin-bottom:10px"></div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div><div class="stats-row"><div class="stat-card progreso"><h2 id="perc">0%</h2><small>PROGRESO</small></div><div class="stat-card racha"><h2 id="racha">18</h2><small>RACHA GYM</small></div><div class="stat-card nosmoke"><h2 id="diasSinFumar">0</h2><small id="mesesSinFumar"></small></div></div><div class="card" style="height:220px"><canvas id="grafico"></canvas></div><div class="notif-btn" onclick="activarNotificaciones()">🔔 ACTIVAR NOTIFICACIONES</div><div class="notif-btn" style="background:#222;margin-top:10px" onclick="testNotificacion()">🔔 PROBAR NOTIFICACIÓN</div></div>
+<div id="notificaciones" class="seccion"><h2>🔔 NOTIFICACIONES</h2><div class="notif-config"><div class="notif-item"><span>🌞 Buenos días (08:00)</span><div class="toggle-switch" id="toggle-bd" onclick="toggleNotif('bd')"></div></div><div class="notif-item"><span>💪 Recordatorio 1 (18:30)</span><div class="toggle-switch" id="toggle-r1" onclick="toggleNotif('r1')"></div></div><div class="notif-item"><span>⏰ Recordatorio 2 (19:00)</span><div class="toggle-switch" id="toggle-r2" onclick="toggleNotif('r2')"></div></div><div class="notif-item"><span>🚭 Racha sin fumar (10:00)</span><div class="toggle-switch" id="toggle-tab" onclick="toggleNotif('tab')"></div></div><div class="notif-item"><span>📊 Resumen semanal (Dom 20:00)</span><div class="toggle-switch" id="toggle-res" onclick="toggleNotif('res')"></div></div><div class="notif-item"><span>⚠️ Sin entrenar (21:00)</span><div class="toggle-switch" id="toggle-se" onclick="toggleNotif('se')"></div></div></div><div class="notif-btn" onclick="programarNotificaciones()">✅ GUARDAR</div></div>
 <div id="lunes" class="seccion"><h2>📆 ESPALDA / BÍCEPS</h2><div id="list-lunes"></div></div>
 <div id="martes" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-martes"></div></div>
 <div id="miercoles" class="seccion"><h2>💪 PECHO / TRÍCEPS</h2><div id="list-miercoles"></div></div>
@@ -56,5 +102,80 @@
 <div id="descanso-box"><h1 style="color:#32d74b;margin-bottom:20px">💪 DESCANSA</h1><div class="descanso-timer-num" id="descansoTimer">00</div><button onclick="cancelarDescanso()" style="margin-top:30px;background:#222;color:#fff;border:none;padding:12px 30px;border-radius:10px">CANCELAR</button></div>
 <div id="timer-box"><h1 id="t-num">60</h1><button onclick="iniciarTimer()" style="background:#32d74b;border:none;padding:12px 30px;border-radius:10px;color:#fff;font-weight:bold">INICIAR</button><button onclick="cerrarTimer()" style="background:#222;border:none;padding:12px 30px;border-radius:10px;color:#fff;margin-top:10px">CERRAR</button></div>
 <button id="float-t" onclick="abrirTimer()">⏱️</button>
+<script>
+const ejercicios = {
+lunes: [{nombre:"Dominadas / Negativas", series:"3 x Fallo", instrucciones:"1. Salta a la barra.\n2. Baja lento 5 segundos.", consejo:"Saca pecho.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/3c194808-73c8-4d75-a2d9-cf85dd42fbeb", tienePeso:false},
+{nombre:"Remo con Barra", series:"4 x 12", instrucciones:"1. Espalda recta.\n2. Tira al ombligo.", consejo:"No redondees.", peso:"~16 kg", imagen:"https://api.smartworkout.app/asset/image/be04fca7-9dc1-4b64-a7b4-d05217eaecda", tienePeso:true},
+{nombre:"Remo a una mano", series:"3 x 12", instrucciones:"1. Apoya rodilla.\n2. Tira a cadera.", consejo:"Tira con codo.", peso:"~6.5 kg", imagen:"https://api.smartworkout.app/asset/image/55720d63-1744-4bf8-9917-8eafd30740f5", tienePeso:true},
+{nombre:"Curl Bíceps", series:"3 x 12", instrucciones:"1. Codos pegados.\n2. Sube al hombro.", consejo:"No balances.", peso:"~3 kg", imagen:"https://api.smartworkout.app/asset/image/303b810b-f875-42eb-8b26-cc79b18b6865", tienePeso:true}],
+martes: [{nombre:"Cardio", series:"30 min", instrucciones:"Ritmo constante.", consejo:"Hidrátate.", peso:"Intensidad media", tienePeso:false},
+{nombre:"Elevación piernas", series:"4 x 15", instrucciones:"Eleva a 90°.", consejo:"Lumbar pegada.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/336b57e7-bcea-4e65-a54f-3a3519729f7e", tienePeso:false},
+{nombre:"Plancha", series:"3 x 45s", instrucciones:"Cuerpo recto.", consejo:"No hundas.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/606defc2-dc68-41d8-bea0-41a8d68aaa71", tienePeso:false}],
+miercoles: [{nombre:"Press Banca", series:"4 x 12", instrucciones:"Baja al pecho.", consejo:"Codos 45°", peso:"~9.5 kg", imagen:"https://api.smartworkout.app/asset/image/567ae9ad-b584-4d53-b400-82b0117a7ce1", tienePeso:true},
+{nombre:"Fondos", series:"3 x 10", instrucciones:"Baja a 90°.", consejo:"Apoya pie.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030", tienePeso:false},
+{nombre:"Press Francés", series:"3 x 12", instrucciones:"Baja a sienes.", consejo:"Poco peso.", peso:"~3 kg", imagen:"https://api.smartworkout.app/asset/image/deff1b63-c052-42b3-a3e4-aad93db0159f", tienePeso:true},
+{nombre:"Extensión Nuca", series:"3 x 12", instrucciones:"Detrás cabeza.", consejo:"Codos pegados.", peso:"~5.5 kg", imagen:"https://api.smartworkout.app/asset/image/6a79a439-417e-4fe9-8d83-0079e565389a", tienePeso:true}],
+jueves: [{nombre:"Cardio", series:"30 min", instrucciones:"Caminata inclinación.", consejo:"Ritmo constante.", peso:"Intensidad media", tienePeso:false},
+{nombre:"Crunch", series:"4 x 20", instrucciones:"Solo hombros.", consejo:"Mov pequeño.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/85e37877-a9d0-4fb6-93d1-e8c0931caed9", tienePeso:false},
+{nombre:"Toques talón", series:"3 x 20", instrucciones:"Toca talones.", consejo:"Rápido.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/bc90a160-cf28-49ff-ab43-60a01086d62f", tienePeso:false}],
+viernes: [{nombre:"Sentadillas", series:"4 x 12", instrucciones:"Baja como silla.", consejo:"Empieza sin peso.", peso:"~20 kg", imagen:"https://api.smartworkout.app/asset/image/7937ce6b-b8cd-418c-a71c-aa8f4ecb3635", tienePeso:true},
+{nombre:"Peso Muerto", series:"4 x 15", instrucciones:"Baja trasero.", consejo:"Cadera.", peso:"~5.5 kg", imagen:"https://api.smartworkout.app/asset/image/7fa791dd-b202-4a33-a55b-ede33ac9ba8f", tienePeso:true},
+{nombre:"Press Militar", series:"4 x 10", instrucciones:"Sube arriba.", consejo:"Usa respaldo.", peso:"~6.5 kg", imagen:"https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89", tienePeso:true},
+{nombre:"Elevaciones", series:"3 x 15", instrucciones:"Sube a hombros.", consejo:"Poco peso.", peso:"~3 kg", imagen:"https://api.smartworkout.app/asset/image/32c6f15d-63ef-4bd6-ae6b-0056c26157fc", tienePeso:true}],
+sabado: [{nombre:"Cardio", series:"30 min", instrucciones:"Actividad libre.", consejo:"Disfruta.", peso:"Moderado", tienePeso:false},
+{nombre:"Escaladores", series:"3 x 30s", instrucciones:"Rodillas al pecho.", consejo:"Rápido.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/5571abe1-227c-4fff-b7b6-9a365284a50d", tienePeso:false},
+{nombre:"V-Ups", series:"3 x 15", instrucciones:"Toca pie.", consejo:"Dobla rodilla.", peso:"Peso corporal", imagen:"https://api.smartworkout.app/asset/image/902e6c32-2f9a-4466-9e42-cc8a3c9eb498", tienePeso:false}]
+};
+let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
+let notas = JSON.parse(localStorage.getItem('nico_notas')) || {};
+let pesosRegistrados = JSON.parse(localStorage.getItem('nico_pesos')) || [{valor:82, fecha:'20/04'}];
+let rachaActual = parseInt(localStorage.getItem('nico_racha')) || 18;
+let ultimaFechaRacha = localStorage.getItem('nico_ultima_fecha_racha') || '';
+let ultimoResetSemana = localStorage.getItem('nico_ultimo_reset') || '';
+let rachaDiasCompletados = JSON.parse(localStorage.getItem('nico_dias_completados')) || [];
+let notificacionesActivas = {bd:true, r1:true, r2:true, tab:true, res:true, se:true};
+let permisosNotificaciones = false;
+let intervalosNotificaciones = [];
+let intervalDescanso = null;
+let discosActuales = {d125:0, d15:0, d2:0};
+let ejercicioDiscoActual = null;
+let timerInterval = null;
+const fechaDejarFumar = new Date(2026, 1, 22);
+function getDiaSemana() { return ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()]; }
+function getRutinaHoy() { const r = { lunes:'Espalda/Bíceps', martes:'Cardio/Abs', miercoles:'Pecho/Tríceps', jueves:'Cardio/Abs', viernes:'Pierna/Hombro', sabado:'Cardio/Abs', domingo:'Descanso' }; return r[getDiaSemana()] || 'Descanso'; }
+function mostrarToast(m) { const t = document.createElement('div'); t.className = 'toast-msg'; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+function actualizarHome() { document.getElementById('racha').innerText = rachaActual; const total = Object.values(ejercicios).reduce((s,d) => s + d.length, 0); const hechos = Object.values(checks).filter(v => v === true).length; const pct = Math.min(Math.round((hechos / total) * 100), 100); document.getElementById('perc').innerText = pct + "%"; document.getElementById('todayDay').innerHTML = `📅 HOY ES ${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date().getDay()]}`; document.getElementById('todayRoutine').innerHTML = getRutinaHoy(); }
+function go(id) { document.querySelectorAll('.seccion').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); if (id === 'home') actualizarHome(); window.scrollTo(0,0); closeMenu(); }
+function goToday() { const hoy = getDiaSemana(); if (hoy !== 'domingo') go(hoy); else go('domingo'); }
+function toggleSubmenu(b) { b.classList.toggle('open'); b.nextElementSibling.classList.toggle('show'); }
+function openMenu() { document.getElementById('menu-lat').classList.add('open'); document.getElementById('overlay').style.display = 'block'; }
+function closeMenu() { document.getElementById('menu-lat').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
+function borrarTodo() { if (confirm("¿Borrar todos los datos?")) { localStorage.clear(); location.reload(); } }
+function abrirTimer() { document.getElementById('timer-box').style.display = 'flex'; }
+function cerrarTimer() { if (timerInterval) clearInterval(timerInterval); document.getElementById('timer-box').style.display = 'none'; }
+function iniciarTimer() { let s = 60; document.getElementById('t-num').innerText = s; if (timerInterval) clearInterval(timerInterval); timerInterval = setInterval(() => { s--; document.getElementById('t-num').innerText = s; if (s <= 0) { clearInterval(timerInterval); cerrarTimer(); mostrarToast("⏰ ¡TIEMPO!"); } }, 1000); }
+function abrirSelectorDescanso() { document.getElementById('descansoSelector').classList.add('show'); }
+function cerrarSelectorDescanso() { document.getElementById('descansoSelector').classList.remove('show'); }
+function iniciarDescanso(seg) { cerrarSelectorDescanso(); const box = document.getElementById('descanso-box'); const num = document.getElementById('descansoTimer'); num.innerText = seg; box.style.display = 'flex'; if (intervalDescanso) clearInterval(intervalDescanso); intervalDescanso = setInterval(() => { seg--; num.innerText = seg; if (seg <= 0) { clearInterval(intervalDescanso); box.style.display = 'none'; mostrarToast("⏰ DESCANSO TERMINADO"); } }, 1000); }
+function cancelarDescanso() { if (intervalDescanso) clearInterval(intervalDescanso); document.getElementById('descanso-box').style.display = 'none'; }
+function renderizarRutinas() { for (const dia in ejercicios) { const lista = document.getElementById(`list-${dia}`); if (!lista) continue; lista.innerHTML = ejercicios[dia].map((ex, idx) => { const id = `${dia}-${idx}`; return `<div class="card"><div style="display:flex; justify-content:space-between"><div><div class="ex-header"><span class="ex-title">${ex.nombre}</span><div class="ex-buttons">${ex.tienePeso ? `<span class="calc-icon" onclick="abrirCalc('${id}')">🏋️ CALCULAR</span>` : ''}<span class="descanso-icon" onclick="abrirSelectorDescanso()">⏱️ DESCANSAR</span></div></div><span class="ex-reps">${ex.series}</span></div><input type="checkbox" class="check-box" ${checks[id] ? 'checked' : ''} onchange="marcarCheck('${dia}', ${idx}, this.checked)"></div><input type="number" class="input-nota" step="0.5" placeholder="Peso real..." value="${notas[id] || ''}" onchange="guardarNota('${id}', this.value)"><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 INSTRUCCIONES</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g,'<br>')}</div><p style="color:#32d74b">💡 ${ex.consejo}</p><p style="color:#ff6600">⚖️ ${ex.peso}</p></div></div>`; }).join(''); } }
+function marcarCheck(dia, idx, valor) { const id = `${dia}-${idx}`; checks[id] = valor; localStorage.setItem('nico_checks', JSON.stringify(checks)); const todos = ejercicios[dia].every((_, i) => checks[`${dia}-${i}`] === true); if (todos) { if (typeof canvasConfetti !== 'undefined') canvasConfetti({ particleCount: 200, spread: 80 }); const hoy = new Date().toDateString(); if (ultimaFechaRacha !== hoy && !rachaDiasCompletados.includes(dia)) { rachaActual++; ultimaFechaRacha = hoy; rachaDiasCompletados.push(dia); localStorage.setItem('nico_racha', rachaActual); localStorage.setItem('nico_ultima_fecha_racha', ultimaFechaRacha); localStorage.setItem('nico_dias_completados', JSON.stringify(rachaDiasCompletados)); mostrarToast(`🎉🔥 +1 RACHA! ${rachaActual} días 🔥🎉`); } else { mostrarToast(`🎉 Completaste ${dia}!`); } actualizarHome(); } }
+function guardarNota(id, valor) { if (valor && valor !== '') notas[id] = valor; else delete notas[id]; localStorage.setItem('nico_notas', JSON.stringify(notas)); }
+function activarNotificaciones() { if (!('Notification' in window)) { mostrarToast("No soporta notificaciones"); return; } Notification.requestPermission().then(p => { if (p === 'granted') { permisosNotificaciones = true; mostrarToast("✅ Notificaciones activadas"); } else mostrarToast("❌ Permiso denegado"); }); }
+function testNotificacion() { if (permisosNotificaciones) { new Notification("🔔 PRUEBA", { body: "¡Notificación funcionando!" }); mostrarToast("✅ Prueba enviada"); } else mostrarToast("❌ Activa primero"); }
+function agregarPeso() { const v = document.getElementById('in-peso').value; if (v && !isNaN(v)) { pesosRegistrados.push({ valor: parseFloat(v), fecha: new Date().toLocaleDateString('es-ES', {day:'2-digit',month:'2-digit'}) }); localStorage.setItem('nico_pesos', JSON.stringify(pesosRegistrados)); document.getElementById('in-peso').value = ''; actualizarHome(); mostrarHistorialPeso(); mostrarToast(`✅ Peso: ${v}kg`); } }
+function eliminarPeso(i) { if (confirm("¿Borrar?")) { pesosRegistrados.splice(i,1); localStorage.setItem('nico_pesos', JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); } }
+function mostrarHistorialPeso() { const h = document.getElementById('hist-peso'); if (!h) return; h.innerHTML = [...pesosRegistrados].reverse().map((p,i) => `<div class="peso-item"><span>${p.fecha}: <b>${p.valor}kg</b></span><button class="btn-del" onclick="eliminarPeso(${i})">🗑️</button></div>`).join(''); }
+function abrirCalc(id) { ejercicioDiscoActual = id; const g = localStorage.getItem(`discos_${id}`); if (g) discosActuales = JSON.parse(g); else discosActuales = { d125:0, d15:0, d2:0 }; const total = (discosActuales.d125*1.25)+(discosActuales.d15*1.5)+(discosActuales.d2*2); document.getElementById('totalDisco').innerText = total.toFixed(2); document.getElementById('badge125').innerText = discosActuales.d125; document.getElementById('badge15').innerText = discosActuales.d15; document.getElementById('badge2').innerText = discosActuales.d2; document.getElementById('calcModal').classList.add('show'); }
+function cerrarCalc() { document.getElementById('calcModal').classList.remove('show'); }
+function sumarDisco(p) { const clave = p === 1.25 ? 'd125' : (p === 1.5 ? 'd15' : 'd2'); if (discosActuales[clave] < 4) { discosActuales[clave]++; const total = (discosActuales.d125*1.25)+(discosActuales.d15*1.5)+(discosActuales.d2*2); document.getElementById('totalDisco').innerText = total.toFixed(2); document.getElementById('badge125').innerText = discosActuales.d125; document.getElementById('badge15').innerText = discosActuales.d15; document.getElementById('badge2').innerText = discosActuales.d2; if (ejercicioDiscoActual) localStorage.setItem(`discos_${ejercicioDiscoActual}`, JSON.stringify(discosActuales)); } else mostrarToast(`Máximo 4 discos de ${p}kg`); }
+function resetearDiscos() { discosActuales = { d125:0, d15:0, d2:0 }; const total = 0; document.getElementById('totalDisco').innerText = total.toFixed(2); document.getElementById('badge125').innerText = 0; document.getElementById('badge15').innerText = 0; document.getElementById('badge2').innerText = 0; if (ejercicioDiscoActual) localStorage.setItem(`discos_${ejercicioDiscoActual}`, JSON.stringify(discosActuales)); }
+function resetSemanalAuto() { const hoy = new Date(); const numSemana = `${hoy.getFullYear()}-${Math.floor((hoy - new Date(hoy.getFullYear(),0,1))/86400000/7)}`; if (hoy.getDay() === 1 && ultimoResetSemana !== numSemana) { checks = {}; rachaDiasCompletados = []; localStorage.setItem('nico_checks', JSON.stringify(checks)); localStorage.setItem('nico_dias_completados', JSON.stringify(rachaDiasCompletados)); ultimoResetSemana = numSemana; localStorage.setItem('nico_ultimo_reset', ultimoResetSemana); renderizarRutinas(); actualizarHome(); mostrarToast("🔄 LUNES - Nueva semana!"); } }
+function programarNotificacion(msg, h, m, dias, repetir = true) { const ahora = new Date(); const obj = new Date(); obj.setHours(h - 2, m, 0, 0); if (obj <= ahora) obj.setDate(obj.getDate() + 1); const id = setTimeout(() => { const diaActual = getDiaSemana(); if (dias.includes(diaActual)) { if (permisosNotificaciones) new Notification("NICO GYM", { body: msg }); } if (repetir) programarNotificacion(msg, h, m, dias, repetir); }, obj - ahora); return id; }
+function programarNotificaciones() { if (!permisosNotificaciones) return; intervalosNotificaciones.forEach(id => clearTimeout(id)); intervalosNotificaciones = []; const rutina = getRutinaHoy(); intervalosNotificaciones.push(programarNotificacion("🔔 PRUEBA - ¡Funciona!", 20, 0, ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'], false)); if (notificacionesActivas.bd) intervalosNotificaciones.push(programarNotificacion(`🌞 Buenos días. Hoy: ${rutina}`, 8, 0, ['lunes','martes','miercoles','jueves','viernes'])); if (notificacionesActivas.r1) intervalosNotificaciones.push(programarNotificacion(`💪 ¡Hora de entrenar!`, 18, 30, ['lunes','martes','miercoles','jueves','viernes'])); if (notificacionesActivas.r2) intervalosNotificaciones.push(programarNotificacion(`⏰ ¿Has entrenado hoy?`, 19, 0, ['lunes','martes','miercoles','jueves','viernes'])); if (notificacionesActivas.tab) intervalosNotificaciones.push(programarNotificacion(`🚭 ¡Sigue sin fumar!`, 10, 0, ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'])); if (notificacionesActivas.res) intervalosNotificaciones.push(programarNotificacion(`📊 Resumen semanal: Racha ${rachaActual}`, 20, 0, ['domingo'])); if (notificacionesActivas.se) intervalosNotificaciones.push(programarNotificacion(`⚠️ Aún no has entrenado`, 21, 0, ['lunes','martes','miercoles','jueves','viernes'])); mostrarToast("✅ Notificaciones programadas"); }
+function toggleNotif(tipo) { const toggle = document.getElementById(`toggle-${tipo}`); notificacionesActivas[tipo] = !notificacionesActivas[tipo]; if (notificacionesActivas[tipo]) toggle.classList.add('active'); else toggle.classList.remove('active'); localStorage.setItem('nico_notif_activas', JSON.stringify(notificacionesActivas)); programarNotificaciones(); }
+const notifGuardadas = localStorage.getItem('nico_notif_activas'); if (notifGuardadas) notificacionesActivas = JSON.parse(notifGuardadas); for (let t in notificacionesActivas) { const toggle = document.getElementById(`toggle-${t}`); if (toggle && notificacionesActivas[t]) toggle.classList.add('active'); } if ('Notification' in window && Notification.permission === 'granted') { permisosNotificaciones = true; programarNotificaciones(); }
+window.onload = () => { resetSemanalAuto(); renderizarRutinas(); actualizarHome(); mostrarHistorialPeso(); };
+</script>
 </body>
 </html>
