@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>NICO GYM - Racha por día completado</title>
+<title>NICO GYM - Racha semanal acumulada</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <style>
@@ -52,6 +52,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .ex-img{width:100%;max-width:200px;border-radius:8px;margin:10px auto;display:block}
 .btn-main{width:100%;padding:10px;background:#222;color:#ff6600;border:1px solid #ff6600;border-radius:8px;font-weight:bold;margin:10px 0;cursor:pointer}
 .check-box{width:35px;height:35px;accent-color:#32d74b;cursor:pointer}
+.check-box:disabled{opacity:0.5;cursor:not-allowed}
 .input-nota{width:100%;padding:10px;background:#000;border:1px solid #333;color:#fff;border-radius:6px;margin-top:8px}
 .peso-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #222}
 .btn-del{background:0;border:none;color:#ff3b30;font-size:1.2rem;cursor:pointer}
@@ -95,7 +96,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="timer-box"><h1 id="t-num">60</h1><button onclick="iniciarTimer()" style="background:#32d74b;border:none;padding:12px 30px;border-radius:10px;color:#fff;font-weight:bold">INICIAR</button><button onclick="cerrarTimer()" style="background:#222;border:none;padding:12px 30px;border-radius:10px;color:#fff;margin-top:10px">CERRAR</button></div>
 <button id="float-t" onclick="abrirTimer()">⏱️</button>
 <script>
-// ==================== DATOS DE EJERCICIOS (DESCRIPCIONES COMPLETAS) ====================
+// ==================== DATOS DE EJERCICIOS ====================
 const ejercicios = {
 lunes: [{nombre:"Dominadas / Negativas", series:"3 x Fallo", instrucciones:"1. Colócate debajo de la barra con agarre prono (palmas hacia afuera) y manos más anchas que los hombros.\n2. Activa los hombros hacia abajo y atrás.\n3. Sube llevando el pecho a la barra, sacando el pecho y juntando escápulas.\n4. Baja de forma CONTROLADA y LENTA (4-5 segundos).\n5. Si no puedes subir, haz solo la fase negativa: salta hasta arriba y baja lento.", consejo:"Escápulas juntas, pecho afuera, mirada al frente. No balancees el cuerpo.", peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/3c194808-73c8-4d75-a2d9-cf85dd42fbeb", tienePeso:false},{nombre:"Remo con Barra", series:"4 x 12", instrucciones:"1. Sujeta la barra con agarre prono, manos separadas al ancho de hombros.\n2. Inclina el torso hacia adelante (45°) manteniendo la espalda RECTA.\n3. Tira de la barra hacia el ombligo, llevando los codos hacia atrás.\n4. Aprieta las escapulas al final del movimiento.\n5. Baja la barra controladamente hasta estirar los brazos.", consejo:"Espalda totalmente recta en todo momento, no la redondees. No uses impulso.", peso:"Sugerido: 25-30kg", imagen:"https://api.smartworkout.app/asset/image/be04fca7-9dc1-4b64-a7b4-d05217eaecda", tienePeso:true},{nombre:"Remo a una mano", series:"3 x 12", instrucciones:"1. Apoya rodilla y mano del mismo lado en un banco.\n2. La pierna contraria en el suelo, ligeramente flexionada.\n3. Espalda paralela al suelo, completamente RECTA.\n4. Tira de la mancuerna hacia la cadera, codo pegado al cuerpo.\n5. Siente cómo trabajan los dorsales, baja controlado.", consejo:"Tira con el codo, no con el bíceps. Mantén el core apretado.", peso:"Sugerido: 12-14kg", imagen:"https://api.smartworkout.app/asset/image/55720d63-1744-4bf8-9917-8eafd30740f5", tienePeso:true},{nombre:"Curl de Bíceps", series:"3 x 12", instrucciones:"1. De pie, codos pegados a las costillas.\n2. Sube la mancuerna hacia el hombro, girando ligeramente la muñeca.\n3. Aprieta el bíceps en la parte superior.\n4. Baja de forma CONTROLADA y completa.\n5. Sin mover los codos hacia adelante.", consejo:"Mantén los codos pegados a las costillas. No balancees el torso.", peso:"Sugerido: 6-8kg", imagen:"https://api.smartworkout.app/asset/image/303b810b-f875-42eb-8b26-cc79b18b6865", tienePeso:true}],
 martes: [{nombre:"Cardio", series:"20-30 min", instrucciones:"1. Comienza con 5 min de calentamiento a ritmo suave.\n2. Mantén un ritmo constante donde puedas hablar pero con esfuerzo.\n3. Controla la respiración: inhala por nariz, exhala por boca.\n4. Termina con 5 min de enfriamiento a ritmo suave.", consejo:"Mantén una respiración controlada. Hidrátate cada 10 min.", peso:"Intensidad: Media", tienePeso:false},{nombre:"Elevación de piernas", series:"4 x 15", instrucciones:"1. Tumbado boca arriba, manos bajo los glúteos.\n2. Piernas estiradas, eleva hasta 90°.\n3. Baja lentamente sin que los pies toquen el suelo.\n4. Mantén la zona lumbar pegada al suelo.", consejo:"Baja sin que los pies toquen el suelo. Controla el movimiento.", peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/336b57e7-bcea-4e65-a54f-3a3519729f7e", tienePeso:false},{nombre:"Plancha", series:"3 x 45 seg", instrucciones:"1. Apoyo en antebrazos y puntas de pies.\n2. Cuerpo en línea recta desde la cabeza a los pies.\n3. Aprieta abdomen y glúteos.\n4. Respira de forma constante, no aguantes la respiración.", consejo:"Cuerpo alineado, no levantes ni hundas la cadera.", peso:"Peso: Estático", imagen:"https://api.smartworkout.app/asset/image/606defc2-dc68-41d8-bea0-41a8d68aaa71", tienePeso:false}],
@@ -109,15 +110,15 @@ let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
 let notas = JSON.parse(localStorage.getItem('nico_notas')) || {};
 let pesosRegistrados = JSON.parse(localStorage.getItem('nico_pesos')) || [{valor:82, fecha:'20/04'}];
 let rachaActual = parseInt(localStorage.getItem('nico_racha')) || 18;
-let diasCompletadosEstaSemana = JSON.parse(localStorage.getItem('nico_dias_completados_semana')) || [];
-let ultimoResetSemana = localStorage.getItem('nico_ultimo_reset_semana') || '';
+let diasCompletadosSemana = JSON.parse(localStorage.getItem('nico_dias_completados_semana')) || [];
+let ultimaSemanaReset = localStorage.getItem('nico_ultima_semana_reset') || '';
 let discosActuales = {d125:0, d15:0, d2:0};
 let ejercicioDiscoActual = null;
 let intervalDescanso = null;
 let timerInterval = null;
-const fechaDejarFumar = new Date(2026, 1, 22); // 22 de febrero de 2026
+const fechaDejarFumar = new Date(2026, 1, 22); // 22 febrero 2026
 
-// ==================== FUNCIONES DÍAS SIN FUMAR ====================
+// ==================== DÍAS SIN FUMAR ====================
 function calcularDiasSinFumar() {
     const hoy = new Date();
     let meses = hoy.getMonth() - fechaDejarFumar.getMonth();
@@ -130,29 +131,22 @@ function calcularDiasSinFumar() {
     texto += `${dias} día${dias !== 1 ? 's' : ''}`;
     return { total: total >= 0 ? total : 0, texto: texto };
 }
-
 function actualizarDiasSinFumar() {
     const { total, texto } = calcularDiasSinFumar();
     document.getElementById('diasSinFumar').innerHTML = total;
     document.getElementById('mesesSinFumar').innerHTML = `🚭 ${texto}`;
 }
 
-// ==================== RACHA GYM (1 punto por día de rutina completado) ====================
+// ==================== RACHA (suma solo primera vez por día de rutina en cada semana) ====================
 function sumarRachaSiCorresponde(dia) {
-    // Si este día ya se completó en la semana actual, no suma de nuevo
-    if (diasCompletadosEstaSemana.includes(dia)) {
-        mostrarToast(`🎉 ¡Completaste ${dia}! Pero ya habías sumado este día esta semana.`);
+    if (diasCompletadosSemana.includes(dia)) {
+        mostrarToast(`✅ ${dia} ya completado esta semana. No suma racha.`);
         return false;
     }
-    
-    // Sumar punto a la racha total
     rachaActual++;
-    diasCompletadosEstaSemana.push(dia);
-    
-    // Guardar en localStorage
+    diasCompletadosSemana.push(dia);
     localStorage.setItem('nico_racha', rachaActual);
-    localStorage.setItem('nico_dias_completados_semana', JSON.stringify(diasCompletadosEstaSemana));
-    
+    localStorage.setItem('nico_dias_completados_semana', JSON.stringify(diasCompletadosSemana));
     // Confeti
     if (typeof canvasConfetti !== 'undefined') {
         canvasConfetti({ particleCount: 300, spread: 100, origin: { y: 0.6 } });
@@ -162,6 +156,23 @@ function sumarRachaSiCorresponde(dia) {
     mostrarToast(`🎉🔥 +1 RACHA! Ahora tienes ${rachaActual} días 🔥🎉`);
     actualizarHome();
     return true;
+}
+
+// ==================== RESET SEMANAL (borra checks y días completados) ====================
+function resetSemanal() {
+    const hoy = new Date();
+    const yearWeek = `${hoy.getFullYear()}-${Math.ceil((hoy - new Date(hoy.getFullYear(), 0, 1)) / 86400000 / 7)}`;
+    if (ultimaSemanaReset !== yearWeek && hoy.getDay() === 1) { // lunes
+        checks = {};
+        diasCompletadosSemana = [];
+        localStorage.setItem('nico_checks', JSON.stringify(checks));
+        localStorage.setItem('nico_dias_completados_semana', JSON.stringify(diasCompletadosSemana));
+        ultimaSemanaReset = yearWeek;
+        localStorage.setItem('nico_ultima_semana_reset', ultimaSemanaReset);
+        renderizarRutinas(); // refresca los checks (los desmarca y deshabilita)
+        actualizarHome();
+        mostrarToast("🔄 LUNES - Nueva semana. Los checks se han reiniciado.");
+    }
 }
 
 // ==================== UTILIDADES ====================
@@ -174,7 +185,7 @@ function go(id) { document.querySelectorAll('.seccion').forEach(s => s.classList
 function goToday() { const hoy = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()]; if (hoy !== 'domingo') go(hoy); else go('domingo'); }
 function borrarTodo() { if (confirm("¿Borrar todos los datos?")) { localStorage.clear(); location.reload(); } }
 
-// ==================== ACTUALIZAR HOME (PROGRESO, RACHA, GRÁFICO) ====================
+// ==================== ACTUALIZAR HOME (progreso, racha, gráfico) ====================
 function actualizarHome() {
     document.getElementById('racha').innerText = rachaActual;
     actualizarDiasSinFumar();
@@ -213,52 +224,40 @@ function actualizarMostrarDiscos() { const total = (discosActuales.d125 * 1.25) 
 function agregarPeso() { const v = document.getElementById('in-peso').value; if (v && !isNaN(v)) { pesosRegistrados.push({ valor: parseFloat(v), fecha: new Date().toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit' }) }); localStorage.setItem('nico_pesos', JSON.stringify(pesosRegistrados)); document.getElementById('in-peso').value = ''; actualizarHome(); mostrarHistorialPeso(); mostrarToast(`✅ Peso registrado: ${v}kg`); } }
 function eliminarPeso(i) { if (confirm("¿Borrar?")) { pesosRegistrados.splice(i,1); localStorage.setItem('nico_pesos', JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); } }
 function mostrarHistorialPeso() { const h = document.getElementById('hist-peso'); if (!h) return; h.innerHTML = [...pesosRegistrados].reverse().map((p,i) => `<div class="peso-item"><span>${p.fecha}: <b>${p.valor}kg</b></span><button class="btn-del" onclick="eliminarPeso(${i})">🗑️</button></div>`).join(''); }
-// ==================== RENDERIZAR RUTINAS ====================
+// ==================== RENDERIZAR RUTINAS (con checks bloqueados si ya está marcado) ====================
 function renderizarRutinas() {
     for (const dia in ejercicios) {
         const lista = document.getElementById(`list-${dia}`);
         if (!lista) continue;
         lista.innerHTML = ejercicios[dia].map((ex, idx) => {
             const id = `${dia}-${idx}`;
-            return `<div class="card"><div style="display:flex; justify-content:space-between"><div><div class="ex-header"><span class="ex-title">${ex.nombre}</span><div class="ex-buttons">${ex.tienePeso ? `<span class="calc-icon" onclick="abrirCalc('${id}')">🏋️ CALCULAR</span>` : ''}<span class="descanso-icon" onclick="abrirSelectorDescanso()">⏱️ DESCANSAR</span></div></div><span class="ex-reps">${ex.series}</span></div><input type="checkbox" class="check-box" ${checks[id] ? 'checked' : ''} onchange="marcarCheck('${dia}', ${idx}, this.checked)"></div><input type="number" class="input-nota" step="0.5" placeholder="Peso real (kg)..." value="${notas[id] || ''}" onchange="guardarNota('${id}', this.value)"><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="background:#0a0a0a; padding:8px; border-radius:8px; margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g,'<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p><p style="color:#ff6600">⚖️ ${ex.peso}</p></div></div>`;
+            const isChecked = checks[id] === true;
+            // Deshabilitar checkbox si ya está marcado (no se puede desmarcar)
+            const disabledAttr = isChecked ? 'disabled' : '';
+            return `<div class="card"><div style="display:flex; justify-content:space-between"><div><div class="ex-header"><span class="ex-title">${ex.nombre}</span><div class="ex-buttons">${ex.tienePeso ? `<span class="calc-icon" onclick="abrirCalc('${id}')">🏋️ CALCULAR</span>` : ''}<span class="descanso-icon" onclick="abrirSelectorDescanso()">⏱️ DESCANSAR</span></div></div><span class="ex-reps">${ex.series}</span></div><input type="checkbox" class="check-box" ${isChecked ? 'checked' : ''} ${disabledAttr} onchange="marcarCheck('${dia}', ${idx}, this.checked)"></div><input type="number" class="input-nota" step="0.5" placeholder="Peso real (kg)..." value="${notas[id] || ''}" onchange="guardarNota('${id}', this.value)"><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="background:#0a0a0a; padding:8px; border-radius:8px; margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g,'<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p><p style="color:#ff6600">⚖️ ${ex.peso}</p></div></div>`;
         }).join('');
     }
 }
 
 function marcarCheck(dia, idx, valor) {
+    if (valor === false) return; // No permitir desmarcar (por si acaso el usuario intenta)
     const id = `${dia}-${idx}`;
-    checks[id] = valor;
+    if (checks[id]) return; // ya marcado
+    checks[id] = true;
     localStorage.setItem('nico_checks', JSON.stringify(checks));
     // Verificar si todos los ejercicios del día están marcados
     const todosCompletados = ejercicios[dia].every((_, i) => checks[`${dia}-${i}`] === true);
     if (todosCompletados) {
         sumarRachaSiCorresponde(dia);
     }
+    renderizarRutinas(); // refrescar para deshabilitar el check recién marcado
     actualizarHome();
 }
 function guardarNota(id, valor) { if (valor && valor !== '') notas[id] = valor; else delete notas[id]; localStorage.setItem('nico_notas', JSON.stringify(notas)); }
 
-// ==================== RESET SEMANAL AUTOMÁTICO (LUNES) ====================
-// Borra los checks y los días completados de la semana anterior.
-function resetSemanalAuto() {
-    const hoy = new Date();
-    const yearWeek = `${hoy.getFullYear()}-${Math.ceil((hoy - new Date(hoy.getFullYear(), 0, 1)) / 86400000 / 7)}`;
-    if (hoy.getDay() === 1 && ultimoResetSemana !== yearWeek) {
-        checks = {};
-        diasCompletadosEstaSemana = [];
-        localStorage.setItem('nico_checks', JSON.stringify(checks));
-        localStorage.setItem('nico_dias_completados_semana', JSON.stringify(diasCompletadosEstaSemana));
-        ultimoResetSemana = yearWeek;
-        localStorage.setItem('nico_ultimo_reset_semana', ultimoResetSemana);
-        renderizarRutinas();
-        actualizarHome();
-        mostrarToast("🔄 LUNES - Nueva semana lista para entrenar!");
-    }
-}
-
 // ==================== INICIALIZACIÓN ====================
 window.onload = () => {
-    resetSemanalAuto();
+    resetSemanal();       // borra checks si es lunes y no se había hecho
     renderizarRutinas();
     actualizarHome();
     mostrarHistorialPeso();
