@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>NICO GYM - Sin notificaciones</title>
+<title>NICO GYM - Racha por día completado</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <style>
@@ -109,9 +109,8 @@ let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
 let notas = JSON.parse(localStorage.getItem('nico_notas')) || {};
 let pesosRegistrados = JSON.parse(localStorage.getItem('nico_pesos')) || [{valor:82, fecha:'20/04'}];
 let rachaActual = parseInt(localStorage.getItem('nico_racha')) || 18;
-let ultimaFechaRacha = localStorage.getItem('nico_ultima_fecha_racha') || '';
-let ultimoResetSemana = localStorage.getItem('nico_ultimo_reset') || '';
-let rachaDiasCompletados = JSON.parse(localStorage.getItem('nico_dias_completados')) || [];
+let diasCompletadosEstaSemana = JSON.parse(localStorage.getItem('nico_dias_completados_semana')) || [];
+let ultimoResetSemana = localStorage.getItem('nico_ultimo_reset_semana') || '';
 let discosActuales = {d125:0, d15:0, d2:0};
 let ejercicioDiscoActual = null;
 let intervalDescanso = null;
@@ -138,25 +137,21 @@ function actualizarDiasSinFumar() {
     document.getElementById('mesesSinFumar').innerHTML = `🚭 ${texto}`;
 }
 
-// ==================== RACHA GYM CORREGIDA ====================
+// ==================== RACHA GYM (1 punto por día de rutina completado) ====================
 function sumarRachaSiCorresponde(dia) {
-    const hoy = new Date().toDateString();
-    // Si ya sumó racha hoy, no suma otra vez
-    if (ultimaFechaRacha === hoy) {
-        mostrarToast(`🎉 ¡Completaste ${dia}! Ya sumaste racha hoy.`);
+    // Si este día ya se completó en la semana actual, no suma de nuevo
+    if (diasCompletadosEstaSemana.includes(dia)) {
+        mostrarToast(`🎉 ¡Completaste ${dia}! Pero ya habías sumado este día esta semana.`);
         return false;
     }
-    // Si este día ya lo había completado antes (por si acaso)
-    if (rachaDiasCompletados.includes(dia)) return false;
     
-    // Sumar racha
+    // Sumar punto a la racha total
     rachaActual++;
-    ultimaFechaRacha = hoy;
-    rachaDiasCompletados.push(dia);
+    diasCompletadosEstaSemana.push(dia);
     
+    // Guardar en localStorage
     localStorage.setItem('nico_racha', rachaActual);
-    localStorage.setItem('nico_ultima_fecha_racha', ultimaFechaRacha);
-    localStorage.setItem('nico_dias_completados', JSON.stringify(rachaDiasCompletados));
+    localStorage.setItem('nico_dias_completados_semana', JSON.stringify(diasCompletadosEstaSemana));
     
     // Confeti
     if (typeof canvasConfetti !== 'undefined') {
@@ -234,7 +229,7 @@ function marcarCheck(dia, idx, valor) {
     const id = `${dia}-${idx}`;
     checks[id] = valor;
     localStorage.setItem('nico_checks', JSON.stringify(checks));
-    // Verifica si todos los ejercicios del día están marcados
+    // Verificar si todos los ejercicios del día están marcados
     const todosCompletados = ejercicios[dia].every((_, i) => checks[`${dia}-${i}`] === true);
     if (todosCompletados) {
         sumarRachaSiCorresponde(dia);
@@ -244,16 +239,17 @@ function marcarCheck(dia, idx, valor) {
 function guardarNota(id, valor) { if (valor && valor !== '') notas[id] = valor; else delete notas[id]; localStorage.setItem('nico_notas', JSON.stringify(notas)); }
 
 // ==================== RESET SEMANAL AUTOMÁTICO (LUNES) ====================
+// Borra los checks y los días completados de la semana anterior.
 function resetSemanalAuto() {
     const hoy = new Date();
-    const numSemana = `${hoy.getFullYear()}-${Math.floor((hoy - new Date(hoy.getFullYear(), 0, 1)) / 86400000 / 7)}`;
-    if (hoy.getDay() === 1 && ultimoResetSemana !== numSemana) {
+    const yearWeek = `${hoy.getFullYear()}-${Math.ceil((hoy - new Date(hoy.getFullYear(), 0, 1)) / 86400000 / 7)}`;
+    if (hoy.getDay() === 1 && ultimoResetSemana !== yearWeek) {
         checks = {};
-        rachaDiasCompletados = [];
+        diasCompletadosEstaSemana = [];
         localStorage.setItem('nico_checks', JSON.stringify(checks));
-        localStorage.setItem('nico_dias_completados', JSON.stringify(rachaDiasCompletados));
-        ultimoResetSemana = numSemana;
-        localStorage.setItem('nico_ultimo_reset', ultimoResetSemana);
+        localStorage.setItem('nico_dias_completados_semana', JSON.stringify(diasCompletadosEstaSemana));
+        ultimoResetSemana = yearWeek;
+        localStorage.setItem('nico_ultimo_reset_semana', ultimoResetSemana);
         renderizarRutinas();
         actualizarHome();
         mostrarToast("🔄 LUNES - Nueva semana lista para entrenar!");
