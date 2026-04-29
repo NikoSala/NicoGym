@@ -639,9 +639,10 @@ setTimeout(() => {
 }, 500);
 </script>
 <script>
-// ==================== MEJORA #2: CALENDARIO (LUNES a DOMINGO, sin días futuros) ====================
+// ==================== MEJORA #2: CALENDARIO CON NAVEGACIÓN ENTRE MESES ====================
 
 let diasCompletadosEntreno = JSON.parse(localStorage.getItem('nico_calendario')) || [];
+let calendarioOffsetMeses = 0; // 0 = mes actual, -1 = mes anterior, +1 = mes siguiente
 
 function marcarHoyEntreno() {
     const hoy = new Date().toISOString().slice(0,10);
@@ -665,29 +666,45 @@ function getDiasSinFumar() {
     return dias;
 }
 
+function cambiarMes(delta) {
+    calendarioOffsetMeses += delta;
+    renderizarCalendario();
+}
+
 function renderizarCalendario() {
     const contenedor = document.getElementById('calendario-container');
     if (!contenedor) return;
     
     const hoy = new Date();
-    const hoyStr = hoy.toISOString().slice(0,10);
-    const año = hoy.getFullYear();
-    const mes = hoy.getMonth();
+    const añoBase = hoy.getFullYear();
+    const mesBase = hoy.getMonth();
     
-    // Primer día del mes
+    // Calcular el mes a mostrar según el offset
+    let año = añoBase;
+    let mes = mesBase + calendarioOffsetMeses;
+    if (mes < 0) {
+        mes += 12;
+        año--;
+    } else if (mes > 11) {
+        mes -= 12;
+        año++;
+    }
+    
     const primerDia = new Date(año, mes, 1);
-    // Último día del mes
     const ultimoDia = new Date(año, mes + 1, 0);
     const numDias = ultimoDia.getDate();
     
-    // Calcular en qué columna empieza el mes (0 = lunes, 6 = domingo)
-    let diaSemanaPrimero = primerDia.getDay(); // 0 = domingo, 1 = lunes ... 6 = sábado
-    let offset = (diaSemanaPrimero === 0) ? 6 : diaSemanaPrimero - 1; // convertir a lunes=0
+    let diaSemanaPrimero = primerDia.getDay();
+    let offset = (diaSemanaPrimero === 0) ? 6 : diaSemanaPrimero - 1;
     
-    const nombreMes = hoy.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+    const nombreMes = new Date(año, mes).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
     const diasSinFumar = getDiasSinFumar();
     
-    let html = `<h3 style="text-align:center; margin-bottom:15px; color:#ff6600">${nombreMes} ${año}</h3>`;
+    let html = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">`;
+    html += `<button class="notif-btn" style="background:#333; padding:8px 15px; font-size:14px" onclick="cambiarMes(-1)">◀ ${new Date(año, mes-1).toLocaleString('es-ES', { month: 'short' })}</button>`;
+    html += `<h3 style="color:#ff6600; margin:0">${nombreMes} ${año}</h3>`;
+    html += `<button class="notif-btn" style="background:#333; padding:8px 15px; font-size:14px" onclick="cambiarMes(1)">${new Date(año, mes+1).toLocaleString('es-ES', { month: 'short' })} ▶</button>`;
+    html += `</div>`;
     
     // Leyenda
     html += `<div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:11px; flex-wrap:wrap">`;
@@ -700,38 +717,28 @@ function renderizarCalendario() {
     html += `<span><span style="display:inline-block; width:20px; height:20px; background:#ff6600; border:1px solid #fff; border-radius:4px; margin-right:5px"></span> Hoy</span>`;
     html += `</div>`;
     
-    // Días de la semana (Lunes a Domingo)
+    // Días de la semana
     html += `<div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center; margin-bottom:10px">`;
-    html += `<div style="color:#ff6600; font-weight:bold">L</div>`;
-    html += `<div style="color:#ff6600; font-weight:bold">M</div>`;
-    html += `<div style="color:#ff6600; font-weight:bold">X</div>`;
-    html += `<div style="color:#ff6600; font-weight:bold">J</div>`;
-    html += `<div style="color:#ff6600; font-weight:bold">V</div>`;
-    html += `<div style="color:#ff6600; font-weight:bold">S</div>`;
-    html += `<div style="color:#eab308; font-weight:bold">D</div>`;
-    html += `</div>`;
+    html += `<div style="color:#ff6600; font-weight:bold">L</div><div style="color:#ff6600; font-weight:bold">M</div><div style="color:#ff6600; font-weight:bold">X</div><div style="color:#ff6600; font-weight:bold">J</div><div style="color:#ff6600; font-weight:bold">V</div><div style="color:#ff6600; font-weight:bold">S</div><div style="color:#eab308; font-weight:bold">D</div>`;
+    html += `</div><div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center">`;
     
-    html += `<div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center">`;
-    
-    // Días vacíos antes del primer día del mes
     for (let i = 0; i < offset; i++) {
         html += `<div style="padding:8px; color:#333"></div>`;
     }
     
-    // Días del mes
     for (let d = 1; d <= numDias; d++) {
         const fechaActual = new Date(año, mes, d);
         const fechaStr = fechaActual.toISOString().slice(0,10);
         const esDomingo = fechaActual.getDay() === 0;
         const esEntrenado = diasCompletadosEntreno.includes(fechaStr);
         const esSinFumar = diasSinFumar.includes(fechaStr);
-        const esHoy = (fechaStr === hoyStr);
-        const esFuturo = fechaActual > hoy;
+        const esHoy = (calendarioOffsetMeses === 0 && fechaStr === new Date().toISOString().slice(0,10));
+        const esFuturo = (calendarioOffsetMeses === 0 && fechaActual > new Date());
         
         let bgColor = "#222";
         let gradiente = "";
         
-        if (!esFuturo) {
+        if (!esFuturo && calendarioOffsetMeses === 0) {
             if (esEntrenado && esSinFumar && !esDomingo) {
                 gradiente = `linear-gradient(135deg, #2e7d32 50%, #3b82f6 50%)`;
             } else if (esDomingo && esSinFumar) {
@@ -743,6 +750,10 @@ function renderizarCalendario() {
             } else if (esSinFumar) {
                 bgColor = "#3b82f6";
             }
+        } else if (calendarioOffsetMeses !== 0 && esSinFumar && !esDomingo) {
+            bgColor = "#3b82f6";
+        } else if (calendarioOffsetMeses !== 0 && esDomingo) {
+            bgColor = "#eab308";
         }
         
         let estilo = `border-radius:10px; padding:8px; font-weight:bold; min-height:45px; display:flex; align-items:center; justify-content:center; `;
@@ -753,14 +764,13 @@ function renderizarCalendario() {
         let titulo = "";
         if (esEntrenado) titulo += "✅ Entrenado ";
         if (esDomingo) titulo += "🟡 Domingo ";
-        if (esSinFumar && !esFuturo) titulo += "🔵 Sin fumar ";
+        if (esSinFumar) titulo += "🔵 Sin fumar ";
         if (esHoy) titulo = "📅 Hoy";
         if (esFuturo) titulo = "Día futuro";
         
         html += `<div style="${estilo}" title="${titulo}">${d}</div>`;
     }
     
-    // Completar última semana con celdas vacías si es necesario
     const celdasUsadas = offset + numDias;
     const celdasRestantes = (7 - (celdasUsadas % 7)) % 7;
     for (let i = 0; i < celdasRestantes; i++) {
@@ -769,7 +779,7 @@ function renderizarCalendario() {
     
     html += `</div>`;
     
-    // Resumen de rachas
+    // Resumen
     html += `<div style="text-align:center; margin-top:25px; padding:12px; background:#1a1a1a; border-radius:12px">`;
     html += `<p style="color:#ff6600; font-weight:bold">🔥 RACHA GYM: ${rachaActual} días seguidos 🔥</p>`;
     html += `<p style="color:#3b82f6; font-weight:bold">🚭 DÍAS SIN FUMAR: ${calcularDiasSinFumar().total} días 🚭</p>`;
@@ -802,7 +812,7 @@ function crearCalendarioSeccion() {
         calendarioBtn.id = 'menu-calendario';
         calendarioBtn.className = 'nav-btn';
         calendarioBtn.innerHTML = '📅 CALENDARIO';
-        calendarioBtn.onclick = () => { go('calendario'); renderizarCalendario(); };
+        calendarioBtn.onclick = () => { calendarioOffsetMeses = 0; go('calendario'); renderizarCalendario(); };
         const consejosBtn = document.getElementById('menu-consejos');
         if (consejosBtn) menu.insertBefore(calendarioBtn, consejosBtn);
         else menu.appendChild(calendarioBtn);
@@ -811,7 +821,6 @@ function crearCalendarioSeccion() {
     renderizarCalendario();
 }
 
-// Sobrescribir la función que suma racha para también guardar en el calendario
 const sumarRachaOriginalCal = window.sumarRachaSiCorresponde;
 window.sumarRachaSiCorresponde = function(dia) {
     const resultado = sumarRachaOriginalCal(dia);
@@ -821,7 +830,6 @@ window.sumarRachaSiCorresponde = function(dia) {
     return resultado;
 };
 
-// Inicializar
 setTimeout(() => {
     crearCalendarioSeccion();
 }, 500);
