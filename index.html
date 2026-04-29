@@ -639,12 +639,12 @@ setTimeout(() => {
 }, 500);
 </script>
 <script>
-// ==================== MEJORA #2: CALENDARIO DE ENTRENAMIENTO (CORREGIDO) ====================
+// ==================== MEJORA #2: CALENDARIO (CASILLAS DIVIDIDAS, SIN DÍAS FUTUROS) ====================
 
-// Estructura para guardar días completados (formato YYYY-MM-DD)
+// Días completados (entrenados)
 let diasCompletadosHistoricos = JSON.parse(localStorage.getItem('nico_calendario')) || [];
 
-// Función para marcar hoy como completado (entrenado) - SOLO cuando se complete la rutina
+// Marcar hoy como entrenado (solo cuando se complete la rutina)
 function marcarHoyEnCalendario() {
     const hoy = new Date().toISOString().slice(0,10);
     if (!diasCompletadosHistoricos.includes(hoy)) {
@@ -655,31 +655,27 @@ function marcarHoyEnCalendario() {
     }
 }
 
-// Determinar si un día es domingo (0 = domingo)
-function esDomingo(fechaStr) {
-    const fecha = new Date(fechaStr);
-    return fecha.getDay() === 0;
-}
-
-// Generar lista de días sin fumar (desde 22 de febrero hasta ayer)
+// Generar lista de días sin fumar (desde 22 de febrero hasta ayer - NO incluye hoy ni futuro)
 function getDiasSinFumar() {
-    const fechaInicio = new Date(2026, 1, 22); // 22 de febrero de 2026
+    const fechaInicio = new Date(2026, 1, 22); // 22 febrero 2026
     const hoy = new Date();
+    const hoyStr = hoy.toISOString().slice(0,10);
     const diasSinFumar = [];
     let fecha = new Date(fechaInicio);
-    while (fecha < hoy) {
+    while (fecha < hoy) {  // solo días pasados, NO incluye hoy
         diasSinFumar.push(fecha.toISOString().slice(0,10));
         fecha.setDate(fecha.getDate() + 1);
     }
     return diasSinFumar;
 }
 
-// Renderizar calendario del mes actual
+// Renderizar calendario con casillas divididas
 function renderizarCalendario() {
     const contenedor = document.getElementById('calendario-container');
     if (!contenedor) return;
     
     const hoy = new Date();
+    const hoyStr = hoy.toISOString().slice(0,10);
     const año = hoy.getFullYear();
     const mes = hoy.getMonth();
     const primerDia = new Date(año, mes, 1);
@@ -687,22 +683,24 @@ function renderizarCalendario() {
     const numDias = ultimoDia.getDate();
     const diaInicioSemana = primerDia.getDay();
     const nombreMes = hoy.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
-    const hoyStr = hoy.toISOString().slice(0,10);
+    
     const diasSinFumar = getDiasSinFumar();
     
     let html = `<h3 style="text-align:center; margin-bottom:15px; color:#ff6600">${nombreMes} ${año}</h3>`;
     
     // Leyenda
-    html += `<div style="display:flex; justify-content:center; gap:20px; margin-bottom:15px; font-size:12px; flex-wrap:wrap">`;
-    html += `<span><span style="display:inline-block; width:16px; height:16px; background:#2e7d32; border-radius:4px; margin-right:5px"></span> Entrenado 💪</span>`;
-    html += `<span><span style="display:inline-block; width:16px; height:16px; background:#3b82f6; border-radius:4px; margin-right:5px"></span> Sin fumar (no entrenado)</span>`;
-    html += `<span><span style="display:inline-block; width:16px; height:16px; background:#eab308; border-radius:4px; margin-right:5px"></span> Domingo (descanso)</span>`;
-    html += `<span><span style="display:inline-block; width:16px; height:16px; background:#222; border-radius:4px; margin-right:5px; border:1px solid #444"></span> Sin actividad</span>`;
-    html += `<span><span style="display:inline-block; width:16px; height:16px; background:#ff6600; border-radius:4px; margin-right:5px"></span> Hoy</span>`;
+    html += `<div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:11px; flex-wrap:wrap">`;
+    html += `<span><span style="display:inline-block; width:20px; height:20px; background:linear-gradient(135deg,#2e7d32,#2e7d32); border-radius:4px; margin-right:5px"></span> Entrenado</span>`;
+    html += `<span><span style="display:inline-block; width:20px; height:20px; background:linear-gradient(135deg,#eab308,#eab308); border-radius:4px; margin-right:5px"></span> Domingo</span>`;
+    html += `<span><span style="display:inline-block; width:20px; height:20px; background:linear-gradient(135deg,#3b82f6,#3b82f6); border-radius:4px; margin-right:5px"></span> Sin fumar</span>`;
+    html += `<span><span style="display:inline-block; width:20px; height:20px; background:linear-gradient(135deg,#2e7d32,#3b82f6); border-radius:4px; margin-right:5px"></span> Entrenado + Sin fumar</span>`;
+    html += `<span><span style="display:inline-block; width:20px; height:20px; background:linear-gradient(135deg,#eab308,#3b82f6); border-radius:4px; margin-right:5px"></span> Domingo + Sin fumar</span>`;
+    html += `<span><span style="display:inline-block; width:20px; height:20px; background:#222; border:1px solid #444; border-radius:4px; margin-right:5px"></span> Sin actividad</span>`;
+    html += `<span><span style="display:inline-block; width:20px; height:20px; background:#ff6600; border-radius:4px; margin-right:5px"></span> Hoy</span>`;
     html += `</div>`;
     
     html += `<div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center; margin-bottom:10px">`;
-    html += `<div style="color:#aaa">D</div><div style="color:#aaa">L</div><div style="color:#aaa">M</div><div style="color:#aaa">X</div><div style="color:#aaa">J</div><div style="color:#aaa">V</div><div style="color:#aaa">S</div>`;
+    html += `<div style="color:#aaa; font-weight:bold">D</div><div style="color:#aaa; font-weight:bold">L</div><div style="color:#aaa; font-weight:bold">M</div><div style="color:#aaa; font-weight:bold">X</div><div style="color:#aaa; font-weight:bold">J</div><div style="color:#aaa; font-weight:bold">V</div><div style="color:#aaa; font-weight:bold">S</div>`;
     html += `</div><div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center">`;
     
     // Días vacíos antes del primer día
@@ -714,54 +712,75 @@ function renderizarCalendario() {
     for (let d = 1; d <= numDias; d++) {
         const fechaActual = new Date(año, mes, d);
         const fechaStr = fechaActual.toISOString().slice(0,10);
-        const esDomingoDia = fechaActual.getDay() === 0;
+        const esDomingo = fechaActual.getDay() === 0;
         const esEntrenado = diasCompletadosHistoricos.includes(fechaStr);
         const esSinFumar = diasSinFumar.includes(fechaStr);
         const esHoy = (fechaStr === hoyStr);
+        const esFuturo = fechaActual > hoy; // días futuros NO se marcan como sin fumar ni entrenados
         
-        let color = '#222'; // por defecto gris
-        let tooltip = "";
+        let gradiente = "";
+        let backgroundColor = "#222"; // gris por defecto
         
-        if (esEntrenado) {
-            color = '#2e7d32'; // verde entrenado
-            tooltip = "Entrenado";
-        } else if (esDomingoDia) {
-            color = '#eab308'; // amarillo domingo
-            tooltip = "Domingo (descanso)";
-        } else if (esSinFumar && fechaActual < hoy) {
-            color = '#3b82f6'; // azul sin fumar (solo días pasados)
-            tooltip = "Sin fumar";
+        // Días futuros: SOLO gris (sin colores)
+        if (esFuturo) {
+            backgroundColor = "#222";
+        } else {
+            // Determinar colores base
+            let color1 = null;
+            let color2 = null;
+            
+            if (esEntrenado) color1 = "#2e7d32"; // verde
+            else if (esDomingo) color1 = "#eab308"; // amarillo
+            
+            if (esSinFumar && !esFuturo) color2 = "#3b82f6"; // azul
+            
+            if (color1 && color2) {
+                // Dos colores: dividido en diagonal
+                gradiente = `linear-gradient(135deg, ${color1} 50%, ${color2} 50%)`;
+                backgroundColor = "transparent";
+            } else if (color1) {
+                backgroundColor = color1;
+            } else if (color2) {
+                backgroundColor = color2;
+            }
         }
         
-        if (esHoy) tooltip = "Hoy";
-        
-        let estilo = `background:${color}; border-radius:10px; padding:8px; font-weight:bold; position:relative; cursor:default; `;
+        let estilo = `border-radius:10px; padding:8px; font-weight:bold; min-height:45px; display:flex; align-items:center; justify-content:center; `;
+        if (gradiente) estilo += `background: ${gradiente}; `;
+        else estilo += `background: ${backgroundColor}; `;
         if (esHoy) estilo += `border:2px solid #ff6600; `;
         
-        html += `<div style="${estilo}" title="${tooltip}">${d}</div>`;
+        let titulo = "";
+        if (esEntrenado) titulo += "✅ Entrenado ";
+        if (esDomingo) titulo += "🟡 Domingo ";
+        if (esSinFumar && !esFuturo) titulo += "🔵 Sin fumar ";
+        if (esHoy) titulo += "📅 Hoy";
+        if (esFuturo) titulo = "Día futuro";
+        
+        html += `<div style="${estilo}" title="${titulo}">${d}</div>`;
     }
     html += `</div>`;
     
-    // Resumen de racha actual
+    // Resumen de rachas
     html += `<div style="text-align:center; margin-top:25px; padding:12px; background:#1a1a1a; border-radius:12px">`;
     html += `<p style="color:#ff6600; font-weight:bold">🔥 RACHA GYM: ${rachaActual} días seguidos 🔥</p>`;
     html += `<p style="color:#3b82f6; font-weight:bold">🚭 DÍAS SIN FUMAR: ${calcularDiasSinFumar().total} días 🚭</p>`;
-    html += `<p style="font-size:12px; color:#aaa; margin-top:8px">📌 Los días entrenados (verde) se marcan al completar tu rutina.</p>`;
-    html += `<p style="font-size:12px; color:#eab308">🟡 Los domingos son días de descanso.</p>`;
-    html += `<p style="font-size:12px; color:#3b82f6">🔵 Los días en azul son días sin fumar (aunque no hayas entrenado).</p>`;
+    html += `<p style="font-size:11px; color:#aaa; margin-top:8px">📌 Los días entrenados se marcan en verde al completar tu rutina.</p>`;
+    html += `<p style="font-size:11px; color:#3b82f6">🔵 Los días sin fumar aparecen en azul (desde el 22 de febrero).</p>`;
+    html += `<p style="font-size:11px; color:#eab308">🟡 Los domingos son días de descanso.</p>`;
     html += `</div>`;
     
     contenedor.innerHTML = html;
 }
 
-// Añadir nueva sección del calendario al DOM y al menú
+// Crear la sección del calendario
 function crearCalendarioSeccion() {
     if (document.getElementById('calendario')) return;
     
     const nuevaSeccion = document.createElement('div');
     nuevaSeccion.id = 'calendario';
     nuevaSeccion.className = 'seccion';
-    nuevaSeccion.innerHTML = `<h2>📅 CALENDARIO DE ENTRENAMIENTO</h2><div id="calendario-container" style="margin-top:20px"></div>`;
+    nuevaSeccion.innerHTML = `<h2>📅 CALENDARIO</h2><div id="calendario-container" style="margin-top:20px"></div>`;
     
     const consejos = document.getElementById('consejos');
     if (consejos && consejos.parentNode) {
@@ -795,7 +814,7 @@ window.sumarRachaSiCorresponde = function(dia) {
     return resultado;
 };
 
-// Inicializar (NO se marca nada automáticamente - solo se mostrará el historial sin marcar días futuros)
+// Inicializar
 setTimeout(() => {
     crearCalendarioSeccion();
 }, 500);
