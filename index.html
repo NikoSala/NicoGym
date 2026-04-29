@@ -639,11 +639,13 @@ setTimeout(() => {
 }, 500);
 </script>
 <script>
-// ==================== MEJORA #2: CALENDARIO CON NAVEGACIÓN ENTRE MESES ====================
+// ==================== MEJORA #2: CALENDARIO CON PESO Y POPUP ====================
 
 let diasCompletadosEntreno = JSON.parse(localStorage.getItem('nico_calendario')) || [];
-let calendarioOffsetMeses = 0; // 0 = mes actual, -1 = mes anterior, +1 = mes siguiente
+let calendarioOffsetMeses = 0;
+let historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
 
+// Función para marcar hoy como entrenado
 function marcarHoyEntreno() {
     const hoy = new Date().toISOString().slice(0,10);
     if (!diasCompletadosEntreno.includes(hoy)) {
@@ -654,6 +656,7 @@ function marcarHoyEntreno() {
     }
 }
 
+// Obtener días sin fumar
 function getDiasSinFumar() {
     const inicio = new Date(2026, 1, 22);
     const hoy = new Date();
@@ -666,11 +669,41 @@ function getDiasSinFumar() {
     return dias;
 }
 
+// Obtener peso registrado en una fecha concreta (formato YYYY-MM-DD)
+function getPesoEnFecha(fechaStr) {
+    const registro = historialPesos.find(p => {
+        const fechaPeso = p.fecha.split('/').reverse().join('-');
+        return fechaPeso === fechaStr;
+    });
+    return registro ? registro.valor : null;
+}
+
+// Mostrar popup con información del día
+function mostrarPopupDia(dia, mes, año, fechaStr) {
+    const fecha = new Date(año, mes, dia);
+    const esEntrenado = diasCompletadosEntreno.includes(fechaStr);
+    const esDomingo = fecha.getDay() === 0;
+    const peso = getPesoEnFecha(fechaStr);
+    const diasSinFumar = getDiasSinFumar();
+    const esSinFumar = diasSinFumar.includes(fechaStr);
+    
+    let mensaje = `<strong>📅 ${dia}/${mes+1}/${año}</strong><br><br>`;
+    if (esEntrenado) mensaje += `✅ Entrenado 💪<br>`;
+    if (esDomingo) mensaje += `🟡 Domingo (descanso)<br>`;
+    if (esSinFumar) mensaje += `🔵 Día sin fumar 🚭<br>`;
+    if (peso) mensaje += `⚖️ Peso registrado: <strong>${peso} kg</strong><br>`;
+    if (!esEntrenado && !esDomingo && !peso && !esSinFumar) mensaje += `⚪ Sin actividad registrada<br>`;
+    
+    alert(mensaje);
+}
+
+// Navegar entre meses
 function cambiarMes(delta) {
     calendarioOffsetMeses += delta;
     renderizarCalendario();
 }
 
+// Renderizar calendario
 function renderizarCalendario() {
     const contenedor = document.getElementById('calendario-container');
     if (!contenedor) return;
@@ -679,21 +712,14 @@ function renderizarCalendario() {
     const añoBase = hoy.getFullYear();
     const mesBase = hoy.getMonth();
     
-    // Calcular el mes a mostrar según el offset
     let año = añoBase;
     let mes = mesBase + calendarioOffsetMeses;
-    if (mes < 0) {
-        mes += 12;
-        año--;
-    } else if (mes > 11) {
-        mes -= 12;
-        año++;
-    }
+    if (mes < 0) { mes += 12; año--; }
+    else if (mes > 11) { mes -= 12; año++; }
     
     const primerDia = new Date(año, mes, 1);
     const ultimoDia = new Date(año, mes + 1, 0);
     const numDias = ultimoDia.getDate();
-    
     let diaSemanaPrimero = primerDia.getDay();
     let offset = (diaSemanaPrimero === 0) ? 6 : diaSemanaPrimero - 1;
     
@@ -715,6 +741,7 @@ function renderizarCalendario() {
     html += `<span><span style="display:inline-block; width:20px; height:20px; background:linear-gradient(135deg,#eab308,#3b82f6); border-radius:4px; margin-right:5px"></span> Domingo + Sin fumar</span>`;
     html += `<span><span style="display:inline-block; width:20px; height:20px; background:#222; border:1px solid #444; border-radius:4px; margin-right:5px"></span> Sin actividad</span>`;
     html += `<span><span style="display:inline-block; width:20px; height:20px; background:#ff6600; border:1px solid #fff; border-radius:4px; margin-right:5px"></span> Hoy</span>`;
+    html += `<span><span style="display:inline-block; width:16px; height:16px; background:#f59e0b; border-radius:50%; margin-right:5px"></span> Peso registrado</span>`;
     html += `</div>`;
     
     // Días de la semana
@@ -734,41 +761,34 @@ function renderizarCalendario() {
         const esSinFumar = diasSinFumar.includes(fechaStr);
         const esHoy = (calendarioOffsetMeses === 0 && fechaStr === new Date().toISOString().slice(0,10));
         const esFuturo = (calendarioOffsetMeses === 0 && fechaActual > new Date());
+        const tienePeso = getPesoEnFecha(fechaStr) !== null;
         
         let bgColor = "#222";
         let gradiente = "";
         
         if (!esFuturo && calendarioOffsetMeses === 0) {
-            if (esEntrenado && esSinFumar && !esDomingo) {
-                gradiente = `linear-gradient(135deg, #2e7d32 50%, #3b82f6 50%)`;
-            } else if (esDomingo && esSinFumar) {
-                gradiente = `linear-gradient(135deg, #eab308 50%, #3b82f6 50%)`;
-            } else if (esEntrenado) {
-                bgColor = "#2e7d32";
-            } else if (esDomingo) {
-                bgColor = "#eab308";
-            } else if (esSinFumar) {
-                bgColor = "#3b82f6";
-            }
+            if (esEntrenado && esSinFumar && !esDomingo) gradiente = `linear-gradient(135deg, #2e7d32 50%, #3b82f6 50%)`;
+            else if (esDomingo && esSinFumar) gradiente = `linear-gradient(135deg, #eab308 50%, #3b82f6 50%)`;
+            else if (esEntrenado) bgColor = "#2e7d32";
+            else if (esDomingo) bgColor = "#eab308";
+            else if (esSinFumar) bgColor = "#3b82f6";
         } else if (calendarioOffsetMeses !== 0 && esSinFumar && !esDomingo) {
             bgColor = "#3b82f6";
         } else if (calendarioOffsetMeses !== 0 && esDomingo) {
             bgColor = "#eab308";
         }
         
-        let estilo = `border-radius:10px; padding:8px; font-weight:bold; min-height:45px; display:flex; align-items:center; justify-content:center; `;
+        let estilo = `border-radius:10px; padding:8px; font-weight:bold; min-height:55px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; cursor:pointer; `;
         if (gradiente) estilo += `background: ${gradiente}; `;
         else estilo += `background: ${bgColor}; `;
         if (esHoy) estilo += `border:2px solid #ff6600; `;
         
-        let titulo = "";
-        if (esEntrenado) titulo += "✅ Entrenado ";
-        if (esDomingo) titulo += "🟡 Domingo ";
-        if (esSinFumar) titulo += "🔵 Sin fumar ";
-        if (esHoy) titulo = "📅 Hoy";
-        if (esFuturo) titulo = "Día futuro";
+        let pesoIcono = tienePeso ? `<span style="font-size:11px; margin-top:2px">⚖️</span>` : "";
         
-        html += `<div style="${estilo}" title="${titulo}">${d}</div>`;
+        html += `<div style="${estilo}" onclick="mostrarPopupDia(${d}, ${mes}, ${año}, '${fechaStr}')">
+                    <span style="font-size:14px">${d}</span>
+                    ${pesoIcono}
+                 </div>`;
     }
     
     const celdasUsadas = offset + numDias;
@@ -786,10 +806,19 @@ function renderizarCalendario() {
     html += `<p style="font-size:11px; color:#aaa; margin-top:8px">📌 Los días entrenados se marcan en verde al completar tu rutina.</p>`;
     html += `<p style="font-size:11px; color:#3b82f6">🔵 Los días sin fumar aparecen en azul (desde el 22 de febrero).</p>`;
     html += `<p style="font-size:11px; color:#eab308">🟡 Los domingos son días de descanso.</p>`;
+    html += `<p style="font-size:11px; color:#f59e0b">⚖️ El icono ⚖️ indica que registraste peso ese día.</p>`;
     html += `</div>`;
     
     contenedor.innerHTML = html;
 }
+
+// Sobrescribir agregarPeso para actualizar el calendario automáticamente
+const agregarPesoOriginalCal = window.agregarPeso;
+window.agregarPeso = function() {
+    agregarPesoOriginalCal();
+    historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
+    renderizarCalendario();
+};
 
 function crearCalendarioSeccion() {
     if (document.getElementById('calendario')) return;
@@ -824,13 +853,12 @@ function crearCalendarioSeccion() {
 const sumarRachaOriginalCal = window.sumarRachaSiCorresponde;
 window.sumarRachaSiCorresponde = function(dia) {
     const resultado = sumarRachaOriginalCal(dia);
-    if (resultado === true) {
-        marcarHoyEntreno();
-    }
+    if (resultado === true) marcarHoyEntreno();
     return resultado;
 };
 
 setTimeout(() => {
+    historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
     crearCalendarioSeccion();
 }, 500);
 </script>
