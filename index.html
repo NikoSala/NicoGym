@@ -468,5 +468,175 @@ setTimeout(() => {
 }, 1000);
 
 </script>
+    <script>
+// ==================== MEJORA #1: EXPORTAR/IMPORTAR DATOS ====================
+function exportarDatos() {
+    const datos = {
+        version: "1.0",
+        fecha: new Date().toISOString(),
+        racha: rachaActual,
+        maxRacha: maxRachaAlcanzada,
+        pesos: pesosRegistrados,
+        logros: logrosObtenidos,
+        checks: checks,
+        notas: notas,
+        diasCompletadosSemana: diasCompletadosSemana,
+        ultimaSemanaReset: ultimaSemanaReset,
+        ultimoMensajeBienvenida: localStorage.getItem("ultimoMensajeBienvenida") || "",
+        configDiscos: {}
+    };
+    // Guardar configuración de discos de cada ejercicio (si existe)
+    for (let key in localStorage) {
+        if (key.startsWith("discos_")) {
+            datos.configDiscos[key] = localStorage.getItem(key);
+        }
+    }
+    const json = JSON.stringify(datos, null, 2);
+    const blob = new Blob([json], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `nicogym_backup_${new Date().toISOString().slice(0,19).replace(/:/g, "-")}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    mostrarMensajeMotivador("📦 Copia de seguridad guardada correctamente.", "logro");
+}
+
+function importarDatos(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const datos = JSON.parse(e.target.result);
+            if (datos.version !== "1.0") throw new Error("Versión no compatible");
+            // Restaurar datos
+            rachaActual = datos.racha;
+            maxRachaAlcanzada = datos.maxRacha;
+            pesosRegistrados = datos.pesos;
+            logrosObtenidos = datos.logros;
+            checks = datos.checks;
+            notas = datos.notas;
+            diasCompletadosSemana = datos.diasCompletadosSemana;
+            ultimaSemanaReset = datos.ultimaSemanaReset || "";
+            if (datos.ultimoMensajeBienvenida) localStorage.setItem("ultimoMensajeBienvenida", datos.ultimoMensajeBienvenida);
+            // Restaurar discos
+            for (let key in datos.configDiscos) {
+                localStorage.setItem(key, datos.configDiscos[key]);
+            }
+            // Guardar en localStorage
+            localStorage.setItem('nico_racha', rachaActual);
+            localStorage.setItem('nico_max_racha', maxRachaAlcanzada);
+            localStorage.setItem('nico_pesos', JSON.stringify(pesosRegistrados));
+            localStorage.setItem('nico_logros', JSON.stringify(logrosObtenidos));
+            localStorage.setItem('nico_checks', JSON.stringify(checks));
+            localStorage.setItem('nico_notas', JSON.stringify(notas));
+            localStorage.setItem('nico_dias_completados_semana', JSON.stringify(diasCompletadosSemana));
+            localStorage.setItem('nico_ultima_semana_reset', ultimaSemanaReset);
+            // Recargar la interfaz
+            actualizarHome();
+            renderizarRutinas();
+            renderizarLogros();
+            mostrarHistorialPeso();
+            mostrarMensajeMotivador("✅ Datos importados correctamente. La app se ha actualizado.", "logro");
+        } catch(err) {
+            mostrarMensajeMotivador("❌ Error al importar: archivo no válido", "peso");
+        }
+    };
+    reader.readAsText(file);
+}
+
+// Añadir botones de exportar/importar en la sección de peso
+function agregarBotonesRespaldo() {
+    const seccionPeso = document.getElementById('peso');
+    if (!seccionPeso) return;
+    // Evitar duplicados
+    if (document.getElementById('respaldo-buttons')) return;
+    const divBotones = document.createElement('div');
+    divBotones.id = 'respaldo-buttons';
+    divBotones.style.display = 'flex';
+    divBotones.style.gap = '10px';
+    divBotones.style.marginTop = '15px';
+    divBotones.style.marginBottom = '10px';
+    divBotones.innerHTML = `
+        <button class="notif-btn" style="background:#2e7d32; flex:1" onclick="exportarDatos()">📤 EXPORTAR COPIA</button>
+        <label class="notif-btn" style="background:#ff6600; flex:1; display:inline-block; text-align:center; cursor:pointer">
+            📥 IMPORTAR COPIA
+            <input type="file" accept=".json" style="display:none" onchange="importarDatos(event)">
+        </label>
+    `;
+    const cardPeso = seccionPeso.querySelector('.card');
+    if (cardPeso) cardPeso.after(divBotones);
+}
+
+// ==================== MEJORA #5: APARTADO DE CONSEJOS PARA NOVATO ====================
+function crearPaginaConsejos() {
+    // Comprobar si ya existe la sección
+    if (document.getElementById('consejos')) return;
+    const nuevaSeccion = document.createElement('div');
+    nuevaSeccion.id = 'consejos';
+    nuevaSeccion.className = 'seccion';
+    nuevaSeccion.innerHTML = `
+        <h2>💡 CONSEJOS PARA NOVATO</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:15px; margin-top:15px">
+            <div class="card"><span style="font-size:2rem">💧</span><br><strong>Hidratación:</strong> Bebe agua antes, durante y después de entrenar.</div>
+            <div class="card"><span style="font-size:2rem">🧘</span><br><strong>Calentamiento:</strong> 5-10 min de movilidad articular o cardio suave.</div>
+            <div class="card"><span style="font-size:2rem">⚠️</span><br><strong>Dolor ≠ fatiga:</strong> Si duele una articulación, PARA. Si es músculo, es normal.</div>
+            <div class="card"><span style="font-size:2rem">🎯</span><br><strong>Técnica > peso:</strong> Mejor poco peso y buen movimiento que mucho peso y mala postura.</div>
+            <div class="card"><span style="font-size:2rem">⏱️</span><br><strong>Descansos:</strong> 45-60 segundos entre series. Usa el temporizador de la app.</div>
+            <div class="card"><span style="font-size:2rem">😴</span><br><strong>Duerme bien:</strong> El músculo crece mientras descansas, no en el gimnasio.</div>
+            <div class="card"><span style="font-size:2rem">🚭</span><br><strong>Sin tabaco:</strong> Llevas ${calcularDiasSinFumar().total} días sin fumar, ¡eso ya es un logro!</div>
+            <div class="card"><span style="font-size:2rem">🦵</span><br><strong>Sentadillas:</strong> Baja como si te sentaras en una silla, pecho arriba.</div>
+            <div class="card"><span style="font-size:2rem">✨</span><br><strong>Sin comparativas:</strong> Tú contra ti mismo. Cada cuerpo es diferente.</div>
+            <div class="card"><span style="font-size:2rem">📆</span><br><strong>Constancia > intensidad:</strong> Mejor entrenar poco pero regular, que mucho una vez.</div>
+            <div class="card"><span style="font-size:2rem">🍗</span><br><strong>Proteína después:</strong> Ayuda a reparar el músculo (huevos, pollo, legumbres).</div>
+            <div class="card"><span style="font-size:2rem">🎧</span><br><strong>Música:</strong> Pon tu playlist favorita, ayuda a mantener el ritmo.</div>
+        </div>
+    `;
+    // Insertar después de la sección de peso (o al final del body)
+    const pesoSection = document.getElementById('peso');
+    if (pesoSection && pesoSection.parentNode) {
+        pesoSection.parentNode.insertBefore(nuevaSeccion, pesoSection.nextSibling);
+    } else {
+        document.body.appendChild(nuevaSeccion);
+    }
+    // Añadir enlace en el menú lateral
+    const menu = document.getElementById('menu-lat');
+    if (menu && !document.getElementById('menu-consejos')) {
+        const consejosBtn = document.createElement('div');
+        consejosBtn.id = 'menu-consejos';
+        consejosBtn.className = 'nav-btn';
+        consejosBtn.innerHTML = '💡 CONSEJOS';
+        consejosBtn.onclick = () => go('consejos');
+        // Insertar antes del debug-btn
+        const debugBtn = menu.querySelector('.debug-btn');
+        if (debugBtn) menu.insertBefore(consejosBtn, debugBtn);
+        else menu.appendChild(consejosBtn);
+    }
+}
+
+// Inyectar botones y página de consejos al cargar
+setTimeout(() => {
+    agregarBotonesRespaldo();
+    crearPaginaConsejos();
+    // También añadir la sección de consejos a la función go si no existe
+    const originalGo = window.go;
+    window.go = function(id) {
+        originalGo(id);
+        if (id === 'consejos') {
+            // Aseguramos que los consejos se muestren con el día sin fumar actualizado
+            const consejosSection = document.getElementById('consejos');
+            if (consejosSection) {
+                const tarjetaSinFumar = consejosSection.querySelector('.card span[style="font-size:2rem"] + br + strong + br + span');
+                if (tarjetaSinFumar) {
+                    // Actualizar el texto en vivo si se necesita
+                }
+            }
+        }
+    };
+}, 500);
+</script>
 </body>
 </html>
