@@ -636,5 +636,184 @@ window.addEventListener('load', () => {
     crearCalendarioSeccion();
 });
 </script>
+<!-- ==================== NUEVA SECCIÓN: ESTIRAMIENTOS ==================== -->
+<div id="estiramientos" class="seccion">
+    <h2>🧘 ESTIRAMIENTOS POST‑ENTRENO</h2>
+    <div style="display:grid; gap:15px; margin-top:15px">
+        
+        <!-- Estiramiento 1 -->
+        <div class="card">
+            <span class="ex-title">1. Estiramiento de isquiotibiales</span>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0">
+                <img src="https://i.imgur.com/5q5Ys5S.png" style="width:120px; border-radius:10px" alt="Isquios">
+                <div style="flex:1">
+                    <strong>📝 CÓMO HACERLO:</strong><br>
+                    1. Siéntate en el suelo con una pierna estirada y la otra flexionada.<br>
+                    2. Inclínate hacia adelante desde la cadera, no desde la espalda.<br>
+                    3. Intenta tocar la punta del pie sin forzar.<br>
+                    4. Mantén durante 30 segundos y cambia de pierna.<br>
+                    <span style="color:#32d74b">💡 Consejo: No rebotes, mantén la posición suave.</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Estiramiento 2 -->
+        <div class="card">
+            <span class="ex-title">2. Estiramiento de cuádriceps</span>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0">
+                <img src="https://i.imgur.com/JqXVkqU.png" style="width:120px; border-radius:10px" alt="Cuádriceps">
+                <div style="flex:1">
+                    <strong>📝 CÓMO HACERLO:</strong><br>
+                    1. De pie, sujétate a una pared o silla.<br>
+                    2. Dobla la rodilla llevando el talón hacia el glúteo.<br>
+                    3. Sujeta el pie con la mano del mismo lado.<br>
+                    4. Mantén la rodilla pegada a la otra pierna.<br>
+                    5. Aguanta 30 segundos y cambia de pierna.<br>
+                    <span style="color:#32d74b">💡 Consejo: No arquear la espalda, pecho arriba.</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Estiramiento 3 -->
+        <div class="card">
+            <span class="ex-title">3. Estiramiento de pectorales</span>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0">
+                <img src="https://i.imgur.com/XrjDCX2.png" style="width:120px; border-radius:10px" alt="Pectorales">
+                <div style="flex:1">
+                    <strong>📝 CÓMO HACERLO:</strong><br>
+                    1. Busca un marco de puerta o una esquina.<br>
+                    2. Apoya el antebrazo en el marco, codo a la altura del hombro.<br>
+                    3. Gira suavemente el torso hacia el lado contrario.<br>
+                    4. Siente el estiramiento en el pecho.<br>
+                    5. Mantén 30 segundos y cambia de brazo.<br>
+                    <span style="color:#32d74b">💡 Consejo: No fuerces, solo gira hasta sentir el estiramiento.</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Estiramiento 4 -->
+        <div class="card">
+            <span class="ex-title">4. Estiramiento de espalda baja (gato‑vaca)</span>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0">
+                <img src="https://i.imgur.com/5iSq2gP.png" style="width:120px; border-radius:10px" alt="Gato vaca">
+                <div style="flex:1">
+                    <strong>📝 CÓMO HACERLO:</strong><br>
+                    1. En posición de cuatro patas (manos y rodillas).<br>
+                    2. Inspira, arquea la espalda hacia abajo (vaca).<br>
+                    3. Espira, redondea la espalda hacia arriba (gato).<br>
+                    4. Repite 10 veces, moviéndote con la respiración.<br>
+                    <span style="color:#32d74b">💡 Consejo: Movimiento suave, no rápido.</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Estiramiento 5 -->
+        <div class="card">
+            <span class="ex-title">5. Estiramiento de hombros (brazo cruzado)</span>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0">
+                <img src="https://i.imgur.com/Dp4xQLW.png" style="width:120px; border-radius:10px" alt="Hombros">
+                <div style="flex:1">
+                    <strong>📝 CÓMO HACERLO:</strong><br>
+                    1. De pie o sentado, estira un brazo cruzando el pecho.<br>
+                    2. Con la mano contraria, tira suavemente del codo.<br>
+                    3. Mantén el hombro relajado y hacia abajo.<br>
+                    4. Aguanta 30 segundos y cambia de brazo.<br>
+                    <span style="color:#32d74b">💡 Consejo: No tires del brazo, solo presión suave.</span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+// ==================== MEJORA #9: AÑADIR ESTIRAMIENTOS AL MENÚ ====================
+function crearSeccionEstiramientos() {
+    if (document.getElementById('estiramientos')) return;
+    
+    const menu = document.getElementById('menu-lat');
+    if (menu && !document.getElementById('menu-estiramientos')) {
+        const estiramientosBtn = document.createElement('div');
+        estiramientosBtn.id = 'menu-estiramientos';
+        estiramientosBtn.className = 'nav-btn';
+        estiramientosBtn.innerHTML = '🧘 ESTIRAMIENTOS';
+        estiramientosBtn.onclick = () => go('estiramientos');
+        
+        const debugBtn = menu.querySelector('.debug-btn');
+        if (debugBtn) menu.insertBefore(estiramientosBtn, debugBtn);
+        else menu.appendChild(estiramientosBtn);
+    }
+}
+
+// ==================== MEJORA #10: ENVIAR COPIA POR EMAIL ====================
+function enviarCopiaEmail() {
+    // Generar los mismos datos que en exportarDatos()
+    const datos = {
+        version: "1.0",
+        fecha: new Date().toISOString(),
+        racha: rachaActual,
+        maxRacha: maxRachaAlcanzada,
+        pesos: pesosRegistrados,
+        logros: logrosObtenidos,
+        checks: checks,
+        notas: notas,
+        diasCompletadosSemana: diasCompletadosSemana,
+        ultimaSemanaReset: ultimaSemanaReset,
+        ultimoMensajeBienvenida: localStorage.getItem("ultimoMensajeBienvenida") || "",
+        configDiscos: {}
+    };
+    for (let key in localStorage) {
+        if (key.startsWith("discos_")) {
+            datos.configDiscos[key] = localStorage.getItem(key);
+        }
+    }
+    const json = JSON.stringify(datos, null, 2);
+    const blob = new Blob([json], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    
+    // Crear enlace mailto con el archivo adjunto (no se puede adjuntar directamente, pero podemos incluir instrucciones)
+    // En su lugar, abrimos el cliente de correo con un cuerpo preparado y el usuario adjunta manualmente.
+    // Para una experiencia más fluida, usamos mailto con un texto y luego el usuario guarda el archivo y lo adjunta.
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `nicogym_backup_${new Date().toISOString().slice(0,19).replace(/:/g, "-")}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    // Ahora abrir el cliente de correo con el destinatario y un texto predefinido
+    const subject = "Copia de seguridad NICO GYM";
+    const body = "Adjunto encontrarás el archivo de copia de seguridad de tu app NICO GYM. Guárdalo en un lugar seguro.";
+    window.location.href = `mailto:nsalar.96@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    mostrarMensajeMotivador("📧 Se ha abierto tu correo. Adjunta el archivo descargado y envíalo.", "logro");
+}
+
+function agregarBotonEmail() {
+    const seccionPeso = document.getElementById('peso');
+    if (!seccionPeso) return;
+    if (document.getElementById('email-button')) return;
+    
+    const divBotones = document.getElementById('respaldo-buttons');
+    if (!divBotones) return;
+    
+    const emailBtn = document.createElement('button');
+    emailBtn.id = 'email-button';
+    emailBtn.className = 'notif-btn';
+    emailBtn.style.background = '#3b82f6';
+    emailBtn.style.flex = '1';
+    emailBtn.innerHTML = '✉️ ENVIAR COPIA POR EMAIL';
+    emailBtn.onclick = enviarCopiaEmail;
+    
+    divBotones.appendChild(emailBtn);
+}
+
+// Ejecutar cuando cargue la página
+setTimeout(() => {
+    crearSeccionEstiramientos();
+    agregarBotonEmail();
+}, 500);
+</script>
 </body>
 </html>
