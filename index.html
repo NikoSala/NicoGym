@@ -729,7 +729,8 @@ window.addEventListener('load', () => {
 <script>
 // ==================== MEJORA #9: AÑADIR ESTIRAMIENTOS AL MENÚ ====================
 function crearSeccionEstiramientos() {
-    if (document.getElementById('estiramientos')) return;
+    // Asegurar que la sección existe en el DOM
+    if (!document.getElementById('estiramientos')) return;
     
     const menu = document.getElementById('menu-lat');
     if (menu && !document.getElementById('menu-estiramientos')) {
@@ -771,9 +772,7 @@ function enviarCopiaEmail() {
     const blob = new Blob([json], {type: "application/json"});
     const url = URL.createObjectURL(blob);
     
-    // Crear enlace mailto con el archivo adjunto (no se puede adjuntar directamente, pero podemos incluir instrucciones)
-    // En su lugar, abrimos el cliente de correo con un cuerpo preparado y el usuario adjunta manualmente.
-    // Para una experiencia más fluida, usamos mailto con un texto y luego el usuario guarda el archivo y lo adjunta.
+    // Descargar el archivo
     const a = document.createElement("a");
     a.href = url;
     a.download = `nicogym_backup_${new Date().toISOString().slice(0,19).replace(/:/g, "-")}.json`;
@@ -782,12 +781,12 @@ function enviarCopiaEmail() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    // Ahora abrir el cliente de correo con el destinatario y un texto predefinido
+    // Abrir el cliente de correo
     const subject = "Copia de seguridad NICO GYM";
-    const body = "Adjunto encontrarás el archivo de copia de seguridad de tu app NICO GYM. Guárdalo en un lugar seguro.";
+    const body = "Adjunto encontrarás el archivo de copia de seguridad de mi app NICO GYM.";
     window.location.href = `mailto:nsalar.96@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     
-    mostrarMensajeMotivador("📧 Se ha abierto tu correo. Adjunta el archivo descargado y envíalo.", "logro");
+    mostrarMensajeMotivador("📧 Archivo descargado. Se ha abierto tu correo. Adjunta el archivo y envíalo.", "logro");
 }
 
 function agregarBotonEmail() {
@@ -809,11 +808,18 @@ function agregarBotonEmail() {
     divBotones.appendChild(emailBtn);
 }
 
-// Ejecutar cuando cargue la página
+// Esperar a que todo el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    crearSeccionEstiramientos();
+    agregarBotonEmail();
+});
+
+// También ejecutar después de un pequeño retraso por si el DOMContentLoaded ya ocurrió
 setTimeout(() => {
     crearSeccionEstiramientos();
     agregarBotonEmail();
 }, 500);
+</script>
 </script>
 </body>
 </html>
