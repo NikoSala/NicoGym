@@ -318,5 +318,155 @@ window.onload=()=>{
     actualizarMaxRacha();
 };
 </script>
+<script>
+// ==================== MENSAJES MOTIVACIONALES INTERNOS (sin notificaciones del sistema) ====================
+
+// Cola de mensajes para no saturar
+let colaMensajes = [];
+let mostrandoMensaje = false;
+
+function mostrarMensajeMotivador(mensaje, tipo = "normal") {
+    colaMensajes.push({ mensaje, tipo });
+    if (!mostrandoMensaje) procesarColaMensajes();
+}
+
+function procesarColaMensajes() {
+    if (colaMensajes.length === 0) {
+        mostrandoMensaje = false;
+        return;
+    }
+    mostrandoMensaje = true;
+    const { mensaje, tipo } = colaMensajes.shift();
+    
+    // Colores según tipo
+    let colorFondo = "#ff6600";
+    let colorBorde = "#ff884d";
+    let emoji = "💪";
+    if (tipo === "logro") { colorFondo = "#8b5cf6"; colorBorde = "#a855f7"; emoji = "🏆"; }
+    if (tipo === "racha") { colorFondo = "#32d74b"; colorBorde = "#2e7d32"; emoji = "🔥"; }
+    if (tipo === "bienvenida") { colorFondo = "#0ea5e9"; colorBorde = "#38bdf8"; emoji = "🌞"; }
+    if (tipo === "peso") { colorFondo = "#f59e0b"; colorBorde = "#fbbf24"; emoji = "⚖️"; }
+    if (tipo === "completado") { colorFondo = "#10b981"; colorBorde = "#34d399"; emoji = "🎉"; }
+    
+    // Crear mensaje flotante
+    const msgDiv = document.createElement("div");
+    msgDiv.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        background: ${colorFondo};
+        color: #000;
+        padding: 14px 18px;
+        border-radius: 16px;
+        font-weight: bold;
+        text-align: center;
+        z-index: 10000;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        border-left: 5px solid ${colorBorde};
+        font-size: 14px;
+        animation: slideUp 0.3s ease-out;
+        transition: opacity 0.3s;
+        backdrop-filter: blur(4px);
+    `;
+    msgDiv.innerHTML = `<span style="font-size:1.2rem; margin-right:8px">${emoji}</span> ${mensaje}`;
+    document.body.appendChild(msgDiv);
+    
+    // Eliminar después de 4 segundos
+    setTimeout(() => {
+        msgDiv.style.opacity = "0";
+        setTimeout(() => {
+            if (msgDiv.parentNode) msgDiv.parentNode.removeChild(msgDiv);
+            procesarColaMensajes();
+        }, 300);
+    }, 4000);
+}
+
+// Función para obtener el día de la semana en español (lunes, martes...)
+function obtenerNombreDia(diaKey) {
+    const nombres = {
+        lunes: "Lunes", martes: "Martes", miercoles: "Miércoles",
+        jueves: "Jueves", viernes: "Viernes", sabado: "Sábado", domingo: "Domingo"
+    };
+    return nombres[diaKey] || diaKey;
+}
+
+// Mensaje de bienvenida del día (solo una vez al día)
+let ultimoMensajeBienvenida = localStorage.getItem("ultimoMensajeBienvenida") || "";
+function mostrarBienvenidaDiaria() {
+    const hoy = new Date().toDateString();
+    if (ultimoMensajeBienvenida !== hoy) {
+        const diaActual = obtenerNombreDia(getDiaSemana());
+        const rutinaHoy = getRutinaHoy();
+        mostrarMensajeMotivador(`🌞 Buenos días, campeón. Hoy es ${diaActual}: ${rutinaHoy}. ¡Dale todo!`, "bienvenida");
+        ultimoMensajeBienvenida = hoy;
+        localStorage.setItem("ultimoMensajeBienvenida", ultimoMensajeBienvenida);
+    }
+}
+function getDiaSemana() {
+    return ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()];
+}
+function getRutinaHoy() {
+    const dia = getDiaSemana();
+    const r = { lunes:'Espalda/Bíceps', martes:'Cardio/Abs', miercoles:'Pecho/Tríceps', jueves:'Cardio/Abs', viernes:'Pierna/Hombro', sabado:'Cardio/Abs', domingo:'Descanso' };
+    return r[dia] || 'Descanso';
+}
+
+// Sobrescribir la función sumarRachaSiCorresponde original para añadir mensajes motivadores
+// Guardamos la función original
+const sumarRachaOriginal = window.sumarRachaSiCorresponde;
+window.sumarRachaSiCorresponde = function(dia) {
+    const nombreDia = obtenerNombreDia(dia);
+    const resultado = sumarRachaOriginal(dia);
+    if (resultado === true) {
+        // Mensaje al completar el día
+        let mensajeCompletado = "";
+        switch(dia) {
+            case "lunes": mensajeCompletado = `🎉 ¡Buen trabajo! Has completado el entrenamiento de Lunes. ¡A por el resto de la semana!`; break;
+            case "martes": mensajeCompletado = `💪 Martes completado. ¡Estás imparable!`; break;
+            case "miercoles": mensajeCompletado = `🔥 Vas por la mitad de la semana. ¡Sigue así!`; break;
+            case "jueves": mensajeCompletado = `🌟 Jueves terminado. ¡Ya casi es viernes!`; break;
+            case "viernes": mensajeCompletado = `🏆 ¡Semana completada! Descansa el sábado (cardio) y domingo. ¡Eres grande!`; break;
+            case "sabado": mensajeCompletado = `🎯 Sábado completado. Buen trabajo de cardio. ¡Mañana descanso!`; break;
+            default: mensajeCompletado = `🎉 ¡Has completado ${nombreDia}! ¡Sigue así!`;
+        }
+        mostrarMensajeMotivador(mensajeCompletado, "completado");
+        
+        // Mensajes de racha especial
+        const racha = rachaActual;
+        if (racha === 10) mostrarMensajeMotivador(`🎯 ¡Racha de 10 días! Tu constancia es impresionante.`, "racha");
+        else if (racha === 20) mostrarMensajeMotivador(`🚀 20 días seguidos. ¡Eres una máquina!`, "racha");
+        else if (racha === 30) mostrarMensajeMotivador(`🔥 30 días de racha. ¡Imparable!`, "racha");
+        else if (racha === 50) mostrarMensajeMotivador(`🏆 50 días de racha. ¡LEYENDA!`, "racha");
+        else if (racha === 100) mostrarMensajeMotivador(`👑 100 DÍAS DE RACHA. ¡ERES UN CRACK!`, "racha");
+    }
+    return resultado;
+};
+
+// Sobrescribir verificarYDesbloquearLogros para añadir mensaje al obtener logro
+const verificarLogrosOriginal = window.verificarYDesbloquearLogros;
+window.verificarYDesbloquearLogros = function() {
+    const logrosAntes = [...logrosObtenidos];
+    verificarLogrosOriginal();
+    const logrosDespues = logrosObtenidos.filter(l => !logrosAntes.includes(l));
+    for (const logroId of logrosDespues) {
+        const logro = listaLogros.find(l => l.id === logroId);
+        if (logro) mostrarMensajeMotivador(`🏆 ¡NUEVO LOGRO! ${logro.nombre} 🏆`, "logro");
+    }
+};
+
+// Sobrescribir agregarPeso para añadir mensaje
+const agregarPesoOriginal = window.agregarPeso;
+window.agregarPeso = function() {
+    agregarPesoOriginal();
+    mostrarMensajeMotivador(`⚖️ Peso registrado. ¡Cada paso cuenta!`, "peso");
+};
+
+// Inyectar bienvenida al cargar
+setTimeout(() => {
+    mostrarBienvenidaDiaria();
+}, 1000);
+
+</script>
 </body>
 </html>
