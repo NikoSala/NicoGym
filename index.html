@@ -105,7 +105,8 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="descansoSelector" class="descanso-modal"><h3>⏱️ DESCANSO</h3><div class="descanso-tiempos"><button class="tiempo-btn" onclick="iniciarDescanso(30)">30s</button><button class="tiempo-btn" onclick="iniciarDescanso(45)">45s</button><button class="tiempo-btn" onclick="iniciarDescanso(60)">60s</button><button class="tiempo-btn" onclick="iniciarDescanso(90)">90s</button></div><button class="descanso-cerrar" onclick="cerrarSelectorDescanso()">❌ CERRAR</button></div>
 <div id="descanso-box"><h1 style="color:#32d74b;margin-bottom:20px">💪 DESCANSA</h1><div class="descanso-timer-num" id="descansoTimer">00</div><button onclick="cancelarDescanso()" style="margin-top:30px;background:#222;color:#fff;border:none;padding:12px 30px;border-radius:10px">CANCELAR</button></div>
 <div id="timer-box"><h1 id="t-num">60</h1><button onclick="iniciarTimer()" style="background:#32d74b;border:none;padding:12px 30px;border-radius:10px;color:#fff;font-weight:bold">INICIAR</button><button onclick="cerrarTimer()" style="background:#222;border:none;padding:12px 30px;border-radius:10px;color:#fff;margin-top:10px">CERRAR</button></div>
-// ==================== DATOS DE EJERCICIOS (COMPLETOS, con imágenes, descripciones y consejos) ====================
+<script>
+    // ==================== DATOS DE EJERCICIOS (COMPLETOS, con imágenes, descripciones y consejos) ====================
 const ejercicios = {
     lunes: [
         {nombre:"Dominadas / Negativas", series:"3 x Fallo", 
