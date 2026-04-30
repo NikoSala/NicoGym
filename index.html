@@ -89,13 +89,9 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 </head>
 <body>
 <div id="overlay" onclick="closeMenu()"></div>
-<nav id="menu-lat"><div class="nav-btn" onclick="go('home')">🏠 INICIO</div><div class="submenu-btn" onclick="toggleSubmenu(this)"><span>📅 RUTINA SEMANAL</span><span class="arrow">▼</span></div><div class="submenu-items"><div class="sub-link" onclick="go('lunes')">📆 Lunes: Espalda / Bíceps</div><div class="sub-link" onclick="go('martes')">🏃 Martes: Cardio / Abs</div><div class="sub-link" onclick="go('miercoles')">💪 Miércoles: Pecho / Tríceps</div><div class="sub-link" onclick="go('jueves')">🏃 Jueves: Cardio / Abs</div><div class="sub-link" onclick="go('viernes')">🦵 Viernes: Pierna / Hombro</div><div class="sub-link" onclick="go('sabado')">🏃 Sábado: Cardio / Abs</div><div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso</div></div><div class="nav-btn" onclick="go('peso')">⚖️ PESO CORPORAL</div><div class="nav-btn" onclick="go('logros')">🏆 LOGROS</div><div class="debug-btn" onclick="borrarTodo()">⚙️ Reset</div></nav>
+<nav id="menu-lat"><div class="nav-btn" onclick="go('home')">🏠 INICIO</div><div class="submenu-btn" onclick="toggleSubmenu(this)"><span>📅 RUTINA SEMANAL</span><span class="arrow">▼</span></div><div class="submenu-items"><div class="sub-link" onclick="go('lunes')">📆 Lunes: Espalda / Bíceps</div><div class="sub-link" onclick="go('martes')">🏃 Martes: Cardio / Abs</div><div class="sub-link" onclick="go('miercoles')">💪 Miércoles: Pecho / Tríceps</div><div class="sub-link" onclick="go('jueves')">🏃 Jueves: Cardio / Abs</div><div class="sub-link" onclick="go('viernes')">🦵 Viernes: Pierna / Hombro</div><div class="sub-link" onclick="go('sabado')">🏃 Sábado: Cardio / Abs</div><div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso</div></div><div class="nav-btn" onclick="go('peso')">⚖️ PESO CORPORAL</div><div class="nav-btn" onclick="go('logros')">🏆 LOGROS</div><div class="nav-btn" onclick="go('estiramientos')">🧘 ESTIRAMIENTOS</div><div class="debug-btn" onclick="borrarTodo()">⚙️ Reset</div></nav>
 <header><span class="menu-icon" onclick="openMenu()">☰</span><span class="logo">NICO <span style="color:#ff6600">GYM</span></span><span class="home-icon" onclick="go('home')">🏠</span></header>
-<div id="home" class="seccion active"><div class="today-card" onclick="goToday()"><div class="today-day" id="todayDay">Cargando...</div><div id="todayRoutine" style="color:#aaa;margin-bottom:10px"></div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div><div class="stats-row"><div class="stat-card progreso"><h2 id="perc">0%</h2><small>PROGRESO SEMANAL</small></div><div class="stat-card racha"><h2 id="racha">18</h2><small>🔥 RACHA GYM</small></div><div class="stat-card nosmoke" style="background: linear-gradient(135deg, #0a2a1a, #0a1a0a); border: 1px solid #66bb6a;">
-    <h2 id="diasSinFumar" style="color: #66bb6a; font-size: 1.8rem;">0</h2>
-    <small style="color: #66bb6a;">🚭 DÍAS SIN FUMAR</small>
-    <div id="fraseSinFumar" style="font-size: 0.7rem; color: #a5d6a7; margin-top: 8px; font-weight: normal;">💪 Cada día es un triunfo</div>
-</div>
+<div id="home" class="seccion active"><div class="today-card" onclick="goToday()"><div class="today-day" id="todayDay">Cargando...</div><div id="todayRoutine" style="color:#aaa;margin-bottom:10px"></div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div><div class="stats-row"><div class="stat-card progreso"><h2 id="perc">0%</h2><small>PROGRESO SEMANAL</small></div><div class="stat-card racha"><h2 id="racha">18</h2><small>🔥 RACHA GYM</small></div><div class="stat-card nosmoke" style="background: linear-gradient(135deg, #0a2a1a, #0a1a0a); border: 1px solid #66bb6a;"><h2 id="diasSinFumar" style="color: #66bb6a; font-size: 1.8rem;">0</h2><small style="color: #66bb6a;">🚭 DÍAS SIN FUMAR</small><div id="fraseSinFumar" style="font-size: 0.7rem; color: #a5d6a7; margin-top: 8px; font-weight: normal;">💪 Cada día es un triunfo</div></div></div><div class="card" style="height:220px"><canvas id="grafico"></canvas></div></div>
 <div id="lunes" class="seccion"><h2>📆 ESPALDA / BÍCEPS</h2><div id="list-lunes"></div></div>
 <div id="martes" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-martes"></div></div>
 <div id="miercoles" class="seccion"><h2>💪 PECHO / TRÍCEPS</h2><div id="list-miercoles"></div></div>
@@ -103,111 +99,23 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="viernes" class="seccion"><h2>🦵 PIERNA / HOMBRO</h2><div id="list-viernes"></div></div>
 <div id="sabado" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-sabado"></div></div>
 <div id="domingo" class="seccion"><div class="sunday-card"><div class="sunday-emoji">🔋✨😴✨💪</div><div class="sunday-title">DÍA DE RECARGA</div><div style="margin-top:20px"><p>💧 Hidrátate</p><p>🍗 Come proteína</p><p>🧘‍♂️ Estiramientos</p><p>😴 Duerme 7-8h</p></div></div></div>
-<div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso en kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div></div>
+<div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso en kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div><div id="respaldo-buttons" style="display:flex; gap:10px; margin-top:15px; margin-bottom:10px"><button class="notif-btn" style="background:#2e7d32; flex:1" onclick="exportarDatos()">📤 EXPORTAR COPIA</button><button class="notif-btn" style="background:#3b82f6; flex:1" onclick="enviarCopiaEmail()">✉️ ENVIAR COPIA POR EMAIL</button></div></div>
 <div id="logros" class="seccion"><h2>🏆 MIS LOGROS</h2><div id="logros-container" class="logros-grid"></div></div>
+<div id="estiramientos" class="seccion"><h2>🧘 ESTIRAMIENTOS POST‑ENTRENO</h2><div style="display:grid; gap:15px; margin-top:15px"><div class="card"><div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center"><div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🦵</div><div style="flex:1"><span class="ex-title">1. Estiramiento de isquiotibiales</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. Siéntate en el suelo con una pierna estirada y la otra flexionada.<br>2. Inclínate hacia adelante desde la cadera, no desde la espalda.<br>3. Intenta tocar la punta del pie sin forzar.<br>4. Mantén durante 30 segundos y cambia de pierna.<br><span style="color:#32d74b">💡 Consejo: No rebotes, mantén la posición suave.</span></div></div></div></div><div class="card"><div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center"><div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🦵</div><div style="flex:1"><span class="ex-title">2. Estiramiento de cuádriceps</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. De pie, sujétate a una pared o silla.<br>2. Dobla la rodilla llevando el talón hacia el glúteo.<br>3. Sujeta el pie con la mano del mismo lado.<br>4. Mantén la rodilla pegada a la otra pierna.<br>5. Aguanta 30 segundos y cambia de pierna.<br><span style="color:#32d74b">💡 Consejo: No arquear la espalda, pecho arriba.</span></div></div></div></div><div class="card"><div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center"><div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">💪</div><div style="flex:1"><span class="ex-title">3. Estiramiento de pectorales</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. Busca un marco de puerta o una esquina.<br>2. Apoya el antebrazo en el marco, codo a la altura del hombro.<br>3. Gira suavemente el torso hacia el lado contrario.<br>4. Siente el estiramiento en el pecho.<br>5. Mantén 30 segundos y cambia de brazo.<br><span style="color:#32d74b">💡 Consejo: No fuerces, solo gira hasta sentir el estiramiento.</span></div></div></div></div><div class="card"><div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center"><div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🐱</div><div style="flex:1"><span class="ex-title">4. Estiramiento de espalda baja (gato‑vaca)</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. En posición de cuatro patas (manos y rodillas).<br>2. Inspira, arquea la espalda hacia abajo (vaca).<br>3. Espira, redondea la espalda hacia arriba (gato).<br>4. Repite 10 veces, moviéndote con la respiración.<br><span style="color:#32d74b">💡 Consejo: Movimiento suave, no rápido.</span></div></div></div></div><div class="card"><div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center"><div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🙆</div><div style="flex:1"><span class="ex-title">5. Estiramiento de hombros (brazo cruzado)</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. De pie o sentado, estira un brazo cruzando el pecho.<br>2. Con la mano contraria, tira suavemente del codo.<br>3. Mantén el hombro relajado y hacia abajo.<br>4. Aguanta 30 segundos y cambia de brazo.<br><span style="color:#32d74b">💡 Consejo: No tires del brazo, solo presión suave.</span></div></div></div></div></div></div>
+<div id="calendario" class="seccion"><h2>📅 CALENDARIO DE ENTRENO</h2><div id="calendario-entreno-container" style="margin-top:20px"></div><h2 style="margin-top:30px; color:#3b82f6">🚭 CALENDARIO DE DÍAS SIN FUMAR</h2><div id="calendario-sinfumar-container" style="margin-top:20px"></div></div>
 <div id="calcModal" class="calc-modal"><span class="close-calc" onclick="cerrarCalc()">&times;</span><h3>🏋️ CALCULAR DISCOS</h3><div style="font-size:12px;margin-bottom:10px">Kit 20kg | Máx 4 discos</div><div class="calc-grid"><button class="calc-btn" onclick="sumarDisco(1.25)">+1.25kg <span class="badge" id="badge125">0</span></button><button class="calc-btn" onclick="sumarDisco(1.5)">+1.5kg <span class="badge" id="badge15">0</span></button><button class="calc-btn" onclick="sumarDisco(2)">+2kg <span class="badge" id="badge2">0</span></button></div><div>PESO TOTAL: <strong id="totalDisco" style="color:#ff6600;font-size:24px">0</strong> kg</div><button class="calc-reset" onclick="resetearDiscos()">🗑️ RESET</button></div>
 <div id="descansoSelector" class="descanso-modal"><h3>⏱️ DESCANSO</h3><div class="descanso-tiempos"><button class="tiempo-btn" onclick="iniciarDescanso(30)">30s</button><button class="tiempo-btn" onclick="iniciarDescanso(45)">45s</button><button class="tiempo-btn" onclick="iniciarDescanso(60)">60s</button><button class="tiempo-btn" onclick="iniciarDescanso(90)">90s</button></div><button class="descanso-cerrar" onclick="cerrarSelectorDescanso()">❌ CERRAR</button></div>
 <div id="descanso-box"><h1 style="color:#32d74b;margin-bottom:20px">💪 DESCANSA</h1><div class="descanso-timer-num" id="descansoTimer">00</div><button onclick="cancelarDescanso()" style="margin-top:30px;background:#222;color:#fff;border:none;padding:12px 30px;border-radius:10px">CANCELAR</button></div>
 <div id="timer-box"><h1 id="t-num">60</h1><button onclick="iniciarTimer()" style="background:#32d74b;border:none;padding:12px 30px;border-radius:10px;color:#fff;font-weight:bold">INICIAR</button><button onclick="cerrarTimer()" style="background:#222;border:none;padding:12px 30px;border-radius:10px;color:#fff;margin-top:10px">CERRAR</button></div>
 <script>
-// ==================== DATOS DE EJERCICIOS (DESCRIPCIONES COMPLETAS PARA TODOS LOS DÍAS) ====================
+// ==================== DATOS DE EJERCICIOS ====================
 const ejercicios = {
-    lunes: [
-        {nombre:"Dominadas / Negativas", series:"3 x Fallo", 
-         instrucciones:"1. Colócate debajo de la barra con agarre prono (palmas hacia afuera) y manos más anchas que los hombros.\n2. Activa los hombros hacia abajo y atrás.\n3. Sube llevando el pecho a la barra, sacando el pecho y juntando escápulas.\n4. Baja de forma CONTROLADA y LENTA (4-5 segundos).\n5. Si no puedes subir, haz solo la fase negativa: salta hasta arriba y baja lento.",
-         consejo:"Escápulas juntas, pecho afuera, mirada al frente. No balancees el cuerpo.",
-         peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/3c194808-73c8-4d75-a2d9-cf85dd42fbeb", tienePeso:false},
-        {nombre:"Remo con Barra", series:"4 x 12",
-         instrucciones:"1. Sujeta la barra con agarre prono, manos separadas al ancho de hombros.\n2. Inclina el torso hacia adelante (45°) manteniendo la espalda RECTA.\n3. Tira de la barra hacia el ombligo, llevando los codos hacia atrás.\n4. Aprieta las escapulas al final del movimiento.\n5. Baja la barra controladamente hasta estirar los brazos.",
-         consejo:"Espalda totalmente recta en todo momento, no la redondees. No uses impulso.",
-         peso:"⭐ NOVATO: 10-12 kg totales", imagen:"https://api.smartworkout.app/asset/image/be04fca7-9dc1-4b64-a7b4-d05217eaecda", tienePeso:true},
-        {nombre:"Remo a una mano", series:"3 x 12",
-         instrucciones:"1. Apoya rodilla y mano del mismo lado en un banco.\n2. La pierna contraria en el suelo, ligeramente flexionada.\n3. Espalda paralela al suelo, completamente RECTA.\n4. Tira de la mancuerna hacia la cadera, codo pegado al cuerpo.\n5. Siente cómo trabajan los dorsales, baja controlado.",
-         consejo:"Tira con el codo, no con el bíceps. Mantén el core apretado.",
-         peso:"⭐ NOVATO: 4-6 kg por mano", imagen:"https://api.smartworkout.app/asset/image/55720d63-1744-4bf8-9917-8eafd30740f5", tienePeso:true},
-        {nombre:"Curl de Bíceps", series:"3 x 12",
-         instrucciones:"1. De pie, codos pegados a las costillas.\n2. Sube la mancuerna hacia el hombro, girando ligeramente la muñeca.\n3. Aprieta el bíceps en la parte superior.\n4. Baja de forma CONTROLADA y completa.\n5. Sin mover los codos hacia adelante.",
-         consejo:"Mantén los codos pegados a las costillas. No balancees el torso.",
-         peso:"⭐ NOVATO: 2-3 kg por mano", imagen:"https://api.smartworkout.app/asset/image/303b810b-f875-42eb-8b26-cc79b18b6865", tienePeso:true}
-    ],
-    martes: [
-        {nombre:"Cardio", series:"20-30 min",
-         instrucciones:"1. Comienza con 5 min de calentamiento a ritmo suave (caminando o trote suave).\n2. Mantén un ritmo constante donde puedas hablar pero con esfuerzo.\n3. Controla la respiración: inhala por nariz, exhala por boca.\n4. Termina con 5 min de enfriamiento a ritmo suave.\n5. Si puedes, añade una ligera inclinación en la cinta o camina por una cuesta.",
-         consejo:"Mantén una respiración controlada. Hidrátate cada 10 min.",
-         peso:"Intensidad: Media", imagen:"", tienePeso:false},
-        {nombre:"Elevación de piernas", series:"4 x 15",
-         instrucciones:"1. Tumbado boca arriba, manos bajo los glúteos o a los lados.\n2. Piernas estiradas, eleva hasta 90° (formando una L).\n3. Baja lentamente SIN que los pies toquen el suelo.\n4. Mantén la zona lumbar pegada al suelo en todo momento.\n5. Si te duele la espalda, dobla ligeramente las rodillas.",
-         consejo:"Baja sin que los pies toquen el suelo. Controla el movimiento.",
-         peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/336b57e7-bcea-4e65-a54f-3a3519729f7e", tienePeso:false},
-        {nombre:"Plancha", series:"3 x 45 seg",
-         instrucciones:"1. Apoyo en antebrazos y puntas de pies.\n2. Cuerpo en línea recta desde la cabeza a los pies.\n3. Aprieta abdomen y glúteos.\n4. Respira de forma constante, no aguantes la respiración.\n5. Si no llegas a 45 segundos, haz series más cortas pero con buena forma.",
-         consejo:"Cuerpo alineado, no levantes ni hundas la cadera.",
-         peso:"Peso: Estático", imagen:"https://api.smartworkout.app/asset/image/606defc2-dc68-41d8-bea0-41a8d68aaa71", tienePeso:false}
-    ],
-    miercoles: [
-        {nombre:"Press banca", series:"4 x 12",
-         instrucciones:"1. Tumbado en el banco, ojos bajo la barra.\n2. Pies firmes en el suelo.\n3. Agarra la barra más ancha que los hombros.\n4. Baja la barra hasta el pecho (zona de los pezones).\n5. Mantén codos a 45° del cuerpo, no los abras.\n6. Sube con fuerza, apretando el pecho.",
-         consejo:"Codos a 45° del cuerpo (no abiertos). Espalda apoyada, pies anclados.",
-         peso:"⭐ NOVATO: 6-8 kg totales (mancuernas de 3-4 kg c/u)", imagen:"https://api.smartworkout.app/asset/image/567ae9ad-b584-4d53-b400-82b0117a7ce1", tienePeso:true},
-        {nombre:"Fondos paralelas", series:"3 x 10",
-         instrucciones:"1. Usa dos sillas fuertes o paralelas.\n2. Sujeta las paralelas con brazos extendidos.\n3. Baja lentamente hasta que los codos estén a 90°.\n4. Inclina el torso ligeramente hacia adelante.\n5. Sube con fuerza hasta extender los brazos.\n6. Si es muy difícil, apoya un pie en el suelo.",
-         consejo:"Inclina el torso adelante para enfocar el pecho. Control en la bajada.",
-         peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030", tienePeso:false},
-        {nombre:"Press Francés", series:"3 x 12",
-         instrucciones:"1. Tumbado en el banco, mancuerna sobre el pecho con brazos extendidos.\n2. Baja la mancuerna hacia las sienes, flexionando codos.\n3. Mantén codos apuntando al techo (no se abren).\n4. Sube extendiendo los brazos por completo.\n5. No golpees tu cabeza, baja con control.",
-         consejo:"Codos cerrados apuntando al techo. Movimiento solo de antebrazos.",
-         peso:"⭐ NOVATO: 2-3 kg totales", imagen:"https://api.smartworkout.app/asset/image/deff1b63-c052-42b3-a3e4-aad93db0159f", tienePeso:true},
-        {nombre:"Extensión Nuca", series:"3 x 12",
-         instrucciones:"1. De pie o sentado (mejor sentado con respaldo).\n2. Sujeta una mancuerna con ambas manos detrás de la cabeza.\n3. Sube la mancuerna por encima de la cabeza.\n4. Baja controlado detrás de la cabeza, flexionando codos.\n5. Mantén codos pegados a las orejas.\n6. No bajes demasiado rápido.",
-         consejo:"No abras los codos al subir. Controla la bajada.",
-         peso:"⭐ NOVATO: 2-4 kg totales", imagen:"https://api.smartworkout.app/asset/image/6a79a439-417e-4fe9-8d83-0079e565389a", tienePeso:true}
-    ],
-    jueves: [
-        {nombre:"Cardio", series:"20-30 min",
-         instrucciones:"1. Calienta 5 min suave.\n2. Mantén ritmo constante de intensidad media (que puedas hablar pero con esfuerzo).\n3. Controla tu respiración.\n4. Termina con 5 min de enfriamiento.\n5. Puedes hacer caminata rápida, bici estática o elíptica.",
-         consejo:"Hidrátate bien antes, durante y después.",
-         peso:"Intensidad: Media", imagen:"", tienePeso:false},
-        {nombre:"Crunch Abs", series:"4 x 20",
-         instrucciones:"1. Tumbado, rodillas flexionadas, pies en el suelo.\n2. Manos detrás de la cabeza sin juntar los dedos (no tires del cuello).\n3. Eleva solo las escápulas del suelo (la zona baja de la espalda no se mueve).\n4. Aprieta el abdomen al subir.\n5. Baja controlado sin apoyar completamente la cabeza.\n6. Mira al techo para no forzar el cuello.",
-         consejo:"Mira al techo para no forzar el cuello. Solo sube los hombros.",
-         peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/85e37877-a9d0-4fb6-93d1-e8c0931caed9", tienePeso:false},
-        {nombre:"Toques Talón", series:"3 x 20",
-         instrucciones:"1. Tumbado, rodillas flexionadas, pies en el suelo.\n2. Eleva ligeramente los hombros (como si hicieras un crunch).\n3. Alterna tocando el talón izquierdo con mano izquierda y talón derecho con mano derecha.\n4. Mantén la tensión en el abdomen todo el tiempo.\n5. Muévete rápido, como si fueras una pinza.",
-         consejo:"Mantén la tensión en el abdomen. No apoyes la cabeza.",
-         peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/bc90a160-cf28-49ff-ab43-60a01086d62f", tienePeso:false}
-    ],
-    viernes: [
-        {nombre:"Sentadillas", series:"4 x 12",
-         instrucciones:"1. Barra en los trapecios (no en el cuello).\n2. Pies al ancho de hombros, puntas ligeramente hacia afuera.\n3. Baja como si te sentaras en una silla imaginaria.\n4. Mantén el pecho hacia arriba y la espalda recta.\n5. Baja hasta que los muslos estén paralelos al suelo (o lo que tu movilidad permita).\n6. Sube apretando glúteos.\n7. Empieza sin peso para practicar la técnica.",
-         consejo:"No dejes que las rodillas se cierren hacia adentro. Espalda recta.",
-         peso:"⭐ NOVATO: 10-12 kg totales", imagen:"https://api.smartworkout.app/asset/image/7937ce6b-b8cd-418c-a71c-aa8f4ecb3635", tienePeso:true},
-        {nombre:"Peso Muerto Rumano", series:"4 x 15",
-         instrucciones:"1. Barra pegada a las espinillas.\n2. Espalda recta, pecho hacia afuera.\n3. Baja el torso HACIA ATRÁS, no hacia abajo.\n4. Sientes el estiramiento en los isquiotibiales (detrás del muslo).\n5. Sube apretando los glúteos, sin arquear la espalda.\n6. Mantén la barra cerca del cuerpo todo el recorrido.",
-         consejo:"Siente el tirón en los isquios. Espalda recta siempre.",
-         peso:"⭐ NOVATO: 4-6 kg totales", imagen:"https://api.smartworkout.app/asset/image/7fa791dd-b202-4a33-a55b-ede33ac9ba8f", tienePeso:true},
-        {nombre:"Press Militar", series:"4 x 10",
-         instrucciones:"1. Sentado en una silla con respaldo (protege la lumbar).\n2. Mancuernas a la altura de los hombros, palmas hacia adelante.\n3. Sube las mancuernas por encima de la cabeza hasta estirar brazos.\n4. Aprieta los hombros al final del movimiento.\n5. Baja controlado hasta los hombros.\n6. No arquees la espalda.",
-         consejo:"No arquees la zona lumbar, aprieta el core. Movimiento vertical.",
-         peso:"⭐ NOVATO: 4-6 kg totales (2-3 kg cada mano)", imagen:"https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89", tienePeso:true},
-        {nombre:"Elevaciones Laterales", series:"3 x 15",
-         instrucciones:"1. De pie, mancuernas a los lados.\n2. Sube los brazos HASTA la altura de los hombros (no más arriba).\n3. Mantén una ligera flexión de codos (no los bloquees).\n4. Controla la bajada, no dejes caer el peso.\n5. No uses impulso del cuerpo.",
-         consejo:"MUY POCO PESO. El hombro se lesiona fácilmente.",
-         peso:"⭐ NOVATO: 1-2 kg por mano", imagen:"https://api.smartworkout.app/asset/image/32c6f15d-63ef-4bd6-ae6b-0056c26157fc", tienePeso:true}
-    ],
-    sabado: [
-        {nombre:"Cardio", series:"30 min",
-         instrucciones:"1. Calentamiento 5 min.\n2. Ritmo constante de intensidad media-alta.\n3. Enfriamiento 5 min.\n4. Puedes hacer: caminata rápida, trote suave, bici, elíptica, escaladora o saltar a la comba.\n5. Busca variar para no aburrirte.",
-         consejo:"Mantén el pulso en zona cardio (120-140 pulsaciones aprox).",
-         peso:"Moderado", imagen:"", tienePeso:false},
-        {nombre:"Escaladores", series:"3 x 45 seg",
-         instrucciones:"1. En posición de plancha alta (como si fueras a hacer una flexión).\n2. Lleva alternativamente las rodillas al pecho lo más rápido que puedas.\n3. Mantén la cadera baja (no la subas).\n4. Acelera el ritmo.\n5. Sufre esos 45 segundos, descansa y repite.",
-         consejo:"Espalda recta y movimiento rápido. Cadera hacia abajo.",
-         peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/5571abe1-227c-4fff-b7b6-9a365284a50d", tienePeso:false},
-        {nombre:"V-Ups Alternos", series:"3 x 15",
-         instrucciones:"1. Tumbado, brazos extendidos detrás de la cabeza.\n2. Sube pierna y brazo contrario simultáneamente.\n3. Toca la punta del pie con la mano (intenta tocarla).\n4. Baja controlado.\n5. Alterna lado.\n6. Para novato, puedes doblar ligeramente la rodilla.",
-         consejo:"Sube con fuerza abdominal, no con impulso. Controla el movimiento.",
-         peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/902e6c32-2f9a-4466-9e42-cc8a3c9eb498", tienePeso:false}
-    ]
+    lunes: [{nombre:"Dominadas / Negativas", series:"3 x Fallo", instrucciones:"1. Colócate debajo de la barra con agarre prono.\n2. Activa los hombros hacia abajo y atrás.\n3. Sube llevando el pecho a la barra.\n4. Baja CONTROLADO (4-5 segundos).", consejo:"Escápulas juntas, pecho afuera.", peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/3c194808-73c8-4d75-a2d9-cf85dd42fbeb", tienePeso:false},{nombre:"Remo con Barra", series:"4 x 12", instrucciones:"1. Sujeta la barra al ancho de hombros.\n2. Inclina torso 45° espalda RECTA.\n3. Tira hacia el ombligo.", consejo:"Espalda recta SIEMPRE.", peso:"⭐ NOVATO: 10-12 kg", imagen:"https://api.smartworkout.app/asset/image/be04fca7-9dc1-4b64-a7b4-d05217eaecda", tienePeso:true},{nombre:"Remo a una mano", series:"3 x 12", instrucciones:"1. Apoya rodilla y mano.\n2. Espalda paralela al suelo.\n3. Tira hacia la cadera.", consejo:"Tira con el codo.", peso:"⭐ NOVATO: 4-6 kg por mano", imagen:"https://api.smartworkout.app/asset/image/55720d63-1744-4bf8-9917-8eafd30740f5", tienePeso:true},{nombre:"Curl de Bíceps", series:"3 x 12", instrucciones:"1. De pie, codos pegados.\n2. Sube hacia el hombro.\n3. Baja CONTROLADO.", consejo:"No balancees el cuerpo.", peso:"⭐ NOVATO: 2-3 kg por mano", imagen:"https://api.smartworkout.app/asset/image/303b810b-f875-42eb-8b26-cc79b18b6865", tienePeso:true}],
+    martes: [{nombre:"Cardio", series:"20-30 min", instrucciones:"1. Calienta 5 min suave.\n2. Mantén ritmo constante.\n3. Respiración controlada.\n4. Enfría 5 min.", consejo:"Hidrátate.", peso:"Intensidad: Media", imagen:"", tienePeso:false},{nombre:"Elevación de piernas", series:"4 x 15", instrucciones:"1. Tumbado, manos bajo glúteos.\n2. Eleva piernas a 90°.\n3. Baja sin tocar suelo.", consejo:"Lumbar pegada.", peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/336b57e7-bcea-4e65-a54f-3a3519729f7e", tienePeso:false},{nombre:"Plancha", series:"3 x 45 seg", instrucciones:"1. Apoyo antebrazos y puntas pies.\n2. Cuerpo línea recta.\n3. Aprieta abdomen.", consejo:"No hundas cadera.", peso:"Peso: Estático", imagen:"https://api.smartworkout.app/asset/image/606defc2-dc68-41d8-bea0-41a8d68aaa71", tienePeso:false}],
+    miercoles: [{nombre:"Press banca", series:"4 x 12", instrucciones:"1. Tumbado, mancuernas sobre pecho.\n2. Baja al pecho.\n3. Codos 45°.\n4. Sube apretando pecho.", consejo:"Codos 45°", peso:"⭐ NOVATO: 6-8 kg totales", imagen:"https://api.smartworkout.app/asset/image/567ae9ad-b584-4d53-b400-82b0117a7ce1", tienePeso:true},{nombre:"Fondos paralelas", series:"3 x 10", instrucciones:"1. Usa dos sillas.\n2. Baja a 90°.\n3. Sube con fuerza.", consejo:"Apoya un pie si es difícil.", peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030", tienePeso:false},{nombre:"Press Francés", series:"3 x 12", instrucciones:"1. Tumbado, mancuerna sobre cara.\n2. Baja a sienes.\n3. Codos al techo.", consejo:"Poco peso.", peso:"⭐ NOVATO: 2-3 kg", imagen:"https://api.smartworkout.app/asset/image/deff1b63-c052-42b3-a3e4-aad93db0159f", tienePeso:true},{nombre:"Extensión Nuca", series:"3 x 12", instrucciones:"1. Sentado, mancuerna a dos manos.\n2. Sube y baja detrás nuca.\n3. Codos pegados.", consejo:"Controla el peso.", peso:"⭐ NOVATO: 2-4 kg", imagen:"https://api.smartworkout.app/asset/image/6a79a439-417e-4fe9-8d83-0079e565389a", tienePeso:true}],
+    jueves: [{nombre:"Cardio", series:"20-30 min", instrucciones:"Caminata con inclinación.", consejo:"Ritmo constante.", peso:"Intensidad: Media", imagen:"", tienePeso:false},{nombre:"Crunch Abs", series:"4 x 20", instrucciones:"1. Tumbado, rodillas flexionadas.\n2. Manos tras cabeza.\n3. Eleva solo hombros.", consejo:"Movimiento pequeño.", peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/85e37877-a9d0-4fb6-93d1-e8c0931caed9", tienePeso:false},{nombre:"Toques Talón", series:"3 x 20", instrucciones:"1. Tumbado, rodillas flexionadas.\n2. Eleva hombros.\n3. Toca talones alternando.", consejo:"Rápido.", peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/bc90a160-cf28-49ff-ab43-60a01086d62f", tienePeso:false}],
+    viernes: [{nombre:"Sentadillas", series:"4 x 12", instrucciones:"1. Barra en trapecios.\n2. Baja como sentarte.\n3. Espalda recta.", consejo:"Empieza sin peso.", peso:"⭐ NOVATO: 10-12 kg totales", imagen:"https://api.smartworkout.app/asset/image/7937ce6b-b8cd-418c-a71c-aa8f4ecb3635", tienePeso:true},{nombre:"Peso Muerto Rumano", series:"4 x 15", instrucciones:"1. Mancuernas a los lados.\n2. Baja trasero atrás.\n3. Siente isquios.", consejo:"Movimiento de cadera.", peso:"⭐ NOVATO: 4-6 kg totales", imagen:"https://api.smartworkout.app/asset/image/7fa791dd-b202-4a33-a55b-ede33ac9ba8f", tienePeso:true},{nombre:"Press Militar", series:"4 x 10", instrucciones:"1. Sentado con respaldo.\n2. Sube por encima cabeza.\n3. Baja controlado.", consejo:"Usa respaldo.", peso:"⭐ NOVATO: 4-6 kg totales", imagen:"https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89", tienePeso:true},{nombre:"Elevaciones Laterales", series:"3 x 15", instrucciones:"1. De pie, mancuernas a los lados.\n2. Sube hasta hombros.\n3. Baja controlado.", consejo:"MUY POCO PESO.", peso:"⭐ NOVATO: 1-2 kg por mano", imagen:"https://api.smartworkout.app/asset/image/32c6f15d-63ef-4bd6-ae6b-0056c26157fc", tienePeso:true}],
+    sabado: [{nombre:"Cardio", series:"30 min", instrucciones:"Actividad libre (caminar, bici, correr).", consejo:"Disfruta.", peso:"Moderado", imagen:"", tienePeso:false},{nombre:"Escaladores", series:"3 x 45 seg", instrucciones:"1. Plancha alta.\n2. Rodillas al pecho alternando.\n3. Cadera baja.", consejo:"Rápido.", peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/5571abe1-227c-4fff-b7b6-9a365284a50d", tienePeso:false},{nombre:"V-Ups Alternos", series:"3 x 15", instrucciones:"1. Tumbado, brazos atrás.\n2. Sube pierna y brazo contrario.\n3. Toca pie con mano.", consejo:"Dobla rodilla al principio.", peso:"Peso: Corporal", imagen:"https://api.smartworkout.app/asset/image/902e6c32-2f9a-4466-9e42-cc8a3c9eb498", tienePeso:false}]
 };
 
 // ==================== VARIABLES GLOBALES ====================
@@ -225,6 +133,7 @@ let intervalDescanso = null;
 let timerInterval = null;
 const fechaDejarFumar = new Date(2026, 1, 22);
 
+// Lista de logros
 const listaLogros = [
     {id:"primer_paso",nombre:"🏁 Primer paso",desc:"Completar tu primer día",condicion:()=>rachaActual>=1,icono:"🏁"},
     {id:"racha_5",nombre:"🔥 Racha 5",desc:"Alcanzar 5 días",condicion:()=>rachaActual>=5,icono:"🔥"},
@@ -261,6 +170,20 @@ function actualizarDiasSinFumar(){
     document.getElementById('mesesSinFumar').innerHTML=`🚭 ${texto}`;
 }
 
+function actualizarFraseSinFumar() {
+    const dias = calcularDiasSinFumar().total;
+    let frase = "";
+    let emoji = "";
+    if (dias < 7) { frase = "💪 ¡Primeros días! Lo más difícil ya pasó"; emoji = "🌱"; }
+    else if (dias < 30) { frase = "🍃 Tu cuerpo ya está limpiándose. ¡Sigue así!"; emoji = "💨"; }
+    else if (dias < 60) { frase = "🎉 ¡1 mes sin fumar! Tus pulmones te lo agradecen"; emoji = "🫁"; }
+    else if (dias < 90) { frase = "🔥 ¡2 meses! Eres más fuerte que el cigarro"; emoji = "💪"; }
+    else if (dias < 180) { frase = "🏆 ¡3 meses! Has ahorrado dinero y salud"; emoji = "💰"; }
+    else if (dias < 365) { frase = "🌟 ¡MEDIO AÑO! Respiras mejor, vives mejor"; emoji = "✨"; }
+    else { frase = "👑 ¡UN AÑO SIN FUMAR! Eres un campeón"; emoji = "🏆"; }
+    document.getElementById('fraseSinFumar').innerHTML = `${emoji} ${frase}`;
+}
+
 function mostrarToast(m){const t=document.createElement('div');t.className='toast-msg';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),3000);}
 function getRutinaHoy(){const dia=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()];const r={lunes:'Espalda/Bíceps',martes:'Cardio/Abs',miercoles:'Pecho/Tríceps',jueves:'Cardio/Abs',viernes:'Pierna/Hombro',sabado:'Cardio/Abs',domingo:'Descanso'};return r[dia]||'Descanso';}
 function getDiaSemana(){return ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()];}
@@ -275,6 +198,7 @@ function borrarTodo(){if(confirm("¿Borrar todos los datos?")){localStorage.clea
 function actualizarHome(){
     document.getElementById('racha').innerText=rachaActual;
     actualizarDiasSinFumar();
+    actualizarFraseSinFumar();
     const total=Object.values(ejercicios).reduce((s,d)=>s+d.length,0);
     const realizados=Object.values(checks).filter(v=>v===true).length;
     const porcentaje=Math.min(Math.round((realizados/total)*100),100);
@@ -317,9 +241,7 @@ function verificarYDesbloquearLogros(){
             logrosObtenidos.push(logro.id);
             nuevos=true;
             mostrarToast(`🏆 ¡NUEVO LOGRO! ${logro.nombre} 🏆`);
-            if(typeof canvasConfetti!=='undefined'){
-                canvasConfetti({particleCount:200,spread:100,origin:{y:0.6}});
-            }
+            if(typeof canvasConfetti!=='undefined') canvasConfetti({particleCount:200,spread:100,origin:{y:0.6}});
         }
     }
     if(nuevos){
@@ -367,8 +289,8 @@ function sumarDisco(p){const clave=p===1.25?'d125':(p===1.5?'d15':'d2');if(disco
 function resetearDiscos(){discosActuales={d125:0,d15:0,d2:0};actualizarMostrarDiscos();if(ejercicioDiscoActual)localStorage.setItem(`discos_${ejercicioDiscoActual}`,JSON.stringify(discosActuales));}
 function actualizarMostrarDiscos(){const total=(discosActuales.d125*1.25)+(discosActuales.d15*1.5)+(discosActuales.d2*2);document.getElementById('totalDisco').innerText=total.toFixed(2);document.getElementById('badge125').innerText=discosActuales.d125;document.getElementById('badge15').innerText=discosActuales.d15;document.getElementById('badge2').innerText=discosActuales.d2;}
 
-function agregarPeso(){const v=document.getElementById('in-peso').value;if(v&&!isNaN(v)){pesosRegistrados.push({valor:parseFloat(v),fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})});localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados));document.getElementById('in-peso').value='';actualizarHome();mostrarHistorialPeso();mostrarToast(`✅ Peso registrado: ${v}kg`);}}
-function eliminarPeso(i){if(confirm("¿Borrar?")){pesosRegistrados.splice(i,1);localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados));actualizarHome();mostrarHistorialPeso();}}
+function agregarPeso(){const v=document.getElementById('in-peso').value;if(v&&!isNaN(v)){pesosRegistrados.push({valor:parseFloat(v),fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})});localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados));document.getElementById('in-peso').value='';actualizarHome();mostrarHistorialPeso();mostrarToast(`✅ Peso registrado: ${v}kg`);refrescarPesosCalendario();}}
+function eliminarPeso(i){if(confirm("¿Borrar?")){pesosRegistrados.splice(i,1);localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados));actualizarHome();mostrarHistorialPeso();refrescarPesosCalendario();}}
 function mostrarHistorialPeso(){const h=document.getElementById('hist-peso');if(!h)return;h.innerHTML=[...pesosRegistrados].reverse().map((p,i)=>`<div class="peso-item"><span>${p.fecha}: <b>${p.valor}kg</b></span><button class="btn-del" onclick="eliminarPeso(${i})">🗑️</button></div>`).join('');}
 
 function renderizarRutinas(){
@@ -394,6 +316,7 @@ function marcarCheck(dia,idx,valor){
     if(todosCompletados){
         sumarRachaSiCorresponde(dia);
         verificarYDesbloquearLogros();
+        marcarEntrenoHoy();
     }
     renderizarRutinas();
     actualizarHome();
@@ -432,17 +355,11 @@ function mostrarBienvenidaDiaria() {
         localStorage.setItem("ultimoMensajeBienvenida", ultimoMensajeBienvenida);
     }
 }
-
-// Sobrescribir agregarPeso para mensaje
-const agregarPesoOriginal = window.agregarPeso;
-window.agregarPeso = function() { agregarPesoOriginal(); mostrarMensajeMotivador(`⚖️ Peso registrado. ¡Cada paso cuenta!`, "peso"); };
-
-// Inicialización de bienvenida
 setTimeout(() => { mostrarBienvenidaDiaria(); }, 1000);
 
-// ==================== EXPORTAR/IMPORTAR ====================
+// ==================== EXPORTAR/IMPORTAR/EMAIL ====================
 function exportarDatos() {
-    const datos = { version: "1.0", fecha: new Date().toISOString(), racha: rachaActual, maxRacha: maxRachaAlcanzada, pesos: pesosRegistrados, logros: logrosObtenidos, checks: checks, notas: notas, diasCompletadosSemana: diasCompletadosSemana, ultimaSemanaReset: ultimaSemanaReset, ultimoMensajeBienvenida: localStorage.getItem("ultimoMensajeBienvenida") || "", configDiscos: {} };
+    const datos = { version: "1.0", fecha: new Date().toISOString(), racha: rachaActual, maxRacha: maxRachaAlcanzada, pesos: pesosRegistrados, logros: logrosObtenidos, checks: checks, notas: notas, diasCompletadosSemana: diasCompletadosSemana, ultimaSemanaReset: ultimaSemanaReset, ultimoMensajeBienvenida: localStorage.getItem("ultimoMensajeBienvenida") || "", entrenosRegistrados: entrenosRegistrados || [], configDiscos: {} };
     for (let key in localStorage) if (key.startsWith("discos_")) datos.configDiscos[key] = localStorage.getItem(key);
     const json = JSON.stringify(datos, null, 2);
     const blob = new Blob([json], {type: "application/json"});
@@ -454,568 +371,140 @@ function exportarDatos() {
     mostrarMensajeMotivador("📦 Copia de seguridad guardada correctamente.", "logro");
 }
 
-function importarDatos(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const datos = JSON.parse(e.target.result);
-            if (datos.version !== "1.0") throw new Error("Versión no compatible");
-            rachaActual = datos.racha; maxRachaAlcanzada = datos.maxRacha; pesosRegistrados = datos.pesos; logrosObtenidos = datos.logros; checks = datos.checks; notas = datos.notas; diasCompletadosSemana = datos.diasCompletadosSemana; ultimaSemanaReset = datos.ultimaSemanaReset || "";
-            if (datos.ultimoMensajeBienvenida) localStorage.setItem("ultimoMensajeBienvenida", datos.ultimoMensajeBienvenida);
-            for (let key in datos.configDiscos) localStorage.setItem(key, datos.configDiscos[key]);
-            localStorage.setItem('nico_racha', rachaActual); localStorage.setItem('nico_max_racha', maxRachaAlcanzada); localStorage.setItem('nico_pesos', JSON.stringify(pesosRegistrados)); localStorage.setItem('nico_logros', JSON.stringify(logrosObtenidos)); localStorage.setItem('nico_checks', JSON.stringify(checks)); localStorage.setItem('nico_notas', JSON.stringify(notas)); localStorage.setItem('nico_dias_completados_semana', JSON.stringify(diasCompletadosSemana)); localStorage.setItem('nico_ultima_semana_reset', ultimaSemanaReset);
-            actualizarHome(); renderizarRutinas(); renderizarLogros(); mostrarHistorialPeso();
-            mostrarMensajeMotivador("✅ Datos importados correctamente.", "logro");
-        } catch(err) { mostrarMensajeMotivador("❌ Error al importar: archivo no válido", "peso"); }
-    };
-    reader.readAsText(file);
+function enviarCopiaEmail() {
+    const datos = { version: "1.0", fecha: new Date().toISOString(), racha: rachaActual, maxRacha: maxRachaAlcanzada, pesos: pesosRegistrados, logros: logrosObtenidos, checks: checks, notas: notas, diasCompletadosSemana: diasCompletadosSemana, ultimaSemanaReset: ultimaSemanaReset, ultimoMensajeBienvenida: localStorage.getItem("ultimoMensajeBienvenida") || "", entrenosRegistrados: entrenosRegistrados || [], configDiscos: {} };
+    for (let key in localStorage) if (key.startsWith("discos_")) datos.configDiscos[key] = localStorage.getItem(key);
+    const json = JSON.stringify(datos, null, 2);
+    const blob = new Blob([json], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `nicogym_backup_${new Date().toISOString().slice(0,19).replace(/:/g, "-")}.json`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    const subject = "Copia de seguridad NICO GYM";
+    const body = "Adjunto encontrarás el archivo de copia de seguridad de mi app NICO GYM.";
+    window.location.href = `mailto:nsalar.96@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    mostrarMensajeMotivador("📧 Archivo descargado. Abre tu correo, adjúntalo y envíalo.", "logro");
 }
 
-function agregarBotonesRespaldo() {
-    const seccionPeso = document.getElementById('peso');
-    if (!seccionPeso || document.getElementById('respaldo-buttons')) return;
-    const divBotones = document.createElement('div');
-    divBotones.id = 'respaldo-buttons';
-    divBotones.style.display = 'flex'; divBotones.style.gap = '10px'; divBotones.style.marginTop = '15px'; divBotones.style.marginBottom = '10px';
-    divBotones.innerHTML = `<button class="notif-btn" style="background:#2e7d32; flex:1" onclick="exportarDatos()">📤 EXPORTAR COPIA</button><label class="notif-btn" style="background:#ff6600; flex:1; display:inline-block; text-align:center; cursor:pointer">📥 IMPORTAR COPIA<input type="file" accept=".json" style="display:none" onchange="importarDatos(event)"></label>`;
-    const cardPeso = seccionPeso.querySelector('.card');
-    if (cardPeso) cardPeso.after(divBotones);
-}
-
-function crearPaginaConsejos() {
-    if (document.getElementById('consejos')) return;
-    const nuevaSeccion = document.createElement('div');
-    nuevaSeccion.id = 'consejos';
-    nuevaSeccion.className = 'seccion';
-    nuevaSeccion.innerHTML = `<h2>💡 CONSEJOS PARA NOVATO</h2><div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:15px; margin-top:15px"><div class="card"><span style="font-size:2rem">💧</span><br><strong>Hidratación:</strong> Bebe agua antes, durante y después de entrenar.</div><div class="card"><span style="font-size:2rem">🧘</span><br><strong>Calentamiento:</strong> 5-10 min de movilidad articular o cardio suave.</div><div class="card"><span style="font-size:2rem">⚠️</span><br><strong>Dolor ≠ fatiga:</strong> Si duele una articulación, PARA. Si es músculo, es normal.</div><div class="card"><span style="font-size:2rem">🎯</span><br><strong>Técnica > peso:</strong> Mejor poco peso y buen movimiento que mucho peso y mala postura.</div><div class="card"><span style="font-size:2rem">⏱️</span><br><strong>Descansos:</strong> 45-60 segundos entre series. Usa el temporizador de la app.</div><div class="card"><span style="font-size:2rem">😴</span><br><strong>Duerme bien:</strong> El músculo crece mientras descansas, no en el gimnasio.</div><div class="card"><span style="font-size:2rem">🚭</span><br><strong>Sin tabaco:</strong> Llevas ${calcularDiasSinFumar().total} días sin fumar, ¡eso ya es un logro!</div><div class="card"><span style="font-size:2rem">🦵</span><br><strong>Sentadillas:</strong> Baja como si te sentaras en una silla, pecho arriba.</div><div class="card"><span style="font-size:2rem">✨</span><br><strong>Sin comparativas:</strong> Tú contra ti mismo. Cada cuerpo es diferente.</div><div class="card"><span style="font-size:2rem">📆</span><br><strong>Constancia > intensidad:</strong> Mejor entrenar poco pero regular, que mucho una vez.</div><div class="card"><span style="font-size:2rem">🍗</span><br><strong>Proteína después:</strong> Ayuda a reparar el músculo (huevos, pollo, legumbres).</div><div class="card"><span style="font-size:2rem">🎧</span><br><strong>Música:</strong> Pon tu playlist favorita, ayuda a mantener el ritmo.</div></div>`;
-    const pesoSection = document.getElementById('peso');
-    if (pesoSection && pesoSection.parentNode) pesoSection.parentNode.insertBefore(nuevaSeccion, pesoSection.nextSibling);
-    else document.body.appendChild(nuevaSeccion);
-    const menu = document.getElementById('menu-lat');
-    if (menu && !document.getElementById('menu-consejos')) {
-        const consejosBtn = document.createElement('div');
-        consejosBtn.id = 'menu-consejos'; consejosBtn.className = 'nav-btn'; consejosBtn.innerHTML = '💡 CONSEJOS';
-        consejosBtn.onclick = () => go('consejos');
-        const debugBtn = menu.querySelector('.debug-btn');
-        if (debugBtn) menu.insertBefore(consejosBtn, debugBtn);
-        else menu.appendChild(consejosBtn);
-    }
-}
-
-setTimeout(() => { agregarBotonesRespaldo(); crearPaginaConsejos(); }, 500);
-
-// ==================== CALENDARIOS (CORREGIDO) ====================
-
-// --- ALMACENAMIENTO ---
-let calendarioMesesOffset = 0;
-let historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
+// ==================== CALENDARIOS ====================
 let entrenosRegistrados = JSON.parse(localStorage.getItem('nico_entrenos_registrados')) || [];
+let calendarioMesesOffset = 0;
+let historialPesosCal = JSON.parse(localStorage.getItem('nico_pesos')) || [];
 
-// --- FUNCIONES PRINCIPALES ---
-function guardarEntrenos() {
-    localStorage.setItem('nico_entrenos_registrados', JSON.stringify(entrenosRegistrados));
-}
-
+function guardarEntrenos() { localStorage.setItem('nico_entrenos_registrados', JSON.stringify(entrenosRegistrados)); }
 function marcarEntrenoHoy() {
     const hoy = new Date().toISOString().slice(0,10);
     if (!entrenosRegistrados.includes(hoy)) {
         entrenosRegistrados.push(hoy);
         guardarEntrenos();
         renderizarCalendarioEntreno();
-        mostrarMensajeMotivador("📅 ¡Día marcado en el calendario!", "logro");
+        mostrarMensajeMotivador("📅 ¡Día marcado en el calendario de entrenos!", "logro");
     }
 }
-
-// --- DÍAS SIN FUMAR ---
-function getDiasSinFumar() {
-    const inicio = new Date(2026, 1, 22); // 22 febrero 2026
+function getDiasSinFumarCal() {
+    const inicio = new Date(2026, 1, 22);
     const hoy = new Date();
     const dias = [];
     let fecha = new Date(inicio);
-    while (fecha < hoy) {
-        dias.push(fecha.toISOString().slice(0,10));
-        fecha.setDate(fecha.getDate() + 1);
-    }
+    while (fecha < hoy) { dias.push(fecha.toISOString().slice(0,10)); fecha.setDate(fecha.getDate() + 1); }
     return dias;
 }
-
-// --- PESOS ---
-function getPesoEnFecha(fechaStr) {
-    for (let p of historialPesos) {
+function getPesoEnFechaCal(fechaStr) {
+    for (let p of historialPesosCal) {
         const partes = p.fecha.split('/');
         const fechaPeso = `2026-${partes[1]}-${partes[0]}`;
         if (fechaPeso === fechaStr) return p.valor;
     }
     return null;
 }
-
-function refrescarPesos() {
-    historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
+function refrescarPesosCalendario() {
+    historialPesosCal = JSON.parse(localStorage.getItem('nico_pesos')) || [];
     renderizarCalendarioEntreno();
 }
-
-// --- POPUPS ---
-function mostrarPopup(titulo, mensaje) {
-    const popup = document.createElement('div');
-    popup.style.cssText = `
-        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        background: #1a1a1a; border: 2px solid #ff6600; border-radius: 20px;
-        padding: 20px; z-index: 20000; min-width: 250px; text-align: center;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.5); backdrop-filter: blur(10px);
-    `;
-    popup.innerHTML = `
-        <h3 style="color:#ff6600; margin-bottom:15px">${titulo}</h3>
-        <div style="margin-bottom:20px">${mensaje}</div>
-        <button class="notif-btn" style="background:#ff6600; padding:8px 20px" onclick="this.parentElement.remove()">CERRAR</button>
-    `;
-    document.body.appendChild(popup);
-}
-
-function popupEntreno(dia, mes, año, fechaStr) {
+function cambiarMesCal(delta) { calendarioMesesOffset += delta; renderizarCalendarioEntreno(); renderizarCalendarioSinFumar(); }
+function popupEntrenoCal(dia, mes, año, fechaStr) {
     const fecha = new Date(año, mes, dia);
     const esEntrenado = entrenosRegistrados.includes(fechaStr);
     const esDomingo = fecha.getDay() === 0;
-    const peso = getPesoEnFecha(fechaStr);
+    const peso = getPesoEnFechaCal(fechaStr);
     let msg = "";
     if (esEntrenado) msg += "✅ Entrenado 💪<br>";
     if (esDomingo) msg += "🟡 Domingo (descanso)<br>";
     if (peso) msg += `⚖️ Peso: <strong>${peso} kg</strong><br>`;
     if (!esEntrenado && !esDomingo && !peso) msg = "⚪ Sin actividad";
-    mostrarPopup(`📅 ${dia}/${mes+1}/${año}`, msg);
+    const popup = document.createElement('div');
+    popup.style.cssText = `position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid #ff6600; border-radius:20px; padding:20px; z-index:20000; min-width:250px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.5); backdrop-filter:blur(10px);`;
+    popup.innerHTML = `<h3 style="color:#ff6600; margin-bottom:15px">📅 ${dia}/${mes+1}/${año}</h3><div style="margin-bottom:20px">${msg}</div><button class="notif-btn" style="background:#ff6600; padding:8px 20px" onclick="this.parentElement.remove()">CERRAR</button>`;
+    document.body.appendChild(popup);
 }
-
-function popupSinFumar(dia, mes, año, fechaStr) {
-    const esSinFumar = getDiasSinFumar().includes(fechaStr);
+function popupSinFumarCal(dia, mes, año, fechaStr) {
+    const esSinFumar = getDiasSinFumarCal().includes(fechaStr);
     const msg = esSinFumar ? "🔵 Día sin fumar 🚭" : "⚪ Con tabaco o futuro";
-    mostrarPopup(`📅 ${dia}/${mes+1}/${año}`, msg);
+    const popup = document.createElement('div');
+    popup.style.cssText = `position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid #ff6600; border-radius:20px; padding:20px; z-index:20000; min-width:250px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.5); backdrop-filter:blur(10px);`;
+    popup.innerHTML = `<h3 style="color:#ff6600; margin-bottom:15px">📅 ${dia}/${mes+1}/${año}</h3><div style="margin-bottom:20px">${msg}</div><button class="notif-btn" style="background:#ff6600; padding:8px 20px" onclick="this.parentElement.remove()">CERRAR</button>`;
+    document.body.appendChild(popup);
 }
-
-// --- NAVEGACIÓN ---
-function cambiarMesCal(delta) {
-    calendarioMesesOffset += delta;
-    renderizarCalendarioEntreno();
-    renderizarCalendarioSinFumar();
-}
-
-// --- RENDERIZADO CALENDARIO ENTRENO ---
 function renderizarCalendarioEntreno() {
     const contenedor = document.getElementById('calendario-entreno-container');
     if (!contenedor) return;
-    
-    const hoy = new Date();
-    const hoyStr = hoy.toISOString().slice(0,10);
-    let año = hoy.getFullYear();
-    let mes = hoy.getMonth() + calendarioMesesOffset;
-    if (mes < 0) { mes += 12; año--; }
-    if (mes > 11) { mes -= 12; año++; }
-    
-    const primerDia = new Date(año, mes, 1);
-    const ultimoDia = new Date(año, mes + 1, 0);
-    const numDias = ultimoDia.getDate();
-    let diaSemanaPrimero = primerDia.getDay();
+    const hoy = new Date(); const hoyStr = hoy.toISOString().slice(0,10);
+    let año = hoy.getFullYear(); let mes = hoy.getMonth() + calendarioMesesOffset;
+    if (mes < 0) { mes += 12; año--; } if (mes > 11) { mes -= 12; año++; }
+    const primerDia = new Date(año, mes, 1); const ultimoDia = new Date(año, mes + 1, 0);
+    const numDias = ultimoDia.getDate(); let diaSemanaPrimero = primerDia.getDay();
     let offset = diaSemanaPrimero === 0 ? 6 : diaSemanaPrimero - 1;
     const nombreMes = new Date(año, mes).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
-    
-    let html = `<div style="display:flex; justify-content:space-between; margin-bottom:15px">
-        <button class="notif-btn" style="background:#333; padding:8px 15px" onclick="cambiarMesCal(-1)">◀</button>
-        <h3 style="color:#ff6600">${nombreMes} ${año}</h3>
-        <button class="notif-btn" style="background:#333; padding:8px 15px" onclick="cambiarMesCal(1)">▶</button>
-    </div>`;
-    
-    html += `<div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:11px">
-        <span><span style="display:inline-block; width:18px; height:18px; background:#2e7d32; border-radius:4px"></span> Entrenado</span>
-        <span><span style="display:inline-block; width:18px; height:18px; background:#eab308; border-radius:4px"></span> Domingo</span>
-        <span><span style="display:inline-block; width:18px; height:18px; background:#222; border:1px solid #444"></span> Sin entrenar</span>
-        <span><span style="display:inline-block; width:14px; height:14px; background:#f59e0b; border-radius:50%"></span> Peso</span>
-    </div>`;
-    
-    html += `<div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center; margin-bottom:10px">
-        <div style="color:#ff6600">L</div><div style="color:#ff6600">M</div><div style="color:#ff6600">X</div>
-        <div style="color:#ff6600">J</div><div style="color:#ff6600">V</div><div style="color:#ff6600">S</div>
-        <div style="color:#eab308">D</div>
-    </div><div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center">`;
-    
+    let html = `<div style="display:flex; justify-content:space-between; margin-bottom:15px"><button class="notif-btn" style="background:#333; padding:8px 15px" onclick="cambiarMesCal(-1)">◀</button><h3 style="color:#ff6600">${nombreMes} ${año}</h3><button class="notif-btn" style="background:#333; padding:8px 15px" onclick="cambiarMesCal(1)">▶</button></div>`;
+    html += `<div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:11px"><span><span style="display:inline-block; width:18px; height:18px; background:#2e7d32; border-radius:4px"></span> Entrenado</span><span><span style="display:inline-block; width:18px; height:18px; background:#eab308; border-radius:4px"></span> Domingo</span><span><span style="display:inline-block; width:18px; height:18px; background:#222; border:1px solid #444"></span> Sin entrenar</span><span><span style="display:inline-block; width:14px; height:14px; background:#f59e0b; border-radius:50%"></span> Peso</span></div>`;
+    html += `<div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center; margin-bottom:10px"><div style="color:#ff6600">L</div><div style="color:#ff6600">M</div><div style="color:#ff6600">X</div><div style="color:#ff6600">J</div><div style="color:#ff6600">V</div><div style="color:#ff6600">S</div><div style="color:#eab308">D</div></div><div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center">`;
     for (let i = 0; i < offset; i++) html += `<div style="padding:8px; color:#333"></div>`;
-    
     for (let d = 1; d <= numDias; d++) {
-        const fechaActual = new Date(año, mes, d);
-        const fechaStr = fechaActual.toISOString().slice(0,10);
-        const esDomingo = fechaActual.getDay() === 0;
-        const esEntrenado = entrenosRegistrados.includes(fechaStr);
-        const esHoy = fechaStr === hoyStr;
-        const tienePeso = getPesoEnFecha(fechaStr) !== null;
-        
-        let color = "#222";
-        if (esEntrenado) color = "#2e7d32";
-        else if (esDomingo) color = "#eab308";
-        
+        const fechaActual = new Date(año, mes, d); const fechaStr = fechaActual.toISOString().slice(0,10);
+        const esDomingo = fechaActual.getDay() === 0; const esEntrenado = entrenosRegistrados.includes(fechaStr);
+        const esHoy = fechaStr === hoyStr; const tienePeso = getPesoEnFechaCal(fechaStr) !== null;
+        let color = "#222"; if (esEntrenado) color = "#2e7d32"; else if (esDomingo) color = "#eab308";
         let estilo = `background:${color}; border-radius:10px; padding:8px; font-weight:bold; min-height:55px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; `;
         if (esHoy) estilo += `border:2px solid #ff6600; `;
         const pesoIcono = tienePeso ? `<span style="font-size:11px; margin-top:2px">⚖️</span>` : "";
-        html += `<div style="${estilo}" onclick="popupEntreno(${d}, ${mes}, ${año}, '${fechaStr}')">
-            <span style="font-size:14px">${d}</span>${pesoIcono}
-        </div>`;
+        html += `<div style="${estilo}" onclick="popupEntrenoCal(${d}, ${mes}, ${año}, '${fechaStr}')"><span style="font-size:14px">${d}</span>${pesoIcono}</div>`;
     }
-    
-    const usadas = offset + numDias;
-    const restantes = (7 - (usadas % 7)) % 7;
+    const usadas = offset + numDias; const restantes = (7 - (usadas % 7)) % 7;
     for (let i = 0; i < restantes; i++) html += `<div style="padding:8px; color:#333"></div>`;
-    html += `</div>`;
-    contenedor.innerHTML = html;
+    html += `</div>`; contenedor.innerHTML = html;
 }
-
-// --- RENDERIZADO CALENDARIO SIN FUMAR ---
 function renderizarCalendarioSinFumar() {
     const contenedor = document.getElementById('calendario-sinfumar-container');
     if (!contenedor) return;
-    
-    const hoy = new Date();
-    let año = hoy.getFullYear();
-    let mes = hoy.getMonth() + calendarioMesesOffset;
-    if (mes < 0) { mes += 12; año--; }
-    if (mes > 11) { mes -= 12; año++; }
-    
-    const primerDia = new Date(año, mes, 1);
-    const ultimoDia = new Date(año, mes + 1, 0);
-    const numDias = ultimoDia.getDate();
-    let diaSemanaPrimero = primerDia.getDay();
+    let año = new Date().getFullYear(); let mes = new Date().getMonth() + calendarioMesesOffset;
+    if (mes < 0) { mes += 12; año--; } if (mes > 11) { mes -= 12; año++; }
+    const primerDia = new Date(año, mes, 1); const ultimoDia = new Date(año, mes + 1, 0);
+    const numDias = ultimoDia.getDate(); let diaSemanaPrimero = primerDia.getDay();
     let offset = diaSemanaPrimero === 0 ? 6 : diaSemanaPrimero - 1;
     const nombreMes = new Date(año, mes).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
-    const diasSinFumar = getDiasSinFumar();
-    
-    let html = `<div style="text-align:center; margin-bottom:15px">
-        <h3 style="color:#3b82f6">${nombreMes} ${año}</h3>
-    </div>`;
-    
-    html += `<div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:11px">
-        <span><span style="display:inline-block; width:18px; height:18px; background:#3b82f6; border-radius:4px"></span> Sin fumar</span>
-        <span><span style="display:inline-block; width:18px; height:18px; background:#222; border:1px solid #444"></span> Con tabaco / futuro</span>
-    </div>`;
-    
-    html += `<div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center; margin-bottom:10px">
-        <div style="color:#aaa">L</div><div style="color:#aaa">M</div><div style="color:#aaa">X</div>
-        <div style="color:#aaa">J</div><div style="color:#aaa">V</div><div style="color:#aaa">S</div>
-        <div style="color:#aaa">D</div>
-    </div><div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center">`;
-    
+    const diasSinFumar = getDiasSinFumarCal();
+    let html = `<div style="text-align:center; margin-bottom:15px"><h3 style="color:#3b82f6">${nombreMes} ${año}</h3></div>`;
+    html += `<div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:11px"><span><span style="display:inline-block; width:18px; height:18px; background:#3b82f6; border-radius:4px"></span> Sin fumar</span><span><span style="display:inline-block; width:18px; height:18px; background:#222; border:1px solid #444"></span> Con tabaco / futuro</span></div>`;
+    html += `<div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center; margin-bottom:10px"><div style="color:#aaa">L</div><div style="color:#aaa">M</div><div style="color:#aaa">X</div><div style="color:#aaa">J</div><div style="color:#aaa">V</div><div style="color:#aaa">S</div><div style="color:#aaa">D</div></div><div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center">`;
     for (let i = 0; i < offset; i++) html += `<div style="padding:8px; color:#333"></div>`;
-    
     for (let d = 1; d <= numDias; d++) {
-        const fechaActual = new Date(año, mes, d);
-        const fechaStr = fechaActual.toISOString().slice(0,10);
+        const fechaActual = new Date(año, mes, d); const fechaStr = fechaActual.toISOString().slice(0,10);
         const esSinFumar = diasSinFumar.includes(fechaStr) && fechaActual < new Date();
         const color = esSinFumar ? "#3b82f6" : "#222";
-        html += `<div style="background:${color}; border-radius:10px; padding:8px; font-weight:bold; min-height:50px; display:flex; align-items:center; justify-content:center; cursor:pointer; border:1px solid #333" onclick="popupSinFumar(${d}, ${mes}, ${año}, '${fechaStr}')">${d}</div>`;
+        html += `<div style="background:${color}; border-radius:10px; padding:8px; font-weight:bold; min-height:50px; display:flex; align-items:center; justify-content:center; cursor:pointer; border:1px solid #333" onclick="popupSinFumarCal(${d}, ${mes}, ${año}, '${fechaStr}')">${d}</div>`;
     }
-    
-    const usadas = offset + numDias;
-    const restantes = (7 - (usadas % 7)) % 7;
+    const usadas = offset + numDias; const restantes = (7 - (usadas % 7)) % 7;
     for (let i = 0; i < restantes; i++) html += `<div style="padding:8px; color:#333"></div>`;
-    html += `</div>`;
-    contenedor.innerHTML = html;
+    html += `</div>`; contenedor.innerHTML = html;
 }
-
-// --- CREAR SECCIÓN ---
 function crearCalendarios() {
     if (document.getElementById('calendario')) return;
-    const seccion = document.createElement('div');
-    seccion.id = 'calendario';
-    seccion.className = 'seccion';
-    seccion.innerHTML = `
-        <h2>📅 CALENDARIO DE ENTRENO</h2>
-        <div id="calendario-entreno-container" style="margin-top:20px"></div>
-        <h2 style="margin-top:30px; color:#3b82f6">🚭 CALENDARIO DE DÍAS SIN FUMAR</h2>
-        <div id="calendario-sinfumar-container" style="margin-top:20px"></div>
-    `;
-    const consejos = document.getElementById('consejos');
-    if (consejos && consejos.parentNode) consejos.parentNode.insertBefore(seccion, consejos.nextSibling);
-    else document.body.appendChild(seccion);
-    
-    const menu = document.getElementById('menu-lat');
-    if (menu && !document.getElementById('menu-calendario')) {
-        const btn = document.createElement('div');
-        btn.id = 'menu-calendario';
-        btn.className = 'nav-btn';
-        btn.innerHTML = '📅 CALENDARIO';
-        btn.onclick = () => { calendarioMesesOffset = 0; go('calendario'); renderizarCalendarioEntreno(); renderizarCalendarioSinFumar(); };
-        const consejosBtn = document.getElementById('menu-consejos');
-        if (consejosBtn) menu.insertBefore(btn, consejosBtn);
-        else menu.appendChild(btn);
-    }
-    renderizarCalendarioEntreno();
-    renderizarCalendarioSinFumar();
+    const seccion = document.getElementById('calendario');
+    if (!seccion) return;
+    renderizarCalendarioEntreno(); renderizarCalendarioSinFumar();
 }
-
-// --- CONECTAR CON LA RACHA ---
-const sumarRachaOriginalTemp = window.sumarRachaSiCorresponde;
-window.sumarRachaSiCorresponde = function(dia) {
-    const res = sumarRachaOriginalTemp(dia);
-    if (res === true) marcarEntrenoHoy();
-    return res;
-};
-
-// --- ACTUALIZAR PESOS AL AÑADIR ---
-const agregarPesoOriginalTemp = window.agregarPeso;
-window.agregarPeso = function() {
-    agregarPesoOriginalTemp();
-    setTimeout(() => { refrescarPesos(); }, 200);
-};
-
-// --- INICIALIZAR ---
-setTimeout(() => {
-    refrescarPesos();
-    crearCalendarios();
-}, 500);
-    
-    window.addEventListener('load', () => {
-    resetSemanal();
-    renderizarRutinas();
-    actualizarHome();
-    mostrarHistorialPeso();
-    renderizarLogros();
-    verificarYDesbloquearLogros();
-    crearCalendarioSeccion();
-});
+setTimeout(() => { refrescarPesosCalendario(); crearCalendarios(); }, 500);
 </script>
-<!-- ==================== NUEVA SECCIÓN: ESTIRAMIENTOS ==================== -->
-<div id="estiramientos" class="seccion">
-    <h2>🧘 ESTIRAMIENTOS POST‑ENTRENO</h2>
-    <div style="display:grid; gap:15px; margin-top:15px">
-        
-        <!-- Estiramiento 1 -->
-        <div class="card">
-            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
-                <div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🦵</div>
-                <div style="flex:1">
-                    <span class="ex-title">1. Estiramiento de isquiotibiales</span>
-                    <div style="margin-top:5px">
-                        <strong>📝 CÓMO HACERLO:</strong><br>
-                        1. Siéntate en el suelo con una pierna estirada y la otra flexionada.<br>
-                        2. Inclínate hacia adelante desde la cadera, no desde la espalda.<br>
-                        3. Intenta tocar la punta del pie sin forzar.<br>
-                        4. Mantén durante 30 segundos y cambia de pierna.<br>
-                        <span style="color:#32d74b">💡 Consejo: No rebotes, mantén la posición suave.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Estiramiento 2 -->
-        <div class="card">
-            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
-                <div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🦵</div>
-                <div style="flex:1">
-                    <span class="ex-title">2. Estiramiento de cuádriceps</span>
-                    <div style="margin-top:5px">
-                        <strong>📝 CÓMO HACERLO:</strong><br>
-                        1. De pie, sujétate a una pared o silla.<br>
-                        2. Dobla la rodilla llevando el talón hacia el glúteo.<br>
-                        3. Sujeta el pie con la mano del mismo lado.<br>
-                        4. Mantén la rodilla pegada a la otra pierna.<br>
-                        5. Aguanta 30 segundos y cambia de pierna.<br>
-                        <span style="color:#32d74b">💡 Consejo: No arquear la espalda, pecho arriba.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Estiramiento 3 -->
-        <div class="card">
-            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
-                <div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">💪</div>
-                <div style="flex:1">
-                    <span class="ex-title">3. Estiramiento de pectorales</span>
-                    <div style="margin-top:5px">
-                        <strong>📝 CÓMO HACERLO:</strong><br>
-                        1. Busca un marco de puerta o una esquina.<br>
-                        2. Apoya el antebrazo en el marco, codo a la altura del hombro.<br>
-                        3. Gira suavemente el torso hacia el lado contrario.<br>
-                        4. Siente el estiramiento en el pecho.<br>
-                        5. Mantén 30 segundos y cambia de brazo.<br>
-                        <span style="color:#32d74b">💡 Consejo: No fuerces, solo gira hasta sentir el estiramiento.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Estiramiento 4 -->
-        <div class="card">
-            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
-                <div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🐱</div>
-                <div style="flex:1">
-                    <span class="ex-title">4. Estiramiento de espalda baja (gato‑vaca)</span>
-                    <div style="margin-top:5px">
-                        <strong>📝 CÓMO HACERLO:</strong><br>
-                        1. En posición de cuatro patas (manos y rodillas).<br>
-                        2. Inspira, arquea la espalda hacia abajo (vaca).<br>
-                        3. Espira, redondea la espalda hacia arriba (gato).<br>
-                        4. Repite 10 veces, moviéndote con la respiración.<br>
-                        <span style="color:#32d74b">💡 Consejo: Movimiento suave, no rápido.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Estiramiento 5 -->
-        <div class="card">
-            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
-                <div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🙆</div>
-                <div style="flex:1">
-                    <span class="ex-title">5. Estiramiento de hombros (brazo cruzado)</span>
-                    <div style="margin-top:5px">
-                        <strong>📝 CÓMO HACERLO:</strong><br>
-                        1. De pie o sentado, estira un brazo cruzando el pecho.<br>
-                        2. Con la mano contraria, tira suavemente del codo.<br>
-                        3. Mantén el hombro relajado y hacia abajo.<br>
-                        4. Aguanta 30 segundos y cambia de brazo.<br>
-                        <span style="color:#32d74b">💡 Consejo: No tires del brazo, solo presión suave.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-    </div>
-</div>
-
-<script>
-// ==================== MEJORA #9: AÑADIR ESTIRAMIENTOS AL MENÚ ====================
-function crearSeccionEstiramientos() {
-    // Asegurar que la sección existe en el DOM
-    if (!document.getElementById('estiramientos')) return;
-    
-    const menu = document.getElementById('menu-lat');
-    if (menu && !document.getElementById('menu-estiramientos')) {
-        const estiramientosBtn = document.createElement('div');
-        estiramientosBtn.id = 'menu-estiramientos';
-        estiramientosBtn.className = 'nav-btn';
-        estiramientosBtn.innerHTML = '🧘 ESTIRAMIENTOS';
-        estiramientosBtn.onclick = () => go('estiramientos');
-        
-        const debugBtn = menu.querySelector('.debug-btn');
-        if (debugBtn) menu.insertBefore(estiramientosBtn, debugBtn);
-        else menu.appendChild(estiramientosBtn);
-    }
-}
-
-// ==================== MEJORA #10: ENVIAR COPIA POR EMAIL ====================
-function enviarCopiaEmail() {
-    // Generar los mismos datos que en exportarDatos()
-    const datos = {
-        version: "1.0",
-        fecha: new Date().toISOString(),
-        racha: rachaActual,
-        maxRacha: maxRachaAlcanzada,
-        pesos: pesosRegistrados,
-        logros: logrosObtenidos,
-        checks: checks,
-        notas: notas,
-        diasCompletadosSemana: diasCompletadosSemana,
-        ultimaSemanaReset: ultimaSemanaReset,
-        ultimoMensajeBienvenida: localStorage.getItem("ultimoMensajeBienvenida") || "",
-        configDiscos: {}
-    };
-    for (let key in localStorage) {
-        if (key.startsWith("discos_")) {
-            datos.configDiscos[key] = localStorage.getItem(key);
-        }
-    }
-    const json = JSON.stringify(datos, null, 2);
-    const blob = new Blob([json], {type: "application/json"});
-    const url = URL.createObjectURL(blob);
-    
-    // Descargar el archivo
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `nicogym_backup_${new Date().toISOString().slice(0,19).replace(/:/g, "-")}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    // Abrir el cliente de correo
-    const subject = "Copia de seguridad NICO GYM";
-    const body = "Adjunto encontrarás el archivo de copia de seguridad de mi app NICO GYM.";
-    window.location.href = `mailto:nsalar.96@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    mostrarMensajeMotivador("📧 Archivo descargado. Se ha abierto tu correo. Adjunta el archivo y envíalo.", "logro");
-}
-
-function agregarBotonEmail() {
-    const seccionPeso = document.getElementById('peso');
-    if (!seccionPeso) return;
-    if (document.getElementById('email-button')) return;
-    
-    const divBotones = document.getElementById('respaldo-buttons');
-    if (!divBotones) return;
-    
-    const emailBtn = document.createElement('button');
-    emailBtn.id = 'email-button';
-    emailBtn.className = 'notif-btn';
-    emailBtn.style.background = '#3b82f6';
-    emailBtn.style.flex = '1';
-    emailBtn.innerHTML = '✉️ ENVIAR COPIA POR EMAIL';
-    emailBtn.onclick = enviarCopiaEmail;
-    
-    divBotones.appendChild(emailBtn);
-}
-
-// Esperar a que todo el DOM esté listo
-document.addEventListener('DOMContentLoaded', function() {
-    crearSeccionEstiramientos();
-    agregarBotonEmail();
-});
-
-// También ejecutar después de un pequeño retraso por si el DOMContentLoaded ya ocurrió
-setTimeout(() => {
-    crearSeccionEstiramientos();
-    agregarBotonEmail();
-}, 500);
-</script>
-</script>
-// ==================== FRASES MOTIVADORAS PARA DEJAR DE FUMAR ====================
-function actualizarFraseSinFumar() {
-    const dias = calcularDiasSinFumar().total;
-    let frase = "";
-    let emoji = "";
-    
-    if (dias < 7) {
-        frase = "💪 ¡Primeros días! Lo más difícil ya pasó";
-        emoji = "🌱";
-    } else if (dias < 30) {
-        frase = "🍃 Tu cuerpo ya está limpiándose. ¡Sigue así!";
-        emoji = "💨";
-    } else if (dias < 60) {
-        frase = "🎉 ¡1 mes sin fumar! Tus pulmones te lo agradecen";
-        emoji = "🫁";
-    } else if (dias < 90) {
-        frase = "🔥 ¡2 meses! Eres más fuerte que el cigarro";
-        emoji = "💪";
-    } else if (dias < 180) {
-        frase = "🏆 ¡3 meses! Has ahorrado dinero y salud";
-        emoji = "💰";
-    } else if (dias < 365) {
-        frase = "🌟 ¡MEDIO AÑO! Respiras mejor, vives mejor";
-        emoji = "✨";
-    } else {
-        frase = "👑 ¡UN AÑO SIN FUMAR! Eres un campeón";
-        emoji = "🏆";
-    }
-    
-    document.getElementById('fraseSinFumar').innerHTML = `${emoji} ${frase}`;
-}
-
-// Sobrescribir la función actualizarDiasSinFumar para que también actualice la frase
-const actualizarDiasSinFumarOriginal = window.actualizarDiasSinFumar;
-window.actualizarDiasSinFumar = function() {
-    if (actualizarDiasSinFumarOriginal) actualizarDiasSinFumarOriginal();
-    actualizarFraseSinFumar();
-};
-
-// También ejecutar al cargar
-setTimeout(() => {
-    actualizarFraseSinFumar();
-}, 500);
 </body>
 </html>
