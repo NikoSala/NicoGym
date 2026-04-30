@@ -1022,5 +1022,48 @@ setTimeout(() => {
 }, 500);
 </script>
 </script>
+// ==================== FRASES MOTIVADORAS PARA DEJAR DE FUMAR ====================
+function actualizarFraseSinFumar() {
+    const dias = calcularDiasSinFumar().total;
+    let frase = "";
+    let emoji = "";
+    
+    if (dias < 7) {
+        frase = "💪 ¡Primeros días! Lo más difícil ya pasó";
+        emoji = "🌱";
+    } else if (dias < 30) {
+        frase = "🍃 Tu cuerpo ya está limpiándose. ¡Sigue así!";
+        emoji = "💨";
+    } else if (dias < 60) {
+        frase = "🎉 ¡1 mes sin fumar! Tus pulmones te lo agradecen";
+        emoji = "🫁";
+    } else if (dias < 90) {
+        frase = "🔥 ¡2 meses! Eres más fuerte que el cigarro";
+        emoji = "💪";
+    } else if (dias < 180) {
+        frase = "🏆 ¡3 meses! Has ahorrado dinero y salud";
+        emoji = "💰";
+    } else if (dias < 365) {
+        frase = "🌟 ¡MEDIO AÑO! Respiras mejor, vives mejor";
+        emoji = "✨";
+    } else {
+        frase = "👑 ¡UN AÑO SIN FUMAR! Eres un campeón";
+        emoji = "🏆";
+    }
+    
+    document.getElementById('fraseSinFumar').innerHTML = `${emoji} ${frase}`;
+}
+
+// Sobrescribir la función actualizarDiasSinFumar para que también actualice la frase
+const actualizarDiasSinFumarOriginal = window.actualizarDiasSinFumar;
+window.actualizarDiasSinFumar = function() {
+    if (actualizarDiasSinFumarOriginal) actualizarDiasSinFumarOriginal();
+    actualizarFraseSinFumar();
+};
+
+// También ejecutar al cargar
+setTimeout(() => {
+    actualizarFraseSinFumar();
+}, 500);
 </body>
 </html>
