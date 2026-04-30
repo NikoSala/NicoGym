@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>NICO GYM - Definitivo</title>
+<title>NICO GYM - Final</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <style>
@@ -91,7 +91,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="overlay" onclick="closeMenu()"></div>
 <nav id="menu-lat"><div class="nav-btn" onclick="go('home')">🏠 INICIO</div><div class="submenu-btn" onclick="toggleSubmenu(this)"><span>📅 RUTINA SEMANAL</span><span class="arrow">▼</span></div><div class="submenu-items"><div class="sub-link" onclick="go('lunes')">📆 Lunes: Espalda / Bíceps</div><div class="sub-link" onclick="go('martes')">🏃 Martes: Cardio / Abs</div><div class="sub-link" onclick="go('miercoles')">💪 Miércoles: Pecho / Tríceps</div><div class="sub-link" onclick="go('jueves')">🏃 Jueves: Cardio / Abs</div><div class="sub-link" onclick="go('viernes')">🦵 Viernes: Pierna / Hombro</div><div class="sub-link" onclick="go('sabado')">🏃 Sábado: Cardio / Abs</div><div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso</div></div><div class="nav-btn" onclick="go('peso')">⚖️ PESO CORPORAL</div><div class="nav-btn" onclick="go('logros')">🏆 LOGROS</div><div class="nav-btn" onclick="go('estiramientos')">🧘 ESTIRAMIENTOS</div><div class="debug-btn" onclick="borrarTodo()">⚙️ Reset</div></nav>
 <header><span class="menu-icon" onclick="openMenu()">☰</span><span class="logo">NICO <span style="color:#ff6600">GYM</span></span><span class="home-icon" onclick="go('home')">🏠</span></header>
-<div id="home" class="seccion active"><div class="today-card" onclick="goToday()"><div class="today-day" id="todayDay">Cargando...</div><div id="todayRoutine" style="color:#aaa;margin-bottom:10px"></div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div><div class="stats-row"><div class="stat-card progreso"><h2 id="perc">0%</h2><small>PROGRESO SEMANAL</small></div><div class="stat-card racha"><h2 id="racha">18</h2><small>🔥 RACHA GYM</small></div><div class="stat-card nosmoke" style="background: linear-gradient(135deg, #0a2a1a, #0a1a0a); border: 1px solid #66bb6a;"><h2 id="diasSinFumar" style="color: #66bb6a; font-size: 1.8rem;">0</h2><small style="color: #66bb6a;">🚭 DÍAS SIN FUMAR</small><div id="fraseSinFumar" style="font-size: 0.7rem; color: #a5d6a7; margin-top: 8px; font-weight: normal;">💪 Cada día es un triunfo</div></div></div><div class="card" style="height:220px"><canvas id="grafico"></canvas></div></div>
+<div id="home" class="seccion active"><div class="today-card" onclick="goToday()"><div class="today-day" id="todayDay">Cargando...</div><div id="todayRoutine" style="color:#aaa;margin-bottom:10px"></div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div><div class="stats-row"><div class="stat-card progreso"><h2 id="perc">0%</h2><small>PROGRESO SEMANAL</small></div><div class="stat-card racha"><h2 id="racha">18</h2><small>🔥 RACHA GYM</small></div><div class="stat-card nosmoke" style="background:linear-gradient(135deg,#0a2a1a,#0a1a0a);border:1px solid #66bb6a"><h2 id="diasSinFumar" style="color:#66bb6a;font-size:1.8rem">0</h2><small style="color:#66bb6a">🚭 DÍAS SIN FUMAR</small><div id="fraseSinFumar" style="font-size:.7rem;color:#a5d6a7;margin-top:8px">💪 Cada día es un triunfo</div></div></div><div class="card" style="height:220px"><canvas id="grafico"></canvas></div></div>
 <div id="lunes" class="seccion"><h2>📆 ESPALDA / BÍCEPS</h2><div id="list-lunes"></div></div>
 <div id="martes" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-martes"></div></div>
 <div id="miercoles" class="seccion"><h2>💪 PECHO / TRÍCEPS</h2><div id="list-miercoles"></div></div>
@@ -99,10 +99,10 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="viernes" class="seccion"><h2>🦵 PIERNA / HOMBRO</h2><div id="list-viernes"></div></div>
 <div id="sabado" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-sabado"></div></div>
 <div id="domingo" class="seccion"><div class="sunday-card"><div class="sunday-emoji">🔋✨😴✨💪</div><div class="sunday-title">DÍA DE RECARGA</div><div style="margin-top:20px"><p>💧 Hidrátate</p><p>🍗 Come proteína</p><p>🧘‍♂️ Estiramientos</p><p>😴 Duerme 7-8h</p></div></div></div>
-<div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso en kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div><div id="respaldo-buttons" style="display:flex; gap:10px; margin-top:15px; margin-bottom:10px"><button class="notif-btn" style="background:#2e7d32; flex:1" onclick="exportarDatos()">📤 EXPORTAR COPIA</button><button class="notif-btn" style="background:#3b82f6; flex:1" onclick="enviarCopiaEmail()">✉️ ENVIAR COPIA POR EMAIL</button></div></div>
+<div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex;gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso en kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div><div id="respaldo-buttons" style="display:flex;gap:10px;margin-top:15px;margin-bottom:10px"><button class="notif-btn" style="background:#2e7d32;flex:1" onclick="exportarDatos()">📤 EXPORTAR COPIA</button><button class="notif-btn" style="background:#3b82f6;flex:1" onclick="enviarCopiaEmail()">✉️ ENVIAR COPIA POR EMAIL</button></div></div>
 <div id="logros" class="seccion"><h2>🏆 MIS LOGROS</h2><div id="logros-container" class="logros-grid"></div></div>
-<div id="estiramientos" class="seccion"><h2>🧘 ESTIRAMIENTOS POST‑ENTRENO</h2><div style="display:grid; gap:15px; margin-top:15px"><div class="card"><div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center"><div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🦵</div><div style="flex:1"><span class="ex-title">1. Estiramiento de isquiotibiales</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. Siéntate en el suelo con una pierna estirada y la otra flexionada.<br>2. Inclínate hacia adelante desde la cadera, no desde la espalda.<br>3. Intenta tocar la punta del pie sin forzar.<br>4. Mantén durante 30 segundos y cambia de pierna.<br><span style="color:#32d74b">💡 Consejo: No rebotes, mantén la posición suave.</span></div></div></div></div><div class="card"><div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center"><div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🦵</div><div style="flex:1"><span class="ex-title">2. Estiramiento de cuádriceps</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. De pie, sujétate a una pared o silla.<br>2. Dobla la rodilla llevando el talón hacia el glúteo.<br>3. Sujeta el pie con la mano del mismo lado.<br>4. Mantén la rodilla pegada a la otra pierna.<br>5. Aguanta 30 segundos y cambia de pierna.<br><span style="color:#32d74b">💡 Consejo: No arquear la espalda, pecho arriba.</span></div></div></div></div><div class="card"><div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center"><div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">💪</div><div style="flex:1"><span class="ex-title">3. Estiramiento de pectorales</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. Busca un marco de puerta o una esquina.<br>2. Apoya el antebrazo en el marco, codo a la altura del hombro.<br>3. Gira suavemente el torso hacia el lado contrario.<br>4. Siente el estiramiento en el pecho.<br>5. Mantén 30 segundos y cambia de brazo.<br><span style="color:#32d74b">💡 Consejo: No fuerces, solo gira hasta sentir el estiramiento.</span></div></div></div></div><div class="card"><div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center"><div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🐱</div><div style="flex:1"><span class="ex-title">4. Estiramiento de espalda baja (gato‑vaca)</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. En posición de cuatro patas (manos y rodillas).<br>2. Inspira, arquea la espalda hacia abajo (vaca).<br>3. Espira, redondea la espalda hacia arriba (gato).<br>4. Repite 10 veces, moviéndote con la respiración.<br><span style="color:#32d74b">💡 Consejo: Movimiento suave, no rápido.</span></div></div></div></div><div class="card"><div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center"><div style="font-size:4rem; background:#1a1a1a; width:100px; height:100px; display:flex; align-items:center; justify-content:center; border-radius:15px">🙆</div><div style="flex:1"><span class="ex-title">5. Estiramiento de hombros (brazo cruzado)</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. De pie o sentado, estira un brazo cruzando el pecho.<br>2. Con la mano contraria, tira suavemente del codo.<br>3. Mantén el hombro relajado y hacia abajo.<br>4. Aguanta 30 segundos y cambia de brazo.<br><span style="color:#32d74b">💡 Consejo: No tires del brazo, solo presión suave.</span></div></div></div></div></div></div>
-<div id="calendario" class="seccion"><h2>📅 CALENDARIO DE ENTRENO</h2><div id="calendario-entreno-container" style="margin-top:20px"></div><h2 style="margin-top:30px; color:#3b82f6">🚭 CALENDARIO DE DÍAS SIN FUMAR</h2><div id="calendario-sinfumar-container" style="margin-top:20px"></div></div>
+<div id="estiramientos" class="seccion"><h2>🧘 ESTIRAMIENTOS POST‑ENTRENO</h2><div style="display:grid;gap:15px;margin-top:15px"><div class="card"><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><div style="font-size:4rem;background:#1a1a1a;width:100px;height:100px;display:flex;align-items:center;justify-content:center;border-radius:15px">🦵</div><div style="flex:1"><span class="ex-title">1. Estiramiento de isquiotibiales</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. Siéntate en el suelo con una pierna estirada y la otra flexionada.<br>2. Inclínate hacia adelante desde la cadera, no desde la espalda.<br>3. Intenta tocar la punta del pie sin forzar.<br>4. Mantén durante 30 segundos y cambia de pierna.<br><span style="color:#32d74b">💡 Consejo: No rebotes, mantén la posición suave.</span></div></div></div></div><div class="card"><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><div style="font-size:4rem;background:#1a1a1a;width:100px;height:100px;display:flex;align-items:center;justify-content:center;border-radius:15px">🦵</div><div style="flex:1"><span class="ex-title">2. Estiramiento de cuádriceps</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. De pie, sujétate a una pared o silla.<br>2. Dobla la rodilla llevando el talón hacia el glúteo.<br>3. Sujeta el pie con la mano del mismo lado.<br>4. Mantén la rodilla pegada a la otra pierna.<br>5. Aguanta 30 segundos y cambia de pierna.<br><span style="color:#32d74b">💡 Consejo: No arquear la espalda, pecho arriba.</span></div></div></div></div><div class="card"><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><div style="font-size:4rem;background:#1a1a1a;width:100px;height:100px;display:flex;align-items:center;justify-content:center;border-radius:15px">💪</div><div style="flex:1"><span class="ex-title">3. Estiramiento de pectorales</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. Busca un marco de puerta o una esquina.<br>2. Apoya el antebrazo en el marco, codo a la altura del hombro.<br>3. Gira suavemente el torso hacia el lado contrario.<br>4. Siente el estiramiento en el pecho.<br>5. Mantén 30 segundos y cambia de brazo.<br><span style="color:#32d74b">💡 Consejo: No fuerces, solo gira hasta sentir el estiramiento.</span></div></div></div></div><div class="card"><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><div style="font-size:4rem;background:#1a1a1a;width:100px;height:100px;display:flex;align-items:center;justify-content:center;border-radius:15px">🐱</div><div style="flex:1"><span class="ex-title">4. Estiramiento de espalda baja (gato‑vaca)</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. En posición de cuatro patas (manos y rodillas).<br>2. Inspira, arquea la espalda hacia abajo (vaca).<br>3. Espira, redondea la espalda hacia arriba (gato).<br>4. Repite 10 veces, moviéndote con la respiración.<br><span style="color:#32d74b">💡 Consejo: Movimiento suave, no rápido.</span></div></div></div></div><div class="card"><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><div style="font-size:4rem;background:#1a1a1a;width:100px;height:100px;display:flex;align-items:center;justify-content:center;border-radius:15px">🙆</div><div style="flex:1"><span class="ex-title">5. Estiramiento de hombros (brazo cruzado)</span><div style="margin-top:5px"><strong>📝 CÓMO HACERLO:</strong><br>1. De pie o sentado, estira un brazo cruzando el pecho.<br>2. Con la mano contraria, tira suavemente del codo.<br>3. Mantén el hombro relajado y hacia abajo.<br>4. Aguanta 30 segundos y cambia de brazo.<br><span style="color:#32d74b">💡 Consejo: No tires del brazo, solo presión suave.</span></div></div></div></div></div></div>
+<div id="calendario" class="seccion"><h2>📅 CALENDARIO DE ENTRENO</h2><div id="calendario-entreno-container" style="margin-top:20px"></div><h2 style="margin-top:30px;color:#3b82f6">🚭 CALENDARIO DE DÍAS SIN FUMAR</h2><div id="calendario-sinfumar-container" style="margin-top:20px"></div></div>
 <div id="calcModal" class="calc-modal"><span class="close-calc" onclick="cerrarCalc()">&times;</span><h3>🏋️ CALCULAR DISCOS</h3><div style="font-size:12px;margin-bottom:10px">Kit 20kg | Máx 4 discos</div><div class="calc-grid"><button class="calc-btn" onclick="sumarDisco(1.25)">+1.25kg <span class="badge" id="badge125">0</span></button><button class="calc-btn" onclick="sumarDisco(1.5)">+1.5kg <span class="badge" id="badge15">0</span></button><button class="calc-btn" onclick="sumarDisco(2)">+2kg <span class="badge" id="badge2">0</span></button></div><div>PESO TOTAL: <strong id="totalDisco" style="color:#ff6600;font-size:24px">0</strong> kg</div><button class="calc-reset" onclick="resetearDiscos()">🗑️ RESET</button></div>
 <div id="descansoSelector" class="descanso-modal"><h3>⏱️ DESCANSO</h3><div class="descanso-tiempos"><button class="tiempo-btn" onclick="iniciarDescanso(30)">30s</button><button class="tiempo-btn" onclick="iniciarDescanso(45)">45s</button><button class="tiempo-btn" onclick="iniciarDescanso(60)">60s</button><button class="tiempo-btn" onclick="iniciarDescanso(90)">90s</button></div><button class="descanso-cerrar" onclick="cerrarSelectorDescanso()">❌ CERRAR</button></div>
 <div id="descanso-box"><h1 style="color:#32d74b;margin-bottom:20px">💪 DESCANSA</h1><div class="descanso-timer-num" id="descansoTimer">00</div><button onclick="cancelarDescanso()" style="margin-top:30px;background:#222;color:#fff;border:none;padding:12px 30px;border-radius:10px">CANCELAR</button></div>
@@ -133,6 +133,11 @@ let intervalDescanso = null;
 let timerInterval = null;
 const fechaDejarFumar = new Date(2026, 1, 22);
 
+// Calendario
+let entrenosRegistrados = JSON.parse(localStorage.getItem('nico_entrenos_registrados')) || [];
+let calendarioMesesOffset = 0;
+let historialPesosCal = JSON.parse(localStorage.getItem('nico_pesos')) || [];
+
 // Lista de logros
 const listaLogros = [
     {id:"primer_paso",nombre:"🏁 Primer paso",desc:"Completar tu primer día",condicion:()=>rachaActual>=1,icono:"🏁"},
@@ -152,38 +157,24 @@ const listaLogros = [
 
 // ==================== FUNCIONES BASE ====================
 function calcularDiasSinFumar() {
-    const hoy=new Date();
-    let meses=hoy.getMonth()-fechaDejarFumar.getMonth();
-    let dias=hoy.getDate()-fechaDejarFumar.getDate();
+    const hoy=new Date(); let meses=hoy.getMonth()-fechaDejarFumar.getMonth(); let dias=hoy.getDate()-fechaDejarFumar.getDate();
     if(dias<0){meses--;const ant=new Date(hoy.getFullYear(),hoy.getMonth(),0);dias+=ant.getDate();}
-    if(meses<0)meses+=12;
-    const total=Math.floor((hoy-fechaDejarFumar)/(1000*60*60*24));
-    let texto="";
-    if(meses>0)texto+=`${meses} mes${meses!==1?'es':''} `;
-    texto+=`${dias} día${dias!==1?'s':''}`;
+    if(meses<0)meses+=12; const total=Math.floor((hoy-fechaDejarFumar)/(1000*60*60*24));
+    let texto=""; if(meses>0)texto+=`${meses} mes${meses!==1?'es':''} `; texto+=`${dias} día${dias!==1?'s':''}`;
     return{total:total>=0?total:0,texto:texto};
 }
-
-function actualizarDiasSinFumar(){
-    const{total,texto}=calcularDiasSinFumar();
-    document.getElementById('diasSinFumar').innerHTML=total;
-    document.getElementById('mesesSinFumar').innerHTML=`🚭 ${texto}`;
-}
-
+function actualizarDiasSinFumar(){ const{total,texto}=calcularDiasSinFumar(); document.getElementById('diasSinFumar').innerHTML=total; document.getElementById('mesesSinFumar').innerHTML=`🚭 ${texto}`; }
 function actualizarFraseSinFumar() {
-    const dias = calcularDiasSinFumar().total;
-    let frase = "";
-    let emoji = "";
-    if (dias < 7) { frase = "💪 ¡Primeros días! Lo más difícil ya pasó"; emoji = "🌱"; }
-    else if (dias < 30) { frase = "🍃 Tu cuerpo ya está limpiándose. ¡Sigue así!"; emoji = "💨"; }
-    else if (dias < 60) { frase = "🎉 ¡1 mes sin fumar! Tus pulmones te lo agradecen"; emoji = "🫁"; }
-    else if (dias < 90) { frase = "🔥 ¡2 meses! Eres más fuerte que el cigarro"; emoji = "💪"; }
-    else if (dias < 180) { frase = "🏆 ¡3 meses! Has ahorrado dinero y salud"; emoji = "💰"; }
-    else if (dias < 365) { frase = "🌟 ¡MEDIO AÑO! Respiras mejor, vives mejor"; emoji = "✨"; }
-    else { frase = "👑 ¡UN AÑO SIN FUMAR! Eres un campeón"; emoji = "🏆"; }
-    document.getElementById('fraseSinFumar').innerHTML = `${emoji} ${frase}`;
+    const dias=calcularDiasSinFumar().total; let frase="",emoji="";
+    if(dias<7){frase="💪 ¡Primeros días! Lo más difícil ya pasó";emoji="🌱";}
+    else if(dias<30){frase="🍃 Tu cuerpo ya está limpiándose. ¡Sigue así!";emoji="💨";}
+    else if(dias<60){frase="🎉 ¡1 mes sin fumar! Tus pulmones te lo agradecen";emoji="🫁";}
+    else if(dias<90){frase="🔥 ¡2 meses! Eres más fuerte que el cigarro";emoji="💪";}
+    else if(dias<180){frase="🏆 ¡3 meses! Has ahorrado dinero y salud";emoji="💰";}
+    else if(dias<365){frase="🌟 ¡MEDIO AÑO! Respiras mejor, vives mejor";emoji="✨";}
+    else{frase="👑 ¡UN AÑO SIN FUMAR! Eres un campeón";emoji="🏆";}
+    document.getElementById('fraseSinFumar').innerHTML=`${emoji} ${frase}`;
 }
-
 function mostrarToast(m){const t=document.createElement('div');t.className='toast-msg';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),3000);}
 function getRutinaHoy(){const dia=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()];const r={lunes:'Espalda/Bíceps',martes:'Cardio/Abs',miercoles:'Pecho/Tríceps',jueves:'Cardio/Abs',viernes:'Pierna/Hombro',sabado:'Cardio/Abs',domingo:'Descanso'};return r[dia]||'Descanso';}
 function getDiaSemana(){return ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()];}
@@ -197,8 +188,7 @@ function borrarTodo(){if(confirm("¿Borrar todos los datos?")){localStorage.clea
 
 function actualizarHome(){
     document.getElementById('racha').innerText=rachaActual;
-    actualizarDiasSinFumar();
-    actualizarFraseSinFumar();
+    actualizarDiasSinFumar(); actualizarFraseSinFumar();
     const total=Object.values(ejercicios).reduce((s,d)=>s+d.length,0);
     const realizados=Object.values(checks).filter(v=>v===true).length;
     const porcentaje=Math.min(Math.round((realizados/total)*100),100);
@@ -211,18 +201,11 @@ function actualizarHome(){
 }
 
 function sumarRachaSiCorresponde(dia){
-    if(diasCompletadosSemana.includes(dia)){
-        mostrarToast(`✅ ${dia} ya completado esta semana.`);
-        return false;
-    }
-    rachaActual++;
-    diasCompletadosSemana.push(dia);
+    if(diasCompletadosSemana.includes(dia)){ mostrarToast(`✅ ${dia} ya completado esta semana.`); return false; }
+    rachaActual++; diasCompletadosSemana.push(dia);
     localStorage.setItem('nico_racha',rachaActual);
     localStorage.setItem('nico_dias_completados_semana',JSON.stringify(diasCompletadosSemana));
-    if(rachaActual>maxRachaAlcanzada){
-        maxRachaAlcanzada=rachaActual;
-        localStorage.setItem('nico_max_racha',maxRachaAlcanzada);
-    }
+    if(rachaActual>maxRachaAlcanzada){ maxRachaAlcanzada=rachaActual; localStorage.setItem('nico_max_racha',maxRachaAlcanzada); }
     verificarYDesbloquearLogros();
     if(typeof canvasConfetti!=='undefined'){
         canvasConfetti({particleCount:300,spread:100,origin:{y:0.6}});
@@ -238,40 +221,28 @@ function verificarYDesbloquearLogros(){
     let nuevos=false;
     for(const logro of listaLogros){
         if(!logrosObtenidos.includes(logro.id) && logro.condicion()){
-            logrosObtenidos.push(logro.id);
-            nuevos=true;
+            logrosObtenidos.push(logro.id); nuevos=true;
             mostrarToast(`🏆 ¡NUEVO LOGRO! ${logro.nombre} 🏆`);
             if(typeof canvasConfetti!=='undefined') canvasConfetti({particleCount:200,spread:100,origin:{y:0.6}});
         }
     }
-    if(nuevos){
-        localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos));
-        renderizarLogros();
-    }
+    if(nuevos){ localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros(); }
 }
 
 function renderizarLogros(){
     const contenedor=document.getElementById('logros-container');
     if(!contenedor) return;
-    contenedor.innerHTML=listaLogros.map(logro=>{
-        const obtenido=logrosObtenidos.includes(logro.id);
-        return `<div class="badge-card ${obtenido?'obtenido':''}"><span class="badge-icon">${logro.icono}</span><div class="badge-nombre">${logro.nombre}</div><div class="badge-desc">${logro.desc}</div><div class="${obtenido?'badge-obtenido':'badge-bloqueado'}">${obtenido?'✅ DESBLOQUEADO':'🔒 BLOQUEADO'}</div></div>`;
-    }).join('');
+    contenedor.innerHTML=listaLogros.map(logro=>{const obtenido=logrosObtenidos.includes(logro.id); return `<div class="badge-card ${obtenido?'obtenido':''}"><span class="badge-icon">${logro.icono}</span><div class="badge-nombre">${logro.nombre}</div><div class="badge-desc">${logro.desc}</div><div class="${obtenido?'badge-obtenido':'badge-bloqueado'}">${obtenido?'✅ DESBLOQUEADO':'🔒 BLOQUEADO'}</div></div>`;}).join('');
 }
 
 function resetSemanal(){
-    const hoy=new Date();
-    const yearWeek=`${hoy.getFullYear()}-${Math.ceil((hoy-new Date(hoy.getFullYear(),0,1))/86400000/7)}`;
+    const hoy=new Date(); const yearWeek=`${hoy.getFullYear()}-${Math.ceil((hoy-new Date(hoy.getFullYear(),0,1))/86400000/7)}`;
     if(ultimaSemanaReset!==yearWeek && hoy.getDay()===1){
-        checks={};
-        diasCompletadosSemana=[];
+        checks={}; diasCompletadosSemana=[];
         localStorage.setItem('nico_checks',JSON.stringify(checks));
         localStorage.setItem('nico_dias_completados_semana',JSON.stringify(diasCompletadosSemana));
-        ultimaSemanaReset=yearWeek;
-        localStorage.setItem('nico_ultima_semana_reset',ultimaSemanaReset);
-        renderizarRutinas();
-        actualizarHome();
-        mostrarToast("🔄 LUNES - Nueva semana. Los checks se han reiniciado.");
+        ultimaSemanaReset=yearWeek; localStorage.setItem('nico_ultima_semana_reset',ultimaSemanaReset);
+        renderizarRutinas(); actualizarHome(); mostrarToast("🔄 LUNES - Nueva semana. Los checks se han reiniciado.");
     }
 }
 
@@ -295,45 +266,29 @@ function mostrarHistorialPeso(){const h=document.getElementById('hist-peso');if(
 
 function renderizarRutinas(){
     for(const dia in ejercicios){
-        const lista=document.getElementById(`list-${dia}`);
-        if(!lista)continue;
+        const lista=document.getElementById(`list-${dia}`); if(!lista)continue;
         lista.innerHTML=ejercicios[dia].map((ex,idx)=>{
-            const id=`${dia}-${idx}`;
-            const isChecked=checks[id]===true;
-            const disabledAttr=isChecked?'disabled':'';
+            const id=`${dia}-${idx}`; const isChecked=checks[id]===true; const disabledAttr=isChecked?'disabled':'';
             return `<div class="card"><div style="display:flex; justify-content:space-between"><div><div class="ex-header"><span class="ex-title">${ex.nombre}</span><div class="ex-buttons">${ex.tienePeso?`<span class="calc-icon" onclick="abrirCalc('${id}')">🏋️ CALCULAR</span>`:''}<span class="descanso-icon" onclick="abrirSelectorDescanso()">⏱️ DESCANSAR</span></div></div><span class="ex-reps">${ex.series}</span></div><input type="checkbox" class="check-box" ${isChecked?'checked':''} ${disabledAttr} onchange="marcarCheck('${dia}',${idx},this.checked)"></div><input type="number" class="input-nota" step="0.5" placeholder="Peso real (kg)..." value="${notas[id]||''}" onchange="guardarNota('${id}',this.value)"><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen?`<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">`:''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g,'<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p><p style="color:#ff6600">⚖️ ${ex.peso}</p></div></div>`;
         }).join('');
     }
 }
 
 function marcarCheck(dia,idx,valor){
-    if(valor===false)return;
-    const id=`${dia}-${idx}`;
-    if(checks[id])return;
-    checks[id]=true;
-    localStorage.setItem('nico_checks',JSON.stringify(checks));
+    if(valor===false)return; const id=`${dia}-${idx}`; if(checks[id])return;
+    checks[id]=true; localStorage.setItem('nico_checks',JSON.stringify(checks));
     const todosCompletados=ejercicios[dia].every((_,i)=>checks[`${dia}-${i}`]===true);
-    if(todosCompletados){
-        sumarRachaSiCorresponde(dia);
-        verificarYDesbloquearLogros();
-        marcarEntrenoHoy();
-    }
-    renderizarRutinas();
-    actualizarHome();
+    if(todosCompletados){ sumarRachaSiCorresponde(dia); verificarYDesbloquearLogros(); marcarEntrenoHoy(); }
+    renderizarRutinas(); actualizarHome();
 }
 function guardarNota(id,valor){if(valor&&valor!=='')notas[id]=valor;else delete notas[id];localStorage.setItem('nico_notas',JSON.stringify(notas));}
 
 // ==================== MENSAJES MOTIVACIONALES ====================
-let colaMensajes = [];
-let mostrandoMensaje = false;
-function mostrarMensajeMotivador(mensaje, tipo = "normal") {
-    colaMensajes.push({ mensaje, tipo });
-    if (!mostrandoMensaje) procesarColaMensajes();
-}
+let colaMensajes = []; let mostrandoMensaje = false;
+function mostrarMensajeMotivador(mensaje, tipo = "normal") { colaMensajes.push({ mensaje, tipo }); if (!mostrandoMensaje) procesarColaMensajes(); }
 function procesarColaMensajes() {
     if (colaMensajes.length === 0) { mostrandoMensaje = false; return; }
-    mostrandoMensaje = true;
-    const { mensaje, tipo } = colaMensajes.shift();
+    mostrandoMensaje = true; const { mensaje, tipo } = colaMensajes.shift();
     let colorFondo = "#ff6600", colorBorde = "#ff884d", emoji = "💪";
     if (tipo === "logro") { colorFondo = "#8b5cf6"; colorBorde = "#a855f7"; emoji = "🏆"; }
     if (tipo === "racha") { colorFondo = "#32d74b"; colorBorde = "#2e7d32"; emoji = "🔥"; }
@@ -351,8 +306,7 @@ function mostrarBienvenidaDiaria() {
     const hoy = new Date().toDateString();
     if (ultimoMensajeBienvenida !== hoy) {
         mostrarMensajeMotivador(`🌞 Buenos días, campeón. Hoy es ${obtenerNombreDia(getDiaSemana())}: ${getRutinaHoy()}. ¡Dale todo!`, "bienvenida");
-        ultimoMensajeBienvenida = hoy;
-        localStorage.setItem("ultimoMensajeBienvenida", ultimoMensajeBienvenida);
+        ultimoMensajeBienvenida = hoy; localStorage.setItem("ultimoMensajeBienvenida", ultimoMensajeBienvenida);
     }
 }
 setTimeout(() => { mostrarBienvenidaDiaria(); }, 1000);
@@ -361,100 +315,67 @@ setTimeout(() => { mostrarBienvenidaDiaria(); }, 1000);
 function exportarDatos() {
     const datos = { version: "1.0", fecha: new Date().toISOString(), racha: rachaActual, maxRacha: maxRachaAlcanzada, pesos: pesosRegistrados, logros: logrosObtenidos, checks: checks, notas: notas, diasCompletadosSemana: diasCompletadosSemana, ultimaSemanaReset: ultimaSemanaReset, ultimoMensajeBienvenida: localStorage.getItem("ultimoMensajeBienvenida") || "", entrenosRegistrados: entrenosRegistrados || [], configDiscos: {} };
     for (let key in localStorage) if (key.startsWith("discos_")) datos.configDiscos[key] = localStorage.getItem(key);
-    const json = JSON.stringify(datos, null, 2);
-    const blob = new Blob([json], {type: "application/json"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `nicogym_backup_${new Date().toISOString().slice(0,19).replace(/:/g, "-")}.json`;
+    const json = JSON.stringify(datos, null, 2); const blob = new Blob([json], {type: "application/json"}); const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = `nicogym_backup_${new Date().toISOString().slice(0,19).replace(/:/g, "-")}.json`;
     document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
     mostrarMensajeMotivador("📦 Copia de seguridad guardada correctamente.", "logro");
 }
-
 function enviarCopiaEmail() {
     const datos = { version: "1.0", fecha: new Date().toISOString(), racha: rachaActual, maxRacha: maxRachaAlcanzada, pesos: pesosRegistrados, logros: logrosObtenidos, checks: checks, notas: notas, diasCompletadosSemana: diasCompletadosSemana, ultimaSemanaReset: ultimaSemanaReset, ultimoMensajeBienvenida: localStorage.getItem("ultimoMensajeBienvenida") || "", entrenosRegistrados: entrenosRegistrados || [], configDiscos: {} };
     for (let key in localStorage) if (key.startsWith("discos_")) datos.configDiscos[key] = localStorage.getItem(key);
-    const json = JSON.stringify(datos, null, 2);
-    const blob = new Blob([json], {type: "application/json"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `nicogym_backup_${new Date().toISOString().slice(0,19).replace(/:/g, "-")}.json`;
+    const json = JSON.stringify(datos, null, 2); const blob = new Blob([json], {type: "application/json"}); const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = `nicogym_backup_${new Date().toISOString().slice(0,19).replace(/:/g, "-")}.json`;
     document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-    const subject = "Copia de seguridad NICO GYM";
-    const body = "Adjunto encontrarás el archivo de copia de seguridad de mi app NICO GYM.";
+    const subject = "Copia de seguridad NICO GYM"; const body = "Adjunto encontrarás el archivo de copia de seguridad de mi app NICO GYM.";
     window.location.href = `mailto:nsalar.96@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     mostrarMensajeMotivador("📧 Archivo descargado. Abre tu correo, adjúntalo y envíalo.", "logro");
 }
 
 // ==================== CALENDARIOS ====================
-let entrenosRegistrados = JSON.parse(localStorage.getItem('nico_entrenos_registrados')) || [];
-let calendarioMesesOffset = 0;
-let historialPesosCal = JSON.parse(localStorage.getItem('nico_pesos')) || [];
-
 function guardarEntrenos() { localStorage.setItem('nico_entrenos_registrados', JSON.stringify(entrenosRegistrados)); }
 function marcarEntrenoHoy() {
     const hoy = new Date().toISOString().slice(0,10);
     if (!entrenosRegistrados.includes(hoy)) {
-        entrenosRegistrados.push(hoy);
-        guardarEntrenos();
-        renderizarCalendarioEntreno();
+        entrenosRegistrados.push(hoy); guardarEntrenos(); renderizarCalendarioEntreno();
         mostrarMensajeMotivador("📅 ¡Día marcado en el calendario de entrenos!", "logro");
     }
 }
 function getDiasSinFumarCal() {
-    const inicio = new Date(2026, 1, 22);
-    const hoy = new Date();
-    const dias = [];
-    let fecha = new Date(inicio);
+    const inicio = new Date(2026, 1, 22); const hoy = new Date(); const dias = []; let fecha = new Date(inicio);
     while (fecha < hoy) { dias.push(fecha.toISOString().slice(0,10)); fecha.setDate(fecha.getDate() + 1); }
     return dias;
 }
 function getPesoEnFechaCal(fechaStr) {
     for (let p of historialPesosCal) {
-        const partes = p.fecha.split('/');
-        const fechaPeso = `2026-${partes[1]}-${partes[0]}`;
+        const partes = p.fecha.split('/'); const fechaPeso = `2026-${partes[1]}-${partes[0]}`;
         if (fechaPeso === fechaStr) return p.valor;
     }
     return null;
 }
-function refrescarPesosCalendario() {
-    historialPesosCal = JSON.parse(localStorage.getItem('nico_pesos')) || [];
-    renderizarCalendarioEntreno();
-}
+function refrescarPesosCalendario() { historialPesosCal = JSON.parse(localStorage.getItem('nico_pesos')) || []; renderizarCalendarioEntreno(); }
 function cambiarMesCal(delta) { calendarioMesesOffset += delta; renderizarCalendarioEntreno(); renderizarCalendarioSinFumar(); }
 function popupEntrenoCal(dia, mes, año, fechaStr) {
-    const fecha = new Date(año, mes, dia);
-    const esEntrenado = entrenosRegistrados.includes(fechaStr);
-    const esDomingo = fecha.getDay() === 0;
-    const peso = getPesoEnFechaCal(fechaStr);
-    let msg = "";
-    if (esEntrenado) msg += "✅ Entrenado 💪<br>";
-    if (esDomingo) msg += "🟡 Domingo (descanso)<br>";
-    if (peso) msg += `⚖️ Peso: <strong>${peso} kg</strong><br>`;
-    if (!esEntrenado && !esDomingo && !peso) msg = "⚪ Sin actividad";
-    const popup = document.createElement('div');
-    popup.style.cssText = `position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid #ff6600; border-radius:20px; padding:20px; z-index:20000; min-width:250px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.5); backdrop-filter:blur(10px);`;
+    const fecha = new Date(año, mes, dia); const esEntrenado = entrenosRegistrados.includes(fechaStr); const esDomingo = fecha.getDay() === 0;
+    const peso = getPesoEnFechaCal(fechaStr); let msg = "";
+    if (esEntrenado) msg += "✅ Entrenado 💪<br>"; if (esDomingo) msg += "🟡 Domingo (descanso)<br>";
+    if (peso) msg += `⚖️ Peso: <strong>${peso} kg</strong><br>`; if (!esEntrenado && !esDomingo && !peso) msg = "⚪ Sin actividad";
+    const popup = document.createElement('div'); popup.style.cssText = `position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid #ff6600; border-radius:20px; padding:20px; z-index:20000; min-width:250px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.5); backdrop-filter:blur(10px);`;
     popup.innerHTML = `<h3 style="color:#ff6600; margin-bottom:15px">📅 ${dia}/${mes+1}/${año}</h3><div style="margin-bottom:20px">${msg}</div><button class="notif-btn" style="background:#ff6600; padding:8px 20px" onclick="this.parentElement.remove()">CERRAR</button>`;
     document.body.appendChild(popup);
 }
 function popupSinFumarCal(dia, mes, año, fechaStr) {
-    const esSinFumar = getDiasSinFumarCal().includes(fechaStr);
-    const msg = esSinFumar ? "🔵 Día sin fumar 🚭" : "⚪ Con tabaco o futuro";
-    const popup = document.createElement('div');
-    popup.style.cssText = `position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid #ff6600; border-radius:20px; padding:20px; z-index:20000; min-width:250px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.5); backdrop-filter:blur(10px);`;
+    const esSinFumar = getDiasSinFumarCal().includes(fechaStr); const msg = esSinFumar ? "🔵 Día sin fumar 🚭" : "⚪ Con tabaco o futuro";
+    const popup = document.createElement('div'); popup.style.cssText = `position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid #ff6600; border-radius:20px; padding:20px; z-index:20000; min-width:250px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.5); backdrop-filter:blur(10px);`;
     popup.innerHTML = `<h3 style="color:#ff6600; margin-bottom:15px">📅 ${dia}/${mes+1}/${año}</h3><div style="margin-bottom:20px">${msg}</div><button class="notif-btn" style="background:#ff6600; padding:8px 20px" onclick="this.parentElement.remove()">CERRAR</button>`;
     document.body.appendChild(popup);
 }
 function renderizarCalendarioEntreno() {
-    const contenedor = document.getElementById('calendario-entreno-container');
-    if (!contenedor) return;
+    const contenedor = document.getElementById('calendario-entreno-container'); if (!contenedor) return;
     const hoy = new Date(); const hoyStr = hoy.toISOString().slice(0,10);
     let año = hoy.getFullYear(); let mes = hoy.getMonth() + calendarioMesesOffset;
     if (mes < 0) { mes += 12; año--; } if (mes > 11) { mes -= 12; año++; }
     const primerDia = new Date(año, mes, 1); const ultimoDia = new Date(año, mes + 1, 0);
-    const numDias = ultimoDia.getDate(); let diaSemanaPrimero = primerDia.getDay();
-    let offset = diaSemanaPrimero === 0 ? 6 : diaSemanaPrimero - 1;
+    const numDias = ultimoDia.getDate(); let diaSemanaPrimero = primerDia.getDay(); let offset = diaSemanaPrimero === 0 ? 6 : diaSemanaPrimero - 1;
     const nombreMes = new Date(año, mes).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
     let html = `<div style="display:flex; justify-content:space-between; margin-bottom:15px"><button class="notif-btn" style="background:#333; padding:8px 15px" onclick="cambiarMesCal(-1)">◀</button><h3 style="color:#ff6600">${nombreMes} ${año}</h3><button class="notif-btn" style="background:#333; padding:8px 15px" onclick="cambiarMesCal(1)">▶</button></div>`;
     html += `<div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:11px"><span><span style="display:inline-block; width:18px; height:18px; background:#2e7d32; border-radius:4px"></span> Entrenado</span><span><span style="display:inline-block; width:18px; height:18px; background:#eab308; border-radius:4px"></span> Domingo</span><span><span style="display:inline-block; width:18px; height:18px; background:#222; border:1px solid #444"></span> Sin entrenar</span><span><span style="display:inline-block; width:14px; height:14px; background:#f59e0b; border-radius:50%"></span> Peso</span></div>`;
@@ -475,13 +396,11 @@ function renderizarCalendarioEntreno() {
     html += `</div>`; contenedor.innerHTML = html;
 }
 function renderizarCalendarioSinFumar() {
-    const contenedor = document.getElementById('calendario-sinfumar-container');
-    if (!contenedor) return;
+    const contenedor = document.getElementById('calendario-sinfumar-container'); if (!contenedor) return;
     let año = new Date().getFullYear(); let mes = new Date().getMonth() + calendarioMesesOffset;
     if (mes < 0) { mes += 12; año--; } if (mes > 11) { mes -= 12; año++; }
     const primerDia = new Date(año, mes, 1); const ultimoDia = new Date(año, mes + 1, 0);
-    const numDias = ultimoDia.getDate(); let diaSemanaPrimero = primerDia.getDay();
-    let offset = diaSemanaPrimero === 0 ? 6 : diaSemanaPrimero - 1;
+    const numDias = ultimoDia.getDate(); let diaSemanaPrimero = primerDia.getDay(); let offset = diaSemanaPrimero === 0 ? 6 : diaSemanaPrimero - 1;
     const nombreMes = new Date(año, mes).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
     const diasSinFumar = getDiasSinFumarCal();
     let html = `<div style="text-align:center; margin-bottom:15px"><h3 style="color:#3b82f6">${nombreMes} ${año}</h3></div>`;
@@ -498,12 +417,7 @@ function renderizarCalendarioSinFumar() {
     for (let i = 0; i < restantes; i++) html += `<div style="padding:8px; color:#333"></div>`;
     html += `</div>`; contenedor.innerHTML = html;
 }
-function crearCalendarios() {
-    if (document.getElementById('calendario')) return;
-    const seccion = document.getElementById('calendario');
-    if (!seccion) return;
-    renderizarCalendarioEntreno(); renderizarCalendarioSinFumar();
-}
+function crearCalendarios() { renderizarCalendarioEntreno(); renderizarCalendarioSinFumar(); }
 setTimeout(() => { refrescarPesosCalendario(); crearCalendarios(); }, 500);
 </script>
 </body>
