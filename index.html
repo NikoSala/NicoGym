@@ -167,19 +167,108 @@ let diasFumados = JSON.parse(localStorage.getItem('nico_dias_fumados')) || [];
 
 // ==================== LOGROS ====================
 const listaLogros = [
-{id:"primer_paso",nombre:"🏁 Primer paso",desc:"Completar tu primer día",condicion:()=>rachaActual>=1,icono:"🏁"},
-{id:"racha_5",nombre:"🔥 Racha 5",desc:"Alcanzar 5 días",condicion:()=>rachaActual>=5,icono:"🔥"},
-{id:"racha_10",nombre:"💪 Racha 10",desc:"Alcanzar 10 días",condicion:()=>rachaActual>=10,icono:"💪"},
-{id:"racha_20",nombre:"🦾 Racha 20",desc:"Alcanzar 20 días",condicion:()=>rachaActual>=20,icono:"🦾"},
-{id:"racha_30",nombre:"🚀 Racha 30",desc:"Alcanzar 30 días",condicion:()=>rachaActual>=30,icono:"🚀"},
-{id:"racha_50",nombre:"🏆 Racha 50",desc:"Alcanzar 50 días",condicion:()=>rachaActual>=50,icono:"🏆"},
-{id:"racha_100",nombre:"👑 Racha 100",desc:"Alcanzar 100 días",condicion:()=>rachaActual>=100,icono:"👑"},
-{id:"ns_30",nombre:"🚭 1 mes sin fumar",desc:"30 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=30,icono:"🚭"},
-{id:"ns_90",nombre:"🎉 3 meses sin fumar",desc:"90 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=90,icono:"🎉"},
-{id:"ns_180",nombre:"🥳 6 meses sin fumar",desc:"180 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=180,icono:"🥳"},
-{id:"ns_365",nombre:"🎊 1 año sin fumar",desc:"365 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=365,icono:"🎊"},
-{id:"semana_completa",nombre:"📆 Semana completa",desc:"Completar 6 días en una semana",condicion:()=>diasCompletadosSemana.length>=6,icono:"📆"},
-{id:"super_racha",nombre:"🦸 Super racha",desc:"Superar tu récord",condicion:()=>rachaActual>maxRachaAlcanzada&&rachaActual>0,icono:"🦸"}
+    // Logros de racha
+    {id:"primer_paso",nombre:"🏁 Primer paso",desc:"Completar tu primer día",condicion:()=>rachaActual>=1,icono:"🏁"},
+    {id:"racha_3",nombre:"🔥 Racha 3",desc:"3 días seguidos entrenando",condicion:()=>rachaActual>=3,icono:"🔥"},
+    {id:"racha_5",nombre:"🔥 Racha 5",desc:"5 días seguidos entrenando",condicion:()=>rachaActual>=5,icono:"🔥"},
+    {id:"racha_7",nombre:"💪 Racha 7",desc:"1 semana completa entrenando",condicion:()=>rachaActual>=7,icono:"💪"},
+    {id:"racha_10",nombre:"💪 Racha 10",desc:"10 días seguidos entrenando",condicion:()=>rachaActual>=10,icono:"💪"},
+    {id:"racha_14",nombre:"🚀 Racha 14",desc:"2 semanas seguidas entrenando",condicion:()=>rachaActual>=14,icono:"🚀"},
+    {id:"racha_20",nombre:"🦾 Racha 20",desc:"20 días seguidos entrenando",condicion:()=>rachaActual>=20,icono:"🦾"},
+    {id:"racha_21",nombre:"🦾 Racha 21",desc:"3 semanas seguidas entrenando",condicion:()=>rachaActual>=21,icono:"🦾"},
+    {id:"racha_30",nombre:"🚀 Racha 30",desc:"30 días seguidos entrenando",condicion:()=>rachaActual>=30,icono:"🚀"},
+    {id:"racha_40",nombre:"🏆 Racha 40",desc:"40 días seguidos entrenando",condicion:()=>rachaActual>=40,icono:"🏆"},
+    {id:"racha_50",nombre:"🏆 Racha 50",desc:"50 días seguidos entrenando",condicion:()=>rachaActual>=50,icono:"🏆"},
+    {id:"racha_60",nombre:"👑 Racha 60",desc:"2 meses seguidos entrenando",condicion:()=>rachaActual>=60,icono:"👑"},
+    {id:"racha_75",nombre:"💎 Racha 75",desc:"75 días seguidos entrenando",condicion:()=>rachaActual>=75,icono:"💎"},
+    {id:"racha_90",nombre:"🎯 Racha 90",desc:"3 meses seguidos entrenando",condicion:()=>rachaActual>=90,icono:"🎯"},
+    {id:"racha_100",nombre:"👑 Racha 100",desc:"100 días seguidos entrenando",condicion:()=>rachaActual>=100,icono:"👑"},
+    
+    // Logros de días sin fumar
+    {id:"ns_7",nombre:"🌱 1 semana sin fumar",desc:"7 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=7,icono:"🌱"},
+    {id:"ns_14",nombre:"🍃 2 semanas sin fumar",desc:"14 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=14,icono:"🍃"},
+    {id:"ns_30",nombre:"🚭 1 mes sin fumar",desc:"30 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=30,icono:"🚭"},
+    {id:"ns_60",nombre:"💨 2 meses sin fumar",desc:"60 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=60,icono:"💨"},
+    {id:"ns_90",nombre:"🎉 3 meses sin fumar",desc:"90 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=90,icono:"🎉"},
+    {id:"ns_100",nombre:"💪 100 días sin fumar",desc:"100 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=100,icono:"💪"},
+    {id:"ns_180",nombre:"🥳 6 meses sin fumar",desc:"180 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=180,icono:"🥳"},
+    {id:"ns_365",nombre:"🎊 1 año sin fumar",desc:"365 días sin fumar",condicion:()=>calcularDiasSinFumar().total>=365,icono:"🎊"},
+    
+    // Logros de constancia semanal
+    {id:"semana_completa",nombre:"📆 Semana completa",desc:"Completar 6 días en una semana",condicion:()=>diasCompletadosSemana.length>=6,icono:"📆"},
+    {id:"super_racha",nombre:"🦸 Super racha",desc:"Superar tu récord",condicion:()=>rachaActual>maxRachaAlcanzada&&rachaActual>0,icono:"🦸"},
+    
+    // Logros de ejercicios
+    {id:"primera_dominada",nombre:"🏋️ Primera dominada",desc:"Completar el ejercicio de dominadas",condicion:()=>checks['lunes-0']===true,icono:"🏋️"},
+    {id:"primer_dia_completo",nombre:"🎯 Primer día completo",desc:"Completar tu primer día de rutina",condicion:()=>rachaActual>=1,icono:"🎯"},
+    {id:"pierna_fuerte",nombre:"🦵 Pierna fuerte",desc:"Completar 5 veces el día de piernas",condicion:()=>{
+        let contador = 0;
+        for(let i=0; i<5; i++) {
+            if(checks[`viernes-0`] && checks[`viernes-1`] && checks[`viernes-2`] && checks[`viernes-3`]) contador++;
+        }
+        return contador >= 5;
+    },icono:"🦵"},
+    {id:"brazo_acero",nombre:"💪 Brazo de acero",desc:"Completar 5 veces el día de bíceps/tríceps",condicion:()=>{
+        let contador = 0;
+        for(let i=0; i<5; i++) {
+            if(checks[`lunes-3`] && checks[`miercoles-2`] && checks[`miercoles-3`]) contador++;
+        }
+        return contador >= 5;
+    },icono:"💪"},
+    {id:"especialista_pecho",nombre:"🎯 Especialista en pecho",desc:"Completar 5 veces el día de pecho",condicion:()=>{
+        let contador = 0;
+        for(let i=0; i<5; i++) {
+            if(checks[`miercoles-0`]) contador++;
+        }
+        return contador >= 5;
+    },icono:"🎯"},
+    
+    // Logros de peso corporal
+    {id:"primer_peso",nombre:"⚖️ Primer peso registrado",desc:"Registrar tu primer peso",condicion:()=>pesosRegistrados.length>=1,icono:"⚖️"},
+    {id:"menos_1kg",nombre:"📉 -1 kg",desc:"Bajar 1 kg desde tu peso inicial",condicion:()=>{
+        const inicial = pesosRegistrados[0]?.valor || 0;
+        const actual = pesosRegistrados[pesosRegistrados.length-1]?.valor || 0;
+        return inicial - actual >= 1;
+    },icono:"📉"},
+    {id:"menos_2kg",nombre:"📉 -2 kg",desc:"Bajar 2 kg desde tu peso inicial",condicion:()=>{
+        const inicial = pesosRegistrados[0]?.valor || 0;
+        const actual = pesosRegistrados[pesosRegistrados.length-1]?.valor || 0;
+        return inicial - actual >= 2;
+    },icono:"📉"},
+    {id:"menos_5kg",nombre:"🎉 -5 kg",desc:"Bajar 5 kg desde tu peso inicial",condicion:()=>{
+        const inicial = pesosRegistrados[0]?.valor || 0;
+        const actual = pesosRegistrados[pesosRegistrados.length-1]?.valor || 0;
+        return inicial - actual >= 5;
+    },icono:"🎉"},
+    {id:"mas_1kg",nombre:"📈 +1 kg",desc:"Subir 1 kg desde tu peso inicial",condicion:()=>{
+        const inicial = pesosRegistrados[0]?.valor || 0;
+        const actual = pesosRegistrados[pesosRegistrados.length-1]?.valor || 0;
+        return actual - inicial >= 1;
+    },icono:"📈"},
+    
+    // Logros especiales (divertidos)
+    {id:"entreno_nocturno",nombre:"🌙 Entrenamiento nocturno",desc:"Completar un día después de las 21:00",condicion:()=>{
+        const ahora = new Date();
+        return ahora.getHours() >= 21 && localStorage.getItem('ultimoCheckCompletado') === 'hoy';
+    },icono:"🌙"},
+    {id:"madrugador",nombre:"☀️ Madrugador",desc:"Completar un día antes de las 08:00",condicion:()=>{
+        const ahora = new Date();
+        return ahora.getHours() < 8 && localStorage.getItem('ultimoCheckCompletado') === 'hoy';
+    },icono:"☀️"},
+    
+    // Logros de series/reps
+    {id:"cien_series",nombre:"🏋️ 100 series",desc:"Completar 100 series en total",condicion:()=>{
+        const totalChecks = Object.values(checks).filter(v=>v===true).length;
+        return totalChecks >= 100;
+    },icono:"🏋️"},
+    {id:"quinientas_series",nombre:"💪 500 series",desc:"Completar 500 series en total",condicion:()=>{
+        const totalChecks = Object.values(checks).filter(v=>v===true).length;
+        return totalChecks >= 500;
+    },icono:"💪"},
+    {id:"mil_series",nombre:"🦾 1000 series",desc:"Completar 1000 series en total",condicion:()=>{
+        const totalChecks = Object.values(checks).filter(v=>v===true).length;
+        return totalChecks >= 1000;
+    },icono:"🦾"}
 ];
 
 // ==================== FUNCIONES BASE ====================
