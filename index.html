@@ -93,7 +93,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div class="nav-btn" onclick="go('home')">🏠 INICIO</div>
 <div class="submenu-btn" onclick="toggleSubmenu(this)"><span>📅 RUTINA SEMANAL</span><span class="arrow">▼</span></div>
 <div class="submenu-items">
-<div class="sub-link" onclick="go('lunes')">📆 Lunes: Espalda / Bíceps</div>
+<div class="sub-link" onclick="go('lunes')">💪 Lunes: Espalda / Bíceps</div>
 <div class="sub-link" onclick="go('martes')">🏃 Martes: Cardio / Abs</div>
 <div class="sub-link" onclick="go('miercoles')">💪 Miércoles: Pecho / Tríceps</div>
 <div class="sub-link" onclick="go('jueves')">🏃 Jueves: Cardio / Abs</div>
@@ -111,11 +111,11 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 
 <div id="home" class="seccion active">
 <div class="today-card" onclick="goToday()"><div class="today-day" id="todayDay">Cargando...</div><div id="todayRoutine" style="color:#aaa;margin-bottom:10px"></div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div>
-<div class="stats-row"><div class="stat-card progreso"><h2 id="perc">0%</h2><small>PROGRESO SEMANAL</small></div><div class="stat-card racha"><h2 id="racha">18</h2><small>🔥 RACHA GYM</small></div><div class="stat-card nosmoke" style="background:linear-gradient(135deg,#0a2a1a,#0a1a0a);border:1px solid #66bb6a"><h2 id="diasSinFumar" style="color:#66bb6a;font-size:1.8rem">0</h2><small style="color:#66bb6a">🚭 DÍAS SIN FUMAR</small><div id="fraseSinFumar" style="font-size:.7rem;color:#a5d6a7;margin-top:8px">💪 Cada día es un triunfo</div></div></div>
+<div class="stats-row"><div class="stat-card progreso"><h2 id="perc">0%</h2><small>PROGRESO SEMANAL</small></div><div class="stat-card racha"><h2 id="racha">18</h2><small>🔥 RACHA GYM</small></div><div class="stat-card nosmoke" style="background:linear-gradient(135deg,#0a2a1a,#0a1a0a);border:1px solid #66bb6a"><h2 id="diasSinFumar" style="color:#66bb6a;font-size:1.8rem">0</h2><small style="color:#66bb6a">🚭 DÍAS SIN FUMAR</small></div></div>
 <div class="card" style="height:220px"><canvas id="grafico"></canvas></div>
 </div>
 
-<div id="lunes" class="seccion"><h2>📆 ESPALDA / BÍCEPS</h2><div id="list-lunes"></div></div>
+<div id="lunes" class="seccion"><h2>💪 ESPALDA / BÍCEPS</h2><div id="list-lunes"></div></div>
 <div id="martes" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-martes"></div></div>
 <div id="miercoles" class="seccion"><h2>💪 PECHO / TRÍCEPS</h2><div id="list-miercoles"></div></div>
 <div id="jueves" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="list-jueves"></div></div>
@@ -210,23 +210,8 @@ function calcularDiasSinFumar() {
 }
 
 function actualizarDiasSinFumar() {
-    const { total, texto } = calcularDiasSinFumar();
+    const { total } = calcularDiasSinFumar();
     document.getElementById('diasSinFumar').innerHTML = total;
-    document.getElementById('fraseSinFumar').innerHTML = `🚭 ${texto}`;
-    actualizarFraseSinFumar();
-}
-
-function actualizarFraseSinFumar() {
-    const dias = calcularDiasSinFumar().total;
-    let frase = "", emoji = "";
-    if (dias < 7) { frase = "💪 ¡Primeros días! Lo más difícil ya pasó"; emoji = "🌱"; }
-    else if (dias < 30) { frase = "🍃 Tu cuerpo ya está limpiándose. ¡Sigue así!"; emoji = "💨"; }
-    else if (dias < 60) { frase = "🎉 ¡1 mes sin fumar! Tus pulmones te lo agradecen"; emoji = "🫁"; }
-    else if (dias < 90) { frase = "🔥 ¡2 meses! Eres más fuerte que el cigarro"; emoji = "💪"; }
-    else if (dias < 180) { frase = "🏆 ¡3 meses! Has ahorrado dinero y salud"; emoji = "💰"; }
-    else if (dias < 365) { frase = "🌟 ¡MEDIO AÑO! Respiras mejor, vives mejor"; emoji = "✨"; }
-    else { frase = "👑 ¡UN AÑO SIN FUMAR! Eres un campeón"; emoji = "🏆"; }
-    document.getElementById('fraseSinFumar').innerHTML = `${emoji} ${frase}`;
 }
 
 function marcarHoyFumado() {
