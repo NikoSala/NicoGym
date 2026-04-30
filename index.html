@@ -502,23 +502,28 @@ function crearPaginaConsejos() {
 
 setTimeout(() => { agregarBotonesRespaldo(); crearPaginaConsejos(); }, 500);
 
-// ==================== CALENDARIO: ENTRENO + DÍAS SIN FUMAR (CORREGIDO) ====================
-let diasCompletadosEntreno = JSON.parse(localStorage.getItem('nico_calendario')) || [];
+// ==================== CALENDARIOS RENOVADOS ====================
 let calendarioOffsetMeses = 0;
 let historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
 
-// Función para marcar hoy como entrenado (SOLO cuando se completa la rutina)
-function marcarHoyEntreno() {
+// --- CALENDARIO DE ENTRENO ---
+let diasEntrenados = JSON.parse(localStorage.getItem('nico_dias_entrenados')) || [];
+
+function guardarDiasEntrenados() {
+    localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados));
+}
+
+function marcarHoyEntrenado() {
     const hoy = new Date().toISOString().slice(0,10);
-    if (!diasCompletadosEntreno.includes(hoy)) {
-        diasCompletadosEntreno.push(hoy);
-        localStorage.setItem('nico_calendario', JSON.stringify(diasCompletadosEntreno));
+    if (!diasEntrenados.includes(hoy)) {
+        diasEntrenados.push(hoy);
+        guardarDiasEntrenados();
         renderizarCalendarioEntreno();
         mostrarMensajeMotivador("📅 Día marcado en el calendario. ¡Sigue así!", "logro");
     }
 }
 
-// Días sin fumar (desde 22 febrero hasta ayer - NO incluye hoy ni futuros)
+// --- CALENDARIO DE DÍAS SIN FUMAR ---
 function getDiasSinFumar() {
     const inicio = new Date(2026, 1, 22);
     const hoy = new Date();
@@ -531,12 +536,12 @@ function getDiasSinFumar() {
     return dias;
 }
 
-// Obtener peso registrado en una fecha (formato YYYY-MM-DD)
+// --- PESOS ---
 function getPesoEnFecha(fechaStr) {
-    // Los pesos están guardados como {valor: 82, fecha: "20/04"}
     for (let p of historialPesos) {
         const partes = p.fecha.split('/');
-        const fechaPeso = `2026-${partes[1]}-${partes[0]}`; // asumimos año 2026
+        // Asume año actual (2026) para las fechas de peso
+        const fechaPeso = `2026-${partes[1]}-${partes[0]}`;
         if (fechaPeso === fechaStr) {
             return p.valor;
         }
@@ -544,9 +549,19 @@ function getPesoEnFecha(fechaStr) {
     return null;
 }
 
-// Popup bonito
+function actualizarHistorialPesos() {
+    historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
+    renderizarCalendarioEntreno();
+}
+
+// --- POPUPS BONITOS ---
 function mostrarPopupBonito(titulo, mensaje) {
+    // Eliminar popup anterior si existe
+    const existing = document.querySelector('.custom-popup');
+    if (existing) existing.remove();
+    
     const popup = document.createElement('div');
+    popup.className = 'custom-popup';
     popup.style.cssText = `
         position: fixed;
         top: 50%;
@@ -570,10 +585,9 @@ function mostrarPopupBonito(titulo, mensaje) {
     document.body.appendChild(popup);
 }
 
-// Popup día entrenamiento
-function mostrarPopupDiaEntreno(dia, mes, año, fechaStr) {
+function mostrarPopupEntreno(dia, mes, año, fechaStr) {
     const fecha = new Date(año, mes, dia);
-    const esEntrenado = diasCompletadosEntreno.includes(fechaStr);
+    const esEntrenado = diasEntrenados.includes(fechaStr);
     const esDomingo = fecha.getDay() === 0;
     const peso = getPesoEnFecha(fechaStr);
     let mensaje = "";
@@ -584,22 +598,21 @@ function mostrarPopupDiaEntreno(dia, mes, año, fechaStr) {
     mostrarPopupBonito(`📅 ${dia}/${mes+1}/${año}`, mensaje);
 }
 
-// Popup día sin fumar
-function mostrarPopupDiaSinFumar(dia, mes, año, fechaStr) {
+function mostrarPopupSinFumar(dia, mes, año, fechaStr) {
     const diasSinFumar = getDiasSinFumar();
     const esSinFumar = diasSinFumar.includes(fechaStr);
     let mensaje = esSinFumar ? "🔵 Día sin fumar 🚭" : "⚪ Día con tabaco (o futuro)";
     mostrarPopupBonito(`📅 ${dia}/${mes+1}/${año}`, mensaje);
 }
 
-// Navegar meses
+// --- NAVEGACIÓN DE MESES ---
 function cambiarMes(delta) {
     calendarioOffsetMeses += delta;
     renderizarCalendarioEntreno();
     renderizarCalendarioSinFumar();
 }
 
-// Renderizar calendario de ENTRENO
+// --- RENDERIZADO ---
 function renderizarCalendarioEntreno() {
     const contenedor = document.getElementById('calendario-entreno-container');
     if (!contenedor) return;
@@ -619,16 +632,16 @@ function renderizarCalendarioEntreno() {
     const nombreMes = new Date(año, mes).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
     
     let html = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
-                    <button class="notif-btn" style="background:#333; padding:8px 15px; font-size:14px" onclick="cambiarMes(-1)">◀</button>
+                    <button class="notif-btn" style="background:#333; padding:8px 15px" onclick="cambiarMes(-1)">◀</button>
                     <h3 style="color:#ff6600; margin:0">${nombreMes} ${año}</h3>
-                    <button class="notif-btn" style="background:#333; padding:8px 15px; font-size:14px" onclick="cambiarMes(1)">▶</button>
+                    <button class="notif-btn" style="background:#333; padding:8px 15px" onclick="cambiarMes(1)">▶</button>
                 </div>`;
     
-    html += `<div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:11px; flex-wrap:wrap">
-                <span><span style="display:inline-block; width:20px; height:20px; background:#2e7d32; border-radius:4px; margin-right:5px"></span> Entrenado</span>
-                <span><span style="display:inline-block; width:20px; height:20px; background:#eab308; border-radius:4px; margin-right:5px"></span> Domingo</span>
-                <span><span style="display:inline-block; width:20px; height:20px; background:#222; border:1px solid #444; border-radius:4px; margin-right:5px"></span> Sin entrenar</span>
-                <span><span style="display:inline-block; width:16px; height:16px; background:#f59e0b; border-radius:50%; margin-right:5px"></span> Peso registrado</span>
+    html += `<div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:11px">
+                <span><span style="display:inline-block; width:20px; height:20px; background:#2e7d32; border-radius:4px"></span> Entrenado</span>
+                <span><span style="display:inline-block; width:20px; height:20px; background:#eab308; border-radius:4px"></span> Domingo</span>
+                <span><span style="display:inline-block; width:20px; height:20px; background:#222; border:1px solid #444; border-radius:4px"></span> Sin entrenar</span>
+                <span><span style="display:inline-block; width:16px; height:16px; background:#f59e0b; border-radius:50%"></span> Peso</span>
             </div>`;
     
     html += `<div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center; margin-bottom:10px">
@@ -644,7 +657,7 @@ function renderizarCalendarioEntreno() {
         const fechaActual = new Date(año, mes, d);
         const fechaStr = fechaActual.toISOString().slice(0,10);
         const esDomingo = fechaActual.getDay() === 0;
-        const esEntrenado = diasCompletadosEntreno.includes(fechaStr);
+        const esEntrenado = diasEntrenados.includes(fechaStr);
         const esHoy = (fechaStr === hoyStr);
         const tienePeso = getPesoEnFecha(fechaStr) !== null;
         
@@ -656,7 +669,7 @@ function renderizarCalendarioEntreno() {
         if (esHoy) estilo += `border:2px solid #ff6600; `;
         
         let pesoIcono = tienePeso ? `<span style="font-size:11px; margin-top:2px">⚖️</span>` : "";
-        html += `<div style="${estilo}" onclick="mostrarPopupDiaEntreno(${d}, ${mes}, ${año}, '${fechaStr}')">
+        html += `<div style="${estilo}" onclick="mostrarPopupEntreno(${d}, ${mes}, ${año}, '${fechaStr}')">
                     <span style="font-size:14px">${d}</span>${pesoIcono}
                 </div>`;
     }
@@ -669,7 +682,6 @@ function renderizarCalendarioEntreno() {
     contenedor.innerHTML = html;
 }
 
-// Renderizar calendario de DÍAS SIN FUMAR
 function renderizarCalendarioSinFumar() {
     const contenedor = document.getElementById('calendario-sinfumar-container');
     if (!contenedor) return;
@@ -692,9 +704,9 @@ function renderizarCalendarioSinFumar() {
                     <h3 style="color:#3b82f6; margin:0">${nombreMes} ${año}</h3>
                 </div>`;
     
-    html += `<div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:11px; flex-wrap:wrap">
-                <span><span style="display:inline-block; width:20px; height:20px; background:#3b82f6; border-radius:4px; margin-right:5px"></span> Sin fumar</span>
-                <span><span style="display:inline-block; width:20px; height:20px; background:#222; border:1px solid #444; border-radius:4px; margin-right:5px"></span> Con tabaco / futuro</span>
+    html += `<div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:11px">
+                <span><span style="display:inline-block; width:20px; height:20px; background:#3b82f6; border-radius:4px"></span> Sin fumar</span>
+                <span><span style="display:inline-block; width:20px; height:20px; background:#222; border:1px solid #444; border-radius:4px"></span> Con tabaco / futuro</span>
             </div>`;
     
     html += `<div style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; text-align:center; margin-bottom:10px">
@@ -716,7 +728,7 @@ function renderizarCalendarioSinFumar() {
         if (esSinFumar && !esFuturo) color = "#3b82f6";
         
         let estilo = `background:${color}; border-radius:10px; padding:8px; font-weight:bold; min-height:50px; display:flex; align-items:center; justify-content:center; cursor:pointer; border:1px solid #333;`;
-        html += `<div style="${estilo}" onclick="mostrarPopupDiaSinFumar(${d}, ${mes}, ${año}, '${fechaStr}')">${d}</div>`;
+        html += `<div style="${estilo}" onclick="mostrarPopupSinFumar(${d}, ${mes}, ${año}, '${fechaStr}')">${d}</div>`;
     }
     
     const celdasUsadas = offset + numDias;
@@ -727,7 +739,7 @@ function renderizarCalendarioSinFumar() {
     contenedor.innerHTML = html;
 }
 
-// Crear sección de calendarios
+// --- CONSTRUIR SECCIONES ---
 function crearCalendarios() {
     if (document.getElementById('calendario')) return;
     
@@ -750,63 +762,54 @@ function crearCalendarios() {
     
     const menu = document.getElementById('menu-lat');
     if (menu && !document.getElementById('menu-calendario')) {
-        const calendarioBtn = document.createElement('div');
-        calendarioBtn.id = 'menu-calendario';
-        calendarioBtn.className = 'nav-btn';
-        calendarioBtn.innerHTML = '📅 CALENDARIO';
-        calendarioBtn.onclick = () => { calendarioOffsetMeses = 0; go('calendario'); renderizarCalendarioEntreno(); renderizarCalendarioSinFumar(); };
+        const btn = document.createElement('div');
+        btn.id = 'menu-calendario';
+        btn.className = 'nav-btn';
+        btn.innerHTML = '📅 CALENDARIO';
+        btn.onclick = () => { calendarioOffsetMeses = 0; go('calendario'); renderizarCalendarioEntreno(); renderizarCalendarioSinFumar(); };
         const consejosBtn = document.getElementById('menu-consejos');
-        if (consejosBtn) menu.insertBefore(calendarioBtn, consejosBtn);
-        else menu.appendChild(calendarioBtn);
+        if (consejosBtn) menu.insertBefore(btn, consejosBtn);
+        else menu.appendChild(btn);
     }
     
     renderizarCalendarioEntreno();
     renderizarCalendarioSinFumar();
 }
 
-// LIMPIAR TODOS LOS DÍAS MAL MARCADOS (ejecutar una vez)
-function limpiarDiasMalMarcados() {
-    const hoy = new Date();
-    let cambios = false;
-    
-    // Eliminar cualquier día que sea hoy o futuro
-    const nuevosDias = diasCompletadosEntreno.filter(fechaStr => {
-        const fecha = new Date(fechaStr);
-        return fecha < hoy;
-    });
-    
-    if (nuevosDias.length !== diasCompletadosEntreno.length) {
-        diasCompletadosEntreno = nuevosDias;
-        localStorage.setItem('nico_calendario', JSON.stringify(diasCompletadosEntreno));
-        cambios = true;
-    }
-    
-    if (cambios) {
-        renderizarCalendarioEntreno();
-        mostrarMensajeMotivador("📅 Calendario corregido: se han eliminado marcas incorrectas.", "logro");
-    }
+// --- LIMPIEZA TOTAL (borra todas las marcas incorrectas) ---
+function limpiarCalendarioCompleto() {
+    // Borrar cualquier día que no sea realmente entrenado
+    // Como has reseteado, empezamos de cero
+    diasEntrenados = [];
+    guardarDiasEntrenados();
+    renderizarCalendarioEntreno();
+    mostrarMensajeMotivador("🗑️ Calendario de entrenos limpiado. Ahora solo se marcarán los días que completes.", "logro");
 }
 
-// Conectar con la racha
-const sumarRachaOriginalCal2 = window.sumarRachaSiCorresponde;
+// --- CONECTAR CON LA RACHA ---
+const sumarRachaOriginalCal3 = window.sumarRachaSiCorresponde;
 window.sumarRachaSiCorresponde = function(dia) {
-    const resultado = sumarRachaOriginalCal2(dia);
+    const resultado = sumarRachaOriginalCal3(dia);
     if (resultado === true) {
-        marcarHoyEntreno();
+        marcarHoyEntrenado();
     }
     return resultado;
 };
 
-// Forzar recarga de pesos desde localStorage
-function actualizarHistorialPesos() {
-    historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
-    renderizarCalendarioEntreno();
-}
+// --- ACTUALIZAR PESOS AL AÑADIR NUEVO ---
+const agregarPesoOriginalCal3 = window.agregarPeso;
+window.agregarPeso = function() {
+    agregarPesoOriginalCal3();
+    setTimeout(() => {
+        historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
+        renderizarCalendarioEntreno();
+    }, 100);
+};
 
-// Inicializar
+// --- INICIALIZAR ---
 setTimeout(() => {
     historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
-    limpiarDiasMalMarcados();
+    limpiarCalendarioCompleto(); // Esto borra todas las marcas antiguas incorrectas
     crearCalendarios();
 }, 500);
     
