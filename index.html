@@ -502,12 +502,12 @@ function crearPaginaConsejos() {
 
 setTimeout(() => { agregarBotonesRespaldo(); crearPaginaConsejos(); }, 500);
 
-// ==================== CALENDARIO: ENTRENO + DÍAS SIN FUMAR (separados) ====================
+// ==================== CALENDARIO: ENTRENO + DÍAS SIN FUMAR (CORREGIDO) ====================
 let diasCompletadosEntreno = JSON.parse(localStorage.getItem('nico_calendario')) || [];
 let calendarioOffsetMeses = 0;
 let historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
 
-// Marcar hoy como entrenado (solo al completar rutina)
+// Función para marcar hoy como entrenado (SOLO cuando se completa la rutina)
 function marcarHoyEntreno() {
     const hoy = new Date().toISOString().slice(0,10);
     if (!diasCompletadosEntreno.includes(hoy)) {
@@ -518,7 +518,7 @@ function marcarHoyEntreno() {
     }
 }
 
-// Días sin fumar (desde 22 febrero hasta ayer)
+// Días sin fumar (desde 22 febrero hasta ayer - NO incluye hoy ni futuros)
 function getDiasSinFumar() {
     const inicio = new Date(2026, 1, 22);
     const hoy = new Date();
@@ -531,16 +531,20 @@ function getDiasSinFumar() {
     return dias;
 }
 
-// Peso en fecha
+// Obtener peso registrado en una fecha (formato YYYY-MM-DD)
 function getPesoEnFecha(fechaStr) {
-    const registro = historialPesos.find(p => {
-        const fechaPeso = p.fecha.split('/').reverse().join('-');
-        return fechaPeso === fechaStr;
-    });
-    return registro ? registro.valor : null;
+    // Los pesos están guardados como {valor: 82, fecha: "20/04"}
+    for (let p of historialPesos) {
+        const partes = p.fecha.split('/');
+        const fechaPeso = `2026-${partes[1]}-${partes[0]}`; // asumimos año 2026
+        if (fechaPeso === fechaStr) {
+            return p.valor;
+        }
+    }
+    return null;
 }
 
-// Popup bonito (en lugar de alert)
+// Popup bonito
 function mostrarPopupBonito(titulo, mensaje) {
     const popup = document.createElement('div');
     popup.style.cssText = `
@@ -582,12 +586,9 @@ function mostrarPopupDiaEntreno(dia, mes, año, fechaStr) {
 
 // Popup día sin fumar
 function mostrarPopupDiaSinFumar(dia, mes, año, fechaStr) {
-    const fecha = new Date(año, mes, dia);
     const diasSinFumar = getDiasSinFumar();
     const esSinFumar = diasSinFumar.includes(fechaStr);
-    let mensaje = "";
-    if (esSinFumar) mensaje += "🔵 Día sin fumar 🚭<br>";
-    else mensaje += "⚪ Día con tabaco (o futuro)<br>";
+    let mensaje = esSinFumar ? "🔵 Día sin fumar 🚭" : "⚪ Día con tabaco (o futuro)";
     mostrarPopupBonito(`📅 ${dia}/${mes+1}/${año}`, mensaje);
 }
 
@@ -763,23 +764,26 @@ function crearCalendarios() {
     renderizarCalendarioSinFumar();
 }
 
-// Limpiar días mal marcados (días futuros o de hoy sin entrenar)
+// LIMPIAR TODOS LOS DÍAS MAL MARCADOS (ejecutar una vez)
 function limpiarDiasMalMarcados() {
     const hoy = new Date();
-    const hoyStr = hoy.toISOString().slice(0,10);
     let cambios = false;
+    
+    // Eliminar cualquier día que sea hoy o futuro
     const nuevosDias = diasCompletadosEntreno.filter(fechaStr => {
         const fecha = new Date(fechaStr);
         return fecha < hoy;
     });
+    
     if (nuevosDias.length !== diasCompletadosEntreno.length) {
         diasCompletadosEntreno = nuevosDias;
         localStorage.setItem('nico_calendario', JSON.stringify(diasCompletadosEntreno));
         cambios = true;
     }
+    
     if (cambios) {
         renderizarCalendarioEntreno();
-        mostrarMensajeMotivador("📅 Calendario corregido.", "logro");
+        mostrarMensajeMotivador("📅 Calendario corregido: se han eliminado marcas incorrectas.", "logro");
     }
 }
 
@@ -793,8 +797,15 @@ window.sumarRachaSiCorresponde = function(dia) {
     return resultado;
 };
 
+// Forzar recarga de pesos desde localStorage
+function actualizarHistorialPesos() {
+    historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
+    renderizarCalendarioEntreno();
+}
+
 // Inicializar
 setTimeout(() => {
+    historialPesos = JSON.parse(localStorage.getItem('nico_pesos')) || [];
     limpiarDiasMalMarcados();
     crearCalendarios();
 }, 500);
