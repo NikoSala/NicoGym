@@ -46,14 +46,9 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .ex-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
 .ex-buttons{display:flex;gap:8px}
 .calc-icon{background:#ff6600;color:#000;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:bold;cursor:pointer}
-.descanso-icon{background:#2e7d32;color:#fff;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:bold;cursor:pointer}
-.calc-modal,.descanso-modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a1a;border:2px solid #ff6600;border-radius:15px;padding:20px;z-index:4000;width:90%;max-width:320px;text-align:center}
-.descanso-modal{border-color:#32d74b}
-.calc-modal.show,.descanso-modal.show{display:block}
+.calc-modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a1a;border:2px solid #ff6600;border-radius:15px;padding:20px;z-index:4000;width:90%;max-width:320px;text-align:center}
+.calc-modal.show{display:block}
 .close-calc{position:absolute;top:10px;right:15px;cursor:pointer;font-size:1.5rem;color:#aaa}
-.descanso-tiempos{display:flex;justify-content:center;gap:12px;margin:20px 0;flex-wrap:wrap}
-.tiempo-btn{background:#333;border:none;color:#fff;padding:10px 15px;border-radius:10px;font-size:1rem;cursor:pointer}
-.descanso-cerrar{margin-top:15px;background:#222;color:#aaa;border:none;padding:8px;border-radius:8px;cursor:pointer}
 .detalles{display:none;background:#050505;padding:10px;border-radius:8px;margin-top:10px;border-left:3px solid #ff6600}
 .detalles.show{display:block}
 .ex-img{width:100%;max-width:200px;border-radius:8px;margin:10px auto;display:block}
@@ -67,12 +62,8 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .calc-btn{background:#333;border:none;color:#fff;padding:12px;border-radius:8px;cursor:pointer;position:relative}
 .badge{position:absolute;top:-8px;right:-5px;background:#ff6600;font-size:.7rem;padding:2px 6px;border-radius:20px}
 .calc-reset{width:100%;padding:10px;background:#222;color:#ff3b30;border:1px solid #ff3b30;border-radius:8px;cursor:pointer;margin-top:10px}
-#timer-box,#descanso-box{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:3000;display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
-#descanso-box{z-index:3500}
-.descanso-timer-num,#t-num{font-size:8rem;font-weight:bold;font-family:monospace}
-#t-num{color:#ff6600}
-.descanso-timer-num{color:#32d74b}
-#float-t{position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:linear-gradient(135deg,#ff6600,#ff884d);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:900;font-size:1.5rem;border:none;color:#fff;cursor:pointer;box-shadow:0 4px 15px rgba(255,102,0,0.4)}
+#descanso-box{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:3500;display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+.descanso-timer-num{font-size:8rem;font-weight:bold;font-family:monospace;color:#32d74b}
 .today-card{background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid #ff6600;border-radius:15px;padding:20px;margin-bottom:20px;text-align:center;cursor:pointer}
 .today-day{font-size:1.5rem;font-weight:bold;color:#ff6600;margin-bottom:8px}
 .today-btn{background:#ff6600;color:#000;padding:8px 20px;border-radius:20px;display:inline-block;font-weight:bold;margin-top:8px}
@@ -92,7 +83,6 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .badge-desc{font-size:.7rem;color:#aaa}
 .badge-obtenido{font-size:.7rem;color:#32d74b;margin-top:5px}
 .badge-bloqueado{font-size:.7rem;color:#555}
-.timer-input{background:#222;border:2px solid #ff6600;color:#ff6600;font-size:2rem;font-weight:bold;text-align:center;border-radius:10px;padding:8px;width:120px;margin-bottom:20px}
 
 /* CALENDARIOS APILADOS */
 .cal-wrapper{display:flex;flex-direction:column;gap:20px;margin-top:10px}
@@ -220,34 +210,11 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
   <button class="calc-reset" onclick="resetearDiscos()">🗑️ RESET</button>
 </div>
 
-<div id="descansoSelector" class="descanso-modal">
-  <h3>⏱️ DESCANSO</h3>
-  <div class="descanso-tiempos">
-    <button class="tiempo-btn" onclick="iniciarDescanso(30)">30s</button>
-    <button class="tiempo-btn" onclick="iniciarDescanso(45)">45s</button>
-    <button class="tiempo-btn" onclick="iniciarDescanso(60)">60s</button>
-    <button class="tiempo-btn" onclick="iniciarDescanso(90)">90s</button>
-  </div>
-  <button class="descanso-cerrar" onclick="cerrarSelectorDescanso()">❌ CERRAR</button>
-</div>
-
 <div id="descanso-box">
   <h1 style="color:#32d74b;margin-bottom:20px">💪 DESCANSA</h1>
-  <div class="descanso-timer-num" id="descansoTimer">00</div>
-  <button onclick="cancelarDescanso()" style="margin-top:30px;background:#222;color:#fff;border:none;padding:12px 30px;border-radius:10px">CANCELAR</button>
+  <div class="descanso-timer-num" id="descansoTimer">30</div>
+  <button onclick="cancelarDescanso()" style="margin-top:30px;background:#222;color:#fff;border:none;padding:12px 30px;border-radius:10px">SALTAR</button>
 </div>
-
-<div id="timer-box">
-  <h2 style="color:#aaa;margin-bottom:10px">⏱️ TEMPORIZADOR</h2>
-  <input type="number" id="timer-input" class="timer-input" value="60" min="5" max="600">
-  <h1 id="t-num">60</h1>
-  <div style="display:flex;gap:12px;margin-top:20px;justify-content:center">
-    <button onclick="iniciarTimer()" style="background:#32d74b;border:none;padding:12px 30px;border-radius:10px;color:#fff;font-weight:bold">INICIAR</button>
-    <button onclick="cerrarTimer()" style="background:#222;border:none;padding:12px 30px;border-radius:10px;color:#fff">CERRAR</button>
-  </div>
-</div>
-
-<button id="float-t" onclick="abrirTimer()">⏱️</button>
 
 <script>
 // ==================== DATOS ====================
@@ -268,6 +235,10 @@ let diasEntrenados = JSON.parse(localStorage.getItem('nico_dias_entrenados')) ||
 let diasFumados = JSON.parse(localStorage.getItem('nico_dias_fumados')) || [];
 const fechaDejarFumar = new Date(2026, 1, 22);
 
+let discosActuales = {d125:0, d15:0, d2:0};
+let ejercicioDiscoActual = null;
+let intervalDescanso = null;
+
 let currentViewMonthGym = new Date().getMonth();
 let currentViewYearGym = new Date().getFullYear();
 let currentViewMonthSmoke = new Date().getMonth();
@@ -284,10 +255,10 @@ function getSemanaActual() { const d = new Date(); d.setHours(0,0,0,0); d.setDat
 function changeMonth(offset, type) {
     if (type === 'gym') {
         let d = new Date(currentViewYearGym, currentViewMonthGym + offset, 1);
-        currentViewMonthGym = d.getMonth(); currentViewYearGym = d.getFullYear();
+        currentViewYearGym = d.getFullYear(); currentViewMonthGym = d.getMonth();
     } else {
         let d = new Date(currentViewYearSmoke, currentViewMonthSmoke + offset, 1);
-        currentViewMonthSmoke = d.getMonth(); currentViewYearSmoke = d.getFullYear();
+        currentViewYearSmoke = d.getFullYear(); currentViewMonthSmoke = d.getMonth();
     }
     renderizarCalendarios();
 }
@@ -299,136 +270,60 @@ function renderizarCalendarios() {
 
 function toggleDia(fStr, esHumo, fechaObj) {
     const hoy = new Date(); hoy.setHours(23,59,59,999);
-    if (fechaObj > hoy) {
-        mostrarToast("🚫 No puedes marcar días futuros.");
-        return;
-    }
-
+    if (fechaObj > hoy) { mostrarToast("🚫 No puedes marcar días futuros."); return; }
     if (esHumo) {
-        if (diasFumados.includes(fStr)) {
-            diasFumados = diasFumados.filter(d => d !== fStr);
-            mostrarToast("✅ Día marcado como limpio.");
-        } else {
-            diasFumados.push(fStr);
-            mostrarToast("😡 Día marcado como fumado.");
-        }
+        if (diasFumados.includes(fStr)) { diasFumados = diasFumados.filter(d => d !== fStr); mostrarToast("✅ Día marcado como limpio."); }
+        else { diasFumados.push(fStr); mostrarToast("😡 Día marcado como fumado."); }
         localStorage.setItem('nico_dias_fumados', JSON.stringify(diasFumados));
     } else {
-        if (diasEntrenados.includes(fStr)) {
-            diasEntrenados = diasEntrenados.filter(d => d !== fStr);
-            mostrarToast("🗑️ Día de entreno eliminado.");
-        } else {
-            diasEntrenados.push(fStr);
-            mostrarToast("🔥 Día de entreno añadido.");
-            if (typeof canvasConfetti !== 'undefined') canvasConfetti({ particleCount: 50, spread: 30, origin: { y: 0.8 } });
-        }
+        if (diasEntrenados.includes(fStr)) { diasEntrenados = diasEntrenados.filter(d => d !== fStr); mostrarToast("🗑️ Día de entreno eliminado."); }
+        else { diasEntrenados.push(fStr); mostrarToast("🔥 Día de entreno añadido."); if (typeof canvasConfetti !== 'undefined') canvasConfetti({ particleCount: 50, spread: 30, origin: { y: 0.8 } }); }
         localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados));
     }
-    actualizarHome();
-    renderizarCalendarios();
+    actualizarHome(); renderizarCalendarios();
 }
 
 function renderCal(id, mes, año, listaDias, claseActiva, labelId, esHumo = false) {
-    const container = document.getElementById(id);
-    if (!container) return;
-    container.innerHTML = '';
-    
+    const container = document.getElementById(id); if (!container) return; container.innerHTML = '';
     const nombreMes = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(new Date(año, mes, 1)).toUpperCase();
     document.getElementById(labelId).innerText = `${nombreMes} ${año}`;
-    
-    ['L','M','X','J','V','S','D'].forEach(d => {
-        const div = document.createElement('div');
-        div.className = 'cal-day-label'; div.innerText = d; container.appendChild(div);
-    });
-    
-    const primerDia = new Date(año, mes, 1).getDay();
-    const offset = primerDia === 0 ? 6 : primerDia - 1;
-    const diasEnMes = new Date(año, mes + 1, 0).getDate();
-    
+    ['L','M','X','J','V','S','D'].forEach(d => { const div = document.createElement('div'); div.className = 'cal-day-label'; div.innerText = d; container.appendChild(div); });
+    const primerDia = new Date(año, mes, 1).getDay(); const offset = primerDia === 0 ? 6 : primerDia - 1; const diasEnMes = new Date(año, mes + 1, 0).getDate();
     for(let i=0; i<offset; i++) container.appendChild(document.createElement('div'));
-    
-    const hoyStr = getHoyStr();
-    const hoyDate = new Date(); hoyDate.setHours(23,59,59,999);
-
+    const hoyStr = getHoyStr(); const hoyDate = new Date(); hoyDate.setHours(23,59,59,999);
     for(let d=1; d<=diasEnMes; d++) {
-        const cell = document.createElement('div');
-        cell.className = 'cal-cell active';
-        cell.innerText = d;
-        
-        const fecha = new Date(año, mes, d);
-        const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`;
-        
-        if (fecha > hoyDate) {
-            cell.classList.add('future');
-        } else {
-            cell.onclick = () => toggleDia(fStr, esHumo, fecha);
-        }
-        
+        const cell = document.createElement('div'); cell.className = 'cal-cell active'; cell.innerText = d;
+        const fecha = new Date(año, mes, d); const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`;
+        if (fecha > hoyDate) cell.classList.add('future'); else cell.onclick = () => toggleDia(fStr, esHumo, fecha);
         if (fStr === hoyStr) cell.classList.add('today');
-        
-        if (esHumo) {
-            if (listaDias.includes(fStr)) {
-                cell.classList.add('fumado'); cell.innerText = '😡';
-            } else if (fecha >= fechaDejarFumar && fecha <= new Date()) {
-                cell.classList.add('nosmoke');
-            }
-        } else {
-            if (listaDias.includes(fStr)) {
-                cell.classList.add('entrenado');
-            } else if (fecha.getDay() === 0) {
-                cell.classList.add('domingo');
-            }
-        }
+        if (esHumo) { if (listaDias.includes(fStr)) { cell.classList.add('fumado'); cell.innerText = '😡'; } else if (fecha >= fechaDejarFumar && fecha <= new Date()) cell.classList.add('nosmoke'); }
+        else { if (listaDias.includes(fStr)) cell.classList.add('entrenado'); else if (fecha.getDay() === 0) cell.classList.add('domingo'); }
         container.appendChild(cell);
     }
 }
 
 // ==================== FUNCIONES CORE ====================
 function marcarDiaCompletadoManual(dia) {
-    const hoyStr = getHoyStr();
-    const semanaStr = getSemanaActual();
-    const key = `completado_${dia}_${semanaStr}`;
-    
-    if (localStorage.getItem(key)) {
-        mostrarToast(`⚠️ ${dia.toUpperCase()} ya completado esta semana.`);
-        return;
-    }
-
-    if (!diasEntrenados.includes(hoyStr)) {
-        diasEntrenados.push(hoyStr);
-        localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados));
-    }
-    
-    localStorage.setItem(key, "true");
-    mostrarToast(`🔥 ¡ENTRENO ${dia.toUpperCase()} REGISTRADO!`);
-    hablar(`Entrenamiento de ${dia} registrado. ¡Buen trabajo!`);
-    actualizarHome();
-    renderizarCalendarios();
-    renderizarRutinas();
+    const hoyStr = getHoyStr(); const semanaStr = getSemanaActual(); const key = `completado_${dia}_${semanaStr}`;
+    if (localStorage.getItem(key)) { mostrarToast(`⚠️ ${dia.toUpperCase()} ya completado esta semana.`); return; }
+    if (!diasEntrenados.includes(hoyStr)) { diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); }
+    localStorage.setItem(key, "true"); mostrarToast(`🔥 ¡ENTRENO ${dia.toUpperCase()} REGISTRADO!`); hablar(`Entrenamiento de ${dia} registrado. ¡Buen trabajo!`);
+    actualizarHome(); renderizarCalendarios(); renderizarRutinas();
     if (typeof canvasConfetti !== 'undefined') canvasConfetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
 }
 
 function marcarHoyFumado() {
     const hoyStr = getHoyStr();
     if (!diasFumados.includes(hoyStr)) {
-        diasFumados.push(hoyStr);
-        localStorage.setItem('nico_dias_fumados', JSON.stringify(diasFumados));
-        mostrarToast("😡 Has marcado que hoy has fumado.");
-        hablar("Vaya, hoy has fumado. Mañana será un día mejor.");
-        actualizarHome();
-        renderizarCalendarios();
-    } else {
-        mostrarToast("⚠️ Ya estaba marcado.");
-    }
+        diasFumados.push(hoyStr); localStorage.setItem('nico_dias_fumados', JSON.stringify(diasFumados));
+        mostrarToast("😡 Has marcado que hoy has fumado."); hablar("Vaya, hoy has fumado. Mañana será un día mejor.");
+        actualizarHome(); renderizarCalendarios();
+    } else mostrarToast("⚠️ Ya estaba marcado.");
 }
 
 function calcularDiasSinFumar() {
     const hoy = new Date(); let total = 0; let f = new Date(fechaDejarFumar);
-    while (f <= hoy) {
-        const fStr = `${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`;
-        if (!diasFumados.includes(fStr)) total++;
-        f.setDate(f.getDate() + 1);
-    }
+    while (f <= hoy) { const fStr = `${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`; if (!diasFumados.includes(fStr)) total++; f.setDate(f.getDate() + 1); }
     return total;
 }
 
@@ -438,14 +333,9 @@ function actualizarHome() {
     const total = Object.values(ejercicios).reduce((s,d) => s + d.length, 0);
     const hechos = Object.values(checks).filter(v => v === true).length;
     document.getElementById('perc').innerText = Math.min(Math.round((hechos/total)*100), 100) + "%";
-    
     const ctx = document.getElementById('grafico').getContext('2d');
     if (window.miGrafico) window.miGrafico.destroy();
-    window.miGrafico = new Chart(ctx, {
-        type: 'line',
-        data: { labels: pesosRegistrados.map(p => p.fecha), datasets: [{ data: pesosRegistrados.map(p => p.valor), borderColor: '#ff6600', fill: true, backgroundColor: 'rgba(255,102,0,0.1)' }] },
-        options: { maintainAspectRatio: false, plugins: { legend: { display: false } } }
-    });
+    window.miGrafico = new Chart(ctx, { type: 'line', data: { labels: pesosRegistrados.map(p => p.fecha), datasets: [{ data: pesosRegistrados.map(p => p.valor), borderColor: '#ff6600', fill: true, backgroundColor: 'rgba(255,102,0,0.1)' }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } } } });
     document.getElementById('todayDay').innerText = `📅 ${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date().getDay()]}`;
     document.getElementById('todayRoutine').innerText = getRutinaHoy();
 }
@@ -453,21 +343,25 @@ function actualizarHome() {
 function renderizarRutinas() {
     const semanaStr = getSemanaActual();
     for (const dia in ejercicios) {
-        const lista = document.getElementById(`list-${dia}`);
-        if (!lista) continue;
+        const lista = document.getElementById(`list-${dia}`); if (!lista) continue;
         const btn = document.getElementById(`btn-done-${dia}`);
-        if (btn) {
-            if (localStorage.getItem(`completado_${dia}_${semanaStr}`)) {
-                btn.disabled = true; btn.innerText = "⭐ RUTINA COMPLETADA ESTA SEMANA";
-            } else {
-                btn.disabled = false; btn.innerText = "✅ ¡ENTRENO COMPLETADO!";
-            }
-        }
+        if (btn) { if (localStorage.getItem(`completado_${dia}_${semanaStr}`)) { btn.disabled = true; btn.innerText = "⭐ RUTINA COMPLETADA ESTA SEMANA"; } else { btn.disabled = false; btn.innerText = "✅ ¡ENTRENO COMPLETADO!"; } }
         lista.innerHTML = ejercicios[dia].map((ex, idx) => {
-            const id = `${dia}-${idx}`;
-            const isChecked = checks[id] === true;
-            return `<div class="card"><div style="display:flex; justify-content:space-between"><div><div class="ex-header"><span class="ex-title">${ex.nombre}</span><div class="ex-buttons">${ex.tienePeso ? `<span class="calc-icon" onclick="abrirCalc('${id}')">🏋️ CALC</span>` : ''}<span class="descanso-icon" onclick="abrirSelectorDescanso()">⏱️ DESC</span></div></div><span class="ex-reps">${ex.series}</span></div><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="checks['${id}']=true;localStorage.setItem('nico_checks',JSON.stringify(checks));actualizarHome()"></div><input type="number" class="input-nota" placeholder="Peso real (kg)..." value="${notas[id] || ''}" onchange="notas['${id}']=this.value;localStorage.setItem('nico_notas',JSON.stringify(notas))"><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p><p style="color:#ff6600">⚖️ ${ex.peso}</p></div></div>`;
+            const id = `${dia}-${idx}`; const isChecked = checks[id] === true;
+            return `<div class="card"><div style="display:flex; justify-content:space-between"><div><div class="ex-header"><span class="ex-title">${ex.nombre}</span><div class="ex-buttons">${ex.tienePeso ? `<span class="calc-icon" onclick="abrirCalc('${id}')">🏋️ CALC</span>` : ''}</div></div><span class="ex-reps">${ex.series}</span></div><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><input type="number" class="input-nota" placeholder="Peso real (kg)..." value="${notas[id] || ''}" onchange="notas['${id}']=this.value;localStorage.setItem('nico_notas',JSON.stringify(notas))"><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p><p style="color:#ff6600">⚖️ ${ex.peso}</p></div></div>`;
         }).join('');
+    }
+}
+
+function marcarEjercicioHecho(id) {
+    checks[id] = true; localStorage.setItem('nico_checks', JSON.stringify(checks));
+    actualizarHome(); renderizarRutinas();
+    
+    // Solo lanzar descanso si NO es día de cardio (martes, jueves, sábado)
+    const dia = id.split('-')[0];
+    const diasCardio = ['martes', 'jueves', 'sabado'];
+    if (!diasCardio.includes(dia)) {
+        iniciarDescanso(30);
     }
 }
 
@@ -480,30 +374,20 @@ function closeMenu() { document.getElementById('menu-lat').classList.remove('ope
 function go(id) { document.querySelectorAll('.seccion').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home')actualizarHome(); if(id==='calendarios')renderizarCalendarios(); closeMenu(); window.scrollTo(0,0); }
 function goToday() { const h = getDiaSemana(); go(h==='domingo'?'domingo':h); }
 function mostrarToast(m) { const t = document.createElement('div'); t.className = 'toast-msg'; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
-function abrirTimer() { document.getElementById('timer-box').style.display = 'flex'; }
-function cerrarTimer() { clearInterval(timerInterval); document.getElementById('timer-box').style.display = 'none'; }
-function iniciarTimer() { let s = document.getElementById('timer-input').value; timerInterval = setInterval(() => { s--; document.getElementById('t-num').innerText = s; if(s<=0){clearInterval(timerInterval); hablar("Temporizador terminado."); mostrarToast("⏰ FIN");} }, 1000); }
 function abrirCalc(id) { ejercicioDiscoActual = id; const g = localStorage.getItem(`discos_${id}`); discosActuales = g ? JSON.parse(g) : {d125:0, d15:0, d2:0}; actualizarMostrarDiscos(); document.getElementById('calcModal').classList.add('show'); }
 function cerrarCalc() { document.getElementById('calcModal').classList.remove('show'); }
 function sumarDisco(p) { const clave = p === 1.25 ? 'd125' : (p === 1.5 ? 'd15' : 'd2'); if (discosActuales[clave] >= 4) return; discosActuales[clave]++; localStorage.setItem(`discos_${ejercicioDiscoActual}`, JSON.stringify(discosActuales)); actualizarMostrarDiscos(); }
 function resetearDiscos() { discosActuales = { d125: 0, d15: 0, d2: 0 }; localStorage.removeItem(`discos_${ejercicioDiscoActual}`); actualizarMostrarDiscos(); }
 function actualizarMostrarDiscos() { const total = (discosActuales.d125 * 1.25) + (discosActuales.d15 * 1.5) + (discosActuales.d2 * 2); document.getElementById('totalDisco').innerText = total.toFixed(2); document.getElementById('badge125').innerText = discosActuales.d125; document.getElementById('badge15').innerText = discosActuales.d15; document.getElementById('badge2').innerText = discosActuales.d2; }
-function iniciarDescanso(s) { document.getElementById('descansoSelector').classList.remove('show'); document.getElementById('descanso-box').style.display='flex'; document.getElementById('descansoTimer').innerText=s; intervalDescanso=setInterval(()=>{s--;document.getElementById('descansoTimer').innerText=s;if(s<=0){clearInterval(intervalDescanso);document.getElementById('descanso-box').style.display='none';hablar("Descanso terminado. ¡A por la siguiente serie!");mostrarToast("⏰");}},1000); }
+function iniciarDescanso(s) { document.getElementById('descanso-box').style.display='flex'; document.getElementById('descansoTimer').innerText=s; intervalDescanso=setInterval(()=>{s--;document.getElementById('descansoTimer').innerText=s;if(s<=0){clearInterval(intervalDescanso);document.getElementById('descanso-box').style.display='none';hablar("Descanso terminado. ¡Siguiente serie!");mostrarToast("⏰");}},1000); }
 function cancelarDescanso() { clearInterval(intervalDescanso); document.getElementById('descanso-box').style.display='none'; }
-function abrirSelectorDescanso() { document.getElementById('descansoSelector').classList.add('show'); }
-function cerrarSelectorDescanso() { document.getElementById('descansoSelector').classList.remove('show'); }
 function borrarTodo() { if(confirm("¿Borrar todo?")) { localStorage.clear(); location.reload(); } }
 function agregarPeso() { const v = document.getElementById('in-peso').value; if(v){ pesosRegistrados.push({valor:parseFloat(v), fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})}); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); } }
 function eliminarPeso(i) { pesosRegistrados.splice(i,1); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); }
 function mostrarHistorialPeso() { const h = document.getElementById('hist-peso'); h.innerHTML = pesosRegistrados.map((p,i) => `<div class="peso-item"><span>${p.fecha}: <b>${p.valor}kg</b></span><button class="btn-del" onclick="eliminarPeso(${i})">🗑️</button></div>`).reverse().join(''); }
 function exportarDatos(conEmail = false) { const datos = { pesos: pesosRegistrados, checks: checks, notas: notas, entrenos: diasEntrenados, humo: diasFumados, fecha: new Date().toISOString() }; const json = JSON.stringify(datos, null, 2); const blob = new Blob([json], { type: "application/json" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `nicogym_backup.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); if (conEmail) { window.location.href = `mailto:nsalar.96@gmail.com?subject=Backup%20NICO%20GYM&body=Adjunto%20el%20archivo.`; } }
 
-window.onload = () => {
-    renderizarRutinas();
-    actualizarHome();
-    mostrarHistorialPeso();
-    renderizarCalendarios();
-};
+window.onload = () => { renderizarRutinas(); actualizarHome(); mostrarHistorialPeso(); renderizarCalendarios(); };
 </script>
 </body>
 </html>
