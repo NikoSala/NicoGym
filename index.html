@@ -41,15 +41,12 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bottom:80px}
-
-/* ANIMACIONES */
 @keyframes fadeSlideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 @keyframes checkPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
 .seccion{opacity:0;transform:translateX(20px);transition:all 0.3s ease;display:none;padding:15px}
 .seccion.active{display:block;animation:fadeSlideIn 0.3s ease forwards}
 .check-box:active{transform:scale(0.9)}
 .check-box:checked{animation:checkPop 0.3s ease}
-
 header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom:2px solid #ff6600;display:flex;justify-content:space-between;align-items:center;padding:0 15px;position:sticky;top:0;z-index:1000}
 .logo{font-weight:900;background:linear-gradient(135deg,#fff,#ff6600);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.3rem}
 .menu-icon{font-size:1.8rem;cursor:pointer}
@@ -112,8 +109,6 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .badge-desc{font-size:.7rem;color:#aaa}
 .badge-obtenido{font-size:.7rem;color:#32d74b}
 .badge-bloqueado{font-size:.7rem;color:#555}
-
-/* CICLO VISUAL */
 .cycle-card{border-radius:16px;padding:10px 12px;margin-bottom:15px;text-align:center}
 .cycle-card.fuerza{background:linear-gradient(135deg,#2a0a0a,#1a0505);border:1.5px solid #ff3b30}
 .cycle-card.volumen{background:linear-gradient(135deg,#0a2a0a,#051505);border:1.5px solid #32d74b}
@@ -130,18 +125,14 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .cycle-card.fuerza .cycle-bar-fill{background:#ff3b30}
 .cycle-card.volumen .cycle-bar-fill{background:#32d74b}
 .cycle-card.definicion .cycle-bar-fill{background:#ffd60a}
-
 .day-cycle-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:bold;margin-bottom:12px}
 .day-cycle-badge.fuerza{background:#ff3b30;color:#fff}
 .day-cycle-badge.volumen{background:#32d74b;color:#000}
 .day-cycle-badge.definicion{background:#ffd60a;color:#000}
-
-/* RESÚMEN DE PESO - CORREGIDO */
 .peso-resumen{background:#0a0a0a;border-radius:12px;padding:12px;margin-bottom:15px;display:flex;justify-content:space-around;text-align:center}
 .peso-resumen-item{flex:1}
 .peso-resumen-valor{font-size:1.3rem;font-weight:bold;color:#ff6600}
 .peso-resumen-label{font-size:0.65rem;color:#aaa}
-
 .exercise-card{background:#0a0a0a;border-radius:16px;padding:15px;margin-bottom:12px;border-left:5px solid}
 .exercise-card.fuerza{border-left-color:#ff3b30}
 .exercise-card.volumen{border-left-color:#32d74b}
@@ -186,7 +177,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .editor-input{width:100%;background:#000;border:1px solid #333;color:#fff;padding:8px;border-radius:5px;margin-bottom:10px}
 .photo-section-title{font-size:1.4rem;margin-bottom:15px;color:#ff6600}
 .photo-grid-upload{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-bottom:20px}
-.photo-upload-card{background:#111;border-radius:16px;padding:15px;text-align:center;border:1px solid #333;cursor:pointer}
+.photo-upload-card{background:#111;border-radius:16px;padding:15px;text-align:center;border:1px solid #333;cursor:pointer;transition:all 0.2s}
 .photo-upload-card:active{transform:scale(0.98)}
 .photo-upload-card .emoji{font-size:2.5rem;display:block;margin-bottom:8px}
 .photo-upload-card .label{font-size:0.8rem;color:#aaa}
@@ -220,15 +211,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <nav id="menu-lat">
     <div class="nav-btn" onclick="go('home')">🏠 INICIO</div>
     <div class="submenu-btn" onclick="toggleSubmenu(this)"><span>📅 RUTINA SEMANAL</span><span class="arrow">▼</span></div>
-    <div class="submenu-items">
-        <div class="sub-link" onclick="go('lunes')">💪 Lunes: Espalda / Bíceps</div>
-        <div class="sub-link" onclick="go('martes')">🏃 Martes: Cardio / Abs</div>
-        <div class="sub-link" onclick="go('miercoles')">💪 Miércoles: Pecho / Tríceps</div>
-        <div class="sub-link" onclick="go('jueves')">🏃 Jueves: Cardio / Abs</div>
-        <div class="sub-link" onclick="go('viernes')">🦵 Viernes: Pierna / Hombro</div>
-        <div class="sub-link" onclick="go('sabado')">🏃 Sábado: Cardio / Abs</div>
-        <div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso</div>
-    </div>
+    <div class="submenu-items"><div class="sub-link" onclick="go('lunes')">💪 Lunes: Espalda / Bíceps</div><div class="sub-link" onclick="go('martes')">🏃 Martes: Cardio / Abs</div><div class="sub-link" onclick="go('miercoles')">💪 Miércoles: Pecho / Tríceps</div><div class="sub-link" onclick="go('jueves')">🏃 Jueves: Cardio / Abs</div><div class="sub-link" onclick="go('viernes')">🦵 Viernes: Pierna / Hombro</div><div class="sub-link" onclick="go('sabado')">🏃 Sábado: Cardio / Abs</div><div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso</div></div>
     <div class="nav-btn" onclick="go('calendarios')">📅 CALENDARIOS</div>
     <div class="nav-btn" onclick="go('progreso-fotos')">📸 GALERÍA PROGRESO</div>
     <div class="nav-btn" onclick="go('peso')">⚖️ PESO CORPORAL</div>
@@ -240,18 +223,11 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 
 <div id="home" class="seccion active">
     <div id="cycleCard" class="cycle-card">CARGANDO...</div>
-    <div id="pesoResumen" class="peso-resumen">
-        <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoActualResumen">-- kg</div><div class="peso-resumen-label">Actual</div></div>
-        <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoInicialResumen">-- kg</div><div class="peso-resumen-label">Inicio</div></div>
-        <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoObjetivoResumen">75 kg</div><div class="peso-resumen-label">🎯 Objetivo</div></div>
-    </div>
+    <div id="pesoResumen" class="peso-resumen"><div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoActualResumen">-- kg</div><div class="peso-resumen-label">Actual</div></div><div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoInicialResumen">-- kg</div><div class="peso-resumen-label">Inicio</div></div><div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoObjetivoResumen">75 kg</div><div class="peso-resumen-label">🎯 Objetivo</div></div></div>
     <div class="today-card" onclick="goToday()"><div class="today-day" id="todayDay">Cargando...</div><div id="todayRoutine" style="color:#aaa;margin-bottom:10px"></div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div>
     <div class="stats-row"><div class="stat-card racha"><h2 id="racha">0</h2><small>🔥 RACHA GYM</small></div><div class="stat-card nosmoke"><h2 id="diasSinFumar" style="color:#007aff;font-size:1.8rem">0</h2><small>🚭 DÍAS SIN FUMAR</small></div></div>
     <div style="margin-bottom:15px"><div class="card" style="height:200px"><canvas id="grafico"></canvas></div></div>
-    <div class="card" style="text-align:center">
-        <button onclick="marcarHoyFumado()" style="background:#222;color:#aaa;border:1px solid #555;padding:10px 20px;border-radius:8px;cursor:pointer">🚬 Marcar hoy como fumado</button>
-        <button id="btnNotificaciones" onclick="solicitarPermisoNotificaciones()" style="background:#222;color:#ff6600;border:1px solid #ff6600;padding:10px 20px;border-radius:8px;cursor:pointer;margin-left:10px">🔔 Recordatorios</button>
-    </div>
+    <div class="card" style="text-align:center"><button onclick="marcarHoyFumado()" style="background:#222;color:#aaa;border:1px solid #555;padding:10px 20px;border-radius:8px;cursor:pointer">🚬 Marcar hoy como fumado</button><button id="btnNotificaciones" onclick="solicitarPermisoNotificaciones()" style="background:#222;color:#ff6600;border:1px solid #ff6600;padding:10px 20px;border-radius:8px;cursor:pointer;margin-left:10px">🔔 Recordatorios</button></div>
 </div>
 
 <div id="calendarios" class="seccion"><h2 style="text-align:center;margin-bottom:15px">📅 SEGUIMIENTO</h2><div class="cal-wrapper"><div class="cal-card"><div class="cal-nav"><button onclick="changeMonth(-1,'gym')">←</button><span id="cal-month-gym"></span><button onclick="changeMonth(1,'gym')">→</button></div><div id="cal-gym" class="cal-grid"></div><div class="cal-legend"><div class="leg-item"><div class="leg-box" style="background:#32d74b"></div><span>Entrenado</span></div><div class="leg-item"><div class="leg-box" style="background:#ffd60a"></div><span>Domingo</span></div></div></div><div class="cal-card"><div class="cal-nav"><button onclick="changeMonth(-1,'smoke')">←</button><span id="cal-month-smoke"></span><button onclick="changeMonth(1,'smoke')">→</button></div><div id="cal-smoke" class="cal-grid"></div><div class="cal-legend"><div class="leg-item"><div class="leg-box" style="background:#ff3b30"></div><span>Fumado</span></div><div class="leg-item"><div class="leg-box" style="background:#007aff"></div><span>Limpio</span></div></div></div></div></div>
@@ -284,223 +260,76 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <script>
 // ==================== CICLO MENSUAL ====================
 const MAX_PESO_TOTAL = 20;
-const OBJETIVO_PESO = 75;
+function getSemanaDelMes(){const hoy=new Date(), inicioMes=new Date(hoy.getFullYear(),hoy.getMonth(),1), diaSemanaInicio=inicioMes.getDay()||7, diaMes=hoy.getDate(); return Math.min(Math.ceil((diaMes+diaSemanaInicio-1)/7),5);}
+function getTipoCiclo(){const s=getSemanaDelMes(); if(s===1||s===4||s===5) return 'FUERZA'; if(s===2) return 'VOLUMEN'; return 'DEFINICIÓN';}
+function getConfiguracionCiclo(){const t=getTipoCiclo(); return{FUERZA:{nombre:'🏋️ FUERZA',emoji:'🏋️',color:'#ff3b30',series:'4-5',reps:'3-5',peso:'PESADO (16-18kg)',objetivo:'GANAR FUERZA'},VOLUMEN:{nombre:'💪 VOLUMEN',emoji:'💪',color:'#32d74b',series:'3-4',reps:'8-12',peso:'MODERADO (10-12kg)',objetivo:'HIPERTROFIA'},DEFINICIÓN:{nombre:'🔥 DEFINICIÓN',emoji:'🔥',color:'#ffd60a',series:'3-4',reps:'15-20',peso:'LIGERO (6-8kg)',objetivo:'MARCAR'}}[t];}
+function actualizarBadgesCicloDia(){const t=getTipoCiclo(), c=getConfiguracionCiclo(), cls=t.toLowerCase(), txt=`${c.nombre} | ${c.series} x ${c.reps}`; ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'].forEach(d=>{const b=document.getElementById(`cycleBadge-${d}`); if(b){b.className=`day-cycle-badge ${cls}`; b.innerText=txt;}});}
+function actualizarBannerCiclo(){const c=getConfiguracionCiclo(), t=getTipoCiclo().toLowerCase(), s=getSemanaDelMes(), card=document.getElementById('cycleCard'); if(card){card.className=`cycle-card ${t}`; card.innerHTML=`<div><span class="cycle-emoji">${c.emoji}</span><span class="cycle-title" style="color:${c.color}">${c.nombre}</span></div><div class="cycle-semana">📅 Semana ${s} de 4</div><div class="cycle-bar"><div class="cycle-bar-fill" style="width:${(s/4)*100}%"></div></div><div class="cycle-stats"><div class="cycle-stat"><strong>${c.series}</strong> Series</div><div class="cycle-stat"><strong>${c.reps}</strong> Reps</div><div class="cycle-stat"><strong>${c.peso}</strong></div></div><div class="cycle-objetivo">🎯 ${c.objetivo}</div>`;}}
 
-function getSemanaDelMes() {
-    const hoy = new Date();
-    const inicioMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-    const diaSemanaInicio = inicioMes.getDay() || 7;
-    const diaMes = hoy.getDate();
-    let semana = Math.ceil((diaMes + diaSemanaInicio - 1) / 7);
-    return Math.min(semana, 5);
-}
+// ==================== RUTINAS ====================
+const rutinasBase={lunes:[{nombre:"Dominadas / Negativas",serieTexto:"3 x AL FALLO",instrucciones:"1️⃣ Salta o súbete con agarre ancho.\n2️⃣ Si no puedes subir, salta hasta arriba.\n3️⃣ BAJA MUY LENTO (5 segundos).",consejo:"Saca pecho y junta escápulas.",peso:"Corporal",imagen:"https://api.smartworkout.app/asset/image/3c194808-73c8-4d75-a2d9-cf85dd42fbeb",tienePeso:false,esTiempo:false},{nombre:"Remo con Barra",serieTexto:"4 x 12",instrucciones:"1️⃣ Sujeta la barra al ancho de hombros.\n2️⃣ Inclina 45°, espalda RECTA.\n3️⃣ Tira al ombligo.",consejo:"Espalda recta SIEMPRE.",peso:"12",imagen:"https://api.smartworkout.app/asset/image/be04fca7-9dc1-4b64-a7b4-d05217eaecda",tienePeso:true,esTiempo:false},{nombre:"Remo a una mano",serieTexto:"3 x 12",instrucciones:"1️⃣ Apoya rodilla y mano en banco.\n2️⃣ Espalda paralela.\n3️⃣ Tira hacia cadera.",consejo:"Tira con el codo.",peso:"8",imagen:"https://api.smartworkout.app/asset/image/55720d63-1744-4bf8-9917-8eafd30740f5",tienePeso:true,esTiempo:false},{nombre:"Curl de Bíceps",serieTexto:"3 x 12",instrucciones:"1️⃣ De pie, codos pegados.\n2️⃣ Sube hacia hombro.\n3️⃣ Baja controlado.",consejo:"No balances el cuerpo.",peso:"6",imagen:"https://api.smartworkout.app/asset/image/303b810b-f875-42eb-8b26-cc79b18b6865",tienePeso:true,esTiempo:false}],martes:[{nombre:"Cardio caminata",serieTexto:"30 min",instrucciones:"Caminata a ritmo constante.",consejo:"Hidrátate.",peso:"Media",imagen:"",tienePeso:false,esTiempo:true},{nombre:"Elevación piernas",serieTexto:"4 x 15",instrucciones:"1️⃣ Tumbado, manos bajo glúteos.\n2️⃣ Eleva a 90°.\n3️⃣ Baja lento.",consejo:"Dobla rodillas si duele lumbar.",peso:"Corporal",imagen:"https://api.smartworkout.app/asset/image/336b57e7-bcea-4e65-a54f-3a3519729f7e",tienePeso:false,esTiempo:false},{nombre:"Plancha",serieTexto:"3-4 x 30-60 seg",instrucciones:"1️⃣ Apoyo antebrazos.\n2️⃣ Cuerpo línea recta.\n3️⃣ Aprieta abdomen.",consejo:"Si se hunde cadera, PARA.",peso:"Corporal",imagen:"https://api.smartworkout.app/asset/image/606defc2-dc68-41d8-bea0-41a8d68aaa71",tienePeso:false,esTiempo:true}],miercoles:[{nombre:"Press banca",serieTexto:"4 x 12",instrucciones:"1️⃣ Tumbado, mancuernas sobre pecho.\n2️⃣ Baja al pecho.\n3️⃣ Codos 45°.\n4️⃣ Sube apretando.",consejo:"Hazlo en suelo.",peso:"14",imagen:"https://api.smartworkout.app/asset/image/567ae9ad-b584-4d53-b400-82b0117a7ce1",tienePeso:true,esTiempo:false},{nombre:"Fondos",serieTexto:"3 x 10",instrucciones:"1️⃣ Usa dos sillas.\n2️⃣ Baja a 90°.\n3️⃣ Sube con fuerza.",consejo:"Apoya un pie si es difícil.",peso:"Corporal",imagen:"https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030",tienePeso:false,esTiempo:false},{nombre:"Aperturas",serieTexto:"3 x 12",instrucciones:"1️⃣ Brazos arriba.\n2️⃣ Abre en cruz.\n3️⃣ Vuelve a juntar.",consejo:"Poco peso.",peso:"4",imagen:"https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89",tienePeso:true,esTiempo:false},{nombre:"Press Francés",serieTexto:"3 x 12",instrucciones:"1️⃣ Tumbado, mancuerna sobre cara.\n2️⃣ Baja a sienes.",consejo:"MUY POCO peso.",peso:"3",imagen:"https://api.smartworkout.app/asset/image/deff1b63-c052-42b3-a3e4-aad93db0159f",tienePeso:true,esTiempo:false},{nombre:"Extensión nuca",serieTexto:"3 x 12",instrucciones:"1️⃣ Sentado.\n2️⃣ Mancuerna a dos manos detrás cabeza.\n3️⃣ Sube y baja.",consejo:"Codos pegados.",peso:"4",imagen:"https://api.smartworkout.app/asset/image/6a79a439-417e-4fe9-8d83-0079e565389a",tienePeso:true,esTiempo:false}],jueves:[{nombre:"Cardio caminata",serieTexto:"30 min",instrucciones:"Caminata a ritmo constante.",consejo:"No te apoyes.",peso:"Media",imagen:"",tienePeso:false,esTiempo:true},{nombre:"Crunch",serieTexto:"4 x 20",instrucciones:"1️⃣ Tumbado rodillas flexionadas.\n2️⃣ Eleva SOLO hombros.",consejo:"Movimiento pequeño.",peso:"Corporal",imagen:"https://api.smartworkout.app/asset/image/85e37877-a9d0-4fb6-93d1-e8c0931caed9",tienePeso:false,esTiempo:false},{nombre:"Toques talón",serieTexto:"3 x 20",instrucciones:"1️⃣ Eleva hombros.\n2️⃣ Toca talón alternando.",consejo:"Rápido.",peso:"Corporal",imagen:"https://api.smartworkout.app/asset/image/bc90a160-cf28-49ff-ab43-60a01086d62f",tienePeso:false,esTiempo:false}],viernes:[{nombre:"Sentadillas",serieTexto:"4 x 12",instrucciones:"1️⃣ Barra en trapecios.\n2️⃣ Baja como sentarte.\n3️⃣ Espalda RECTA.",consejo:"Empieza sin peso.",peso:"16",imagen:"https://api.smartworkout.app/asset/image/7937ce6b-b8cd-418c-a71c-aa8f4ecb3635",tienePeso:true,esTiempo:false},{nombre:"Peso Muerto",serieTexto:"4 x 15",instrucciones:"1️⃣ Mancuernas a los lados.\n2️⃣ Baja trasero atrás.\n3️⃣ Sube apretando glúteos.",consejo:"Movimiento de CADERA.",peso:"12",imagen:"https://api.smartworkout.app/asset/image/7fa791dd-b202-4a33-a55b-ede33ac9ba8f",tienePeso:true,esTiempo:false},{nombre:"Press Militar",serieTexto:"4 x 10",instrucciones:"1️⃣ Sentado con respaldo.\n2️⃣ Sube por encima cabeza.",consejo:"Usa respaldo.",peso:"10",imagen:"https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89",tienePeso:true,esTiempo:false},{nombre:"Elevaciones laterales",serieTexto:"3 x 15",instrucciones:"1️⃣ De pie.\n2️⃣ Sube a altura hombros.",consejo:"MUY POCO peso.",peso:"3",imagen:"https://api.smartworkout.app/asset/image/32c6f15d-63ef-4bd6-ae6b-0056c26157fc",tienePeso:true,esTiempo:false}],sabado:[{nombre:"Cardio libre",serieTexto:"30 min",instrucciones:"Elige tu actividad favorita.",consejo:"Disfruta.",peso:"Moderado",imagen:"",tienePeso:false,esTiempo:true},{nombre:"Escaladores",serieTexto:"3-4 x 20-45 seg",instrucciones:"1️⃣ Plancha alta.\n2️⃣ Rodillas al pecho rápido.",consejo:"Ve a tope.",peso:"Corporal",imagen:"https://api.smartworkout.app/asset/image/5571abe1-227c-4fff-b7b6-9a365284a50d",tienePeso:false,esTiempo:true},{nombre:"V-Ups",serieTexto:"3 x 15",instrucciones:"1️⃣ Brazos atrás.\n2️⃣ Sube pierna y brazo contrario.\n3️⃣ Toca pie.",consejo:"Dobla rodilla.",peso:"Corporal",imagen:"https://api.smartworkout.app/asset/image/902e6c32-2f9a-4466-9e42-cc8a3c9eb498",tienePeso:false,esTiempo:false}]};
+const estiramientosPorDia={lunes:["Hombros cruzados","Pectoral en pared"],martes:["Espalda en el suelo","Postura del niño"],miercoles:["Pectoral en pared","Tríceps nuca"],jueves:["Postura del niño","Espalda en el suelo"],viernes:["Cuádriceps de pie","Isquiotibiales sentado"],sabado:["Espalda en el suelo","Postura del niño"]};
 
-function getTipoCiclo() {
-    const semana = getSemanaDelMes();
-    if (semana === 1 || semana === 4 || semana === 5) return 'FUERZA';
-    if (semana === 2) return 'VOLUMEN';
-    return 'DEFINICIÓN';
-}
+// ==================== VARIABLES ====================
+let checks=JSON.parse(localStorage.getItem('nico_checks'))||{};
+let notas=JSON.parse(localStorage.getItem('nico_notas'))||{};
+let historialSeries=JSON.parse(localStorage.getItem('nico_historial_series'))||{};
+let pesosRegistrados=JSON.parse(localStorage.getItem('nico_pesos'))||[];
+let diasEntrenados=JSON.parse(localStorage.getItem('nico_dias_entrenados'))||[];
+let diasFumados=JSON.parse(localStorage.getItem('nico_dias_fumados'))||[];
+let logrosObtenidos=JSON.parse(localStorage.getItem('nico_logros'))||[];
+let ejercicioDiscoActual="";
+let discosActuales={d125:0,d15:0,d2:0};
+if(pesosRegistrados.length===0){pesosRegistrados.push({valor:84,fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})}); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados));}
 
-function getConfiguracionCiclo() {
-    const tipo = getTipoCiclo();
-    const configs = {
-        FUERZA: { nombre: '🏋️ FUERZA', emoji: '🏋️', color: '#ff3b30', series: '4-5', reps: '3-5', peso: 'PESADO (16-18kg)', desc: 'Pocas reps, mucho peso', objetivo: 'GANAR FUERZA' },
-        VOLUMEN: { nombre: '💪 VOLUMEN', emoji: '💪', color: '#32d74b', series: '3-4', reps: '8-12', peso: 'MODERADO (10-12kg)', desc: 'Reps medias, peso moderado', objetivo: 'HIPERTROFIA' },
-        DEFINICIÓN: { nombre: '🔥 DEFINICIÓN', emoji: '🔥', color: '#ffd60a', series: '3-4', reps: '15-20', peso: 'LIGERO (6-8kg)', desc: 'Muchas reps, poco peso', objetivo: 'MARCAR' }
-    };
-    return configs[tipo];
-}
-
-function actualizarBadgesCicloDia() {
-    const tipo = getTipoCiclo();
-    const config = getConfiguracionCiclo();
-    const badgeClass = tipo.toLowerCase();
-    const badgeText = `${config.nombre} | ${config.series} x ${config.reps}`;
-    const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-    for(const dia of dias) {
-        const badge = document.getElementById(`cycleBadge-${dia}`);
-        if(badge) { badge.className = `day-cycle-badge ${badgeClass}`; badge.innerText = badgeText; }
-    }
-}
-
-function actualizarBannerCiclo() {
-    const config = getConfiguracionCiclo();
-    const tipo = getTipoCiclo().toLowerCase();
-    const semana = getSemanaDelMes();
-    const porcentaje = (semana / 4) * 100;
-    const card = document.getElementById('cycleCard');
-    if(card) {
-        card.className = `cycle-card ${tipo}`;
-        card.innerHTML = `<div><span class="cycle-emoji">${config.emoji}</span><span class="cycle-title" style="color:${config.color}">${config.nombre}</span></div><div class="cycle-semana">📅 Semana ${semana} de 4</div><div class="cycle-bar"><div class="cycle-bar-fill" style="width:${porcentaje}%"></div></div><div class="cycle-stats"><div class="cycle-stat"><strong>${config.series}</strong> Series</div><div class="cycle-stat"><strong>${config.reps}</strong> Reps</div><div class="cycle-stat"><strong>${config.peso}</strong></div></div><div class="cycle-objetivo">🎯 ${config.objetivo}</div>`;
-    }
-}
-
-// ==================== RUTINAS BASE ====================
-const rutinasBase = {
-    lunes: [{nombre:"Dominadas / Negativas", serieTexto:"3 x AL FALLO", instrucciones:"1️⃣ Salta o súbete con agarre ancho.\n2️⃣ Si no puedes subir, salta hasta arriba.\n3️⃣ BAJA MUY LENTO (5 segundos).", consejo:"Saca pecho y junta escápulas.", peso:"Corporal", imagen:"https://api.smartworkout.app/asset/image/3c194808-73c8-4d75-a2d9-cf85dd42fbeb", tienePeso:false, esTiempo:false},
-    {nombre:"Remo con Barra", serieTexto:"4 x 12", instrucciones:"1️⃣ Sujeta la barra al ancho de hombros.\n2️⃣ Inclina 45°, espalda RECTA.\n3️⃣ Tira al ombligo.", consejo:"Espalda recta SIEMPRE.", peso:"12", imagen:"https://api.smartworkout.app/asset/image/be04fca7-9dc1-4b64-a7b4-d05217eaecda", tienePeso:true, esTiempo:false},
-    {nombre:"Remo a una mano", serieTexto:"3 x 12", instrucciones:"1️⃣ Apoya rodilla y mano en banco.\n2️⃣ Espalda paralela.\n3️⃣ Tira hacia cadera.", consejo:"Tira con el codo.", peso:"8", imagen:"https://api.smartworkout.app/asset/image/55720d63-1744-4bf8-9917-8eafd30740f5", tienePeso:true, esTiempo:false},
-    {nombre:"Curl de Bíceps", serieTexto:"3 x 12", instrucciones:"1️⃣ De pie, codos pegados.\n2️⃣ Sube hacia hombro.\n3️⃣ Baja controlado.", consejo:"No balances el cuerpo.", peso:"6", imagen:"https://api.smartworkout.app/asset/image/303b810b-f875-42eb-8b26-cc79b18b6865", tienePeso:true, esTiempo:false}],
-    martes: [{nombre:"Cardio caminata", serieTexto:"30 min", instrucciones:"Caminata a ritmo constante.", consejo:"Hidrátate.", peso:"Media", imagen:"", tienePeso:false, esTiempo:true},
-    {nombre:"Elevación piernas", serieTexto:"4 x 15", instrucciones:"1️⃣ Tumbado, manos bajo glúteos.\n2️⃣ Eleva a 90°.\n3️⃣ Baja lento.", consejo:"Dobla rodillas si duele lumbar.", peso:"Corporal", imagen:"https://api.smartworkout.app/asset/image/336b57e7-bcea-4e65-a54f-3a3519729f7e", tienePeso:false, esTiempo:false},
-    {nombre:"Plancha", serieTexto:"3-4 x 30-60 seg", instrucciones:"1️⃣ Apoyo antebrazos.\n2️⃣ Cuerpo línea recta.\n3️⃣ Aprieta abdomen.", consejo:"Si se hunde cadera, PARA.", peso:"Corporal", imagen:"https://api.smartworkout.app/asset/image/606defc2-dc68-41d8-bea0-41a8d68aaa71", tienePeso:false, esTiempo:true}],
-    miercoles: [{nombre:"Press banca", serieTexto:"4 x 12", instrucciones:"1️⃣ Tumbado, mancuernas sobre pecho.\n2️⃣ Baja al pecho.\n3️⃣ Codos 45°.\n4️⃣ Sube apretando.", consejo:"Hazlo en suelo.", peso:"14", imagen:"https://api.smartworkout.app/asset/image/567ae9ad-b584-4d53-b400-82b0117a7ce1", tienePeso:true, esTiempo:false},
-    {nombre:"Fondos", serieTexto:"3 x 10", instrucciones:"1️⃣ Usa dos sillas.\n2️⃣ Baja a 90°.\n3️⃣ Sube con fuerza.", consejo:"Apoya un pie si es difícil.", peso:"Corporal", imagen:"https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030", tienePeso:false, esTiempo:false},
-    {nombre:"Aperturas", serieTexto:"3 x 12", instrucciones:"1️⃣ Brazos arriba.\n2️⃣ Abre en cruz.\n3️⃣ Vuelve a juntar.", consejo:"Poco peso.", peso:"4", imagen:"https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89", tienePeso:true, esTiempo:false},
-    {nombre:"Press Francés", serieTexto:"3 x 12", instrucciones:"1️⃣ Tumbado, mancuerna sobre cara.\n2️⃣ Baja a sienes.", consejo:"MUY POCO peso.", peso:"3", imagen:"https://api.smartworkout.app/asset/image/deff1b63-c052-42b3-a3e4-aad93db0159f", tienePeso:true, esTiempo:false},
-    {nombre:"Extensión nuca", serieTexto:"3 x 12", instrucciones:"1️⃣ Sentado.\n2️⃣ Mancuerna a dos manos detrás cabeza.\n3️⃣ Sube y baja.", consejo:"Codos pegados.", peso:"4", imagen:"https://api.smartworkout.app/asset/image/6a79a439-417e-4fe9-8d83-0079e565389a", tienePeso:true, esTiempo:false}],
-    jueves: [{nombre:"Cardio caminata", serieTexto:"30 min", instrucciones:"Caminata a ritmo constante.", consejo:"No te apoyes.", peso:"Media", imagen:"", tienePeso:false, esTiempo:true},
-    {nombre:"Crunch", serieTexto:"4 x 20", instrucciones:"1️⃣ Tumbado rodillas flexionadas.\n2️⃣ Eleva SOLO hombros.", consejo:"Movimiento pequeño.", peso:"Corporal", imagen:"https://api.smartworkout.app/asset/image/85e37877-a9d0-4fb6-93d1-e8c0931caed9", tienePeso:false, esTiempo:false},
-    {nombre:"Toques talón", serieTexto:"3 x 20", instrucciones:"1️⃣ Eleva hombros.\n2️⃣ Toca talón alternando.", consejo:"Rápido.", peso:"Corporal", imagen:"https://api.smartworkout.app/asset/image/bc90a160-cf28-49ff-ab43-60a01086d62f", tienePeso:false, esTiempo:false}],
-    viernes: [{nombre:"Sentadillas", serieTexto:"4 x 12", instrucciones:"1️⃣ Barra en trapecios.\n2️⃣ Baja como sentarte.\n3️⃣ Espalda RECTA.", consejo:"Empieza sin peso.", peso:"16", imagen:"https://api.smartworkout.app/asset/image/7937ce6b-b8cd-418c-a71c-aa8f4ecb3635", tienePeso:true, esTiempo:false},
-    {nombre:"Peso Muerto", serieTexto:"4 x 15", instrucciones:"1️⃣ Mancuernas a los lados.\n2️⃣ Baja trasero atrás.\n3️⃣ Sube apretando glúteos.", consejo:"Movimiento de CADERA.", peso:"12", imagen:"https://api.smartworkout.app/asset/image/7fa791dd-b202-4a33-a55b-ede33ac9ba8f", tienePeso:true, esTiempo:false},
-    {nombre:"Press Militar", serieTexto:"4 x 10", instrucciones:"1️⃣ Sentado con respaldo.\n2️⃣ Sube por encima cabeza.", consejo:"Usa respaldo.", peso:"10", imagen:"https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89", tienePeso:true, esTiempo:false},
-    {nombre:"Elevaciones laterales", serieTexto:"3 x 15", instrucciones:"1️⃣ De pie.\n2️⃣ Sube a altura hombros.", consejo:"MUY POCO peso.", peso:"3", imagen:"https://api.smartworkout.app/asset/image/32c6f15d-63ef-4bd6-ae6b-0056c26157fc", tienePeso:true, esTiempo:false}],
-    sabado: [{nombre:"Cardio libre", serieTexto:"30 min", instrucciones:"Elige tu actividad favorita.", consejo:"Disfruta.", peso:"Moderado", imagen:"", tienePeso:false, esTiempo:true},
-    {nombre:"Escaladores", serieTexto:"3-4 x 20-45 seg", instrucciones:"1️⃣ Plancha alta.\n2️⃣ Rodillas al pecho rápido.", consejo:"Ve a tope.", peso:"Corporal", imagen:"https://api.smartworkout.app/asset/image/5571abe1-227c-4fff-b7b6-9a365284a50d", tienePeso:false, esTiempo:true},
-    {nombre:"V-Ups", serieTexto:"3 x 15", instrucciones:"1️⃣ Brazos atrás.\n2️⃣ Sube pierna y brazo contrario.\n3️⃣ Toca pie.", consejo:"Dobla rodilla.", peso:"Corporal", imagen:"https://api.smartworkout.app/asset/image/902e6c32-2f9a-4466-9e42-cc8a3c9eb498", tienePeso:false, esTiempo:false}]
-};
-
-const estiramientosPorDia = {
-    lunes: ["Hombros cruzados", "Pectoral en pared"], martes: ["Espalda en el suelo", "Postura del niño"], miercoles: ["Pectoral en pared", "Tríceps nuca"],
-    jueves: ["Postura del niño", "Espalda en el suelo"], viernes: ["Cuádriceps de pie", "Isquiotibiales sentado"], sabado: ["Espalda en el suelo", "Postura del niño"]
-};
-
-// ==================== VARIABLES GLOBALES ====================
-let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
-let notas = JSON.parse(localStorage.getItem('nico_notas')) || {};
-let historialSeries = JSON.parse(localStorage.getItem('nico_historial_series')) || {};
-let pesosRegistrados = JSON.parse(localStorage.getItem('nico_pesos')) || [];
-let diasEntrenados = JSON.parse(localStorage.getItem('nico_dias_entrenados')) || [];
-let diasFumados = JSON.parse(localStorage.getItem('nico_dias_fumados')) || [];
-let logrosObtenidos = JSON.parse(localStorage.getItem('nico_logros')) || [];
-let ejercicioDiscoActual = "";
-let discosActuales = {d125:0, d15:0, d2:0};
-
-// Si no hay pesos, crear uno por defecto
-if(pesosRegistrados.length === 0) {
-    const fechaHoy = new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'});
-    pesosRegistrados.push({valor:84, fecha:fechaHoy});
-    localStorage.setItem('nico_pesos', JSON.stringify(pesosRegistrados));
-}
-
-function getPesoAjustado(pesoBase) {
-    const tipo = getTipoCiclo();
-    let peso = pesoBase;
-    if (tipo === 'FUERZA') peso = Math.min(Math.round(pesoBase * 1.5), MAX_PESO_TOTAL);
-    else if (tipo === 'VOLUMEN') peso = Math.min(Math.round(pesoBase * 1.0), MAX_PESO_TOTAL);
-    else if (tipo === 'DEFINICIÓN') peso = Math.min(Math.round(pesoBase * 0.7), MAX_PESO_TOTAL);
-    return Math.max(peso, 2);
-}
-
-function generarInputsSeries(id, serieTexto, esTiempo) {
-    let maxSeries = 4;
-    const match = serieTexto.match(/(\d+)(?:\s*[–-]\s*(\d+))?\s*x/);
-    if(match) maxSeries = match[2] ? parseInt(match[2]) : parseInt(match[1]);
-    if(maxSeries > 8) maxSeries = 8;
-    let html = '';
-    for(let i=1; i<=maxSeries; i++) {
-        const key = `${id}-s${i}`;
-        const val = notas[key] || '';
-        const hist = historialSeries[key] || '--';
-        const placeholder = esTiempo ? "ej: 45s" : "kg / reps";
-        html += `<div class="series-box"><div class="series-label">Serie ${i}</div><input type="text" class="series-input" placeholder="${placeholder}" value="${val}" onchange="guardarSerie('${key}', this.value)"><div class="series-hist">Ant: ${hist}</div></div>`;
-    }
-    return html;
-}
-
-function renderizarRutinas() {
-    const configCiclo = getConfiguracionCiclo();
-    const tipo = getTipoCiclo().toLowerCase();
-    const semanaStr = getSemanaActual();
-    for (const dia of ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado']) {
-        const lista = document.getElementById(`list-${dia}`);
-        if (!lista) continue;
-        const btn = document.getElementById(`btn-done-${dia}`);
-        if(btn) {
-            if (localStorage.getItem(`completado_${dia}_${semanaStr}`)) { btn.disabled = true; btn.innerText = `⭐ RUTINA ${getTipoCiclo()} COMPLETADA`; }
-            else { btn.disabled = false; btn.innerText = `✅ COMPLETAR ENTRENO ${getTipoCiclo()}`; }
-        }
-        const rutina = rutinasBase[dia];
-        if(!rutina) continue;
-        lista.innerHTML = rutina.map((ex, idx) => {
-            const id = `${dia}-${idx}`;
-            const isChecked = checks[id] === true;
-            const pesoAjustado = ex.tienePeso ? getPesoAjustado(ex.peso) : null;
-            let serieMostrada = ex.serieTexto;
-            if(!ex.esTiempo && !ex.serieTexto.includes("AL FALLO") && !ex.serieTexto.includes("min")) {
-                serieMostrada = `${configCiclo.series} x ${configCiclo.reps}`;
-            }
-            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge ${tipo}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value ${tipo}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value ${tipo}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value ${tipo}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(80px,1fr)); gap:8px; margin-top:12px;">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
-        }).join('');
-        const stretchList = document.getElementById(`stretches-${dia}`);
-        if(stretchList && estiramientosPorDia[dia]) stretchList.innerHTML = `<div class="stretch-card"><strong>🧘 ESTIRAMIENTOS:</strong><ul style="margin-left:20px;margin-top:5px">${estiramientosPorDia[dia].map(s => `<li>${s}</li>`).join('')}</ul></div>`;
-    }
-}
-
-function marcarEjercicioHecho(id) { if(checks[id]) return; checks[id] = true; localStorage.setItem('nico_checks', JSON.stringify(checks)); actualizarHome(); renderizarRutinas(); if(navigator.vibrate) navigator.vibrate(50); const dia = id.split('-')[0]; if (!['martes','jueves','sabado'].includes(dia)) iniciarDescanso(30); }
-function marcarDiaCompletadoManual(dia) { const hoyStr = getHoyStr(); const semanaStr = getSemanaActual(); const key = `completado_${dia}_${semanaStr}`; if(localStorage.getItem(key)) return; if(!diasEntrenados.includes(hoyStr)) { diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); } localStorage.setItem(key,"true"); mostrarMensajeMotivador(`🎉 ¡${getTipoCiclo()} completado!`,"completado"); actualizarHome(); renderizarRutinas(); renderizarCalendarios(); if(navigator.vibrate) navigator.vibrate([200,100,200]); canvasConfetti({particleCount:300,spread:100}); }
-
-function actualizarResumenPeso() {
-    if(pesosRegistrados.length > 0) {
-        document.getElementById('pesoActualResumen').innerText = pesosRegistrados[pesosRegistrados.length-1].valor + ' kg';
-        document.getElementById('pesoInicialResumen').innerText = pesosRegistrados[0].valor + ' kg';
-    }
-}
-function actualizarHome() {
-    document.getElementById('racha').innerText = diasEntrenados.length;
-    document.getElementById('diasSinFumar').innerText = calcularDiasSinFumar();
-    const ctx = document.getElementById('grafico').getContext('2d');
-    if(window.miGrafico) window.miGrafico.destroy();
-    window.miGrafico = new Chart(ctx, { type: 'line', data: { labels: pesosRegistrados.map(p=>p.fecha), datasets: [{ data: pesosRegistrados.map(p=>p.valor), borderColor: '#ff6600', fill: true, backgroundColor: 'rgba(255,102,0,0.1)' }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } } } });
-    document.getElementById('todayDay').innerText = `📅 ${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date().getDay()]}`;
-    document.getElementById('todayRoutine').innerText = getRutinaHoy();
-    verificarYDesbloquearLogros();
-    actualizarResumenPeso();
-}
-function getRutinaHoy() { const d = new Date().getDay(); const tipo = getTipoCiclo(); return `${['Descanso','Espalda/Bíceps','Cardio/Abs','Pecho/Tríceps','Cardio/Abs','Pierna/Hombro','Cardio/Abs'][d]} [${tipo}]`; }
+function getPesoAjustado(p){const t=getTipoCiclo(); let r=p; if(t==='FUERZA') r=Math.min(Math.round(p*1.5),MAX_PESO_TOTAL); else if(t==='VOLUMEN') r=Math.min(Math.round(p*1.0),MAX_PESO_TOTAL); else if(t==='DEFINICIÓN') r=Math.min(Math.round(p*0.7),MAX_PESO_TOTAL); return Math.max(r,2);}
+function generarInputsSeries(id,texto,esTiempo){let max=4; const m=texto.match(/(\d+)(?:[–-](\d+))?x/); if(m){if(m[2]) max=parseInt(m[2]); else max=parseInt(m[1]);} if(max>8) max=8; let html=''; for(let i=1;i<=max;i++){const key=`${id}-s${i}`; html+=`<div class="series-box"><div class="series-label">Serie ${i}</div><input type="text" class="series-input" placeholder="${esTiempo?'ej: 45s':'kg / reps'}" value="${notas[key]||''}" onchange="guardarSerie('${key}',this.value)"><div class="series-hist">Ant: ${historialSeries[key]||'--'}</div></div>`;} return html;}
+function renderizarRutinas(){const c=getConfiguracionCiclo(), t=getTipoCiclo().toLowerCase(), semanaStr=getSemanaActual(); for(const dia of ['lunes','martes','miercoles','jueves','viernes','sabado']){const lista=document.getElementById(`list-${dia}`); if(!lista) continue; const btn=document.getElementById(`btn-done-${dia}`); if(btn){if(localStorage.getItem(`completado_${dia}_${semanaStr}`)){btn.disabled=true; btn.innerText=`⭐ RUTINA ${getTipoCiclo()} COMPLETADA`;} else{btn.disabled=false; btn.innerText=`✅ COMPLETAR ENTRENO ${getTipoCiclo()}`;}} const rutina=rutinasBase[dia]; if(!rutina) continue; lista.innerHTML=rutina.map((ex,idx)=>{const id=`${dia}-${idx}`; const isChecked=checks[id]===true; const pesoAjustado=ex.tienePeso?getPesoAjustado(ex.peso):null; let serieMostrada=ex.serieTexto; if(!ex.esTiempo && !ex.serieTexto.includes("AL FALLO") && !ex.serieTexto.includes("min")){serieMostrada=`${c.series} x ${c.reps}`;} return `<div class="exercise-card ${t}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge ${t}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked?'checked disabled':''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value ${t}">${serieMostrada}</div></div>${ex.tienePeso?`<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value ${t}">${pesoAjustado} kg</div></div>`:`<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value ${t}">${ex.peso||'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen?`<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">`:''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g,'<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(80px,1fr)); gap:8px; margin-top:12px;">${generarInputsSeries(id,ex.serieTexto,ex.esTiempo)}</div></div>`;}).join(''); const stretchList=document.getElementById(`stretches-${dia}`); if(stretchList && estiramientosPorDia[dia]) stretchList.innerHTML=`<div class="stretch-card"><strong>🧘 ESTIRAMIENTOS:</strong><ul style="margin-left:20px;margin-top:5px">${estiramientosPorDia[dia].map(s=>`<li>${s}</li>`).join('')}</ul></div>`;}}
+function marcarEjercicioHecho(id){if(checks[id]) return; checks[id]=true; localStorage.setItem('nico_checks',JSON.stringify(checks)); actualizarHome(); renderizarRutinas(); if(navigator.vibrate) navigator.vibrate(50); const dia=id.split('-')[0]; if(!['martes','jueves','sabado'].includes(dia)) iniciarDescanso(30);}
+function marcarDiaCompletadoManual(dia){const hoyStr=getHoyStr(), semanaStr=getSemanaActual(), key=`completado_${dia}_${semanaStr}`; if(localStorage.getItem(key)) return; if(!diasEntrenados.includes(hoyStr)){diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} localStorage.setItem(key,"true"); mostrarMensajeMotivador(`🎉 ¡${getTipoCiclo()} completado!`,"completado"); actualizarHome(); renderizarRutinas(); renderizarCalendarios(); if(navigator.vibrate) navigator.vibrate([200,100,200]); canvasConfetti({particleCount:300,spread:100});}
+function actualizarResumenPeso(){if(pesosRegistrados.length>0){document.getElementById('pesoActualResumen').innerText=pesosRegistrados[pesosRegistrados.length-1].valor+' kg'; document.getElementById('pesoInicialResumen').innerText=pesosRegistrados[0].valor+' kg';}}
+function actualizarHome(){document.getElementById('racha').innerText=diasEntrenados.length; document.getElementById('diasSinFumar').innerText=calcularDiasSinFumar(); const ctx=document.getElementById('grafico').getContext('2d'); if(window.miGrafico) window.miGrafico.destroy(); window.miGrafico=new Chart(ctx,{type:'line',data:{labels:pesosRegistrados.map(p=>p.fecha),datasets:[{data:pesosRegistrados.map(p=>p.valor),borderColor:'#ff6600',fill:true,backgroundColor:'rgba(255,102,0,0.1)'}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false}}}}); document.getElementById('todayDay').innerText=`📅 ${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date().getDay()]}`; document.getElementById('todayRoutine').innerText=getRutinaHoy(); verificarYDesbloquearLogros(); actualizarResumenPeso();}
+function getRutinaHoy(){const d=new Date().getDay(); return `${['Descanso','Espalda/Bíceps','Cardio/Abs','Pecho/Tríceps','Cardio/Abs','Pierna/Hombro','Cardio/Abs'][d]} [${getTipoCiclo()}]`;}
 
 // ==================== CALENDARIOS ====================
-let currentViewMonthGym = new Date().getMonth(), currentViewYearGym = new Date().getFullYear(), currentViewMonthSmoke = new Date().getMonth(), currentViewYearSmoke = new Date().getFullYear();
-function getHoyStr() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-function getSemanaActual() { const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+4-(d.getDay()||7)); return `${d.getFullYear()}-W${Math.ceil((((d-new Date(d.getFullYear(),0,1))/86400000)+1)/7)}`; }
-function changeMonth(offset,type) { if(type==='gym'){let d=new Date(currentViewYearGym,currentViewMonthGym+offset,1); currentViewYearGym=d.getFullYear(); currentViewMonthGym=d.getMonth();} else{let d=new Date(currentViewYearSmoke,currentViewMonthSmoke+offset,1); currentViewYearSmoke=d.getFullYear(); currentViewMonthSmoke=d.getMonth();} renderizarCalendarios(); }
-function renderCal(id,mes,año,listaDias,labelId,esHumo=false) { const container=document.getElementById(id); if(!container) return; container.innerHTML=''; const nombreMes=new Intl.DateTimeFormat('es-ES',{month:'long'}).format(new Date(año,mes,1)).toUpperCase(); document.getElementById(labelId).innerText=`${nombreMes} ${año}`; ['L','M','X','J','V','S','D'].forEach(d=>{const div=document.createElement('div'); div.className='cal-day-label'; div.innerText=d; container.appendChild(div);}); const primerDia=new Date(año,mes,1).getDay(); const offset=primerDia===0?6:primerDia-1; const diasEnMes=new Date(año,mes+1,0).getDate(); for(let i=0;i<offset;i++) container.appendChild(document.createElement('div')); const hoyStr=getHoyStr(); const hoyDate=new Date(); hoyDate.setHours(23,59,59,999); for(let d=1;d<=diasEnMes;d++){const cell=document.createElement('div'); cell.className='cal-cell'; cell.innerText=d; const fecha=new Date(año,mes,d); const fStr=`${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`; if(fecha>hoyDate) cell.classList.add('future'); else cell.onclick=()=>toggleDia(fStr,esHumo,fecha); if(fStr===hoyStr) cell.classList.add('today'); if(esHumo){if(listaDias.includes(fStr)) cell.classList.add('fumado'); else if(fecha>=new Date(2026,1,22)&&fecha<=new Date()) cell.classList.add('nosmoke');} else{if(listaDias.includes(fStr)) cell.classList.add('entrenado'); else if(fecha.getDay()===0) cell.classList.add('domingo');} container.appendChild(cell);} }
-function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarMensajeMotivador("✅ Día limpio.","bienvenida");} else{diasFumados.push(fStr); mostrarMensajeMotivador("🚬 Marcado como fumado.","logro");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarMensajeMotivador("🔥 ¡Día añadido!","racha"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); }
+let currentViewMonthGym=new Date().getMonth(), currentViewYearGym=new Date().getFullYear(), currentViewMonthSmoke=new Date().getMonth(), currentViewYearSmoke=new Date().getFullYear();
+function getHoyStr(){const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function getSemanaActual(){const d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+4-(d.getDay()||7)); return `${d.getFullYear()}-W${Math.ceil((((d-new Date(d.getFullYear(),0,1))/86400000)+1)/7)}`;}
+function changeMonth(o,t){if(t==='gym'){let d=new Date(currentViewYearGym,currentViewMonthGym+o,1); currentViewYearGym=d.getFullYear(); currentViewMonthGym=d.getMonth();} else{let d=new Date(currentViewYearSmoke,currentViewMonthSmoke+o,1); currentViewYearSmoke=d.getFullYear(); currentViewMonthSmoke=d.getMonth();} renderizarCalendarios();}
+function renderCal(id,mes,año,lista,labelId,esHumo){const cont=document.getElementById(id); if(!cont) return; cont.innerHTML=''; const nombreMes=new Intl.DateTimeFormat('es-ES',{month:'long'}).format(new Date(año,mes,1)).toUpperCase(); document.getElementById(labelId).innerText=`${nombreMes} ${año}`; ['L','M','X','J','V','S','D'].forEach(d=>{const div=document.createElement('div'); div.className='cal-day-label'; div.innerText=d; cont.appendChild(div);}); const primerDia=new Date(año,mes,1).getDay(); const offset=primerDia===0?6:primerDia-1; const diasEnMes=new Date(año,mes+1,0).getDate(); for(let i=0;i<offset;i++) cont.appendChild(document.createElement('div')); const hoyStr=getHoyStr(); const hoyDate=new Date(); hoyDate.setHours(23,59,59,999); for(let d=1;d<=diasEnMes;d++){const cell=document.createElement('div'); cell.className='cal-cell'; cell.innerText=d; const fecha=new Date(año,mes,d); const fStr=`${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`; if(fecha>hoyDate) cell.classList.add('future'); else cell.onclick=()=>toggleDia(fStr,esHumo,fecha); if(fStr===hoyStr) cell.classList.add('today'); if(esHumo){if(lista.includes(fStr)) cell.classList.add('fumado'); else if(fecha>=new Date(2026,1,22)&&fecha<=new Date()) cell.classList.add('nosmoke');} else{if(lista.includes(fStr)) cell.classList.add('entrenado'); else if(fecha.getDay()===0) cell.classList.add('domingo');} cont.appendChild(cell);}}
+function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarMensajeMotivador("✅ Día limpio.","bienvenida");} else{diasFumados.push(fStr); mostrarMensajeMotivador("🚬 Marcado como fumado.","logro");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarMensajeMotivador("🔥 ¡Día añadido!","racha"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios();}
 function renderizarCalendarios(){renderCal('cal-gym',currentViewMonthGym,currentViewYearGym,diasEntrenados,'cal-month-gym',false); renderCal('cal-smoke',currentViewMonthSmoke,currentViewYearSmoke,diasFumados,'cal-month-smoke',true);}
 
-// ==================== FUNCIONES SECUNDARIAS ====================
-function resetSemanal(){const semanaStr=getSemanaActual(); const ultima=localStorage.getItem('nico_ultima_semana_reset'); if(ultima!==semanaStr){for(let key in notas) if(key.includes('-s')) historialSeries[key]=notas[key]; localStorage.setItem('nico_historial_series',JSON.stringify(historialSeries)); checks={}; notas={}; localStorage.setItem('nico_checks',JSON.stringify(checks)); localStorage.setItem('nico_notas',JSON.stringify(notas)); localStorage.setItem('nico_ultima_semana_reset',semanaStr);}}
-function guardarSerie(key,valor){notas[key]=valor; localStorage.setItem('nico_notas',JSON.stringify(notas));}
-function calcularDiasSinFumar(){let total=0; let f=new Date(2026,1,22); const hoy=new Date(); while(f<=hoy){const fStr=`${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`; if(!diasFumados.includes(fStr)) total++; f.setDate(f.getDate()+1);} return total;}
-function marcarHoyFumado(){const hoyStr=getHoyStr(); if(!diasFumados.includes(hoyStr)){diasFumados.push(hoyStr); localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados)); mostrarMensajeMotivador("🚬 Marcado como fumado.","logro"); actualizarHome(); renderizarCalendarios();}}
-
-// ==================== RESET SEGURO ====================
+// ==================== MISC ====================
+function resetSemanal(){const s=getSemanaActual(), u=localStorage.getItem('nico_ultima_semana_reset'); if(u!==s){for(let k in notas) if(k.includes('-s')) historialSeries[k]=notas[k]; localStorage.setItem('nico_historial_series',JSON.stringify(historialSeries)); checks={}; notas={}; localStorage.setItem('nico_checks',JSON.stringify(checks)); localStorage.setItem('nico_notas',JSON.stringify(notas)); localStorage.setItem('nico_ultima_semana_reset',s);}}
+function guardarSerie(k,v){notas[k]=v; localStorage.setItem('nico_notas',JSON.stringify(notas));}
+function calcularDiasSinFumar(){let t=0; let f=new Date(2026,1,22); const h=new Date(); while(f<=h){const fs=`${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`; if(!diasFumados.includes(fs)) t++; f.setDate(f.getDate()+1);} return t;}
+function marcarHoyFumado(){const h=getHoyStr(); if(!diasFumados.includes(h)){diasFumados.push(h); localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados)); mostrarMensajeMotivador("🚬 Marcado como fumado.","logro"); actualizarHome(); renderizarCalendarios();}}
 function mostrarConfirmacionReset(){document.getElementById('resetModal').style.display='flex'; document.getElementById('confirmResetInput').value=''; document.getElementById('confirmResetInput').focus();}
 function cerrarModalReset(){document.getElementById('resetModal').style.display='none';}
 function confirmarBorrarTodo(){if(document.getElementById('confirmResetInput').value==="BORRAR"){localStorage.clear(); location.reload();} else{mostrarToast("❌ Debes escribir BORRAR exactamente");}}
-
-// ==================== NOTIFICACIONES ====================
 function solicitarPermisoNotificaciones(){if(!("Notification" in window)){mostrarToast("❌ Navegador no soporta notificaciones"); return;} if(Notification.permission==="granted"){programarRecordatorio(); mostrarToast("🔔 Recordatorios activados (19:00)");} else if(Notification.permission!=="denied"){Notification.requestPermission().then(p=>{if(p==="granted"){programarRecordatorio(); mostrarToast("🔔 Recordatorios activados (19:00)");}});} else{mostrarToast("❌ Permiso denegado");}}
 function programarRecordatorio(){const ahora=new Date(); const objetivo=new Date(); objetivo.setHours(19,0,0,0); let tiempo=objetivo-ahora; if(tiempo<0){objetivo.setDate(objetivo.getDate()+1); tiempo=objetivo-ahora;} setTimeout(()=>{const tipo=getTipoCiclo(); const rutina=getRutinaHoy(); new Notification("💪 NICO GYM",{body:`Hoy toca ${rutina}`,icon:"https://cdn-icons-png.flaticon.com/512/2964/2964514.png",vibrate:[200,100,200]}); programarRecordatorio();},tiempo);}
 
-// ==================== FOTOS ====================
-let fotosTemp2={frente:null,espalda:null,izquierda:null,derecha:null}, fotosGuardadas=JSON.parse(localStorage.getItem('nico_fotos_progreso'))||{};
-function actualizarEstadoFotos(){const statusDiv=document.getElementById('photoStatus'); const btn=document.getElementById('btnGuardarDia'); const total=(fotosTemp2.frente?1:0)+(fotosTemp2.espalda?1:0)+(fotosTemp2.izquierda?1:0)+(fotosTemp2.derecha?1:0); if(total===4){statusDiv.className='photo-status ready'; statusDiv.innerHTML='✅ ¡4 fotos listas!'; if(btn)btn.disabled=false;} else{statusDiv.className='photo-status pending'; statusDiv.innerHTML=`⚠️ ${total}/4 fotos (faltan ${4-total})`; if(btn)btn.disabled=true;}}
-function previewFoto(tipo,input){const file=input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=e=>{fotosTemp2[tipo]=e.target.result; const img=document.getElementById(`preview-${tipo}`); if(img){img.src=e.target.result; img.style.display='block';} actualizarEstadoFotos();}; reader.readAsDataURL(file);}
-function guardarDiaCompleto(){if(!fotosTemp2.frente||!fotosTemp2.espalda||!fotosTemp2.izquierda||!fotosTemp2.derecha){mostrarToast("❌ Faltan fotos"); return;} const hoy=new Date(); const fechaStr=`${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`; fotosGuardadas[fechaStr]={frente:fotosTemp2.frente,espalda:fotosTemp2.espalda,izquierda:fotosTemp2.izquierda,derecha:fotosTemp2.derecha}; localStorage.setItem('nico_fotos_progreso',JSON.stringify(fotosGuardadas)); fotosTemp2={frente:null,espalda:null,izquierda:null,derecha:null}; ['frente','espalda','izquierda','derecha'].forEach(t=>{const inp=document.getElementById(`input-${t}`); if(inp)inp.value=''; const img=document.getElementById(`preview-${t}`); if(img){img.style.display='none'; img.src='';}}); actualizarEstadoFotos(); actualizarHistorial(); actualizarSelectoresComparacion(); mostrarToast("✅ ¡Fotos guardadas!"); canvasConfetti({particleCount:100,spread:70}); verificarLogroFotos();}
-function actualizarHistorial(){const container=document.getElementById('history-list'); if(!container) return; const fechas=Object.keys(fotosGuardadas).sort().reverse(); if(fechas.length===0){container.innerHTML='<div class="empty-state">Todavía no has guardado ningún día</div>'; return;} container.innerHTML=fechas.map(f=>`<div class="history-item"><div><div class="history-date">📅 ${f}</div><div class="history-preview">${fotosGuardadas[f].frente?`<img src="${fotosGuardadas[f].frente}">`:''}${fotosGuardadas[f].espalda?`<img src="${fotosGuardadas[f].espalda}">`:''}</div></div><button class="delete-day" onclick="eliminarDia('${f}')">🗑️</button></div>`).join('');}
-function eliminarDia(f){if(confirm(`¿Eliminar ${f}?`)){delete fotosGuardadas[f]; localStorage.setItem('nico_fotos_progreso',JSON.stringify(fotosGuardadas)); actualizarHistorial(); actualizarSelectoresComparacion(); mostrarToast(`🗑️ ${f} eliminado`);}}
+// ==================== FOTOS MEJORADO ====================
+let fotosTemp={frente:null,espalda:null,izquierda:null,derecha:null};
+let fotosGuardadas=JSON.parse(localStorage.getItem('nico_fotos_progreso'))||{};
+if(Object.keys(fotosGuardadas).length>0) console.log("Fotos cargadas:",Object.keys(fotosGuardadas).length);
+
+function actualizarEstadoFotos(){const statusDiv=document.getElementById('photoStatus'); const btn=document.getElementById('btnGuardarDia'); const total=(fotosTemp.frente?1:0)+(fotosTemp.espalda?1:0)+(fotosTemp.izquierda?1:0)+(fotosTemp.derecha?1:0); if(total===4){statusDiv.className='photo-status ready'; statusDiv.innerHTML='✅ ¡4 fotos listas! Guarda tu progreso.'; if(btn) btn.disabled=false;} else{statusDiv.className='photo-status pending'; statusDiv.innerHTML=`⚠️ ${total}/4 fotos seleccionadas`; if(btn) btn.disabled=true;}}
+function previewFoto(tipo,input){const file=input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(e){fotosTemp[tipo]=e.target.result; const img=document.getElementById(`preview-${tipo}`); if(img){img.src=e.target.result; img.style.display='block';} actualizarEstadoFotos();}; reader.readAsDataURL(file);}
+function guardarDiaCompleto(){if(!fotosTemp.frente||!fotosTemp.espalda||!fotosTemp.izquierda||!fotosTemp.derecha){mostrarToast("❌ Selecciona las 4 fotos antes de guardar"); return;} const hoy=new Date(); const fechaStr=`${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`; fotosGuardadas[fechaStr]={frente:fotosTemp.frente,espalda:fotosTemp.espalda,izquierda:fotosTemp.izquierda,derecha:fotosTemp.derecha}; localStorage.setItem('nico_fotos_progreso',JSON.stringify(fotosGuardadas)); fotosTemp={frente:null,espalda:null,izquierda:null,derecha:null}; ['frente','espalda','izquierda','derecha'].forEach(t=>{const inp=document.getElementById(`input-${t}`); if(inp) inp.value=''; const img=document.getElementById(`preview-${t}`); if(img){img.style.display='none'; img.src='';}}); actualizarEstadoFotos(); actualizarHistorialFotos(); actualizarSelectoresComparacion(); mostrarToast("✅ ¡Fotos guardadas correctamente! No se borrarán al recargar."); canvasConfetti({particleCount:100,spread:70}); verificarLogroFotos();}
+function actualizarHistorialFotos(){const container=document.getElementById('history-list'); if(!container) return; const fechas=Object.keys(fotosGuardadas).sort().reverse(); if(fechas.length===0){container.innerHTML='<div class="empty-state">Todavía no has guardado ningún día</div>'; return;} container.innerHTML=fechas.map(fecha=>{const f=fotosGuardadas[fecha]; return `<div class="history-item"><div><div class="history-date">📅 ${fecha}</div><div class="history-preview">${f.frente?`<img src="${f.frente}">`:''}${f.espalda?`<img src="${f.espalda}">`:''}</div></div><button class="delete-day" onclick="eliminarDiaFotos('${fecha}')">🗑️</button></div>`;}).join('');}
+function eliminarDiaFotos(fecha){if(confirm(`¿Eliminar el registro del ${fecha}?`)){delete fotosGuardadas[fecha]; localStorage.setItem('nico_fotos_progreso',JSON.stringify(fotosGuardadas)); actualizarHistorialFotos(); actualizarSelectoresComparacion(); mostrarToast(`🗑️ Registro de ${fecha} eliminado`);}}
 function actualizarSelectoresComparacion(){const s1=document.getElementById('compare-dia1'), s2=document.getElementById('compare-dia2'); if(!s1||!s2) return; const fechas=Object.keys(fotosGuardadas).sort().reverse(); const opts=fechas.map(f=>`<option value="${f}">${f}</option>`); s1.innerHTML='<option value="">Día 1</option>'+opts.join(''); s2.innerHTML='<option value="">Día 2</option>'+opts.join(''); if(fechas.length>=2){s1.value=fechas[1]; s2.value=fechas[0]; actualizarComparacion();}}
-function actualizarComparacion(){const f1=document.getElementById('compare-dia1')?.value, f2=document.getElementById('compare-dia2')?.value, cont=document.getElementById('compare-container'); if(!cont||!f1||!f2){if(cont)cont.innerHTML='<div class="empty-state" style="grid-column:span 2;">Selecciona dos días</div>'; return;} const d1=fotosGuardadas[f1], d2=fotosGuardadas[f2]; if(!d1||!d2) return; cont.innerHTML=`<div class="compare-day"><h4>${f1}</h4><div class="compare-photos"><div class="compare-photo"><img src="${d1.frente}"><span>Frente</span></div><div class="compare-photo"><img src="${d1.espalda}"><span>Espalda</span></div><div class="compare-photo"><img src="${d1.izquierda}"><span>Izquierda</span></div><div class="compare-photo"><img src="${d1.derecha}"><span>Derecha</span></div></div></div><div class="compare-day"><h4>${f2}</h4><div class="compare-photos"><div class="compare-photo"><img src="${d2.frente}"><span>Frente</span></div><div class="compare-photo"><img src="${d2.espalda}"><span>Espalda</span></div><div class="compare-photo"><img src="${d2.izquierda}"><span>Izquierda</span></div><div class="compare-photo"><img src="${d2.derecha}"><span>Derecha</span></div></div></div>`;}
-function verificarLogroFotos(){let logros=JSON.parse(localStorage.getItem('nico_logros'))||[]; if(Object.keys(fotosGuardadas).length>=1&&!logros.includes('foto_progreso')){logros.push('foto_progreso'); localStorage.setItem('nico_logros',JSON.stringify(logros)); mostrarMensajeMotivador("📸 ¡Primera foto!", "logro");}}
-function inicializarFotos(){actualizarHistorial(); actualizarSelectoresComparacion(); actualizarEstadoFotos();}
+function actualizarComparacion(){const f1=document.getElementById('compare-dia1')?.value, f2=document.getElementById('compare-dia2')?.value, cont=document.getElementById('compare-container'); if(!cont||!f1||!f2){if(cont) cont.innerHTML='<div class="empty-state" style="grid-column:span 2;">Selecciona dos días</div>'; return;} const d1=fotosGuardadas[f1], d2=fotosGuardadas[f2]; if(!d1||!d2) return; cont.innerHTML=`<div class="compare-day"><h4>${f1}</h4><div class="compare-photos"><div class="compare-photo"><img src="${d1.frente}"><span>Frente</span></div><div class="compare-photo"><img src="${d1.espalda}"><span>Espalda</span></div><div class="compare-photo"><img src="${d1.izquierda}"><span>Izquierda</span></div><div class="compare-photo"><img src="${d1.derecha}"><span>Derecha</span></div></div></div><div class="compare-day"><h4>${f2}</h4><div class="compare-photos"><div class="compare-photo"><img src="${d2.frente}"><span>Frente</span></div><div class="compare-photo"><img src="${d2.espalda}"><span>Espalda</span></div><div class="compare-photo"><img src="${d2.izquierda}"><span>Izquierda</span></div><div class="compare-photo"><img src="${d2.derecha}"><span>Derecha</span></div></div></div>`;}
+function verificarLogroFotos(){let logs=JSON.parse(localStorage.getItem('nico_logros'))||[]; if(Object.keys(fotosGuardadas).length>=1 && !logs.includes('foto_progreso')){logs.push('foto_progreso'); localStorage.setItem('nico_logros',JSON.stringify(logs)); mostrarMensajeMotivador("📸 ¡Primera foto guardada!","logro");}}
+function inicializarFotos(){actualizarHistorialFotos(); actualizarSelectoresComparacion(); actualizarEstadoFotos();}
 
 // ==================== MENSAJES ====================
 let cola=[], mostrando=false;
 function mostrarMensajeMotivador(m,tipo="normal"){cola.push({m,tipo}); if(!mostrando) procesar();}
-function procesar(){if(cola.length===0){mostrando=false; return;} mostrando=true; const {m,tipo}=cola.shift(); let color="#ff6600", emoji="💪"; if(tipo==="logro"){color="#8b5cf6"; emoji="🏆";} if(tipo==="racha"){color="#32d74b"; emoji="🔥";} if(tipo==="completado"){color="#10b981"; emoji="🎉";} const d=document.createElement("div"); d.style.cssText=`position:fixed;bottom:20px;left:20px;right:20px;background:${color};color:#000;padding:14px;border-radius:16px;font-weight:bold;text-align:center;z-index:10000;`; d.innerHTML=`<span style="font-size:1.2rem">${emoji}</span> ${m}`; document.body.appendChild(d); setTimeout(()=>{d.style.opacity="0"; setTimeout(()=>{d.remove(); procesar();},300);},3000);}
+function procesar(){if(cola.length===0){mostrando=false; return;} mostrando=true; const {m,tipo}=cola.shift(); let color="#ff6600",emoji="💪"; if(tipo==="logro"){color="#8b5cf6"; emoji="🏆";} if(tipo==="racha"){color="#32d74b"; emoji="🔥";} if(tipo==="completado"){color="#10b981"; emoji="🎉";} const d=document.createElement("div"); d.style.cssText=`position:fixed;bottom:20px;left:20px;right:20px;background:${color};color:#000;padding:14px;border-radius:16px;font-weight:bold;text-align:center;z-index:10000;`; d.innerHTML=`<span style="font-size:1.2rem">${emoji}</span> ${m}`; document.body.appendChild(d); setTimeout(()=>{d.style.opacity="0"; setTimeout(()=>{d.remove(); procesar();},300);},3000);}
 
 // ==================== NAVEGACIÓN ====================
 function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home'){actualizarHome(); actualizarBannerCiclo(); actualizarResumenPeso();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') inicializarFotos(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
@@ -534,9 +363,7 @@ const listaLogros=[
     {id:"foto_progreso",nombre:"📸 Mi progreso",desc:"Primera foto",condicion:()=>Object.keys(fotosGuardadas).length>=1,icono:"📸"}
 ];
 function verificarYDesbloquearLogros(){let nuevos=false; listaLogros.forEach(l=>{if(!logrosObtenidos.includes(l.id) && l.condicion()){logrosObtenidos.push(l.id); nuevos=true; mostrarMensajeMotivador(`🏆 ${l.nombre}!`,"logro"); canvasConfetti({particleCount:200,spread:100});}}); if(nuevos) localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros();}
-function renderizarLogros(){const cont=document.getElementById('logros-container'); if(!cont) return; cont.innerHTML=listaLogros.map(l=>{const obtenido=logrosObtenidos.includes(l.id); return `<div class="badge-card ${obtenido?'obtenido':''}"><span class="badge-icon">${l.icono}</span><div class="badge-nombre">${l.nombre}</div><div class="badge-desc">${l.desc}</div><div class="${obtenido?'badge-obtenido':'badge-bloqueado'}">${obtenido?'✅ DESBLOQUEADO':'🔒 BLOQUEADO'}</div></div>`;}).join('');}
-
-// ==================== BACKUP ====================
+function renderizarLogros(){const cont=document.getElementById('logros-container'); if(!cont) return; cont.innerHTML=listaLogros.map(l=>{const o=logrosObtenidos.includes(l.id); return `<div class="badge-card ${o?'obtenido':''}"><span class="badge-icon">${l.icono}</span><div class="badge-nombre">${l.nombre}</div><div class="badge-desc">${l.desc}</div><div class="${o?'badge-obtenido':'badge-bloqueado'}">${o?'✅ DESBLOQUEADO':'🔒 BLOQUEADO'}</div></div>`;}).join('');}
 function exportarDatos(conEmail=false){const datos={pesos:pesosRegistrados,checks:checks,notas:notas,entrenos:diasEntrenados,humo:diasFumados,fotos:fotosGuardadas,logros:logrosObtenidos}; const json=JSON.stringify(datos); const blob=new Blob([json],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`nicogym_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); if(conEmail) setTimeout(()=>{window.location.href="mailto:?subject=Backup NICO GYM&body=Adjunto mi backup";},500); mostrarToast("✅ Backup creado");}
 
 // ==================== INICIALIZACIÓN ====================
