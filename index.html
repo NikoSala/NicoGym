@@ -363,54 +363,186 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 
 <!-- ==================== FOTOS - SIN MINIATURAS AUTOMÁTICAS ==================== -->
 <div id="progreso-fotos" class="seccion">
-    <h2>📸 MI EVOLUCIÓN</h2>
+    <h2>📸 MI BIBLIOTECA DE IMÁGENES</h2>
     
+    <!-- Subir fotos -->
     <div class="card">
-        <h3>📅 FOTOS DE HOY</h3>
-        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:15px;">
-            <div id="fotoFrente" style="background:#111; border-radius:12px; border:1px dashed #444; aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; flex-direction:column; cursor:pointer; position:relative; overflow:hidden;" onclick="document.getElementById('inputFrente').click()">
-                <div id="textFrente" style="font-size:2rem;">😀</div>
-                <span style="font-size:0.7rem; color:#aaa;">FRENTE</span>
-                <img id="imgFrente" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:none;">
-                <input type="file" id="inputFrente" accept="image/*" style="display:none" onchange="cargarFotoYGuardar('frente', this)">
-            </div>
-            <div id="fotoEspalda" style="background:#111; border-radius:12px; border:1px dashed #444; aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; flex-direction:column; cursor:pointer; position:relative; overflow:hidden;" onclick="document.getElementById('inputEspalda').click()">
-                <div id="textEspalda" style="font-size:2rem;">🙃</div>
-                <span style="font-size:0.7rem; color:#aaa;">ESPALDA</span>
-                <img id="imgEspalda" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:none;">
-                <input type="file" id="inputEspalda" accept="image/*" style="display:none" onchange="cargarFotoYGuardar('espalda', this)">
-            </div>
-            <div id="fotoIzquierda" style="background:#111; border-radius:12px; border:1px dashed #444; aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; flex-direction:column; cursor:pointer; position:relative; overflow:hidden;" onclick="document.getElementById('inputIzquierda').click()">
-                <div id="textIzquierda" style="font-size:2rem;">⬅️</div>
-                <span style="font-size:0.7rem; color:#aaa;">IZQUIERDO</span>
-                <img id="imgIzquierda" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:none;">
-                <input type="file" id="inputIzquierda" accept="image/*" style="display:none" onchange="cargarFotoYGuardar('izquierda', this)">
-            </div>
-            <div id="fotoDerecha" style="background:#111; border-radius:12px; border:1px dashed #444; aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; flex-direction:column; cursor:pointer; position:relative; overflow:hidden;" onclick="document.getElementById('inputDerecha').click()">
-                <div id="textDerecha" style="font-size:2rem;">➡️</div>
-                <span style="font-size:0.7rem; color:#aaa;">DERECHO</span>
-                <img id="imgDerecha" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:none;">
-                <input type="file" id="inputDerecha" accept="image/*" style="display:none" onchange="cargarFotoYGuardar('derecha', this)">
-            </div>
+        <h3>📅 SUBIR FOTOS DE HOY</h3>
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:10px;">
+            <input type="file" id="f1" accept="image/*" style="background:#000; color:#fff; padding:8px; border-radius:8px;">
+            <input type="file" id="f2" accept="image/*" style="background:#000; color:#fff; padding:8px; border-radius:8px;">
+            <input type="file" id="f3" accept="image/*" style="background:#000; color:#fff; padding:8px; border-radius:8px;">
+            <input type="file" id="f4" accept="image/*" style="background:#000; color:#fff; padding:8px; border-radius:8px;">
         </div>
-        <div id="estadoFotos" style="text-align:center; padding:10px; border-radius:10px; background:#3a1a1a; color:#ff3b30; margin-bottom:10px;">⚠️ Selecciona las 4 fotos</div>
+        <div style="display:flex; gap:10px; margin:15px 0;">
+            <div style="flex:1; text-align:center; font-size:0.7rem; color:#aaa;">😀 FRENTE</div>
+            <div style="flex:1; text-align:center; font-size:0.7rem; color:#aaa;">🙃 ESPALDA</div>
+            <div style="flex:1; text-align:center; font-size:0.7rem; color:#aaa;">⬅️ IZQUIERDO</div>
+            <div style="flex:1; text-align:center; font-size:0.7rem; color:#aaa;">➡️ DERECHO</div>
+        </div>
+        <button id="botonGuardarFotos" onclick="guardarDiaFotos()" style="width:100%; padding:14px; background:#ff6600; color:#000; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">💾 GUARDAR DÍA</button>
+        <div id="mensajeFotos" style="margin-top:10px; text-align:center; font-size:0.8rem;"></div>
     </div>
-
+    
+    <!-- Lista de días guardados -->
     <div class="card">
         <h3>📚 DÍAS GUARDADOS</h3>
-        <div id="listaDiasGuardados" style="max-height:150px; overflow-y:auto; margin-bottom:10px;"></div>
+        <div id="listaDiasFotos" style="max-height:200px; overflow-y:auto;"></div>
     </div>
-
+    
+    <!-- Visualizador -->
     <div class="card">
-        <h3>🔍 COMPARAR DOS DÍAS</h3>
-        <div style="display:flex; gap:10px; margin-bottom:15px;">
-            <select id="compararDia1" style="flex:1; background:#000; color:#fff; padding:10px; border-radius:8px; border:1px solid #333;"></select>
-            <select id="compararDia2" style="flex:1; background:#000; color:#fff; padding:10px; border-radius:8px; border:1px solid #333;"></select>
-        </div>
-        <button onclick="verComparacion()" style="width:100%; padding:10px; background:#ff6600; color:#000; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">👀 VER COMPARACIÓN</button>
-        <div id="compararResultado" style="margin-top:15px; display:flex; gap:15px; flex-wrap:wrap; justify-content:center;"></div>
+        <h3>👀 VER FOTOS DE UN DÍA</h3>
+        <select id="selectorDiaFotos" style="width:100%; padding:10px; background:#000; color:#fff; border-radius:8px; margin-bottom:10px;">
+            <option value="">Selecciona un día</option>
+        </select>
+        <button onclick="verDiaFotos()" style="width:100%; padding:12px; background:#32d74b; color:#000; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">🔍 VER FOTOS DE ESTE DÍA</button>
+        <div id="visualizadorFotos" style="display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:15px;"></div>
     </div>
 </div>
+
+<script>
+// ==================== BIBLIOTECA DE FOTOS SIMPLE ====================
+let bibliotecaFotos = JSON.parse(localStorage.getItem('NICO_FOTOS_BIBLIOTECA')) || {};
+
+function guardarDiaFotos() {
+    const f1 = document.getElementById('f1').files[0];
+    const f2 = document.getElementById('f2').files[0];
+    const f3 = document.getElementById('f3').files[0];
+    const f4 = document.getElementById('f4').files[0];
+    
+    if (!f1 || !f2 || !f3 || !f4) {
+        document.getElementById('mensajeFotos').innerHTML = '<span style="color:#ff3b30;">❌ Debes seleccionar las 4 fotos</span>';
+        return;
+    }
+    
+    const lector1 = new FileReader();
+    const lector2 = new FileReader();
+    const lector3 = new FileReader();
+    const lector4 = new FileReader();
+    
+    let contador = 0;
+    let fotos = { frente: null, espalda: null, izquierda: null, derecha: null };
+    
+    lector1.onload = function(e) { fotos.frente = e.target.result; contador++; if(contador===4) finalizarGuardado(fotos); };
+    lector2.onload = function(e) { fotos.espalda = e.target.result; contador++; if(contador===4) finalizarGuardado(fotos); };
+    lector3.onload = function(e) { fotos.izquierda = e.target.result; contador++; if(contador===4) finalizarGuardado(fotos); };
+    lector4.onload = function(e) { fotos.derecha = e.target.result; contador++; if(contador===4) finalizarGuardado(fotos); };
+    
+    lector1.readAsDataURL(f1);
+    lector2.readAsDataURL(f2);
+    lector3.readAsDataURL(f3);
+    lector4.readAsDataURL(f4);
+}
+
+function finalizarGuardado(fotos) {
+    const hoy = new Date();
+    const fechaStr = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
+    
+    bibliotecaFotos[fechaStr] = {
+        frente: fotos.frente,
+        espalda: fotos.espalda,
+        izquierda: fotos.izquierda,
+        derecha: fotos.derecha,
+        fecha: hoy.getTime()
+    };
+    
+    localStorage.setItem('NICO_FOTOS_BIBLIOTECA', JSON.stringify(bibliotecaFotos));
+    
+    // Limpiar inputs
+    document.getElementById('f1').value = '';
+    document.getElementById('f2').value = '';
+    document.getElementById('f3').value = '';
+    document.getElementById('f4').value = '';
+    
+    document.getElementById('mensajeFotos').innerHTML = '<span style="color:#32d74b;">✅ Día guardado correctamente!</span>';
+    setTimeout(() => { document.getElementById('mensajeFotos').innerHTML = ''; }, 3000);
+    
+    actualizarListaDias();
+    
+    if(typeof canvasConfetti !== 'undefined') canvasConfetti({ particleCount: 100, spread: 70 });
+    
+    let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
+    if(Object.keys(bibliotecaFotos).length >= 1 && !logros.includes('biblioteca_fotos')) {
+        logros.push('biblioteca_fotos');
+        localStorage.setItem('nico_logros', JSON.stringify(logros));
+    }
+}
+
+function actualizarListaDias() {
+    const container = document.getElementById('listaDiasFotos');
+    const selector = document.getElementById('selectorDiaFotos');
+    if(!container) return;
+    
+    const fechas = Object.keys(bibliotecaFotos).sort().reverse();
+    
+    if(fechas.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#555;">Ningún día guardado</div>';
+        if(selector) selector.innerHTML = '<option value="">Selecciona un día</option>';
+        return;
+    }
+    
+    container.innerHTML = fechas.map(fecha => {
+        return `<div style="display:flex; justify-content:space-between; align-items:center; background:#0a0a0a; padding:10px; border-radius:8px; margin-bottom:8px;">
+                    <span style="color:#ff6600;">📅 ${fecha}</span>
+                    <button onclick="eliminarDiaFotos('${fecha}')" style="background:none; border:none; color:#ff3b30; font-size:1.2rem; cursor:pointer;">🗑️</button>
+                </div>`;
+    }).join('');
+    
+    if(selector) {
+        selector.innerHTML = '<option value="">Selecciona un día</option>' + fechas.map(f => `<option value="${f}">${f}</option>`).join('');
+    }
+}
+
+function eliminarDiaFotos(fecha) {
+    if(confirm(`¿Eliminar el día ${fecha}?`)) {
+        delete bibliotecaFotos[fecha];
+        localStorage.setItem('NICO_FOTOS_BIBLIOTECA', JSON.stringify(bibliotecaFotos));
+        actualizarListaDias();
+        document.getElementById('visualizadorFotos').innerHTML = '';
+        if(typeof mostrarToast === 'function') mostrarToast(`🗑️ ${fecha} eliminado`);
+    }
+}
+
+function verDiaFotos() {
+    const fecha = document.getElementById('selectorDiaFotos').value;
+    const contenedor = document.getElementById('visualizadorFotos');
+    
+    if(!fecha || !bibliotecaFotos[fecha]) {
+        contenedor.innerHTML = '<div style="grid-column:span 2; text-align:center; padding:20px; color:#555;">Selecciona un día válido</div>';
+        return;
+    }
+    
+    const dia = bibliotecaFotos[fecha];
+    contenedor.innerHTML = `
+        <div style="background:#0a0a0a; border-radius:12px; overflow:hidden;">
+            <img src="${dia.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover;">
+            <div style="text-align:center; padding:5px; background:#ff6600; color:#000; font-size:0.7rem;">FRENTE</div>
+        </div>
+        <div style="background:#0a0a0a; border-radius:12px; overflow:hidden;">
+            <img src="${dia.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover;">
+            <div style="text-align:center; padding:5px; background:#ff6600; color:#000; font-size:0.7rem;">ESPALDA</div>
+        </div>
+        <div style="background:#0a0a0a; border-radius:12px; overflow:hidden;">
+            <img src="${dia.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover;">
+            <div style="text-align:center; padding:5px; background:#ff6600; color:#000; font-size:0.7rem;">IZQUIERDO</div>
+        </div>
+        <div style="background:#0a0a0a; border-radius:12px; overflow:hidden;">
+            <img src="${dia.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover;">
+            <div style="text-align:center; padding:5px; background:#ff6600; color:#000; font-size:0.7rem;">DERECHO</div>
+        </div>
+    `;
+}
+
+function inicializarBiblioteca() {
+    actualizarListaDias();
+}
+
+// Inicializar
+if(document.getElementById('progreso-fotos')) {
+    inicializarBiblioteca();
+}
+</script>
 
 <div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso en kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div></div>
 
