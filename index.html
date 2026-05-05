@@ -361,7 +361,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 </div>
 </div>
 
-<!-- ==================== FOTOS - GUARDADO AUTOMÁTICO ==================== -->
+<!-- ==================== FOTOS - SIN MINIATURAS AUTOMÁTICAS ==================== -->
 <div id="progreso-fotos" class="seccion">
     <h2>📸 MI EVOLUCIÓN</h2>
     
@@ -369,25 +369,25 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
         <h3>📅 FOTOS DE HOY</h3>
         <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:15px;">
             <div id="fotoFrente" style="background:#111; border-radius:12px; border:1px dashed #444; aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; flex-direction:column; cursor:pointer; position:relative; overflow:hidden;" onclick="document.getElementById('inputFrente').click()">
-                <span id="textFrente" style="font-size:2rem;">😀</span>
+                <div id="textFrente" style="font-size:2rem;">😀</div>
                 <span style="font-size:0.7rem; color:#aaa;">FRENTE</span>
                 <img id="imgFrente" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:none;">
                 <input type="file" id="inputFrente" accept="image/*" style="display:none" onchange="cargarFotoYGuardar('frente', this)">
             </div>
             <div id="fotoEspalda" style="background:#111; border-radius:12px; border:1px dashed #444; aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; flex-direction:column; cursor:pointer; position:relative; overflow:hidden;" onclick="document.getElementById('inputEspalda').click()">
-                <span id="textEspalda" style="font-size:2rem;">🙃</span>
+                <div id="textEspalda" style="font-size:2rem;">🙃</div>
                 <span style="font-size:0.7rem; color:#aaa;">ESPALDA</span>
                 <img id="imgEspalda" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:none;">
                 <input type="file" id="inputEspalda" accept="image/*" style="display:none" onchange="cargarFotoYGuardar('espalda', this)">
             </div>
             <div id="fotoIzquierda" style="background:#111; border-radius:12px; border:1px dashed #444; aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; flex-direction:column; cursor:pointer; position:relative; overflow:hidden;" onclick="document.getElementById('inputIzquierda').click()">
-                <span id="textIzquierda" style="font-size:2rem;">⬅️</span>
+                <div id="textIzquierda" style="font-size:2rem;">⬅️</div>
                 <span style="font-size:0.7rem; color:#aaa;">IZQUIERDO</span>
                 <img id="imgIzquierda" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:none;">
                 <input type="file" id="inputIzquierda" accept="image/*" style="display:none" onchange="cargarFotoYGuardar('izquierda', this)">
             </div>
             <div id="fotoDerecha" style="background:#111; border-radius:12px; border:1px dashed #444; aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; flex-direction:column; cursor:pointer; position:relative; overflow:hidden;" onclick="document.getElementById('inputDerecha').click()">
-                <span id="textDerecha" style="font-size:2rem;">➡️</span>
+                <div id="textDerecha" style="font-size:2rem;">➡️</div>
                 <span style="font-size:0.7rem; color:#aaa;">DERECHO</span>
                 <img id="imgDerecha" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:none;">
                 <input type="file" id="inputDerecha" accept="image/*" style="display:none" onchange="cargarFotoYGuardar('derecha', this)">
@@ -398,16 +398,17 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 
     <div class="card">
         <h3>📚 DÍAS GUARDADOS</h3>
-        <div id="listaDiasGuardados" style="max-height:200px; overflow-y:auto; margin-bottom:10px;"></div>
+        <div id="listaDiasGuardados" style="max-height:150px; overflow-y:auto; margin-bottom:10px;"></div>
     </div>
 
     <div class="card">
-        <h3>🔍 COMPARAR</h3>
-        <div style="display:flex; gap:10px; margin-bottom:10px;">
-            <select id="compararDia1" style="flex:1; background:#000; color:#fff; padding:8px; border-radius:8px; border:1px solid #333;"></select>
-            <select id="compararDia2" style="flex:1; background:#000; color:#fff; padding:8px; border-radius:8px; border:1px solid #333;"></select>
+        <h3>🔍 COMPARAR DOS DÍAS</h3>
+        <div style="display:flex; gap:10px; margin-bottom:15px;">
+            <select id="compararDia1" style="flex:1; background:#000; color:#fff; padding:10px; border-radius:8px; border:1px solid #333;"></select>
+            <select id="compararDia2" style="flex:1; background:#000; color:#fff; padding:10px; border-radius:8px; border:1px solid #333;"></select>
         </div>
-        <div id="compararResultado" style="display:flex; gap:15px; flex-wrap:wrap;"></div>
+        <button onclick="verComparacion()" style="width:100%; padding:10px; background:#ff6600; color:#000; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">👀 VER COMPARACIÓN</button>
+        <div id="compararResultado" style="margin-top:15px; display:flex; gap:15px; flex-wrap:wrap; justify-content:center;"></div>
     </div>
 </div>
 
@@ -667,18 +668,13 @@ function confirmarBorrarTodo(){if(document.getElementById('confirmResetInput').v
 function solicitarPermisoNotificaciones(){if(!("Notification" in window)){mostrarToast("❌ Navegador no soporta notificaciones"); return;} if(Notification.permission==="granted"){programarRecordatorio(); mostrarToast("🔔 Recordatorios activados (19:00)");} else if(Notification.permission!=="denied"){Notification.requestPermission().then(p=>{if(p==="granted"){programarRecordatorio(); mostrarToast("🔔 Recordatorios activados (19:00)");}});} else{mostrarToast("❌ Permiso denegado");}}
 function programarRecordatorio(){const ahora=new Date(); const objetivo=new Date(); objetivo.setHours(19,0,0,0); let tiempo=objetivo-ahora; if(tiempo<0){objetivo.setDate(objetivo.getDate()+1); tiempo=objetivo-ahora;} setTimeout(()=>{const tipo=getTipoCiclo(); const rutina=getRutinaHoy(); new Notification("💪 NICO GYM",{body:`Hoy toca ${rutina}`,icon:"https://cdn-icons-png.flaticon.com/512/2964/2964514.png",vibrate:[200,100,200]}); programarRecordatorio();},tiempo);}
 
-// ==================== FOTOS - SISTEMA SIMPLE (GUARDADO AUTOMÁTICO) ====================
+// ==================== FOTOS - SIN MINIATURAS AUTOMÁTICAS ====================
 let fotosActuales = { frente: null, espalda: null, izquierda: null, derecha: null };
 let todasLasFechas = JSON.parse(localStorage.getItem('misFotosNico')) || {};
 
 function actualizarEstadoFotos() {
-    const tieneFrente = fotosActuales.frente ? 1 : 0;
-    const tieneEspalda = fotosActuales.espalda ? 1 : 0;
-    const tieneIzquierda = fotosActuales.izquierda ? 1 : 0;
-    const tieneDerecha = fotosActuales.derecha ? 1 : 0;
-    const total = tieneFrente + tieneEspalda + tieneIzquierda + tieneDerecha;
+    const total = (fotosActuales.frente?1:0) + (fotosActuales.espalda?1:0) + (fotosActuales.izquierda?1:0) + (fotosActuales.derecha?1:0);
     const estadoDiv = document.getElementById('estadoFotos');
-    
     if (total === 4) {
         estadoDiv.innerHTML = '✅ ¡Todas las fotos seleccionadas! GUARDANDO...';
         estadoDiv.style.background = '#1a3a1a';
@@ -694,23 +690,18 @@ function actualizarEstadoFotos() {
 function cargarFotoYGuardar(tipo, input) {
     const archivo = input.files[0];
     if (!archivo) return;
-    
     const lector = new FileReader();
     lector.onload = function(e) {
         fotosActuales[tipo] = e.target.result;
-        
-        // Mostrar preview
         const imgId = `img${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`;
-        const img = document.getElementById(imgId);
         const textId = `text${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`;
+        const img = document.getElementById(imgId);
         const texto = document.getElementById(textId);
-        
-        if (img && texto) {
+        if(img && texto) {
             img.src = e.target.result;
             img.style.display = 'block';
             texto.style.display = 'none';
         }
-        
         actualizarEstadoFotos();
     };
     lector.readAsDataURL(archivo);
@@ -719,7 +710,6 @@ function cargarFotoYGuardar(tipo, input) {
 function guardarDiaCompleto() {
     const hoy = new Date();
     const fechaStr = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
-    
     todasLasFechas[fechaStr] = {
         frente: fotosActuales.frente,
         espalda: fotosActuales.espalda,
@@ -727,28 +717,22 @@ function guardarDiaCompleto() {
         derecha: fotosActuales.derecha,
         timestamp: hoy.getTime()
     };
-    
     localStorage.setItem('misFotosNico', JSON.stringify(todasLasFechas));
     
-    // Limpiar formulario para el próximo día
+    // Limpiar
     fotosActuales = { frente: null, espalda: null, izquierda: null, derecha: null };
-    
-    const limpiarPreview = (tipo, imgId, textId) => {
+    const limpiar = (tipo, imgId, textId) => {
         const img = document.getElementById(imgId);
         const texto = document.getElementById(textId);
         const input = document.getElementById(`input${tipo}`);
-        if (input) input.value = '';
-        if (img) {
-            img.style.display = 'none';
-            img.src = '';
-        }
-        if (texto) texto.style.display = 'block';
+        if(input) input.value = '';
+        if(img) { img.style.display = 'none'; img.src = ''; }
+        if(texto) texto.style.display = 'block';
     };
-    
-    limpiarPreview('Frente', 'imgFrente', 'textFrente');
-    limpiarPreview('Espalda', 'imgEspalda', 'textEspalda');
-    limpiarPreview('Izquierda', 'imgIzquierda', 'textIzquierda');
-    limpiarPreview('Derecha', 'imgDerecha', 'textDerecha');
+    limpiar('Frente', 'imgFrente', 'textFrente');
+    limpiar('Espalda', 'imgEspalda', 'textEspalda');
+    limpiar('Izquierda', 'imgIzquierda', 'textIzquierda');
+    limpiar('Derecha', 'imgDerecha', 'textDerecha');
     
     actualizarListaDias();
     actualizarComparadores();
@@ -758,117 +742,94 @@ function guardarDiaCompleto() {
     estadoDiv.style.background = '#1a3a1a';
     estadoDiv.style.color = '#32d74b';
     setTimeout(() => {
-        if (estadoDiv) estadoDiv.innerHTML = '⚠️ Selecciona las 4 fotos';
+        if(estadoDiv) {
+            estadoDiv.innerHTML = '⚠️ Selecciona las 4 fotos';
+            estadoDiv.style.background = '#3a1a1a';
+            estadoDiv.style.color = '#ff3b30';
+        }
     }, 2000);
     
-    if (typeof canvasConfetti !== 'undefined') canvasConfetti({ particleCount: 100, spread: 70 });
+    if(typeof canvasConfetti !== 'undefined') canvasConfetti({ particleCount: 100, spread: 70 });
     
-    // Logro de fotos
     let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
-    if (Object.keys(todasLasFechas).length >= 1 && !logros.includes('foto_progreso')) {
+    if(Object.keys(todasLasFechas).length >= 1 && !logros.includes('foto_progreso')) {
         logros.push('foto_progreso');
         localStorage.setItem('nico_logros', JSON.stringify(logros));
-        if (typeof mostrarMensajeMotivador === 'function') {
-            mostrarMensajeMotivador("📸 ¡Primera foto de progreso!", "logro");
-        }
+        if(typeof mostrarMensajeMotivador === 'function') mostrarMensajeMotivador("📸 ¡Primera foto de progreso!", "logro");
     }
 }
 
 function actualizarListaDias() {
     const container = document.getElementById('listaDiasGuardados');
-    if (!container) return;
-    
+    if(!container) return;
     const fechas = Object.keys(todasLasFechas).sort().reverse();
-    if (fechas.length === 0) {
+    if(fechas.length === 0) {
         container.innerHTML = '<div style="text-align:center; padding:20px; color:#555;">Ningún día guardado</div>';
         return;
     }
-    
     container.innerHTML = fechas.map(fecha => {
-        const dia = todasLasFechas[fecha];
-        return `
-            <div style="display:flex; justify-content:space-between; align-items:center; background:#0a0a0a; padding:8px; border-radius:8px; margin-bottom:8px;">
-                <div style="display:flex; gap:8px; align-items:center;">
-                    <span style="color:#ff6600; font-weight:bold;">${fecha}</span>
-                    <div style="display:flex; gap:3px;">
-                        ${dia.frente ? '<span style="width:30px; height:30px; background-size:cover; background-image:url(' + dia.frente + '); border-radius:4px;"></span>' : ''}
-                        ${dia.espalda ? '<span style="width:30px; height:30px; background-size:cover; background-image:url(' + dia.espalda + '); border-radius:4px;"></span>' : ''}
-                    </div>
-                </div>
-                <button onclick="eliminarDia('${fecha}')" style="background:none; border:none; color:#ff3b30; font-size:1.2rem; cursor:pointer;">🗑️</button>
-            </div>
-        `;
+        return `<div style="display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; padding: 10px; border-radius: 8px; margin-bottom: 8px;">
+                    <span style="color:#ff6600; font-weight:bold;">📅 ${fecha}</span>
+                    <button onclick="eliminarDia('${fecha}')" style="background:none; border:none; color:#ff3b30; font-size:1.2rem; cursor:pointer;">🗑️</button>
+                </div>`;
     }).join('');
 }
 
 function eliminarDia(fecha) {
-    if (confirm(`¿Eliminar el día ${fecha}?`)) {
+    if(confirm(`¿Eliminar el día ${fecha}?`)) {
         delete todasLasFechas[fecha];
         localStorage.setItem('misFotosNico', JSON.stringify(todasLasFechas));
         actualizarListaDias();
         actualizarComparadores();
-        if (typeof mostrarToast === 'function') mostrarToast(`🗑️ ${fecha} eliminado`);
+        if(typeof mostrarToast === 'function') mostrarToast(`🗑️ ${fecha} eliminado`);
     }
 }
 
 function actualizarComparadores() {
     const s1 = document.getElementById('compararDia1');
     const s2 = document.getElementById('compararDia2');
-    if (!s1 || !s2) return;
-    
+    if(!s1 || !s2) return;
     const fechas = Object.keys(todasLasFechas).sort().reverse();
     const opciones = fechas.map(f => `<option value="${f}">${f}</option>`);
     s1.innerHTML = '<option value="">Día 1</option>' + opciones.join('');
     s2.innerHTML = '<option value="">Día 2</option>' + opciones.join('');
-    
-    if (fechas.length >= 2) {
-        s1.value = fechas[0];
-        s2.value = fechas[1];
-    } else if (fechas.length === 1) {
-        s1.value = fechas[0];
-    }
-    
-    compararFotos();
 }
 
-function compararFotos() {
+function verComparacion() {
     const f1 = document.getElementById('compararDia1')?.value;
     const f2 = document.getElementById('compararDia2')?.value;
     const container = document.getElementById('compararResultado');
-    if (!container) return;
+    if(!container) return;
     
-    const dia1 = f1 && todasLasFechas[f1];
-    const dia2 = f2 && todasLasFechas[f2];
+    if(!f1 || !f2) {
+        container.innerHTML = '<div style="text-align:center; padding:40px; color:#555;">Selecciona dos días para comparar</div>';
+        return;
+    }
+    
+    const dia1 = todasLasFechas[f1];
+    const dia2 = todasLasFechas[f2];
     
     let html = '';
     
-    if (dia1) {
-        html += `<div style="flex:1; background:#0a0a0a; border-radius:12px; padding:10px;">
-                    <h4 style="color:#ff6600; text-align:center; margin-bottom:10px;">${f1}</h4>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                        ${dia1.frente ? `<div><img src="${dia1.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Frente</span></div>` : ''}
-                        ${dia1.espalda ? `<div><img src="${dia1.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Espalda</span></div>` : ''}
-                        ${dia1.izquierda ? `<div><img src="${dia1.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Izquierdo</span></div>` : ''}
-                        ${dia1.derecha ? `<div><img src="${dia1.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Derecho</span></div>` : ''}
-                    </div>
-                </div>`;
-    }
+    html += `<div style="flex:1; background:#0a0a0a; border-radius:12px; padding:10px;">
+                <h4 style="color:#ff6600; text-align:center; margin-bottom:10px;">${f1}</h4>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div><img src="${dia1.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Frente</span></div>
+                    <div><img src="${dia1.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Espalda</span></div>
+                    <div><img src="${dia1.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Izquierdo</span></div>
+                    <div><img src="${dia1.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Derecho</span></div>
+                </div>
+            </div>`;
     
-    if (dia2) {
-        html += `<div style="flex:1; background:#0a0a0a; border-radius:12px; padding:10px;">
-                    <h4 style="color:#ff6600; text-align:center; margin-bottom:10px;">${f2}</h4>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                        ${dia2.frente ? `<div><img src="${dia2.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Frente</span></div>` : ''}
-                        ${dia2.espalda ? `<div><img src="${dia2.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Espalda</span></div>` : ''}
-                        ${dia2.izquierda ? `<div><img src="${dia2.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Izquierdo</span></div>` : ''}
-                        ${dia2.derecha ? `<div><img src="${dia2.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Derecho</span></div>` : ''}
-                    </div>
-                </div>`;
-    }
-    
-    if (!dia1 && !dia2) {
-        html = '<div style="text-align:center; padding:40px; color:#555;">Selecciona días para comparar</div>';
-    }
+    html += `<div style="flex:1; background:#0a0a0a; border-radius:12px; padding:10px;">
+                <h4 style="color:#ff6600; text-align:center; margin-bottom:10px;">${f2}</h4>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div><img src="${dia2.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Frente</span></div>
+                    <div><img src="${dia2.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Espalda</span></div>
+                    <div><img src="${dia2.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Izquierdo</span></div>
+                    <div><img src="${dia2.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">Derecho</span></div>
+                </div>
+            </div>`;
     
     container.innerHTML = html;
 }
