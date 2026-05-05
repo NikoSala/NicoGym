@@ -310,7 +310,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .stretch-card{background:#0a1a0a;border:1px solid #32d74b;padding:12px;border-radius:10px;margin-top:15px}
 .editor-input{width:100%;background:#000;border:1px solid #333;color:#fff;padding:8px;border-radius:5px;margin-bottom:10px}
 
-/* ESTILOS FOTOS PROGRESO - NUEVO SISTEMA */
+/* ESTILOS FOTOS PROGRESO */
 .photo-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -514,7 +514,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 </div>
 </div>
 
-<!-- NUEVA SECCIÓN DE FOTOS - CORREGIDA -->
+<!-- SECCIÓN DE FOTOS CORREGIDA -->
 <div id="progreso-fotos" class="seccion">
     <h2>📸 MI EVOLUCIÓN FOTOGRÁFICA</h2>
     
@@ -523,28 +523,28 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     <div class="card">
         <h3>📅 Subir fotos de hoy</h3>
         <div class="photo-grid">
-            <div class="photo-slot" onclick="document.getElementById('input-frente').click()">
-                <input type="file" id="input-frente" hidden accept="image/*" onchange="previewFoto('frente', this)">
-                <div class="placeholder"><span>😀</span><span>FRENTE</span></div>
-                <img id="preview-frente" style="display:none">
+            <div class="photo-slot" onclick="document.getElementById('input-frente-nuevo').click()">
+                <input type="file" id="input-frente-nuevo" hidden accept="image/*" onchange="previewFotoNueva('frente', this)">
+                <div class="placeholder" id="placeholder-frente"><span>😀</span><span>FRENTE</span></div>
+                <img id="preview-frente-nuevo" style="display:none">
                 <div class="photo-label">FRENTE</div>
             </div>
-            <div class="photo-slot" onclick="document.getElementById('input-espalda').click()">
-                <input type="file" id="input-espalda" hidden accept="image/*" onchange="previewFoto('espalda', this)">
-                <div class="placeholder"><span>🙃</span><span>ESPALDA</span></div>
-                <img id="preview-espalda" style="display:none">
+            <div class="photo-slot" onclick="document.getElementById('input-espalda-nuevo').click()">
+                <input type="file" id="input-espalda-nuevo" hidden accept="image/*" onchange="previewFotoNueva('espalda', this)">
+                <div class="placeholder" id="placeholder-espalda"><span>🙃</span><span>ESPALDA</span></div>
+                <img id="preview-espalda-nuevo" style="display:none">
                 <div class="photo-label">ESPALDA</div>
             </div>
-            <div class="photo-slot" onclick="document.getElementById('input-izquierda').click()">
-                <input type="file" id="input-izquierda" hidden accept="image/*" onchange="previewFoto('izquierda', this)">
-                <div class="placeholder"><span>⬅️</span><span>LADO IZQ</span></div>
-                <img id="preview-izquierda" style="display:none">
+            <div class="photo-slot" onclick="document.getElementById('input-izquierda-nuevo').click()">
+                <input type="file" id="input-izquierda-nuevo" hidden accept="image/*" onchange="previewFotoNueva('izquierda', this)">
+                <div class="placeholder" id="placeholder-izquierda"><span>⬅️</span><span>LADO IZQ</span></div>
+                <img id="preview-izquierda-nuevo" style="display:none">
                 <div class="photo-label">IZQUIERDO</div>
             </div>
-            <div class="photo-slot" onclick="document.getElementById('input-derecha').click()">
-                <input type="file" id="input-derecha" hidden accept="image/*" onchange="previewFoto('derecha', this)">
-                <div class="placeholder"><span>➡️</span><span>LADO DER</span></div>
-                <img id="preview-derecha" style="display:none">
+            <div class="photo-slot" onclick="document.getElementById('input-derecha-nuevo').click()">
+                <input type="file" id="input-derecha-nuevo" hidden accept="image/*" onchange="previewFotoNueva('derecha', this)">
+                <div class="placeholder" id="placeholder-derecha"><span>➡️</span><span>LADO DER</span></div>
+                <img id="preview-derecha-nuevo" style="display:none">
                 <div class="photo-label">DERECHO</div>
             </div>
         </div>
@@ -729,9 +729,9 @@ let logrosObtenidos = JSON.parse(localStorage.getItem('nico_logros')) || [];
 let ejercicioDiscoActual = "";
 let discosActuales = {d125:0, d15:0, d2:0};
 
-// DATOS DE FOTOS (nuevo sistema)
+// DATOS DE FOTOS (nuevo sistema con IDs únicos)
 let fotosDias = JSON.parse(localStorage.getItem('nico_fotos_dias')) || {};
-let fotosTemp2 = { frente: null, espalda: null, izquierda: null, derecha: null };
+let fotosTempNuevo = { frente: null, espalda: null, izquierda: null, derecha: null };
 
 // Peso inicial por defecto si no hay
 if(pesosRegistrados.length === 0) {
@@ -834,10 +834,10 @@ function solicitarPermisoNotificaciones(){if(!("Notification" in window)){mostra
 function programarRecordatorio(){const ahora=new Date(); const objetivo=new Date(); objetivo.setHours(19,0,0,0); let tiempo=objetivo-ahora; if(tiempo<0){objetivo.setDate(objetivo.getDate()+1); tiempo=objetivo-ahora;} setTimeout(()=>{const tipo=getTipoCiclo(); const rutina=getRutinaHoy(); new Notification("💪 NICO GYM",{body:`Hoy toca ${rutina}`,icon:"https://cdn-icons-png.flaticon.com/512/2964/2964514.png",vibrate:[200,100,200]}); programarRecordatorio();},tiempo);}
 
 // ==================== NUEVO SISTEMA DE FOTOS (CORREGIDO) ====================
-function actualizarEstadoFotos() {
+function actualizarEstadoFotosNuevo() {
     const statusDiv = document.getElementById('fotoStatus');
     const btn = document.getElementById('btnGuardarDia');
-    const total = (fotosTemp2.frente ? 1 : 0) + (fotosTemp2.espalda ? 1 : 0) + (fotosTemp2.izquierda ? 1 : 0) + (fotosTemp2.derecha ? 1 : 0);
+    const total = (fotosTempNuevo.frente ? 1 : 0) + (fotosTempNuevo.espalda ? 1 : 0) + (fotosTempNuevo.izquierda ? 1 : 0) + (fotosTempNuevo.derecha ? 1 : 0);
     if (total === 4) {
         statusDiv.className = 'photo-status ready';
         statusDiv.innerHTML = '✅ ¡Tienes las 4 fotos! Ya puedes guardar.';
@@ -849,26 +849,26 @@ function actualizarEstadoFotos() {
     }
 }
 
-function previewFoto(tipo, input) {
+function previewFotoNueva(tipo, input) {
     const file = input.files[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = function(e) {
-        fotosTemp2[tipo] = e.target.result;
-        const img = document.getElementById(`preview-${tipo}`);
-        const placeholder = img?.parentElement?.querySelector('.placeholder');
+        fotosTempNuevo[tipo] = e.target.result;
+        const img = document.getElementById(`preview-${tipo}-nuevo`);
+        const placeholder = document.getElementById(`placeholder-${tipo}`);
         if(img) {
             img.src = e.target.result;
             img.style.display = 'block';
             if(placeholder) placeholder.style.display = 'none';
         }
-        actualizarEstadoFotos();
+        actualizarEstadoFotosNuevo();
     };
     reader.readAsDataURL(file);
 }
 
 function guardarDiaCompleto() {
-    if (!fotosTemp2.frente || !fotosTemp2.espalda || !fotosTemp2.izquierda || !fotosTemp2.derecha) {
+    if (!fotosTempNuevo.frente || !fotosTempNuevo.espalda || !fotosTempNuevo.izquierda || !fotosTempNuevo.derecha) {
         mostrarToast("❌ Debes seleccionar las 4 fotos");
         return;
     }
@@ -876,21 +876,21 @@ function guardarDiaCompleto() {
     const fechaStr = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
     
     fotosDias[fechaStr] = {
-        frente: fotosTemp2.frente,
-        espalda: fotosTemp2.espalda,
-        izquierda: fotosTemp2.izquierda,
-        derecha: fotosTemp2.derecha,
+        frente: fotosTempNuevo.frente,
+        espalda: fotosTempNuevo.espalda,
+        izquierda: fotosTempNuevo.izquierda,
+        derecha: fotosTempNuevo.derecha,
         fecha: fechaStr
     };
     localStorage.setItem('nico_fotos_dias', JSON.stringify(fotosDias));
     
     // Limpiar formulario
-    fotosTemp2 = { frente: null, espalda: null, izquierda: null, derecha: null };
+    fotosTempNuevo = { frente: null, espalda: null, izquierda: null, derecha: null };
     ['frente', 'espalda', 'izquierda', 'derecha'].forEach(tipo => {
-        const input = document.getElementById(`input-${tipo}`);
+        const input = document.getElementById(`input-${tipo}-nuevo`);
         if(input) input.value = '';
-        const img = document.getElementById(`preview-${tipo}`);
-        const placeholder = img?.parentElement?.querySelector('.placeholder');
+        const img = document.getElementById(`preview-${tipo}-nuevo`);
+        const placeholder = document.getElementById(`placeholder-${tipo}`);
         if(img) {
             img.style.display = 'none';
             img.src = '';
@@ -898,15 +898,15 @@ function guardarDiaCompleto() {
         if(placeholder) placeholder.style.display = 'flex';
     });
     
-    actualizarEstadoFotos();
-    actualizarHistorialFotos2();
+    actualizarEstadoFotosNuevo();
+    actualizarHistorialFotos();
     actualizarSelectoresComparacion();
     mostrarToast("✅ ¡Fotos guardadas como un día completo!");
     canvasConfetti({ particleCount: 100, spread: 70 });
     verificarLogroFotos();
 }
 
-function actualizarHistorialFotos2() {
+function actualizarHistorialFotos() {
     const container = document.getElementById('historialFotos');
     if (!container) return;
     const fechas = Object.keys(fotosDias).sort().reverse();
@@ -935,7 +935,7 @@ function eliminarDiaFotos(fecha) {
     if (confirm(`¿Eliminar el registro del ${fecha}?`)) {
         delete fotosDias[fecha];
         localStorage.setItem('nico_fotos_dias', JSON.stringify(fotosDias));
-        actualizarHistorialFotos2();
+        actualizarHistorialFotos();
         actualizarSelectoresComparacion();
         mostrarToast(`🗑️ Registro de ${fecha} eliminado`);
     }
@@ -971,11 +971,14 @@ function actualizarComparacion() {
     if (f1 && fotosDias[f1]) {
         const d1 = fotosDias[f1];
         cont1.innerHTML = `
-            <div class="comparador-fotos-grid">
-                <img src="${d1.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Frente</span>
-                <img src="${d1.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Espalda</span>
-                <img src="${d1.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Izquierdo</span>
-                <img src="${d1.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Derecho</span>
+            <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px;">
+                <img src="${d1.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;">
+                <img src="${d1.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;">
+                <img src="${d1.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;">
+                <img src="${d1.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;">
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:5px; font-size:0.6rem; color:#aaa;">
+                <span>Frente</span><span>Espalda</span><span>Izquierdo</span><span>Derecho</span>
             </div>
         `;
     } else {
@@ -985,11 +988,14 @@ function actualizarComparacion() {
     if (f2 && fotosDias[f2]) {
         const d2 = fotosDias[f2];
         cont2.innerHTML = `
-            <div class="comparador-fotos-grid">
-                <img src="${d2.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Frente</span>
-                <img src="${d2.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Espalda</span>
-                <img src="${d2.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Izquierdo</span>
-                <img src="${d2.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Derecho</span>
+            <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px;">
+                <img src="${d2.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;">
+                <img src="${d2.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;">
+                <img src="${d2.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;">
+                <img src="${d2.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;">
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:5px; font-size:0.6rem; color:#aaa;">
+                <span>Frente</span><span>Espalda</span><span>Izquierdo</span><span>Derecho</span>
             </div>
         `;
     } else {
@@ -1007,9 +1013,9 @@ function verificarLogroFotos() {
 }
 
 function inicializarFotos() {
-    actualizarHistorialFotos2();
+    actualizarHistorialFotos();
     actualizarSelectoresComparacion();
-    actualizarEstadoFotos();
+    actualizarEstadoFotosNuevo();
 }
 
 // ==================== PESO ====================
@@ -1017,20 +1023,37 @@ function agregarPeso() { const v = document.getElementById('in-peso').value; if(
 function eliminarPeso(i) { pesosRegistrados.splice(i,1); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); actualizarResumenPeso(); }
 function mostrarHistorialPeso() { const h = document.getElementById('hist-peso'); h.innerHTML = pesosRegistrados.map((p,i) => `<div class="peso-item"><span>${p.fecha}: <b>${p.valor}kg</b></span><button class="btn-del" onclick="eliminarPeso(${i})">🗑️</button></div>`).reverse().join(''); }
 
-// ==================== LOGROS ====================
+// ==================== LOGROS (25 logros originales) ====================
 const listaLogros = [
-    {id:"primer_paso",nombre:"🏁 Primer paso",desc:"Completar primer día",condicion:()=>diasEntrenados.length>=1,icono:"🏁"},
-    {id:"racha_3",nombre:"🔥 Racha 3",desc:"3 días",condicion:()=>diasEntrenados.length>=3,icono:"🔥"},
-    {id:"racha_7",nombre:"💪 Racha 7",desc:"1 semana",condicion:()=>diasEntrenados.length>=7,icono:"💪"},
-    {id:"racha_14",nombre:"🚀 Racha 14",desc:"2 semanas",condicion:()=>diasEntrenados.length>=14,icono:"🚀"},
-    {id:"racha_30",nombre:"👑 Racha 30",desc:"30 días",condicion:()=>diasEntrenados.length>=30,icono:"👑"},
-    {id:"ns_7",nombre:"🌱 1 semana sin fumar",desc:"7 días",condicion:()=>calcularDiasSinFumar()>=7,icono:"🌱"},
-    {id:"ns_30",nombre:"🚭 1 mes sin fumar",desc:"30 días",condicion:()=>calcularDiasSinFumar()>=30,icono:"🚭"},
-    {id:"ns_100",nombre:"💪 100 días sin fumar",desc:"100 días",condicion:()=>calcularDiasSinFumar()>=100,icono:"💪"},
-    {id:"primer_peso",nombre:"⚖️ Mi peso",desc:"Primer registro",condicion:()=>pesosRegistrados.length>=1,icono:"⚖️"},
-    {id:"foto_progreso",nombre:"📸 Mi progreso",desc:"Primera foto",condicion:()=>Object.keys(fotosDias).length>=1,icono:"📸"}
+    {id:"primer_paso",nombre:"🏁 Primer paso",desc:"Completar tu primer día",condicion:()=>diasEntrenados.length>=1,icono:"🏁"},
+    {id:"racha_3",nombre:"🔥 Racha 3",desc:"3 días entrenando",condicion:()=>diasEntrenados.length>=3,icono:"🔥"},
+    {id:"racha_5",nombre:"🔥 Racha 5",desc:"5 días entrenando",condicion:()=>diasEntrenados.length>=5,icono:"🔥"},
+    {id:"racha_7",nombre:"💪 Racha 7",desc:"1 semana entrenando",condicion:()=>diasEntrenados.length>=7,icono:"💪"},
+    {id:"racha_10",nombre:"💪 Racha 10",desc:"10 días entrenando",condicion:()=>diasEntrenados.length>=10,icono:"💪"},
+    {id:"racha_14",nombre:"🚀 Racha 14",desc:"2 semanas entrenando",condicion:()=>diasEntrenados.length>=14,icono:"🚀"},
+    {id:"racha_20",nombre:"🦾 Racha 20",desc:"20 días entrenando",condicion:()=>diasEntrenados.length>=20,icono:"🦾"},
+    {id:"racha_21",nombre:"🦾 Racha 21",desc:"3 semanas entrenando",condicion:()=>diasEntrenados.length>=21,icono:"🦾"},
+    {id:"racha_30",nombre:"🚀 Racha 30",desc:"30 días entrenando",condicion:()=>diasEntrenados.length>=30,icono:"🚀"},
+    {id:"racha_40",nombre:"🏆 Racha 40",desc:"40 días entrenando",condicion:()=>diasEntrenados.length>=40,icono:"🏆"},
+    {id:"racha_50",nombre:"🏆 Racha 50",desc:"50 días entrenando",condicion:()=>diasEntrenados.length>=50,icono:"🏆"},
+    {id:"racha_60",nombre:"👑 Racha 60",desc:"2 meses entrenando",condicion:()=>diasEntrenados.length>=60,icono:"👑"},
+    {id:"racha_75",nombre:"💎 Racha 75",desc:"75 días entrenando",condicion:()=>diasEntrenados.length>=75,icono:"💎"},
+    {id:"racha_90",nombre:"🎯 Racha 90",desc:"3 meses entrenando",condicion:()=>diasEntrenados.length>=90,icono:"🎯"},
+    {id:"racha_100",nombre:"👑 Racha 100",desc:"100 días entrenando",condicion:()=>diasEntrenados.length>=100,icono:"👑"},
+    {id:"ns_7",nombre:"🌱 1 semana sin fumar",desc:"7 días sin fumar",condicion:()=>calcularDiasSinFumar()>=7,icono:"🌱"},
+    {id:"ns_14",nombre:"🍃 2 semanas sin fumar",desc:"14 días sin fumar",condicion:()=>calcularDiasSinFumar()>=14,icono:"🍃"},
+    {id:"ns_30",nombre:"🚭 1 mes sin fumar",desc:"30 días sin fumar",condicion:()=>calcularDiasSinFumar()>=30,icono:"🚭"},
+    {id:"ns_60",nombre:"💨 2 meses sin fumar",desc:"60 días sin fumar",condicion:()=>calcularDiasSinFumar()>=60,icono:"💨"},
+    {id:"ns_90",nombre:"🎉 3 meses sin fumar",desc:"90 días sin fumar",condicion:()=>calcularDiasSinFumar()>=90,icono:"🎉"},
+    {id:"ns_100",nombre:"💪 100 días sin fumar",desc:"100 días sin fumar",condicion:()=>calcularDiasSinFumar()>=100,icono:"💪"},
+    {id:"ns_180",nombre:"🥳 6 meses sin fumar",desc:"180 días sin fumar",condicion:()=>calcularDiasSinFumar()>=180,icono:"🥳"},
+    {id:"ns_365",nombre:"🎊 1 año sin fumar",desc:"365 días sin fumar",condicion:()=>calcularDiasSinFumar()>=365,icono:"🎊"},
+    {id:"primer_peso",nombre:"⚖️ Primer peso",desc:"Registrar tu primer peso",condicion:()=>pesosRegistrados.length>=1,icono:"⚖️"},
+    {id:"menos_1kg",nombre:"📉 -1 kg",desc:"Bajar 1 kg desde el inicio",condicion:()=>{const i=pesosRegistrados[0]?.valor||0; const a=pesosRegistrados[pesosRegistrados.length-1]?.valor||0; return i-a>=1;},icono:"📉"},
+    {id:"menos_5kg",nombre:"🎉 -5 kg",desc:"Bajar 5 kg desde el inicio",condicion:()=>{const i=pesosRegistrados[0]?.valor||0; const a=pesosRegistrados[pesosRegistrados.length-1]?.valor||0; return i-a>=5;},icono:"🎉"},
+    {id:"foto_progreso",nombre:"📸 Modelo",desc:"Sube tu primera foto de progreso",condicion:()=>Object.keys(fotosDias).length>=1,icono:"📸"}
 ];
-function verificarYDesbloquearLogros(){let nuevos=false; listaLogros.forEach(l=>{if(!logrosObtenidos.includes(l.id) && l.condicion()){logrosObtenidos.push(l.id); nuevos=true; mostrarMensajeMotivador(`🏆 ${l.nombre}!`,"logro"); canvasConfetti({particleCount:200,spread:100});}}); if(nuevos) localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros();}
+function verificarYDesbloquearLogros(){let nuevos=false; listaLogros.forEach(l=>{if(!logrosObtenidos.includes(l.id) && l.condicion()){logrosObtenidos.push(l.id); nuevos=true; mostrarMensajeMotivador(`🏆 ¡NUEVO LOGRO! ${l.nombre}`,"logro"); canvasConfetti({particleCount:200,spread:100});}}); if(nuevos) localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros();}
 function renderizarLogros(){const cont=document.getElementById('logros-container'); if(!cont) return; cont.innerHTML=listaLogros.map(l=>{const obtenido=logrosObtenidos.includes(l.id); return `<div class="badge-card ${obtenido?'obtenido':''}"><span class="badge-icon">${l.icono}</span><div class="badge-nombre">${l.nombre}</div><div class="badge-desc">${l.desc}</div><div class="${obtenido?'badge-obtenido':'badge-bloqueado'}">${obtenido?'✅ DESBLOQUEADO':'🔒 BLOQUEADO'}</div></div>`;}).join('');}
 
 // ==================== MENSAJES ====================
