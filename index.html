@@ -308,11 +308,160 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .btn-done{width:100%;padding:15px;background:#32d74b;color:#000;border:none;border-radius:12px;font-weight:900;font-size:1.1rem;margin:20px 0;cursor:pointer}
 .btn-done:disabled{background:#222;color:#555;cursor:not-allowed}
 .stretch-card{background:#0a1a0a;border:1px solid #32d74b;padding:12px;border-radius:10px;margin-top:15px}
-.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.photo-slot{background:#111;aspect-ratio:3/4;border:1px dashed #444;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative}
-.photo-slot img{width:100%;height:100%;object-fit:cover}
-.photo-label{position:absolute;bottom:0;background:rgba(0,0,0,0.7);width:100%;text-align:center;font-size:0.6rem;padding:2px}
 .editor-input{width:100%;background:#000;border:1px solid #333;color:#fff;padding:8px;border-radius:5px;margin-bottom:10px}
+
+/* ESTILOS FOTOS PROGRESO - NUEVO SISTEMA */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.photo-slot {
+    background: #111;
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    border: 1px dashed #444;
+    cursor: pointer;
+    transition: all 0.2s;
+    aspect-ratio: 3/4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+.photo-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.photo-slot .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #666;
+    z-index: 1;
+}
+.photo-slot .placeholder span:first-child {
+    font-size: 2rem;
+}
+.photo-slot .placeholder span:last-child {
+    font-size: 0.7rem;
+    margin-top: 8px;
+}
+.photo-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    text-align: center;
+    font-size: 0.6rem;
+    padding: 4px;
+    z-index: 2;
+}
+.btn-save-day {
+    width: 100%;
+    padding: 14px;
+    background: #32d74b;
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 15px 0;
+    cursor: pointer;
+}
+.btn-save-day:disabled {
+    background: #333;
+    color: #666;
+    cursor: not-allowed;
+}
+.photo-status {
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+}
+.photo-status.ready {
+    background: #1a3a1a;
+    color: #32d74b;
+}
+.photo-status.pending {
+    background: #3a1a1a;
+    color: #ff3b30;
+}
+.comparador-fotos {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+.comparador-dia {
+    flex: 1;
+    background: #0a0a0a;
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+}
+.comparador-dia select {
+    width: 100%;
+    background: #000;
+    color: #fff;
+    border: 1px solid #333;
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+.comparador-fotos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+.comparador-fotos-grid img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #111;
+}
+.history-item {
+    background: #111;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.history-date {
+    font-weight: bold;
+    color: #ff6600;
+}
+.history-preview {
+    display: flex;
+    gap: 5px;
+}
+.history-preview img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+.delete-day {
+    background: none;
+    border: none;
+    color: #ff3b30;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -342,7 +491,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div class="cycle-card" id="cycleCard">CARGANDO...</div>
 
 <!-- Resumen de peso -->
-<div class="peso-resumen">
+<div class="peso-resumen" id="pesoResumen">
     <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoActualResumen">-- kg</div><div class="peso-resumen-label">Actual</div></div>
     <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoInicialResumen">-- kg</div><div class="peso-resumen-label">Inicio</div></div>
     <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoObjetivoResumen">75 kg</div><div class="peso-resumen-label">🎯 Objetivo</div></div>
@@ -365,18 +514,63 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 </div>
 </div>
 
+<!-- NUEVA SECCIÓN DE FOTOS - CORREGIDA -->
 <div id="progreso-fotos" class="seccion">
-<h2>📸 GALERÍA DE PROGRESO</h2>
-<div class="card"><h3>Subir fotos de hoy</h3>
-<div class="photo-grid">
-<div class="photo-slot" onclick="document.getElementById('input-frente').click()"><input type="file" id="input-frente" hidden onchange="subirFoto('frente', this)"><img id="img-frente" src=""><div class="photo-label">FRENTE</div></div>
-<div class="photo-slot" onclick="document.getElementById('input-espalda').click()"><input type="file" id="input-espalda" hidden onchange="subirFoto('espalda', this)"><img id="img-espalda" src=""><div class="photo-label">ESPALDA</div></div>
-<div class="photo-slot" onclick="document.getElementById('input-lado-izq').click()"><input type="file" id="input-lado-izq" hidden onchange="subirFoto('izq', this)"><img id="img-lado-izq" src=""><div class="photo-label">IZQUIERDO</div></div>
-<div class="photo-slot" onclick="document.getElementById('input-lado-der').click()"><input type="file" id="input-lado-der" hidden onchange="subirFoto('der', this)"><img id="img-lado-der" src=""><div class="photo-label">DERECHO</div></div>
-</div>
-<button class="btn-main" onclick="guardarRegistroFotos()">💾 GUARDAR REGISTRO</button></div>
-<div id="comparador-fotos" class="card" style="display:none"><h3>🔍 COMPARADOR</h3><select id="select-fecha-1" class="editor-input" onchange="compararFotos()"></select><select id="select-fecha-2" class="editor-input" onchange="compararFotos()"></select><div id="comparacion-resultado" class="photo-grid"></div></div>
-<div id="historial-fotos"></div>
+    <h2>📸 MI EVOLUCIÓN FOTOGRÁFICA</h2>
+    
+    <div id="fotoStatus" class="photo-status pending">⚠️ Selecciona las 4 fotos</div>
+    
+    <div class="card">
+        <h3>📅 Subir fotos de hoy</h3>
+        <div class="photo-grid">
+            <div class="photo-slot" onclick="document.getElementById('input-frente').click()">
+                <input type="file" id="input-frente" hidden accept="image/*" onchange="previewFoto('frente', this)">
+                <div class="placeholder"><span>😀</span><span>FRENTE</span></div>
+                <img id="preview-frente" style="display:none">
+                <div class="photo-label">FRENTE</div>
+            </div>
+            <div class="photo-slot" onclick="document.getElementById('input-espalda').click()">
+                <input type="file" id="input-espalda" hidden accept="image/*" onchange="previewFoto('espalda', this)">
+                <div class="placeholder"><span>🙃</span><span>ESPALDA</span></div>
+                <img id="preview-espalda" style="display:none">
+                <div class="photo-label">ESPALDA</div>
+            </div>
+            <div class="photo-slot" onclick="document.getElementById('input-izquierda').click()">
+                <input type="file" id="input-izquierda" hidden accept="image/*" onchange="previewFoto('izquierda', this)">
+                <div class="placeholder"><span>⬅️</span><span>LADO IZQ</span></div>
+                <img id="preview-izquierda" style="display:none">
+                <div class="photo-label">IZQUIERDO</div>
+            </div>
+            <div class="photo-slot" onclick="document.getElementById('input-derecha').click()">
+                <input type="file" id="input-derecha" hidden accept="image/*" onchange="previewFoto('derecha', this)">
+                <div class="placeholder"><span>➡️</span><span>LADO DER</span></div>
+                <img id="preview-derecha" style="display:none">
+                <div class="photo-label">DERECHO</div>
+            </div>
+        </div>
+        <button id="btnGuardarDia" class="btn-save-day" onclick="guardarDiaCompleto()" disabled>💾 GUARDAR REGISTRO DE HOY</button>
+    </div>
+
+    <!-- COMPARADOR -->
+    <div class="card">
+        <h3>🔍 COMPARAR DOS DÍAS</h3>
+        <div class="comparador-fotos">
+            <div class="comparador-dia">
+                <select id="compare-fecha1" onchange="actualizarComparacion()"><option value="">Selecciona día 1</option></select>
+                <div id="compare-fotos1" class="comparador-fotos-grid"></div>
+            </div>
+            <div class="comparador-dia">
+                <select id="compare-fecha2" onchange="actualizarComparacion()"><option value="">Selecciona día 2</option></select>
+                <div id="compare-fotos2" class="comparador-fotos-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HISTORIAL -->
+    <div class="card">
+        <h3>📚 HISTORIAL DE REGISTROS</h3>
+        <div id="historialFotos"></div>
+    </div>
 </div>
 
 <div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso en kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div></div>
@@ -471,10 +665,13 @@ function actualizarResumenPeso() {
     if(pesosRegistrados && pesosRegistrados.length > 0) {
         document.getElementById('pesoActualResumen').innerText = pesosRegistrados[pesosRegistrados.length-1].valor + ' kg';
         document.getElementById('pesoInicialResumen').innerText = pesosRegistrados[0].valor + ' kg';
+    } else {
+        document.getElementById('pesoActualResumen').innerText = '-- kg';
+        document.getElementById('pesoInicialResumen').innerText = '-- kg';
     }
 }
 
-// ==================== RUTINAS BASE (con tiempos en ejercicios de Abs) ====================
+// ==================== RUTINAS BASE ====================
 const rutinasBase = {
     lunes: [
         {nombre:"Dominadas / Negativas", serieTexto:"3 x AL FALLO", instrucciones:"1️⃣ Salta o súbete con agarre ancho.\n2️⃣ Si no puedes subir, salta hasta arriba.\n3️⃣ BAJA MUY LENTO (5 segundos).", consejo:"Saca pecho y junta escápulas.", peso:"Corporal", imagen:"https://api.smartworkout.app/asset/image/3c194808-73c8-4d75-a2d9-cf85dd42fbeb", tienePeso:false, esTiempo:false},
@@ -528,11 +725,13 @@ let historialSeries = JSON.parse(localStorage.getItem('nico_historial_series')) 
 let pesosRegistrados = JSON.parse(localStorage.getItem('nico_pesos')) || [];
 let diasEntrenados = JSON.parse(localStorage.getItem('nico_dias_entrenados')) || [];
 let diasFumados = JSON.parse(localStorage.getItem('nico_dias_fumados')) || [];
-let fotosProgreso = JSON.parse(localStorage.getItem('nico_fotos')) || {};
 let logrosObtenidos = JSON.parse(localStorage.getItem('nico_logros')) || [];
-let fotosTemp = {frente:"", espalda:"", izq:"", der:""};
 let ejercicioDiscoActual = "";
 let discosActuales = {d125:0, d15:0, d2:0};
+
+// DATOS DE FOTOS (nuevo sistema)
+let fotosDias = JSON.parse(localStorage.getItem('nico_fotos_dias')) || {};
+let fotosTemp2 = { frente: null, espalda: null, izquierda: null, derecha: null };
 
 // Peso inicial por defecto si no hay
 if(pesosRegistrados.length === 0) {
@@ -634,15 +833,188 @@ function confirmarBorrarTodo(){if(document.getElementById('confirmResetInput').v
 function solicitarPermisoNotificaciones(){if(!("Notification" in window)){mostrarToast("❌ Navegador no soporta notificaciones"); return;} if(Notification.permission==="granted"){programarRecordatorio(); mostrarToast("🔔 Recordatorios activados (19:00)");} else if(Notification.permission!=="denied"){Notification.requestPermission().then(p=>{if(p==="granted"){programarRecordatorio(); mostrarToast("🔔 Recordatorios activados (19:00)");}});} else{mostrarToast("❌ Permiso denegado");}}
 function programarRecordatorio(){const ahora=new Date(); const objetivo=new Date(); objetivo.setHours(19,0,0,0); let tiempo=objetivo-ahora; if(tiempo<0){objetivo.setDate(objetivo.getDate()+1); tiempo=objetivo-ahora;} setTimeout(()=>{const tipo=getTipoCiclo(); const rutina=getRutinaHoy(); new Notification("💪 NICO GYM",{body:`Hoy toca ${rutina}`,icon:"https://cdn-icons-png.flaticon.com/512/2964/2964514.png",vibrate:[200,100,200]}); programarRecordatorio();},tiempo);}
 
-// ==================== FOTOS ====================
-function subirFoto(tipo, input) { const file = input.files[0]; const reader = new FileReader(); reader.onload = (e) => { fotosTemp[tipo] = e.target.result; document.getElementById(`img-${tipo}`).src = e.target.result; }; reader.readAsDataURL(file); }
-function guardarRegistroFotos() { const hoy = new Date().toLocaleDateString(); fotosProgreso[hoy] = {...fotosTemp}; localStorage.setItem('nico_fotos', JSON.stringify(fotosProgreso)); mostrarToast("📸 Fotos guardadas!"); actualizarHistorialFotos(); verificarYDesbloquearLogros(); }
-function actualizarHistorialFotos() { const h = document.getElementById('historial-fotos'); const fechas = Object.keys(fotosProgreso).reverse(); h.innerHTML = fechas.map(f => `<div class="card"><h4>${f}</h4><div class="photo-grid">${Object.values(fotosProgreso[f]).map(img => img ? `<img src="${img}" style="width:100%;border-radius:5px">` : '').join('')}</div></div>`).join(''); const s1 = document.getElementById('select-fecha-1'); const s2 = document.getElementById('select-fecha-2'); s1.innerHTML = s2.innerHTML = fechas.map(f => `<option value="${f}">${f}</option>`).join(''); if (fechas.length >= 2) document.getElementById('comparador-fotos').style.display = 'block'; }
-function compararFotos() { const f1 = document.getElementById('select-fecha-1').value; const f2 = document.getElementById('select-fecha-2').value; const res = document.getElementById('comparacion-resultado'); res.innerHTML = `<div><small>${f1}</small><img src="${fotosProgreso[f1]?.frente}" style="width:100%"></div><div><small>${f2}</small><img src="${fotosProgreso[f2]?.frente}" style="width:100%"></div>`; }
+// ==================== NUEVO SISTEMA DE FOTOS (CORREGIDO) ====================
+function actualizarEstadoFotos() {
+    const statusDiv = document.getElementById('fotoStatus');
+    const btn = document.getElementById('btnGuardarDia');
+    const total = (fotosTemp2.frente ? 1 : 0) + (fotosTemp2.espalda ? 1 : 0) + (fotosTemp2.izquierda ? 1 : 0) + (fotosTemp2.derecha ? 1 : 0);
+    if (total === 4) {
+        statusDiv.className = 'photo-status ready';
+        statusDiv.innerHTML = '✅ ¡Tienes las 4 fotos! Ya puedes guardar.';
+        if(btn) btn.disabled = false;
+    } else {
+        statusDiv.className = 'photo-status pending';
+        statusDiv.innerHTML = `⚠️ Fotos seleccionadas: ${total}/4 (faltan ${4-total})`;
+        if(btn) btn.disabled = true;
+    }
+}
+
+function previewFoto(tipo, input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        fotosTemp2[tipo] = e.target.result;
+        const img = document.getElementById(`preview-${tipo}`);
+        const placeholder = img?.parentElement?.querySelector('.placeholder');
+        if(img) {
+            img.src = e.target.result;
+            img.style.display = 'block';
+            if(placeholder) placeholder.style.display = 'none';
+        }
+        actualizarEstadoFotos();
+    };
+    reader.readAsDataURL(file);
+}
+
+function guardarDiaCompleto() {
+    if (!fotosTemp2.frente || !fotosTemp2.espalda || !fotosTemp2.izquierda || !fotosTemp2.derecha) {
+        mostrarToast("❌ Debes seleccionar las 4 fotos");
+        return;
+    }
+    const hoy = new Date();
+    const fechaStr = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
+    
+    fotosDias[fechaStr] = {
+        frente: fotosTemp2.frente,
+        espalda: fotosTemp2.espalda,
+        izquierda: fotosTemp2.izquierda,
+        derecha: fotosTemp2.derecha,
+        fecha: fechaStr
+    };
+    localStorage.setItem('nico_fotos_dias', JSON.stringify(fotosDias));
+    
+    // Limpiar formulario
+    fotosTemp2 = { frente: null, espalda: null, izquierda: null, derecha: null };
+    ['frente', 'espalda', 'izquierda', 'derecha'].forEach(tipo => {
+        const input = document.getElementById(`input-${tipo}`);
+        if(input) input.value = '';
+        const img = document.getElementById(`preview-${tipo}`);
+        const placeholder = img?.parentElement?.querySelector('.placeholder');
+        if(img) {
+            img.style.display = 'none';
+            img.src = '';
+        }
+        if(placeholder) placeholder.style.display = 'flex';
+    });
+    
+    actualizarEstadoFotos();
+    actualizarHistorialFotos2();
+    actualizarSelectoresComparacion();
+    mostrarToast("✅ ¡Fotos guardadas como un día completo!");
+    canvasConfetti({ particleCount: 100, spread: 70 });
+    verificarLogroFotos();
+}
+
+function actualizarHistorialFotos2() {
+    const container = document.getElementById('historialFotos');
+    if (!container) return;
+    const fechas = Object.keys(fotosDias).sort().reverse();
+    if (fechas.length === 0) {
+        container.innerHTML = '<div class="empty-state">Todavía no has guardado ningún día</div>';
+        return;
+    }
+    container.innerHTML = fechas.map(fecha => {
+        const dia = fotosDias[fecha];
+        return `
+            <div class="history-item">
+                <div>
+                    <div class="history-date">📅 ${fecha}</div>
+                    <div class="history-preview">
+                        ${dia.frente ? `<img src="${dia.frente}">` : ''}
+                        ${dia.espalda ? `<img src="${dia.espalda}">` : ''}
+                    </div>
+                </div>
+                <button class="delete-day" onclick="eliminarDiaFotos('${fecha}')">🗑️</button>
+            </div>
+        `;
+    }).join('');
+}
+
+function eliminarDiaFotos(fecha) {
+    if (confirm(`¿Eliminar el registro del ${fecha}?`)) {
+        delete fotosDias[fecha];
+        localStorage.setItem('nico_fotos_dias', JSON.stringify(fotosDias));
+        actualizarHistorialFotos2();
+        actualizarSelectoresComparacion();
+        mostrarToast(`🗑️ Registro de ${fecha} eliminado`);
+    }
+}
+
+function actualizarSelectoresComparacion() {
+    const s1 = document.getElementById('compare-fecha1');
+    const s2 = document.getElementById('compare-fecha2');
+    if (!s1 || !s2) return;
+    const fechas = Object.keys(fotosDias).sort().reverse();
+    const options = fechas.map(f => `<option value="${f}">${f}</option>`);
+    s1.innerHTML = '<option value="">Selecciona día 1</option>' + options.join('');
+    s2.innerHTML = '<option value="">Selecciona día 2</option>' + options.join('');
+    
+    if (fechas.length >= 2) {
+        s1.value = fechas[1];
+        s2.value = fechas[0];
+        actualizarComparacion();
+    } else {
+        document.getElementById('compare-fotos1').innerHTML = '';
+        document.getElementById('compare-fotos2').innerHTML = '';
+    }
+}
+
+function actualizarComparacion() {
+    const f1 = document.getElementById('compare-fecha1')?.value;
+    const f2 = document.getElementById('compare-fecha2')?.value;
+    const cont1 = document.getElementById('compare-fotos1');
+    const cont2 = document.getElementById('compare-fotos2');
+    
+    if (!cont1 || !cont2) return;
+    
+    if (f1 && fotosDias[f1]) {
+        const d1 = fotosDias[f1];
+        cont1.innerHTML = `
+            <div class="comparador-fotos-grid">
+                <img src="${d1.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Frente</span>
+                <img src="${d1.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Espalda</span>
+                <img src="${d1.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Izquierdo</span>
+                <img src="${d1.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Derecho</span>
+            </div>
+        `;
+    } else {
+        cont1.innerHTML = '<div class="empty-state">Selecciona un día</div>';
+    }
+    
+    if (f2 && fotosDias[f2]) {
+        const d2 = fotosDias[f2];
+        cont2.innerHTML = `
+            <div class="comparador-fotos-grid">
+                <img src="${d2.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Frente</span>
+                <img src="${d2.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Espalda</span>
+                <img src="${d2.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Izquierdo</span>
+                <img src="${d2.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; text-align:center;">Derecho</span>
+            </div>
+        `;
+    } else {
+        cont2.innerHTML = '<div class="empty-state">Selecciona un día</div>';
+    }
+}
+
+function verificarLogroFotos() {
+    let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
+    if (Object.keys(fotosDias).length >= 1 && !logros.includes('foto_progreso')) {
+        logros.push('foto_progreso');
+        localStorage.setItem('nico_logros', JSON.stringify(logros));
+        mostrarMensajeMotivador("📸 ¡Logro: Primera foto de progreso!", "logro");
+    }
+}
+
+function inicializarFotos() {
+    actualizarHistorialFotos2();
+    actualizarSelectoresComparacion();
+    actualizarEstadoFotos();
+}
 
 // ==================== PESO ====================
-function agregarPeso() { const v = document.getElementById('in-peso').value; if(v){ pesosRegistrados.push({valor:parseFloat(v), fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})}); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); mostrarMensajeMotivador(`⚖️ Peso: ${v}kg`, "logro"); } }
-function eliminarPeso(i) { pesosRegistrados.splice(i,1); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); }
+function agregarPeso() { const v = document.getElementById('in-peso').value; if(v){ pesosRegistrados.push({valor:parseFloat(v), fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})}); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); mostrarMensajeMotivador(`⚖️ Peso: ${v}kg`, "logro"); actualizarResumenPeso(); } }
+function eliminarPeso(i) { pesosRegistrados.splice(i,1); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); actualizarResumenPeso(); }
 function mostrarHistorialPeso() { const h = document.getElementById('hist-peso'); h.innerHTML = pesosRegistrados.map((p,i) => `<div class="peso-item"><span>${p.fecha}: <b>${p.valor}kg</b></span><button class="btn-del" onclick="eliminarPeso(${i})">🗑️</button></div>`).reverse().join(''); }
 
 // ==================== LOGROS ====================
@@ -656,7 +1028,7 @@ const listaLogros = [
     {id:"ns_30",nombre:"🚭 1 mes sin fumar",desc:"30 días",condicion:()=>calcularDiasSinFumar()>=30,icono:"🚭"},
     {id:"ns_100",nombre:"💪 100 días sin fumar",desc:"100 días",condicion:()=>calcularDiasSinFumar()>=100,icono:"💪"},
     {id:"primer_peso",nombre:"⚖️ Mi peso",desc:"Primer registro",condicion:()=>pesosRegistrados.length>=1,icono:"⚖️"},
-    {id:"foto_progreso",nombre:"📸 Mi progreso",desc:"Primera foto",condicion:()=>Object.keys(fotosProgreso).length>=1,icono:"📸"}
+    {id:"foto_progreso",nombre:"📸 Mi progreso",desc:"Primera foto",condicion:()=>Object.keys(fotosDias).length>=1,icono:"📸"}
 ];
 function verificarYDesbloquearLogros(){let nuevos=false; listaLogros.forEach(l=>{if(!logrosObtenidos.includes(l.id) && l.condicion()){logrosObtenidos.push(l.id); nuevos=true; mostrarMensajeMotivador(`🏆 ${l.nombre}!`,"logro"); canvasConfetti({particleCount:200,spread:100});}}); if(nuevos) localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros();}
 function renderizarLogros(){const cont=document.getElementById('logros-container'); if(!cont) return; cont.innerHTML=listaLogros.map(l=>{const obtenido=logrosObtenidos.includes(l.id); return `<div class="badge-card ${obtenido?'obtenido':''}"><span class="badge-icon">${l.icono}</span><div class="badge-nombre">${l.nombre}</div><div class="badge-desc">${l.desc}</div><div class="${obtenido?'badge-obtenido':'badge-bloqueado'}">${obtenido?'✅ DESBLOQUEADO':'🔒 BLOQUEADO'}</div></div>`;}).join('');}
@@ -667,7 +1039,7 @@ function mostrarMensajeMotivador(m,tipo="normal"){cola.push({m,tipo}); if(!mostr
 function procesar(){if(cola.length===0){mostrando=false; return;} mostrando=true; const {m,tipo}=cola.shift(); let color="#ff6600", emoji="💪"; if(tipo==="logro"){color="#8b5cf6"; emoji="🏆";} if(tipo==="racha"){color="#32d74b"; emoji="🔥";} if(tipo==="completado"){color="#10b981"; emoji="🎉";} const d=document.createElement("div"); d.style.cssText=`position:fixed;bottom:20px;left:20px;right:20px;background:${color};color:#000;padding:14px;border-radius:16px;font-weight:bold;text-align:center;z-index:10000;`; d.innerHTML=`<span style="font-size:1.2rem">${emoji}</span> ${m}`; document.body.appendChild(d); setTimeout(()=>{d.style.opacity="0"; setTimeout(()=>{d.remove(); procesar();},300);},3000);}
 
 // ==================== NAVEGACIÓN ====================
-function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home'){actualizarHome(); actualizarBannerCiclo(); actualizarResumenPeso();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') actualizarHistorialFotos(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
+function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home'){actualizarHome(); actualizarBannerCiclo(); actualizarResumenPeso();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') inicializarFotos(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
 function goToday(){const h=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()]; go(h);}
 function toggleSubmenu(b){b.classList.toggle('open'); b.nextElementSibling.classList.toggle('show');}
 function openMenu(){document.getElementById('menu-lat').classList.add('open'); document.getElementById('overlay').style.display='block';}
@@ -680,7 +1052,7 @@ function cerrarCalc(){document.getElementById('calcModal').classList.remove('sho
 function sumarDisco(p){const clave=p===1.25?'d125':(p===1.5?'d15':'d2'); if(discosActuales[clave]>=4) return; discosActuales[clave]++; actualizarMostrarDiscos();}
 function resetearDiscos(){discosActuales={d125:0,d15:0,d2:0}; actualizarMostrarDiscos();}
 function actualizarMostrarDiscos(){const total=(discosActuales.d125*1.25)+(discosActuales.d15*1.5)+(discosActuales.d2*2); document.getElementById('totalDisco').innerText=total.toFixed(2); document.getElementById('badge125').innerText=discosActuales.d125; document.getElementById('badge15').innerText=discosActuales.d15; document.getElementById('badge2').innerText=discosActuales.d2; localStorage.setItem(`discos_${ejercicioDiscoActual}`,JSON.stringify(discosActuales));}
-function exportarDatos(conEmail=false){const datos={pesos:pesosRegistrados,checks:checks,notas:notas,entrenos:diasEntrenados,humo:diasFumados,fotos:fotosProgreso,logros:logrosObtenidos}; const json=JSON.stringify(datos); const blob=new Blob([json],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`nicogym_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); if(conEmail) setTimeout(()=>{window.location.href="mailto:?subject=Backup NICO GYM&body=Adjunto mi backup";},500); mostrarToast("✅ Backup creado");}
+function exportarDatos(conEmail=false){const datos={pesos:pesosRegistrados,checks:checks,notas:notas,entrenos:diasEntrenados,humo:diasFumados,fotos:fotosDias,logros:logrosObtenidos}; const json=JSON.stringify(datos); const blob=new Blob([json],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`nicogym_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); if(conEmail) setTimeout(()=>{window.location.href="mailto:?subject=Backup NICO GYM&body=Adjunto mi backup";},500); mostrarToast("✅ Backup creado");}
 
 // ==================== INICIALIZACIÓN ====================
 window.onload=()=>{
@@ -692,7 +1064,7 @@ window.onload=()=>{
     mostrarHistorialPeso();
     renderizarCalendarios();
     renderizarLogros();
-    actualizarHistorialFotos();
+    inicializarFotos();
     actualizarResumenPeso();
     const params=new URLSearchParams(window.location.search);
     if(params.get('action')==='weight') go('peso');
