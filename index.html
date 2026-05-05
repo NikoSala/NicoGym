@@ -372,43 +372,281 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
             <div style="background:#0a0a0a; border-radius:12px; padding:10px; text-align:center;">
                 <div style="font-size:2rem;">😀</div>
                 <div style="font-size:0.7rem; color:#aaa; margin:5px 0;">FRENTE</div>
-                <input type="file" id="fotoFrente" accept="image/*" style="margin-top:5px; font-size:0.7rem;">
+                <input type="file" id="foto0" accept="image/*" style="margin-top:5px; font-size:0.7rem;">
+                <div id="status0" style="font-size:0.6rem; margin-top:4px;"></div>
             </div>
             <div style="background:#0a0a0a; border-radius:12px; padding:10px; text-align:center;">
                 <div style="font-size:2rem;">🙃</div>
                 <div style="font-size:0.7rem; color:#aaa; margin:5px 0;">ESPALDA</div>
-                <input type="file" id="fotoEspalda" accept="image/*" style="margin-top:5px; font-size:0.7rem;">
+                <input type="file" id="foto1" accept="image/*" style="margin-top:5px; font-size:0.7rem;">
+                <div id="status1" style="font-size:0.6rem; margin-top:4px;"></div>
             </div>
             <div style="background:#0a0a0a; border-radius:12px; padding:10px; text-align:center;">
                 <div style="font-size:2rem;">⬅️</div>
                 <div style="font-size:0.7rem; color:#aaa; margin:5px 0;">IZQUIERDO</div>
-                <input type="file" id="fotoIzquierda" accept="image/*" style="margin-top:5px; font-size:0.7rem;">
+                <input type="file" id="foto2" accept="image/*" style="margin-top:5px; font-size:0.7rem;">
+                <div id="status2" style="font-size:0.6rem; margin-top:4px;"></div>
             </div>
             <div style="background:#0a0a0a; border-radius:12px; padding:10px; text-align:center;">
                 <div style="font-size:2rem;">➡️</div>
                 <div style="font-size:0.7rem; color:#aaa; margin:5px 0;">DERECHO</div>
-                <input type="file" id="fotoDerecha" accept="image/*" style="margin-top:5px; font-size:0.7rem;">
+                <input type="file" id="foto3" accept="image/*" style="margin-top:5px; font-size:0.7rem;">
+                <div id="status3" style="font-size:0.6rem; margin-top:4px;"></div>
             </div>
         </div>
         
-        <button onclick="guardar4Fotos()" style="width:100%; padding:14px; background:#ff6600; color:#000; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">💾 GUARDAR LAS 4 FOTOS DE HOY</button>
-        <div id="mensajeFotos" style="margin-top:10px; text-align:center; font-size:0.8rem;"></div>
+        <button id="btnGuardarFotos" onclick="guardarFotosIndexedDB()" style="width:100%; padding:14px; background:#ff6600; color:#000; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">💾 GUARDAR LAS 4 FOTOS DE HOY</button>
+        <div id="mensajeFotosDB" style="margin-top:10px; text-align:center; font-size:0.8rem;"></div>
     </div>
     
     <div class="card">
         <h3>📚 MIS DÍAS GUARDADOS</h3>
-        <div id="listaDiasFotos" style="display:flex; flex-direction:column; gap:8px;"></div>
+        <div id="listaDiasDB" style="display:flex; flex-direction:column; gap:8px;"></div>
     </div>
     
     <div class="card">
         <h3>🔍 VER FOTOS DE UN DÍA</h3>
-        <select id="selectorDia" style="width:100%; padding:10px; background:#000; color:#fff; border-radius:8px; margin-bottom:10px;">
+        <select id="selectorDiaDB" style="width:100%; padding:10px; background:#000; color:#fff; border-radius:8px; margin-bottom:10px;">
             <option value="">Selecciona un día</option>
         </select>
-        <button onclick="verFotosDelDia()" style="width:100%; padding:12px; background:#32d74b; color:#000; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">👀 VER FOTOS</button>
-        <div id="visorFotos" style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:15px;"></div>
+        <button onclick="verFotosIndexedDB()" style="width:100%; padding:12px; background:#32d74b; color:#000; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">👀 VER FOTOS</button>
+        <div id="visorFotosDB" style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:15px;"></div>
     </div>
 </div>
+
+<script>
+// ==================== INDEXEDDB PARA FOTOS (Solución definitiva) ====================
+let db = null;
+const DB_NAME = 'FotosProgresoDB';
+const DB_VERSION = 1;
+const STORE_NAME = 'diasFotos';
+
+// Abrir base de datos
+function abrirDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        
+        request.onerror = (event) => {
+            console.error('Error al abrir DB:', event);
+            reject(event);
+        };
+        
+        request.onsuccess = (event) => {
+            db = event.target.result;
+            console.log('Base de datos abierta');
+            resolve(db);
+        };
+        
+        request.onupgradeneeded = (event) => {
+            const dbActual = event.target.result;
+            if (!dbActual.objectStoreNames.contains(STORE_NAME)) {
+                const store = dbActual.createObjectStore(STORE_NAME, { keyPath: 'fecha' });
+                store.createIndex('timestamp', 'timestamp', { unique: false });
+                console.log('Store creado');
+            }
+        };
+    });
+}
+
+// Guardar fotos en IndexedDB
+async function guardarFotosIndexedDB() {
+    const boton = document.getElementById('btnGuardarFotos');
+    boton.disabled = true;
+    boton.style.opacity = '0.5';
+    
+    const inputs = [
+        document.getElementById('foto0').files[0],
+        document.getElementById('foto1').files[0],
+        document.getElementById('foto2').files[0],
+        document.getElementById('foto3').files[0]
+    ];
+    
+    for(let i=0; i<inputs.length; i++) {
+        if(!inputs[i]) {
+            document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#ff3b30;">❌ Selecciona las 4 fotos</span>';
+            boton.disabled = false;
+            boton.style.opacity = '1';
+            return;
+        }
+    }
+    
+    const lectores = [];
+    const resultados = [];
+    let completados = 0;
+    
+    for(let i=0; i<inputs.length; i++) {
+        const reader = new FileReader();
+        lectores.push(reader);
+        
+        reader.onload = (function(idx, fileReader) {
+            return function(e) {
+                resultados[idx] = e.target.result;
+                completados++;
+                
+                const statusDiv = document.getElementById(`status${idx}`);
+                if(statusDiv) {
+                    statusDiv.innerHTML = '✅ Listo';
+                    statusDiv.style.color = '#32d74b';
+                }
+                
+                if(completados === 4) {
+                    const hoy = new Date();
+                    const fechaStr = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
+                    
+                    const nuevoDia = {
+                        fecha: fechaStr,
+                        timestamp: hoy.getTime(),
+                        frente: resultados[0],
+                        espalda: resultados[1],
+                        izquierda: resultados[2],
+                        derecha: resultados[3]
+                    };
+                    
+                    if(!db) {
+                        abrirDB().then(() => {
+                            guardarEnDB(nuevoDia, boton);
+                        }).catch(() => {
+                            document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#ff3b30;">❌ Error al abrir base de datos</span>';
+                            boton.disabled = false;
+                            boton.style.opacity = '1';
+                        });
+                    } else {
+                        guardarEnDB(nuevoDia, boton);
+                    }
+                }
+            };
+        })(i, reader);
+        
+        reader.readAsDataURL(inputs[i]);
+    }
+}
+
+function guardarEnDB(nuevoDia, boton) {
+    const transaction = db.transaction([STORE_NAME], 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.put(nuevoDia);
+    
+    request.onsuccess = () => {
+        document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#32d74b;">✅ ¡4 fotos guardadas correctamente!</span>';
+        
+        // Limpiar inputs
+        for(let i=0; i<4; i++) {
+            const input = document.getElementById(`foto${i}`);
+            if(input) input.value = '';
+            const statusDiv = document.getElementById(`status${i}`);
+            if(statusDiv) statusDiv.innerHTML = '';
+        }
+        
+        setTimeout(() => {
+            document.getElementById('mensajeFotosDB').innerHTML = '';
+        }, 3000);
+        
+        actualizarListaDiasDB();
+        boton.disabled = false;
+        boton.style.opacity = '1';
+        
+        if(typeof canvasConfetti !== 'undefined') canvasConfetti({ particleCount: 100, spread: 70 });
+    };
+    
+    request.onerror = () => {
+        document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#ff3b30;">❌ Error al guardar</span>';
+        boton.disabled = false;
+        boton.style.opacity = '1';
+    };
+}
+
+// Actualizar lista de días
+async function actualizarListaDiasDB() {
+    if(!db) await abrirDB();
+    
+    const container = document.getElementById('listaDiasDB');
+    const selector = document.getElementById('selectorDiaDB');
+    if(!container) return;
+    
+    const transaction = db.transaction([STORE_NAME], 'readonly');
+    const store = transaction.objectStore(STORE_NAME);
+    const index = store.index('timestamp');
+    const request = index.getAll();
+    
+    request.onsuccess = () => {
+        const items = request.result;
+        items.sort((a,b) => b.timestamp - a.timestamp);
+        
+        if(items.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:20px; color:#555;">Ningún día guardado</div>';
+            selector.innerHTML = '<option value="">Selecciona un día</option>';
+            return;
+        }
+        
+        container.innerHTML = items.map(item => `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#0a0a0a; padding:12px; border-radius:8px;">
+                <span style="color:#ff6600; font-weight:bold;">📅 ${item.fecha}</span>
+                <button onclick="eliminarDiaDB('${item.fecha}')" style="background:none; border:none; color:#ff3b30; font-size:1.2rem; cursor:pointer;">🗑️</button>
+            </div>
+        `).join('');
+        
+        selector.innerHTML = '<option value="">Selecciona un día</option>' + items.map(item => `<option value="${item.fecha}">${item.fecha}</option>`).join('');
+    };
+}
+
+// Eliminar día
+function eliminarDiaDB(fecha) {
+    if(!confirm(`¿Eliminar el día ${fecha}?`)) return;
+    
+    const transaction = db.transaction([STORE_NAME], 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.delete(fecha);
+    
+    request.onsuccess = () => {
+        actualizarListaDiasDB();
+        document.getElementById('visorFotosDB').innerHTML = '';
+        if(typeof mostrarToast === 'function') mostrarToast(`🗑️ ${fecha} eliminado`);
+        else alert(`🗑️ ${fecha} eliminado`);
+    };
+}
+
+// Ver fotos de un día
+async function verFotosIndexedDB() {
+    const fecha = document.getElementById('selectorDiaDB').value;
+    const visor = document.getElementById('visorFotosDB');
+    
+    if(!fecha) {
+        visor.innerHTML = '<div style="grid-column:span 2; text-align:center; padding:20px; color:#555;">Selecciona un día</div>';
+        return;
+    }
+    
+    if(!db) await abrirDB();
+    
+    const transaction = db.transaction([STORE_NAME], 'readonly');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.get(fecha);
+    
+    request.onsuccess = () => {
+        const item = request.result;
+        if(!item) {
+            visor.innerHTML = '<div style="grid-column:span 2; text-align:center; padding:20px; color:#555;">No se encontraron fotos para este día</div>';
+            return;
+        }
+        
+        visor.innerHTML = `
+            <div style="text-align:center;"><img src="${item.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">FRENTE</span></div>
+            <div style="text-align:center;"><img src="${item.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">ESPALDA</span></div>
+            <div style="text-align:center;"><img src="${item.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">IZQUIERDO</span></div>
+            <div style="text-align:center;"><img src="${item.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem;">DERECHO</span></div>
+        `;
+    };
+}
+
+// Inicializar
+async function inicializarFotosDB() {
+    await abrirDB();
+    await actualizarListaDiasDB();
+}
+
+if(document.getElementById('progreso-fotos')) {
+    inicializarFotosDB();
+}
+</script>
 
 <div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso en kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div></div>
 
