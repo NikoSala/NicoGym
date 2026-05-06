@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>NICO GYM - Ciclo Personalizado</title>
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#ff6600">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="NICO GYM">
@@ -41,68 +41,8 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bottom:80px}
-
-/* ANIMACIONES */
-@keyframes fadeSlideIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-@keyframes checkPop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-@keyframes timerPulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.03); opacity: 0.95; }
-    100% { transform: scale(1); opacity: 1; }
-}
-@keyframes dumbbellBounce {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    25% { transform: translateY(-15px) rotate(-10deg); }
-    75% { transform: translateY(-8px) rotate(10deg); }
-}
-@keyframes loadingPulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
-}
-.loading-dumbbell {
-    display: inline-block;
-    animation: dumbbellBounce 0.8s ease-in-out infinite;
-    font-size: 2.5rem;
-}
-.loading-dumbbell:nth-child(2) { animation-delay: 0.2s; }
-.loading-dumbbell:nth-child(3) { animation-delay: 0.4s; }
-.loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    min-height: 400px;
-}
-.loading-text {
-    margin-top: 20px;
-    font-size: 1rem;
-    color: #ff6600;
-    letter-spacing: 2px;
-    animation: loadingPulse 1.5s ease-in-out infinite;
-}
-
-.seccion {
-    opacity: 0;
-    transform: translateX(20px);
-    transition: all 0.3s ease;
-    display: none;
-    padding: 15px;
-}
-.seccion.active {
-    display: block;
-    animation: fadeSlideIn 0.3s ease forwards;
-}
-.check-box:active { transform: scale(0.9); }
-.check-box:checked { animation: checkPop 0.3s ease; }
-
+.seccion{display:none;padding:15px}
+.seccion.active{display:block}
 header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom:2px solid #ff6600;display:flex;justify-content:space-between;align-items:center;padding:0 15px;position:sticky;top:0;z-index:1000}
 .logo{font-weight:900;background:linear-gradient(135deg,#fff,#ff6600);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.3rem}
 .menu-icon{font-size:1.8rem;cursor:pointer}
@@ -118,7 +58,13 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .submenu-items.show{max-height:400px}
 .sub-link{padding:12px 35px;color:#aaa;font-size:.9rem;border-bottom:1px solid #111;display:block;cursor:pointer}
 .debug-btn{margin-top:30px;padding:10px;background:0;color:#333;border:1px solid #222;border-radius:8px;font-size:.7rem;text-align:center;cursor:pointer}
-.card{background:#111;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:0 2px 8px rgba(255,102,0,0.15)}
+.card{background:#111;border-radius:12px;padding:15px;margin-bottom:12px}
+.stats-row{display:flex;gap:10px;margin-bottom:15px}
+.stat-card{flex:1;background:#111;border-radius:12px;padding:12px;text-align:center}
+.stat-card h2{font-size:1.6rem;font-weight:bold}
+.stat-card.racha h2{color:#ff6600}
+.stat-card.nosmoke h2{color:#007aff}
+.stat-card small{font-size:.7rem;color:#aaa}
 .ex-title{font-weight:bold;color:#ff6600;font-size:1.1rem;display:block}
 .ex-reps{color:#32d74b;font-weight:bold;font-size:.9rem}
 .ex-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
@@ -141,8 +87,10 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .badge{position:absolute;top:-8px;right:-5px;background:#ff6600;font-size:.7rem;padding:2px 6px;border-radius:20px}
 .calc-reset{width:100%;padding:10px;background:#222;color:#ff3b30;border:1px solid #ff3b30;border-radius:8px;cursor:pointer;margin-top:10px}
 #descanso-box{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:3500;display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
-#descanso-box .descanso-contenido{background:#1a1a1a;border-radius:30px;padding:30px;text-align:center;border:3px solid #32d74b;box-shadow:0 0 30px rgba(50,215,75,0.5)}
-.descanso-timer-num{font-size:6rem;font-weight:bold;font-family:monospace;color:#32d74b;margin:20px 0;animation:timerPulse 1s infinite}
+.descanso-timer-num{font-size:8rem;font-weight:bold;font-family:monospace;color:#32d74b}
+.today-card{background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid #ff6600;border-radius:15px;padding:20px;margin-bottom:20px;text-align:center;cursor:pointer}
+.today-day{font-size:1.5rem;font-weight:bold;color:#ff6600;margin-bottom:8px}
+.today-btn{background:#ff6600;color:#000;padding:8px 20px;border-radius:20px;display:inline-block;font-weight:bold;margin-top:8px}
 .sunday-card{background:linear-gradient(135deg,#1a0a2e,#0a0a1a);border:2px solid #8b5cf6;border-radius:20px;padding:40px 20px;text-align:center;margin-top:30px}
 .sunday-emoji{font-size:5rem;animation:float 3s infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
@@ -157,202 +105,34 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .badge-desc{font-size:.7rem;color:#aaa}
 .badge-obtenido{font-size:.7rem;color:#32d74b}
 .badge-bloqueado{font-size:.7rem;color:#555}
-
-/* CICLO VISUAL CON COLORES DINÁMICOS */
-.cycle-card {
-    border-radius: 16px;
-    padding: 12px;
-    margin-bottom: 15px;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-.cycle-card.fuerza {
-    background: linear-gradient(135deg, #2a0a0a, #1a0505);
-    border: 2px solid #ff3b30;
-    box-shadow: 0 0 15px rgba(255,59,48,0.3);
-}
-.cycle-card.volumen {
-    background: linear-gradient(135deg, #0a2a0a, #051505);
-    border: 2px solid #32d74b;
-    box-shadow: 0 0 15px rgba(50,215,75,0.3);
-}
-.cycle-card.definicion {
-    background: linear-gradient(135deg, #2a2a0a, #151505);
-    border: 2px solid #ffd60a;
-    box-shadow: 0 0 15px rgba(255,214,10,0.3);
-}
-.cycle-emoji { font-size: 1.8rem; display: inline-block; }
-.cycle-title { font-size: 1rem; font-weight: bold; display: inline-block; margin-left: 5px; color: inherit; }
-.cycle-semana { font-size: 0.65rem; margin-top: 5px; opacity: 0.8; }
-.cycle-stats { display: flex; justify-content: center; gap: 12px; margin: 8px 0; }
-.cycle-stat { background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; }
-.cycle-stat strong { font-size: 0.9rem; display: block; }
-.cycle-objetivo { background: rgba(0,0,0,0.5); border-radius: 10px; padding: 5px 8px; margin-top: 6px; font-size: 0.65rem; }
-.cycle-bar { margin-top: 8px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
-.cycle-bar-fill { height: 100%; border-radius: 4px; }
-.cycle-card.fuerza .cycle-bar-fill { background: #ff3b30; }
-.cycle-card.volumen .cycle-bar-fill { background: #32d74b; }
-.cycle-card.definicion .cycle-bar-fill { background: #ffd60a; }
-
-/* Badge de ciclo en cada día */
-.day-cycle-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
-.day-cycle-badge.fuerza { background: #ff3b30; color: #fff; }
-.day-cycle-badge.volumen { background: #32d74b; color: #000; }
-.day-cycle-badge.definicion { background: #ffd60a; color: #000; }
-
-/* BANNER UNIFICADO CON COLORES DINÁMICOS CORREGIDOS */
-.banner-unificado {
-    border-radius: 16px;
-    padding: 15px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    transition: all 0.3s ease;
-}
-.banner-unificado.fuerza {
-    background: linear-gradient(135deg, #1a0a0a, #0a0505);
-    border: 1px solid #ff3b30;
-}
-.banner-unificado.volumen {
-    background: linear-gradient(135deg, #0a1a0a, #050a05);
-    border: 1px solid #32d74b;
-}
-.banner-unificado.definicion {
-    background: linear-gradient(135deg, #1a1a0a, #0a0a05);
-    border: 1px solid #ffd60a;
-}
-.banner-item {
-    flex: 1;
-    text-align: center;
-    min-width: 70px;
-}
-.banner-label {
-    font-size: 0.6rem;
-    color: #aaa;
-    text-transform: uppercase;
-}
-.banner-value {
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-.banner-unificado.fuerza .banner-value { color: #ff3b30; }
-.banner-unificado.volumen .banner-value { color: #32d74b; }
-.banner-unificado.definicion .banner-value { color: #ffd60a; }
-
-/* Botón entrenar hoy con color dinámico */
-.btn-entrenar-hoy {
-    border: none;
-    padding: 12px 20px;
-    border-radius: 30px;
-    font-weight: bold;
-    font-size: 1rem;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 15px;
-    cursor: pointer;
-    transition: transform 0.1s ease;
-}
-.btn-entrenar-hoy:active {
-    transform: scale(0.97);
-}
-.btn-entrenar-hoy.fuerza {
-    background: linear-gradient(135deg, #ff3b30, #cc0000);
-    color: #fff;
-}
-.btn-entrenar-hoy.volumen {
-    background: linear-gradient(135deg, #32d74b, #1a8a2e);
-    color: #fff;
-}
-.btn-entrenar-hoy.definicion {
-    background: linear-gradient(135deg, #ffd60a, #ccaa00);
-    color: #000;
-}
-
-/* EJERCICIO VISUAL */
-.exercise-card {
-    background: #0a0a0a;
-    border-radius: 16px;
-    padding: 15px;
-    margin-bottom: 12px;
-    border-left: 5px solid;
-}
-.exercise-card.fuerza { border-left-color: #ff3b30; }
-.exercise-card.volumen { border-left-color: #32d74b; }
-.exercise-card.definicion { border-left-color: #ffd60a; }
-.exercise-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-}
-.exercise-name { font-size: 1.1rem; font-weight: bold; color: #ff6600; }
-.exercise-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: bold;
-}
-.exercise-badge.fuerza { background: #ff3b30; color: #fff; }
-.exercise-badge.volumen { background: #32d74b; color: #000; }
-.exercise-badge.definicion { background: #ffd60a; color: #000; }
-.exercise-detail {
-    display: flex;
-    justify-content: space-around;
-    gap: 10px;
-    margin: 15px 0;
-    flex-wrap: wrap;
-}
-.exercise-detail-item {
-    flex: 1;
-    text-align: center;
-    background: #000;
-    padding: 10px;
-    border-radius: 12px;
-}
-.exercise-detail-label { font-size: 0.7rem; color: #888; margin-bottom: 5px; }
-.exercise-detail-value { font-size: 1.1rem; font-weight: bold; }
-.exercise-detail-value.fuerza { color: #ff3b30; }
-.exercise-detail-value.volumen { color: #32d74b; }
-.exercise-detail-value.definicion { color: #ffd60a; }
-.exercise-series {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
-    gap: 8px;
-    margin-top: 12px;
-}
-.series-box {
-    background: #000;
-    border-radius: 10px;
-    padding: 8px;
-    text-align: center;
-}
-.series-label { font-size: 0.6rem; color: #666; }
-.series-input {
-    width: 100%;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    color: #fff;
-    padding: 6px;
-    border-radius: 6px;
-    text-align: center;
-    font-size: 0.75rem;
-    margin-top: 4px;
-}
-.series-hist { font-size: 0.6rem; color: #ff6600; margin-top: 3px; }
-
-/* CALENDARIOS */
+.cycle-card{border-radius:16px;padding:12px;margin-bottom:15px;text-align:center}
+.cycle-emoji{font-size:1.8rem;display:inline-block}
+.cycle-title{font-size:1rem;font-weight:bold;display:inline-block;margin-left:5px}
+.cycle-semana{font-size:0.65rem;margin-top:5px}
+.cycle-stats{display:flex;justify-content:center;gap:12px;margin:8px 0}
+.cycle-stat{background:rgba(0,0,0,0.5);padding:4px 10px;border-radius:20px;font-size:0.65rem}
+.cycle-stat strong{font-size:0.9rem;display:block}
+.cycle-objetivo{background:rgba(0,0,0,0.5);border-radius:10px;padding:5px 8px;margin-top:6px;font-size:0.65rem}
+.cycle-bar{margin-top:8px;height:4px;background:rgba(255,255,255,0.2);border-radius:4px;overflow:hidden}
+.cycle-bar-fill{height:100%;border-radius:4px}
+.day-cycle-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:bold;margin-bottom:12px}
+.peso-resumen{background:#0a0a0a;border-radius:12px;padding:12px;margin-bottom:15px;display:flex;justify-content:space-around;text-align:center}
+.peso-resumen-item{flex:1}
+.peso-resumen-valor{font-size:1.2rem;font-weight:bold;color:#ff6600}
+.peso-resumen-label{font-size:0.65rem;color:#aaa}
+.exercise-card{background:#0a0a0a;border-radius:16px;padding:15px;margin-bottom:12px;border-left:5px solid #ff6600}
+.exercise-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.exercise-name{font-size:1.1rem;font-weight:bold;color:#ff6600}
+.exercise-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:bold}
+.exercise-detail{display:flex;justify-content:space-around;gap:10px;margin:15px 0;flex-wrap:wrap}
+.exercise-detail-item{flex:1;text-align:center;background:#000;padding:10px;border-radius:12px}
+.exercise-detail-label{font-size:0.7rem;color:#888;margin-bottom:5px}
+.exercise-detail-value{font-size:1.1rem;font-weight:bold}
+.exercise-series{display:grid;grid-template-columns:repeat(auto-fit,minmax(75px,1fr));gap:8px;margin-top:12px}
+.series-box{background:#000;border-radius:10px;padding:8px;text-align:center}
+.series-label{font-size:0.6rem;color:#666}
+.series-input{width:100%;background:#1a1a1a;border:1px solid #333;color:#fff;padding:6px;border-radius:6px;text-align:center;font-size:0.75rem;margin-top:4px}
+.series-hist{font-size:0.6rem;color:#ff6600;margin-top:3px}
 .cal-wrapper{display:flex;flex-direction:column;gap:20px;margin-top:10px}
 .cal-card{background:#111;border-radius:15px;padding:15px;border:1px solid #222;max-width:400px;margin:0 auto;width:100%}
 .cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
@@ -363,124 +143,27 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .cal-cell{aspect-ratio:1;background:#0a0a0a;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:#444;transition:0.2s;cursor:pointer}
 .cal-cell.entrenado{background:#32d74b;color:#000;font-weight:bold}
 .cal-cell.fumado{background:#ff3b30;color:#fff;font-weight:bold}
-.cal-cell.nosmoke{background:#007aff;color:#fff}
 .cal-cell.domingo{background:#ffd60a;color:#000;font-weight:bold}
 .cal-cell.today{border:2px solid #ff6600}
 .cal-cell.future{opacity:0.2;cursor:not-allowed}
 .cal-legend{display:flex;gap:12px;margin-top:12px;font-size:0.7rem;justify-content:center}
 .leg-item{display:flex;align-items:center;gap:5px}
 .leg-box{width:12px;height:12px;border-radius:3px}
-
 .btn-done{width:100%;padding:15px;background:#32d74b;color:#000;border:none;border-radius:12px;font-weight:900;font-size:1.1rem;margin:20px 0;cursor:pointer}
 .btn-done:disabled{background:#222;color:#555;cursor:not-allowed}
 .stretch-card{background:#0a1a0a;border:1px solid #32d74b;padding:12px;border-radius:10px;margin-top:15px}
 .editor-input{width:100%;background:#000;border:1px solid #333;color:#fff;padding:8px;border-radius:5px;margin-bottom:10px}
-
-/* Fotos */
-#progreso-fotos input[type="file"] {
-    width: 100%;
-    font-size: 0.65rem;
-    padding: 5px;
-    background: #1a1a1a;
-    color: #fff;
-    border: 1px solid #444;
-    border-radius: 6px;
-    cursor: pointer;
-    box-sizing: border-box;
-}
-#progreso-fotos input[type="file"]::file-selector-button {
-    background: #ff6600;
-    color: #000;
-    border: none;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-right: 6px;
-    font-size: 0.65rem;
-}
-#progreso-fotos .card { overflow-x: hidden; }
-#listaDiasDB > div { word-break: break-word; flex-wrap: wrap; }
-#compararDia1, #compararDia2 { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-/* Modal Reset */
-.reset-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.95);
-    z-index: 5000;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 20px;
-}
-.reset-modal-content {
-    background: #1a1a1a;
-    border-radius: 20px;
-    padding: 25px;
-    max-width: 300px;
-    text-align: center;
-    border: 2px solid #ff3b30;
-}
-.reset-modal-content input {
-    width: 100%;
-    padding: 10px;
-    background: #000;
-    color: #fff;
-    border: 1px solid #ff3b30;
-    border-radius: 8px;
-    text-align: center;
-    margin: 15px 0;
-}
-
-/* Medalla giratoria */
-.medalla-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.85);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    backdrop-filter: blur(5px);
-}
-.medalla-contenedor {
-    text-align: center;
-    animation: medalSpin 2.5s ease-in-out forwards;
-}
-.medalla-icono {
-    font-size: 6rem;
-    display: block;
-    margin-bottom: 15px;
-    filter: drop-shadow(0 0 10px gold);
-}
-.medalla-titulo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #ffd60a;
-    text-shadow: 0 0 10px rgba(255,214,10,0.5);
-}
-.medalla-desc {
-    font-size: 1rem;
-    color: #fff;
-    margin-top: 8px;
-}
-@keyframes medalSpin {
-    0% { transform: rotate(0deg) scale(0.5); opacity: 0; }
-    20% { transform: rotate(72deg) scale(1.2); opacity: 1; }
-    40% { transform: rotate(144deg) scale(1); opacity: 1; }
-    60% { transform: rotate(216deg) scale(1.1); opacity: 1; }
-    80% { transform: rotate(288deg) scale(1); opacity: 1; }
-    100% { transform: rotate(360deg) scale(0.8); opacity: 0; }
-}
+#progreso-fotos input[type="file"]{width:100%;font-size:0.65rem;padding:5px;background:#1a1a1a;color:#fff;border:1px solid #444;border-radius:6px;cursor:pointer}
+#progreso-fotos input[type="file"]::file-selector-button{background:#ff6600;color:#000;border:none;padding:4px 8px;border-radius:4px;font-weight:bold;cursor:pointer;margin-right:6px}
+.reset-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);z-index:5000;align-items:center;justify-content:center;flex-direction:column;padding:20px}
+.reset-modal-content{background:#1a1a1a;border-radius:20px;padding:25px;max-width:300px;text-align:center;border:2px solid #ff3b30}
+.reset-modal-content input{width:100%;padding:10px;background:#000;color:#fff;border:1px solid #ff3b30;border-radius:8px;text-align:center;margin:15px 0}
+.medalla-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:10000;display:flex;align-items:center;justify-content:center;pointer-events:none;backdrop-filter:blur(5px)}
+.medalla-contenedor{text-align:center;animation:medalSpin 2.5s ease-in-out forwards}
+.medalla-icono{font-size:6rem;display:block;margin-bottom:15px;filter:drop-shadow(0 0 10px gold)}
+.medalla-titulo{font-size:1.8rem;font-weight:bold;color:#ffd60a;text-shadow:0 0 10px rgba(255,214,10,0.5)}
+.medalla-desc{font-size:1rem;color:#fff;margin-top:8px}
+@keyframes medalSpin{0%{transform:rotate(0deg) scale(0.5);opacity:0}20%{transform:rotate(72deg) scale(1.2);opacity:1}40%{transform:rotate(144deg) scale(1);opacity:1}60%{transform:rotate(216deg) scale(1.1);opacity:1}80%{transform:rotate(288deg) scale(1);opacity:1}100%{transform:rotate(360deg) scale(0.8);opacity:0}}
 </style>
 </head>
 <body>
@@ -506,60 +189,22 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 </nav>
 <header><span class="menu-icon" onclick="openMenu()">☰</span><span class="logo">NICO <span style="color:#ff6600">GYM</span></span><span class="home-icon" onclick="go('home')">🏠</span></header>
 
-<!-- ==================== HOME CON CICLO PERSONALIZADO ==================== -->
+<!-- HOME -->
 <div id="home" class="seccion active">
-    
-    <!-- ANIMACIÓN DE CARGA -->
-    <div id="loadingAnimation" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px;">
-        <div>
-            <span class="loading-dumbbell">🏋️</span>
-            <span class="loading-dumbbell">💪</span>
-            <span class="loading-dumbbell">🏋️</span>
-        </div>
-        <div class="loading-text">PREPARANDO TU ENTRENO...</div>
-        <div style="margin-top: 15px; font-size: 0.7rem; color: #555;">Cargando tu progreso</div>
+    <div class="cycle-card" id="cycleCard">CARGANDO...</div>
+    <div class="peso-resumen" id="pesoResumen">
+        <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoActualResumen">-- kg</div><div class="peso-resumen-label">Actual</div></div>
+        <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoInicialResumen">-- kg</div><div class="peso-resumen-label">Inicio</div></div>
+        <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoObjetivoResumen">75 kg</div><div class="peso-resumen-label">🎯 Objetivo</div></div>
     </div>
-    
-    <!-- CONTENIDO REAL -->
-    <div id="contenidoHome" style="display: none;">
-        
-        <!-- Banner del ciclo -->
-        <div class="cycle-card" id="cycleCard"></div>
-        
-        <!-- Banner unificado (Racha, Sin fumar, Peso, Objetivo) -->
-        <div class="banner-unificado" id="bannerUnificado">
-            <div class="banner-item">
-                <div class="banner-label">🔥 RACHA</div>
-                <div class="banner-value" id="bannerRacha">0</div>
-            </div>
-            <div class="banner-item">
-                <div class="banner-label">🚭 SIN FUMAR</div>
-                <div class="banner-value" id="bannerSinFumar">0</div>
-            </div>
-            <div class="banner-item">
-                <div class="banner-label">⚖️ PESO</div>
-                <div class="banner-value" id="bannerPeso">-- kg</div>
-            </div>
-            <div class="banner-item">
-                <div class="banner-label">🎯 OBJETIVO</div>
-                <div class="banner-value" id="bannerObjetivo">75 kg</div>
-            </div>
-        </div>
-        
-        <!-- Botón para entrenar hoy -->
-        <button class="btn-entrenar-hoy" id="btnEntrenarHoy" onclick="goToday()">💪 ENTRENAR HOY</button>
-        
-        <!-- Gráfico de peso -->
-        <div style="margin-bottom:15px">
-            <div class="card" style="height:200px">
-                <canvas id="grafico"></canvas>
-            </div>
-        </div>
-        
-        <!-- Botón para marcar fumado -->
-        <div class="card" style="text-align:center">
-            <button onclick="marcarHoyFumado()" style="background:#222; color:#aaa; border:1px solid #555; padding:10px 20px; border-radius:8px; cursor:pointer; width:100%">🚬 Marcar hoy como fumado</button>
-        </div>
+    <div class="today-card" onclick="goToday()"><div class="today-day" id="todayDay">Cargando...</div><div id="todayRoutine" style="color:#aaa;margin-bottom:10px"></div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div>
+    <div class="stats-row">
+        <div class="stat-card racha"><h2 id="racha">0</h2><small>🔥 RACHA GYM</small></div>
+        <div class="stat-card nosmoke"><h2 id="diasSinFumar" style="color:#007aff;font-size:1.8rem">0</h2><small>🚭 DÍAS SIN FUMAR</small></div>
+    </div>
+    <div style="margin-bottom:15px"><div class="card" style="height:200px"><canvas id="grafico"></canvas></div></div>
+    <div class="card" style="text-align:center">
+        <button onclick="marcarHoyFumado()" style="background:#222;color:#aaa;border:1px solid #555;padding:10px 20px;border-radius:8px;cursor:pointer">🚬 Marcar hoy como fumado</button>
     </div>
 </div>
 
@@ -571,36 +216,37 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 </div>
 </div>
 
+<!-- FOTOS (SIMPLE) -->
 <div id="progreso-fotos" class="seccion">
     <h2>📸 MI PROGRESO (4 FOTOS POR DÍA)</h2>
     <div class="card">
         <h3>📅 SUBIR FOTOS DE HOY</h3>
         <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:20px;">
             <div style="background:#0a0a0a; border-radius:16px; padding:12px; text-align:center; border:1px solid #333;">
-                <div style="font-size:2rem; margin-bottom:5px;">😀</div><div style="font-size:0.7rem; color:#aaa; margin-bottom:8px;">FRENTE</div>
-                <input type="file" id="foto0" accept="image/*" style="width:100%; font-size:0.7rem; padding:6px; background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:8px;">
+                <div style="font-size:2rem;">😀</div><div style="font-size:0.7rem; color:#aaa;">FRENTE</div>
+                <input type="file" id="foto0" accept="image/*" style="margin-top:8px; width:100%; font-size:0.7rem;">
                 <div id="status0" style="font-size:0.6rem; margin-top:6px;"></div>
             </div>
             <div style="background:#0a0a0a; border-radius:16px; padding:12px; text-align:center; border:1px solid #333;">
-                <div style="font-size:2rem; margin-bottom:5px;">🙃</div><div style="font-size:0.7rem; color:#aaa; margin-bottom:8px;">ESPALDA</div>
-                <input type="file" id="foto1" accept="image/*" style="width:100%; font-size:0.7rem; padding:6px; background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:8px;">
+                <div style="font-size:2rem;">🙃</div><div style="font-size:0.7rem; color:#aaa;">ESPALDA</div>
+                <input type="file" id="foto1" accept="image/*" style="margin-top:8px; width:100%; font-size:0.7rem;">
                 <div id="status1" style="font-size:0.6rem; margin-top:6px;"></div>
             </div>
             <div style="background:#0a0a0a; border-radius:16px; padding:12px; text-align:center; border:1px solid #333;">
-                <div style="font-size:2rem; margin-bottom:5px;">⬅️</div><div style="font-size:0.7rem; color:#aaa; margin-bottom:8px;">IZQUIERDO</div>
-                <input type="file" id="foto2" accept="image/*" style="width:100%; font-size:0.7rem; padding:6px; background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:8px;">
+                <div style="font-size:2rem;">⬅️</div><div style="font-size:0.7rem; color:#aaa;">IZQUIERDO</div>
+                <input type="file" id="foto2" accept="image/*" style="margin-top:8px; width:100%; font-size:0.7rem;">
                 <div id="status2" style="font-size:0.6rem; margin-top:6px;"></div>
             </div>
             <div style="background:#0a0a0a; border-radius:16px; padding:12px; text-align:center; border:1px solid #333;">
-                <div style="font-size:2rem; margin-bottom:5px;">➡️</div><div style="font-size:0.7rem; color:#aaa; margin-bottom:8px;">DERECHO</div>
-                <input type="file" id="foto3" accept="image/*" style="width:100%; font-size:0.7rem; padding:6px; background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:8px;">
+                <div style="font-size:2rem;">➡️</div><div style="font-size:0.7rem; color:#aaa;">DERECHO</div>
+                <input type="file" id="foto3" accept="image/*" style="margin-top:8px; width:100%; font-size:0.7rem;">
                 <div id="status3" style="font-size:0.6rem; margin-top:6px;"></div>
             </div>
         </div>
         <button id="btnGuardarFotos" onclick="guardarFotosIndexedDB()" style="width:100%; padding:14px; background:#ff6600; color:#000; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">💾 GUARDAR LAS 4 FOTOS DE HOY</button>
         <div id="mensajeFotosDB" style="margin-top:12px; text-align:center; font-size:0.8rem;"></div>
     </div>
-    <div class="card"><h3>📚 MIS DÍAS GUARDADOS</h3><div id="listaDiasDB" style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto; overflow-x:hidden;"></div></div>
+    <div class="card"><h3>📚 MIS DÍAS GUARDADOS</h3><div id="listaDiasDB" style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto;"></div></div>
     <div class="card"><h3>🔍 COMPARAR DOS DÍAS</h3>
         <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap; align-items:flex-end;">
             <div style="flex:1; min-width:130px;"><div style="font-size:0.7rem; color:#aaa; margin-bottom:5px;">📅 PRIMER DÍA</div><select id="compararDia1" style="width:100%; padding:10px; background:#000; color:#fff; border-radius:8px; border:1px solid #333;"></select></div>
@@ -624,15 +270,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="domingo" class="seccion"><div class="sunday-card"><div class="sunday-emoji">🔋✨😴✨💪</div><div class="sunday-title">DÍA DE RECARGA</div></div></div>
 
 <div id="calcModal" class="calc-modal"><span class="close-calc" onclick="cerrarCalc()">&times;</span><h3>🏋️ CALCULAR DISCOS</h3><div class="calc-grid"><button class="calc-btn" onclick="sumarDisco(1.25)">+1.25kg <span class="badge" id="badge125">0</span></button><button class="calc-btn" onclick="sumarDisco(1.5)">+1.5kg <span class="badge" id="badge15">0</span></button><button class="calc-btn" onclick="sumarDisco(2)">+2kg <span class="badge" id="badge2">0</span></button></div><div>PESO TOTAL: <strong id="totalDisco" style="color:#ff6600;font-size:24px">0</strong> kg</div><button class="calc-reset" onclick="resetearDiscos()">🗑️ RESET</button></div>
-
-<div id="descanso-box">
-    <div class="descanso-contenido">
-        <h1 style="color:#32d74b; margin-bottom: 15px; font-size: 1.6rem;">💪 ¡DESCANSA!</h1>
-        <div class="descanso-timer-num" id="descansoTimer">30</div>
-        <div style="font-size: 0.8rem; color: #aaa; margin-bottom: 20px;">Recupera para la siguiente serie</div>
-        <button onclick="cancelarDescanso()" style="background:#ff6600; color:#000; border:none; padding:10px 25px; border-radius:25px; font-weight:bold; font-size:0.9rem; cursor:pointer;">SALTAR</button>
-    </div>
-</div>
+<div id="descanso-box"><h1 style="color:#32d74b">💪 DESCANSA</h1><div class="descanso-timer-num" id="descansoTimer">30</div><button onclick="cancelarDescanso()" style="margin-top:30px;background:#222;color:#fff;border:none;padding:12px 30px;border-radius:10px">SALTAR</button></div>
 
 <div id="resetModal" class="reset-modal"><div class="reset-modal-content"><h3 style="color:#ff3b30;margin-bottom:15px;">⚠️ BORRAR TODO</h3><p style="margin-bottom:15px;">Esto eliminará TODOS tus datos. No se puede deshacer.</p><p style="margin-bottom:15px;">Escribe <strong style="color:#ff6600;">"BORRAR"</strong> para confirmar:</p><input type="text" id="confirmResetInput" placeholder="BORRAR"><div style="display:flex;gap:10px;"><button onclick="cerrarModalReset()" style="flex:1;padding:10px;background:#222;color:#fff;border:none;border-radius:8px;">Cancelar</button><button onclick="confirmarBorrarTodo()" style="flex:1;padding:10px;background:#ff3b30;color:#fff;border:none;border-radius:8px;">Borrar</button></div></div></div>
 
@@ -652,7 +290,6 @@ function getSemanaDelMes() {
 
 function getTipoCiclo() {
     const semana = getSemanaDelMes();
-    // Semana 1 = FUERZA, Semana 2 = DEFINICIÓN, Semana 3 = VOLUMEN, Semana 4 = DEFINICIÓN, Semana 5 = FUERZA
     if (semana === 1 || semana === 5) return 'FUERZA';
     if (semana === 3) return 'VOLUMEN';
     return 'DEFINICIÓN';  // Semanas 2 y 4
@@ -661,39 +298,53 @@ function getTipoCiclo() {
 function getConfiguracionCiclo() {
     const tipo = getTipoCiclo();
     const configs = {
-        FUERZA: { nombre: '🏋️ FUERZA', emoji: '🏋️', color: '#ff3b30', series: '4-5', reps: '3-5', peso: 'PESADO (16-18kg)', desc: 'Pocas reps, mucho peso', objetivo: 'GANAR FUERZA MÁXIMA' },
-        VOLUMEN: { nombre: '💪 VOLUMEN', emoji: '💪', color: '#32d74b', series: '3-4', reps: '8-12', peso: 'MODERADO (10-12kg)', desc: 'Reps medias, peso moderado', objetivo: 'HIPERTROFIA' },
-        DEFINICIÓN: { nombre: '🔥 DEFINICIÓN', emoji: '🔥', color: '#ffd60a', series: '3-4', reps: '15-20', peso: 'LIGERO (6-8kg)', desc: 'Muchas reps, poco peso', objetivo: 'QUEMAR GRASA' }
+        FUERZA: { nombre: '🏋️ FUERZA', emoji: '🏋️', color: '#ff3b30', bgColor: '#2a0a0a', series: '4-5', reps: '3-5', peso: 'PESADO (16-18kg)', desc: 'Pocas reps, mucho peso', objetivo: 'GANAR FUERZA MÁXIMA', btnBg: 'linear-gradient(135deg, #ff3b30, #cc0000)', btnText: '#fff' },
+        VOLUMEN: { nombre: '💪 VOLUMEN', emoji: '💪', color: '#32d74b', bgColor: '#0a2a0a', series: '3-4', reps: '8-12', peso: 'MODERADO (10-12kg)', desc: 'Reps medias, peso moderado', objetivo: 'HIPERTROFIA', btnBg: 'linear-gradient(135deg, #32d74b, #1a8a2e)', btnText: '#fff' },
+        DEFINICIÓN: { nombre: '🔥 DEFINICIÓN', emoji: '🔥', color: '#ffd60a', bgColor: '#2a2a0a', series: '3-4', reps: '15-20', peso: 'LIGERO (6-8kg)', desc: 'Muchas reps, poco peso', objetivo: 'QUEMAR GRASA', btnBg: 'linear-gradient(135deg, #ffd60a, #ccaa00)', btnText: '#000' }
     };
     return configs[tipo];
 }
 
-function actualizarColoresPorCiclo() {
-    const tipo = getTipoCiclo().toLowerCase();
+function aplicarColoresCiclo() {
     const config = getConfiguracionCiclo();
+    const tipoColor = config.color;
     
-    // Actualizar banner unificado
-    const bannerUnificado = document.getElementById('bannerUnificado');
-    if(bannerUnificado) {
-        bannerUnificado.className = `banner-unificado ${tipo}`;
+    // Aplicar color al banner de ciclo
+    const cycleCard = document.getElementById('cycleCard');
+    if(cycleCard) {
+        cycleCard.style.border = `2px solid ${tipoColor}`;
+        cycleCard.style.boxShadow = `0 0 15px ${tipoColor}80`;
+        const titleSpan = cycleCard.querySelector('.cycle-title');
+        if(titleSpan) titleSpan.style.color = tipoColor;
     }
     
-    // Actualizar botón entrenar hoy
-    const btnEntrenar = document.getElementById('btnEntrenarHoy');
-    if(btnEntrenar) {
-        btnEntrenar.className = `btn-entrenar-hoy ${tipo}`;
+    // Aplicar color al botón ENTRENAR HOY
+    const todayBtn = document.querySelector('.today-btn');
+    if(todayBtn) {
+        todayBtn.style.background = config.btnBg;
+        todayBtn.style.color = config.btnText;
+    }
+    
+    // Aplicar color a las tarjetas de estadísticas de racha
+    const rachaCard = document.querySelector('.stat-card.racha');
+    if(rachaCard) {
+        rachaCard.style.border = `1px solid ${tipoColor}`;
     }
 }
 
 function actualizarBadgesCicloDia() {
-    const tipo = getTipoCiclo();
     const config = getConfiguracionCiclo();
-    const badgeClass = tipo.toLowerCase();
     const badgeText = `${config.nombre} | ${config.series} x ${config.reps}`;
+    const badgeColor = config.color;
+    const badgeBg = config.bgColor;
     const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
     for(const dia of dias) {
         const badge = document.getElementById(`cycleBadge-${dia}`);
-        if(badge) { badge.className = `day-cycle-badge ${badgeClass}`; badge.innerText = badgeText; }
+        if(badge) {
+            badge.innerText = badgeText;
+            badge.style.backgroundColor = badgeColor;
+            badge.style.color = config.nombre === 'DEFINICIÓN' ? '#000' : '#fff';
+        }
     }
 }
 
@@ -704,18 +355,21 @@ function actualizarBannerCiclo() {
     const porcentaje = (semana / 4) * 100;
     const card = document.getElementById('cycleCard');
     if(card) {
-        card.className = `cycle-card ${tipo}`;
-        card.innerHTML = `<div><span class="cycle-emoji">${config.emoji}</span><span class="cycle-title" style="color:${config.color}">${config.nombre}</span></div><div class="cycle-semana">📅 Semana ${semana} de 4</div><div class="cycle-bar"><div class="cycle-bar-fill" style="width:${porcentaje}%"></div></div><div class="cycle-stats"><div class="cycle-stat"><strong>${config.series}</strong> Series</div><div class="cycle-stat"><strong>${config.reps}</strong> Reps</div><div class="cycle-stat"><strong>${config.peso}</strong></div></div><div class="cycle-objetivo">🎯 ${config.objetivo}</div>`;
+        card.style.background = `linear-gradient(135deg, ${config.bgColor}, #050505)`;
+        card.style.border = `2px solid ${config.color}`;
+        card.style.boxShadow = `0 0 15px ${config.color}80`;
+        card.innerHTML = `<div><span class="cycle-emoji">${config.emoji}</span><span class="cycle-title" style="color:${config.color}">${config.nombre}</span></div><div class="cycle-semana">📅 Semana ${semana} de 4</div><div class="cycle-bar"><div class="cycle-bar-fill" style="width:${porcentaje}%; background:${config.color}"></div></div><div class="cycle-stats"><div class="cycle-stat"><strong>${config.series}</strong> Series</div><div class="cycle-stat"><strong>${config.reps}</strong> Reps</div><div class="cycle-stat"><strong>${config.peso}</strong></div></div><div class="cycle-objetivo">🎯 ${config.objetivo}<br><span style="font-size:0.75rem">💡 ${config.desc}</span></div>`;
     }
 }
 
-function actualizarBannerUnificado() {
+function actualizarResumenPeso() {
     if(pesosRegistrados && pesosRegistrados.length > 0) {
-        document.getElementById('bannerPeso').innerText = pesosRegistrados[pesosRegistrados.length-1].valor + ' kg';
+        document.getElementById('pesoActualResumen').innerText = pesosRegistrados[pesosRegistrados.length-1].valor + ' kg';
+        document.getElementById('pesoInicialResumen').innerText = pesosRegistrados[0].valor + ' kg';
+    } else {
+        document.getElementById('pesoActualResumen').innerText = '-- kg';
+        document.getElementById('pesoInicialResumen').innerText = '-- kg';
     }
-    document.getElementById('bannerRacha').innerText = diasEntrenados.length;
-    document.getElementById('bannerSinFumar').innerText = calcularDiasSinFumar();
-    document.getElementById('bannerObjetivo').innerText = OBJETIVO_PESO + ' kg';
 }
 
 // ==================== RUTINAS BASE ====================
@@ -809,6 +463,7 @@ function generarInputsSeries(id, serieTexto, esTiempo) {
 function renderizarRutinas() {
     const configCiclo = getConfiguracionCiclo();
     const tipo = getTipoCiclo().toLowerCase();
+    const cicloColor = configCiclo.color;
     const semanaStr = getSemanaActual();
     for (const dia of ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado']) {
         const lista = document.getElementById(`list-${dia}`);
@@ -828,7 +483,9 @@ function renderizarRutinas() {
             if(!ex.esTiempo && !ex.serieTexto.includes("AL FALLO") && !ex.serieTexto.includes("min")) {
                 serieMostrada = `${configCiclo.series} x ${configCiclo.reps}`;
             }
-            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge ${tipo}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value ${tipo}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value ${tipo}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value ${tipo}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
+            const badgeBg = configCiclo.color;
+            const badgeColor = getTipoCiclo() === 'DEFINICIÓN' ? '#000' : '#fff';
+            return `<div class="exercise-card" style="border-left-color: ${cicloColor}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge" style="background: ${badgeBg}; color: ${badgeColor}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value" style="color:${cicloColor}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value" style="color:${cicloColor}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value" style="color:${cicloColor}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
         }).join('');
         const stretchList = document.getElementById(`stretches-${dia}`);
         if(stretchList && estiramientosPorDia[dia]) stretchList.innerHTML = `<div class="stretch-card"><strong>🧘 ESTIRAMIENTOS:</strong><ul style="margin-left:20px;margin-top:5px">${estiramientosPorDia[dia].map(s => `<li>${s}</li>`).join('')}</ul></div>`;
@@ -839,11 +496,16 @@ function marcarEjercicioHecho(id) { if(checks[id]) return; checks[id] = true; lo
 function marcarDiaCompletadoManual(dia) { const hoyStr = getHoyStr(); const semanaStr = getSemanaActual(); const key = `completado_${dia}_${semanaStr}`; if(localStorage.getItem(key)) return; if(!diasEntrenados.includes(hoyStr)) { diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); } localStorage.setItem(key,"true"); mostrarMensajeMotivadorConMedalla(`🎉 ¡${getTipoCiclo()} completado!`, "🎉", "ENTRENO COMPLETADO", `¡${getTipoCiclo()} finalizado!`); actualizarHome(); renderizarRutinas(); renderizarCalendarios(); if(navigator.vibrate) navigator.vibrate([200,100,200]); canvasConfetti({particleCount:300,spread:100}); }
 
 function actualizarHome() {
-    actualizarBannerUnificado();
+    document.getElementById('racha').innerText = diasEntrenados.length;
+    document.getElementById('diasSinFumar').innerText = calcularDiasSinFumar();
+    actualizarResumenPeso();
     const ctx = document.getElementById('grafico').getContext('2d');
     if(window.miGrafico) window.miGrafico.destroy();
     window.miGrafico = new Chart(ctx, { type: 'line', data: { labels: pesosRegistrados.map(p=>p.fecha), datasets: [{ data: pesosRegistrados.map(p=>p.valor), borderColor: '#ff6600', fill: true, backgroundColor: 'rgba(255,102,0,0.1)' }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+    document.getElementById('todayDay').innerText = `📅 ${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date().getDay()]}`;
+    document.getElementById('todayRoutine').innerText = getRutinaHoy();
     verificarYDesbloquearLogros();
+    aplicarColoresCiclo();
 }
 function getRutinaHoy() { const d = new Date().getDay(); const tipo = getTipoCiclo(); return `${['Descanso','Espalda/Bíceps','Cardio/Abs','Pecho/Tríceps','Cardio/Abs','Pierna/Hombro','Cardio/Abs'][d]} [${tipo}]`; }
 
@@ -874,13 +536,12 @@ const STORE_FOTOS_NAME = 'diasFotos';
 function abrirDBFotos() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(DB_FOTOS_NAME, DB_FOTOS_VERSION);
-        request.onerror = (event) => { console.error('Error:', event); reject(event); };
+        request.onerror = (event) => { reject(event); };
         request.onsuccess = (event) => { dbFotos = event.target.result; resolve(dbFotos); };
         request.onupgradeneeded = (event) => {
             const dbActual = event.target.result;
             if (!dbActual.objectStoreNames.contains(STORE_FOTOS_NAME)) {
-                const store = dbActual.createObjectStore(STORE_FOTOS_NAME, { keyPath: 'fecha' });
-                store.createIndex('timestamp', 'timestamp', { unique: false });
+                dbActual.createObjectStore(STORE_FOTOS_NAME, { keyPath: 'fecha' });
             }
         };
     });
@@ -889,26 +550,25 @@ function abrirDBFotos() {
 async function guardarFotosIndexedDB() {
     const boton = document.getElementById('btnGuardarFotos');
     boton.disabled = true;
-    boton.style.opacity = '0.5';
     const inputs = [document.getElementById('foto0').files[0], document.getElementById('foto1').files[0], document.getElementById('foto2').files[0], document.getElementById('foto3').files[0]];
-    for(let i=0; i<inputs.length; i++) { if(!inputs[i]) { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#ff3b30;">❌ Selecciona las 4 fotos</span>'; boton.disabled = false; boton.style.opacity = '1'; return; } }
+    for(let i=0; i<inputs.length; i++) { if(!inputs[i]) { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#ff3b30;">❌ Selecciona las 4 fotos</span>'; boton.disabled = false; return; } }
     const resultados = []; let completados = 0;
-    for(let i=0; i<inputs.length; i++) { const reader = new FileReader(); reader.onload = (function(idx) { return function(e) { resultados[idx] = e.target.result; completados++; const statusDiv = document.getElementById(`status${idx}`); if(statusDiv) { statusDiv.innerHTML = '✅ Listo'; statusDiv.style.color = '#32d74b'; } if(completados === 4) { const hoy = new Date(); const fechaStr = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`; const nuevoDia = { fecha: fechaStr, timestamp: hoy.getTime(), frente: resultados[0], espalda: resultados[1], izquierda: resultados[2], derecha: resultados[3] }; if(!dbFotos) { abrirDBFotos().then(() => guardarEnDBFotos(nuevoDia, boton)); } else { guardarEnDBFotos(nuevoDia, boton); } } }; })(i); reader.readAsDataURL(inputs[i]); }
+    for(let i=0; i<inputs.length; i++) { const reader = new FileReader(); reader.onload = (function(idx) { return function(e) { resultados[idx] = e.target.result; completados++; if(completados === 4) { const hoy = new Date(); const fechaStr = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`; const nuevoDia = { fecha: fechaStr, timestamp: hoy.getTime(), frente: resultados[0], espalda: resultados[1], izquierda: resultados[2], derecha: resultados[3] }; if(!dbFotos) { abrirDBFotos().then(() => guardarEnDBFotos(nuevoDia, boton)); } else { guardarEnDBFotos(nuevoDia, boton); } } }; })(i); reader.readAsDataURL(inputs[i]); }
 }
 
 function guardarEnDBFotos(nuevoDia, boton) {
     const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_FOTOS_NAME);
     const request = store.put(nuevoDia);
-    request.onsuccess = () => { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#32d74b;">✅ ¡4 fotos guardadas correctamente!</span>'; for(let i=0; i<4; i++) { const input = document.getElementById(`foto${i}`); if(input) input.value = ''; const statusDiv = document.getElementById(`status${i}`); if(statusDiv) statusDiv.innerHTML = ''; } setTimeout(() => { document.getElementById('mensajeFotosDB').innerHTML = ''; }, 3000); actualizarListaDiasDB(); actualizarSelectoresComparacion(); boton.disabled = false; boton.style.opacity = '1'; if(typeof canvasConfetti !== 'undefined') canvasConfetti({ particleCount: 100, spread: 70 }); };
-    request.onerror = () => { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#ff3b30;">❌ Error al guardar</span>'; boton.disabled = false; boton.style.opacity = '1'; };
+    request.onsuccess = () => { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#32d74b;">✅ ¡4 fotos guardadas!</span>'; for(let i=0; i<4; i++) { const input = document.getElementById(`foto${i}`); if(input) input.value = ''; } setTimeout(() => { document.getElementById('mensajeFotosDB').innerHTML = ''; }, 3000); actualizarListaDiasDB(); actualizarSelectoresComparacion(); boton.disabled = false; canvasConfetti({ particleCount: 100, spread: 70 }); };
+    request.onerror = () => { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#ff3b30;">❌ Error al guardar</span>'; boton.disabled = false; };
 }
 
-async function actualizarListaDiasDB() { if(!dbFotos) await abrirDBFotos(); const container = document.getElementById('listaDiasDB'); if(!container) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const index = store.index('timestamp'); const request = index.getAll(); request.onsuccess = () => { const items = request.result; items.sort((a,b) => b.timestamp - a.timestamp); if(items.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#555;">Ningún día guardado</div>'; return; } container.innerHTML = items.map(item => `<div style="display:flex; justify-content:space-between; align-items:center; background:#0a0a0a; padding:12px; border-radius:8px;"><span style="color:#ff6600; font-weight:bold;">📅 ${item.fecha}</span><button onclick="eliminarDiaDB('${item.fecha}')" style="background:none; border:none; color:#ff3b30; font-size:1.2rem; cursor:pointer;">🗑️</button></div>`).join(''); }; }
-function eliminarDiaDB(fecha) { if(!confirm(`¿Eliminar el día ${fecha}?`)) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readwrite'); const store = transaction.objectStore(STORE_FOTOS_NAME); const request = store.delete(fecha); request.onsuccess = () => { actualizarListaDiasDB(); actualizarSelectoresComparacion(); document.getElementById('comparadorResultado').innerHTML = ''; if(typeof mostrarToast === 'function') mostrarToast(`🗑️ ${fecha} eliminado`); else alert(`🗑️ ${fecha} eliminado`); }; }
-async function actualizarSelectoresComparacion() { if(!dbFotos) await abrirDBFotos(); const s1 = document.getElementById('compararDia1'); const s2 = document.getElementById('compararDia2'); if(!s1 || !s2) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const index = store.index('timestamp'); const request = index.getAll(); request.onsuccess = () => { const items = request.result; items.sort((a,b) => b.timestamp - a.timestamp); const opciones = items.map(item => `<option value="${item.fecha}">${item.fecha}</option>`); s1.innerHTML = '<option value="">Selecciona primer día</option>' + opciones.join(''); s2.innerHTML = '<option value="">Selecciona segundo día</option>' + opciones.join(''); if(items.length >= 2) { s1.value = items[0].fecha; s2.value = items[1].fecha; compararDosDias(); } }; }
-async function compararDosDias() { const f1 = document.getElementById('compararDia1').value; const f2 = document.getElementById('compararDia2').value; const container = document.getElementById('comparadorResultado'); if(!f1 || !f2) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#555;">Selecciona dos días para comparar</div>'; return; } if(!dbFotos) await abrirDBFotos(); const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const req1 = store.get(f1); const req2 = store.get(f2); let dia1 = null, dia2 = null, completados = 0; req1.onsuccess = () => { dia1 = req1.result; completados++; if(completados===2) mostrarComparacion(); }; req2.onsuccess = () => { dia2 = req2.result; completados++; if(completados===2) mostrarComparacion(); }; function mostrarComparacion() { if(!dia1 || !dia2) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#555;">No se encontraron fotos</div>'; return; } container.innerHTML = `<div style="flex:1; min-width:200px; background:#0a0a0a; border-radius:12px; padding:12px;"><h4 style="color:#ff6600; text-align:center; margin-bottom:10px;">📅 ${dia1.fecha}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia1.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">FRENTE</span></div><div><img src="${dia1.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">ESPALDA</span></div><div><img src="${dia1.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">IZQUIERDO</span></div><div><img src="${dia1.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">DERECHO</span></div></div></div><div style="flex:1; min-width:200px; background:#0a0a0a; border-radius:12px; padding:12px;"><h4 style="color:#ff6600; text-align:center; margin-bottom:10px;">📅 ${dia2.fecha}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia2.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">FRENTE</span></div><div><img src="${dia2.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">ESPALDA</span></div><div><img src="${dia2.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">IZQUIERDO</span></div><div><img src="${dia2.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">DERECHO</span></div></div></div>`; } }
-function inicializarFotosDB() { abrirDBFotos().then(() => { actualizarListaDiasDB(); actualizarSelectoresComparacion(); }).catch(() => {}); }
+async function actualizarListaDiasDB() { if(!dbFotos) await abrirDBFotos(); const container = document.getElementById('listaDiasDB'); if(!container) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const request = store.getAll(); request.onsuccess = () => { const items = request.result; items.sort((a,b)=>b.timestamp - a.timestamp); if(items.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#555;">Ningún día guardado</div>'; return; } container.innerHTML = items.map(item => `<div style="display:flex; justify-content:space-between; align-items:center; background:#0a0a0a; padding:12px; border-radius:8px; margin-bottom:8px;"><span style="color:#ff6600;">📅 ${item.fecha}</span><button onclick="eliminarDiaDB('${item.fecha}')" style="background:none; border:none; color:#ff3b30; font-size:1.2rem; cursor:pointer;">🗑️</button></div>`).join(''); }; }
+function eliminarDiaDB(fecha) { if(!confirm(`¿Eliminar ${fecha}?`)) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readwrite'); const store = transaction.objectStore(STORE_FOTOS_NAME); store.delete(fecha); actualizarListaDiasDB(); actualizarSelectoresComparacion(); document.getElementById('comparadorResultado').innerHTML = ''; mostrarToast(`🗑️ ${fecha} eliminado`); }
+async function actualizarSelectoresComparacion() { if(!dbFotos) await abrirDBFotos(); const s1 = document.getElementById('compararDia1'); const s2 = document.getElementById('compararDia2'); if(!s1||!s2) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const request = store.getAll(); request.onsuccess = () => { const items = request.result; items.sort((a,b)=>b.timestamp - a.timestamp); const opciones = items.map(item => `<option value="${item.fecha}">${item.fecha}</option>`); s1.innerHTML = '<option value="">Día 1</option>' + opciones.join(''); s2.innerHTML = '<option value="">Día 2</option>' + opciones.join(''); if(items.length >= 2) { s1.value = items[0].fecha; s2.value = items[1].fecha; } }; }
+async function compararDosDias() { const f1 = document.getElementById('compararDia1').value; const f2 = document.getElementById('compararDia2').value; const container = document.getElementById('comparadorResultado'); if(!f1||!f2) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#555;">Selecciona dos días</div>'; return; } if(!dbFotos) await abrirDBFotos(); const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const req1 = store.get(f1); const req2 = store.get(f2); let dia1=null, dia2=null, completados=0; req1.onsuccess = () => { dia1 = req1.result; completados++; if(completados===2) mostrarComparacion(); }; req2.onsuccess = () => { dia2 = req2.result; completados++; if(completados===2) mostrarComparacion(); }; function mostrarComparacion() { if(!dia1||!dia2) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#555;">No se encontraron fotos</div>'; return; } container.innerHTML = `<div style="flex:1; min-width:200px; background:#0a0a0a; border-radius:12px; padding:12px;"><h4>${f1}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia1.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Frente</span></div><div><img src="${dia1.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Espalda</span></div><div><img src="${dia1.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Izquierdo</span></div><div><img src="${dia1.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Derecho</span></div></div></div><div style="flex:1; min-width:200px; background:#0a0a0a; border-radius:12px; padding:12px;"><h4>${f2}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia2.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Frente</span></div><div><img src="${dia2.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Espalda</span></div><div><img src="${dia2.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Izquierdo</span></div><div><img src="${dia2.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Derecho</span></div></div></div>`; } }
+function inicializarFotosDB() { abrirDBFotos().then(() => { actualizarListaDiasDB(); actualizarSelectoresComparacion(); }); }
 if(document.getElementById('progreso-fotos')) { inicializarFotosDB(); }
 
 // ==================== PESO ====================
@@ -944,7 +604,7 @@ const listaLogros = [
     {id:"primer_peso",nombre:"⚖️ Primer peso",desc:"Registrar tu primer peso",condicion:()=>pesosRegistrados.length>=1,icono:"⚖️"},
     {id:"menos_1kg",nombre:"📉 -1 kg",desc:"Bajar 1 kg desde el inicio",condicion:()=>{const i=pesosRegistrados[0]?.valor||0; const a=pesosRegistrados[pesosRegistrados.length-1]?.valor||0; return i-a>=1;},icono:"📉"},
     {id:"menos_5kg",nombre:"🎉 -5 kg",desc:"Bajar 5 kg desde el inicio",condicion:()=>{const i=pesosRegistrados[0]?.valor||0; const a=pesosRegistrados[pesosRegistrados.length-1]?.valor||0; return i-a>=5;},icono:"🎉"},
-    {id:"foto_progreso",nombre:"📸 Mi primera foto",desc:"Sube tu primera foto de progreso",condicion:()=>typeof fotosDias !== 'undefined' ? Object.keys(fotosDias).length>=1 : false,icono:"📸"}
+    {id:"foto_progreso",nombre:"📸 Mi primera foto",desc:"Sube tu primera foto de progreso",condicion:()=>Object.keys(fotosDias).length>=1,icono:"📸"}
 ];
 function verificarYDesbloquearLogros(){ let nuevos=false; listaLogros.forEach(l=>{ if(!logrosObtenidos.includes(l.id) && l.condicion()){ logrosObtenidos.push(l.id); nuevos=true; mostrarMensajeMotivadorConMedalla(`🏆 ¡NUEVO LOGRO! ${l.nombre}`, l.icono, l.nombre, l.desc); canvasConfetti({particleCount:200,spread:100}); } }); if(nuevos) localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros(); }
 function mostrarMensajeMotivadorConMedalla(mensaje, icono, titulo, desc) {
@@ -955,30 +615,18 @@ function mostrarMensajeMotivadorConMedalla(mensaje, icono, titulo, desc) {
     setTimeout(() => { overlay.remove(); }, 2500);
 }
 function renderizarLogros(){const cont=document.getElementById('logros-container'); if(!cont) return; cont.innerHTML=listaLogros.map(l=>{const obtenido=logrosObtenidos.includes(l.id); return `<div class="badge-card ${obtenido?'obtenido':''}"><span class="badge-icon">${l.icono}</span><div class="badge-nombre">${l.nombre}</div><div class="badge-desc">${l.desc}</div><div class="${obtenido?'badge-obtenido':'badge-bloqueado'}">${obtenido?'✅ DESBLOQUEADO':'🔒 BLOQUEADO'}</div></div>`;}).join('');}
-
 let fotosDias = {};
-if(typeof todasLasFechas !== 'undefined') fotosDias = todasLasFechas;
 
 // ==================== MENSAJES ====================
 function mostrarToast(m){const t=document.createElement('div'); t.className='toast-msg'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),3000);}
 
-// ==================== ANIMACIÓN DE CARGA ====================
-function ocultarLoading() {
-    const loading = document.getElementById('loadingAnimation');
-    const contenido = document.getElementById('contenidoHome');
-    if(loading && contenido) {
-        loading.style.display = 'none';
-        contenido.style.display = 'block';
-    }
-}
-
 // ==================== NAVEGACIÓN ====================
-function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home'){actualizarHome(); actualizarBannerCiclo(); actualizarColoresPorCiclo();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') inicializarFotosDB(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
+function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home'){actualizarHome(); actualizarBannerCiclo();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') inicializarFotosDB(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
 function goToday(){const h=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()]; go(h);}
 function toggleSubmenu(b){b.classList.toggle('open'); b.nextElementSibling.classList.toggle('show');}
 function openMenu(){document.getElementById('menu-lat').classList.add('open'); document.getElementById('overlay').style.display='block';}
 function closeMenu(){document.getElementById('menu-lat').classList.remove('open'); document.getElementById('overlay').style.display='none';}
-function iniciarDescanso(s){document.getElementById('descanso-box').style.display='flex'; document.getElementById('descansoTimer').innerText=s; let interval=setInterval(()=>{s--; document.getElementById('descansoTimer').innerText=s; if(s<=0){clearInterval(interval); document.getElementById('descanso-box').style.display='none';}},1000);}
+function iniciarDescanso(s){document.getElementById('descanso-box').style.display='flex'; document.getElementById('descansoTimer').innerText=s; let interval=setInterval(()=>{s--;document.getElementById('descansoTimer').innerText=s;if(s<=0){clearInterval(interval);document.getElementById('descanso-box').style.display='none';}},1000);}
 function cancelarDescanso(){document.getElementById('descanso-box').style.display='none';}
 function abrirCalc(id){ejercicioDiscoActual=id; const g=localStorage.getItem(`discos_${id}`); discosActuales=g?JSON.parse(g):{d125:0,d15:0,d2:0}; actualizarMostrarDiscos(); document.getElementById('calcModal').classList.add('show');}
 function cerrarCalc(){document.getElementById('calcModal').classList.remove('show');}
@@ -988,19 +636,15 @@ function actualizarMostrarDiscos(){const total=(discosActuales.d125*1.25)+(disco
 function exportarDatos(conEmail=false){const datos={pesos:pesosRegistrados,checks:checks,notas:notas,entrenos:diasEntrenados,humo:diasFumados,fotos:fotosDias,logros:logrosObtenidos}; const json=JSON.stringify(datos); const blob=new Blob([json],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`nicogym_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); if(conEmail) setTimeout(()=>{window.location.href="mailto:?subject=Backup NICO GYM&body=Adjunto mi backup";},500); mostrarToast("✅ Backup creado");}
 
 window.onload=()=>{
-    setTimeout(() => {
-        actualizarBannerCiclo();
-        actualizarBadgesCicloDia();
-        actualizarColoresPorCiclo();
-        resetSemanal();
-        renderizarRutinas();
-        actualizarHome();
-        mostrarHistorialPeso();
-        renderizarCalendarios();
-        renderizarLogros();
-        if(document.getElementById('progreso-fotos')) inicializarFotosDB();
-        ocultarLoading();
-    }, 800);
+    actualizarBannerCiclo();
+    actualizarBadgesCicloDia();
+    resetSemanal();
+    renderizarRutinas();
+    actualizarHome();
+    mostrarHistorialPeso();
+    renderizarCalendarios();
+    renderizarLogros();
+    if(document.getElementById('progreso-fotos')) inicializarFotosDB();
     
     const params=new URLSearchParams(window.location.search);
     if(params.get('action')==='weight') go('peso');
