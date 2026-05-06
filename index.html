@@ -47,61 +47,22 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bot
     from { opacity: 0; transform: translateX(20px); }
     to { opacity: 1; transform: translateX(0); }
 }
-@keyframes fadeSlideOut {
-    from { opacity: 1; transform: translateX(0); }
-    to { opacity: 0; transform: translateX(-20px); }
-}
 @keyframes checkPop {
     0% { transform: scale(1); }
     50% { transform: scale(1.2); }
     100% { transform: scale(1); }
 }
-/* 🔥 EFECTO NEÓN CICLO */
-@keyframes neonPulse {
-    0% { box-shadow: 0 0 5px currentColor, 0 0 10px currentColor; }
-    50% { box-shadow: 0 0 15px currentColor, 0 0 30px currentColor; }
-    100% { box-shadow: 0 0 5px currentColor, 0 0 10px currentColor; }
-}
-/* 🎬 ANIMACIÓN TRANSICIÓN ENTRE SECCIONES */
-@keyframes slideInRight {
-    from { opacity: 0; transform: translateX(30px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-@keyframes slideOutLeft {
-    from { opacity: 1; transform: translateX(0); }
-    to { opacity: 0; transform: translateX(-30px); }
-}
-/* 🏆 ANIMACIÓN MEDALLA GIRATORIA */
-@keyframes medalSpin {
-    0% { transform: rotate(0deg) scale(0.5); opacity: 0; }
-    20% { transform: rotate(72deg) scale(1.2); opacity: 1; }
-    40% { transform: rotate(144deg) scale(1); opacity: 1; }
-    60% { transform: rotate(216deg) scale(1.1); opacity: 1; }
-    80% { transform: rotate(288deg) scale(1); opacity: 1; }
-    100% { transform: rotate(360deg) scale(0.8); opacity: 0; }
-}
-/* 📊 ANIMACIÓN GRÁFICO */
-@keyframes chartFadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-canvas {
-    animation: chartFadeIn 0.6s ease-out;
-}
 
 .seccion {
     opacity: 0;
     transform: translateX(20px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
     display: none;
     padding: 15px;
 }
 .seccion.active {
     display: block;
-    animation: slideInRight 0.35s ease forwards;
-}
-.seccion.exit {
-    animation: slideOutLeft 0.25s ease forwards;
+    animation: fadeSlideIn 0.3s ease forwards;
 }
 .check-box:active { transform: scale(0.9); }
 .check-box:checked { animation: checkPop 0.3s ease; }
@@ -161,16 +122,15 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .toast-msg{position:fixed;bottom:100px;left:20px;right:20px;background:#ff6600;color:#000;padding:12px;border-radius:10px;text-align:center;font-weight:bold;z-index:5000;animation:fadeInOut 3s}
 @keyframes fadeInOut{0%{opacity:0;transform:translateY(20px)}15%{opacity:1;transform:translateY(0)}85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-20px)}}
 .logros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;margin-top:15px}
-.badge-card{background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border-radius:15px;padding:15px;text-align:center;transition:transform .2s, box-shadow .2s;border:1px solid #333;cursor:pointer}
-.badge-card.obtenido{border-color:#ff6600;background:linear-gradient(135deg,#1a2a1a,#0a1a0a);box-shadow:0 0 10px rgba(255,102,0,0.3)}
-.badge-card:active{transform:scale(0.98)}
+.badge-card{background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border-radius:15px;padding:15px;text-align:center;transition:transform .2s;border:1px solid #333}
+.badge-card.obtenido{border-color:#ff6600;background:linear-gradient(135deg,#1a2a1a,#0a1a0a)}
 .badge-icon{font-size:3rem;margin-bottom:10px;display:block}
 .badge-nombre{font-weight:bold;font-size:.9rem;margin-bottom:5px}
 .badge-desc{font-size:.7rem;color:#aaa}
 .badge-obtenido{font-size:.7rem;color:#32d74b}
 .badge-bloqueado{font-size:.7rem;color:#555}
 
-/* 🔥 CICLO NEÓN */
+/* CICLO VISUAL */
 .cycle-card {
     border-radius: 16px;
     padding: 12px;
@@ -181,23 +141,14 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .cycle-card.fuerza {
     background: linear-gradient(135deg, #2a0a0a, #1a0505);
     border: 1.5px solid #ff3b30;
-    color: #ff3b30;
-    animation: neonPulse 1.5s infinite;
-    box-shadow: 0 0 10px rgba(255,59,48,0.3);
 }
 .cycle-card.volumen {
     background: linear-gradient(135deg, #0a2a0a, #051505);
     border: 1.5px solid #32d74b;
-    color: #32d74b;
-    animation: neonPulse 1.5s infinite;
-    box-shadow: 0 0 10px rgba(50,215,75,0.3);
 }
 .cycle-card.definicion {
     background: linear-gradient(135deg, #2a2a0a, #151505);
     border: 1.5px solid #ffd60a;
-    color: #ffd60a;
-    animation: neonPulse 1.5s infinite;
-    box-shadow: 0 0 10px rgba(255,214,10,0.3);
 }
 .cycle-emoji { font-size: 1.8rem; display: inline-block; }
 .cycle-title { font-size: 1rem; font-weight: bold; display: inline-block; margin-left: 5px; }
@@ -208,6 +159,9 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .cycle-objetivo { background: rgba(0,0,0,0.5); border-radius: 10px; padding: 5px 8px; margin-top: 6px; font-size: 0.65rem; }
 .cycle-bar { margin-top: 8px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
 .cycle-bar-fill { height: 100%; border-radius: 4px; }
+.cycle-card.fuerza .cycle-bar-fill { background: #ff3b30; }
+.cycle-card.volumen .cycle-bar-fill { background: #32d74b; }
+.cycle-card.definicion .cycle-bar-fill { background: #ffd60a; }
 
 /* Badge de ciclo en cada día */
 .day-cycle-badge {
@@ -270,82 +224,17 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     margin: 15px 0;
 }
 
-/* 🏆 MEDALLA GIRATORIA (NUEVO) */
-.medalla-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.85);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    backdrop-filter: blur(5px);
-}
-.medalla-contenedor {
-    text-align: center;
-    animation: medalSpin 2.5s ease-in-out forwards;
-}
-.medalla-icono {
-    font-size: 6rem;
-    display: block;
-    margin-bottom: 15px;
-    filter: drop-shadow(0 0 10px gold);
-}
-.medalla-titulo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #ffd60a;
-    text-shadow: 0 0 10px rgba(255,214,10,0.5);
-}
-.medalla-desc {
-    font-size: 1rem;
-    color: #fff;
-    margin-top: 8px;
-}
-
-/* 🔘 BOTONES 3D */
-.btn-main, .btn-done, .btn-save-day, #btnGuardarFotos, button[onclick*="compararDosDias"], .today-btn, .debug-btn {
-    transition: transform 0.08s linear, box-shadow 0.2s;
-}
-.btn-main:active, .btn-done:active, .btn-save-day:active, #btnGuardarFotos:active, button[onclick*="compararDosDias"]:active, .today-btn:active, .debug-btn:active {
-    transform: scale(0.96);
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
-}
-
-/* ✨ TARJETAS DE EJERCICIOS CON GLOW */
+/* EJERCICIO VISUAL */
 .exercise-card {
     background: #0a0a0a;
     border-radius: 16px;
     padding: 15px;
     margin-bottom: 12px;
     border-left: 5px solid;
-    transition: all 0.2s ease;
 }
-.exercise-card:active {
-    transform: scale(0.99);
-}
-.exercise-card.fuerza { 
-    border-left-color: #ff3b30; 
-}
-.exercise-card.fuerza:hover { 
-    box-shadow: 0 0 12px rgba(255,59,48,0.3); 
-}
-.exercise-card.volumen { 
-    border-left-color: #32d74b; 
-}
-.exercise-card.volumen:hover { 
-    box-shadow: 0 0 12px rgba(50,215,75,0.3); 
-}
-.exercise-card.definicion { 
-    border-left-color: #ffd60a; 
-}
-.exercise-card.definicion:hover { 
-    box-shadow: 0 0 12px rgba(255,214,10,0.3); 
-}
+.exercise-card.fuerza { border-left-color: #ff3b30; }
+.exercise-card.volumen { border-left-color: #32d74b; }
+.exercise-card.definicion { border-left-color: #ffd60a; }
 .exercise-header {
     display: flex;
     justify-content: space-between;
@@ -380,9 +269,6 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 }
 .exercise-detail-label { font-size: 0.7rem; color: #888; margin-bottom: 5px; }
 .exercise-detail-value { font-size: 1.1rem; font-weight: bold; }
-.exercise-detail-value.fuerza { color: #ff3b30; }
-.exercise-detail-value.volumen { color: #32d74b; }
-.exercise-detail-value.definicion { color: #ffd60a; }
 .exercise-series {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
@@ -409,31 +295,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 }
 .series-hist { font-size: 0.6rem; color: #ff6600; margin-top: 3px; }
 
-/* 📅 CALENDARIO CON PULSACIÓN */
-.cal-cell {
-    aspect-ratio: 1;
-    background: #0a0a0a;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    color: #444;
-    transition: all 0.1s ease;
-    cursor: pointer;
-}
-.cal-cell:active {
-    transform: scale(0.92);
-    background: #1a1a1a;
-}
-.cal-cell.entrenado{background:#32d74b;color:#000;font-weight:bold}
-.cal-cell.fumado{background:#ff3b30;color:#fff;font-weight:bold}
-.cal-cell.nosmoke{background:#007aff;color:#fff}
-.cal-cell.domingo{background:#ffd60a;color:#000;font-weight:bold}
-.cal-cell.today{border:2px solid #ff6600}
-.cal-cell.future{opacity:0.2;cursor:not-allowed}
-
-/* Calendarios wrapper */
+/* CALENDARIOS */
 .cal-wrapper{display:flex;flex-direction:column;gap:20px;margin-top:10px}
 .cal-card{background:#111;border-radius:15px;padding:15px;border:1px solid #222;max-width:400px;margin:0 auto;width:100%}
 .cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
@@ -441,9 +303,17 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .cal-nav button{background:#222;border:none;color:#fff;padding:6px 12px;border-radius:6px;font-size:1rem;cursor:pointer}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .cal-day-label{font-size:0.7rem;text-align:center;color:#555;padding-bottom:5px;font-weight:bold}
+.cal-cell{aspect-ratio:1;background:#0a0a0a;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:#444;transition:0.2s;cursor:pointer}
+.cal-cell.entrenado{background:#32d74b;color:#000;font-weight:bold}
+.cal-cell.fumado{background:#ff3b30;color:#fff;font-weight:bold}
+.cal-cell.nosmoke{background:#007aff;color:#fff}
+.cal-cell.domingo{background:#ffd60a;color:#000;font-weight:bold}
+.cal-cell.today{border:2px solid #ff6600}
+.cal-cell.future{opacity:0.2;cursor:not-allowed}
 .cal-legend{display:flex;gap:12px;margin-top:12px;font-size:0.7rem;justify-content:center}
 .leg-item{display:flex;align-items:center;gap:5px}
 .leg-box{width:12px;height:12px;border-radius:3px}
+
 .btn-done{width:100%;padding:15px;background:#32d74b;color:#000;border:none;border-radius:12px;font-weight:900;font-size:1.1rem;margin:20px 0;cursor:pointer}
 .btn-done:disabled{background:#222;color:#555;cursor:not-allowed}
 .stretch-card{background:#0a1a0a;border:1px solid #32d74b;padding:12px;border-radius:10px;margin-top:15px}
@@ -512,7 +382,6 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div style="margin-bottom:15px"><div class="card" style="height:200px"><canvas id="grafico"></canvas></div></div>
 <div class="card" style="text-align:center">
     <button onclick="marcarHoyFumado()" style="background:#222;color:#aaa;border:1px solid #555;padding:10px 20px;border-radius:8px;cursor:pointer">🚬 Marcar hoy como fumado</button>
-    <button onclick="solicitarPermisoNotificaciones()" style="background:#222;color:#ff6600;border:1px solid #ff6600;padding:10px 20px;border-radius:8px;cursor:pointer;margin-left:10px">🔔 Recordatorios</button>
 </div>
 </div>
 
@@ -764,30 +633,14 @@ function renderizarRutinas() {
 }
 
 function marcarEjercicioHecho(id) { if(checks[id]) return; checks[id] = true; localStorage.setItem('nico_checks', JSON.stringify(checks)); actualizarHome(); renderizarRutinas(); if(navigator.vibrate) navigator.vibrate(50); const dia = id.split('-')[0]; if (!['martes','jueves','sabado'].includes(dia)) iniciarDescanso(30); }
-function marcarDiaCompletadoManual(dia) { const hoyStr = getHoyStr(); const semanaStr = getSemanaActual(); const key = `completado_${dia}_${semanaStr}`; if(localStorage.getItem(key)) return; if(!diasEntrenados.includes(hoyStr)) { diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); } localStorage.setItem(key,"true"); mostrarMensajeMotivadorConMedalla(`🎉 ¡${getTipoCiclo()} completado! Sigue así.`); actualizarHome(); renderizarRutinas(); renderizarCalendarios(); if(navigator.vibrate) navigator.vibrate([200,100,200]); canvasConfetti({particleCount:300,spread:100}); }
-
-function mostrarMensajeMotivadorConMedalla(mensaje, esLogro = false, logroData = null) {
-    if(esLogro && logroData) {
-        const overlay = document.createElement('div');
-        overlay.className = 'medalla-overlay';
-        overlay.innerHTML = `<div class="medalla-contenedor"><div class="medalla-icono">${logroData.icono}</div><div class="medalla-titulo">¡NUEVO LOGRO!</div><div class="medalla-desc">${logroData.nombre}</div><div class="medalla-desc" style="font-size:0.85rem;">${logroData.desc}</div></div>`;
-        document.body.appendChild(overlay);
-        setTimeout(() => { overlay.remove(); }, 2500);
-    } else {
-        const toast = document.createElement('div');
-        toast.className = 'toast-msg';
-        toast.innerHTML = `💪 ${mensaje}`;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-    }
-}
+function marcarDiaCompletadoManual(dia) { const hoyStr = getHoyStr(); const semanaStr = getSemanaActual(); const key = `completado_${dia}_${semanaStr}`; if(localStorage.getItem(key)) return; if(!diasEntrenados.includes(hoyStr)) { diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); } localStorage.setItem(key,"true"); mostrarMensajeMotivador(`🎉 ¡${getTipoCiclo()} completado! Sigue así.`,"completado"); actualizarHome(); renderizarRutinas(); renderizarCalendarios(); if(navigator.vibrate) navigator.vibrate([200,100,200]); canvasConfetti({particleCount:300,spread:100}); }
 
 function actualizarHome() {
     document.getElementById('racha').innerText = diasEntrenados.length;
     document.getElementById('diasSinFumar').innerText = calcularDiasSinFumar();
     const ctx = document.getElementById('grafico').getContext('2d');
     if(window.miGrafico) window.miGrafico.destroy();
-    window.miGrafico = new Chart(ctx, { type: 'line', data: { labels: pesosRegistrados.map(p=>p.fecha), datasets: [{ data: pesosRegistrados.map(p=>p.valor), borderColor: '#ff6600', fill: true, backgroundColor: 'rgba(255,102,0,0.2)' }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+    window.miGrafico = new Chart(ctx, { type: 'line', data: { labels: pesosRegistrados.map(p=>p.fecha), datasets: [{ data: pesosRegistrados.map(p=>p.valor), borderColor: '#ff6600', fill: true, backgroundColor: 'rgba(255,102,0,0.1)' }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } } } });
     document.getElementById('todayDay').innerText = `📅 ${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date().getDay()]}`;
     document.getElementById('todayRoutine').innerText = getRutinaHoy();
     verificarYDesbloquearLogros();
@@ -801,19 +654,17 @@ function getHoyStr() { const d = new Date(); return `${d.getFullYear()}-${String
 function getSemanaActual() { const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+4-(d.getDay()||7)); return `${d.getFullYear()}-W${Math.ceil((((d-new Date(d.getFullYear(),0,1))/86400000)+1)/7)}`; }
 function changeMonth(offset,type) { if(type==='gym'){let d=new Date(currentViewYearGym,currentViewMonthGym+offset,1); currentViewYearGym=d.getFullYear(); currentViewMonthGym=d.getMonth();} else{let d=new Date(currentViewYearSmoke,currentViewMonthSmoke+offset,1); currentViewYearSmoke=d.getFullYear(); currentViewMonthSmoke=d.getMonth();} renderizarCalendarios(); }
 function renderCal(id,mes,año,listaDias,labelId,esHumo=false) { const container=document.getElementById(id); if(!container) return; container.innerHTML=''; const nombreMes=new Intl.DateTimeFormat('es-ES',{month:'long'}).format(new Date(año,mes,1)).toUpperCase(); document.getElementById(labelId).innerText=`${nombreMes} ${año}`; ['L','M','X','J','V','S','D'].forEach(d=>{const div=document.createElement('div'); div.className='cal-day-label'; div.innerText=d; container.appendChild(div);}); const primerDia=new Date(año,mes,1).getDay(); const offset=primerDia===0?6:primerDia-1; const diasEnMes=new Date(año,mes+1,0).getDate(); for(let i=0;i<offset;i++) container.appendChild(document.createElement('div')); const hoyStr=getHoyStr(); const hoyDate=new Date(); hoyDate.setHours(23,59,59,999); for(let d=1;d<=diasEnMes;d++){const cell=document.createElement('div'); cell.className='cal-cell'; cell.innerText=d; const fecha=new Date(año,mes,d); const fStr=`${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`; if(fecha>hoyDate) cell.classList.add('future'); else cell.onclick=()=>toggleDia(fStr,esHumo,fecha); if(fStr===hoyStr) cell.classList.add('today'); if(esHumo){if(listaDias.includes(fStr)) cell.classList.add('fumado'); else if(fecha>=new Date(2026,1,22)&&fecha<=new Date()) cell.classList.add('nosmoke');} else{if(listaDias.includes(fStr)) cell.classList.add('entrenado'); else if(fecha.getDay()===0) cell.classList.add('domingo');} container.appendChild(cell);} }
-function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarMensajeMotivadorConMedalla("✅ Día limpio.");} else{diasFumados.push(fStr); mostrarMensajeMotivadorConMedalla("🚬 Marcado como fumado.");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarMensajeMotivadorConMedalla("🔥 ¡Día añadido!"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); }
+function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarMensajeMotivador("✅ Día limpio.","bienvenida");} else{diasFumados.push(fStr); mostrarMensajeMotivador("🚬 Marcado como fumado.","logro");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarMensajeMotivador("🔥 ¡Día añadido!","racha"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); }
 function renderizarCalendarios(){renderCal('cal-gym',currentViewMonthGym,currentViewYearGym,diasEntrenados,'cal-month-gym',false); renderCal('cal-smoke',currentViewMonthSmoke,currentViewYearSmoke,diasFumados,'cal-month-smoke',true);}
 
 // ==================== FUNCIONES SECUNDARIAS ====================
 function resetSemanal(){const semanaStr=getSemanaActual(); const ultima=localStorage.getItem('nico_ultima_semana_reset'); if(ultima!==semanaStr){for(let key in notas) if(key.includes('-s')) historialSeries[key]=notas[key]; localStorage.setItem('nico_historial_series',JSON.stringify(historialSeries)); checks={}; notas={}; localStorage.setItem('nico_checks',JSON.stringify(checks)); localStorage.setItem('nico_notas',JSON.stringify(notas)); localStorage.setItem('nico_ultima_semana_reset',semanaStr);}}
 function guardarSerie(key,valor){notas[key]=valor; localStorage.setItem('nico_notas',JSON.stringify(notas));}
 function calcularDiasSinFumar(){let total=0; let f=new Date(2026,1,22); const hoy=new Date(); while(f<=hoy){const fStr=`${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`; if(!diasFumados.includes(fStr)) total++; f.setDate(f.getDate()+1);} return total;}
-function marcarHoyFumado(){const hoyStr=getHoyStr(); if(!diasFumados.includes(hoyStr)){diasFumados.push(hoyStr); localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados)); mostrarMensajeMotivadorConMedalla("🚬 Marcado como fumado."); actualizarHome(); renderizarCalendarios();}}
+function marcarHoyFumado(){const hoyStr=getHoyStr(); if(!diasFumados.includes(hoyStr)){diasFumados.push(hoyStr); localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados)); mostrarMensajeMotivador("🚬 Marcado como fumado.","logro"); actualizarHome(); renderizarCalendarios();}}
 function mostrarConfirmacionReset(){document.getElementById('resetModal').style.display='flex'; document.getElementById('confirmResetInput').value='';}
 function cerrarModalReset(){document.getElementById('resetModal').style.display='none';}
 function confirmarBorrarTodo(){if(document.getElementById('confirmResetInput').value==="BORRAR"){localStorage.clear(); location.reload();} else{mostrarToast("❌ Debes escribir BORRAR exactamente");}}
-function solicitarPermisoNotificaciones(){if(!("Notification" in window)){mostrarToast("❌ Navegador no soporta notificaciones"); return;} if(Notification.permission==="granted"){programarRecordatorio(); mostrarToast("🔔 Recordatorios activados (19:00)");} else if(Notification.permission!=="denied"){Notification.requestPermission().then(p=>{if(p==="granted"){programarRecordatorio(); mostrarToast("🔔 Recordatorios activados (19:00)");}});} else{mostrarToast("❌ Permiso denegado");}}
-function programarRecordatorio(){const ahora=new Date(); const objetivo=new Date(); objetivo.setHours(19,0,0,0); let tiempo=objetivo-ahora; if(tiempo<0){objetivo.setDate(objetivo.getDate()+1); tiempo=objetivo-ahora;} setTimeout(()=>{const tipo=getTipoCiclo(); const rutina=getRutinaHoy(); new Notification("💪 NICO GYM",{body:`Hoy toca ${rutina}`,icon:"https://cdn-icons-png.flaticon.com/512/2964/2964514.png",vibrate:[200,100,200]}); programarRecordatorio();},tiempo);}
 
 // ==================== FOTOS INDEXEDDB ====================
 let dbFotos = null;
@@ -862,11 +713,11 @@ function inicializarFotosDB() { abrirDBFotos().then(() => { actualizarListaDiasD
 if(document.getElementById('progreso-fotos')) { inicializarFotosDB(); }
 
 // ==================== PESO ====================
-function agregarPeso() { const v = document.getElementById('in-peso').value; if(v){ pesosRegistrados.push({valor:parseFloat(v), fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})}); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); mostrarMensajeMotivadorConMedalla(`⚖️ Peso: ${v}kg`); } }
+function agregarPeso() { const v = document.getElementById('in-peso').value; if(v){ pesosRegistrados.push({valor:parseFloat(v), fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})}); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); mostrarMensajeMotivador(`⚖️ Peso: ${v}kg`, "logro"); } }
 function eliminarPeso(i) { pesosRegistrados.splice(i,1); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); }
 function mostrarHistorialPeso() { const h = document.getElementById('hist-peso'); h.innerHTML = pesosRegistrados.map((p,i) => `<div class="peso-item"><span>${p.fecha}: <b>${p.valor}kg</b></span><button class="btn-del" onclick="eliminarPeso(${i})">🗑️</button></div>`).reverse().join(''); }
 
-// ==================== LOGROS (27 logros) ====================
+// ==================== LOGROS ====================
 const listaLogros = [
     {id:"primer_paso",nombre:"🏁 Primer paso",desc:"Completar tu primer día",condicion:()=>diasEntrenados.length>=1,icono:"🏁"},
     {id:"racha_3",nombre:"🔥 Racha 3",desc:"3 días entrenando",condicion:()=>diasEntrenados.length>=3,icono:"🔥"},
@@ -896,7 +747,7 @@ const listaLogros = [
     {id:"menos_5kg",nombre:"🎉 -5 kg",desc:"Bajar 5 kg desde el inicio",condicion:()=>{const i=pesosRegistrados[0]?.valor||0; const a=pesosRegistrados[pesosRegistrados.length-1]?.valor||0; return i-a>=5;},icono:"🎉"},
     {id:"foto_progreso",nombre:"📸 Mi primera foto",desc:"Sube tu primera foto de progreso",condicion:()=>typeof todasLasFechas !== 'undefined' ? Object.keys(todasLasFechas).length>=1 : false,icono:"📸"}
 ];
-function verificarYDesbloquearLogros(){ let nuevos=false; listaLogros.forEach(l=>{ if(!logrosObtenidos.includes(l.id) && l.condicion()){ logrosObtenidos.push(l.id); nuevos=true; mostrarMensajeMotivadorConMedalla(null, true, l); canvasConfetti({particleCount:200,spread:100}); } }); if(nuevos) localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros(); }
+function verificarYDesbloquearLogros(){ let nuevos=false; listaLogros.forEach(l=>{ if(!logrosObtenidos.includes(l.id) && l.condicion()){ logrosObtenidos.push(l.id); nuevos=true; mostrarMensajeMotivador(`🏆 ¡NUEVO LOGRO! ${l.nombre}`, "logro"); canvasConfetti({particleCount:200,spread:100}); } }); if(nuevos) localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros(); }
 function renderizarLogros(){const cont=document.getElementById('logros-container'); if(!cont) return; cont.innerHTML=listaLogros.map(l=>{const obtenido=logrosObtenidos.includes(l.id); return `<div class="badge-card ${obtenido?'obtenido':''}"><span class="badge-icon">${l.icono}</span><div class="badge-nombre">${l.nombre}</div><div class="badge-desc">${l.desc}</div><div class="${obtenido?'badge-obtenido':'badge-bloqueado'}">${obtenido?'✅ DESBLOQUEADO':'🔒 BLOQUEADO'}</div></div>`;}).join('');}
 
 let todasLasFechas = {};
@@ -907,7 +758,7 @@ function mostrarToast(m){const t=document.createElement('div'); t.className='toa
 function mostrarMensajeMotivador(m){mostrarToast(m);}
 
 // ==================== NAVEGACIÓN ====================
-function go(id){document.querySelectorAll('.seccion').forEach(s=>{s.classList.add('exit'); setTimeout(()=>s.classList.remove('exit'),300); s.classList.remove('active');}); setTimeout(()=>{document.getElementById(id).classList.add('active');},50); if(id==='home'){actualizarHome(); actualizarBannerCiclo(); actualizarResumenPeso();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') inicializarFotosDB(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
+function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home'){actualizarHome(); actualizarBannerCiclo(); actualizarResumenPeso();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') inicializarFotosDB(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
 function goToday(){const h=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()]; go(h);}
 function toggleSubmenu(b){b.classList.toggle('open'); b.nextElementSibling.classList.toggle('show');}
 function openMenu(){document.getElementById('menu-lat').classList.add('open'); document.getElementById('overlay').style.display='block';}
