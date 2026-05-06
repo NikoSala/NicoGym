@@ -105,7 +105,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .debug-btn{margin-top:30px;padding:10px;background:0;color:#333;border:1px solid #222;border-radius:8px;font-size:.7rem;text-align:center;cursor:pointer}
 .card{background:#111;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:0 2px 8px rgba(255,102,0,0.15)}
 .stats-row{display:flex;gap:10px;margin-bottom:15px}
-.stat-card{flex:1;background:#111;border-radius:12px;padding:12px;text-align:center}
+.stat-card{flex:1;background:#111;border-radius:16px;padding:12px;text-align:center}
 .stat-card h2{font-size:1.6rem;font-weight:bold}
 .stat-card.racha h2{color:#ff6600}
 .stat-card.nosmoke h2{color:#007aff}
@@ -149,7 +149,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .badge-obtenido{font-size:.7rem;color:#32d74b}
 .badge-bloqueado{font-size:.7rem;color:#555}
 
-/* CICLO VISUAL */
+/* CICLO VISUAL CON NEONES */
 .cycle-card {
     border-radius: 16px;
     padding: 12px;
@@ -160,17 +160,17 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .cycle-card.fuerza {
     background: linear-gradient(135deg, #2a0a0a, #1a0505);
     border: 2px solid #ff3b30;
-    box-shadow: 0 0 15px rgba(255,59,48,0.3);
+    box-shadow: 0 0 15px rgba(255,59,48,0.5);
 }
 .cycle-card.volumen {
     background: linear-gradient(135deg, #0a2a0a, #051505);
     border: 2px solid #32d74b;
-    box-shadow: 0 0 15px rgba(50,215,75,0.3);
+    box-shadow: 0 0 15px rgba(50,215,75,0.5);
 }
 .cycle-card.definicion {
     background: linear-gradient(135deg, #2a2a0a, #151505);
     border: 2px solid #ffd60a;
-    box-shadow: 0 0 15px rgba(255,214,10,0.3);
+    box-shadow: 0 0 15px rgba(255,214,10,0.5);
 }
 .cycle-emoji { font-size: 1.8rem; display: inline-block; }
 .cycle-title { font-size: 1rem; font-weight: bold; display: inline-block; margin-left: 5px; }
@@ -200,7 +200,6 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 
 /* BANNER UNIFICADO */
 .banner-unificado {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
     border-radius: 16px;
     padding: 15px;
     margin-bottom: 15px;
@@ -209,7 +208,18 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
-    border: 1px solid #ff6600;
+}
+.banner-unificado.fuerza {
+    background: linear-gradient(135deg, #1a0a0a, #0a0505);
+    border: 1px solid #ff3b30;
+}
+.banner-unificado.volumen {
+    background: linear-gradient(135deg, #0a1a0a, #050a05);
+    border: 1px solid #32d74b;
+}
+.banner-unificado.definicion {
+    background: linear-gradient(135deg, #1a1a0a, #0a0a05);
+    border: 1px solid #ffd60a;
 }
 .banner-item {
     flex: 1;
@@ -224,14 +234,14 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .banner-value {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #ff6600;
 }
+.banner-unificado.fuerza .banner-value { color: #ff3b30; }
+.banner-unificado.volumen .banner-value { color: #32d74b; }
+.banner-unificado.definicion .banner-value { color: #ffd60a; }
 
-/* Botón entrenar hoy */
+/* Botón entrenar hoy con neón */
 .btn-entrenar-hoy {
-    background: linear-gradient(135deg, #ff6600, #ff3300);
     border: none;
-    color: #fff;
     padding: 12px 20px;
     border-radius: 30px;
     font-weight: bold;
@@ -240,23 +250,47 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     text-align: center;
     margin-bottom: 15px;
     cursor: pointer;
-    transition: transform 0.1s ease;
+    transition: transform 0.1s ease, box-shadow 0.2s ease;
 }
 .btn-entrenar-hoy:active {
     transform: scale(0.97);
 }
+.btn-entrenar-hoy.fuerza {
+    background: linear-gradient(135deg, #ff3b30, #cc0000);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(255,59,48,0.5);
+}
+.btn-entrenar-hoy.volumen {
+    background: linear-gradient(135deg, #32d74b, #1a8a2e);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(50,215,75,0.5);
+}
+.btn-entrenar-hoy.definicion {
+    background: linear-gradient(135deg, #ffd60a, #ccaa00);
+    color: #000;
+    box-shadow: 0 0 10px rgba(255,214,10,0.5);
+}
 
-/* EJERCICIO VISUAL */
+/* EJERCICIO VISUAL CON NEONES */
 .exercise-card {
     background: #0a0a0a;
     border-radius: 16px;
     padding: 15px;
     margin-bottom: 12px;
-    border-left: 5px solid;
+    transition: box-shadow 0.2s ease;
 }
-.exercise-card.fuerza { border-left-color: #ff3b30; }
-.exercise-card.volumen { border-left-color: #32d74b; }
-.exercise-card.definicion { border-left-color: #ffd60a; }
+.exercise-card.fuerza { 
+    border-left: 5px solid #ff3b30;
+    box-shadow: 0 0 8px rgba(255,59,48,0.2);
+}
+.exercise-card.volumen { 
+    border-left: 5px solid #32d74b;
+    box-shadow: 0 0 8px rgba(50,215,75,0.2);
+}
+.exercise-card.definicion { 
+    border-left: 5px solid #ffd60a;
+    box-shadow: 0 0 8px rgba(255,214,10,0.2);
+}
 .exercise-header {
     display: flex;
     justify-content: space-between;
@@ -272,9 +306,9 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     font-size: 0.7rem;
     font-weight: bold;
 }
-.exercise-badge.fuerza { background: #ff3b30; color: #fff; }
-.exercise-badge.volumen { background: #32d74b; color: #000; }
-.exercise-badge.definicion { background: #ffd60a; color: #000; }
+.exercise-badge.fuerza { background: #ff3b30; color: #fff; box-shadow: 0 0 5px #ff3b30; }
+.exercise-badge.volumen { background: #32d74b; color: #000; box-shadow: 0 0 5px #32d74b; }
+.exercise-badge.definicion { background: #ffd60a; color: #000; box-shadow: 0 0 5px #ffd60a; }
 .exercise-detail {
     display: flex;
     justify-content: space-around;
@@ -514,7 +548,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
             </div>
         </div>
         
-        <!-- Botón entrenar hoy -->
+        <!-- Botón para entrenar hoy -->
         <button class="btn-entrenar-hoy" id="btnEntrenarHoy" onclick="goToday()">💪 ENTRENAR HOY</button>
         
         <!-- Gráfico de peso -->
@@ -524,7 +558,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
             </div>
         </div>
         
-        <!-- Botón marcar fumado -->
+        <!-- Botón para marcar fumado -->
         <div class="card" style="text-align:center">
             <button onclick="marcarHoyFumado()" style="background:#222; color:#aaa; border:1px solid #555; padding:10px 20px; border-radius:8px; cursor:pointer; width:100%">🚬 Marcar hoy como fumado</button>
         </div>
@@ -663,6 +697,12 @@ function actualizarBannerCiclo() {
 }
 
 function actualizarBannerUnificado() {
+    const tipo = getTipoCiclo().toLowerCase();
+    const banner = document.getElementById('bannerUnificado');
+    if(banner) {
+        banner.className = `banner-unificado ${tipo}`;
+    }
+    
     if(pesosRegistrados && pesosRegistrados.length > 0) {
         document.getElementById('bannerPeso').innerText = pesosRegistrados[pesosRegistrados.length-1].valor + ' kg';
     }
@@ -672,54 +712,19 @@ function actualizarBannerUnificado() {
 }
 
 function aplicarColoresDinamicos() {
-    const tipo = getTipoCiclo();
-    const config = getConfiguracionCiclo();
-    const colorPrincipal = config.color;
-    
-    let btnBg = '';
-    let btnText = '#fff';
-    
-    if (tipo === 'FUERZA') {
-        btnBg = 'linear-gradient(135deg, #ff3b30, #cc0000)';
-    } else if (tipo === 'VOLUMEN') {
-        btnBg = 'linear-gradient(135deg, #32d74b, #1a8a2e)';
-    } else if (tipo === 'DEFINICIÓN') {
-        btnBg = 'linear-gradient(135deg, #ffd60a, #ccaa00)';
-        btnText = '#000';
-    }
-    
-    // Banner ciclo
-    const cycleCard = document.getElementById('cycleCard');
-    if(cycleCard) {
-        cycleCard.style.border = `2px solid ${colorPrincipal}`;
-        cycleCard.style.boxShadow = `0 0 15px ${colorPrincipal}80`;
-        const titleSpan = cycleCard.querySelector('.cycle-title');
-        if(titleSpan) titleSpan.style.color = colorPrincipal;
-        const barFill = cycleCard.querySelector('.cycle-bar-fill');
-        if(barFill) barFill.style.backgroundColor = colorPrincipal;
-    }
-    
-    // Banner unificado
-    const bannerUnificado = document.getElementById('bannerUnificado');
-    if(bannerUnificado) {
-        bannerUnificado.style.border = `1px solid ${colorPrincipal}`;
-        const valores = bannerUnificado.querySelectorAll('.banner-value');
-        valores.forEach(val => val.style.color = colorPrincipal);
-    }
+    const tipo = getTipoCiclo().toLowerCase();
     
     // Botón entrenar hoy
     const btnEntrenar = document.getElementById('btnEntrenarHoy');
     if(btnEntrenar) {
-        btnEntrenar.style.background = btnBg;
-        btnEntrenar.style.color = btnText;
+        btnEntrenar.className = `btn-entrenar-hoy ${tipo}`;
     }
     
-    // Badges de ejercicios
-    const badges = document.querySelectorAll('.exercise-badge');
-    badges.forEach(badge => {
-        if(tipo === 'DEFINICIÓN') badge.style.color = '#000';
-        else badge.style.color = '#fff';
-    });
+    // Banner unificado
+    const banner = document.getElementById('bannerUnificado');
+    if(banner) {
+        banner.className = `banner-unificado ${tipo}`;
+    }
 }
 
 function ocultarLoading() {
@@ -823,6 +828,7 @@ function generarInputsSeries(id, serieTexto, esTiempo) {
 function renderizarRutinas() {
     const configCiclo = getConfiguracionCiclo();
     const tipo = getTipoCiclo().toLowerCase();
+    const cicloColor = configCiclo.color;
     const semanaStr = getSemanaActual();
     for (const dia of ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado']) {
         const lista = document.getElementById(`list-${dia}`);
@@ -834,7 +840,6 @@ function renderizarRutinas() {
         }
         const rutina = rutinasBase[dia];
         if(!rutina) continue;
-        const cicloColor = configCiclo.color;
         lista.innerHTML = rutina.map((ex, idx) => {
             const id = `${dia}-${idx}`;
             const isChecked = checks[id] === true;
@@ -845,7 +850,7 @@ function renderizarRutinas() {
             }
             const badgeBg = configCiclo.color;
             const badgeColor = getTipoCiclo() === 'DEFINICIÓN' ? '#000' : '#fff';
-            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge" style="background: ${badgeBg}; color: ${badgeColor}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value" style="color:${cicloColor}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value" style="color:${cicloColor}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value" style="color:${cicloColor}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
+            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge" style="background: ${badgeBg}; color: ${badgeColor}; box-shadow: 0 0 5px ${badgeBg};">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value ${tipo}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value ${tipo}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value ${tipo}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
         }).join('');
         const stretchList = document.getElementById(`stretches-${dia}`);
         if(stretchList && estiramientosPorDia[dia]) stretchList.innerHTML = `<div class="stretch-card"><strong>🧘 ESTIRAMIENTOS:</strong><ul style="margin-left:20px;margin-top:5px">${estiramientosPorDia[dia].map(s => `<li>${s}</li>`).join('')}</ul></div>`;
@@ -997,7 +1002,7 @@ window.onload=()=>{
         renderizarLogros();
         if(document.getElementById('progreso-fotos')) inicializarFotosDB();
         ocultarLoading();
-    }, 1000);
+    }, 500);
     
     const params=new URLSearchParams(window.location.search);
     if(params.get('action')==='weight') go('peso');
