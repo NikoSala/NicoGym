@@ -194,9 +194,9 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     font-weight: bold;
     margin-bottom: 12px;
 }
-.day-cycle-badge.fuerza { background: #ff3b30; color: #fff; }
-.day-cycle-badge.volumen { background: #32d74b; color: #000; }
-.day-cycle-badge.definicion { background: #ffd60a; color: #000; }
+.day-cycle-badge.fuerza { background: #ff3b30; color: #fff; box-shadow: 0 0 5px #ff3b30; }
+.day-cycle-badge.volumen { background: #32d74b; color: #000; box-shadow: 0 0 5px #32d74b; }
+.day-cycle-badge.definicion { background: #ffd60a; color: #000; box-shadow: 0 0 5px #ffd60a; }
 
 /* BANNER UNIFICADO */
 .banner-unificado {
@@ -271,7 +271,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     box-shadow: 0 0 10px rgba(255,214,10,0.5);
 }
 
-/* EJERCICIO VISUAL CON NEONES */
+/* EJERCICIO VISUAL CON NEONES COMPLETOS */
 .exercise-card {
     background: #0a0a0a;
     border-radius: 16px;
@@ -281,15 +281,15 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 }
 .exercise-card.fuerza { 
     border-left: 5px solid #ff3b30;
-    box-shadow: 0 0 8px rgba(255,59,48,0.2);
+    box-shadow: 0 0 8px rgba(255,59,48,0.3);
 }
 .exercise-card.volumen { 
     border-left: 5px solid #32d74b;
-    box-shadow: 0 0 8px rgba(50,215,75,0.2);
+    box-shadow: 0 0 8px rgba(50,215,75,0.3);
 }
 .exercise-card.definicion { 
     border-left: 5px solid #ffd60a;
-    box-shadow: 0 0 8px rgba(255,214,10,0.2);
+    box-shadow: 0 0 8px rgba(255,214,10,0.3);
 }
 .exercise-header {
     display: flex;
@@ -366,7 +366,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .cal-cell.entrenado{background:#32d74b;color:#000;font-weight:bold}
 .cal-cell.fumado{background:#ff3b30;color:#fff;font-weight:bold}
 .cal-cell.nosmoke{background:#007aff;color:#fff}
-.cal-cell.domingo{background:#ffd60a;color:#000;font-weight:bold}
+.cal-cell.domingo{background:#8b5cf6;color:#fff;font-weight:bold}
 .cal-cell.today{border:2px solid #ff6600}
 .cal-cell.future{opacity:0.2;cursor:not-allowed}
 .cal-legend{display:flex;gap:12px;margin-top:12px;font-size:0.7rem;justify-content:center}
@@ -568,7 +568,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="calendarios" class="seccion">
 <h2 style="text-align:center;margin-bottom:15px">📅 SEGUIMIENTO</h2>
 <div class="cal-wrapper">
-<div class="cal-card"><div class="cal-nav"><button onclick="changeMonth(-1,'gym')">←</button><span id="cal-month-gym"></span><button onclick="changeMonth(1,'gym')">→</button></div><div id="cal-gym" class="cal-grid"></div><div class="cal-legend"><div class="leg-item"><div class="leg-box" style="background:#32d74b"></div><span>Entrenado</span></div><div class="leg-item"><div class="leg-box" style="background:#ffd60a"></div><span>Domingo</span></div></div></div>
+<div class="cal-card"><div class="cal-nav"><button onclick="changeMonth(-1,'gym')">←</button><span id="cal-month-gym"></span><button onclick="changeMonth(1,'gym')">→</button></div><div id="cal-gym" class="cal-grid"></div><div class="cal-legend"><div class="leg-item"><div class="leg-box" style="background:#32d74b"></div><span>Entrenado</span></div><div class="leg-item"><div class="leg-box" style="background:#8b5cf6"></div><span>Domingo</span></div></div></div>
 <div class="cal-card"><div class="cal-nav"><button onclick="changeMonth(-1,'smoke')">←</button><span id="cal-month-smoke"></span><button onclick="changeMonth(1,'smoke')">→</button></div><div id="cal-smoke" class="cal-grid"></div><div class="cal-legend"><div class="leg-item"><div class="leg-box" style="background:#ff3b30"></div><span>Fumado</span></div><div class="leg-item"><div class="leg-box" style="background:#007aff"></div><span>Limpio</span></div></div></div>
 </div>
 </div>
@@ -828,7 +828,6 @@ function generarInputsSeries(id, serieTexto, esTiempo) {
 function renderizarRutinas() {
     const configCiclo = getConfiguracionCiclo();
     const tipo = getTipoCiclo().toLowerCase();
-    const cicloColor = configCiclo.color;
     const semanaStr = getSemanaActual();
     for (const dia of ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado']) {
         const lista = document.getElementById(`list-${dia}`);
@@ -848,9 +847,7 @@ function renderizarRutinas() {
             if(!ex.esTiempo && !ex.serieTexto.includes("AL FALLO") && !ex.serieTexto.includes("min")) {
                 serieMostrada = `${configCiclo.series} x ${configCiclo.reps}`;
             }
-            const badgeBg = configCiclo.color;
-            const badgeColor = getTipoCiclo() === 'DEFINICIÓN' ? '#000' : '#fff';
-            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge" style="background: ${badgeBg}; color: ${badgeColor}; box-shadow: 0 0 5px ${badgeBg};">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value ${tipo}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value ${tipo}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value ${tipo}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
+            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge ${tipo}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value ${tipo}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value ${tipo}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value ${tipo}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
         }).join('');
         const stretchList = document.getElementById(`stretches-${dia}`);
         if(stretchList && estiramientosPorDia[dia]) stretchList.innerHTML = `<div class="stretch-card"><strong>🧘 ESTIRAMIENTOS:</strong><ul style="margin-left:20px;margin-top:5px">${estiramientosPorDia[dia].map(s => `<li>${s}</li>`).join('')}</ul></div>`;
@@ -976,7 +973,22 @@ function renderizarLogros(){const cont=document.getElementById('logros-container
 function mostrarToast(m){const t=document.createElement('div'); t.className='toast-msg'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),3000);}
 
 // ==================== NAVEGACIÓN ====================
-function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home'){actualizarHome(); actualizarBannerCiclo(); actualizarBadgesCicloDia(); ocultarLoading();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') inicializarFotosDB(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
+function go(id){
+    document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if(id==='home'){
+        actualizarHome();
+        actualizarBannerCiclo();
+        actualizarBadgesCicloDia();
+        ocultarLoading();
+    }
+    if(id==='calendarios') renderizarCalendarios();
+    if(id==='progreso-fotos') inicializarFotosDB();
+    if(id==='peso') mostrarHistorialPeso();
+    if(id==='logros') renderizarLogros();
+    closeMenu();
+    window.scrollTo(0,0);
+}
 function goToday(){const h=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()]; go(h);}
 function toggleSubmenu(b){b.classList.toggle('open'); b.nextElementSibling.classList.toggle('show');}
 function openMenu(){document.getElementById('menu-lat').classList.add('open'); document.getElementById('overlay').style.display='block';}
