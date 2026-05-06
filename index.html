@@ -57,15 +57,10 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bot
     50% { transform: scale(1.03); opacity: 0.95; }
     100% { transform: scale(1); opacity: 1; }
 }
-/* ANIMACIÓN DE MANCUERNAS */
 @keyframes dumbbellBounce {
     0%, 100% { transform: translateY(0) rotate(0deg); }
     25% { transform: translateY(-15px) rotate(-10deg); }
     75% { transform: translateY(-8px) rotate(10deg); }
-}
-@keyframes dumbbellSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 @keyframes loadingPulse {
     0%, 100% { opacity: 0.4; }
@@ -148,9 +143,6 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 #descanso-box{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:3500;display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
 #descanso-box .descanso-contenido{background:#1a1a1a;border-radius:30px;padding:30px;text-align:center;border:3px solid #32d74b;box-shadow:0 0 30px rgba(50,215,75,0.5)}
 .descanso-timer-num{font-size:6rem;font-weight:bold;font-family:monospace;color:#32d74b;margin:20px 0;animation:timerPulse 1s infinite}
-.today-card{background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid #ff6600;border-radius:15px;padding:20px;margin-bottom:20px;text-align:center;cursor:pointer}
-.today-day{font-size:1.5rem;font-weight:bold;color:#ff6600;margin-bottom:8px}
-.today-btn{background:#ff6600;color:#000;padding:8px 20px;border-radius:20px;display:inline-block;font-weight:bold;margin-top:8px}
 .sunday-card{background:linear-gradient(135deg,#1a0a2e,#0a0a1a);border:2px solid #8b5cf6;border-radius:20px;padding:40px 20px;text-align:center;margin-top:30px}
 .sunday-emoji{font-size:5rem;animation:float 3s infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
@@ -212,93 +204,52 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .day-cycle-badge.volumen { background: #32d74b; color: #000; }
 .day-cycle-badge.definicion { background: #ffd60a; color: #000; }
 
-/* WIDGET SUPERIOR */
-.widget-top {
+/* BANNER UNIFICADO */
+.banner-unificado {
     background: linear-gradient(135deg, #1a1a2e, #16213e);
     border-radius: 16px;
-    padding: 12px 15px;
+    padding: 15px;
     margin-bottom: 15px;
+    border: 1px solid #ff6600;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
-    border: 1px solid #ff6600;
+    gap: 15px;
 }
-.widget-item {
+.banner-item {
     flex: 1;
     text-align: center;
     min-width: 70px;
 }
-.widget-label {
+.banner-label {
     font-size: 0.6rem;
     color: #aaa;
     text-transform: uppercase;
 }
-.widget-value {
+.banner-value {
     font-size: 1.2rem;
     font-weight: bold;
     color: #ff6600;
 }
-.widget-divider {
-    width: 1px;
-    height: 30px;
-    background: #333;
-}
 
-/* RACHA CIRCULAR */
-.racha-circle {
+/* Botón entrenar hoy */
+.btn-entrenar-hoy {
     background: linear-gradient(135deg, #ff6600, #ff3300);
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 5px auto;
-    box-shadow: 0 0 15px rgba(255,102,0,0.4);
-}
-.racha-circle-number {
-    font-size: 1.8rem;
+    border: none;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 30px;
     font-weight: bold;
-    color: #fff;
-    line-height: 1;
-}
-.racha-circle-label {
-    font-size: 0.6rem;
-    color: #fff;
-    opacity: 0.9;
-}
-
-/* Stats row mejorado */
-.stats-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 15px;
-}
-.stat-card {
-    flex: 1;
-    background: #111;
-    border-radius: 16px;
-    padding: 12px;
+    font-size: 1rem;
+    width: 100%;
     text-align: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: transform 0.1s ease;
 }
-.stat-card.racha {
-    background: linear-gradient(135deg, #1a0a0a, #0a0a0a);
-    border: 1px solid #ff6600;
-}
-.stat-card.nosmoke {
-    background: linear-gradient(135deg, #001f3f, #000);
-    border: 1px solid #007aff;
-}
-.stat-card h2 {
-    font-size: 1.6rem;
-    font-weight: bold;
-}
-.stat-card .small-label {
-    font-size: 0.65rem;
-    color: #aaa;
+.btn-entrenar-hoy:active {
+    transform: scale(0.97);
 }
 
 /* EJERCICIO VISUAL */
@@ -422,6 +373,85 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 #progreso-fotos .card { overflow-x: hidden; }
 #listaDiasDB > div { word-break: break-word; flex-wrap: wrap; }
 #compararDia1, #compararDia2 { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Modal Reset */
+.reset-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 5000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+}
+.reset-modal-content {
+    background: #1a1a1a;
+    border-radius: 20px;
+    padding: 25px;
+    max-width: 300px;
+    text-align: center;
+    border: 2px solid #ff3b30;
+}
+.reset-modal-content input {
+    width: 100%;
+    padding: 10px;
+    background: #000;
+    color: #fff;
+    border: 1px solid #ff3b30;
+    border-radius: 8px;
+    text-align: center;
+    margin: 15px 0;
+}
+
+/* Medalla giratoria */
+.medalla-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    backdrop-filter: blur(5px);
+}
+.medalla-contenedor {
+    text-align: center;
+    animation: medalSpin 2.5s ease-in-out forwards;
+}
+.medalla-icono {
+    font-size: 6rem;
+    display: block;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 10px gold);
+}
+.medalla-titulo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #ffd60a;
+    text-shadow: 0 0 10px rgba(255,214,10,0.5);
+}
+.medalla-desc {
+    font-size: 1rem;
+    color: #fff;
+    margin-top: 8px;
+}
+@keyframes medalSpin {
+    0% { transform: rotate(0deg) scale(0.5); opacity: 0; }
+    20% { transform: rotate(72deg) scale(1.2); opacity: 1; }
+    40% { transform: rotate(144deg) scale(1); opacity: 1; }
+    60% { transform: rotate(216deg) scale(1.1); opacity: 1; }
+    80% { transform: rotate(288deg) scale(1); opacity: 1; }
+    100% { transform: rotate(360deg) scale(0.8); opacity: 0; }
+}
 </style>
 </head>
 <body>
@@ -447,11 +477,11 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 </nav>
 <header><span class="menu-icon" onclick="openMenu()">☰</span><span class="logo">NICO <span style="color:#ff6600">GYM</span></span><span class="home-icon" onclick="go('home')">🏠</span></header>
 
-<!-- ==================== HOME CON ANIMACIÓN DE CARGA ==================== -->
+<!-- ==================== HOME SIMPLIFICADO ==================== -->
 <div id="home" class="seccion active">
     
-    <!-- ANIMACIÓN DE CARGA (se muestra hasta que cargan los datos) -->
-    <div id="loadingAnimation" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px;">
+    <!-- ANIMACIÓN DE CARGA -->
+    <div id="loadingAnimation" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px;">
         <div>
             <span class="loading-dumbbell">🏋️</span>
             <span class="loading-dumbbell">💪</span>
@@ -461,55 +491,34 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
         <div style="margin-top: 15px; font-size: 0.7rem; color: #555;">Cargando tu progreso</div>
     </div>
     
-    <!-- CONTENIDO REAL (oculto hasta cargar) -->
+    <!-- CONTENIDO REAL -->
     <div id="contenidoHome" style="display: none;">
+        
         <!-- Banner del ciclo -->
-        <div class="cycle-card" id="cycleCard">CARGANDO...</div>
+        <div class="cycle-card" id="cycleCard"></div>
         
-        <!-- Widget superior -->
-        <div class="widget-top" id="widgetTop">
-            <div class="widget-item">
-                <div class="widget-label">🔥 RACHA</div>
-                <div class="widget-value" id="widgetRacha">0</div>
+        <!-- Banner unificado (Racha, Sin fumar, Peso, Objetivo) -->
+        <div class="banner-unificado">
+            <div class="banner-item">
+                <div class="banner-label">🔥 RACHA</div>
+                <div class="banner-value" id="bannerRacha">0</div>
             </div>
-            <div class="widget-divider"></div>
-            <div class="widget-item">
-                <div class="widget-label">📅 HOY</div>
-                <div class="widget-value" id="widgetHoy">Cargando</div>
+            <div class="banner-item">
+                <div class="banner-label">🚭 SIN FUMAR</div>
+                <div class="banner-value" id="bannerSinFumar">0</div>
             </div>
-            <div class="widget-divider"></div>
-            <div class="widget-item">
-                <div class="widget-label">⚖️ PESO</div>
-                <div class="widget-value" id="widgetPeso">-- kg</div>
+            <div class="banner-item">
+                <div class="banner-label">⚖️ PESO</div>
+                <div class="banner-value" id="bannerPeso">-- kg</div>
             </div>
-            <div class="widget-divider"></div>
-            <div class="widget-item">
-                <div class="widget-label">🎯 OBJETIVO</div>
-                <div class="widget-value" id="widgetObjetivo">75 kg</div>
+            <div class="banner-item">
+                <div class="banner-label">🎯 OBJETIVO</div>
+                <div class="banner-value" id="bannerObjetivo">75 kg</div>
             </div>
         </div>
         
-        <!-- Tarjeta de entrenar hoy -->
-        <div class="today-card" onclick="goToday()">
-            <div class="today-day" id="todayDay">Cargando...</div>
-            <div id="todayRoutine" style="color:#aaa; margin-bottom:10px"></div>
-            <div class="today-btn">👉 ENTRENAR HOY 👈</div>
-        </div>
-        
-        <!-- Estadísticas principales -->
-        <div class="stats-row">
-            <div class="stat-card racha">
-                <div class="racha-circle">
-                    <div class="racha-circle-number" id="rachaNumero">0</div>
-                    <div class="racha-circle-label">RACHA</div>
-                </div>
-                <div class="small-label">🔥 DÍAS CONSECUTIVOS</div>
-            </div>
-            <div class="stat-card nosmoke">
-                <h2 id="diasSinFumar" style="color:#007aff; font-size:1.8rem">0</h2>
-                <div class="small-label">🚭 DÍAS SIN FUMAR</div>
-            </div>
-        </div>
+        <!-- Botón para entrenar hoy -->
+        <button class="btn-entrenar-hoy" onclick="goToday()">💪 ENTRENAR HOY</button>
         
         <!-- Gráfico de peso -->
         <div style="margin-bottom:15px">
@@ -573,7 +582,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     </div>
 </div>
 
-<div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso in kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div></div>
+<div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso en kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div></div>
 
 <div id="logros" class="seccion"><h2>🏆 MIS LOGROS</h2><div id="logros-container" class="logros-grid"></div></div>
 
@@ -653,20 +662,13 @@ function actualizarBannerCiclo() {
     }
 }
 
-function actualizarResumenPeso() {
+function actualizarBannerUnificado() {
     if(pesosRegistrados && pesosRegistrados.length > 0) {
-        document.getElementById('widgetPeso').innerText = pesosRegistrados[pesosRegistrados.length-1].valor + ' kg';
-    } else {
-        document.getElementById('widgetPeso').innerText = '-- kg';
+        document.getElementById('bannerPeso').innerText = pesosRegistrados[pesosRegistrados.length-1].valor + ' kg';
     }
-}
-
-function actualizarWidget() {
-    document.getElementById('widgetRacha').innerText = diasEntrenados.length;
-    const hoyNombre = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date().getDay()];
-    const rutinaHoy = getRutinaHoy();
-    document.getElementById('widgetHoy').innerHTML = `${hoyNombre}<br><span style="font-size:0.6rem;">${rutinaHoy.substring(0,15)}</span>`;
-    document.getElementById('widgetObjetivo').innerText = OBJETIVO_PESO + ' kg';
+    document.getElementById('bannerRacha').innerText = diasEntrenados.length;
+    document.getElementById('bannerSinFumar').innerText = calcularDiasSinFumar();
+    document.getElementById('bannerObjetivo').innerText = OBJETIVO_PESO + ' kg';
 }
 
 // ==================== RUTINAS BASE ====================
@@ -787,19 +789,13 @@ function renderizarRutinas() {
 }
 
 function marcarEjercicioHecho(id) { if(checks[id]) return; checks[id] = true; localStorage.setItem('nico_checks', JSON.stringify(checks)); actualizarHome(); renderizarRutinas(); if(navigator.vibrate) navigator.vibrate(50); const dia = id.split('-')[0]; if (!['martes','jueves','sabado'].includes(dia)) iniciarDescanso(30); }
-function marcarDiaCompletadoManual(dia) { const hoyStr = getHoyStr(); const semanaStr = getSemanaActual(); const key = `completado_${dia}_${semanaStr}`; if(localStorage.getItem(key)) return; if(!diasEntrenados.includes(hoyStr)) { diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); } localStorage.setItem(key,"true"); mostrarMensajeMotivador(`🎉 ¡${getTipoCiclo()} completado! Sigue así.`,"completado"); actualizarHome(); renderizarRutinas(); renderizarCalendarios(); if(navigator.vibrate) navigator.vibrate([200,100,200]); canvasConfetti({particleCount:300,spread:100}); }
+function marcarDiaCompletadoManual(dia) { const hoyStr = getHoyStr(); const semanaStr = getSemanaActual(); const key = `completado_${dia}_${semanaStr}`; if(localStorage.getItem(key)) return; if(!diasEntrenados.includes(hoyStr)) { diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); } localStorage.setItem(key,"true"); mostrarMensajeMotivadorConMedalla(`🎉 ¡${getTipoCiclo()} completado!`, "🎉", "ENTRENO COMPLETADO", `¡${getTipoCiclo()} finalizado!`); actualizarHome(); renderizarRutinas(); renderizarCalendarios(); if(navigator.vibrate) navigator.vibrate([200,100,200]); canvasConfetti({particleCount:300,spread:100}); }
 
 function actualizarHome() {
-    const racha = diasEntrenados.length;
-    document.getElementById('rachaNumero').innerText = racha;
-    document.getElementById('diasSinFumar').innerText = calcularDiasSinFumar();
-    actualizarWidget();
-    actualizarResumenPeso();
+    actualizarBannerUnificado();
     const ctx = document.getElementById('grafico').getContext('2d');
     if(window.miGrafico) window.miGrafico.destroy();
     window.miGrafico = new Chart(ctx, { type: 'line', data: { labels: pesosRegistrados.map(p=>p.fecha), datasets: [{ data: pesosRegistrados.map(p=>p.valor), borderColor: '#ff6600', fill: true, backgroundColor: 'rgba(255,102,0,0.1)' }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } } } });
-    document.getElementById('todayDay').innerText = `📅 ${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date().getDay()]}`;
-    document.getElementById('todayRoutine').innerText = getRutinaHoy();
     verificarYDesbloquearLogros();
 }
 function getRutinaHoy() { const d = new Date().getDay(); const tipo = getTipoCiclo(); return `${['Descanso','Espalda/Bíceps','Cardio/Abs','Pecho/Tríceps','Cardio/Abs','Pierna/Hombro','Cardio/Abs'][d]} [${tipo}]`; }
@@ -810,14 +806,14 @@ function getHoyStr() { const d = new Date(); return `${d.getFullYear()}-${String
 function getSemanaActual() { const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+4-(d.getDay()||7)); return `${d.getFullYear()}-W${Math.ceil((((d-new Date(d.getFullYear(),0,1))/86400000)+1)/7)}`; }
 function changeMonth(offset,type) { if(type==='gym'){let d=new Date(currentViewYearGym,currentViewMonthGym+offset,1); currentViewYearGym=d.getFullYear(); currentViewMonthGym=d.getMonth();} else{let d=new Date(currentViewYearSmoke,currentViewMonthSmoke+offset,1); currentViewYearSmoke=d.getFullYear(); currentViewMonthSmoke=d.getMonth();} renderizarCalendarios(); }
 function renderCal(id,mes,año,listaDias,labelId,esHumo=false) { const container=document.getElementById(id); if(!container) return; container.innerHTML=''; const nombreMes=new Intl.DateTimeFormat('es-ES',{month:'long'}).format(new Date(año,mes,1)).toUpperCase(); document.getElementById(labelId).innerText=`${nombreMes} ${año}`; ['L','M','X','J','V','S','D'].forEach(d=>{const div=document.createElement('div'); div.className='cal-day-label'; div.innerText=d; container.appendChild(div);}); const primerDia=new Date(año,mes,1).getDay(); const offset=primerDia===0?6:primerDia-1; const diasEnMes=new Date(año,mes+1,0).getDate(); for(let i=0;i<offset;i++) container.appendChild(document.createElement('div')); const hoyStr=getHoyStr(); const hoyDate=new Date(); hoyDate.setHours(23,59,59,999); for(let d=1;d<=diasEnMes;d++){const cell=document.createElement('div'); cell.className='cal-cell'; cell.innerText=d; const fecha=new Date(año,mes,d); const fStr=`${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`; if(fecha>hoyDate) cell.classList.add('future'); else cell.onclick=()=>toggleDia(fStr,esHumo,fecha); if(fStr===hoyStr) cell.classList.add('today'); if(esHumo){if(listaDias.includes(fStr)) cell.classList.add('fumado'); else if(fecha>=new Date(2026,1,22)&&fecha<=new Date()) cell.classList.add('nosmoke');} else{if(listaDias.includes(fStr)) cell.classList.add('entrenado'); else if(fecha.getDay()===0) cell.classList.add('domingo');} container.appendChild(cell);} }
-function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarMensajeMotivador("✅ Día limpio.","bienvenida");} else{diasFumados.push(fStr); mostrarMensajeMotivador("🚬 Marcado como fumado.","logro");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarMensajeMotivador("🔥 ¡Día añadido!","racha"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); }
+function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarMensajeMotivadorConMedalla("✅ Día limpio!", "✅", "DÍA LIMPIO", "Sin fumar hoy");} else{diasFumados.push(fStr); mostrarMensajeMotivadorConMedalla("🚬 Marcado como fumado.", "🚬", "FUMADO", "Has fumado hoy");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarMensajeMotivadorConMedalla("🔥 ¡Día añadido!", "🔥", "DÍA DE ENTRENO", "¡Sigue así!"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); }
 function renderizarCalendarios(){renderCal('cal-gym',currentViewMonthGym,currentViewYearGym,diasEntrenados,'cal-month-gym',false); renderCal('cal-smoke',currentViewMonthSmoke,currentViewYearSmoke,diasFumados,'cal-month-smoke',true);}
 
 // ==================== FUNCIONES SECUNDARIAS ====================
 function resetSemanal(){const semanaStr=getSemanaActual(); const ultima=localStorage.getItem('nico_ultima_semana_reset'); if(ultima!==semanaStr){for(let key in notas) if(key.includes('-s')) historialSeries[key]=notas[key]; localStorage.setItem('nico_historial_series',JSON.stringify(historialSeries)); checks={}; notas={}; localStorage.setItem('nico_checks',JSON.stringify(checks)); localStorage.setItem('nico_notas',JSON.stringify(notas)); localStorage.setItem('nico_ultima_semana_reset',semanaStr);}}
 function guardarSerie(key,valor){notas[key]=valor; localStorage.setItem('nico_notas',JSON.stringify(notas));}
 function calcularDiasSinFumar(){let total=0; let f=new Date(2026,1,22); const hoy=new Date(); while(f<=hoy){const fStr=`${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`; if(!diasFumados.includes(fStr)) total++; f.setDate(f.getDate()+1);} return total;}
-function marcarHoyFumado(){const hoyStr=getHoyStr(); if(!diasFumados.includes(hoyStr)){diasFumados.push(hoyStr); localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados)); mostrarMensajeMotivador("🚬 Marcado como fumado.","logro"); actualizarHome(); renderizarCalendarios();}}
+function marcarHoyFumado(){const hoyStr=getHoyStr(); if(!diasFumados.includes(hoyStr)){diasFumados.push(hoyStr); localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados)); mostrarMensajeMotivadorConMedalla("🚬 Marcado como fumado.", "🚬", "FUMADO", "Has fumado hoy"); actualizarHome(); renderizarCalendarios();}}
 function mostrarConfirmacionReset(){document.getElementById('resetModal').style.display='flex'; document.getElementById('confirmResetInput').value='';}
 function cerrarModalReset(){document.getElementById('resetModal').style.display='none';}
 function confirmarBorrarTodo(){if(document.getElementById('confirmResetInput').value==="BORRAR"){localStorage.clear(); location.reload();} else{mostrarToast("❌ Debes escribir BORRAR exactamente");}}
@@ -869,7 +865,7 @@ function inicializarFotosDB() { abrirDBFotos().then(() => { actualizarListaDiasD
 if(document.getElementById('progreso-fotos')) { inicializarFotosDB(); }
 
 // ==================== PESO ====================
-function agregarPeso() { const v = document.getElementById('in-peso').value; if(v){ pesosRegistrados.push({valor:parseFloat(v), fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})}); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); mostrarMensajeMotivador(`⚖️ Peso: ${v}kg`, "logro"); } }
+function agregarPeso() { const v = document.getElementById('in-peso').value; if(v){ pesosRegistrados.push({valor:parseFloat(v), fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})}); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); mostrarMensajeMotivadorConMedalla(`⚖️ Peso: ${v}kg`, "⚖️", "PESO REGISTRADO", `${v} kg`); } }
 function eliminarPeso(i) { pesosRegistrados.splice(i,1); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); }
 function mostrarHistorialPeso() { const h = document.getElementById('hist-peso'); h.innerHTML = pesosRegistrados.map((p,i) => `<div class="peso-item"><span>${p.fecha}: <b>${p.valor}kg</b></span><button class="btn-del" onclick="eliminarPeso(${i})">🗑️</button></div>`).reverse().join(''); }
 
@@ -907,7 +903,7 @@ function verificarYDesbloquearLogros(){ let nuevos=false; listaLogros.forEach(l=
 function mostrarMensajeMotivadorConMedalla(mensaje, icono, titulo, desc) {
     const overlay = document.createElement('div');
     overlay.className = 'medalla-overlay';
-    overlay.innerHTML = `<div class="medalla-contenedor"><div class="medalla-icono">${icono}</div><div class="medalla-titulo">¡NUEVO LOGRO!</div><div class="medalla-desc">${titulo}</div><div class="medalla-desc" style="font-size:0.85rem;">${desc}</div></div>`;
+    overlay.innerHTML = `<div class="medalla-contenedor"><div class="medalla-icono">${icono}</div><div class="medalla-titulo">¡${titulo}!</div><div class="medalla-desc">${desc || mensaje}</div></div>`;
     document.body.appendChild(overlay);
     setTimeout(() => { overlay.remove(); }, 2500);
 }
@@ -918,7 +914,6 @@ if(typeof todasLasFechas !== 'undefined') fotosDias = todasLasFechas;
 
 // ==================== MENSAJES ====================
 function mostrarToast(m){const t=document.createElement('div'); t.className='toast-msg'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),3000);}
-function mostrarMensajeMotivador(m){mostrarToast(m);}
 
 // ==================== ANIMACIÓN DE CARGA ====================
 function ocultarLoading() {
@@ -946,7 +941,6 @@ function actualizarMostrarDiscos(){const total=(discosActuales.d125*1.25)+(disco
 function exportarDatos(conEmail=false){const datos={pesos:pesosRegistrados,checks:checks,notas:notas,entrenos:diasEntrenados,humo:diasFumados,fotos:fotosDias,logros:logrosObtenidos}; const json=JSON.stringify(datos); const blob=new Blob([json],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`nicogym_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); if(conEmail) setTimeout(()=>{window.location.href="mailto:?subject=Backup NICO GYM&body=Adjunto mi backup";},500); mostrarToast("✅ Backup creado");}
 
 window.onload=()=>{
-    // Simular carga mínima para ver la animación
     setTimeout(() => {
         actualizarBannerCiclo();
         actualizarBadgesCicloDia();
