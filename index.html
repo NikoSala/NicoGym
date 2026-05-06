@@ -14,7 +14,7 @@
   \"short_name\": \"NICOGYM\",
   \"start_url\": \".\",
   \"display\": \"standalone\",
-  \"theme_color\": \"#ff6600\",
+  \"theme_color\": \"#000000\",
   \"background_color\": \"#000000\",
   \"icons\": [{
     \"src\": \"https://cdn-icons-png.flaticon.com/512/2964/2964514.png\",
@@ -70,6 +70,11 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bot
     0% { transform: scaleX(1); }
     50% { transform: scaleX(1.01); }
     100% { transform: scaleX(1); }
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
 
 .loading-dumbbell {
@@ -303,6 +308,7 @@ header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
     border-radius: 16px;
     padding: 15px;
     margin-bottom: 12px;
+    transition: transform 0.2s ease;
 }
 .exercise-card.fuerza { border-left: 5px solid #ff3b30; }
 .exercise-card.volumen { border-left: 5px solid #32d74b; }
@@ -551,6 +557,11 @@ header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
     opacity: 1;
 }
 
+/* Animación para ejercicios pendientes */
+.pendiente-shake {
+    animation: shake 0.3s ease-in-out;
+}
+
 /* Variables CSS dinámicas */
 :root {
     --ciclo-color: #ff6600;
@@ -667,12 +678,12 @@ header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
 
 <div id="logros" class="seccion"><h2>🏆 MIS LOGROS</h2><div id="logros-container" class="logros-grid"></div></div>
 
-<div id="lunes" class="seccion"><h2>💪 ESPALDA / BÍCEPS</h2><div id="cycleBadge-lunes" class="day-cycle-badge"></div><div id="list-lunes"></div><div id="stretches-lunes"></div><button id="btn-done-lunes" class="btn-done" onclick="marcarDiaCompletadoManual('lunes')">✅ ¡ENTRENO COMPLETADO!</button></div>
-<div id="martes" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="cycleBadge-martes" class="day-cycle-badge"></div><div id="list-martes"></div><div id="stretches-martes"></div><button id="btn-done-martes" class="btn-done" onclick="marcarDiaCompletadoManual('martes')">✅ ¡ENTRENO COMPLETADO!</button></div>
-<div id="miercoles" class="seccion"><h2>💪 PECHO / TRÍCEPS</h2><div id="cycleBadge-miercoles" class="day-cycle-badge"></div><div id="list-miercoles"></div><div id="stretches-miercoles"></div><button id="btn-done-miercoles" class="btn-done" onclick="marcarDiaCompletadoManual('miercoles')">✅ ¡ENTRENO COMPLETADO!</button></div>
-<div id="jueves" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="cycleBadge-jueves" class="day-cycle-badge"></div><div id="list-jueves"></div><div id="stretches-jueves"></div><button id="btn-done-jueves" class="btn-done" onclick="marcarDiaCompletadoManual('jueves')">✅ ¡ENTRENO COMPLETADO!</button></div>
-<div id="viernes" class="seccion"><h2>🦵 PIERNA / HOMBRO</h2><div id="cycleBadge-viernes" class="day-cycle-badge"></div><div id="list-viernes"></div><div id="stretches-viernes"></div><button id="btn-done-viernes" class="btn-done" onclick="marcarDiaCompletadoManual('viernes')">✅ ¡ENTRENO COMPLETADO!</button></div>
-<div id="sabado" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="cycleBadge-sabado" class="day-cycle-badge"></div><div id="list-sabado"></div><div id="stretches-sabado"></div><button id="btn-done-sabado" class="btn-done" onclick="marcarDiaCompletadoManual('sabado')">✅ ¡ENTRENO COMPLETADO!</button></div>
+<div id="lunes" class="seccion"><h2>💪 ESPALDA / BÍCEPS</h2><div id="cycleBadge-lunes" class="day-cycle-badge"></div><div id="list-lunes"></div><div id="stretches-lunes"></div><button id="btn-done-lunes" class="btn-done" onclick="marcarDiaCompletadoManual('lunes')">✅ COMPLETAR ENTRENO</button></div>
+<div id="martes" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="cycleBadge-martes" class="day-cycle-badge"></div><div id="list-martes"></div><div id="stretches-martes"></div><button id="btn-done-martes" class="btn-done" onclick="marcarDiaCompletadoManual('martes')">✅ COMPLETAR ENTRENO</button></div>
+<div id="miercoles" class="seccion"><h2>💪 PECHO / TRÍCEPS</h2><div id="cycleBadge-miercoles" class="day-cycle-badge"></div><div id="list-miercoles"></div><div id="stretches-miercoles"></div><button id="btn-done-miercoles" class="btn-done" onclick="marcarDiaCompletadoManual('miercoles')">✅ COMPLETAR ENTRENO</button></div>
+<div id="jueves" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="cycleBadge-jueves" class="day-cycle-badge"></div><div id="list-jueves"></div><div id="stretches-jueves"></div><button id="btn-done-jueves" class="btn-done" onclick="marcarDiaCompletadoManual('jueves')">✅ COMPLETAR ENTRENO</button></div>
+<div id="viernes" class="seccion"><h2>🦵 PIERNA / HOMBRO</h2><div id="cycleBadge-viernes" class="day-cycle-badge"></div><div id="list-viernes"></div><div id="stretches-viernes"></div><button id="btn-done-viernes" class="btn-done" onclick="marcarDiaCompletadoManual('viernes')">✅ COMPLETAR ENTRENO</button></div>
+<div id="sabado" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="cycleBadge-sabado" class="day-cycle-badge"></div><div id="list-sabado"></div><div id="stretches-sabado"></div><button id="btn-done-sabado" class="btn-done" onclick="marcarDiaCompletadoManual('sabado')">✅ COMPLETAR ENTRENO</button></div>
 <div id="domingo" class="seccion"><div class="sunday-card"><div class="sunday-emoji">🔋✨😴✨💪</div><div class="sunday-title">DÍA DE RECARGA</div></div></div>
 
 <div id="calcModal" class="calc-modal"><span class="close-calc" onclick="cerrarCalc()">&times;</span><h3>🏋️ CALCULAR DISCOS</h3><div class="calc-grid"><button class="calc-btn" onclick="sumarDisco(1.25)">+1.25kg <span class="badge" id="badge125">0</span></button><button class="calc-btn" onclick="sumarDisco(1.5)">+1.5kg <span class="badge" id="badge15">0</span></button><button class="calc-btn" onclick="sumarDisco(2)">+2kg <span class="badge" id="badge2">0</span></button></div><div>PESO TOTAL: <strong id="totalDisco" style="font-size:24px">0</strong> kg</div><button class="calc-reset" onclick="resetearDiscos()">🗑️ RESET</button></div>
@@ -690,14 +701,15 @@ function getSemanaDelMes() {
     const diaSemanaInicio = inicioMes.getDay() || 7;
     const diaMes = hoy.getDate();
     let semana = Math.ceil((diaMes + diaSemanaInicio - 1) / 7);
-    return Math.min(semana, 5);
+    return Math.min(semana, 4);
 }
 
 function getTipoCiclo() {
     const semana = getSemanaDelMes();
-    if (semana === 1 || semana === 5) return 'FUERZA';
-    if (semana === 3) return 'VOLUMEN';
-    return 'DEFINICIÓN';
+    if (semana === 1) return 'FUERZA';
+    if (semana === 2) return 'VOLUMEN';
+    if (semana === 3) return 'DEFINICIÓN';
+    return 'FUERZA';
 }
 
 function getConfiguracionCiclo() {
@@ -724,7 +736,6 @@ function actualizarColoresCiclo() {
     const color = config.color;
     const tipo = getTipoCiclo().toLowerCase();
     
-    // Color oscuro para el fondo
     let colorOscuro = '#0a0a0a';
     if(tipo === 'fuerza') colorOscuro = '#1a0505';
     if(tipo === 'volumen') colorOscuro = '#051505';
@@ -736,7 +747,6 @@ function actualizarColoresCiclo() {
     const header = document.querySelector('header');
     if(header) {
         header.style.borderBottomColor = color;
-        // MEJORA 9: Animación de ola en header
         header.style.animation = 'headerWave 0.5s ease';
         setTimeout(() => {
             header.style.animation = '';
@@ -749,7 +759,6 @@ function actualizarColoresCiclo() {
     const totalDisco = document.getElementById('totalDisco');
     if(totalDisco) totalDisco.style.color = color;
     
-    // Actualizar tooltips de badges de ciclo
     document.querySelectorAll('.day-cycle-badge, .exercise-badge').forEach(el => {
         el.setAttribute('data-tooltip', config.tooltip);
     });
@@ -921,8 +930,13 @@ function renderizarRutinas() {
         if (!lista) continue;
         const btn = document.getElementById(`btn-done-${dia}`);
         if(btn) {
-            if (localStorage.getItem(`completado_${dia}_${semanaStr}`)) { btn.disabled = true; btn.innerText = `⭐ RUTINA ${getTipoCiclo()} COMPLETADA`; }
-            else { btn.disabled = false; btn.innerText = `✅ COMPLETAR ENTRENO ${getTipoCiclo()}`; }
+            if (localStorage.getItem(`completado_${dia}_${semanaStr}`)) { 
+                btn.disabled = true; 
+                btn.innerText = `⭐ RUTINA ${getTipoCiclo()} COMPLETADA`; 
+            } else { 
+                btn.disabled = false; 
+                btn.innerText = `✅ COMPLETAR ENTRENO ${getTipoCiclo()}`; 
+            }
         }
         const rutina = rutinasBase[dia];
         if(!rutina) continue;
@@ -941,31 +955,69 @@ function renderizarRutinas() {
     }
 }
 
-function marcarEjercicioHecho(id) { if(checks[id]) return; checks[id] = true; localStorage.setItem('nico_checks', JSON.stringify(checks)); actualizarHome(); renderizarRutinas(); if(navigator.vibrate) navigator.vibrate(50); const dia = id.split('-')[0]; if (!['martes','jueves','sabado'].includes(dia)) iniciarDescanso(30); }
-
-// MEJORA 5: Confeti del color del ciclo
-function marcarDiaCompletadoManual(dia) { 
-    const hoyStr = getHoyStr(); 
-    const semanaStr = getSemanaActual(); 
-    const key = `completado_${dia}_${semanaStr}`; 
-    if(localStorage.getItem(key)) return; 
-    if(!diasEntrenados.includes(hoyStr)) { 
-        diasEntrenados.push(hoyStr); 
-        localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); 
-    } 
-    localStorage.setItem(key,"true"); 
+function marcarEjercicioHecho(id) { 
+    if(checks[id]) return; 
+    checks[id] = true; 
+    localStorage.setItem('nico_checks', JSON.stringify(checks)); 
     actualizarHome(); 
     renderizarRutinas(); 
-    renderizarCalendarios(); 
-    if(navigator.vibrate) navigator.vibrate([200,100,200]); 
+    if(navigator.vibrate) navigator.vibrate(50); 
+    const dia = id.split('-')[0]; 
+    if (!['martes','jueves','sabado'].includes(dia)) iniciarDescanso(30); 
+}
+
+// MEJORA 3: Validación de ejercicios completados
+function marcarDiaCompletadoManual(dia) {
+    const listaEjercicios = document.getElementById(`list-${dia}`);
+    if(!listaEjercicios) return;
     
-    // Confeti del color del ciclo
+    const checkboxes = listaEjercicios.querySelectorAll('.check-box');
+    const todosHechos = Array.from(checkboxes).every(cb => cb.checked === true);
+    
+    if(!todosHechos && checkboxes.length > 0) {
+        const pendientes = Array.from(checkboxes).filter(cb => !cb.checked).length;
+        mostrarToast(`❌ Te faltan ${pendientes} ejercicio${pendientes !== 1 ? 's' : ''} por completar`);
+        
+        const ejerciciosPendientes = document.querySelectorAll(`#list-${dia} .exercise-card`);
+        ejerciciosPendientes.forEach(card => {
+            if(card.querySelector('.check-box:not(:checked)')) {
+                card.classList.add('pendiente-shake');
+                setTimeout(() => { card.classList.remove('pendiente-shake'); }, 300);
+            }
+        });
+        return;
+    }
+    
+    const hoyStr = getHoyStr();
+    const semanaStr = getSemanaActual();
+    const key = `completado_${dia}_${semanaStr}`;
+    
+    if(localStorage.getItem(key)) {
+        mostrarToast("⚠️ Este día ya lo completaste esta semana");
+        return;
+    }
+    
+    if(!diasEntrenados.includes(hoyStr)) {
+        diasEntrenados.push(hoyStr);
+        localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados));
+    }
+    
+    localStorage.setItem(key, "true");
+    actualizarHome();
+    renderizarRutinas();
+    renderizarCalendarios();
+    
+    if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
+    
     const config = getConfiguracionCiclo();
     canvasConfetti({
-        particleCount: 200,
-        spread: 100,
-        colors: [config.color, '#ffffff', '#000000']
+        particleCount: 250,
+        spread: 120,
+        origin: { y: 0.6 },
+        colors: [config.color, '#ffffff', '#ffd700']
     });
+    
+    mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO! +1 día de racha`);
 }
 
 function actualizarHome() {
@@ -1037,8 +1089,41 @@ function renderCal(id,mes,año,listaDias,labelId,esHumo=false) {
 function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarToast("✅ Día limpio!");} else{diasFumados.push(fStr); mostrarToast("🚬 Marcado como fumado.");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarToast("🔥 ¡Día añadido!"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); actualizarElementosCiclo();}
 function renderizarCalendarios(){renderCal('cal-gym',currentViewMonthGym,currentViewYearGym,diasEntrenados,'cal-month-gym',false); renderCal('cal-smoke',currentViewMonthSmoke,currentViewYearSmoke,diasFumados,'cal-month-smoke',true); actualizarElementosCiclo();}
 
-// ==================== FUNCIONES SECUNDARIAS ====================
-function resetSemanal(){const semanaStr=getSemanaActual(); const ultima=localStorage.getItem('nico_ultima_semana_reset'); if(ultima!==semanaStr){for(let key in notas) if(key.includes('-s')) historialSeries[key]=notas[key]; localStorage.setItem('nico_historial_series',JSON.stringify(historialSeries)); checks={}; notas={}; localStorage.setItem('nico_checks',JSON.stringify(checks)); localStorage.setItem('nico_notas',JSON.stringify(notas)); localStorage.setItem('nico_ultima_semana_reset',semanaStr);}}
+// ==================== FUNCIÓN RESET SEMANAL CORREGIDA ====================
+function resetSemanal() {
+    const semanaStr = getSemanaActual();
+    const ultima = localStorage.getItem('nico_ultima_semana_reset');
+    
+    if(ultima !== semanaStr) {
+        for(let key in notas) {
+            if(key.includes('-s')) {
+                historialSeries[key] = notas[key];
+            }
+        }
+        localStorage.setItem('nico_historial_series', JSON.stringify(historialSeries));
+        
+        checks = {};
+        localStorage.setItem('nico_checks', JSON.stringify(checks));
+        
+        const nuevasNotas = {};
+        for(let key in notas) {
+            if(!key.includes('-s')) {
+                nuevasNotas[key] = notas[key];
+            }
+        }
+        notas = nuevasNotas;
+        localStorage.setItem('nico_notas', JSON.stringify(notas));
+        
+        localStorage.setItem('nico_ultima_semana_reset', semanaStr);
+        
+        const config = getConfiguracionCiclo();
+        mostrarToast(`🔄 ¡NUEVA SEMANA! Ciclo: ${config.nombre}`);
+        
+        renderizarRutinas();
+        actualizarHome();
+    }
+}
+
 function guardarSerie(key,valor){notas[key]=valor; localStorage.setItem('nico_notas',JSON.stringify(notas));}
 function calcularDiasSinFumar(){let total=0; let f=new Date(2026,1,22); const hoy=new Date(); while(f<=hoy){const fStr=`${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`; if(!diasFumados.includes(fStr)) total++; f.setDate(f.getDate()+1);} return total;}
 function marcarHoyFumado(){const hoyStr=getHoyStr(); if(!diasFumados.includes(hoyStr)){diasFumados.push(hoyStr); localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados)); mostrarToast("🚬 Marcado como fumado."); actualizarHome(); renderizarCalendarios(); actualizarElementosCiclo();}}
