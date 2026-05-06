@@ -52,6 +52,12 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bot
     50% { transform: scale(1.2); }
     100% { transform: scale(1); }
 }
+/* Animación del temporizador */
+@keyframes timerPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.9; }
+    100% { transform: scale(1); opacity: 1; }
+}
 
 .seccion {
     opacity: 0;
@@ -111,7 +117,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .badge{position:absolute;top:-8px;right:-5px;background:#ff6600;font-size:.7rem;padding:2px 6px;border-radius:20px}
 .calc-reset{width:100%;padding:10px;background:#222;color:#ff3b30;border:1px solid #ff3b30;border-radius:8px;cursor:pointer;margin-top:10px}
 #descanso-box{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:3500;display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
-.descanso-timer-num{font-size:8rem;font-weight:bold;font-family:monospace;color:#32d74b}
+.descanso-timer-num{font-size:8rem;font-weight:bold;font-family:monospace;color:#32d74b;animation:timerPulse 1s infinite}
 .today-card{background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid #ff6600;border-radius:15px;padding:20px;margin-bottom:20px;text-align:center;cursor:pointer}
 .today-day{font-size:1.5rem;font-weight:bold;color:#ff6600;margin-bottom:8px}
 .today-btn{background:#ff6600;color:#000;padding:8px 20px;border-radius:20px;display:inline-block;font-weight:bold;margin-top:8px}
@@ -189,6 +195,49 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .peso-resumen-item { flex: 1; }
 .peso-resumen-valor { font-size: 1.2rem; font-weight: bold; color: #ff6600; }
 .peso-resumen-label { font-size: 0.65rem; color: #aaa; }
+
+/* ========== MEJORA 3: RACHA MÁS BONITA (CÍRCULO GRANDE) ========== */
+.racha-circle {
+    background: linear-gradient(135deg, #ff6600, #ff3300);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px auto;
+    box-shadow: 0 0 20px rgba(255,102,0,0.5);
+}
+.racha-circle-number {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1;
+}
+.racha-circle-label {
+    font-size: 0.7rem;
+    color: #fff;
+    opacity: 0.9;
+}
+.racha-card {
+    background: #0a0a0a;
+    border-radius: 16px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ff6600;
+}
+.racha-card.small {
+    flex: 1;
+}
+.stat-card.racha {
+    background: #0a0a0a;
+    border: 1px solid #ff6600;
+    border-radius: 16px;
+}
+.stat-card.racha h2 {
+    font-size: 2rem;
+}
 
 /* Modal Reset */
 .reset-modal {
@@ -345,6 +394,44 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 #progreso-fotos .card { overflow-x: hidden; }
 #listaDiasDB > div { word-break: break-word; flex-wrap: wrap; }
 #compararDia1, #compararDia2 { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ========== MEJORA 6: WIDGET SUPERIOR ========== */
+.widget-top {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border-radius: 16px;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border: 1px solid #ff6600;
+}
+.widget-item {
+    flex: 1;
+    text-align: center;
+    min-width: 80px;
+}
+.widget-item .widget-label {
+    font-size: 0.6rem;
+    color: #aaa;
+    text-transform: uppercase;
+}
+.widget-item .widget-value {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ff6600;
+}
+.widget-item .widget-value.racha-val {
+    font-size: 1.3rem;
+    color: #ff6600;
+}
+.widget-divider {
+    width: 1px;
+    height: 30px;
+    background: #333;
+}
 </style>
 </head>
 <body>
@@ -372,13 +459,53 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 
 <div id="home" class="seccion active">
 <div class="cycle-card" id="cycleCard">CARGANDO...</div>
+
+<!-- ========== MEJORA 6: WIDGET SUPERIOR ========== -->
+<div class="widget-top" id="widgetTop">
+    <div class="widget-item">
+        <div class="widget-label">🔥 RACHA</div>
+        <div class="widget-value racha-val" id="widgetRacha">0</div>
+    </div>
+    <div class="widget-divider"></div>
+    <div class="widget-item">
+        <div class="widget-label">📅 HOY</div>
+        <div class="widget-value" id="widgetHoy">Cargando</div>
+    </div>
+    <div class="widget-divider"></div>
+    <div class="widget-item">
+        <div class="widget-label">⚖️ PESO</div>
+        <div class="widget-value" id="widgetPeso">-- kg</div>
+    </div>
+    <div class="widget-divider"></div>
+    <div class="widget-item">
+        <div class="widget-label">🎯 OBJETIVO</div>
+        <div class="widget-value" id="widgetObjetivo">75 kg</div>
+    </div>
+</div>
+
 <div class="peso-resumen" id="pesoResumen">
     <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoActualResumen">-- kg</div><div class="peso-resumen-label">Actual</div></div>
     <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoInicialResumen">-- kg</div><div class="peso-resumen-label">Inicio</div></div>
     <div class="peso-resumen-item"><div class="peso-resumen-valor" id="pesoObjetivoResumen">75 kg</div><div class="peso-resumen-label">🎯 Objetivo</div></div>
 </div>
+
 <div class="today-card" onclick="goToday()"><div class="today-day" id="todayDay">Cargando...</div><div id="todayRoutine" style="color:#aaa;margin-bottom:10px"></div><div class="today-btn">👉 ENTRENAR HOY 👈</div></div>
-<div class="stats-row"><div class="stat-card racha"><h2 id="racha">0</h2><small>🔥 RACHA GYM</small></div><div class="stat-card nosmoke"><h2 id="diasSinFumar" style="color:#007aff;font-size:1.8rem">0</h2><small>🚭 DÍAS SIN FUMAR</small></div></div>
+
+<!-- ========== MEJORA 3: RACHA MÁS BONITA (círculo grande) ========== -->
+<div class="stats-row">
+    <div class="stat-card racha">
+        <div class="racha-circle">
+            <div class="racha-circle-number" id="rachaNumero">0</div>
+            <div class="racha-circle-label">RACHA</div>
+        </div>
+        <small>🔥 DÍAS CONSECUTIVOS</small>
+    </div>
+    <div class="stat-card nosmoke">
+        <h2 id="diasSinFumar" style="color:#007aff;font-size:1.8rem">0</h2>
+        <small>🚭 DÍAS SIN FUMAR</small>
+    </div>
+</div>
+
 <div style="margin-bottom:15px"><div class="card" style="height:200px"><canvas id="grafico"></canvas></div></div>
 <div class="card" style="text-align:center">
     <button onclick="marcarHoyFumado()" style="background:#222;color:#aaa;border:1px solid #555;padding:10px 20px;border-radius:8px;cursor:pointer">🚬 Marcar hoy como fumado</button>
@@ -446,7 +573,16 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="domingo" class="seccion"><div class="sunday-card"><div class="sunday-emoji">🔋✨😴✨💪</div><div class="sunday-title">DÍA DE RECARGA</div></div></div>
 
 <div id="calcModal" class="calc-modal"><span class="close-calc" onclick="cerrarCalc()">&times;</span><h3>🏋️ CALCULAR DISCOS</h3><div class="calc-grid"><button class="calc-btn" onclick="sumarDisco(1.25)">+1.25kg <span class="badge" id="badge125">0</span></button><button class="calc-btn" onclick="sumarDisco(1.5)">+1.5kg <span class="badge" id="badge15">0</span></button><button class="calc-btn" onclick="sumarDisco(2)">+2kg <span class="badge" id="badge2">0</span></button></div><div>PESO TOTAL: <strong id="totalDisco" style="color:#ff6600;font-size:24px">0</strong> kg</div><button class="calc-reset" onclick="resetearDiscos()">🗑️ RESET</button></div>
-<div id="descanso-box"><h1 style="color:#32d74b">💪 DESCANSA</h1><div class="descanso-timer-num" id="descansoTimer">30</div><button onclick="cancelarDescanso()" style="margin-top:30px;background:#222;color:#fff;border:none;padding:12px 30px;border-radius:10px">SALTAR</button></div>
+
+<!-- ========== MEJORA 5: TEMPORIZADOR DE DESCANSO MÁS VISIBLE ========== -->
+<div id="descanso-box">
+    <div style="background: linear-gradient(135deg, #1a1a1a, #0a0a0a); border-radius: 30px; padding: 30px; text-align: center; border: 3px solid #32d74b; box-shadow: 0 0 30px rgba(50,215,75,0.5);">
+        <h1 style="color:#32d74b; margin-bottom: 20px; font-size: 1.8rem;">💪 ¡DESCANSA!</h1>
+        <div class="descanso-timer-num" id="descansoTimer" style="font-size: 6rem; font-weight: bold; color: #32d74b; font-family: monospace; margin: 20px 0;">30</div>
+        <div style="font-size: 0.9rem; color: #aaa; margin-bottom: 20px;">Recupera para la siguiente serie</div>
+        <button onclick="cancelarDescanso()" style="background:#ff6600; color:#000; border:none; padding:12px 30px; border-radius:30px; font-weight:bold; font-size:1rem; cursor:pointer;">SALTAR</button>
+    </div>
+</div>
 
 <div id="resetModal" class="reset-modal"><div class="reset-modal-content"><h3 style="color:#ff3b30;margin-bottom:15px;">⚠️ BORRAR TODO</h3><p style="margin-bottom:15px;">Esto eliminará TODOS tus datos. No se puede deshacer.</p><p style="margin-bottom:15px;">Escribe <strong style="color:#ff6600;">"BORRAR"</strong> para confirmar:</p><input type="text" id="confirmResetInput" placeholder="BORRAR"><div style="display:flex;gap:10px;"><button onclick="cerrarModalReset()" style="flex:1;padding:10px;background:#222;color:#fff;border:none;border-radius:8px;">Cancelar</button><button onclick="confirmarBorrarTodo()" style="flex:1;padding:10px;background:#ff3b30;color:#fff;border:none;border-radius:8px;">Borrar</button></div></div></div>
 
@@ -509,10 +645,19 @@ function actualizarResumenPeso() {
     if(pesosRegistrados && pesosRegistrados.length > 0) {
         document.getElementById('pesoActualResumen').innerText = pesosRegistrados[pesosRegistrados.length-1].valor + ' kg';
         document.getElementById('pesoInicialResumen').innerText = pesosRegistrados[0].valor + ' kg';
+        document.getElementById('widgetPeso').innerText = pesosRegistrados[pesosRegistrados.length-1].valor + ' kg';
     } else {
         document.getElementById('pesoActualResumen').innerText = '-- kg';
         document.getElementById('pesoInicialResumen').innerText = '-- kg';
+        document.getElementById('widgetPeso').innerText = '-- kg';
     }
+}
+
+function actualizarWidget() {
+    document.getElementById('widgetRacha').innerText = diasEntrenados.length;
+    const hoyNombre = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date().getDay()];
+    const rutinaHoy = getRutinaHoy();
+    document.getElementById('widgetHoy').innerHTML = `${hoyNombre}<br><span style="font-size:0.7rem;">${rutinaHoy.substring(0,15)}</span>`;
 }
 
 // ==================== RUTINAS BASE ====================
@@ -636,8 +781,11 @@ function marcarEjercicioHecho(id) { if(checks[id]) return; checks[id] = true; lo
 function marcarDiaCompletadoManual(dia) { const hoyStr = getHoyStr(); const semanaStr = getSemanaActual(); const key = `completado_${dia}_${semanaStr}`; if(localStorage.getItem(key)) return; if(!diasEntrenados.includes(hoyStr)) { diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); } localStorage.setItem(key,"true"); mostrarMensajeMotivador(`🎉 ¡${getTipoCiclo()} completado! Sigue así.`,"completado"); actualizarHome(); renderizarRutinas(); renderizarCalendarios(); if(navigator.vibrate) navigator.vibrate([200,100,200]); canvasConfetti({particleCount:300,spread:100}); }
 
 function actualizarHome() {
-    document.getElementById('racha').innerText = diasEntrenados.length;
+    const racha = diasEntrenados.length;
+    document.getElementById('racha').innerText = racha;
+    document.getElementById('rachaNumero').innerText = racha;
     document.getElementById('diasSinFumar').innerText = calcularDiasSinFumar();
+    actualizarWidget();
     const ctx = document.getElementById('grafico').getContext('2d');
     if(window.miGrafico) window.miGrafico.destroy();
     window.miGrafico = new Chart(ctx, { type: 'line', data: { labels: pesosRegistrados.map(p=>p.fecha), datasets: [{ data: pesosRegistrados.map(p=>p.valor), borderColor: '#ff6600', fill: true, backgroundColor: 'rgba(255,102,0,0.1)' }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } } } });
@@ -763,7 +911,7 @@ function goToday(){const h=['domingo','lunes','martes','miercoles','jueves','vie
 function toggleSubmenu(b){b.classList.toggle('open'); b.nextElementSibling.classList.toggle('show');}
 function openMenu(){document.getElementById('menu-lat').classList.add('open'); document.getElementById('overlay').style.display='block';}
 function closeMenu(){document.getElementById('menu-lat').classList.remove('open'); document.getElementById('overlay').style.display='none';}
-function iniciarDescanso(s){document.getElementById('descanso-box').style.display='flex'; document.getElementById('descansoTimer').innerText=s; let it=setInterval(()=>{s--; document.getElementById('descansoTimer').innerText=s; if(s<=0){clearInterval(it); document.getElementById('descanso-box').style.display='none';}},1000);}
+function iniciarDescanso(s){document.getElementById('descanso-box').style.display='flex'; document.getElementById('descansoTimer').innerText=s; let interval=setInterval(()=>{s--; document.getElementById('descansoTimer').innerText=s; if(s<=0){clearInterval(interval); document.getElementById('descanso-box').style.display='none';}},1000);}
 function cancelarDescanso(){document.getElementById('descanso-box').style.display='none';}
 function abrirCalc(id){ejercicioDiscoActual=id; const g=localStorage.getItem(`discos_${id}`); discosActuales=g?JSON.parse(g):{d125:0,d15:0,d2:0}; actualizarMostrarDiscos(); document.getElementById('calcModal').classList.add('show');}
 function cerrarCalc(){document.getElementById('calcModal').classList.remove('show');}
@@ -783,6 +931,7 @@ window.onload=()=>{
     renderizarLogros();
     if(document.getElementById('progreso-fotos')) inicializarFotosDB();
     actualizarResumenPeso();
+    actualizarWidget();
     const params=new URLSearchParams(window.location.search);
     if(params.get('action')==='weight') go('peso');
     else if(params.get('action')==='train') goToday();
