@@ -697,19 +697,21 @@ const OBJETIVO_PESO = 75;
 
 function getSemanaDelMes() {
     const hoy = new Date();
-    const inicioMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-    const diaSemanaInicio = inicioMes.getDay() || 7;
     const diaMes = hoy.getDate();
-    let semana = Math.ceil((diaMes + diaSemanaInicio - 1) / 7);
-    return Math.min(semana, 4);
+    if (diaMes <= 7) return 1;
+    if (diaMes <= 14) return 2;
+    if (diaMes <= 21) return 3;
+    return 4;
 }
 
+// NUEVA DISTRIBUCIÓN DE CICLOS (según tu captura)
 function getTipoCiclo() {
     const semana = getSemanaDelMes();
     if (semana === 1) return 'FUERZA';
-    if (semana === 2) return 'VOLUMEN';
-    if (semana === 3) return 'DEFINICIÓN';
-    return 'FUERZA';
+    if (semana === 2) return 'DEFINICIÓN';
+    if (semana === 3) return 'VOLUMEN';
+    if (semana === 4) return 'DEFINICIÓN';
+    return 'FUERZA'; // Semana 5 o más
 }
 
 function getConfiguracionCiclo() {
