@@ -203,7 +203,7 @@ header {
 .leg-box { width: 12px; height: 12px; border-radius: 3px; display: inline-block; margin-right: 4px; }
 .peso-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #222; }
 .btn-del { background: none; border: none; color: #ff3b30; font-size: 1.2rem; cursor: pointer; }
-#hist-peso { max-height: 300px; overflow-y: auto; }
+#histPeso { max-height: 300px; overflow-y: auto; }
 .logros-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
 .badge-card { background: #0a0a0a; border-radius: 16px; padding: 12px; text-align: center; border: 1px solid #222; }
 .badge-card.obtenido { border-color: var(--ciclo-color, #ff3b30); }
@@ -285,7 +285,6 @@ header {
 </style>
 </head>
 <body>
-
 <div id="overlay" onclick="closeMenu()"></div>
 
 <nav id="menu-lat">
@@ -367,6 +366,7 @@ header {
         <div id="comparadorResultado" style="display:flex; flex-wrap:wrap; gap:16px; justify-content:center;"></div>
     </div>
 </div>
+
 <!-- PESO -->
 <div id="peso" class="seccion">
     <h2>⚖️ MI PESO</h2>
@@ -379,7 +379,6 @@ header {
 
 <!-- LOGROS -->
 <div id="logros" class="seccion"><h2>🏆 LOGROS</h2><div id="logrosContainer" class="logros-grid"></div></div>
-
 <!-- RUTINAS -->
 <div id="lunes" class="seccion"><h2>💪 ESPALDA / BÍCEPS</h2><div id="badge-lunes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-lunes"></div><div id="estiramientos-lunes"></div><button class="btn-done" onclick="completarDia('lunes')">✅ COMPLETAR ENTRENO</button></div>
 <div id="martes" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="badge-martes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-martes"></div><div id="estiramientos-martes"></div><button class="btn-done" onclick="completarDia('martes')">✅ COMPLETAR ENTRENO</button></div>
@@ -407,7 +406,6 @@ header {
 </div>
 
 <div id="descanso-box"><div class="descanso-contenido"><h1>💪 ¡DESCANSA!</h1><div class="descanso-timer-num" id="descansoTimer">30</div><button onclick="cancelarDescanso()" style="background:var(--ciclo-color); border:none; padding:8px 24px; border-radius:30px;">SALTAR</button></div></div>
-
 <script>
 // ==================== CONFIGURACIÓN CICLOS ====================
 function getSemanaDelMes() {
@@ -437,21 +435,23 @@ function getConfigCiclo() {
     return configs[tipo];
 }
 
-// ==================== PESOS POR EJERCICIO ====================
+// ==================== PESOS POR EJERCICIO (CORREGIDO) ====================
 function getPesoEjercicio(nombre) {
     const tipo = getTipoCiclo();
     const pesos = {
-        "Remo con Barra": { FUERZA: 20, VOLUMEN: 16, DEFINICIÓN: 14 },
+        // 2 mancuernas (peso TOTAL ambas)
         "Sentadillas": { FUERZA: 20, VOLUMEN: 16, DEFINICIÓN: 14 },
         "Peso Muerto Rumano": { FUERZA: 20, VOLUMEN: 16, DEFINICIÓN: 14 },
         "Press banca": { FUERZA: 20, VOLUMEN: 16, DEFINICIÓN: 14 },
+        "Remo con Barra": { FUERZA: 20, VOLUMEN: 16, DEFINICIÓN: 14 },
         "Press Militar Sentado": { FUERZA: 16, VOLUMEN: 12, DEFINICIÓN: 10 },
-        "Remo a una mano": { FUERZA: 16, VOLUMEN: 12, DEFINICIÓN: 10 },
         "Curl de Bíceps": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
-        "Press Francés": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
         "Aperturas con mancuernas": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
-        "Extensión tríceps tras nuca": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
-        "Elevaciones laterales": { FUERZA: 10, VOLUMEN: 7, DEFINICIÓN: 5 }
+        "Press Francés": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
+        "Elevaciones laterales": { FUERZA: 10, VOLUMEN: 7, DEFINICIÓN: 5 },
+        // 1 mancuerna (peso TOTAL esa mancuerna) - CORREGIDO
+        "Remo a una mano": { FUERZA: 10, VOLUMEN: 8, DEFINICIÓN: 6 },
+        "Extensión tríceps tras nuca": { FUERZA: 10, VOLUMEN: 8, DEFINICIÓN: 6 }
     };
     if (pesos[nombre]) return pesos[nombre][tipo];
     return 0;
@@ -503,7 +503,8 @@ const estiramientos = {
     viernes: ["Cuádriceps de pie", "Isquiotibiales sentado"],
     sabado: ["Espalda en el suelo", "Postura del niño"]
 };
-// ==================== VARIABLES GLOBALES (CLAVES ORIGINALES) ====================
+
+// ==================== VARIABLES GLOBALES ====================
 let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
 let pesosRegistrados = JSON.parse(localStorage.getItem('nico_pesos')) || [];
 let diasEntrenados = JSON.parse(localStorage.getItem('nico_dias_entrenados')) || [];
@@ -611,7 +612,6 @@ function marcarEjercicio(id) {
     const dia = id.split('-')[0];
     if (!['martes', 'jueves', 'sabado'].includes(dia)) iniciarDescanso(45);
 }
-
 function completarDia(dia) {
     const ejercicios = document.querySelectorAll(`#lista-${dia} .check-box`);
     const todos = Array.from(ejercicios).every(cb => cb.checked === true);
@@ -645,6 +645,7 @@ function completarDia(dia) {
     canvasConfetti({ particleCount: 200, spread: 100, colors: [config.color, '#fff'] });
     mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO! +1 día de racha`);
 }
+
 // ==================== CALENDARIOS ====================
 let mesGym = new Date().getMonth(), añoGym = new Date().getFullYear();
 let mesSmoke = new Date().getMonth(), añoSmoke = new Date().getFullYear();
@@ -750,6 +751,7 @@ function toggleDia(fStr, esHumo) {
     }
     actualizarUI();
 }
+
 // ==================== PESO ====================
 function agregarPeso() {
     const input = document.getElementById('nuevoPeso');
@@ -853,9 +855,7 @@ function mostrarMedalla(icono, nombre) {
     document.body.appendChild(div);
     setTimeout(() => div.remove(), 2500);
     canvasConfetti({ particleCount: 150, spread: 80 });
-}
-
-// ==================== FOTOS INDEXEDDB (NOMBRE ORIGINAL) ====================
+}// ==================== FOTOS INDEXEDDB ====================
 let db = null;
 const DB_NAME = 'FotosProgresoDB';
 const STORE_NAME = 'diasFotos';
@@ -960,6 +960,7 @@ async function eliminarDia(fecha) {
     cargarSelectores();
     document.getElementById('comparadorResultado').innerHTML = '';
 }
+
 // ==================== CALCULADORA ====================
 let discoActual = '';
 let discos = { d125: 0, d15: 0, d2: 0 };
