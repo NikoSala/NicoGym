@@ -27,7 +27,12 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bottom:80px}
+
+/* MEJORA 7: Fondo dinámico con gradiente */
+body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bottom:80px;
+    background: radial-gradient(circle at 10% 20%, #000000, var(--ciclo-color-oscuro, #0a0a0a));
+    transition: background 0.5s ease;
+}
 
 /* ANIMACIONES */
 @keyframes fadeSlideIn {
@@ -44,10 +49,36 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bot
     50% { transform: scale(1.03); opacity: 0.95; }
     100% { transform: scale(1); opacity: 1; }
 }
+@keyframes dumbbellBounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-15px) rotate(-10deg); }
+    75% { transform: translateY(-8px) rotate(10deg); }
+}
+@keyframes loadingPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
 @keyframes iconPulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
 }
+@keyframes headerWave {
+    0% { transform: scaleX(1); }
+    50% { transform: scaleX(1.01); }
+    100% { transform: scaleX(1); }
+}
+
+.loading-dumbbell {
+    display: inline-block;
+    animation: dumbbellBounce 0.8s ease-in-out infinite;
+    font-size: 2.5rem;
+}
+.loading-dumbbell:nth-child(2) { animation-delay: 0.2s; }
+.loading-dumbbell:nth-child(3) { animation-delay: 0.4s; }
 
 .seccion {
     opacity: 0;
@@ -61,9 +92,12 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bot
     animation: fadeSlideIn 0.3s ease forwards;
 }
 .check-box:active { transform: scale(0.9); }
-.check-box:checked { animation: checkPop 0.3s ease; }
+.check-box:checked { animation: checkPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
 
-header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);display:flex;justify-content:space-between;align-items:center;padding:0 15px;position:sticky;top:0;z-index:1000}
+/* MEJORA 9: Transición suave para el header */
+header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);display:flex;justify-content:space-between;align-items:center;padding:0 15px;position:sticky;top:0;z-index:1000;
+    transition: border-bottom-color 0.5s ease, box-shadow 0.5s ease;
+}
 header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
 .logo{font-weight:900;background:linear-gradient(135deg,#fff, var(--ciclo-color, #ff6600));-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.3rem}
 .menu-icon{font-size:1.8rem;cursor:pointer;color: var(--ciclo-color, #ff6600);}
@@ -77,17 +111,33 @@ header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
 #menu-lat{position:fixed;left:-280px;top:0;width:280px;height:100%;background:#0a0a0a;transition:.3s;z-index:2000;border-right:2px solid var(--ciclo-color, #ff6600);overflow-y:auto}
 #menu-lat.open{left:0}
 #overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;z-index:1500}
-.nav-btn{padding:18px;border-bottom:1px solid #222;color:#fff;display:block;font-weight:bold;cursor:pointer}
+.nav-btn{padding:18px;border-bottom:1px solid #222;color:#fff;display:block;font-weight:bold;cursor:pointer;
+    position: relative;
+    overflow: hidden;
+}
 .nav-btn:hover { background: var(--ciclo-color, #ff6600); color: #000; }
-.submenu-btn{background:#0f0f0f;display:flex;justify-content:space-between;padding:18px;border-bottom:1px solid #222;font-weight:bold;cursor:pointer}
+.submenu-btn{background:#0f0f0f;display:flex;justify-content:space-between;padding:18px;border-bottom:1px solid #222;font-weight:bold;cursor:pointer;
+    position: relative;
+    overflow: hidden;
+}
 .submenu-btn .arrow{transition:.3s;font-size:.8rem}
 .submenu-btn.open .arrow{transform:rotate(180deg)}
 .submenu-items{max-height:0;overflow:hidden;transition:max-height .3s;background:#050505}
 .submenu-items.show{max-height:400px}
-.sub-link{padding:12px 35px;color:#aaa;font-size:.9rem;border-bottom:1px solid #111;display:block;cursor:pointer}
+.sub-link{padding:12px 35px;color:#aaa;font-size:.9rem;border-bottom:1px solid #111;display:block;cursor:pointer;
+    position: relative;
+    overflow: hidden;
+}
 .sub-link:hover { background: var(--ciclo-color, #ff6600); color: #000; }
 .debug-btn{margin-top:30px;padding:10px;background:0;color:#333;border:1px solid #222;border-radius:8px;font-size:.7rem;text-align:center;cursor:pointer}
-.card{background:#111;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+
+/* MEJORA 2: Neumorfismo en tarjetas */
+.card{background:#111;border-radius:12px;padding:15px;margin-bottom:12px;
+    background: rgba(17, 17, 17, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.3), -3px -3px 10px rgba(255,255,255,0.03);
+}
 .stats-row{display:flex;gap:10px;margin-bottom:15px}
 .stat-card{flex:1;background:#111;border-radius:16px;padding:12px;text-align:center}
 .stat-card h2{font-size:1.6rem;font-weight:bold}
@@ -105,7 +155,32 @@ header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
 .detalles{display:none;background:#050505;padding:10px;border-radius:8px;margin-top:10px;border-left:3px solid var(--ciclo-color, #ff6600)}
 .detalles.show{display:block}
 .ex-img{width:100%;max-width:200px;border-radius:8px;margin:10px auto;display:block}
-.btn-main{width:100%;padding:10px;background:#222;color: var(--ciclo-color, #ff6600);border:1px solid var(--ciclo-color, #ff6600);border-radius:8px;font-weight:bold;margin:10px 0;cursor:pointer}
+
+/* MEJORA 4 + 8: GLOW en botones + Efecto ripple */
+.btn-main{width:100%;padding:10px;background:#222;color: var(--ciclo-color, #ff6600);border:1px solid var(--ciclo-color, #ff6600);border-radius:8px;font-weight:bold;margin:10px 0;cursor:pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.btn-main:hover {
+    box-shadow: 0 0 15px var(--ciclo-color, #ff6600);
+}
+.btn-main::after, .nav-btn::after, .sub-link::after, .submenu-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+.btn-main:active::after, .nav-btn:active::after, .sub-link:active::after, .submenu-btn:active::after {
+    width: 200px;
+    height: 200px;
+}
 .check-box{width:35px;height:35px;accent-color:#32d74b;cursor:pointer}
 .check-box:disabled{opacity:0.5;cursor:not-allowed}
 .input-nota{width:100%;padding:10px;background:#000;border:1px solid #333;color:#fff;border-radius:6px;margin-top:8px}
@@ -160,8 +235,20 @@ header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
 .cycle-stat { background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; }
 .cycle-stat strong { font-size: 0.9rem; display: block; }
 .cycle-objetivo { background: rgba(0,0,0,0.5); border-radius: 10px; padding: 5px 8px; margin-top: 6px; font-size: 0.65rem; }
-.cycle-bar { margin-top: 8px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
-.cycle-bar-fill { height: 100%; }
+
+/* MEJORA 3: Barra de progreso con shimmer */
+.cycle-bar { margin-top: 8px; height: 6px; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden; }
+.cycle-bar-fill { height: 100%; border-radius: 10px; transition: width 0.5s ease; position: relative; }
+.cycle-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+}
 
 /* Badge de ciclo en cada día */
 .day-cycle-badge {
@@ -211,7 +298,8 @@ header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
 
 /* EJERCICIO VISUAL */
 .exercise-card {
-    background: #0a0a0a;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(4px);
     border-radius: 16px;
     padding: 15px;
     margin-bottom: 12px;
@@ -291,10 +379,11 @@ header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
 /* CALENDARIOS */
 .cal-wrapper{display:flex;flex-direction:column;gap:20px;margin-top:10px}
 .cal-card{
-    background:#111;
+    background: rgba(17, 17, 17, 0.85);
+    backdrop-filter: blur(8px);
     border-radius:15px;
     padding:15px;
-    border:1px solid #222;
+    border:1px solid rgba(255,255,255,0.08);
     max-width:400px;
     margin:0 auto;
     width:100%;
@@ -307,8 +396,10 @@ header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
     text-transform:uppercase;
     transition: color 0.3s ease;
 }
-.cal-nav button{background:#222;border:none;color:#fff;padding:6px 12px;border-radius:6px;font-size:1rem;cursor:pointer}
-.cal-nav button:hover { background: var(--ciclo-color, #ff6600); }
+.cal-nav button{background:#222;border:none;color:#fff;padding:6px 12px;border-radius:6px;font-size:1rem;cursor:pointer;
+    transition: all 0.3s ease;
+}
+.cal-nav button:hover { background: var(--ciclo-color, #ff6600); box-shadow: 0 0 10px var(--ciclo-color, #ff6600);}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .cal-day-label{font-size:0.7rem;text-align:center;color:#555;padding-bottom:5px;font-weight:bold}
 .cal-cell{aspect-ratio:1;background:#0a0a0a;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:#444;transition:0.2s;cursor:pointer}
@@ -316,7 +407,7 @@ header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
 .cal-cell.fumado{background:#ff3b30;color:#fff;font-weight:bold}
 .cal-cell.nosmoke{background:#007aff;color:#fff}
 .cal-cell.domingo{background:#8b5cf6;color:#fff;font-weight:bold}
-.cal-cell.today{border:2px solid var(--ciclo-color, #ff6600)}
+.cal-cell.today{border:2px solid var(--ciclo-color, #ff6600); box-shadow: 0 0 5px var(--ciclo-color, #ff6600);}
 .cal-cell.future{opacity:0.2;cursor:not-allowed}
 .cal-legend{display:flex;gap:12px;margin-top:12px;font-size:0.7rem;justify-content:center}
 .leg-item{display:flex;align-items:center;gap:5px}
@@ -433,9 +524,37 @@ header { border-bottom: 2px solid var(--ciclo-color, #ff6600); }
     100% { transform: rotate(360deg) scale(0.8); opacity: 0; }
 }
 
+/* MEJORA 6: Tooltips */
+[data-tooltip] {
+    position: relative;
+    cursor: help;
+}
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: var(--ciclo-color, #ff6600);
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 100;
+    border: 1px solid var(--ciclo-color, #ff6600);
+}
+[data-tooltip]:hover::before {
+    opacity: 1;
+}
+
 /* Variables CSS dinámicas */
 :root {
     --ciclo-color: #ff6600;
+    --ciclo-color-oscuro: #0a0a0a;
 }
 </style>
 </head>
@@ -584,9 +703,9 @@ function getTipoCiclo() {
 function getConfiguracionCiclo() {
     const tipo = getTipoCiclo();
     const configs = {
-        FUERZA: { nombre: '🏋️ FUERZA', emoji: '🏋️', color: '#ff3b30', series: '4-5', reps: '3-5', peso: 'PESADO (16-18kg)', desc: 'Pocas reps, mucho peso', objetivo: 'GANAR FUERZA MÁXIMA', iconoHeader: '🔴🏋️' },
-        VOLUMEN: { nombre: '💪 VOLUMEN', emoji: '💪', color: '#32d74b', series: '3-4', reps: '8-12', peso: 'MODERADO (10-12kg)', desc: 'Reps medias, peso moderado', objetivo: 'HIPERTROFIA', iconoHeader: '🟢💪' },
-        DEFINICIÓN: { nombre: '🔥 DEFINICIÓN', emoji: '🔥', color: '#ffd60a', series: '3-4', reps: '15-20', peso: 'LIGERO (6-8kg)', desc: 'Muchas reps, poco peso', objetivo: 'QUEMAR GRASA', iconoHeader: '🟡🔥' }
+        FUERZA: { nombre: '🏋️ FUERZA', emoji: '🏋️', color: '#ff3b30', series: '4-5', reps: '3-5', peso: 'PESADO (16-18kg)', desc: 'Pocas reps, mucho peso', objetivo: 'GANAR FUERZA MÁXIMA', iconoHeader: '🔴🏋️', tooltip: 'Semana de FUERZA - Series pesadas con pocas repeticiones' },
+        VOLUMEN: { nombre: '💪 VOLUMEN', emoji: '💪', color: '#32d74b', series: '3-4', reps: '8-12', peso: 'MODERADO (10-12kg)', desc: 'Reps medias, peso moderado', objetivo: 'HIPERTROFIA', iconoHeader: '🟢💪', tooltip: 'Semana de VOLUMEN - Repeticiones medias para ganar músculo' },
+        DEFINICIÓN: { nombre: '🔥 DEFINICIÓN', emoji: '🔥', color: '#ffd60a', series: '3-4', reps: '15-20', peso: 'LIGERO (6-8kg)', desc: 'Muchas reps, poco peso', objetivo: 'QUEMAR GRASA', iconoHeader: '🟡🔥', tooltip: 'Semana de DEFINICIÓN - Muchas repeticiones para marcar' }
     };
     return configs[tipo];
 }
@@ -596,22 +715,44 @@ function actualizarIconoHeader() {
     const iconoElement = document.getElementById('cicloIconoHeader');
     if(iconoElement) {
         iconoElement.textContent = config.iconoHeader;
+        iconoElement.setAttribute('data-tooltip', config.tooltip);
     }
 }
 
 function actualizarColoresCiclo() {
     const config = getConfiguracionCiclo();
     const color = config.color;
+    const tipo = getTipoCiclo().toLowerCase();
+    
+    // Color oscuro para el fondo
+    let colorOscuro = '#0a0a0a';
+    if(tipo === 'fuerza') colorOscuro = '#1a0505';
+    if(tipo === 'volumen') colorOscuro = '#051505';
+    if(tipo === 'definicion') colorOscuro = '#1a1a05';
+    
     document.documentElement.style.setProperty('--ciclo-color', color);
+    document.documentElement.style.setProperty('--ciclo-color-oscuro', colorOscuro);
     
     const header = document.querySelector('header');
-    if(header) header.style.borderBottomColor = color;
+    if(header) {
+        header.style.borderBottomColor = color;
+        // MEJORA 9: Animación de ola en header
+        header.style.animation = 'headerWave 0.5s ease';
+        setTimeout(() => {
+            header.style.animation = '';
+        }, 500);
+    }
     
     const logoSpan = document.querySelector('.logo span');
     if(logoSpan) logoSpan.style.color = color;
     
     const totalDisco = document.getElementById('totalDisco');
     if(totalDisco) totalDisco.style.color = color;
+    
+    // Actualizar tooltips de badges de ciclo
+    document.querySelectorAll('.day-cycle-badge, .exercise-badge').forEach(el => {
+        el.setAttribute('data-tooltip', config.tooltip);
+    });
 }
 
 function actualizarBadgesCicloDia() {
@@ -624,7 +765,8 @@ function actualizarBadgesCicloDia() {
         const badge = document.getElementById(`cycleBadge-${dia}`);
         if(badge) { 
             badge.className = `day-cycle-badge ${badgeClass}`;
-            badge.innerText = badgeText; 
+            badge.innerText = badgeText;
+            badge.setAttribute('data-tooltip', config.tooltip);
         }
     }
 }
@@ -792,7 +934,7 @@ function renderizarRutinas() {
             if(!ex.esTiempo && !ex.serieTexto.includes("AL FALLO") && !ex.serieTexto.includes("min")) {
                 serieMostrada = `${configCiclo.series} x ${configCiclo.reps}`;
             }
-            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name ${tipo}">${ex.nombre}</span><span class="exercise-badge ${tipo}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value ${tipo}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value ${tipo}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value ${tipo}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
+            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name ${tipo}">${ex.nombre}</span><span class="exercise-badge ${tipo}" data-tooltip="${configCiclo.tooltip}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value ${tipo}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value ${tipo}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value ${tipo}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
         }).join('');
         const stretchList = document.getElementById(`stretches-${dia}`);
         if(stretchList && estiramientosPorDia[dia]) stretchList.innerHTML = `<div class="stretch-card"><strong>🧘 ESTIRAMIENTOS:</strong><ul style="margin-left:20px;margin-top:5px">${estiramientosPorDia[dia].map(s => `<li>${s}</li>`).join('')}</ul></div>`;
@@ -800,7 +942,31 @@ function renderizarRutinas() {
 }
 
 function marcarEjercicioHecho(id) { if(checks[id]) return; checks[id] = true; localStorage.setItem('nico_checks', JSON.stringify(checks)); actualizarHome(); renderizarRutinas(); if(navigator.vibrate) navigator.vibrate(50); const dia = id.split('-')[0]; if (!['martes','jueves','sabado'].includes(dia)) iniciarDescanso(30); }
-function marcarDiaCompletadoManual(dia) { const hoyStr = getHoyStr(); const semanaStr = getSemanaActual(); const key = `completado_${dia}_${semanaStr}`; if(localStorage.getItem(key)) return; if(!diasEntrenados.includes(hoyStr)) { diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); } localStorage.setItem(key,"true"); actualizarHome(); renderizarRutinas(); renderizarCalendarios(); if(navigator.vibrate) navigator.vibrate([200,100,200]); canvasConfetti({particleCount:300,spread:100}); }
+
+// MEJORA 5: Confeti del color del ciclo
+function marcarDiaCompletadoManual(dia) { 
+    const hoyStr = getHoyStr(); 
+    const semanaStr = getSemanaActual(); 
+    const key = `completado_${dia}_${semanaStr}`; 
+    if(localStorage.getItem(key)) return; 
+    if(!diasEntrenados.includes(hoyStr)) { 
+        diasEntrenados.push(hoyStr); 
+        localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); 
+    } 
+    localStorage.setItem(key,"true"); 
+    actualizarHome(); 
+    renderizarRutinas(); 
+    renderizarCalendarios(); 
+    if(navigator.vibrate) navigator.vibrate([200,100,200]); 
+    
+    // Confeti del color del ciclo
+    const config = getConfiguracionCiclo();
+    canvasConfetti({
+        particleCount: 200,
+        spread: 100,
+        colors: [config.color, '#ffffff', '#000000']
+    });
+}
 
 function actualizarHome() {
     actualizarBannerUnificado();
