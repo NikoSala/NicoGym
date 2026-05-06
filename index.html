@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>NICO GYM - Ciclo Personalizado</title>
+<title>NICO GYM - Ciclo Mensual</title>
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -149,7 +149,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .badge-obtenido{font-size:.7rem;color:#32d74b}
 .badge-bloqueado{font-size:.7rem;color:#555}
 
-/* CICLO VISUAL CON NEONES */
+/* CICLO VISUAL */
 .cycle-card {
     border-radius: 16px;
     padding: 12px;
@@ -160,17 +160,14 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .cycle-card.fuerza {
     background: linear-gradient(135deg, #2a0a0a, #1a0505);
     border: 2px solid #ff3b30;
-    box-shadow: 0 0 15px rgba(255,59,48,0.5);
 }
 .cycle-card.volumen {
     background: linear-gradient(135deg, #0a2a0a, #051505);
     border: 2px solid #32d74b;
-    box-shadow: 0 0 15px rgba(50,215,75,0.5);
 }
 .cycle-card.definicion {
     background: linear-gradient(135deg, #2a2a0a, #151505);
     border: 2px solid #ffd60a;
-    box-shadow: 0 0 15px rgba(255,214,10,0.5);
 }
 .cycle-emoji { font-size: 1.8rem; display: inline-block; }
 .cycle-title { font-size: 1rem; font-weight: bold; display: inline-block; margin-left: 5px; }
@@ -180,10 +177,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .cycle-stat strong { font-size: 0.9rem; display: block; }
 .cycle-objetivo { background: rgba(0,0,0,0.5); border-radius: 10px; padding: 5px 8px; margin-top: 6px; font-size: 0.65rem; }
 .cycle-bar { margin-top: 8px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
-.cycle-bar-fill { height: 100%; border-radius: 4px; }
-.cycle-card.fuerza .cycle-bar-fill { background: #ff3b30; }
-.cycle-card.volumen .cycle-bar-fill { background: #32d74b; }
-.cycle-card.definicion .cycle-bar-fill { background: #ffd60a; }
+.cycle-bar-fill { height: 100%; background: #ff6600; }
 
 /* Badge de ciclo en cada día */
 .day-cycle-badge {
@@ -194,37 +188,29 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     font-weight: bold;
     margin-bottom: 12px;
 }
-.day-cycle-badge.fuerza { background: #ff3b30; color: #fff; box-shadow: 0 0 5px #ff3b30; }
-.day-cycle-badge.volumen { background: #32d74b; color: #000; box-shadow: 0 0 5px #32d74b; }
-.day-cycle-badge.definicion { background: #ffd60a; color: #000; box-shadow: 0 0 5px #ffd60a; }
+.day-cycle-badge.fuerza { background: #ff3b30; color: #fff; }
+.day-cycle-badge.volumen { background: #32d74b; color: #000; }
+.day-cycle-badge.definicion { background: #ffd60a; color: #000; }
 
 /* BANNER UNIFICADO */
 .banner-unificado {
     border-radius: 16px;
-    padding: 15px;
+    padding: 12px;
     margin-bottom: 15px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 10px;
+    background: #0a0a0a;
 }
-.banner-unificado.fuerza {
-    background: linear-gradient(135deg, #1a0a0a, #0a0505);
-    border: 1px solid #ff3b30;
-}
-.banner-unificado.volumen {
-    background: linear-gradient(135deg, #0a1a0a, #050a05);
-    border: 1px solid #32d74b;
-}
-.banner-unificado.definicion {
-    background: linear-gradient(135deg, #1a1a0a, #0a0a05);
-    border: 1px solid #ffd60a;
-}
+.banner-unificado.fuerza { border: 1px solid #ff3b30; }
+.banner-unificado.volumen { border: 1px solid #32d74b; }
+.banner-unificado.definicion { border: 1px solid #ffd60a; }
 .banner-item {
     flex: 1;
     text-align: center;
-    min-width: 70px;
+    min-width: 60px;
 }
 .banner-label {
     font-size: 0.6rem;
@@ -232,15 +218,17 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     text-transform: uppercase;
 }
 .banner-value {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
 }
 .banner-unificado.fuerza .banner-value { color: #ff3b30; }
 .banner-unificado.volumen .banner-value { color: #32d74b; }
 .banner-unificado.definicion .banner-value { color: #ffd60a; }
 
-/* Botón entrenar hoy con neón */
+/* Botón entrenar hoy */
 .btn-entrenar-hoy {
+    background: #ff6600;
+    color: #fff;
     border: none;
     padding: 12px 20px;
     border-radius: 30px;
@@ -250,47 +238,22 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     text-align: center;
     margin-bottom: 15px;
     cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.2s ease;
 }
-.btn-entrenar-hoy:active {
-    transform: scale(0.97);
-}
-.btn-entrenar-hoy.fuerza {
-    background: linear-gradient(135deg, #ff3b30, #cc0000);
-    color: #fff;
-    box-shadow: 0 0 10px rgba(255,59,48,0.5);
-}
-.btn-entrenar-hoy.volumen {
-    background: linear-gradient(135deg, #32d74b, #1a8a2e);
-    color: #fff;
-    box-shadow: 0 0 10px rgba(50,215,75,0.5);
-}
-.btn-entrenar-hoy.definicion {
-    background: linear-gradient(135deg, #ffd60a, #ccaa00);
-    color: #000;
-    box-shadow: 0 0 10px rgba(255,214,10,0.5);
-}
+.btn-entrenar-hoy.fuerza { background: #ff3b30; }
+.btn-entrenar-hoy.volumen { background: #32d74b; }
+.btn-entrenar-hoy.definicion { background: #ffd60a; color: #000; }
 
-/* EJERCICIO VISUAL CON NEONES COMPLETOS */
+/* EJERCICIO VISUAL */
 .exercise-card {
     background: #0a0a0a;
     border-radius: 16px;
     padding: 15px;
     margin-bottom: 12px;
-    transition: box-shadow 0.2s ease;
+    border-left: 5px solid #ff6600;
 }
-.exercise-card.fuerza { 
-    border-left: 5px solid #ff3b30;
-    box-shadow: 0 0 8px rgba(255,59,48,0.3);
-}
-.exercise-card.volumen { 
-    border-left: 5px solid #32d74b;
-    box-shadow: 0 0 8px rgba(50,215,75,0.3);
-}
-.exercise-card.definicion { 
-    border-left: 5px solid #ffd60a;
-    box-shadow: 0 0 8px rgba(255,214,10,0.3);
-}
+.exercise-card.fuerza { border-left-color: #ff3b30; }
+.exercise-card.volumen { border-left-color: #32d74b; }
+.exercise-card.definicion { border-left-color: #ffd60a; }
 .exercise-header {
     display: flex;
     justify-content: space-between;
@@ -306,9 +269,9 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     font-size: 0.7rem;
     font-weight: bold;
 }
-.exercise-badge.fuerza { background: #ff3b30; color: #fff; box-shadow: 0 0 5px #ff3b30; }
-.exercise-badge.volumen { background: #32d74b; color: #000; box-shadow: 0 0 5px #32d74b; }
-.exercise-badge.definicion { background: #ffd60a; color: #000; box-shadow: 0 0 5px #ffd60a; }
+.exercise-badge.fuerza { background: #ff3b30; color: #fff; }
+.exercise-badge.volumen { background: #32d74b; color: #000; }
+.exercise-badge.definicion { background: #ffd60a; color: #000; }
 .exercise-detail {
     display: flex;
     justify-content: space-around;
@@ -364,7 +327,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     max-width:400px;
     margin:0 auto;
     width:100%;
-    transition: all 0.3s ease;
+    transition: border 0.3s ease;
 }
 .cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .cal-nav span{
@@ -525,7 +488,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <!-- ==================== HOME ==================== -->
 <div id="home" class="seccion active">
     
-    <!-- ANIMACIÓN DE CARGA (se ve por 500ms) -->
+    <!-- ANIMACIÓN DE CARGA (desaparece cuando los datos están listos) -->
     <div id="loadingAnimation" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px;">
         <div>
             <span class="loading-dumbbell">🏋️</span>
@@ -536,7 +499,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
         <div style="margin-top: 15px; font-size: 0.7rem; color: #555;">Cargando tu progreso</div>
     </div>
     
-    <!-- CONTENIDO REAL (oculto hasta cargar) -->
+    <!-- CONTENIDO REAL (se muestra al cargar) -->
     <div id="contenidoHome" style="display: none;">
         
         <!-- Banner del ciclo -->
@@ -601,35 +564,35 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
         <h3>📅 SUBIR FOTOS DE HOY</h3>
         <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:20px;">
             <div style="background:#0a0a0a; border-radius:16px; padding:12px; text-align:center; border:1px solid #333;">
-                <div style="font-size:2rem; margin-bottom:5px;">😀</div><div style="font-size:0.7rem; color:#aaa; margin-bottom:8px;">FRENTE</div>
-                <input type="file" id="foto0" accept="image/*" style="width:100%; font-size:0.7rem; padding:6px; background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:8px;">
-                <div id="status0" style="font-size:0.6rem; margin-top:6px;"></div>
+                <div style="font-size:2rem;">😀</div><div style="font-size:0.7rem; color:#aaa;">FRENTE</div>
+                <input type="file" id="foto0" accept="image/*" style="width:100%; font-size:0.7rem; margin-top:5px;">
+                <div id="status0" style="font-size:0.6rem; margin-top:5px;"></div>
             </div>
             <div style="background:#0a0a0a; border-radius:16px; padding:12px; text-align:center; border:1px solid #333;">
-                <div style="font-size:2rem; margin-bottom:5px;">🙃</div><div style="font-size:0.7rem; color:#aaa; margin-bottom:8px;">ESPALDA</div>
-                <input type="file" id="foto1" accept="image/*" style="width:100%; font-size:0.7rem; padding:6px; background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:8px;">
-                <div id="status1" style="font-size:0.6rem; margin-top:6px;"></div>
+                <div style="font-size:2rem;">🙃</div><div style="font-size:0.7rem; color:#aaa;">ESPALDA</div>
+                <input type="file" id="foto1" accept="image/*" style="width:100%; font-size:0.7rem; margin-top:5px;">
+                <div id="status1" style="font-size:0.6rem; margin-top:5px;"></div>
             </div>
             <div style="background:#0a0a0a; border-radius:16px; padding:12px; text-align:center; border:1px solid #333;">
-                <div style="font-size:2rem; margin-bottom:5px;">⬅️</div><div style="font-size:0.7rem; color:#aaa; margin-bottom:8px;">IZQUIERDO</div>
-                <input type="file" id="foto2" accept="image/*" style="width:100%; font-size:0.7rem; padding:6px; background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:8px;">
-                <div id="status2" style="font-size:0.6rem; margin-top:6px;"></div>
+                <div style="font-size:2rem;">⬅️</div><div style="font-size:0.7rem; color:#aaa;">IZQUIERDO</div>
+                <input type="file" id="foto2" accept="image/*" style="width:100%; font-size:0.7rem; margin-top:5px;">
+                <div id="status2" style="font-size:0.6rem; margin-top:5px;"></div>
             </div>
             <div style="background:#0a0a0a; border-radius:16px; padding:12px; text-align:center; border:1px solid #333;">
-                <div style="font-size:2rem; margin-bottom:5px;">➡️</div><div style="font-size:0.7rem; color:#aaa; margin-bottom:8px;">DERECHO</div>
-                <input type="file" id="foto3" accept="image/*" style="width:100%; font-size:0.7rem; padding:6px; background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:8px;">
-                <div id="status3" style="font-size:0.6rem; margin-top:6px;"></div>
+                <div style="font-size:2rem;">➡️</div><div style="font-size:0.7rem; color:#aaa;">DERECHO</div>
+                <input type="file" id="foto3" accept="image/*" style="width:100%; font-size:0.7rem; margin-top:5px;">
+                <div id="status3" style="font-size:0.6rem; margin-top:5px;"></div>
             </div>
         </div>
-        <button id="btnGuardarFotos" onclick="guardarFotosIndexedDB()" style="width:100%; padding:14px; background:#ff6600; color:#000; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">💾 GUARDAR LAS 4 FOTOS DE HOY</button>
+        <button id="btnGuardarFotos" onclick="guardarFotosIndexedDB()" style="width:100%; padding:14px; background:#ff6600; color:#000; border:none; border-radius:12px; font-weight:bold;">💾 GUARDAR LAS 4 FOTOS DE HOY</button>
         <div id="mensajeFotosDB" style="margin-top:12px; text-align:center; font-size:0.8rem;"></div>
     </div>
-    <div class="card"><h3>📚 MIS DÍAS GUARDADOS</h3><div id="listaDiasDB" style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto; overflow-x:hidden;"></div></div>
+    <div class="card"><h3>📚 MIS DÍAS GUARDADOS</h3><div id="listaDiasDB" style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto;"></div></div>
     <div class="card"><h3>🔍 COMPARAR DOS DÍAS</h3>
-        <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap; align-items:flex-end;">
-            <div style="flex:1; min-width:130px;"><div style="font-size:0.7rem; color:#aaa; margin-bottom:5px;">📅 PRIMER DÍA</div><select id="compararDia1" style="width:100%; padding:10px; background:#000; color:#fff; border-radius:8px; border:1px solid #333;"></select></div>
-            <div style="flex:1; min-width:130px;"><div style="font-size:0.7rem; color:#aaa; margin-bottom:5px;">📅 SEGUNDO DÍA</div><select id="compararDia2" style="width:100%; padding:10px; background:#000; color:#fff; border-radius:8px; border:1px solid #333;"></select></div>
-            <button onclick="compararDosDias()" style="padding:10px 20px; background:#32d74b; color:#000; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">👀 COMPARAR</button>
+        <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:130px;"><div style="font-size:0.7rem; color:#aaa;">📅 PRIMER DÍA</div><select id="compararDia1" style="width:100%; padding:10px; background:#000; color:#fff; border-radius:8px;"></select></div>
+            <div style="flex:1; min-width:130px;"><div style="font-size:0.7rem; color:#aaa;">📅 SEGUNDO DÍA</div><select id="compararDia2" style="width:100%; padding:10px; background:#000; color:#fff; border-radius:8px;"></select></div>
+            <button onclick="compararDosDias()" style="padding:10px 20px; background:#32d74b; color:#000; border:none; border-radius:8px;">👀 COMPARAR</button>
         </div>
         <div id="comparadorResultado" style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center; margin-top:15px;"></div>
     </div>
@@ -648,17 +611,8 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="domingo" class="seccion"><div class="sunday-card"><div class="sunday-emoji">🔋✨😴✨💪</div><div class="sunday-title">DÍA DE RECARGA</div></div></div>
 
 <div id="calcModal" class="calc-modal"><span class="close-calc" onclick="cerrarCalc()">&times;</span><h3>🏋️ CALCULAR DISCOS</h3><div class="calc-grid"><button class="calc-btn" onclick="sumarDisco(1.25)">+1.25kg <span class="badge" id="badge125">0</span></button><button class="calc-btn" onclick="sumarDisco(1.5)">+1.5kg <span class="badge" id="badge15">0</span></button><button class="calc-btn" onclick="sumarDisco(2)">+2kg <span class="badge" id="badge2">0</span></button></div><div>PESO TOTAL: <strong id="totalDisco" style="color:#ff6600;font-size:24px">0</strong> kg</div><button class="calc-reset" onclick="resetearDiscos()">🗑️ RESET</button></div>
-
-<div id="descanso-box">
-    <div class="descanso-contenido">
-        <h1 style="color:#32d74b; margin-bottom: 15px; font-size: 1.6rem;">💪 ¡DESCANSA!</h1>
-        <div class="descanso-timer-num" id="descansoTimer">30</div>
-        <div style="font-size: 0.8rem; color: #aaa; margin-bottom: 20px;">Recupera para la siguiente serie</div>
-        <button onclick="cancelarDescanso()" style="background:#ff6600; color:#000; border:none; padding:10px 25px; border-radius:25px; font-weight:bold; font-size:0.9rem; cursor:pointer;">SALTAR</button>
-    </div>
-</div>
-
-<div id="resetModal" class="reset-modal"><div class="reset-modal-content"><h3 style="color:#ff3b30;margin-bottom:15px;">⚠️ BORRAR TODO</h3><p style="margin-bottom:15px;">Esto eliminará TODOS tus datos. No se puede deshacer.</p><p style="margin-bottom:15px;">Escribe <strong style="color:#ff6600;">"BORRAR"</strong> para confirmar:</p><input type="text" id="confirmResetInput" placeholder="BORRAR"><div style="display:flex;gap:10px;"><button onclick="cerrarModalReset()" style="flex:1;padding:10px;background:#222;color:#fff;border:none;border-radius:8px;">Cancelar</button><button onclick="confirmarBorrarTodo()" style="flex:1;padding:10px;background:#ff3b30;color:#fff;border:none;border-radius:8px;">Borrar</button></div></div></div>
+<div id="descanso-box"><div class="descanso-contenido"><h1 style="color:#32d74b;">💪 ¡DESCANSA!</h1><div class="descanso-timer-num" id="descansoTimer">30</div><button onclick="cancelarDescanso()" style="background:#ff6600; color:#000; border:none; padding:10px 25px; border-radius:25px;">SALTAR</button></div></div>
+<div id="resetModal" class="reset-modal"><div class="reset-modal-content"><h3 style="color:#ff3b30;">⚠️ BORRAR TODO</h3><p>Esto eliminará TODOS tus datos.</p><p>Escribe <strong style="color:#ff6600;">"BORRAR"</strong> para confirmar:</p><input type="text" id="confirmResetInput" placeholder="BORRAR"><div style="display:flex;gap:10px;"><button onclick="cerrarModalReset()" style="flex:1;padding:10px;background:#222;color:#fff;border-radius:8px;">Cancelar</button><button onclick="confirmarBorrarTodo()" style="flex:1;padding:10px;background:#ff3b30;color:#fff;border-radius:8px;">Borrar</button></div></div></div>
 
 <script>
 // ==================== CICLO MENSUAL ====================
@@ -714,7 +668,7 @@ function actualizarBannerCiclo() {
     const card = document.getElementById('cycleCard');
     if(card) {
         card.className = `cycle-card ${tipo}`;
-        card.innerHTML = `<div><span class="cycle-emoji">${config.emoji}</span><span class="cycle-title" style="color:${config.color}">${config.nombre}</span></div><div class="cycle-semana">📅 Semana ${semana} de 4</div><div class="cycle-bar"><div class="cycle-bar-fill" style="width:${porcentaje}%"></div></div><div class="cycle-stats"><div class="cycle-stat"><strong>${config.series}</strong> Series</div><div class="cycle-stat"><strong>${config.reps}</strong> Reps</div><div class="cycle-stat"><strong>${config.peso}</strong></div></div><div class="cycle-objetivo">🎯 ${config.objetivo}</div>`;
+        card.innerHTML = `<div><span class="cycle-emoji">${config.emoji}</span><span class="cycle-title" style="color:${config.color}">${config.nombre}</span></div><div class="cycle-semana">📅 Semana ${semana} de 4</div><div class="cycle-bar"><div class="cycle-bar-fill" style="width:${porcentaje}%; background:${config.color}"></div></div><div class="cycle-stats"><div class="cycle-stat"><strong>${config.series}</strong> Series</div><div class="cycle-stat"><strong>${config.reps}</strong> Reps</div><div class="cycle-stat"><strong>${config.peso}</strong></div></div><div class="cycle-objetivo">🎯 ${config.objetivo}</div>`;
     }
 }
 
@@ -733,10 +687,8 @@ function actualizarBannerUnificado() {
     document.getElementById('bannerObjetivo').innerText = OBJETIVO_PESO + ' kg';
 }
 
-function aplicarColoresDinamicos() {
+function actualizarBotonesYCiclo() {
     const tipo = getTipoCiclo().toLowerCase();
-    const config = getConfiguracionCiclo();
-    const colorPrincipal = config.color;
     
     // Botón entrenar hoy
     const btnEntrenar = document.getElementById('btnEntrenarHoy');
@@ -750,36 +702,13 @@ function aplicarColoresDinamicos() {
         banner.className = `banner-unificado ${tipo}`;
     }
     
-    // Calendario: borde y nombre del mes
+    // Calendario: borde y nombre del mes (solo si existe)
     const calGymCard = document.getElementById('calGymCard');
     if(calGymCard) {
-        calGymCard.style.border = `1px solid ${colorPrincipal}`;
-    }
-    const monthSpanGym = document.getElementById('cal-month-gym');
-    if(monthSpanGym) {
-        monthSpanGym.style.color = colorPrincipal;
-    }
-}
-
-function actualizarColoresCalendario() {
-    const colorPrincipal = getConfiguracionCiclo().color;
-    const calGymCard = document.getElementById('calGymCard');
-    if(calGymCard) {
-        calGymCard.style.border = `1px solid ${colorPrincipal}`;
-    }
-    const monthSpanGym = document.getElementById('cal-month-gym');
-    if(monthSpanGym) {
-        monthSpanGym.style.color = colorPrincipal;
-    }
-}
-
-function ocultarLoading() {
-    const loading = document.getElementById('loadingAnimation');
-    const contenido = document.getElementById('contenidoHome');
-    if(loading && contenido) {
-        loading.style.display = 'none';
-        contenido.style.display = 'block';
-        aplicarColoresDinamicos();
+        const colorCiclo = getConfiguracionCiclo().color;
+        calGymCard.style.border = `1px solid ${colorCiclo}`;
+        const monthSpan = document.getElementById('cal-month-gym');
+        if(monthSpan) monthSpan.style.color = colorCiclo;
     }
 }
 
@@ -893,7 +822,7 @@ function renderizarRutinas() {
             if(!ex.esTiempo && !ex.serieTexto.includes("AL FALLO") && !ex.serieTexto.includes("min")) {
                 serieMostrada = `${configCiclo.series} x ${configCiclo.reps}`;
             }
-            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge ${tipo}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value ${tipo}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value ${tipo}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value ${tipo}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
+            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge ${tipo}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value ${tipo}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value ${tipo}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value ${tipo}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
         }).join('');
         const stretchList = document.getElementById(`stretches-${dia}`);
         if(stretchList && estiramientosPorDia[dia]) stretchList.innerHTML = `<div class="stretch-card"><strong>🧘 ESTIRAMIENTOS:</strong><ul style="margin-left:20px;margin-top:5px">${estiramientosPorDia[dia].map(s => `<li>${s}</li>`).join('')}</ul></div>`;
@@ -929,7 +858,6 @@ function changeMonth(offset,type) {
         currentViewMonthSmoke=d.getMonth();
     }
     renderizarCalendarios(); 
-    actualizarColoresCalendario();
 }
 function renderCal(id,mes,año,listaDias,labelId,esHumo=false) { 
     const container=document.getElementById(id); 
@@ -963,15 +891,21 @@ function renderCal(id,mes,año,listaDias,labelId,esHumo=false) {
         }
         container.appendChild(cell);
     } 
+    // Actualizar el borde del calendario después de renderizar
+    const colorCiclo = getConfiguracionCiclo().color;
+    const calCard = document.getElementById('calGymCard');
+    if(calCard) calCard.style.border = `1px solid ${colorCiclo}`;
+    const monthSpan = document.getElementById('cal-month-gym');
+    if(monthSpan) monthSpan.style.color = colorCiclo;
 }
-function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarToast("✅ Día limpio!");} else{diasFumados.push(fStr); mostrarToast("🚬 Marcado como fumado.");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarToast("🔥 ¡Día añadido!"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); actualizarColoresCalendario();}
-function renderizarCalendarios(){renderCal('cal-gym',currentViewMonthGym,currentViewYearGym,diasEntrenados,'cal-month-gym',false); renderCal('cal-smoke',currentViewMonthSmoke,currentViewYearSmoke,diasFumados,'cal-month-smoke',true); actualizarColoresCalendario();}
+function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarToast("✅ Día limpio!");} else{diasFumados.push(fStr); mostrarToast("🚬 Marcado como fumado.");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarToast("🔥 ¡Día añadido!"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); actualizarBotonesYCiclo();}
+function renderizarCalendarios(){renderCal('cal-gym',currentViewMonthGym,currentViewYearGym,diasEntrenados,'cal-month-gym',false); renderCal('cal-smoke',currentViewMonthSmoke,currentViewYearSmoke,diasFumados,'cal-month-smoke',true); actualizarBotonesYCiclo();}
 
 // ==================== FUNCIONES SECUNDARIAS ====================
 function resetSemanal(){const semanaStr=getSemanaActual(); const ultima=localStorage.getItem('nico_ultima_semana_reset'); if(ultima!==semanaStr){for(let key in notas) if(key.includes('-s')) historialSeries[key]=notas[key]; localStorage.setItem('nico_historial_series',JSON.stringify(historialSeries)); checks={}; notas={}; localStorage.setItem('nico_checks',JSON.stringify(checks)); localStorage.setItem('nico_notas',JSON.stringify(notas)); localStorage.setItem('nico_ultima_semana_reset',semanaStr);}}
 function guardarSerie(key,valor){notas[key]=valor; localStorage.setItem('nico_notas',JSON.stringify(notas));}
 function calcularDiasSinFumar(){let total=0; let f=new Date(2026,1,22); const hoy=new Date(); while(f<=hoy){const fStr=`${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`; if(!diasFumados.includes(fStr)) total++; f.setDate(f.getDate()+1);} return total;}
-function marcarHoyFumado(){const hoyStr=getHoyStr(); if(!diasFumados.includes(hoyStr)){diasFumados.push(hoyStr); localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados)); mostrarToast("🚬 Marcado como fumado."); actualizarHome(); renderizarCalendarios();}}
+function marcarHoyFumado(){const hoyStr=getHoyStr(); if(!diasFumados.includes(hoyStr)){diasFumados.push(hoyStr); localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados)); mostrarToast("🚬 Marcado como fumado."); actualizarHome(); renderizarCalendarios(); actualizarBotonesYCiclo();}}
 function mostrarConfirmacionReset(){document.getElementById('resetModal').style.display='flex'; document.getElementById('confirmResetInput').value='';}
 function cerrarModalReset(){document.getElementById('resetModal').style.display='none';}
 function confirmarBorrarTodo(){if(document.getElementById('confirmResetInput').value==="BORRAR"){localStorage.clear(); location.reload();} else{mostrarToast("❌ Debes escribir BORRAR exactamente");}}
@@ -1017,7 +951,7 @@ function guardarEnDBFotos(nuevoDia, boton) {
 async function actualizarListaDiasDB() { if(!dbFotos) await abrirDBFotos(); const container = document.getElementById('listaDiasDB'); if(!container) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const request = store.getAll(); request.onsuccess = () => { const items = request.result; items.sort((a,b)=>b.timestamp - a.timestamp); if(items.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#555;">Ningún día guardado</div>'; return; } container.innerHTML = items.map(item => `<div style="display:flex; justify-content:space-between; align-items:center; background:#0a0a0a; padding:12px; border-radius:8px; margin-bottom:8px;"><span style="color:#ff6600;">📅 ${item.fecha}</span><button onclick="eliminarDiaDB('${item.fecha}')" style="background:none; border:none; color:#ff3b30; font-size:1.2rem; cursor:pointer;">🗑️</button></div>`).join(''); }; }
 function eliminarDiaDB(fecha) { if(!confirm(`¿Eliminar ${fecha}?`)) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readwrite'); const store = transaction.objectStore(STORE_FOTOS_NAME); store.delete(fecha); actualizarListaDiasDB(); actualizarSelectoresComparacion(); document.getElementById('comparadorResultado').innerHTML = ''; mostrarToast(`🗑️ ${fecha} eliminado`); }
 async function actualizarSelectoresComparacion() { if(!dbFotos) await abrirDBFotos(); const s1 = document.getElementById('compararDia1'); const s2 = document.getElementById('compararDia2'); if(!s1||!s2) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const request = store.getAll(); request.onsuccess = () => { const items = request.result; items.sort((a,b)=>b.timestamp - a.timestamp); const opciones = items.map(item => `<option value="${item.fecha}">${item.fecha}</option>`); s1.innerHTML = '<option value="">Día 1</option>' + opciones.join(''); s2.innerHTML = '<option value="">Día 2</option>' + opciones.join(''); if(items.length >= 2) { s1.value = items[0].fecha; s2.value = items[1].fecha; } }; }
-async function compararDosDias() { const f1 = document.getElementById('compararDia1').value; const f2 = document.getElementById('compararDia2').value; const container = document.getElementById('comparadorResultado'); if(!f1||!f2) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#555;">Selecciona dos días</div>'; return; } if(!dbFotos) await abrirDBFotos(); const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const req1 = store.get(f1); const req2 = store.get(f2); let dia1=null, dia2=null, completados=0; req1.onsuccess = () => { dia1 = req1.result; completados++; if(completados===2) mostrarComparacion(); }; req2.onsuccess = () => { dia2 = req2.result; completados++; if(completados===2) mostrarComparacion(); }; function mostrarComparacion() { if(!dia1||!dia2) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#555;">No se encontraron fotos</div>'; return; } container.innerHTML = `<div style="flex:1; min-width:200px; background:#0a0a0a; border-radius:12px; padding:12px;"><h4>${f1}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia1.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Frente</span></div><div><img src="${dia1.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Espalda</span></div><div><img src="${dia1.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Izquierdo</span></div><div><img src="${dia1.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Derecho</span></div></div></div><div style="flex:1; min-width:200px; background:#0a0a0a; border-radius:12px; padding:12px;"><h4>${f2}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia2.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Frente</span></div><div><img src="${dia2.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Espalda</span></div><div><img src="${dia2.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Izquierdo</span></div><div><img src="${dia2.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Derecho</span></div></div></div>`; } }
+async function compararDosDias() { const f1 = document.getElementById('compararDia1').value; const f2 = document.getElementById('compararDia2').value; const container = document.getElementById('comparadorResultado'); if(!f1||!f2) { container.innerHTML = '<div style="text-align:center; padding:40px;">Selecciona dos días</div>'; return; } if(!dbFotos) await abrirDBFotos(); const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const req1 = store.get(f1); const req2 = store.get(f2); let dia1=null, dia2=null, completados=0; req1.onsuccess = () => { dia1 = req1.result; completados++; if(completados===2) mostrarComparacion(); }; req2.onsuccess = () => { dia2 = req2.result; completados++; if(completados===2) mostrarComparacion(); }; function mostrarComparacion() { if(!dia1||!dia2) { container.innerHTML = '<div style="text-align:center; padding:40px;">No se encontraron fotos</div>'; return; } container.innerHTML = `<div style="flex:1; background:#0a0a0a; border-radius:12px; padding:12px;"><h4>${f1}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia1.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Frente</span></div><div><img src="${dia1.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Espalda</span></div><div><img src="${dia1.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Izquierdo</span></div><div><img src="${dia1.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Derecho</span></div></div></div><div style="flex:1; background:#0a0a0a; border-radius:12px; padding:12px;"><h4>${f2}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia2.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Frente</span></div><div><img src="${dia2.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Espalda</span></div><div><img src="${dia2.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Izquierdo</span></div><div><img src="${dia2.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Derecho</span></div></div></div>`; } }
 function inicializarFotosDB() { abrirDBFotos().then(() => { actualizarListaDiasDB(); actualizarSelectoresComparacion(); }); }
 if(document.getElementById('progreso-fotos')) { inicializarFotosDB(); }
 
@@ -1070,12 +1004,16 @@ function go(id){
         actualizarHome();
         actualizarBannerCiclo();
         actualizarBadgesCicloDia();
-        ocultarLoading();
+        actualizarBotonesYCiclo();
+        // Ocultar loading y mostrar contenido
+        const loading = document.getElementById('loadingAnimation');
+        const contenido = document.getElementById('contenidoHome');
+        if(loading && contenido) {
+            loading.style.display = 'none';
+            contenido.style.display = 'block';
+        }
     }
-    if(id==='calendarios'){
-        renderizarCalendarios();
-        actualizarColoresCalendario();
-    }
+    if(id==='calendarios') renderizarCalendarios();
     if(id==='progreso-fotos') inicializarFotosDB();
     if(id==='peso') mostrarHistorialPeso();
     if(id==='logros') renderizarLogros();
@@ -1106,8 +1044,14 @@ window.onload=()=>{
         renderizarCalendarios();
         renderizarLogros();
         if(document.getElementById('progreso-fotos')) inicializarFotosDB();
-        ocultarLoading();
-        actualizarColoresCalendario();
+        actualizarBotonesYCiclo();
+        // Ocultar loading y mostrar contenido
+        const loading = document.getElementById('loadingAnimation');
+        const contenido = document.getElementById('contenidoHome');
+        if(loading && contenido) {
+            loading.style.display = 'none';
+            contenido.style.display = 'block';
+        }
     }, 500);
     
     const params=new URLSearchParams(window.location.search);
