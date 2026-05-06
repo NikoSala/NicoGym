@@ -73,21 +73,6 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bot
 }
 .loading-dumbbell:nth-child(2) { animation-delay: 0.2s; }
 .loading-dumbbell:nth-child(3) { animation-delay: 0.4s; }
-.loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    min-height: 400px;
-}
-.loading-text {
-    margin-top: 20px;
-    font-size: 1rem;
-    color: #ff6600;
-    letter-spacing: 2px;
-    animation: loadingPulse 1.5s ease-in-out infinite;
-}
 
 .seccion {
     opacity: 0;
@@ -489,7 +474,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 </nav>
 <header><span class="menu-icon" onclick="openMenu()">☰</span><span class="logo">NICO <span style="color:#ff6600">GYM</span></span><span class="home-icon" onclick="go('home')">🏠</span></header>
 
-<!-- ==================== HOME CON CICLO PERSONALIZADO ==================== -->
+<!-- ==================== HOME ==================== -->
 <div id="home" class="seccion active">
     
     <!-- ANIMACIÓN DE CARGA -->
@@ -499,17 +484,17 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
             <span class="loading-dumbbell">💪</span>
             <span class="loading-dumbbell">🏋️</span>
         </div>
-        <div class="loading-text">PREPARANDO TU ENTRENO...</div>
+        <div style="margin-top: 20px; font-size: 1rem; color: #ff6600; letter-spacing: 2px; animation: loadingPulse 1.5s ease-in-out infinite;">PREPARANDO TU ENTRENO...</div>
         <div style="margin-top: 15px; font-size: 0.7rem; color: #555;">Cargando tu progreso</div>
     </div>
     
-    <!-- CONTENIDO REAL -->
+    <!-- CONTENIDO REAL (oculto hasta cargar) -->
     <div id="contenidoHome" style="display: none;">
         
         <!-- Banner del ciclo -->
         <div class="cycle-card" id="cycleCard"></div>
         
-        <!-- Banner unificado (Racha, Sin fumar, Peso, Objetivo) -->
+        <!-- Banner unificado -->
         <div class="banner-unificado" id="bannerUnificado">
             <div class="banner-item">
                 <div class="banner-label">🔥 RACHA</div>
@@ -529,7 +514,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
             </div>
         </div>
         
-        <!-- Botón para entrenar hoy -->
+        <!-- Botón entrenar hoy -->
         <button class="btn-entrenar-hoy" id="btnEntrenarHoy" onclick="goToday()">💪 ENTRENAR HOY</button>
         
         <!-- Gráfico de peso -->
@@ -539,7 +524,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
             </div>
         </div>
         
-        <!-- Botón para marcar fumado -->
+        <!-- Botón marcar fumado -->
         <div class="card" style="text-align:center">
             <button onclick="marcarHoyFumado()" style="background:#222; color:#aaa; border:1px solid #555; padding:10px 20px; border-radius:8px; cursor:pointer; width:100%">🚬 Marcar hoy como fumado</button>
         </div>
@@ -620,7 +605,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="resetModal" class="reset-modal"><div class="reset-modal-content"><h3 style="color:#ff3b30;margin-bottom:15px;">⚠️ BORRAR TODO</h3><p style="margin-bottom:15px;">Esto eliminará TODOS tus datos. No se puede deshacer.</p><p style="margin-bottom:15px;">Escribe <strong style="color:#ff6600;">"BORRAR"</strong> para confirmar:</p><input type="text" id="confirmResetInput" placeholder="BORRAR"><div style="display:flex;gap:10px;"><button onclick="cerrarModalReset()" style="flex:1;padding:10px;background:#222;color:#fff;border:none;border-radius:8px;">Cancelar</button><button onclick="confirmarBorrarTodo()" style="flex:1;padding:10px;background:#ff3b30;color:#fff;border:none;border-radius:8px;">Borrar</button></div></div></div>
 
 <script>
-// ==================== CICLO MENSUAL PERSONALIZADO ====================
+// ==================== CICLO MENSUAL ====================
 const MAX_PESO_TOTAL = 20;
 const OBJETIVO_PESO = 75;
 
@@ -635,10 +620,9 @@ function getSemanaDelMes() {
 
 function getTipoCiclo() {
     const semana = getSemanaDelMes();
-    // Semana 1 = FUERZA, Semana 2 = DEFINICIÓN, Semana 3 = VOLUMEN, Semana 4 = DEFINICIÓN, Semana 5 = FUERZA
     if (semana === 1 || semana === 5) return 'FUERZA';
     if (semana === 3) return 'VOLUMEN';
-    return 'DEFINICIÓN';  // Semanas 2 y 4
+    return 'DEFINICIÓN';
 }
 
 function getConfiguracionCiclo() {
@@ -649,82 +633,6 @@ function getConfiguracionCiclo() {
         DEFINICIÓN: { nombre: '🔥 DEFINICIÓN', emoji: '🔥', color: '#ffd60a', series: '3-4', reps: '15-20', peso: 'LIGERO (6-8kg)', desc: 'Muchas reps, poco peso', objetivo: 'QUEMAR GRASA' }
     };
     return configs[tipo];
-}
-
-// ==================== FUNCIÓN DE COLORES DINÁMICOS ====================
-function aplicarColoresDinamicos() {
-    const tipo = getTipoCiclo();
-    const config = getConfiguracionCiclo();
-    
-    let colorPrincipal = config.color;
-    let btnBg = '';
-    let btnText = '#fff';
-    
-    if (tipo === 'FUERZA') {
-        btnBg = 'linear-gradient(135deg, #ff3b30, #cc0000)';
-    } else if (tipo === 'VOLUMEN') {
-        btnBg = 'linear-gradient(135deg, #32d74b, #1a8a2e)';
-    } else if (tipo === 'DEFINICIÓN') {
-        btnBg = 'linear-gradient(135deg, #ffd60a, #ccaa00)';
-        btnText = '#000';
-    }
-    
-    // 1. Banner del ciclo
-    const cycleCard = document.getElementById('cycleCard');
-    if (cycleCard) {
-        cycleCard.style.border = `2px solid ${colorPrincipal}`;
-        cycleCard.style.boxShadow = `0 0 15px ${colorPrincipal}80`;
-        const titleSpan = cycleCard.querySelector('.cycle-title');
-        if (titleSpan) titleSpan.style.color = colorPrincipal;
-        const barFill = cycleCard.querySelector('.cycle-bar-fill');
-        if (barFill) barFill.style.backgroundColor = colorPrincipal;
-        // Actualizar también el color de las stats del ciclo
-        const statValues = cycleCard.querySelectorAll('.cycle-stat strong');
-        statValues.forEach(val => val.style.color = colorPrincipal);
-    }
-    
-    // 2. Banner unificado
-    const bannerUnificado = document.getElementById('bannerUnificado');
-    if (bannerUnificado) {
-        bannerUnificado.style.border = `1px solid ${colorPrincipal}`;
-        const valores = bannerUnificado.querySelectorAll('.banner-value');
-        valores.forEach(val => val.style.color = colorPrincipal);
-    }
-    
-    // 3. Botón ENTRENAR HOY
-    const btnEntrenar = document.getElementById('btnEntrenarHoy');
-    if (btnEntrenar) {
-        btnEntrenar.style.background = btnBg;
-        btnEntrenar.style.color = btnText;
-    }
-    
-    // 4. Badges de ciclo en cada día
-    const badges = document.querySelectorAll('.day-cycle-badge');
-    badges.forEach(badge => {
-        if (tipo === 'DEFINICIÓN') {
-            badge.style.color = '#000';
-        } else {
-            badge.style.color = '#fff';
-        }
-    });
-    
-    // 5. Border left de los ejercicios (ya se aplica con las clases CSS)
-    const exerciseCards = document.querySelectorAll('.exercise-card');
-    exerciseCards.forEach(card => {
-        card.style.borderLeftColor = colorPrincipal;
-    });
-    
-    // 6. Valores de detalle en ejercicios
-    const detailValues = document.querySelectorAll('.exercise-detail-value');
-    detailValues.forEach(val => {
-        val.style.color = colorPrincipal;
-    });
-    
-    // 7. También el texto de la tabla de días sin fumar (número)
-    const diasSinFumarNum = document.getElementById('diasSinFumar');
-    if (diasSinFumarNum && tipo !== 'DEFINICIÓN') {
-        diasSinFumarNum.style.color = '#007aff'; // mantener azul para no fumador
-    }
 }
 
 function actualizarBadgesCicloDia() {
@@ -761,6 +669,67 @@ function actualizarBannerUnificado() {
     document.getElementById('bannerRacha').innerText = diasEntrenados.length;
     document.getElementById('bannerSinFumar').innerText = calcularDiasSinFumar();
     document.getElementById('bannerObjetivo').innerText = OBJETIVO_PESO + ' kg';
+}
+
+function aplicarColoresDinamicos() {
+    const tipo = getTipoCiclo();
+    const config = getConfiguracionCiclo();
+    const colorPrincipal = config.color;
+    
+    let btnBg = '';
+    let btnText = '#fff';
+    
+    if (tipo === 'FUERZA') {
+        btnBg = 'linear-gradient(135deg, #ff3b30, #cc0000)';
+    } else if (tipo === 'VOLUMEN') {
+        btnBg = 'linear-gradient(135deg, #32d74b, #1a8a2e)';
+    } else if (tipo === 'DEFINICIÓN') {
+        btnBg = 'linear-gradient(135deg, #ffd60a, #ccaa00)';
+        btnText = '#000';
+    }
+    
+    // Banner ciclo
+    const cycleCard = document.getElementById('cycleCard');
+    if(cycleCard) {
+        cycleCard.style.border = `2px solid ${colorPrincipal}`;
+        cycleCard.style.boxShadow = `0 0 15px ${colorPrincipal}80`;
+        const titleSpan = cycleCard.querySelector('.cycle-title');
+        if(titleSpan) titleSpan.style.color = colorPrincipal;
+        const barFill = cycleCard.querySelector('.cycle-bar-fill');
+        if(barFill) barFill.style.backgroundColor = colorPrincipal;
+    }
+    
+    // Banner unificado
+    const bannerUnificado = document.getElementById('bannerUnificado');
+    if(bannerUnificado) {
+        bannerUnificado.style.border = `1px solid ${colorPrincipal}`;
+        const valores = bannerUnificado.querySelectorAll('.banner-value');
+        valores.forEach(val => val.style.color = colorPrincipal);
+    }
+    
+    // Botón entrenar hoy
+    const btnEntrenar = document.getElementById('btnEntrenarHoy');
+    if(btnEntrenar) {
+        btnEntrenar.style.background = btnBg;
+        btnEntrenar.style.color = btnText;
+    }
+    
+    // Badges de ejercicios
+    const badges = document.querySelectorAll('.exercise-badge');
+    badges.forEach(badge => {
+        if(tipo === 'DEFINICIÓN') badge.style.color = '#000';
+        else badge.style.color = '#fff';
+    });
+}
+
+function ocultarLoading() {
+    const loading = document.getElementById('loadingAnimation');
+    const contenido = document.getElementById('contenidoHome');
+    if(loading && contenido) {
+        loading.style.display = 'none';
+        contenido.style.display = 'block';
+        aplicarColoresDinamicos();
+    }
 }
 
 // ==================== RUTINAS BASE ====================
@@ -865,6 +834,7 @@ function renderizarRutinas() {
         }
         const rutina = rutinasBase[dia];
         if(!rutina) continue;
+        const cicloColor = configCiclo.color;
         lista.innerHTML = rutina.map((ex, idx) => {
             const id = `${dia}-${idx}`;
             const isChecked = checks[id] === true;
@@ -873,7 +843,9 @@ function renderizarRutinas() {
             if(!ex.esTiempo && !ex.serieTexto.includes("AL FALLO") && !ex.serieTexto.includes("min")) {
                 serieMostrada = `${configCiclo.series} x ${configCiclo.reps}`;
             }
-            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge ${tipo}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value ${tipo}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value ${tipo}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value ${tipo}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
+            const badgeBg = configCiclo.color;
+            const badgeColor = getTipoCiclo() === 'DEFINICIÓN' ? '#000' : '#fff';
+            return `<div class="exercise-card ${tipo}"><div class="exercise-header"><span class="exercise-name">${ex.nombre}</span><span class="exercise-badge" style="background: ${badgeBg}; color: ${badgeColor}">${getTipoCiclo()}</span><input type="checkbox" class="check-box" ${isChecked ? 'checked disabled' : ''} onchange="marcarEjercicioHecho('${id}')"></div><div class="exercise-detail"><div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value" style="color:${cicloColor}">${serieMostrada}</div></div>${ex.tienePeso ? `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO TOTAL</div><div class="exercise-detail-value" style="color:${cicloColor}">${pesoAjustado} kg</div></div>` : `<div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO</div><div class="exercise-detail-value" style="color:${cicloColor}">${ex.peso || 'Corporal'}</div></div>`}</div><button class="btn-main" onclick="document.getElementById('det-${id}').classList.toggle('show')">📋 VER INSTRUCCIONES ▾</button><div class="detalles" id="det-${id}">${ex.imagen ? `<img src="${ex.imagen}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : ''}<div style="padding:8px;background:#0a0a0a;border-radius:8px;margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div><div class="exercise-series">${generarInputsSeries(id, ex.serieTexto, ex.esTiempo)}</div></div>`;
         }).join('');
         const stretchList = document.getElementById(`stretches-${dia}`);
         if(stretchList && estiramientosPorDia[dia]) stretchList.innerHTML = `<div class="stretch-card"><strong>🧘 ESTIRAMIENTOS:</strong><ul style="margin-left:20px;margin-top:5px">${estiramientosPorDia[dia].map(s => `<li>${s}</li>`).join('')}</ul></div>`;
@@ -881,7 +853,7 @@ function renderizarRutinas() {
 }
 
 function marcarEjercicioHecho(id) { if(checks[id]) return; checks[id] = true; localStorage.setItem('nico_checks', JSON.stringify(checks)); actualizarHome(); renderizarRutinas(); if(navigator.vibrate) navigator.vibrate(50); const dia = id.split('-')[0]; if (!['martes','jueves','sabado'].includes(dia)) iniciarDescanso(30); }
-function marcarDiaCompletadoManual(dia) { const hoyStr = getHoyStr(); const semanaStr = getSemanaActual(); const key = `completado_${dia}_${semanaStr}`; if(localStorage.getItem(key)) return; if(!diasEntrenados.includes(hoyStr)) { diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); } localStorage.setItem(key,"true"); mostrarMensajeMotivadorConMedalla(`🎉 ¡${getTipoCiclo()} completado!`, "🎉", "ENTRENO COMPLETADO", `¡${getTipoCiclo()} finalizado!`); actualizarHome(); renderizarRutinas(); renderizarCalendarios(); if(navigator.vibrate) navigator.vibrate([200,100,200]); canvasConfetti({particleCount:300,spread:100}); }
+function marcarDiaCompletadoManual(dia) { const hoyStr = getHoyStr(); const semanaStr = getSemanaActual(); const key = `completado_${dia}_${semanaStr}`; if(localStorage.getItem(key)) return; if(!diasEntrenados.includes(hoyStr)) { diasEntrenados.push(hoyStr); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); } localStorage.setItem(key,"true"); actualizarHome(); renderizarRutinas(); renderizarCalendarios(); if(navigator.vibrate) navigator.vibrate([200,100,200]); canvasConfetti({particleCount:300,spread:100}); }
 
 function actualizarHome() {
     actualizarBannerUnificado();
@@ -891,8 +863,6 @@ function actualizarHome() {
     document.getElementById('todayDay').innerText = `📅 ${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date().getDay()]}`;
     document.getElementById('todayRoutine').innerText = getRutinaHoy();
     verificarYDesbloquearLogros();
-    // Aplicar colores dinámicos después de actualizar todo
-    aplicarColoresDinamicos();
 }
 function getRutinaHoy() { const d = new Date().getDay(); const tipo = getTipoCiclo(); return `${['Descanso','Espalda/Bíceps','Cardio/Abs','Pecho/Tríceps','Cardio/Abs','Pierna/Hombro','Cardio/Abs'][d]} [${tipo}]`; }
 
@@ -902,14 +872,14 @@ function getHoyStr() { const d = new Date(); return `${d.getFullYear()}-${String
 function getSemanaActual() { const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+4-(d.getDay()||7)); return `${d.getFullYear()}-W${Math.ceil((((d-new Date(d.getFullYear(),0,1))/86400000)+1)/7)}`; }
 function changeMonth(offset,type) { if(type==='gym'){let d=new Date(currentViewYearGym,currentViewMonthGym+offset,1); currentViewYearGym=d.getFullYear(); currentViewMonthGym=d.getMonth();} else{let d=new Date(currentViewYearSmoke,currentViewMonthSmoke+offset,1); currentViewYearSmoke=d.getFullYear(); currentViewMonthSmoke=d.getMonth();} renderizarCalendarios(); }
 function renderCal(id,mes,año,listaDias,labelId,esHumo=false) { const container=document.getElementById(id); if(!container) return; container.innerHTML=''; const nombreMes=new Intl.DateTimeFormat('es-ES',{month:'long'}).format(new Date(año,mes,1)).toUpperCase(); document.getElementById(labelId).innerText=`${nombreMes} ${año}`; ['L','M','X','J','V','S','D'].forEach(d=>{const div=document.createElement('div'); div.className='cal-day-label'; div.innerText=d; container.appendChild(div);}); const primerDia=new Date(año,mes,1).getDay(); const offset=primerDia===0?6:primerDia-1; const diasEnMes=new Date(año,mes+1,0).getDate(); for(let i=0;i<offset;i++) container.appendChild(document.createElement('div')); const hoyStr=getHoyStr(); const hoyDate=new Date(); hoyDate.setHours(23,59,59,999); for(let d=1;d<=diasEnMes;d++){const cell=document.createElement('div'); cell.className='cal-cell'; cell.innerText=d; const fecha=new Date(año,mes,d); const fStr=`${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`; if(fecha>hoyDate) cell.classList.add('future'); else cell.onclick=()=>toggleDia(fStr,esHumo,fecha); if(fStr===hoyStr) cell.classList.add('today'); if(esHumo){if(listaDias.includes(fStr)) cell.classList.add('fumado'); else if(fecha>=new Date(2026,1,22)&&fecha<=new Date()) cell.classList.add('nosmoke');} else{if(listaDias.includes(fStr)) cell.classList.add('entrenado'); else if(fecha.getDay()===0) cell.classList.add('domingo');} container.appendChild(cell);} }
-function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarMensajeMotivadorConMedalla("✅ Día limpio!", "✅", "DÍA LIMPIO", "Sin fumar hoy");} else{diasFumados.push(fStr); mostrarMensajeMotivadorConMedalla("🚬 Marcado como fumado.", "🚬", "FUMADO", "Has fumado hoy");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarMensajeMotivadorConMedalla("🔥 ¡Día añadido!", "🔥", "DÍA DE ENTRENO", "¡Sigue así!"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); }
+function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarToast("✅ Día limpio!");} else{diasFumados.push(fStr); mostrarToast("🚬 Marcado como fumado.");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarToast("🔥 ¡Día añadido!"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); }
 function renderizarCalendarios(){renderCal('cal-gym',currentViewMonthGym,currentViewYearGym,diasEntrenados,'cal-month-gym',false); renderCal('cal-smoke',currentViewMonthSmoke,currentViewYearSmoke,diasFumados,'cal-month-smoke',true);}
 
 // ==================== FUNCIONES SECUNDARIAS ====================
 function resetSemanal(){const semanaStr=getSemanaActual(); const ultima=localStorage.getItem('nico_ultima_semana_reset'); if(ultima!==semanaStr){for(let key in notas) if(key.includes('-s')) historialSeries[key]=notas[key]; localStorage.setItem('nico_historial_series',JSON.stringify(historialSeries)); checks={}; notas={}; localStorage.setItem('nico_checks',JSON.stringify(checks)); localStorage.setItem('nico_notas',JSON.stringify(notas)); localStorage.setItem('nico_ultima_semana_reset',semanaStr);}}
 function guardarSerie(key,valor){notas[key]=valor; localStorage.setItem('nico_notas',JSON.stringify(notas));}
 function calcularDiasSinFumar(){let total=0; let f=new Date(2026,1,22); const hoy=new Date(); while(f<=hoy){const fStr=`${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`; if(!diasFumados.includes(fStr)) total++; f.setDate(f.getDate()+1);} return total;}
-function marcarHoyFumado(){const hoyStr=getHoyStr(); if(!diasFumados.includes(hoyStr)){diasFumados.push(hoyStr); localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados)); mostrarMensajeMotivadorConMedalla("🚬 Marcado como fumado.", "🚬", "FUMADO", "Has fumado hoy"); actualizarHome(); renderizarCalendarios();}}
+function marcarHoyFumado(){const hoyStr=getHoyStr(); if(!diasFumados.includes(hoyStr)){diasFumados.push(hoyStr); localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados)); mostrarToast("🚬 Marcado como fumado."); actualizarHome(); renderizarCalendarios();}}
 function mostrarConfirmacionReset(){document.getElementById('resetModal').style.display='flex'; document.getElementById('confirmResetInput').value='';}
 function cerrarModalReset(){document.getElementById('resetModal').style.display='none';}
 function confirmarBorrarTodo(){if(document.getElementById('confirmResetInput').value==="BORRAR"){localStorage.clear(); location.reload();} else{mostrarToast("❌ Debes escribir BORRAR exactamente");}}
@@ -919,17 +889,17 @@ let dbFotos = null;
 const DB_FOTOS_NAME = 'FotosProgresoDB';
 const DB_FOTOS_VERSION = 1;
 const STORE_FOTOS_NAME = 'diasFotos';
+let fotosDias = {};
 
 function abrirDBFotos() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(DB_FOTOS_NAME, DB_FOTOS_VERSION);
-        request.onerror = (event) => { console.error('Error:', event); reject(event); };
+        request.onerror = (event) => { reject(event); };
         request.onsuccess = (event) => { dbFotos = event.target.result; resolve(dbFotos); };
         request.onupgradeneeded = (event) => {
             const dbActual = event.target.result;
             if (!dbActual.objectStoreNames.contains(STORE_FOTOS_NAME)) {
-                const store = dbActual.createObjectStore(STORE_FOTOS_NAME, { keyPath: 'fecha' });
-                store.createIndex('timestamp', 'timestamp', { unique: false });
+                dbActual.createObjectStore(STORE_FOTOS_NAME, { keyPath: 'fecha' });
             }
         };
     });
@@ -938,30 +908,29 @@ function abrirDBFotos() {
 async function guardarFotosIndexedDB() {
     const boton = document.getElementById('btnGuardarFotos');
     boton.disabled = true;
-    boton.style.opacity = '0.5';
     const inputs = [document.getElementById('foto0').files[0], document.getElementById('foto1').files[0], document.getElementById('foto2').files[0], document.getElementById('foto3').files[0]];
-    for(let i=0; i<inputs.length; i++) { if(!inputs[i]) { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#ff3b30;">❌ Selecciona las 4 fotos</span>'; boton.disabled = false; boton.style.opacity = '1'; return; } }
+    for(let i=0; i<inputs.length; i++) { if(!inputs[i]) { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#ff3b30;">❌ Selecciona las 4 fotos</span>'; boton.disabled = false; return; } }
     const resultados = []; let completados = 0;
-    for(let i=0; i<inputs.length; i++) { const reader = new FileReader(); reader.onload = (function(idx) { return function(e) { resultados[idx] = e.target.result; completados++; const statusDiv = document.getElementById(`status${idx}`); if(statusDiv) { statusDiv.innerHTML = '✅ Listo'; statusDiv.style.color = '#32d74b'; } if(completados === 4) { const hoy = new Date(); const fechaStr = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`; const nuevoDia = { fecha: fechaStr, timestamp: hoy.getTime(), frente: resultados[0], espalda: resultados[1], izquierda: resultados[2], derecha: resultados[3] }; if(!dbFotos) { abrirDBFotos().then(() => guardarEnDBFotos(nuevoDia, boton)); } else { guardarEnDBFotos(nuevoDia, boton); } } }; })(i); reader.readAsDataURL(inputs[i]); }
+    for(let i=0; i<inputs.length; i++) { const reader = new FileReader(); reader.onload = (function(idx) { return function(e) { resultados[idx] = e.target.result; completados++; if(completados === 4) { const hoy = new Date(); const fechaStr = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`; const nuevoDia = { fecha: fechaStr, timestamp: hoy.getTime(), frente: resultados[0], espalda: resultados[1], izquierda: resultados[2], derecha: resultados[3] }; if(!dbFotos) { abrirDBFotos().then(() => guardarEnDBFotos(nuevoDia, boton)); } else { guardarEnDBFotos(nuevoDia, boton); } } }; })(i); reader.readAsDataURL(inputs[i]); }
 }
 
 function guardarEnDBFotos(nuevoDia, boton) {
     const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_FOTOS_NAME);
     const request = store.put(nuevoDia);
-    request.onsuccess = () => { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#32d74b;">✅ ¡4 fotos guardadas correctamente!</span>'; for(let i=0; i<4; i++) { const input = document.getElementById(`foto${i}`); if(input) input.value = ''; const statusDiv = document.getElementById(`status${i}`); if(statusDiv) statusDiv.innerHTML = ''; } setTimeout(() => { document.getElementById('mensajeFotosDB').innerHTML = ''; }, 3000); actualizarListaDiasDB(); actualizarSelectoresComparacion(); boton.disabled = false; boton.style.opacity = '1'; if(typeof canvasConfetti !== 'undefined') canvasConfetti({ particleCount: 100, spread: 70 }); };
-    request.onerror = () => { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#ff3b30;">❌ Error al guardar</span>'; boton.disabled = false; boton.style.opacity = '1'; };
+    request.onsuccess = () => { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#32d74b;">✅ ¡4 fotos guardadas!</span>'; for(let i=0; i<4; i++) { const input = document.getElementById(`foto${i}`); if(input) input.value = ''; } setTimeout(() => { document.getElementById('mensajeFotosDB').innerHTML = ''; }, 3000); actualizarListaDiasDB(); actualizarSelectoresComparacion(); boton.disabled = false; canvasConfetti({ particleCount: 100, spread: 70 }); };
+    request.onerror = () => { document.getElementById('mensajeFotosDB').innerHTML = '<span style="color:#ff3b30;">❌ Error</span>'; boton.disabled = false; };
 }
 
-async function actualizarListaDiasDB() { if(!dbFotos) await abrirDBFotos(); const container = document.getElementById('listaDiasDB'); if(!container) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const index = store.index('timestamp'); const request = index.getAll(); request.onsuccess = () => { const items = request.result; items.sort((a,b) => b.timestamp - a.timestamp); if(items.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#555;">Ningún día guardado</div>'; return; } container.innerHTML = items.map(item => `<div style="display:flex; justify-content:space-between; align-items:center; background:#0a0a0a; padding:12px; border-radius:8px;"><span style="color:#ff6600; font-weight:bold;">📅 ${item.fecha}</span><button onclick="eliminarDiaDB('${item.fecha}')" style="background:none; border:none; color:#ff3b30; font-size:1.2rem; cursor:pointer;">🗑️</button></div>`).join(''); }; }
-function eliminarDiaDB(fecha) { if(!confirm(`¿Eliminar el día ${fecha}?`)) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readwrite'); const store = transaction.objectStore(STORE_FOTOS_NAME); const request = store.delete(fecha); request.onsuccess = () => { actualizarListaDiasDB(); actualizarSelectoresComparacion(); document.getElementById('comparadorResultado').innerHTML = ''; if(typeof mostrarToast === 'function') mostrarToast(`🗑️ ${fecha} eliminado`); else alert(`🗑️ ${fecha} eliminado`); }; }
-async function actualizarSelectoresComparacion() { if(!dbFotos) await abrirDBFotos(); const s1 = document.getElementById('compararDia1'); const s2 = document.getElementById('compararDia2'); if(!s1 || !s2) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const index = store.index('timestamp'); const request = index.getAll(); request.onsuccess = () => { const items = request.result; items.sort((a,b) => b.timestamp - a.timestamp); const opciones = items.map(item => `<option value="${item.fecha}">${item.fecha}</option>`); s1.innerHTML = '<option value="">Selecciona primer día</option>' + opciones.join(''); s2.innerHTML = '<option value="">Selecciona segundo día</option>' + opciones.join(''); if(items.length >= 2) { s1.value = items[0].fecha; s2.value = items[1].fecha; compararDosDias(); } }; }
-async function compararDosDias() { const f1 = document.getElementById('compararDia1').value; const f2 = document.getElementById('compararDia2').value; const container = document.getElementById('comparadorResultado'); if(!f1 || !f2) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#555;">Selecciona dos días para comparar</div>'; return; } if(!dbFotos) await abrirDBFotos(); const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const req1 = store.get(f1); const req2 = store.get(f2); let dia1 = null, dia2 = null, completados = 0; req1.onsuccess = () => { dia1 = req1.result; completados++; if(completados===2) mostrarComparacion(); }; req2.onsuccess = () => { dia2 = req2.result; completados++; if(completados===2) mostrarComparacion(); }; function mostrarComparacion() { if(!dia1 || !dia2) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#555;">No se encontraron fotos</div>'; return; } container.innerHTML = `<div style="flex:1; min-width:200px; background:#0a0a0a; border-radius:12px; padding:12px;"><h4 style="color:#ff6600; text-align:center; margin-bottom:10px;">📅 ${dia1.fecha}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia1.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">FRENTE</span></div><div><img src="${dia1.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">ESPALDA</span></div><div><img src="${dia1.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">IZQUIERDO</span></div><div><img src="${dia1.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">DERECHO</span></div></div></div><div style="flex:1; min-width:200px; background:#0a0a0a; border-radius:12px; padding:12px;"><h4 style="color:#ff6600; text-align:center; margin-bottom:10px;">📅 ${dia2.fecha}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia2.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">FRENTE</span></div><div><img src="${dia2.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">ESPALDA</span></div><div><img src="${dia2.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">IZQUIERDO</span></div><div><img src="${dia2.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span style="font-size:0.6rem; display:block; text-align:center;">DERECHO</span></div></div></div>`; } }
-function inicializarFotosDB() { abrirDBFotos().then(() => { actualizarListaDiasDB(); actualizarSelectoresComparacion(); }).catch(() => {}); }
+async function actualizarListaDiasDB() { if(!dbFotos) await abrirDBFotos(); const container = document.getElementById('listaDiasDB'); if(!container) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const request = store.getAll(); request.onsuccess = () => { const items = request.result; items.sort((a,b)=>b.timestamp - a.timestamp); if(items.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#555;">Ningún día guardado</div>'; return; } container.innerHTML = items.map(item => `<div style="display:flex; justify-content:space-between; align-items:center; background:#0a0a0a; padding:12px; border-radius:8px; margin-bottom:8px;"><span style="color:#ff6600;">📅 ${item.fecha}</span><button onclick="eliminarDiaDB('${item.fecha}')" style="background:none; border:none; color:#ff3b30; font-size:1.2rem; cursor:pointer;">🗑️</button></div>`).join(''); }; }
+function eliminarDiaDB(fecha) { if(!confirm(`¿Eliminar ${fecha}?`)) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readwrite'); const store = transaction.objectStore(STORE_FOTOS_NAME); store.delete(fecha); actualizarListaDiasDB(); actualizarSelectoresComparacion(); document.getElementById('comparadorResultado').innerHTML = ''; mostrarToast(`🗑️ ${fecha} eliminado`); }
+async function actualizarSelectoresComparacion() { if(!dbFotos) await abrirDBFotos(); const s1 = document.getElementById('compararDia1'); const s2 = document.getElementById('compararDia2'); if(!s1||!s2) return; const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const request = store.getAll(); request.onsuccess = () => { const items = request.result; items.sort((a,b)=>b.timestamp - a.timestamp); const opciones = items.map(item => `<option value="${item.fecha}">${item.fecha}</option>`); s1.innerHTML = '<option value="">Día 1</option>' + opciones.join(''); s2.innerHTML = '<option value="">Día 2</option>' + opciones.join(''); if(items.length >= 2) { s1.value = items[0].fecha; s2.value = items[1].fecha; } }; }
+async function compararDosDias() { const f1 = document.getElementById('compararDia1').value; const f2 = document.getElementById('compararDia2').value; const container = document.getElementById('comparadorResultado'); if(!f1||!f2) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#555;">Selecciona dos días</div>'; return; } if(!dbFotos) await abrirDBFotos(); const transaction = dbFotos.transaction([STORE_FOTOS_NAME], 'readonly'); const store = transaction.objectStore(STORE_FOTOS_NAME); const req1 = store.get(f1); const req2 = store.get(f2); let dia1=null, dia2=null, completados=0; req1.onsuccess = () => { dia1 = req1.result; completados++; if(completados===2) mostrarComparacion(); }; req2.onsuccess = () => { dia2 = req2.result; completados++; if(completados===2) mostrarComparacion(); }; function mostrarComparacion() { if(!dia1||!dia2) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#555;">No se encontraron fotos</div>'; return; } container.innerHTML = `<div style="flex:1; min-width:200px; background:#0a0a0a; border-radius:12px; padding:12px;"><h4>${f1}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia1.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Frente</span></div><div><img src="${dia1.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Espalda</span></div><div><img src="${dia1.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Izquierdo</span></div><div><img src="${dia1.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Derecho</span></div></div></div><div style="flex:1; min-width:200px; background:#0a0a0a; border-radius:12px; padding:12px;"><h4>${f2}</h4><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><div><img src="${dia2.frente}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Frente</span></div><div><img src="${dia2.espalda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Espalda</span></div><div><img src="${dia2.izquierda}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Izquierdo</span></div><div><img src="${dia2.derecha}" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px;"><span>Derecho</span></div></div></div>`; } }
+function inicializarFotosDB() { abrirDBFotos().then(() => { actualizarListaDiasDB(); actualizarSelectoresComparacion(); }); }
 if(document.getElementById('progreso-fotos')) { inicializarFotosDB(); }
 
 // ==================== PESO ====================
-function agregarPeso() { const v = document.getElementById('in-peso').value; if(v){ pesosRegistrados.push({valor:parseFloat(v), fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})}); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); mostrarMensajeMotivadorConMedalla(`⚖️ Peso: ${v}kg`, "⚖️", "PESO REGISTRADO", `${v} kg`); } }
+function agregarPeso() { const v = document.getElementById('in-peso').value; if(v){ pesosRegistrados.push({valor:parseFloat(v), fecha:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})}); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); mostrarToast(`⚖️ Peso: ${v}kg`); } }
 function eliminarPeso(i) { pesosRegistrados.splice(i,1); localStorage.setItem('nico_pesos',JSON.stringify(pesosRegistrados)); actualizarHome(); mostrarHistorialPeso(); }
 function mostrarHistorialPeso() { const h = document.getElementById('hist-peso'); h.innerHTML = pesosRegistrados.map((p,i) => `<div class="peso-item"><span>${p.fecha}: <b>${p.valor}kg</b></span><button class="btn-del" onclick="eliminarPeso(${i})">🗑️</button></div>`).reverse().join(''); }
 
@@ -993,35 +962,13 @@ const listaLogros = [
     {id:"primer_peso",nombre:"⚖️ Primer peso",desc:"Registrar tu primer peso",condicion:()=>pesosRegistrados.length>=1,icono:"⚖️"},
     {id:"menos_1kg",nombre:"📉 -1 kg",desc:"Bajar 1 kg desde el inicio",condicion:()=>{const i=pesosRegistrados[0]?.valor||0; const a=pesosRegistrados[pesosRegistrados.length-1]?.valor||0; return i-a>=1;},icono:"📉"},
     {id:"menos_5kg",nombre:"🎉 -5 kg",desc:"Bajar 5 kg desde el inicio",condicion:()=>{const i=pesosRegistrados[0]?.valor||0; const a=pesosRegistrados[pesosRegistrados.length-1]?.valor||0; return i-a>=5;},icono:"🎉"},
-    {id:"foto_progreso",nombre:"📸 Mi primera foto",desc:"Sube tu primera foto de progreso",condicion:()=>typeof fotosDias !== 'undefined' ? Object.keys(fotosDias).length>=1 : false,icono:"📸"}
+    {id:"foto_progreso",nombre:"📸 Mi primera foto",desc:"Sube tu primera foto de progreso",condicion:()=>Object.keys(fotosDias).length>=1,icono:"📸"}
 ];
-function verificarYDesbloquearLogros(){ let nuevos=false; listaLogros.forEach(l=>{ if(!logrosObtenidos.includes(l.id) && l.condicion()){ logrosObtenidos.push(l.id); nuevos=true; mostrarMensajeMotivadorConMedalla(`🏆 ¡NUEVO LOGRO! ${l.nombre}`, l.icono, l.nombre, l.desc); canvasConfetti({particleCount:200,spread:100}); } }); if(nuevos) localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros(); }
-function mostrarMensajeMotivadorConMedalla(mensaje, icono, titulo, desc) {
-    const overlay = document.createElement('div');
-    overlay.className = 'medalla-overlay';
-    overlay.innerHTML = `<div class="medalla-contenedor"><div class="medalla-icono">${icono}</div><div class="medalla-titulo">¡${titulo}!</div><div class="medalla-desc">${desc || mensaje}</div></div>`;
-    document.body.appendChild(overlay);
-    setTimeout(() => { overlay.remove(); }, 2500);
-}
+function verificarYDesbloquearLogros(){ let nuevos=false; listaLogros.forEach(l=>{ if(!logrosObtenidos.includes(l.id) && l.condicion()){ logrosObtenidos.push(l.id); nuevos=true; const overlay = document.createElement('div'); overlay.className = 'medalla-overlay'; overlay.innerHTML = `<div class="medalla-contenedor"><div class="medalla-icono">${l.icono}</div><div class="medalla-titulo">¡NUEVO LOGRO!</div><div class="medalla-desc">${l.nombre}</div><div class="medalla-desc" style="font-size:0.85rem;">${l.desc}</div></div>`; document.body.appendChild(overlay); setTimeout(() => overlay.remove(), 2500); canvasConfetti({particleCount:200,spread:100}); } }); if(nuevos) localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros(); }
 function renderizarLogros(){const cont=document.getElementById('logros-container'); if(!cont) return; cont.innerHTML=listaLogros.map(l=>{const obtenido=logrosObtenidos.includes(l.id); return `<div class="badge-card ${obtenido?'obtenido':''}"><span class="badge-icon">${l.icono}</span><div class="badge-nombre">${l.nombre}</div><div class="badge-desc">${l.desc}</div><div class="${obtenido?'badge-obtenido':'badge-bloqueado'}">${obtenido?'✅ DESBLOQUEADO':'🔒 BLOQUEADO'}</div></div>`;}).join('');}
-
-let fotosDias = {};
-if(typeof todasLasFechas !== 'undefined') fotosDias = todasLasFechas;
 
 // ==================== MENSAJES ====================
 function mostrarToast(m){const t=document.createElement('div'); t.className='toast-msg'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),3000);}
-
-// ==================== ANIMACIÓN DE CARGA ====================
-function ocultarLoading() {
-    const loading = document.getElementById('loadingAnimation');
-    const contenido = document.getElementById('contenidoHome');
-    if(loading && contenido) {
-        loading.style.display = 'none';
-        contenido.style.display = 'block';
-        // Aplicar colores después de mostrar el contenido
-        aplicarColoresDinamicos();
-    }
-}
 
 // ==================== NAVEGACIÓN ====================
 function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home'){actualizarHome(); actualizarBannerCiclo(); actualizarBadgesCicloDia(); ocultarLoading();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') inicializarFotosDB(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
@@ -1039,16 +986,18 @@ function actualizarMostrarDiscos(){const total=(discosActuales.d125*1.25)+(disco
 function exportarDatos(conEmail=false){const datos={pesos:pesosRegistrados,checks:checks,notas:notas,entrenos:diasEntrenados,humo:diasFumados,fotos:fotosDias,logros:logrosObtenidos}; const json=JSON.stringify(datos); const blob=new Blob([json],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`nicogym_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); if(conEmail) setTimeout(()=>{window.location.href="mailto:?subject=Backup NICO GYM&body=Adjunto mi backup";},500); mostrarToast("✅ Backup creado");}
 
 window.onload=()=>{
-    actualizarBannerCiclo();
-    actualizarBadgesCicloDia();
-    resetSemanal();
-    renderizarRutinas();
-    actualizarHome();
-    mostrarHistorialPeso();
-    renderizarCalendarios();
-    renderizarLogros();
-    if(document.getElementById('progreso-fotos')) inicializarFotosDB();
-    ocultarLoading();
+    setTimeout(() => {
+        actualizarBannerCiclo();
+        actualizarBadgesCicloDia();
+        resetSemanal();
+        renderizarRutinas();
+        actualizarHome();
+        mostrarHistorialPeso();
+        renderizarCalendarios();
+        renderizarLogros();
+        if(document.getElementById('progreso-fotos')) inicializarFotosDB();
+        ocultarLoading();
+    }, 1000);
     
     const params=new URLSearchParams(window.location.search);
     if(params.get('action')==='weight') go('peso');
