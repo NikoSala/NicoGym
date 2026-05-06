@@ -57,6 +57,42 @@ body{background:#000;color:#fff;font-family:-apple-system,sans-serif;padding-bot
     50% { transform: scale(1.03); opacity: 0.95; }
     100% { transform: scale(1); opacity: 1; }
 }
+/* ANIMACIÓN DE MANCUERNAS */
+@keyframes dumbbellBounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-15px) rotate(-10deg); }
+    75% { transform: translateY(-8px) rotate(10deg); }
+}
+@keyframes dumbbellSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes loadingPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+.loading-dumbbell {
+    display: inline-block;
+    animation: dumbbellBounce 0.8s ease-in-out infinite;
+    font-size: 2.5rem;
+}
+.loading-dumbbell:nth-child(2) { animation-delay: 0.2s; }
+.loading-dumbbell:nth-child(3) { animation-delay: 0.4s; }
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    min-height: 400px;
+}
+.loading-text {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #ff6600;
+    letter-spacing: 2px;
+    animation: loadingPulse 1.5s ease-in-out infinite;
+}
 
 .seccion {
     opacity: 0;
@@ -265,54 +301,6 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     color: #aaa;
 }
 
-/* Resumen de peso */
-.peso-resumen {
-    background: #0a0a0a;
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
-}
-.peso-resumen-item { flex: 1; }
-.peso-resumen-valor { font-size: 1.2rem; font-weight: bold; color: #ff6600; }
-.peso-resumen-label { font-size: 0.65rem; color: #aaa; }
-
-/* Modal Reset */
-.reset-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.95);
-    z-index: 5000;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 20px;
-}
-.reset-modal-content {
-    background: #1a1a1a;
-    border-radius: 20px;
-    padding: 25px;
-    max-width: 300px;
-    text-align: center;
-    border: 2px solid #ff3b30;
-}
-.reset-modal-content input {
-    width: 100%;
-    padding: 10px;
-    background: #000;
-    color: #fff;
-    border: 1px solid #ff3b30;
-    border-radius: 8px;
-    text-align: center;
-    margin: 15px 0;
-}
-
 /* EJERCICIO VISUAL */
 .exercise-card {
     background: #0a0a0a;
@@ -459,67 +447,81 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 </nav>
 <header><span class="menu-icon" onclick="openMenu()">☰</span><span class="logo">NICO <span style="color:#ff6600">GYM</span></span><span class="home-icon" onclick="go('home')">🏠</span></header>
 
-<!-- ==================== HOME CORREGIDO Y LIMPIO ==================== -->
+<!-- ==================== HOME CON ANIMACIÓN DE CARGA ==================== -->
 <div id="home" class="seccion active">
     
-    <!-- Banner del ciclo -->
-    <div class="cycle-card" id="cycleCard">CARGANDO...</div>
-    
-    <!-- Widget superior (racha, hoy, peso, objetivo) -->
-    <div class="widget-top" id="widgetTop">
-        <div class="widget-item">
-            <div class="widget-label">🔥 RACHA</div>
-            <div class="widget-value" id="widgetRacha">0</div>
+    <!-- ANIMACIÓN DE CARGA (se muestra hasta que cargan los datos) -->
+    <div id="loadingAnimation" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px;">
+        <div>
+            <span class="loading-dumbbell">🏋️</span>
+            <span class="loading-dumbbell">💪</span>
+            <span class="loading-dumbbell">🏋️</span>
         </div>
-        <div class="widget-divider"></div>
-        <div class="widget-item">
-            <div class="widget-label">📅 HOY</div>
-            <div class="widget-value" id="widgetHoy">Cargando</div>
-        </div>
-        <div class="widget-divider"></div>
-        <div class="widget-item">
-            <div class="widget-label">⚖️ PESO</div>
-            <div class="widget-value" id="widgetPeso">-- kg</div>
-        </div>
-        <div class="widget-divider"></div>
-        <div class="widget-item">
-            <div class="widget-label">🎯 OBJETIVO</div>
-            <div class="widget-value" id="widgetObjetivo">75 kg</div>
-        </div>
+        <div class="loading-text">PREPARANDO TU ENTRENO...</div>
+        <div style="margin-top: 15px; font-size: 0.7rem; color: #555;">Cargando tu progreso</div>
     </div>
     
-    <!-- Tarjeta de entrenar hoy -->
-    <div class="today-card" onclick="goToday()">
-        <div class="today-day" id="todayDay">Cargando...</div>
-        <div id="todayRoutine" style="color:#aaa; margin-bottom:10px"></div>
-        <div class="today-btn">👉 ENTRENAR HOY 👈</div>
-    </div>
-    
-    <!-- Estadísticas principales (Racha circular y Días sin fumar) -->
-    <div class="stats-row">
-        <div class="stat-card racha">
-            <div class="racha-circle">
-                <div class="racha-circle-number" id="rachaNumero">0</div>
-                <div class="racha-circle-label">RACHA</div>
+    <!-- CONTENIDO REAL (oculto hasta cargar) -->
+    <div id="contenidoHome" style="display: none;">
+        <!-- Banner del ciclo -->
+        <div class="cycle-card" id="cycleCard">CARGANDO...</div>
+        
+        <!-- Widget superior -->
+        <div class="widget-top" id="widgetTop">
+            <div class="widget-item">
+                <div class="widget-label">🔥 RACHA</div>
+                <div class="widget-value" id="widgetRacha">0</div>
             </div>
-            <div class="small-label">🔥 DÍAS CONSECUTIVOS</div>
+            <div class="widget-divider"></div>
+            <div class="widget-item">
+                <div class="widget-label">📅 HOY</div>
+                <div class="widget-value" id="widgetHoy">Cargando</div>
+            </div>
+            <div class="widget-divider"></div>
+            <div class="widget-item">
+                <div class="widget-label">⚖️ PESO</div>
+                <div class="widget-value" id="widgetPeso">-- kg</div>
+            </div>
+            <div class="widget-divider"></div>
+            <div class="widget-item">
+                <div class="widget-label">🎯 OBJETIVO</div>
+                <div class="widget-value" id="widgetObjetivo">75 kg</div>
+            </div>
         </div>
-        <div class="stat-card nosmoke">
-            <h2 id="diasSinFumar" style="color:#007aff; font-size:1.8rem">0</h2>
-            <div class="small-label">🚭 DÍAS SIN FUMAR</div>
+        
+        <!-- Tarjeta de entrenar hoy -->
+        <div class="today-card" onclick="goToday()">
+            <div class="today-day" id="todayDay">Cargando...</div>
+            <div id="todayRoutine" style="color:#aaa; margin-bottom:10px"></div>
+            <div class="today-btn">👉 ENTRENAR HOY 👈</div>
         </div>
-    </div>
-    
-    <!-- Gráfico de peso -->
-    <div style="margin-bottom:15px">
-        <div class="card" style="height:200px">
-            <canvas id="grafico"></canvas>
+        
+        <!-- Estadísticas principales -->
+        <div class="stats-row">
+            <div class="stat-card racha">
+                <div class="racha-circle">
+                    <div class="racha-circle-number" id="rachaNumero">0</div>
+                    <div class="racha-circle-label">RACHA</div>
+                </div>
+                <div class="small-label">🔥 DÍAS CONSECUTIVOS</div>
+            </div>
+            <div class="stat-card nosmoke">
+                <h2 id="diasSinFumar" style="color:#007aff; font-size:1.8rem">0</h2>
+                <div class="small-label">🚭 DÍAS SIN FUMAR</div>
+            </div>
         </div>
-    </div>
-    
-    <!-- Botón para marcar fumado -->
-    <div class="card" style="text-align:center">
-        <button onclick="marcarHoyFumado()" style="background:#222; color:#aaa; border:1px solid #555; padding:10px 20px; border-radius:8px; cursor:pointer; width:100%">🚬 Marcar hoy como fumado</button>
+        
+        <!-- Gráfico de peso -->
+        <div style="margin-bottom:15px">
+            <div class="card" style="height:200px">
+                <canvas id="grafico"></canvas>
+            </div>
+        </div>
+        
+        <!-- Botón para marcar fumado -->
+        <div class="card" style="text-align:center">
+            <button onclick="marcarHoyFumado()" style="background:#222; color:#aaa; border:1px solid #555; padding:10px 20px; border-radius:8px; cursor:pointer; width:100%">🚬 Marcar hoy como fumado</button>
+        </div>
     </div>
 </div>
 
@@ -571,7 +573,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
     </div>
 </div>
 
-<div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso en kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div></div>
+<div id="peso" class="seccion"><h2>⚖️ MI PESO CORPORAL</h2><div class="card" style="display:flex; gap:8px"><input type="number" id="in-peso" step="0.1" placeholder="Peso in kg" style="flex:1;padding:12px;background:#000;color:#fff;border:1px solid #444;border-radius:8px"><button onclick="agregarPeso()" style="padding:10px 20px;background:#ff6600;border:none;border-radius:8px;font-weight:bold;color:#fff">AÑADIR</button></div><div id="hist-peso"></div></div>
 
 <div id="logros" class="seccion"><h2>🏆 MIS LOGROS</h2><div id="logros-container" class="logros-grid"></div></div>
 
@@ -899,17 +901,34 @@ const listaLogros = [
     {id:"primer_peso",nombre:"⚖️ Primer peso",desc:"Registrar tu primer peso",condicion:()=>pesosRegistrados.length>=1,icono:"⚖️"},
     {id:"menos_1kg",nombre:"📉 -1 kg",desc:"Bajar 1 kg desde el inicio",condicion:()=>{const i=pesosRegistrados[0]?.valor||0; const a=pesosRegistrados[pesosRegistrados.length-1]?.valor||0; return i-a>=1;},icono:"📉"},
     {id:"menos_5kg",nombre:"🎉 -5 kg",desc:"Bajar 5 kg desde el inicio",condicion:()=>{const i=pesosRegistrados[0]?.valor||0; const a=pesosRegistrados[pesosRegistrados.length-1]?.valor||0; return i-a>=5;},icono:"🎉"},
-    {id:"foto_progreso",nombre:"📸 Mi primera foto",desc:"Sube tu primera foto de progreso",condicion:()=>typeof todasLasFechas !== 'undefined' ? Object.keys(todasLasFechas).length>=1 : false,icono:"📸"}
+    {id:"foto_progreso",nombre:"📸 Mi primera foto",desc:"Sube tu primera foto de progreso",condicion:()=>typeof fotosDias !== 'undefined' ? Object.keys(fotosDias).length>=1 : false,icono:"📸"}
 ];
-function verificarYDesbloquearLogros(){ let nuevos=false; listaLogros.forEach(l=>{ if(!logrosObtenidos.includes(l.id) && l.condicion()){ logrosObtenidos.push(l.id); nuevos=true; mostrarMensajeMotivador(`🏆 ¡NUEVO LOGRO! ${l.nombre}`, "logro"); canvasConfetti({particleCount:200,spread:100}); } }); if(nuevos) localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros(); }
+function verificarYDesbloquearLogros(){ let nuevos=false; listaLogros.forEach(l=>{ if(!logrosObtenidos.includes(l.id) && l.condicion()){ logrosObtenidos.push(l.id); nuevos=true; mostrarMensajeMotivadorConMedalla(`🏆 ¡NUEVO LOGRO! ${l.nombre}`, l.icono, l.nombre, l.desc); canvasConfetti({particleCount:200,spread:100}); } }); if(nuevos) localStorage.setItem('nico_logros',JSON.stringify(logrosObtenidos)); renderizarLogros(); }
+function mostrarMensajeMotivadorConMedalla(mensaje, icono, titulo, desc) {
+    const overlay = document.createElement('div');
+    overlay.className = 'medalla-overlay';
+    overlay.innerHTML = `<div class="medalla-contenedor"><div class="medalla-icono">${icono}</div><div class="medalla-titulo">¡NUEVO LOGRO!</div><div class="medalla-desc">${titulo}</div><div class="medalla-desc" style="font-size:0.85rem;">${desc}</div></div>`;
+    document.body.appendChild(overlay);
+    setTimeout(() => { overlay.remove(); }, 2500);
+}
 function renderizarLogros(){const cont=document.getElementById('logros-container'); if(!cont) return; cont.innerHTML=listaLogros.map(l=>{const obtenido=logrosObtenidos.includes(l.id); return `<div class="badge-card ${obtenido?'obtenido':''}"><span class="badge-icon">${l.icono}</span><div class="badge-nombre">${l.nombre}</div><div class="badge-desc">${l.desc}</div><div class="${obtenido?'badge-obtenido':'badge-bloqueado'}">${obtenido?'✅ DESBLOQUEADO':'🔒 BLOQUEADO'}</div></div>`;}).join('');}
 
-let todasLasFechas = {};
-if(typeof fotosGuardadas !== 'undefined') todasLasFechas = fotosGuardadas;
+let fotosDias = {};
+if(typeof todasLasFechas !== 'undefined') fotosDias = todasLasFechas;
 
 // ==================== MENSAJES ====================
 function mostrarToast(m){const t=document.createElement('div'); t.className='toast-msg'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),3000);}
 function mostrarMensajeMotivador(m){mostrarToast(m);}
+
+// ==================== ANIMACIÓN DE CARGA ====================
+function ocultarLoading() {
+    const loading = document.getElementById('loadingAnimation');
+    const contenido = document.getElementById('contenidoHome');
+    if(loading && contenido) {
+        loading.style.display = 'none';
+        contenido.style.display = 'block';
+    }
+}
 
 // ==================== NAVEGACIÓN ====================
 function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home'){actualizarHome(); actualizarBannerCiclo();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') inicializarFotosDB(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
@@ -924,18 +943,23 @@ function cerrarCalc(){document.getElementById('calcModal').classList.remove('sho
 function sumarDisco(p){const clave=p===1.25?'d125':(p===1.5?'d15':'d2'); if(discosActuales[clave]>=4) return; discosActuales[clave]++; actualizarMostrarDiscos();}
 function resetearDiscos(){discosActuales={d125:0,d15:0,d2:0}; actualizarMostrarDiscos();}
 function actualizarMostrarDiscos(){const total=(discosActuales.d125*1.25)+(discosActuales.d15*1.5)+(discosActuales.d2*2); document.getElementById('totalDisco').innerText=total.toFixed(2); document.getElementById('badge125').innerText=discosActuales.d125; document.getElementById('badge15').innerText=discosActuales.d15; document.getElementById('badge2').innerText=discosActuales.d2; localStorage.setItem(`discos_${ejercicioDiscoActual}`,JSON.stringify(discosActuales));}
-function exportarDatos(conEmail=false){const datos={pesos:pesosRegistrados,checks:checks,notas:notas,entrenos:diasEntrenados,humo:diasFumados,fotos:typeof todasLasFechas !== 'undefined' ? todasLasFechas : {},logros:logrosObtenidos}; const json=JSON.stringify(datos); const blob=new Blob([json],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`nicogym_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); if(conEmail) setTimeout(()=>{window.location.href="mailto:?subject=Backup NICO GYM&body=Adjunto mi backup";},500); mostrarToast("✅ Backup creado");}
+function exportarDatos(conEmail=false){const datos={pesos:pesosRegistrados,checks:checks,notas:notas,entrenos:diasEntrenados,humo:diasFumados,fotos:fotosDias,logros:logrosObtenidos}; const json=JSON.stringify(datos); const blob=new Blob([json],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`nicogym_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); if(conEmail) setTimeout(()=>{window.location.href="mailto:?subject=Backup NICO GYM&body=Adjunto mi backup";},500); mostrarToast("✅ Backup creado");}
 
 window.onload=()=>{
-    actualizarBannerCiclo();
-    actualizarBadgesCicloDia();
-    resetSemanal();
-    renderizarRutinas();
-    actualizarHome();
-    mostrarHistorialPeso();
-    renderizarCalendarios();
-    renderizarLogros();
-    if(document.getElementById('progreso-fotos')) inicializarFotosDB();
+    // Simular carga mínima para ver la animación
+    setTimeout(() => {
+        actualizarBannerCiclo();
+        actualizarBadgesCicloDia();
+        resetSemanal();
+        renderizarRutinas();
+        actualizarHome();
+        mostrarHistorialPeso();
+        renderizarCalendarios();
+        renderizarLogros();
+        if(document.getElementById('progreso-fotos')) inicializarFotosDB();
+        ocultarLoading();
+    }, 800);
+    
     const params=new URLSearchParams(window.location.search);
     if(params.get('action')==='weight') go('peso');
     else if(params.get('action')==='train') goToday();
