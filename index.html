@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>NICO GYM - Ciclo Mensual</title>
+<title>NICO GYM - Ciclo Personalizado</title>
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -158,7 +158,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .badge-obtenido{font-size:.7rem;color:#32d74b}
 .badge-bloqueado{font-size:.7rem;color:#555}
 
-/* CICLO VISUAL */
+/* CICLO VISUAL CON COLORES DINÁMICOS */
 .cycle-card {
     border-radius: 16px;
     padding: 12px;
@@ -168,15 +168,18 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 }
 .cycle-card.fuerza {
     background: linear-gradient(135deg, #2a0a0a, #1a0505);
-    border: 1.5px solid #ff3b30;
+    border: 2px solid #ff3b30;
+    box-shadow: 0 0 15px rgba(255,59,48,0.3);
 }
 .cycle-card.volumen {
     background: linear-gradient(135deg, #0a2a0a, #051505);
-    border: 1.5px solid #32d74b;
+    border: 2px solid #32d74b;
+    box-shadow: 0 0 15px rgba(50,215,75,0.3);
 }
 .cycle-card.definicion {
     background: linear-gradient(135deg, #2a2a0a, #151505);
-    border: 1.5px solid #ffd60a;
+    border: 2px solid #ffd60a;
+    box-shadow: 0 0 15px rgba(255,214,10,0.3);
 }
 .cycle-emoji { font-size: 1.8rem; display: inline-block; }
 .cycle-title { font-size: 1rem; font-weight: bold; display: inline-block; margin-left: 5px; }
@@ -204,18 +207,29 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .day-cycle-badge.volumen { background: #32d74b; color: #000; }
 .day-cycle-badge.definicion { background: #ffd60a; color: #000; }
 
-/* BANNER UNIFICADO */
+/* BANNER UNIFICADO CON COLORES DINÁMICOS */
 .banner-unificado {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
     border-radius: 16px;
     padding: 15px;
     margin-bottom: 15px;
-    border: 1px solid #ff6600;
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
+    transition: all 0.3s ease;
+}
+.banner-unificado.fuerza {
+    background: linear-gradient(135deg, #1a0a0a, #0a0505);
+    border: 1px solid #ff3b30;
+}
+.banner-unificado.volumen {
+    background: linear-gradient(135deg, #0a1a0a, #050a05);
+    border: 1px solid #32d74b;
+}
+.banner-unificado.definicion {
+    background: linear-gradient(135deg, #1a1a0a, #0a0a05);
+    border: 1px solid #ffd60a;
 }
 .banner-item {
     flex: 1;
@@ -230,10 +244,12 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .banner-value {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #ff6600;
 }
+.banner-unificado.fuerza .banner-value { color: #ff3b30; }
+.banner-unificado.volumen .banner-value { color: #32d74b; }
+.banner-unificado.definicion .banner-value { color: #ffd60a; }
 
-/* Botón entrenar hoy */
+/* Botón entrenar hoy con color dinámico */
 .btn-entrenar-hoy {
     background: linear-gradient(135deg, #ff6600, #ff3300);
     border: none;
@@ -251,6 +267,9 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 .btn-entrenar-hoy:active {
     transform: scale(0.97);
 }
+.btn-entrenar-hoy.fuerza { background: linear-gradient(135deg, #ff3b30, #cc0000); }
+.btn-entrenar-hoy.volumen { background: linear-gradient(135deg, #32d74b, #1a8a2e); }
+.btn-entrenar-hoy.definicion { background: linear-gradient(135deg, #ffd60a, #ccaa00); color: #000; }
 
 /* EJERCICIO VISUAL */
 .exercise-card {
@@ -297,6 +316,9 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 }
 .exercise-detail-label { font-size: 0.7rem; color: #888; margin-bottom: 5px; }
 .exercise-detail-value { font-size: 1.1rem; font-weight: bold; }
+.exercise-detail-value.fuerza { color: #ff3b30; }
+.exercise-detail-value.volumen { color: #32d74b; }
+.exercise-detail-value.definicion { color: #ffd60a; }
 .exercise-series {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
@@ -477,7 +499,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 </nav>
 <header><span class="menu-icon" onclick="openMenu()">☰</span><span class="logo">NICO <span style="color:#ff6600">GYM</span></span><span class="home-icon" onclick="go('home')">🏠</span></header>
 
-<!-- ==================== HOME SIMPLIFICADO ==================== -->
+<!-- ==================== HOME CON CICLO PERSONALIZADO ==================== -->
 <div id="home" class="seccion active">
     
     <!-- ANIMACIÓN DE CARGA -->
@@ -498,7 +520,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
         <div class="cycle-card" id="cycleCard"></div>
         
         <!-- Banner unificado (Racha, Sin fumar, Peso, Objetivo) -->
-        <div class="banner-unificado">
+        <div class="banner-unificado" id="bannerUnificado">
             <div class="banner-item">
                 <div class="banner-label">🔥 RACHA</div>
                 <div class="banner-value" id="bannerRacha">0</div>
@@ -518,7 +540,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
         </div>
         
         <!-- Botón para entrenar hoy -->
-        <button class="btn-entrenar-hoy" onclick="goToday()">💪 ENTRENAR HOY</button>
+        <button class="btn-entrenar-hoy" id="btnEntrenarHoy" onclick="goToday()">💪 ENTRENAR HOY</button>
         
         <!-- Gráfico de peso -->
         <div style="margin-bottom:15px">
@@ -608,7 +630,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="resetModal" class="reset-modal"><div class="reset-modal-content"><h3 style="color:#ff3b30;margin-bottom:15px;">⚠️ BORRAR TODO</h3><p style="margin-bottom:15px;">Esto eliminará TODOS tus datos. No se puede deshacer.</p><p style="margin-bottom:15px;">Escribe <strong style="color:#ff6600;">"BORRAR"</strong> para confirmar:</p><input type="text" id="confirmResetInput" placeholder="BORRAR"><div style="display:flex;gap:10px;"><button onclick="cerrarModalReset()" style="flex:1;padding:10px;background:#222;color:#fff;border:none;border-radius:8px;">Cancelar</button><button onclick="confirmarBorrarTodo()" style="flex:1;padding:10px;background:#ff3b30;color:#fff;border:none;border-radius:8px;">Borrar</button></div></div></div>
 
 <script>
-// ==================== CICLO MENSUAL ====================
+// ==================== CICLO MENSUAL PERSONALIZADO ====================
 const MAX_PESO_TOTAL = 20;
 const OBJETIVO_PESO = 75;
 
@@ -623,9 +645,10 @@ function getSemanaDelMes() {
 
 function getTipoCiclo() {
     const semana = getSemanaDelMes();
-    if (semana === 1 || semana === 4 || semana === 5) return 'FUERZA';
-    if (semana === 2) return 'VOLUMEN';
-    return 'DEFINICIÓN';
+    // NUEVO CICLO: Semana 1 = FUERZA, Semana 2 = DEFINICIÓN, Semana 3 = VOLUMEN, Semana 4 = DEFINICIÓN, Semana 5 = FUERZA
+    if (semana === 1 || semana === 5) return 'FUERZA';
+    if (semana === 3) return 'VOLUMEN';
+    return 'DEFINICIÓN';  // Semanas 2 y 4
 }
 
 function getConfiguracionCiclo() {
@@ -633,9 +656,26 @@ function getConfiguracionCiclo() {
     const configs = {
         FUERZA: { nombre: '🏋️ FUERZA', emoji: '🏋️', color: '#ff3b30', series: '4-5', reps: '3-5', peso: 'PESADO (16-18kg)', desc: 'Pocas reps, mucho peso', objetivo: 'GANAR FUERZA MÁXIMA' },
         VOLUMEN: { nombre: '💪 VOLUMEN', emoji: '💪', color: '#32d74b', series: '3-4', reps: '8-12', peso: 'MODERADO (10-12kg)', desc: 'Reps medias, peso moderado', objetivo: 'HIPERTROFIA' },
-        DEFINICIÓN: { nombre: '🔥 DEFINICIÓN', emoji: '🔥', color: '#ffd60a', series: '3-4', reps: '15-20', peso: 'LIGERO (6-8kg)', desc: 'Muchas reps, poco peso', objetivo: 'MARCAR' }
+        DEFINICIÓN: { nombre: '🔥 DEFINICIÓN', emoji: '🔥', color: '#ffd60a', series: '3-4', reps: '15-20', peso: 'LIGERO (6-8kg)', desc: 'Muchas reps, poco peso', objetivo: 'QUEMAR GRASA' }
     };
     return configs[tipo];
+}
+
+function actualizarColoresPorCiclo() {
+    const tipo = getTipoCiclo().toLowerCase();
+    const config = getConfiguracionCiclo();
+    
+    // Actualizar banner unificado
+    const bannerUnificado = document.getElementById('bannerUnificado');
+    if(bannerUnificado) {
+        bannerUnificado.className = `banner-unificado ${tipo}`;
+    }
+    
+    // Actualizar botón entrenar hoy
+    const btnEntrenar = document.getElementById('btnEntrenarHoy');
+    if(btnEntrenar) {
+        btnEntrenar.className = `btn-entrenar-hoy ${tipo}`;
+    }
 }
 
 function actualizarBadgesCicloDia() {
@@ -926,7 +966,7 @@ function ocultarLoading() {
 }
 
 // ==================== NAVEGACIÓN ====================
-function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home'){actualizarHome(); actualizarBannerCiclo();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') inicializarFotosDB(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
+function go(id){document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='home'){actualizarHome(); actualizarBannerCiclo(); actualizarColoresPorCiclo();} if(id==='calendarios') renderizarCalendarios(); if(id==='progreso-fotos') inicializarFotosDB(); if(id==='peso') mostrarHistorialPeso(); if(id==='logros') renderizarLogros(); closeMenu(); window.scrollTo(0,0);}
 function goToday(){const h=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][new Date().getDay()]; go(h);}
 function toggleSubmenu(b){b.classList.toggle('open'); b.nextElementSibling.classList.toggle('show');}
 function openMenu(){document.getElementById('menu-lat').classList.add('open'); document.getElementById('overlay').style.display='block';}
@@ -944,6 +984,7 @@ window.onload=()=>{
     setTimeout(() => {
         actualizarBannerCiclo();
         actualizarBadgesCicloDia();
+        actualizarColoresPorCiclo();
         resetSemanal();
         renderizarRutinas();
         actualizarHome();
