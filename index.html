@@ -356,9 +356,23 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 
 /* CALENDARIOS */
 .cal-wrapper{display:flex;flex-direction:column;gap:20px;margin-top:10px}
-.cal-card{background:#111;border-radius:15px;padding:15px;border:1px solid #222;max-width:400px;margin:0 auto;width:100%}
+.cal-card{
+    background:#111;
+    border-radius:15px;
+    padding:15px;
+    border:1px solid #222;
+    max-width:400px;
+    margin:0 auto;
+    width:100%;
+    transition: all 0.3s ease;
+}
 .cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.cal-nav span{font-size:0.9rem;font-weight:bold;text-transform:uppercase;color:#ff6600}
+.cal-nav span{
+    font-size:0.9rem;
+    font-weight:bold;
+    text-transform:uppercase;
+    transition: color 0.3s ease;
+}
 .cal-nav button{background:#222;border:none;color:#fff;padding:6px 12px;border-radius:6px;font-size:1rem;cursor:pointer}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .cal-day-label{font-size:0.7rem;text-align:center;color:#555;padding-bottom:5px;font-weight:bold}
@@ -511,7 +525,7 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <!-- ==================== HOME ==================== -->
 <div id="home" class="seccion active">
     
-    <!-- ANIMACIÓN DE CARGA -->
+    <!-- ANIMACIÓN DE CARGA (se ve por 500ms) -->
     <div id="loadingAnimation" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px;">
         <div>
             <span class="loading-dumbbell">🏋️</span>
@@ -568,8 +582,16 @@ header{height:60px;background:linear-gradient(135deg,#000,#1a1a1a);border-bottom
 <div id="calendarios" class="seccion">
 <h2 style="text-align:center;margin-bottom:15px">📅 SEGUIMIENTO</h2>
 <div class="cal-wrapper">
-<div class="cal-card"><div class="cal-nav"><button onclick="changeMonth(-1,'gym')">←</button><span id="cal-month-gym"></span><button onclick="changeMonth(1,'gym')">→</button></div><div id="cal-gym" class="cal-grid"></div><div class="cal-legend"><div class="leg-item"><div class="leg-box" style="background:#32d74b"></div><span>Entrenado</span></div><div class="leg-item"><div class="leg-box" style="background:#8b5cf6"></div><span>Domingo</span></div></div></div>
-<div class="cal-card"><div class="cal-nav"><button onclick="changeMonth(-1,'smoke')">←</button><span id="cal-month-smoke"></span><button onclick="changeMonth(1,'smoke')">→</button></div><div id="cal-smoke" class="cal-grid"></div><div class="cal-legend"><div class="leg-item"><div class="leg-box" style="background:#ff3b30"></div><span>Fumado</span></div><div class="leg-item"><div class="leg-box" style="background:#007aff"></div><span>Limpio</span></div></div></div>
+<div class="cal-card" id="calGymCard">
+    <div class="cal-nav"><button onclick="changeMonth(-1,'gym')">←</button><span id="cal-month-gym"></span><button onclick="changeMonth(1,'gym')">→</button></div>
+    <div id="cal-gym" class="cal-grid"></div>
+    <div class="cal-legend"><div class="leg-item"><div class="leg-box" style="background:#32d74b"></div><span>Entrenado</span></div><div class="leg-item"><div class="leg-box" style="background:#8b5cf6"></div><span>Domingo</span></div></div>
+</div>
+<div class="cal-card" id="calSmokeCard">
+    <div class="cal-nav"><button onclick="changeMonth(-1,'smoke')">←</button><span id="cal-month-smoke"></span><button onclick="changeMonth(1,'smoke')">→</button></div>
+    <div id="cal-smoke" class="cal-grid"></div>
+    <div class="cal-legend"><div class="leg-item"><div class="leg-box" style="background:#ff3b30"></div><span>Fumado</span></div><div class="leg-item"><div class="leg-box" style="background:#007aff"></div><span>Limpio</span></div></div>
+</div>
 </div>
 </div>
 
@@ -713,6 +735,8 @@ function actualizarBannerUnificado() {
 
 function aplicarColoresDinamicos() {
     const tipo = getTipoCiclo().toLowerCase();
+    const config = getConfiguracionCiclo();
+    const colorPrincipal = config.color;
     
     // Botón entrenar hoy
     const btnEntrenar = document.getElementById('btnEntrenarHoy');
@@ -724,6 +748,28 @@ function aplicarColoresDinamicos() {
     const banner = document.getElementById('bannerUnificado');
     if(banner) {
         banner.className = `banner-unificado ${tipo}`;
+    }
+    
+    // Calendario: borde y nombre del mes
+    const calGymCard = document.getElementById('calGymCard');
+    if(calGymCard) {
+        calGymCard.style.border = `1px solid ${colorPrincipal}`;
+    }
+    const monthSpanGym = document.getElementById('cal-month-gym');
+    if(monthSpanGym) {
+        monthSpanGym.style.color = colorPrincipal;
+    }
+}
+
+function actualizarColoresCalendario() {
+    const colorPrincipal = getConfiguracionCiclo().color;
+    const calGymCard = document.getElementById('calGymCard');
+    if(calGymCard) {
+        calGymCard.style.border = `1px solid ${colorPrincipal}`;
+    }
+    const monthSpanGym = document.getElementById('cal-month-gym');
+    if(monthSpanGym) {
+        monthSpanGym.style.color = colorPrincipal;
     }
 }
 
@@ -872,10 +918,54 @@ function getRutinaHoy() { const d = new Date().getDay(); const tipo = getTipoCic
 let currentViewMonthGym = new Date().getMonth(), currentViewYearGym = new Date().getFullYear(), currentViewMonthSmoke = new Date().getMonth(), currentViewYearSmoke = new Date().getFullYear();
 function getHoyStr() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function getSemanaActual() { const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+4-(d.getDay()||7)); return `${d.getFullYear()}-W${Math.ceil((((d-new Date(d.getFullYear(),0,1))/86400000)+1)/7)}`; }
-function changeMonth(offset,type) { if(type==='gym'){let d=new Date(currentViewYearGym,currentViewMonthGym+offset,1); currentViewYearGym=d.getFullYear(); currentViewMonthGym=d.getMonth();} else{let d=new Date(currentViewYearSmoke,currentViewMonthSmoke+offset,1); currentViewYearSmoke=d.getFullYear(); currentViewMonthSmoke=d.getMonth();} renderizarCalendarios(); }
-function renderCal(id,mes,año,listaDias,labelId,esHumo=false) { const container=document.getElementById(id); if(!container) return; container.innerHTML=''; const nombreMes=new Intl.DateTimeFormat('es-ES',{month:'long'}).format(new Date(año,mes,1)).toUpperCase(); document.getElementById(labelId).innerText=`${nombreMes} ${año}`; ['L','M','X','J','V','S','D'].forEach(d=>{const div=document.createElement('div'); div.className='cal-day-label'; div.innerText=d; container.appendChild(div);}); const primerDia=new Date(año,mes,1).getDay(); const offset=primerDia===0?6:primerDia-1; const diasEnMes=new Date(año,mes+1,0).getDate(); for(let i=0;i<offset;i++) container.appendChild(document.createElement('div')); const hoyStr=getHoyStr(); const hoyDate=new Date(); hoyDate.setHours(23,59,59,999); for(let d=1;d<=diasEnMes;d++){const cell=document.createElement('div'); cell.className='cal-cell'; cell.innerText=d; const fecha=new Date(año,mes,d); const fStr=`${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`; if(fecha>hoyDate) cell.classList.add('future'); else cell.onclick=()=>toggleDia(fStr,esHumo,fecha); if(fStr===hoyStr) cell.classList.add('today'); if(esHumo){if(listaDias.includes(fStr)) cell.classList.add('fumado'); else if(fecha>=new Date(2026,1,22)&&fecha<=new Date()) cell.classList.add('nosmoke');} else{if(listaDias.includes(fStr)) cell.classList.add('entrenado'); else if(fecha.getDay()===0) cell.classList.add('domingo');} container.appendChild(cell);} }
-function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarToast("✅ Día limpio!");} else{diasFumados.push(fStr); mostrarToast("🚬 Marcado como fumado.");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarToast("🔥 ¡Día añadido!"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); }
-function renderizarCalendarios(){renderCal('cal-gym',currentViewMonthGym,currentViewYearGym,diasEntrenados,'cal-month-gym',false); renderCal('cal-smoke',currentViewMonthSmoke,currentViewYearSmoke,diasFumados,'cal-month-smoke',true);}
+function changeMonth(offset,type) { 
+    if(type==='gym'){
+        let d=new Date(currentViewYearGym,currentViewMonthGym+offset,1); 
+        currentViewYearGym=d.getFullYear(); 
+        currentViewMonthGym=d.getMonth();
+    } else {
+        let d=new Date(currentViewYearSmoke,currentViewMonthSmoke+offset,1); 
+        currentViewYearSmoke=d.getFullYear(); 
+        currentViewMonthSmoke=d.getMonth();
+    }
+    renderizarCalendarios(); 
+    actualizarColoresCalendario();
+}
+function renderCal(id,mes,año,listaDias,labelId,esHumo=false) { 
+    const container=document.getElementById(id); 
+    if(!container) return; 
+    container.innerHTML=''; 
+    const nombreMes=new Intl.DateTimeFormat('es-ES',{month:'long'}).format(new Date(año,mes,1)).toUpperCase(); 
+    document.getElementById(labelId).innerText=`${nombreMes} ${año}`; 
+    ['L','M','X','J','V','S','D'].forEach(d=>{const div=document.createElement('div'); div.className='cal-day-label'; div.innerText=d; container.appendChild(div);}); 
+    const primerDia=new Date(año,mes,1).getDay(); 
+    const offset=primerDia===0?6:primerDia-1; 
+    const diasEnMes=new Date(año,mes+1,0).getDate(); 
+    for(let i=0;i<offset;i++) container.appendChild(document.createElement('div')); 
+    const hoyStr=getHoyStr(); 
+    const hoyDate=new Date(); 
+    hoyDate.setHours(23,59,59,999); 
+    for(let d=1;d<=diasEnMes;d++){
+        const cell=document.createElement('div'); 
+        cell.className='cal-cell'; 
+        cell.innerText=d; 
+        const fecha=new Date(año,mes,d); 
+        const fStr=`${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`; 
+        if(fecha>hoyDate) cell.classList.add('future');
+        else cell.onclick=()=>toggleDia(fStr,esHumo,fecha); 
+        if(fStr===hoyStr) cell.classList.add('today'); 
+        if(esHumo){
+            if(listaDias.includes(fStr)) cell.classList.add('fumado'); 
+            else if(fecha>=new Date(2026,1,22)&&fecha<=new Date()) cell.classList.add('nosmoke');
+        } else {
+            if(listaDias.includes(fStr)) cell.classList.add('entrenado'); 
+            else if(fecha.getDay()===0) cell.classList.add('domingo');
+        }
+        container.appendChild(cell);
+    } 
+}
+function toggleDia(fStr,esHumo,fechaObj){const hoy=new Date(); hoy.setHours(23,59,59,999); if(fechaObj>hoy){mostrarToast("🚫 No puedes marcar días futuros."); return;} if(esHumo){if(diasFumados.includes(fStr)){diasFumados=diasFumados.filter(d=>d!==fStr); mostrarToast("✅ Día limpio!");} else{diasFumados.push(fStr); mostrarToast("🚬 Marcado como fumado.");} localStorage.setItem('nico_dias_fumados',JSON.stringify(diasFumados));} else{if(diasEntrenados.includes(fStr)){diasEntrenados=diasEntrenados.filter(d=>d!==fStr); mostrarToast("🗑️ Día eliminado.");} else{diasEntrenados.push(fStr); mostrarToast("🔥 ¡Día añadido!"); canvasConfetti({particleCount:50,spread:30});} localStorage.setItem('nico_dias_entrenados',JSON.stringify(diasEntrenados));} actualizarHome(); renderizarCalendarios(); actualizarColoresCalendario();}
+function renderizarCalendarios(){renderCal('cal-gym',currentViewMonthGym,currentViewYearGym,diasEntrenados,'cal-month-gym',false); renderCal('cal-smoke',currentViewMonthSmoke,currentViewYearSmoke,diasFumados,'cal-month-smoke',true); actualizarColoresCalendario();}
 
 // ==================== FUNCIONES SECUNDARIAS ====================
 function resetSemanal(){const semanaStr=getSemanaActual(); const ultima=localStorage.getItem('nico_ultima_semana_reset'); if(ultima!==semanaStr){for(let key in notas) if(key.includes('-s')) historialSeries[key]=notas[key]; localStorage.setItem('nico_historial_series',JSON.stringify(historialSeries)); checks={}; notas={}; localStorage.setItem('nico_checks',JSON.stringify(checks)); localStorage.setItem('nico_notas',JSON.stringify(notas)); localStorage.setItem('nico_ultima_semana_reset',semanaStr);}}
@@ -982,7 +1072,10 @@ function go(id){
         actualizarBadgesCicloDia();
         ocultarLoading();
     }
-    if(id==='calendarios') renderizarCalendarios();
+    if(id==='calendarios'){
+        renderizarCalendarios();
+        actualizarColoresCalendario();
+    }
     if(id==='progreso-fotos') inicializarFotosDB();
     if(id==='peso') mostrarHistorialPeso();
     if(id==='logros') renderizarLogros();
@@ -1014,6 +1107,7 @@ window.onload=()=>{
         renderizarLogros();
         if(document.getElementById('progreso-fotos')) inicializarFotosDB();
         ocultarLoading();
+        actualizarColoresCalendario();
     }, 500);
     
     const params=new URLSearchParams(window.location.search);
