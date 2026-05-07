@@ -557,6 +557,7 @@ header {
 </style>
 </head>
 <body>
+
 <div id="overlay" onclick="closeMenu()"></div>
 
 <nav id="menu-lat">
@@ -651,6 +652,7 @@ header {
 
 <!-- LOGROS -->
 <div id="logros" class="seccion"><h2>🏆 LOGROS</h2><div id="logrosContainer" class="logros-grid"></div></div>
+
 <!-- RUTINAS -->
 <div id="lunes" class="seccion"><h2>💪 ESPALDA / BÍCEPS</h2><div id="badge-lunes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-lunes"></div><div id="estiramientos-lunes"></div><button class="btn-done" onclick="completarDia('lunes')">✅ COMPLETAR ENTRENO</button></div>
 <div id="martes" class="seccion"><h2>🏃 CARDIO / ABS</h2><div id="badge-martes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-martes"></div><div id="estiramientos-martes"></div><button class="btn-done" onclick="completarDia('martes')">✅ COMPLETAR ENTRENO</button></div>
@@ -678,6 +680,7 @@ header {
 </div>
 
 <div id="descanso-box"><div class="descanso-contenido"><h1>💪 ¡DESCANSA!</h1><div class="descanso-timer-num" id="descansoTimer">30</div><button onclick="cancelarDescanso()" style="background:var(--ciclo-color); border:none; padding:8px 24px; border-radius:30px;">SALTAR</button></div></div>
+
 <script>
 // ==================== CONFIGURACIÓN CICLOS ====================
 function getSemanaDelMes() {
@@ -700,83 +703,117 @@ function getTipoCiclo() {
 function getConfigCiclo() {
     const tipo = getTipoCiclo();
     const configs = {
-        FUERZA: { nombre: '🔴 FUERZA', emoji: '🔴🏋️', color: '#ff3b30', series: '4-5', reps: '3-5', peso: 'PESADO (14-20kg)', objetivo: 'GANAR FUERZA MÁXIMA' },
-        VOLUMEN: { nombre: '🟢 VOLUMEN', emoji: '🟢💪', color: '#32d74b', series: '3-4', reps: '8-12', peso: 'MODERADO (10-16kg)', objetivo: 'HIPERTROFIA' },
-        DEFINICIÓN: { nombre: '🟡 DEFINICIÓN', emoji: '🟡🔥', color: '#ffd60a', series: '3-4', reps: '15-20', peso: 'LIGERO (5-14kg)', objetivo: 'QUEMAR GRASA' }
+        FUERZA: { nombre: '🔴 FUERZA', emoji: '🔴🏋️', color: '#ff3b30', series: '4-5', reps: '3-5', peso: 'PESADO (14-19kg)', objetivo: 'GANAR FUERZA MÁXIMA' },
+        VOLUMEN: { nombre: '🟢 VOLUMEN', emoji: '🟢💪', color: '#32d74b', series: '3-4', reps: '8-12', peso: 'MODERADO (10-14kg)', objetivo: 'HIPERTROFIA' },
+        DEFINICIÓN: { nombre: '🟡 DEFINICIÓN', emoji: '🟡🔥', color: '#ffd60a', series: '3-4', reps: '15-20', peso: 'LIGERO (5-10kg)', objetivo: 'QUEMAR GRASA' }
     };
     return configs[tipo];
 }
 
-// ==================== PESOS POR EJERCICIO (AJUSTADO) ====================
+// ==================== PESOS POR EJERCICIO (DEFINITIVO) ====================
 function getPesoEjercicio(nombre) {
     const tipo = getTipoCiclo();
     const pesos = {
-        // 2 mancuernas - FUERZA 9kg c/u, VOLUMEN 8kg c/u, DEFINICIÓN 7kg c/u
-        "Remo con Barra": { FUERZA: 18, VOLUMEN: 16, DEFINICIÓN: 14 },
-        "Press banca": { FUERZA: 18, VOLUMEN: 16, DEFINICIÓN: 14 },
-        "Sentadillas": { FUERZA: 18, VOLUMEN: 16, DEFINICIÓN: 14 },
-        "Peso Muerto Rumano": { FUERZA: 18, VOLUMEN: 16, DEFINICIÓN: 14 },
-        // 2 mancuernas - FUERZA 7kg c/u, VOLUMEN 5.5kg c/u, DEFINICIÓN 3.5kg c/u
-        "Curl de Bíceps": { FUERZA: 14, VOLUMEN: 11, DEFINICIÓN: 7 },
-        "Aperturas con mancuernas": { FUERZA: 14, VOLUMEN: 11, DEFINICIÓN: 7 },
-        "Press Francés": { FUERZA: 14, VOLUMEN: 11, DEFINICIÓN: 7 },
-        // 2 mancuernas - FUERZA 8kg c/u, VOLUMEN 6kg c/u, DEFINICIÓN 5kg c/u
-        "Press Militar Sentado": { FUERZA: 16, VOLUMEN: 12, DEFINICIÓN: 10 },
-        // 2 mancuernas - FUERZA 5kg c/u, VOLUMEN 3.5kg c/u, DEFINICIÓN 2.5kg c/u
+        // Barra larga: peso TOTAL de la barra (suma de ambos lados)
+        "Sentadillas": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
+        "Peso Muerto Rumano": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
+        "Press banca": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
+        "Remo con Barra": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
+        // 2 mancuernas - peso TOTAL (suma de las dos)
+        "Press Militar Sentado": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
+        "Curl de Bíceps": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
+        "Aperturas con mancuernas": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
+        "Press Francés": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
         "Elevaciones laterales": { FUERZA: 10, VOLUMEN: 7, DEFINICIÓN: 5 },
-        // 1 mancuerna - FUERZA 9kg, VOLUMEN 8kg, DEFINICIÓN 7kg
-        "Remo a una mano": { FUERZA: 9, VOLUMEN: 8, DEFINICIÓN: 7 },
-        "Extensión tríceps tras nuca": { FUERZA: 9, VOLUMEN: 8, DEFINICIÓN: 7 }
+        // 1 mancuerna (única)
+        "Remo a una mano": { FUERZA: 9.5, VOLUMEN: 7, DEFINICIÓN: 5 },
+        "Extensión tríceps tras nuca": { FUERZA: 9.5, VOLUMEN: 7, DEFINICIÓN: 5 }
     };
     if (pesos[nombre]) return pesos[nombre][tipo];
     return 0;
 }
 
+// Formatear peso mostrado: "X kg c/u" para 2 mancuernas, "X kg" para 1 mancuerna o barra larga
 function formatearPeso(nombreEjercicio, pesoTotal) {
     if (pesoTotal === 0) return 'Corporal';
     
+    // Ejercicios de 2 mancuernas (mostrar peso por mancuerna)
+    const dosMancuernas = [
+        "Press Militar Sentado", "Curl de Bíceps", "Aperturas con mancuernas",
+        "Press Francés", "Elevaciones laterales"
+    ];
+    if (dosMancuernas.includes(nombreEjercicio)) {
+        const porMancuerna = pesoTotal / 2;
+        return porMancuerna + ' kg c/u';
+    }
+    
+    // Ejercicios de 1 mancuerna
     const unaMancuerna = ["Remo a una mano", "Extensión tríceps tras nuca"];
     if (unaMancuerna.includes(nombreEjercicio)) {
         return pesoTotal + ' kg';
     }
     
-    const pesoPorMancuerna = pesoTotal / 2;
-    return pesoPorMancuerna + ' kg c/u';
+    // Barra larga: mostrar peso total
+    return pesoTotal + ' kg';
 }
 
-// ==================== MODAL DISCOS ====================
+// Modal de discos (mejorado con combinaciones exactas)
 function mostrarDiscos(ejercicioNombre, pesoTotal) {
-    const unaMancuernaList = ["Remo a una mano", "Extensión tríceps tras nuca"];
-    const esUnaMancuerna = unaMancuernaList.includes(ejercicioNombre);
-    let pesoPorMancuerna = pesoTotal;
+    const tipo = getTipoCiclo();
+    let pesoMostrar = pesoTotal;
+    let esBarraLarga = false;
+    let esDosMancuernas = false;
+    let esUnaMancuerna = false;
     
-    if (!esUnaMancuerna && pesoTotal > 0) {
-        pesoPorMancuerna = pesoTotal / 2;
+    const dosMancuernas = ["Press Militar Sentado", "Curl de Bíceps", "Aperturas con mancuernas", "Press Francés", "Elevaciones laterales"];
+    const unaMancuerna = ["Remo a una mano", "Extensión tríceps tras nuca"];
+    const barraLarga = ["Sentadillas", "Peso Muerto Rumano", "Press banca", "Remo con Barra"];
+    
+    if (dosMancuernas.includes(ejercicioNombre)) {
+        esDosMancuernas = true;
+        pesoMostrar = pesoTotal / 2;
+    } else if (unaMancuerna.includes(ejercicioNombre)) {
+        esUnaMancuerna = true;
+    } else if (barraLarga.includes(ejercicioNombre)) {
+        esBarraLarga = true;
+        pesoMostrar = pesoTotal / 2; // peso por lado
     }
     
-    const discosPorPeso = {
-        9: { 2: 3, 1.5: 2, 1.25: 0, texto: "2kg(3) + 1.5kg(2)" },
-        8: { 2: 4, 1.5: 0, 1.25: 0, texto: "2kg(4)" },
-        7: { 2: 2, 1.5: 2, 1.25: 0, texto: "2kg(2) + 1.5kg(2)" },
-        6: { 2: 3, 1.5: 0, 1.25: 0, texto: "2kg(3)" },
-        5.5: { 2: 2, 1.5: 1, 1.25: 0, texto: "2kg(2) + 1.5kg(1)" },
-        5: { 2: 1, 1.5: 2, 1.25: 0, texto: "2kg(1) + 1.5kg(2)" },
-        3.5: { 2: 1, 1.5: 1, 1.25: 0, texto: "2kg(1) + 1.5kg(1)" },
-        2.5: { 2: 0, 1.5: 0, 1.25: 2, texto: "1.25kg(2)" }
+    // Mapeo de combinaciones de discos SEGÚN TU KIT REAL
+    const combos = {
+        9.5: "2kg(2) + 1.5kg(2) + 1.25kg(2)",
+        9: "2kg(2) + 1.5kg(2) + 1.25kg(1) + ??? No exacto, usar 9.5",
+        8.5: "2kg(2) + 1.5kg(2) + 1.25kg(2) = 9.5, no 8.5 exacto",
+        8: "2kg(2) + 1.5kg(1) + 1.25kg(2) = 4+1.5+2.5=8",
+        7.5: "2kg(1) + 1.5kg(2) + 1.25kg(2) = 2+3+2.5=7.5",
+        7: "2kg(2) + 1.5kg(2) = 4+3=7",
+        6.5: "2kg(2) + 1.25kg(2) = 4+2.5=6.5",
+        6: "No exacto, usar 6.5 o 5.5",
+        5.5: "2kg(2) + 1.5kg(1) = 4+1.5=5.5",
+        5: "2kg(1) + 1.5kg(2) = 2+3=5",
+        4.5: "1.5kg(3) -> No tienes 3, usar 5 o 4",
+        4: "2kg(2) = 4",
+        3.5: "2kg(1) + 1.5kg(1) = 3.5",
+        3: "1.5kg(2) = 3",
+        2.5: "1.25kg(2) = 2.5",
+        2: "2kg(1) = 2"
     };
     
-    const info = discosPorPeso[pesoPorMancuerna] || { texto: "No disponible" };
-    const unidad = esUnaMancuerna ? "mancuerna" : "mancuerna (cada una)";
+    let textoDiscos = combos[pesoMostrar] || "No disponible exactamente, aproximado";
+    let unidad = "";
+    if (esBarraLarga) unidad = "lado de la barra";
+    else if (esDosMancuernas) unidad = "mancuerna (cada una)";
+    else if (esUnaMancuerna) unidad = "mancuerna";
     
     const modalHTML = `
         <div id="modalDiscos" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid var(--ciclo-color); border-radius:20px; padding:20px; z-index:6000; width:280px; text-align:center; box-shadow:0 0 20px rgba(0,0,0,0.5);">
             <span onclick="cerrarModalDiscos()" style="position:absolute; top:10px; right:15px; cursor:pointer; font-size:1.3rem;">&times;</span>
             <div style="font-size:1.2rem; margin-bottom:10px;">🏋️ ${ejercicioNombre}</div>
-            <div style="font-size:0.8rem; color:#aaa; margin-bottom:15px;">Peso: ${pesoPorMancuerna} kg por ${unidad}</div>
+            <div style="font-size:0.8rem; color:#aaa; margin-bottom:15px;">Peso: ${pesoMostrar} kg por ${unidad}</div>
             <div style="background:#0a0a0a; border-radius:12px; padding:12px;">
                 <div style="font-weight:bold; margin-bottom:8px;">📦 Discos necesarios:</div>
-                <div>${info.texto}</div>
-                <div style="margin-top:8px; font-size:0.7rem; color:#aaa;">TOTAL: ${pesoPorMancuerna} kg</div>
+                <div>${textoDiscos}</div>
+                <div style="margin-top:8px; font-size:0.7rem; color:#aaa;">TOTAL: ${pesoMostrar} kg</div>
             </div>
             <button onclick="cerrarModalDiscos()" style="margin-top:15px; padding:8px 20px; background:var(--ciclo-color); border:none; border-radius:30px; font-weight:bold;">CERRAR</button>
         </div>
@@ -798,7 +835,7 @@ function cerrarModalDiscos() {
     if (overlay) overlay.remove();
 }
 
-// ==================== RUTINAS ====================
+// ==================== RUTINAS (sin cambios, solo referencia) ====================
 const rutinas = {
     lunes: [
         { nombre: "Dominadas / Negativas", texto: "3 x AL FALLO", instrucciones: "1️⃣ Agarre ancho.\n2️⃣ Salta hasta arriba si no puedes.\n3️⃣ Baja MUY LENTO (5 segundos).", consejo: "Saca pecho y junta escápulas.", peso: 0, img: "https://api.smartworkout.app/asset/image/3c194808-73c8-4d75-a2d9-cf85dd42fbeb" },
@@ -895,7 +932,8 @@ function actualizarUI() {
     renderizarCalendarios();
     renderizarLogros();
 }
-    function renderizarRutinas() {
+
+function renderizarRutinas() {
     const config = getConfigCiclo();
     const semanaKey = getSemanaKey();
     
@@ -1200,7 +1238,8 @@ function mostrarMedalla(icono, nombre) {
     setTimeout(() => div.remove(), 2500);
     canvasConfetti({ particleCount: 150, spread: 80 });
 }
-    // ==================== FOTOS INDEXEDDB ====================
+
+// ==================== FOTOS INDEXEDDB ====================
 let db = null;
 const DB_NAME = 'FotosProgresoDB';
 const STORE_NAME = 'diasFotos';
