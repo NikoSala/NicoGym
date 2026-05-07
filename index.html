@@ -1004,18 +1004,89 @@ function completarDia(dia) {
         mostrarToast(`❌ Te faltan ${pendientes} ejercicio${pendientes !== 1 ? 's' : ''}`);
         return;
     }
-    const hoy = getHoyStr();
+    
     const semanaKey = getSemanaKey();
     const key = `completado_${dia}_${semanaKey}`;
-    if (localStorage.getItem(key)) { mostrarToast("⚠️ Ya completaste este día esta semana"); return; }
-    if (!diasEntrenados.includes(hoy)) { diasEntrenados.push(hoy); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); }
-    localStorage.setItem(key, 'true');
-    actualizarUI();
-    renderizarCalendarios();
-    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-    const config = getConfigCiclo();
-    canvasConfetti({ particleCount: 200, spread: 100, colors: [config.color, '#fff'] });
-    mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO! +1 día de racha`);
+    if (localStorage.getItem(key)) { 
+        mostrarToast("⚠️ Ya completaste este día esta semana"); 
+        return; 
+    }
+    
+    // === NUEVO: Preguntar qué día marcar ===
+    const hoy = new Date();
+    const hoyStr = getHoyStr();
+    const opciones = [];
+    
+    // Generar opciones: hoy, ayer, mañana, y el día de la rutina (por si acaso)
+    const ayer = new Date(hoy);
+    ayer.setDate(hoy.getDate() - 1);
+    const manana = new Date(hoy);
+    manana.setDate(hoy.getDate() + 1);
+    
+    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    
+    const fechaToStr = (f) => `${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`;
+    
+    const opcionesList = [
+        { fecha: hoyStr, nombre: `Hoy (${diasSemana[hoy.getDay()]})` },
+        { fecha: fechaToStr(ayer), nombre: `Ayer (${diasSemana[ayer.getDay()]})` },
+        { fecha: fechaToStr(manana), nombre: `Mañana (${diasSemana[manana.getDay()]})` }
+    ];
+    
+    // Añadir el día de la rutina si no está ya en las opciones
+    const diaSemanaMap = { 'lunes': 1, 'martes': 2, 'miercoles': 3, 'jueves': 4, 'viernes': 5, 'sabado': 6 };
+    const diaRutinaNum = diaSemanaMap[dia];
+    const fechaRutina = new Date(hoy);
+    const diasDiferencia = diaRutinaNum - hoy.getDay();
+    fechaRutina.setDate(hoy.getDate() + diasDiferencia);
+    const fechaRutinaStr = fechaToStr(fechaRutina);
+    
+    if (!opcionesList.some(opt => opt.fecha === fechaRutinaStr) && fechaRutinaStr !== hoyStr) {
+        opcionesList.push({ fecha: fechaRutinaStr, nombre: `${diasSemana[diaRutinaNum]} (día de la rutina)` });
+    }
+    
+    // Crear modal de selección
+    const modalHTML = `
+        <div id="modalFecha" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid var(--ciclo-color); border-radius:20px; padding:20px; z-index:7000; width:280px; text-align:center;">
+            <div style="font-size:1.2rem; margin-bottom:15px;">📅 ¿Qué día entrenaste?</div>
+            ${opcionesList.map(opt => `<button class="fecha-opcion" data-fecha="${opt.fecha}" style="display:block; width:100%; margin:8px 0; padding:10px; background:#333; border:none; border-radius:12px; color:#fff; cursor:pointer;">${opt.nombre}</button>`).join('')}
+            <button onclick="cerrarModalFecha()" style="margin-top:10px; padding:8px 20px; background:#222; border:none; border-radius:30px; color:#aaa; cursor:pointer;">Cancelar</button>
+        </div>
+        <div id="modalFechaOverlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:6999;"></div>
+    `;
+    
+    document.querySelectorAll('#modalFecha, #modalFechaOverlay').forEach(el => el.remove());
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Guardar la función para ejecutar después de elegir fecha
+    window.completarConFecha = (fechaSeleccionada) => {
+        if (!diasEntrenados.includes(fechaSeleccionada)) {
+            diasEntrenados.push(fechaSeleccionada);
+            localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados));
+        }
+        localStorage.setItem(key, 'true');
+        actualizarUI();
+        renderizarCalendarios();
+        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        const config = getConfigCiclo();
+        canvasConfetti({ particleCount: 200, spread: 100, colors: [config.color, '#fff'] });
+        mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO! +1 día de racha`);
+        cerrarModalFecha();
+    };
+    
+    // Asignar eventos a los botones
+    setTimeout(() => {
+        document.querySelectorAll('.fecha-opcion').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const fecha = btn.getAttribute('data-fecha');
+                window.completarConFecha(fecha);
+            });
+        });
+    }, 10);
+}
+
+function cerrarModalFecha() {
+    document.querySelectorAll('#modalFecha, #modalFechaOverlay').forEach(el => el.remove());
 }
 
 // ==================== CALENDARIOS ====================
