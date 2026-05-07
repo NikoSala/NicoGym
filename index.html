@@ -585,6 +585,17 @@ header {
 :root {
     --ciclo-color: #ff3b30;
 }
+/* Ajustes para que los días quepan en una sola línea */
+.sub-link {
+    padding-left: 20px !important;  /* Antes 35px, lo reducimos */
+    font-size: 0.8rem !important;   /* Antes 0.9rem, un poco más pequeño */
+    white-space: nowrap;            /* Evita que el texto se rompa */
+    overflow-x: auto;               /* Scroll horizontal si es necesario */
+    scrollbar-width: none;          /* Oculta scrollbar en Firefox */
+}
+.sub-link::-webkit-scrollbar {
+    display: none;                  /* Oculta scrollbar en Chrome/Safari */
+}
 </style>
 </head>
 <body>
