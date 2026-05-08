@@ -703,11 +703,30 @@ header {
 // ==================== CONFIGURACIÓN CICLOS ====================
 function getSemanaDelMes() {
     const hoy = new Date();
-    const dia = hoy.getDate();
-    if (dia <= 7) return 1;
-    if (dia <= 14) return 2;
-    if (dia <= 21) return 3;
-    return 4;
+    const año = hoy.getFullYear();
+    const mes = hoy.getMonth();
+    
+    // Primer lunes del mes actual
+    let primerLunes = new Date(año, mes, 1);
+    while (primerLunes.getDay() !== 1) { // 1 = lunes
+        primerLunes.setDate(primerLunes.getDate() + 1);
+    }
+    
+    // Si hoy es antes del primer lunes, pertenece a la última semana del mes anterior
+    if (hoy < primerLunes) {
+        let primerLunesAnterior = new Date(año, mes - 1, 1);
+        while (primerLunesAnterior.getDay() !== 1) {
+            primerLunesAnterior.setDate(primerLunesAnterior.getDate() + 1);
+        }
+        const diffDias = Math.floor((hoy - primerLunesAnterior) / (1000 * 60 * 60 * 24));
+        let semana = Math.floor(diffDias / 7) + 1;
+        return Math.min(semana, 5);
+    }
+    
+    // Calcular semana
+    const diffDias = Math.floor((hoy - primerLunes) / (1000 * 60 * 60 * 24));
+    let semana = Math.floor(diffDias / 7) + 1;
+    return Math.min(semana, 5);
 }
 
 function getTipoCiclo() {
@@ -715,7 +734,7 @@ function getTipoCiclo() {
     if (semana === 1) return 'FUERZA';
     if (semana === 2) return 'DEFINICIÓN';
     if (semana === 3) return 'VOLUMEN';
-    return 'DEFINICIÓN';
+    return 'DEFINICIÓN'; // semana 4 o 5
 }
 
 function getConfigCiclo() {
@@ -728,27 +747,27 @@ function getConfigCiclo() {
     return configs[tipo];
 }
 
-// ==================== PESOS POR EJERCICIO (CORREGIDOS) ====================
+// ==================== PESOS POR EJERCICIO (DEFINITIVO) ====================
 function getPesoEjercicio(nombre) {
     const tipo = getTipoCiclo();
     const pesos = {
-        // Ejercicios con FUERZA:7kg c/u (14 total), VOLUMEN:6.5kg c/u (13 total), DEFINICIÓN:4kg c/u (8 total)
-        "Curl de Bíceps": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
-        "Curl martillo": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
-        "Aperturas con mancuernas": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
-        "Press Francés": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
-        "Press Militar Sentado": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
-        "Press hombros": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
-        "Plancha con remo": { FUERZA: 13, VOLUMEN: 13, DEFINICIÓN: 8 },
-        "Pájaro (fly invertido)": { FUERZA: 13, VOLUMEN: 13, DEFINICIÓN: 8 },
-        "Curl de muñeca": { FUERZA: 13, VOLUMEN: 13, DEFINICIÓN: 8 },
-        "Elevaciones frontales": { FUERZA: 13, VOLUMEN: 13, DEFINICIÓN: 8 },
-        // Elevaciones laterales (más ligeras)
-        "Elevaciones laterales": { FUERZA: 10, VOLUMEN: 8, DEFINICIÓN: 6 },
+        // FUERZA: 9.5kg c/u (19 total), VOLUMEN: 7kg c/u (14 total), DEFINICIÓN: 4kg c/u (8 total)
+        "Curl de Bíceps": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 8 },
+        "Curl martillo": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 8 },
+        "Aperturas con mancuernas": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 8 },
+        "Press Francés": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 8 },
+        "Press Militar Sentado": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 8 },
+        "Press hombros": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 8 },
+        "Plancha con remo": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 8 },
+        "Pájaro (fly invertido)": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 8 },
+        "Elevaciones frontales": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 8 },
+        "Curl de muñeca": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 8 },
+        // Elevaciones laterales (más ligeras): FUERZA:7kg c/u (14), VOLUMEN:6.5kg c/u (13), DEFINICIÓN:3kg c/u (6)
+        "Elevaciones laterales": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 6 },
         // Una mancuerna
         "Remo a una mano": { FUERZA: 9.5, VOLUMEN: 7, DEFINICIÓN: 4 },
         "Extensión tríceps tras nuca": { FUERZA: 9.5, VOLUMEN: 7, DEFINICIÓN: 4 },
-        // Barra larga (sin cambios)
+        // Barra larga (sin cambios, usan total)
         "Remo con Barra": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
         "Press banca": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
         "Sentadillas": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
@@ -825,7 +844,7 @@ const rutinas = {
     martes: [
         { nombre: "Elevación de gemelos con mancuerna", musculo: "🦵 Gemelos", texto: "3-4 x 12-15", instrucciones: "1. De pie, sujeta una mancuerna con una mano y apoya la otra en la pared.\n2. Sube los talones lo más alto posible.\n3. Mantén la posición arriba 1 segundo.\n4. Baja lentamente sintiendo el estiramiento.", consejo: "Sube de golpe, baja lento.", peso: 19, img: "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649" },
         { nombre: "Peso muerto pierna recta", musculo: "🦵 Isquiotibiales", texto: "3-4 x 10-12", instrucciones: "1. Mancuernas a los lados, espalda RECTA.\n2. Flexiona CADERA, NO la espalda.\n3. Baja hasta sentir estiramiento en los isquios.\n4. Sube apretando glúteos.", consejo: "Espalda recta, solo flexionas cadera.", peso: 19, img: "https://api.smartworkout.app/asset/image/3eadeadf-bba7-411d-bba0-f0fa952df94e" },
-        { nombre: "Curl de muñeca", musculo: "💪 Antebrazo", texto: "3-4 x 12-15", instrucciones: "1. Apoya el antebrazo en el muslo, muñeca fuera.\n2. Sujeta una mancuerna ligera.\n3. Sube la mancuerna solo con la muñeca.\n4. Baja controlado.", consejo: "Solo mueves la muñeca.", peso: 5, img: "https://api.smartworkout.app/asset/image/bdc1c814-229e-4be4-81f6-782c0994dc87" },
+        { nombre: "Curl de muñeca", musculo: "💪 Antebrazo", texto: "3-4 x 12-15", instrucciones: "1. Apoya el antebrazo en el muslo, muñeca fuera.\n2. Sujeta una mancuerna ligera.\n3. Sube la mancuerna solo con la muñeca.\n4. Baja controlado.", consejo: "Solo mueves la muñeca.", peso: 7, img: "https://api.smartworkout.app/asset/image/bdc1c814-229e-4be4-81f6-782c0994dc87" },
         { nombre: "Sentadilla sumo", musculo: "🦵 Aductores / Glúteo", texto: "3-4 x 10-12", instrucciones: "1. Piernas abiertas, puntas hacia afuera.\n2. Sujeta una mancuerna verticalmente.\n3. Baja como sentarte, espalda recta.\n4. Sube apretando glúteos.", consejo: "Abre bien las piernas.", peso: 19, img: "https://api.smartworkout.app/asset/image/d1abb756-5176-4f70-bb4d-b1c6f059ce72" }
     ],
     miercoles: [
