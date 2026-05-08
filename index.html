@@ -108,10 +108,17 @@ header {
 }
 .submenu-items.show { max-height: 300px; }
 .sub-link {
-    padding: 12px 40px;
+    padding: 12px 20px;
     color: #aaa;
     display: block;
     cursor: pointer;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.sub-link::-webkit-scrollbar {
+    display: none;
 }
 .debug-btn {
     margin-top: 20px;
@@ -513,13 +520,6 @@ header {
     text-align: center;
 }
 .reset-modal.show { display: block; }
-.close-reset {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    cursor: pointer;
-    font-size: 1.3rem;
-}
 #descanso-box {
     position: fixed;
     inset: 0;
@@ -584,17 +584,6 @@ header {
 .medalla-titulo { font-size: 1.3rem; color: #ffd60a; }
 :root {
     --ciclo-color: #ff3b30;
-}
-/* Ajustes para que los días quepan en una sola línea */
-.sub-link {
-    padding-left: 20px !important;  /* Antes 35px, lo reducimos */
-    font-size: 0.8rem !important;   /* Antes 0.9rem, un poco más pequeño */
-    white-space: nowrap;            /* Evita que el texto se rompa */
-    overflow-x: auto;               /* Scroll horizontal si es necesario */
-    scrollbar-width: none;          /* Oculta scrollbar en Firefox */
-}
-.sub-link::-webkit-scrollbar {
-    display: none;                  /* Oculta scrollbar en Chrome/Safari */
 }
 </style>
 </head>
@@ -696,12 +685,12 @@ header {
 <div id="logros" class="seccion"><h2>🏆 LOGROS</h2><div id="logrosContainer" class="logros-grid"></div></div>
 
 <!-- RUTINAS -->
-<div id="lunes" class="seccion"><h2>💪 Lunes: Espalda/Bíceps</h2><div id="badge-lunes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-lunes"></div><div id="estiramientos-lunes"></div><button class="btn-done" onclick="completarDia('lunes')">✅ COMPLETAR ENTRENO</button></div>
-<div id="martes" class="seccion"><h2>🏃 Martes: Gemelos/Antebrazos</h2><div id="badge-martes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-martes"></div><div id="estiramientos-martes"></div><button class="btn-done" onclick="completarDia('martes')">✅ COMPLETAR ENTRENO</button></div>
-<div id="miercoles" class="seccion"><h2>💪 Miércoles: Pecho/Tríceps</h2><div id="badge-miercoles" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-miercoles"></div><div id="estiramientos-miercoles"></div><button class="btn-done" onclick="completarDia('miercoles')">✅ COMPLETAR ENTRENO</button></div>
-<div id="jueves" class="seccion"><h2>🏃 JUEVES: TRAPECIOS/LUMBARES</h2><div id="badge-jueves" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-jueves"></div><div id="estiramientos-jueves"></div><button class="btn-done" onclick="completarDia('jueves')">✅ COMPLETAR ENTRENO</button></div>
-<div id="viernes" class="seccion"><h2>🦵 VIERNES: PIERNA/HOMBRO</h2><div id="badge-viernes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-viernes"></div><div id="estiramientos-viernes"></div><button class="btn-done" onclick="completarDia('viernes')">✅ COMPLETAR ENTRENO</button></div>
-<div id="sabado" class="seccion"><h2>🏃 SÁBADO: HOMBRO POSTERIOR/PIERNA</h2><div id="badge-sabado" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-sabado"></div><div id="estiramientos-sabado"></div><button class="btn-done" onclick="completarDia('sabado')">✅ COMPLETAR ENTRENO</button></div>
+<div id="lunes" class="seccion"><h2>💪 LUNES: ESPALDA / BÍCEPS</h2><div id="badge-lunes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-lunes"></div><div id="estiramientos-lunes"></div><button class="btn-done" onclick="completarDia('lunes')">✅ COMPLETAR ENTRENO</button></div>
+<div id="martes" class="seccion"><h2>🏃 MARTES: GEMELOS / ANTEBRAZOS</h2><div id="badge-martes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-martes"></div><div id="estiramientos-martes"></div><button class="btn-done" onclick="completarDia('martes')">✅ COMPLETAR ENTRENO</button></div>
+<div id="miercoles" class="seccion"><h2>💪 MIÉRCOLES: PECHO / TRÍCEPS</h2><div id="badge-miercoles" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-miercoles"></div><div id="estiramientos-miercoles"></div><button class="btn-done" onclick="completarDia('miercoles')">✅ COMPLETAR ENTRENO</button></div>
+<div id="jueves" class="seccion"><h2>🏃 JUEVES: TRAPECIOS / LUMBARES</h2><div id="badge-jueves" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-jueves"></div><div id="estiramientos-jueves"></div><button class="btn-done" onclick="completarDia('jueves')">✅ COMPLETAR ENTRENO</button></div>
+<div id="viernes" class="seccion"><h2>🦵 VIERNES: PIERNA / HOMBRO</h2><div id="badge-viernes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-viernes"></div><div id="estiramientos-viernes"></div><button class="btn-done" onclick="completarDia('viernes')">✅ COMPLETAR ENTRENO</button></div>
+<div id="sabado" class="seccion"><h2>🏃 SÁBADO: HOMBRO POSTERIOR / PIERNA UNILATERAL</h2><div id="badge-sabado" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-sabado"></div><div id="estiramientos-sabado"></div><button class="btn-done" onclick="completarDia('sabado')">✅ COMPLETAR ENTRENO</button></div>
 <div id="domingo" class="seccion"><div class="sunday-card"><div class="sunday-emoji">🔋✨😴✨💪</div><div class="sunday-title">DÍA DE RECARGA</div></div></div>
 
 <div id="resetModal" class="reset-modal">
@@ -739,33 +728,39 @@ function getConfigCiclo() {
     return configs[tipo];
 }
 
-// ==================== PESOS POR EJERCICIO ====================
+// ==================== PESOS POR EJERCICIO (CORREGIDOS) ====================
 function getPesoEjercicio(nombre) {
     const tipo = getTipoCiclo();
     const pesos = {
+        // Ejercicios con FUERZA:7kg c/u (14 total), VOLUMEN:6.5kg c/u (13 total), DEFINICIÓN:4kg c/u (8 total)
+        "Curl de Bíceps": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
+        "Curl martillo": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
+        "Aperturas con mancuernas": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
+        "Press Francés": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
+        "Press Militar Sentado": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
+        "Press hombros": { FUERZA: 14, VOLUMEN: 13, DEFINICIÓN: 8 },
+        "Plancha con remo": { FUERZA: 13, VOLUMEN: 13, DEFINICIÓN: 8 },
+        "Pájaro (fly invertido)": { FUERZA: 13, VOLUMEN: 13, DEFINICIÓN: 8 },
+        "Curl de muñeca": { FUERZA: 13, VOLUMEN: 13, DEFINICIÓN: 8 },
+        "Elevaciones frontales": { FUERZA: 13, VOLUMEN: 13, DEFINICIÓN: 8 },
+        // Elevaciones laterales (más ligeras)
+        "Elevaciones laterales": { FUERZA: 10, VOLUMEN: 8, DEFINICIÓN: 6 },
+        // Una mancuerna
+        "Remo a una mano": { FUERZA: 9.5, VOLUMEN: 7, DEFINICIÓN: 4 },
+        "Extensión tríceps tras nuca": { FUERZA: 9.5, VOLUMEN: 7, DEFINICIÓN: 4 },
+        // Barra larga (sin cambios)
         "Remo con Barra": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
-        "Curl martillo": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
-        "Curl de Bíceps": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
-        "Elevación de gemelos con mancuerna": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
-        "Peso muerto pierna recta": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
-        "Curl de muñeca": { FUERZA: 10, VOLUMEN: 7, DEFINICIÓN: 5 },
-        "Sentadilla sumo": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
         "Press banca": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
-        "Fondos": { FUERZA: 0, VOLUMEN: 0, DEFINICIÓN: 0 },
-        "Aperturas con mancuernas": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
-        "Press Francés": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
-        "Extensión tríceps tras nuca": { FUERZA: 9.5, VOLUMEN: 7, DEFINICIÓN: 5 },
-        "Encogimientos de hombros": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
-        "Peso muerto rumano": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
-        "Puente de glúteos con peso": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
-        "Plancha con remo": { FUERZA: 10, VOLUMEN: 7, DEFINICIÓN: 5 },
         "Sentadillas": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
-        "Press Militar Sentado": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
-        "Elevaciones laterales": { FUERZA: 10, VOLUMEN: 7, DEFINICIÓN: 5 },
-        "Pájaro (fly invertido)": { FUERZA: 10, VOLUMEN: 7, DEFINICIÓN: 5 },
+        "Peso muerto pierna recta": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
+        "Peso muerto rumano": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
+        "Encogimientos de hombros": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
+        "Sentadilla sumo": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
+        "Elevación de gemelos con mancuerna": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
         "Sentadilla búlgara": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
-        "Press hombros": { FUERZA: 14, VOLUMEN: 10, DEFINICIÓN: 7 },
-        "Elevaciones frontales": { FUERZA: 10, VOLUMEN: 7, DEFINICIÓN: 5 }
+        "Puente de glúteos con peso": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
+        // Corporales
+        "Fondos": { FUERZA: 0, VOLUMEN: 0, DEFINICIÓN: 0 }
     };
     if (pesos[nombre]) return pesos[nombre][tipo];
     return 0;
@@ -775,22 +770,35 @@ function formatearPeso(nombreEjercicio, pesoTotal) {
     if (pesoTotal === 0) return 'Corporal';
     const dosMancuernas = ["Curl martillo", "Curl de Bíceps", "Curl de muñeca", "Aperturas con mancuernas", "Press Francés", "Press Militar Sentado", "Elevaciones laterales", "Pájaro (fly invertido)", "Press hombros", "Elevaciones frontales", "Plancha con remo"];
     if (dosMancuernas.includes(nombreEjercicio)) return (pesoTotal / 2) + ' kg c/u';
-    const unaMancuerna = ["Extensión tríceps tras nuca"];
+    const unaMancuerna = ["Extensión tríceps tras nuca", "Remo a una mano"];
     if (unaMancuerna.includes(nombreEjercicio)) return pesoTotal + ' kg';
     return pesoTotal + ' kg';
 }
 
 function mostrarDiscos(ejercicioNombre, pesoTotal) {
     const dosMancuernas = ["Curl martillo", "Curl de Bíceps", "Curl de muñeca", "Aperturas con mancuernas", "Press Francés", "Press Militar Sentado", "Elevaciones laterales", "Pájaro (fly invertido)", "Press hombros", "Elevaciones frontales", "Plancha con remo"];
-    const unaMancuerna = ["Extensión tríceps tras nuca"];
+    const unaMancuerna = ["Extensión tríceps tras nuca", "Remo a una mano"];
     const barraLarga = ["Remo con Barra", "Press banca", "Sentadillas", "Sentadilla sumo", "Peso muerto pierna recta", "Peso muerto rumano", "Elevación de gemelos con mancuerna", "Encogimientos de hombros", "Sentadilla búlgara", "Puente de glúteos con peso"];
+    
     let pesoMostrar = pesoTotal;
     let tipo = "";
     if (dosMancuernas.includes(ejercicioNombre)) { pesoMostrar = pesoTotal / 2; tipo = "mancuerna (cada una)"; }
     else if (unaMancuerna.includes(ejercicioNombre)) { tipo = "mancuerna"; }
     else if (barraLarga.includes(ejercicioNombre)) { pesoMostrar = pesoTotal / 2; tipo = "lado de la barra"; }
-    const combos = { 9.5: "2kg(2) + 1.5kg(2) + 1.25kg(2)", 9: "2kg(2) + 1.5kg(2) + 1.25kg(1)", 8: "2kg(2) + 1.5kg(1) + 1.25kg(2)", 7: "2kg(2) + 1.5kg(2)", 6.5: "2kg(2) + 1.25kg(2)", 6: "2kg(3)", 5.5: "2kg(2) + 1.5kg(1)", 5: "2kg(1) + 1.5kg(2)", 4: "2kg(2)", 3.5: "2kg(1) + 1.5kg(1)", 2.5: "1.25kg(2)", 2: "2kg(1)" };
+    
+    const combos = {
+        9.5: "2kg(2) + 1.5kg(2) + 1.25kg(2)",
+        7: "2kg(2) + 1.5kg(2)",
+        6.5: "2kg(2) + 1.25kg(2)",
+        5: "1.25kg(4)",
+        4: "2kg(2)",
+        3.5: "2kg(1) + 1.5kg(1)",
+        3: "1.5kg(2)",
+        2.5: "1.25kg(2)",
+        2: "2kg(1)"
+    };
     const texto = combos[pesoMostrar] || "No disponible exacto, aproximado";
+    
     const modalHTML = `
         <div id="modalDiscos" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid var(--ciclo-color); border-radius:20px; padding:20px; z-index:6000; width:280px; text-align:center;">
             <span onclick="cerrarModalDiscos()" style="position:absolute; top:10px; right:15px; cursor:pointer;">&times;</span>
@@ -809,41 +817,41 @@ function cerrarModalDiscos() { document.querySelectorAll('#modalDiscos, #modalDi
 // ==================== RUTINAS ====================
 const rutinas = {
     lunes: [
-        { nombre: "Dominadas / Negativas", musculo: "💪 Espalda", texto: "3 x AL FALLO", instrucciones: "1. Salta o súbete a la barra con agarre ancho (palmas mirando afuera).\n2. Si no puedes subir, salta hasta arriba (mentón sobre barra).\n3. BAJA MUY LENTO, contando 5 segundos.\n4. Repite hasta que no puedas bajar controlado.", consejo: "Saca pecho y junta escápulas.", peso: 0, img: "https://api.smartworkout.app/asset/image/3c194808-73c8-4d75-a2d9-cf85dd42fbeb" },
-        { nombre: "Remo con Barra", musculo: "💪 Espalda", texto: "4 x 12", instrucciones: "1. Sujeta la barra con manos al ancho de hombros.\n2. Inclina el torso 45° hacia adelante, espalda RECTA.\n3. Tira de la barra hacia tu ombligo y aprieta los omóplatos.\n4. Baja controlado hasta estirar brazos.", consejo: "Espalda recta SIEMPRE como una mesa.", peso: 16, img: "https://api.smartworkout.app/asset/image/be04fca7-9dc1-4b64-a7b4-d05217eaecda" },
-        { nombre: "Curl martillo", musculo: "💪 Bíceps / Braquial", texto: "3-4 x 8-12", instrucciones: "1. De pie, codos PEGADOS a las costillas, palmas mirándose.\n2. Sube la mancuerna hacia el hombro SIN girar la muñeca.\n3. Aprieta el bíceps arriba durante 1 segundo.\n4. Baja CONTROLADO hasta estirar completamente el brazo.", consejo: "No balances el cuerpo. Muñeca siempre recta.", peso: 7, img: "https://api.smartworkout.app/asset/image/3b047fe7-a0a3-4080-aeec-acb472b7a6a1" },
-        { nombre: "Curl de Bíceps", musculo: "💪 Bíceps", texto: "3-4 x 8-12", instrucciones: "1. De pie, codos pegados al cuerpo, palmas hacia arriba.\n2. Sube la mancuerna hacia el hombro.\n3. Aprieta el bíceps en la parte superior.\n4. Baja lentamente hasta estirar el brazo.", consejo: "No balances el cuerpo.", peso: 7, img: "https://api.smartworkout.app/asset/image/303b810b-f875-42eb-8b26-cc79b18b6865" }
+        { nombre: "Dominadas / Negativas", musculo: "💪 Espalda", texto: "3 x AL FALLO", instrucciones: "1. Salta o súbete a la barra con agarre ancho.\n2. Si no puedes subir, salta hasta arriba.\n3. BAJA MUY LENTO, contando 5 segundos.\n4. Repite hasta que no puedas bajar controlado.", consejo: "Saca pecho y junta escápulas.", peso: 0, img: "https://api.smartworkout.app/asset/image/3c194808-73c8-4d75-a2d9-cf85dd42fbeb" },
+        { nombre: "Remo con Barra", musculo: "💪 Espalda", texto: "4 x 12", instrucciones: "1. Sujeta la barra con manos al ancho de hombros.\n2. Inclina 45°, espalda RECTA.\n3. Tira la barra al ombligo y aprieta omóplatos.\n4. Baja controlado.", consejo: "Espalda recta SIEMPRE.", peso: 16, img: "https://api.smartworkout.app/asset/image/be04fca7-9dc1-4b64-a7b4-d05217eaecda" },
+        { nombre: "Curl martillo", musculo: "💪 Bíceps / Braquial", texto: "3-4 x 8-12", instrucciones: "1. De pie, codos PEGADOS a las costillas, palmas mirándose.\n2. Sube la mancuerna hacia el hombro SIN girar la muñeca.\n3. Aprieta el bíceps arriba.\n4. Baja CONTROLADO.", consejo: "No balances el cuerpo.", peso: 7, img: "https://api.smartworkout.app/asset/image/3b047fe7-a0a3-4080-aeec-acb472b7a6a1" },
+        { nombre: "Curl de Bíceps", musculo: "💪 Bíceps", texto: "3-4 x 8-12", instrucciones: "1. De pie, codos pegados al cuerpo, palmas arriba.\n2. Sube la mancuerna hacia el hombro.\n3. Aprieta el bíceps arriba.\n4. Baja lentamente.", consejo: "No balances el cuerpo.", peso: 7, img: "https://api.smartworkout.app/asset/image/303b810b-f875-42eb-8b26-cc79b18b6865" }
     ],
     martes: [
         { nombre: "Elevación de gemelos con mancuerna", musculo: "🦵 Gemelos", texto: "3-4 x 12-15", instrucciones: "1. De pie, sujeta una mancuerna con una mano y apoya la otra en la pared.\n2. Sube los talones lo más alto posible.\n3. Mantén la posición arriba 1 segundo.\n4. Baja lentamente sintiendo el estiramiento.", consejo: "Sube de golpe, baja lento.", peso: 19, img: "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649" },
-        { nombre: "Peso muerto pierna recta", musculo: "🦵 Isquiotibiales", texto: "3-4 x 10-12", instrucciones: "1. Mancuernas a los lados, espalda RECTA.\n2. Flexiona CADERA, NO la espalda baja.\n3. Baja hasta sentir estiramiento en los isquios.\n4. Sube apretando glúteos y mantén la espalda recta.", consejo: "Espalda recta, solo flexionas cadera.", peso: 19, img: "https://api.smartworkout.app/asset/image/3eadeadf-bba7-411d-bba0-f0fa952df94e" },
-        { nombre: "Curl de muñeca", musculo: "💪 Antebrazo", texto: "3-4 x 12-15", instrucciones: "1. Apoya el antebrazo en el muslo, muñeca fuera.\n2. Sujeta una mancuerna ligera.\n3. Sube la mancuerna solo con la muñeca.\n4. Baja controlado.", consejo: "Solo mueves la muñeca, antebrazo quieto.", peso: 5, img: "https://api.smartworkout.app/asset/image/bdc1c814-229e-4be4-81f6-782c0994dc87" },
-        { nombre: "Sentadilla sumo", musculo: "🦵 Aductores / Glúteo", texto: "3-4 x 10-12", instrucciones: "1. Piernas abiertas, puntas hacia afuera.\n2. Sujeta una mancuerna verticalmente.\n3. Baja como sentarte, espalda recta.\n4. Sube apretando glúteos.", consejo: "Abre bien las piernas, empuja con los talones.", peso: 19, img: "https://api.smartworkout.app/asset/image/d1abb756-5176-4f70-bb4d-b1c6f059ce72" }
+        { nombre: "Peso muerto pierna recta", musculo: "🦵 Isquiotibiales", texto: "3-4 x 10-12", instrucciones: "1. Mancuernas a los lados, espalda RECTA.\n2. Flexiona CADERA, NO la espalda.\n3. Baja hasta sentir estiramiento en los isquios.\n4. Sube apretando glúteos.", consejo: "Espalda recta, solo flexionas cadera.", peso: 19, img: "https://api.smartworkout.app/asset/image/3eadeadf-bba7-411d-bba0-f0fa952df94e" },
+        { nombre: "Curl de muñeca", musculo: "💪 Antebrazo", texto: "3-4 x 12-15", instrucciones: "1. Apoya el antebrazo en el muslo, muñeca fuera.\n2. Sujeta una mancuerna ligera.\n3. Sube la mancuerna solo con la muñeca.\n4. Baja controlado.", consejo: "Solo mueves la muñeca.", peso: 5, img: "https://api.smartworkout.app/asset/image/bdc1c814-229e-4be4-81f6-782c0994dc87" },
+        { nombre: "Sentadilla sumo", musculo: "🦵 Aductores / Glúteo", texto: "3-4 x 10-12", instrucciones: "1. Piernas abiertas, puntas hacia afuera.\n2. Sujeta una mancuerna verticalmente.\n3. Baja como sentarte, espalda recta.\n4. Sube apretando glúteos.", consejo: "Abre bien las piernas.", peso: 19, img: "https://api.smartworkout.app/asset/image/d1abb756-5176-4f70-bb4d-b1c6f059ce72" }
     ],
     miercoles: [
-        { nombre: "Press banca", musculo: "🏋️ Pecho", texto: "4 x 12", instrucciones: "1. Tumbado en el suelo, mancuernas sobre el pecho.\n2. Baja las mancuernas hacia el pecho (zona de los pezones).\n3. Mantén codos a 45°.\n4. Sube apretando el pecho.", consejo: "Hazlo en el suelo, es más seguro.", peso: 19, img: "https://api.smartworkout.app/asset/image/567ae9ad-b584-4d53-b400-82b0117a7ce1" },
-        { nombre: "Fondos", musculo: "🏋️ Pecho / Tríceps", texto: "3 x 10", instrucciones: "1. Usa dos sillas fuertes.\n2. Baja el cuerpo hasta que los codos estén a 90°.\n3. Sube con fuerza.\n4. Si es difícil, apoya un pie en el suelo.", consejo: "Apoya un pie si es difícil.", peso: 0, img: "https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030" },
-        { nombre: "Aperturas con mancuernas", musculo: "🏋️ Pecho", texto: "3 x 12", instrucciones: "1. Tumbado, brazos extendidos hacia arriba.\n2. Baja los brazos en cruz lentamente.\n3. Siente el estiramiento en el pecho.\n4. Vuelve a juntar apretando el pecho.", consejo: "Usa poco peso, no lesiones el hombro.", peso: 7, img: "https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89" },
-        { nombre: "Press Francés", musculo: "💪 Tríceps", texto: "3 x 12", instrucciones: "1. Tumbado, mancuerna sobre la cara, brazos extendidos.\n2. Baja la mancuerna hacia las sienes.\n3. Mantén codos apuntando al techo.\n4. Extiende los brazos arriba.", consejo: "MUY POCO peso, protege codos.", peso: 7, img: "https://api.smartworkout.app/asset/image/deff1b63-c052-42b3-a3e4-aad93db0159f" },
-        { nombre: "Extensión tríceps tras nuca", musculo: "💪 Tríceps", texto: "3 x 12", instrucciones: "1. Sentado, sujeta una mancuerna con ambas manos detrás de la cabeza.\n2. Sube la mancuerna hacia arriba.\n3. Baja controlado detrás de la nuca.\n4. Mantén los codos pegados a las orejas.", consejo: "Codos pegados a las orejas.", peso: 9.5, img: "https://api.smartworkout.app/asset/image/6a79a439-417e-4fe9-8d83-0079e565389a" }
+        { nombre: "Press banca", musculo: "🏋️ Pecho", texto: "4 x 12", instrucciones: "1. Tumbado en el suelo, mancuernas sobre el pecho.\n2. Baja las mancuernas hacia el pecho.\n3. Mantén codos a 45°.\n4. Sube apretando el pecho.", consejo: "Hazlo en el suelo.", peso: 19, img: "https://api.smartworkout.app/asset/image/567ae9ad-b584-4d53-b400-82b0117a7ce1" },
+        { nombre: "Fondos", musculo: "🏋️ Pecho / Tríceps", texto: "3 x 10", instrucciones: "1. Usa dos sillas fuertes.\n2. Baja hasta que los codos estén a 90°.\n3. Sube con fuerza.\n4. Si es difícil, apoya un pie.", consejo: "Apoya un pie si es difícil.", peso: 0, img: "https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030" },
+        { nombre: "Aperturas con mancuernas", musculo: "🏋️ Pecho", texto: "3 x 12", instrucciones: "1. Tumbado, brazos extendidos arriba.\n2. Baja los brazos en cruz lentamente.\n3. Siente el estiramiento en el pecho.\n4. Vuelve a juntar apretando el pecho.", consejo: "Usa poco peso.", peso: 7, img: "https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89" },
+        { nombre: "Press Francés", musculo: "💪 Tríceps", texto: "3 x 12", instrucciones: "1. Tumbado, mancuerna sobre la cara.\n2. Baja hacia las sienes.\n3. Mantén codos apuntando al techo.\n4. Extiende arriba.", consejo: "MUY POCO peso.", peso: 7, img: "https://api.smartworkout.app/asset/image/deff1b63-c052-42b3-a3e4-aad93db0159f" },
+        { nombre: "Extensión tríceps tras nuca", musculo: "💪 Tríceps", texto: "3 x 12", instrucciones: "1. Sentado, sujeta una mancuerna con ambas manos detrás de la cabeza.\n2. Sube hacia arriba.\n3. Baja controlado detrás de la nuca.\n4. Mantén los codos pegados a las orejas.", consejo: "Codos pegados a las orejas.", peso: 7, img: "https://api.smartworkout.app/asset/image/6a79a439-417e-4fe9-8d83-0079e565389a" }
     ],
     jueves: [
-        { nombre: "Encogimientos de hombros", musculo: "💪 Trapecio", texto: "3-4 x 12-15", instrucciones: "1. Sujeta una mancuerna en cada mano.\n2. Sube los hombros como si quisieras tocar las orejas.\n3. Mantén la contracción arriba 1 segundo.\n4. Baja controlado.", consejo: "Sube y baja, NO gires los hombros.", peso: 19, img: "https://api.smartworkout.app/asset/image/2fd042bd-382c-416c-95de-eed1d0a47747" },
-        { nombre: "Peso muerto rumano", musculo: "🦵 Isquiotibiales / Lumbar", texto: "3-4 x 10-12", instrucciones: "1. Sujeta dos mancuernas, espalda recta.\n2. Baja el trasero hacia atrás.\n3. Baja hasta sentir estiramiento en los isquios.\n4. Sube apretando glúteos.", consejo: "Movimiento de CADERA, no de espalda.", peso: 19, img: "https://api.smartworkout.app/asset/image/4b28abc3-2106-48f8-b069-c4b00daa2857" },
-        { nombre: "Puente de glúteos con peso", musculo: "💪 Lumbar / Glúteo", texto: "3-4 x 12-15", instrucciones: "1. Tumbado boca arriba, rodillas dobladas, pies en el suelo.\n2. Coloca un peso sobre la pelvis, sujétalo con ambas manos.\n3. Eleva la cadera apretando los glúteos.\n4. Baja controlado sin tocar el suelo.", consejo: "Aprieta los glúteos arriba, no arquees la espalda.", peso: 19, img: "https://api.smartworkout.app/asset/image/84c71a41-92e8-429d-9b38-8d9485aa59c1" },
-        { nombre: "Plancha con remo", musculo: "💪 Core / Espalda", texto: "3-4 x 8-10 c/lado", instrucciones: "1. Colócate en plancha alta con una mano en el suelo y otra sobre una mancuerna.\n2. Rema la mancuerna hacia tu cadera.\n3. Mantén la cadera firme sin girar.\n4. Baja la mancuerna y cambia de lado.", consejo: "No gires la cadera, core firme.", peso: 10, img: "https://api.smartworkout.app/asset/image/381e8a39-9fb9-4de5-a012-53ca5f19c125" }
+        { nombre: "Encogimientos de hombros", musculo: "💪 Trapecio", texto: "3-4 x 12-15", instrucciones: "1. Sujeta una mancuerna en cada mano.\n2. Sube los hombros como si quisieras tocar las orejas.\n3. Mantén la contracción arriba 1 segundo.\n4. Baja controlado.", consejo: "Sube y baja, NO gires.", peso: 19, img: "https://api.smartworkout.app/asset/image/2fd042bd-382c-416c-95de-eed1d0a47747" },
+        { nombre: "Peso muerto rumano", musculo: "🦵 Isquiotibiales / Lumbar", texto: "3-4 x 10-12", instrucciones: "1. Sujeta dos mancuernas, espalda recta.\n2. Baja el trasero hacia atrás.\n3. Baja hasta sentir estiramiento en los isquios.\n4. Sube apretando glúteos.", consejo: "Movimiento de CADERA.", peso: 19, img: "#" },
+        { nombre: "Puente de glúteos con peso", musculo: "💪 Lumbar / Glúteo", texto: "3-4 x 12-15", instrucciones: "1. Tumbado boca arriba, rodillas dobladas, pies en el suelo.\n2. Coloca un peso sobre la pelvis, sujétalo con ambas manos.\n3. Eleva la cadera apretando los glúteos.\n4. Baja controlado sin tocar el suelo.", consejo: "Aprieta los glúteos arriba.", peso: 19, img: "https://api.smartworkout.app/asset/image/84c71a41-92e8-429d-9b38-8d9485aa59c1" },
+        { nombre: "Plancha con remo", musculo: "💪 Core / Espalda", texto: "3-4 x 8-10 c/lado", instrucciones: "1. En plancha alta, una mano en el suelo y otra sobre una mancuerna.\n2. Rema hacia tu cadera.\n3. Mantén la cadera firme.\n4. Baja y cambia de lado.", consejo: "No gires la cadera.", peso: 7, img: "https://api.smartworkout.app/asset/image/381e8a39-9fb9-4de5-a012-53ca5f19c125" }
     ],
     viernes: [
-        { nombre: "Sentadillas", musculo: "🦵 Cuádriceps / Glúteo", texto: "4 x 12", instrucciones: "1. Coloca la barra en los trapecios (hombros).\n2. Pies al ancho de hombros, puntas ligeramente afuera.\n3. Baja como si te sentaras en una silla, espalda recta.\n4. Sube apretando glúteos.", consejo: "Empieza sin peso, domina técnica.", peso: 19, img: "https://api.smartworkout.app/asset/image/7937ce6b-b8cd-418c-a71c-aa8f4ecb3635" },
-        { nombre: "Peso muerto rumano", musculo: "🦵 Isquiotibiales", texto: "4 x 15", instrucciones: "1. Sujeta dos mancuernas, espalda recta.\n2. Baja el trasero hacia atrás.\n3. Baja hasta sentir estiramiento en los isquios.\n4. Sube apretando glúteos.", consejo: "Movimiento de CADERA.", peso: 19, img: "https://api.smartworkout.app/asset/image/4b28abc3-2106-48f8-b069-c4b00daa2857" },
-        { nombre: "Press Militar Sentado", musculo: "🏋️ Hombro", texto: "4 x 10", instrucciones: "1. Sentado con respaldo, mancuernas a la altura de los hombros.\n2. Sube las mancuernas por encima de la cabeza.\n3. Aprieta los hombros en la parte superior.\n4. Baja controlado hasta los hombros.", consejo: "Usa respaldo para proteger lumbar.", peso: 14, img: "https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89" },
-        { nombre: "Elevaciones laterales", musculo: "🏋️ Hombro lateral", texto: "3 x 15", instrucciones: "1. De pie, mancuernas a los lados.\n2. Sube los brazos hasta la altura de los hombros.\n3. Mantén una ligera flexión de codos.\n4. Baja controlado.", consejo: "MUY POCO peso, protege hombros.", peso: 10, img: "https://api.smartworkout.app/asset/image/32c6f15d-63ef-4bd6-ae6b-0056c26157fc" }
+        { nombre: "Sentadillas", musculo: "🦵 Cuádriceps / Glúteo", texto: "4 x 12", instrucciones: "1. Barra en los trapecios.\n2. Pies al ancho de hombros.\n3. Baja como sentarte, espalda recta.\n4. Sube apretando glúteos.", consejo: "Empieza sin peso.", peso: 19, img: "https://api.smartworkout.app/asset/image/7937ce6b-b8cd-418c-a71c-aa8f4ecb3635" },
+        { nombre: "Peso muerto rumano", musculo: "🦵 Isquiotibiales", texto: "4 x 15", instrucciones: "1. Sujeta dos mancuernas, espalda recta.\n2. Baja el trasero hacia atrás.\n3. Baja hasta sentir estiramiento.\n4. Sube apretando glúteos.", consejo: "Movimiento de CADERA.", peso: 19, img: "#" },
+        { nombre: "Press Militar Sentado", musculo: "🏋️ Hombro", texto: "4 x 10", instrucciones: "1. Sentado con respaldo, mancuernas a hombros.\n2. Sube por encima de la cabeza.\n3. Aprieta los hombros arriba.\n4. Baja controlado.", consejo: "Usa respaldo.", peso: 7, img: "https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89" },
+        { nombre: "Elevaciones laterales", musculo: "🏋️ Hombro lateral", texto: "3 x 15", instrucciones: "1. De pie, mancuernas a los lados.\n2. Sube a altura hombros.\n3. Mantén ligera flexión de codos.\n4. Baja controlado.", consejo: "MUY POCO peso.", peso: 7, img: "https://api.smartworkout.app/asset/image/32c6f15d-63ef-4bd6-ae6b-0056c26157fc" }
     ],
     sabado: [
-        { nombre: "Pájaro (fly invertido)", musculo: "🏋️ Hombro posterior", texto: "3-4 x 12-15", instrucciones: "1. Inclínate hacia adelante con el pecho apoyado en los muslos.\n2. Sujeta dos mancuernas ligeras.\n3. Sube los brazos en cruz apretando las escápulas.\n4. Baja controlado.", consejo: "Hombros atrás, escápulas juntas.", peso: 10, img: "https://api.smartworkout.app/asset/image/80833bf7-99b5-4272-b3b2-629ccc137ce1" },
-        { nombre: "Sentadilla búlgara", musculo: "🦵 Pierna unilateral", texto: "3-4 x 8-10 c/lado", instrucciones: "1. Apoya el pie trasero en una silla.\n2. Sujeta una mancuerna en cada mano.\n3. Baja la rodilla trasera hacia el suelo.\n4. Sube con el talón delantero.", consejo: "Rodilla trasera cerca del suelo, pecho arriba.", peso: 19, img: "https://api.smartworkout.app/asset/image/637085f3-fe97-47d3-a004-d051e2452459" },
-        { nombre: "Press hombros", musculo: "🏋️ Hombro", texto: "3-4 x 10-12", instrucciones: "1. Sentado con respaldo, mancuernas a hombros.\n2. Sube las mancuernas por encima de la cabeza.\n3. Aprieta los hombros arriba.\n4. Baja controlado.", consejo: "Usa respaldo, no arquees la espalda.", peso: 14, img: "https://api.smartworkout.app/asset/image/e8d372ce-07a0-411c-8555-1695f1c86af6" },
-        { nombre: "Elevaciones frontales", musculo: "🏋️ Hombro anterior", texto: "3-4 x 12-15", instrucciones: "1. De pie, mancuernas a los lados.\n2. Sube una mancuerna hasta la altura de los hombros.\n3. Baja controlado.\n4. Alterna el brazo.", consejo: "No subas más arriba de los hombros.", peso: 10, img: "https://api.smartworkout.app/asset/image/6a737a3f-6f24-4671-8a77-f49535b0dc51" }
+        { nombre: "Pájaro (fly invertido)", musculo: "🏋️ Hombro posterior", texto: "3-4 x 12-15", instrucciones: "1. Inclínate, pecho en muslos.\n2. Sube mancuernas en cruz.\n3. Aprieta escápulas arriba.\n4. Baja controlado.", consejo: "Hombros atrás.", peso: 7, img: "https://api.smartworkout.app/asset/image/80833bf7-99b5-4272-b3b2-629ccc137ce1" },
+        { nombre: "Sentadilla búlgara", musculo: "🦵 Pierna unilateral", texto: "3-4 x 8-10 c/lado", instrucciones: "1. Apoya el pie trasero en una silla.\n2. Sujeta una mancuerna en cada mano.\n3. Baja la rodilla trasera hacia el suelo.\n4. Sube con el talón delantero.", consejo: "Pecho arriba.", peso: 19, img: "https://api.smartworkout.app/asset/image/637085f3-fe97-47d3-a004-d051e2452459" },
+        { nombre: "Press hombros", musculo: "🏋️ Hombro", texto: "3-4 x 10-12", instrucciones: "1. Sentado con respaldo, mancuernas a hombros.\n2. Sube por encima de la cabeza.\n3. Aprieta los hombros arriba.\n4. Baja controlado.", consejo: "Usa respaldo.", peso: 7, img: "https://api.smartworkout.app/asset/image/e8d372ce-07a0-411c-8555-1695f1c86af6" },
+        { nombre: "Elevaciones frontales", musculo: "🏋️ Hombro anterior", texto: "3-4 x 12-15", instrucciones: "1. De pie, mancuernas a los lados.\n2. Sube una mancuerna a altura hombros.\n3. Baja controlado.\n4. Alterna el brazo.", consejo: "No subas más arriba.", peso: 7, img: "https://api.smartworkout.app/asset/image/6a737a3f-6f24-4671-8a77-f49535b0dc51" }
     ]
 };
 
@@ -877,6 +885,11 @@ let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
 if (pesosRegistrados.length === 0) {
     pesosRegistrados.push({ valor: 84, fecha: new Date().toLocaleDateString('es-ES') });
     localStorage.setItem('nico_pesos', JSON.stringify(pesosRegistrados));
+}
+
+function guardarDatosCalendario() {
+    localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados));
+    localStorage.setItem('nico_dias_fumados', JSON.stringify(diasFumados));
 }
 
 // ==================== FUNCIONES PRINCIPALES ====================
@@ -953,12 +966,11 @@ function renderizarRutinas() {
                         <div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO RECOMENDADO</div><div class="exercise-detail-value" ${onclickDiscos}>📦 ${pesoMostrado}</div></div>
                     </div>
                     <button class="btn-main" onclick="toggleDetalles('det-${id}')">📋 VER INSTRUCCIONES ▾</button>
-                    <div class="detalles" id="det-${id}">${ex.img ? `<img src="${ex.img}" class="ex-img" loading="lazy">` : ''}<div style="margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div>
+                    <div class="detalles" id="det-${id}">${ex.img && ex.img !== '#' ? `<img src="${ex.img}" class="ex-img" loading="lazy">` : ''}<div style="margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div>
                 </div>
             `;
         }).join('');
         
-        // Añadir cardio y abdominal al final
         if (cardioYEstr[dia]) {
             const stretchContainer = document.getElementById(`estiramientos-${dia}`);
             if (stretchContainer) {
@@ -999,7 +1011,7 @@ function completarDia(dia) {
     const semanaKey = getSemanaKey();
     const key = `completado_${dia}_${semanaKey}`;
     if (localStorage.getItem(key)) { mostrarToast("⚠️ Ya completaste este día esta semana"); return; }
-    if (!diasEntrenados.includes(hoy)) { diasEntrenados.push(hoy); localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados)); }
+    if (!diasEntrenados.includes(hoy)) { diasEntrenados.push(hoy); guardarDatosCalendario(); }
     localStorage.setItem(key, 'true');
     actualizarUI();
     renderizarCalendarios();
@@ -1039,7 +1051,7 @@ function renderCal(id, mes, año, dias, labelId, esHumo) {
         const fecha = new Date(año, mes, d);
         const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`;
         if (fecha > hoyDate) cell.classList.add('future');
-        else cell.onclick = () => toggleDia(fStr, esHumo);
+        else cell.onclick = () => toggleDia(fStr, esHumo, cell);
         if (fStr === hoy) cell.classList.add('today');
         if (esHumo) {
             if (dias.includes(fStr)) cell.classList.add('fumado');
@@ -1057,18 +1069,32 @@ function changeMonth(dir, tipo) {
     else { let nueva = new Date(añoSmoke, mesSmoke + dir, 1); mesSmoke = nueva.getMonth(); añoSmoke = nueva.getFullYear(); renderizarCalendarios(); }
 }
 
-function toggleDia(fStr, esHumo) {
+function toggleDia(fStr, esHumo, cellElement) {
     if (esHumo) {
-        if (diasFumados.includes(fStr)) { diasFumados = diasFumados.filter(d => d !== fStr); mostrarToast("✅ Día limpio!"); }
-        else { diasFumados.push(fStr); mostrarToast("🚬 Marcado como fumado"); }
-        localStorage.setItem('nico_dias_fumados', JSON.stringify(diasFumados));
+        if (diasFumados.includes(fStr)) {
+            diasFumados = diasFumados.filter(d => d !== fStr);
+            mostrarToast("✅ Día limpio!");
+            if (cellElement) cellElement.classList.remove('fumado');
+        } else {
+            diasFumados.push(fStr);
+            mostrarToast("🚬 Marcado como fumado");
+            if (cellElement) cellElement.classList.add('fumado');
+        }
+        guardarDatosCalendario();
     } else {
-        if (diasEntrenados.includes(fStr)) { diasEntrenados = diasEntrenados.filter(d => d !== fStr); mostrarToast("🗑️ Día eliminado"); }
-        else { diasEntrenados.push(fStr); mostrarToast("🔥 ¡Día añadido!"); canvasConfetti({ particleCount: 50, spread: 30 }); }
-        localStorage.setItem('nico_dias_entrenados', JSON.stringify(diasEntrenados));
+        if (diasEntrenados.includes(fStr)) {
+            diasEntrenados = diasEntrenados.filter(d => d !== fStr);
+            mostrarToast("🗑️ Día eliminado");
+            if (cellElement) cellElement.classList.remove('entrenado');
+        } else {
+            diasEntrenados.push(fStr);
+            mostrarToast("🔥 ¡Día añadido!");
+            canvasConfetti({ particleCount: 50, spread: 30 });
+            if (cellElement) cellElement.classList.add('entrenado');
+        }
+        guardarDatosCalendario();
     }
     actualizarUI();
-    renderizarCalendarios();
 }
 
 // ==================== PESO ====================
@@ -1107,7 +1133,7 @@ function actualizarGrafico() {
     });
 }
 
-function marcarHoyFumado() { const hoy = getHoyStr(); if (!diasFumados.includes(hoy)) { diasFumados.push(hoy); localStorage.setItem('nico_dias_fumados', JSON.stringify(diasFumados)); mostrarToast("🚬 Marcado como fumado"); actualizarUI(); } }
+function marcarHoyFumado() { const hoy = getHoyStr(); if (!diasFumados.includes(hoy)) { diasFumados.push(hoy); guardarDatosCalendario(); mostrarToast("🚬 Marcado como fumado"); actualizarUI(); renderizarCalendarios(); } }
 
 function calcularDiasSinFumar() { let total = 0; let f = new Date(2026, 1, 22); const hoy = new Date(); while (f <= hoy) { const fStr = `${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`; if (!diasFumados.includes(fStr)) total++; f.setDate(f.getDate() + 1); } return total; }
 
@@ -1182,6 +1208,11 @@ function exportarDatos(conEmail) { const datos = { pesos: pesosRegistrados, chec
 
 // ==================== INICIO ====================
 window.onload = () => {
+    diasEntrenados = JSON.parse(localStorage.getItem('nico_dias_entrenados')) || [];
+    diasFumados = JSON.parse(localStorage.getItem('nico_dias_fumados')) || [];
+    pesosRegistrados = JSON.parse(localStorage.getItem('nico_pesos')) || [];
+    checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
+    logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
     actualizarUI();
     mostrarHistorialPeso();
     renderizarLogros();
