@@ -106,7 +106,7 @@ header {
     transition: max-height 0.3s;
     background: #050505;
 }
-.submenu-items.show { max-height: 300px; }
+.submenu-items.show { max-height: 400px; }
 .sub-link {
     padding: 12px 20px;
     color: #aaa;
@@ -117,9 +117,7 @@ header {
     overflow-x: auto;
     scrollbar-width: none;
 }
-.sub-link::-webkit-scrollbar {
-    display: none;
-}
+.sub-link::-webkit-scrollbar { display: none; }
 .debug-btn {
     margin-top: 20px;
     padding: 10px;
@@ -267,6 +265,11 @@ header {
     border-radius: 12px;
     text-align: center;
     min-width: 80px;
+    cursor: pointer;
+    transition: 0.1s;
+}
+.exercise-detail-item:hover {
+    background: #1a1a1a;
 }
 .exercise-detail-label {
     font-size: 0.65rem;
@@ -276,11 +279,6 @@ header {
     font-size: 1rem;
     font-weight: bold;
     color: var(--ciclo-color, #ff3b30);
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-.exercise-detail-value:hover {
-    opacity: 0.7;
 }
 .btn-main {
     width: 100%;
@@ -316,6 +314,7 @@ header {
     border-radius: 12px;
     margin: 10px auto;
     display: block;
+    cursor: pointer;
 }
 .check-box {
     width: 32px;
@@ -596,12 +595,12 @@ header {
     <div class="submenu-btn" onclick="toggleSubmenu(this)">📅 RUTINA SEMANAL <span class="arrow">▼</span></div>
     <div class="submenu-items">
         <div class="sub-link" onclick="go('lunes')">💪 Lunes: Espalda/Bíceps</div>
-        <div class="sub-link" onclick="go('martes')">🏃 Martes: Gemelos/Antebrazos</div>
-        <div class="sub-link" onclick="go('miercoles')">💪 Miércoles: Pecho/Tríceps</div>
-        <div class="sub-link" onclick="go('jueves')">🏃 Jueves: Trapecios/Lumbares</div>
-        <div class="sub-link" onclick="go('viernes')">🦵 Viernes: Pierna/Hombro</div>
-        <div class="sub-link" onclick="go('sabado')">🏃 Sábado: Hombro posterior/Pierna</div>
-        <div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso activo</div>
+        <div class="sub-link" onclick="go('martes')">🏋️ Martes: Pecho/Hombro</div>
+        <div class="sub-link" onclick="go('miercoles')">🦵 Miércoles: Pierna/Tríceps</div>
+        <div class="sub-link" onclick="go('jueves')">💪 Jueves: Espalda/Bíceps</div>
+        <div class="sub-link" onclick="go('viernes')">🏋️ Viernes: Pecho/Hombro</div>
+        <div class="sub-link" onclick="go('sabado')">🦵 Sábado: Pierna/Tríceps</div>
+        <div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso</div>
     </div>
     <div class="nav-btn" onclick="go('calendarios')">📅 CALENDARIOS</div>
     <div class="nav-btn" onclick="go('progreso-fotos')">📸 GALERÍA PROGRESO</div>
@@ -686,11 +685,11 @@ header {
 
 <!-- RUTINAS -->
 <div id="lunes" class="seccion"><h2>💪 LUNES: ESPALDA / BÍCEPS</h2><div id="badge-lunes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-lunes"></div><div id="estiramientos-lunes"></div><button class="btn-done" onclick="completarDia('lunes')">✅ COMPLETAR ENTRENO</button></div>
-<div id="martes" class="seccion"><h2>🏃 MARTES: GEMELOS / ANTEBRAZOS</h2><div id="badge-martes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-martes"></div><div id="estiramientos-martes"></div><button class="btn-done" onclick="completarDia('martes')">✅ COMPLETAR ENTRENO</button></div>
-<div id="miercoles" class="seccion"><h2>💪 MIÉRCOLES: PECHO / TRÍCEPS</h2><div id="badge-miercoles" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-miercoles"></div><div id="estiramientos-miercoles"></div><button class="btn-done" onclick="completarDia('miercoles')">✅ COMPLETAR ENTRENO</button></div>
-<div id="jueves" class="seccion"><h2>🏃 JUEVES: TRAPECIOS / LUMBARES</h2><div id="badge-jueves" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-jueves"></div><div id="estiramientos-jueves"></div><button class="btn-done" onclick="completarDia('jueves')">✅ COMPLETAR ENTRENO</button></div>
-<div id="viernes" class="seccion"><h2>🦵 VIERNES: PIERNA / HOMBRO</h2><div id="badge-viernes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-viernes"></div><div id="estiramientos-viernes"></div><button class="btn-done" onclick="completarDia('viernes')">✅ COMPLETAR ENTRENO</button></div>
-<div id="sabado" class="seccion"><h2>🏃 SÁBADO: HOMBRO POSTERIOR / PIERNA UNILATERAL</h2><div id="badge-sabado" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-sabado"></div><div id="estiramientos-sabado"></div><button class="btn-done" onclick="completarDia('sabado')">✅ COMPLETAR ENTRENO</button></div>
+<div id="martes" class="seccion"><h2>🏋️ MARTES: PECHO / HOMBRO</h2><div id="badge-martes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-martes"></div><div id="estiramientos-martes"></div><button class="btn-done" onclick="completarDia('martes')">✅ COMPLETAR ENTRENO</button></div>
+<div id="miercoles" class="seccion"><h2>🦵 MIÉRCOLES: PIERNA / TRÍCEPS</h2><div id="badge-miercoles" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-miercoles"></div><div id="estiramientos-miercoles"></div><button class="btn-done" onclick="completarDia('miercoles')">✅ COMPLETAR ENTRENO</button></div>
+<div id="jueves" class="seccion"><h2>💪 JUEVES: ESPALDA / BÍCEPS</h2><div id="badge-jueves" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-jueves"></div><div id="estiramientos-jueves"></div><button class="btn-done" onclick="completarDia('jueves')">✅ COMPLETAR ENTRENO</button></div>
+<div id="viernes" class="seccion"><h2>🏋️ VIERNES: PECHO / HOMBRO</h2><div id="badge-viernes" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-viernes"></div><div id="estiramientos-viernes"></div><button class="btn-done" onclick="completarDia('viernes')">✅ COMPLETAR ENTRENO</button></div>
+<div id="sabado" class="seccion"><h2>🦵 SÁBADO: PIERNA / TRÍCEPS</h2><div id="badge-sabado" class="exercise-badge" style="display:inline-block; margin-bottom:12px;"></div><div id="lista-sabado"></div><div id="estiramientos-sabado"></div><button class="btn-done" onclick="completarDia('sabado')">✅ COMPLETAR ENTRENO</button></div>
 <div id="domingo" class="seccion"><div class="sunday-card"><div class="sunday-emoji">🔋✨😴✨💪</div><div class="sunday-title">DÍA DE RECARGA</div></div></div>
 
 <div id="resetModal" class="reset-modal">
@@ -723,7 +722,6 @@ function getSemanaDelMes() {
         return Math.min(semana, 5);
     }
     
-    // Calcular semana
     const diffDias = Math.floor((hoy - primerLunes) / (1000 * 60 * 60 * 24));
     let semana = Math.floor(diffDias / 7) + 1;
     return Math.min(semana, 5);
@@ -734,7 +732,7 @@ function getTipoCiclo() {
     if (semana === 1) return 'FUERZA';
     if (semana === 2) return 'DEFINICIÓN';
     if (semana === 3) return 'VOLUMEN';
-    return 'DEFINICIÓN'; // semana 4 o 5
+    return 'DEFINICIÓN';
 }
 
 function getConfigCiclo() {
@@ -747,7 +745,7 @@ function getConfigCiclo() {
     return configs[tipo];
 }
 
-// ==================== PESOS POR EJERCICIO (DEFINITIVO) ====================
+// ==================== PESOS POR EJERCICIO (AJUSTADOS A COMBINACIONES REALES) ====================
 function getPesoEjercicio(nombre) {
     const tipo = getTipoCiclo();
     const pesos = {
@@ -767,7 +765,7 @@ function getPesoEjercicio(nombre) {
         // Una mancuerna
         "Remo a una mano": { FUERZA: 9.5, VOLUMEN: 7, DEFINICIÓN: 4 },
         "Extensión tríceps tras nuca": { FUERZA: 9.5, VOLUMEN: 7, DEFINICIÓN: 4 },
-        // Barra larga (sin cambios, usan total)
+        // Barra larga (sin cambios)
         "Remo con Barra": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
         "Press banca": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
         "Sentadillas": { FUERZA: 19, VOLUMEN: 14, DEFINICIÓN: 10 },
@@ -809,14 +807,12 @@ function mostrarDiscos(ejercicioNombre, pesoTotal) {
         9.5: "2kg(2) + 1.5kg(2) + 1.25kg(2)",
         7: "2kg(2) + 1.5kg(2)",
         6.5: "2kg(2) + 1.25kg(2)",
-        5: "1.25kg(4)",
         4: "2kg(2)",
-        3.5: "2kg(1) + 1.5kg(1)",
         3: "1.5kg(2)",
         2.5: "1.25kg(2)",
-        2: "2kg(1)"
+        0: "Peso corporal"
     };
-    const texto = combos[pesoMostrar] || "No disponible exacto, aproximado";
+    const texto = combos[pesoMostrar] || "Ajusta con tus discos (2, 1.5, 1.25)";
     
     const modalHTML = `
         <div id="modalDiscos" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid var(--ciclo-color); border-radius:20px; padding:20px; z-index:6000; width:280px; text-align:center;">
@@ -982,7 +978,7 @@ function renderizarRutinas() {
                     </div>
                     <div class="exercise-detail">
                         <div class="exercise-detail-item"><div class="exercise-detail-label">📊 SERIES</div><div class="exercise-detail-value">${textoSeries}</div></div>
-                        <div class="exercise-detail-item"><div class="exercise-detail-label">⚖️ PESO RECOMENDADO</div><div class="exercise-detail-value" ${onclickDiscos}>📦 ${pesoMostrado}</div></div>
+                        <div class="exercise-detail-item" ${onclickDiscos}><div class="exercise-detail-label">⚖️ PESO RECOMENDADO</div><div class="exercise-detail-value">📦 ${pesoMostrado}</div></div>
                     </div>
                     <button class="btn-main" onclick="toggleDetalles('det-${id}')">📋 VER INSTRUCCIONES ▾</button>
                     <div class="detalles" id="det-${id}">${ex.img && ex.img !== '#' ? `<img src="${ex.img}" class="ex-img" loading="lazy">` : ''}<div style="margin:8px 0"><strong>📝 CÓMO HACERLO:</strong><br>${ex.instrucciones.replace(/\n/g, '<br>')}</div><p style="color:#32d74b">💡 CONSEJO: ${ex.consejo}</p></div>
@@ -1159,14 +1155,31 @@ function calcularDiasSinFumar() { let total = 0; let f = new Date(2026, 1, 22); 
 const listaLogros = [
     { id: "primer_paso", nombre: "🏁 Primer paso", desc: "Completar tu primer día", cond: () => diasEntrenados.length >= 1, icono: "🏁" },
     { id: "racha_3", nombre: "🔥 Racha 3", desc: "3 días entrenando", cond: () => diasEntrenados.length >= 3, icono: "🔥" },
+    { id: "racha_5", nombre: "🔥 Racha 5", desc: "5 días entrenando", cond: () => diasEntrenados.length >= 5, icono: "🔥" },
     { id: "racha_7", nombre: "💪 Racha 7", desc: "1 semana entrenando", cond: () => diasEntrenados.length >= 7, icono: "💪" },
+    { id: "racha_10", nombre: "💪 Racha 10", desc: "10 días entrenando", cond: () => diasEntrenados.length >= 10, icono: "💪" },
     { id: "racha_14", nombre: "🚀 Racha 14", desc: "2 semanas entrenando", cond: () => diasEntrenados.length >= 14, icono: "🚀" },
-    { id: "racha_30", nombre: "🏆 Racha 30", desc: "30 días entrenando", cond: () => diasEntrenados.length >= 30, icono: "🏆" },
+    { id: "racha_20", nombre: "🦾 Racha 20", desc: "20 días entrenando", cond: () => diasEntrenados.length >= 20, icono: "🦾" },
+    { id: "racha_21", nombre: "🦾 Racha 21", desc: "3 semanas entrenando", cond: () => diasEntrenados.length >= 21, icono: "🦾" },
+    { id: "racha_30", nombre: "🚀 Racha 30", desc: "30 días entrenando", cond: () => diasEntrenados.length >= 30, icono: "🚀" },
+    { id: "racha_40", nombre: "🏆 Racha 40", desc: "40 días entrenando", cond: () => diasEntrenados.length >= 40, icono: "🏆" },
+    { id: "racha_50", nombre: "🏆 Racha 50", desc: "50 días entrenando", cond: () => diasEntrenados.length >= 50, icono: "🏆" },
+    { id: "racha_60", nombre: "👑 Racha 60", desc: "2 meses entrenando", cond: () => diasEntrenados.length >= 60, icono: "👑" },
+    { id: "racha_75", nombre: "💎 Racha 75", desc: "75 días entrenando", cond: () => diasEntrenados.length >= 75, icono: "💎" },
+    { id: "racha_90", nombre: "🎯 Racha 90", desc: "3 meses entrenando", cond: () => diasEntrenados.length >= 90, icono: "🎯" },
+    { id: "racha_100", nombre: "👑 Racha 100", desc: "100 días entrenando", cond: () => diasEntrenados.length >= 100, icono: "👑" },
     { id: "ns_7", nombre: "🌱 1 semana sin fumar", desc: "7 días sin fumar", cond: () => calcularDiasSinFumar() >= 7, icono: "🌱" },
+    { id: "ns_14", nombre: "🍃 2 semanas sin fumar", desc: "14 días sin fumar", cond: () => calcularDiasSinFumar() >= 14, icono: "🍃" },
     { id: "ns_30", nombre: "🚭 1 mes sin fumar", desc: "30 días sin fumar", cond: () => calcularDiasSinFumar() >= 30, icono: "🚭" },
+    { id: "ns_60", nombre: "💨 2 meses sin fumar", desc: "60 días sin fumar", cond: () => calcularDiasSinFumar() >= 60, icono: "💨" },
+    { id: "ns_90", nombre: "🎉 3 meses sin fumar", desc: "90 días sin fumar", cond: () => calcularDiasSinFumar() >= 90, icono: "🎉" },
     { id: "ns_100", nombre: "💪 100 días sin fumar", desc: "100 días sin fumar", cond: () => calcularDiasSinFumar() >= 100, icono: "💪" },
+    { id: "ns_180", nombre: "🥳 6 meses sin fumar", desc: "180 días sin fumar", cond: () => calcularDiasSinFumar() >= 180, icono: "🥳" },
+    { id: "ns_365", nombre: "🎊 1 año sin fumar", desc: "365 días sin fumar", cond: () => calcularDiasSinFumar() >= 365, icono: "🎊" },
     { id: "primer_peso", nombre: "⚖️ Primer peso", desc: "Registrar tu primer peso", cond: () => pesosRegistrados.length >= 1, icono: "⚖️" },
-    { id: "menos_5kg", nombre: "🎉 -5 kg", desc: "Bajar 5 kg", cond: () => (pesosRegistrados[0]?.valor || 0) - (pesosRegistrados[pesosRegistrados.length-1]?.valor || 0) >= 5, icono: "🎉" }
+    { id: "menos_1kg", nombre: "📉 -1 kg", desc: "Bajar 1 kg desde el inicio", cond: () => (pesosRegistrados[0]?.valor || 0) - (pesosRegistrados[pesosRegistrados.length-1]?.valor || 0) >= 1, icono: "📉" },
+    { id: "menos_5kg", nombre: "🎉 -5 kg", desc: "Bajar 5 kg desde el inicio", cond: () => (pesosRegistrados[0]?.valor || 0) - (pesosRegistrados[pesosRegistrados.length-1]?.valor || 0) >= 5, icono: "🎉" },
+    { id: "foto_progreso", nombre: "📸 Mi primera foto", desc: "Sube tu primera foto de progreso", cond: () => false, icono: "📸" }
 ];
 
 function renderizarLogros() {
