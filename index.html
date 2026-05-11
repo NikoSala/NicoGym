@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-<title>NICO GYM - VERSIÓN DEFINITIVA (CORREGIDA)</title>
+<title>NICO GYM - VERSIÓN DEFINITIVA (CON COMPLETADO DE DÍAS)</title>
 <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2964/2964514.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <style>
-/* ========== ESTILOS COMPLETOS (no cambian) ========== */
+/* ========== ESTILOS COMPLETOS ========== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { overflow-x: hidden; width: 100%; }
 body { background: linear-gradient(135deg, #000000, #1a1a1a, #0a0a0a, #000000); background-size: 300% 300%; animation: fondoAnimado 10s ease infinite; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding-bottom: 70px; overflow-x: hidden; width: 100%; }
@@ -74,12 +74,13 @@ header { background: #000; border-bottom: 2px solid var(--ciclo-color, #ff3b30);
 .cal-nav button:active { transform: translateY(3px); box-shadow: 0 0px 0 rgba(0,0,0,0.4); }
 .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; min-width: 280px; }
 .cal-day-label { font-size: 0.65rem; text-align: center; color: #555; padding-bottom: 4px; }
-.cal-cell { aspect-ratio: 1; background: #0a0a0a; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; cursor: pointer; transition: transform 0.05s linear; border: 2px solid transparent; }
+.cal-cell { aspect-ratio: 1; background: #0a0a0a; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; cursor: pointer; transition: transform 0.05s linear; border: 3px solid transparent; font-weight: 500; }
 .cal-cell:active { transform: scale(0.95); }
 .cal-cell.fumado { background: #ff3b30; color: #fff; }
 .cal-cell.nosmoke { background: #007aff; color: #fff; }
 .cal-cell.domingo { background: #8b5cf6; color: #fff; }
-.cal-cell.today { border-width: 3px; }
+.cal-cell.completado { background: #32d74b; color: #000; font-weight: bold; }
+.cal-cell.today { border-width: 3px; border-color: white; }
 .cal-cell.future { opacity: 0.2; cursor: not-allowed; }
 .cal-legend { display: flex; gap: 12px; margin-top: 12px; font-size: 0.65rem; justify-content: center; flex-wrap: wrap; }
 .leg-box { width: 12px; height: 12px; border-radius: 3px; display: inline-block; margin-right: 4px; }
@@ -114,7 +115,7 @@ header { background: #000; border-bottom: 2px solid var(--ciclo-color, #ff3b30);
 @keyframes spin { from { transform: rotate(0deg) scale(0.5); opacity: 0; } to { transform: rotate(360deg) scale(1); opacity: 1; } }
 .medalla-icono { font-size: 4rem; }
 .medalla-titulo { font-size: 1.3rem; color: #ffd60a; }
-:root { --ciclo-color: #ff3b30; --ciclo-volumen: #ff8c00; }
+:root { --ciclo-color: #ff3b30; --ciclo-volumen: #ff8c00; --ciclo-definicion: #e6c8a0; }
 .modal-overlay-ejercicios { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 6999; }
 .modal-container-ejercicios { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #1a1a1a; border: 3px solid var(--modal-color, #ff3b30); border-radius: 24px; padding: 20px; z-index: 7000; width: 90%; max-width: 420px; max-height: 80vh; overflow-y: auto; box-shadow: 0 0 40px rgba(0,0,0,0.9); }
 .modal-container-ejercicios h3 { color: var(--modal-color, #ff3b30); margin-bottom: 15px; text-align: center; }
@@ -178,7 +179,8 @@ header { background: #000; border-bottom: 2px solid var(--ciclo-color, #ff3b30);
         <div class="cal-legend">
             <span class="leg-box" style="background:#ff3b30;"></span> FUERZA 
             <span class="leg-box" style="background:#ff8c00;"></span> VOLUMEN 
-            <span class="leg-box" style="background:#ffd60a;"></span> DEFINICIÓN
+            <span class="leg-box" style="background:#e6c8a0;"></span> DEFINICIÓN
+            <span class="leg-box" style="background:#32d74b;"></span> Entrenado
             <span class="leg-box" style="background:#8b5cf6;"></span> Domingo
         </div>
     </div>
@@ -248,49 +250,49 @@ function getTipoCiclo() { return getTipoCicloPorSemana(getNumeroSemana(new Date(
 function getCicloColor(tipo) {
     if (tipo === 'FUERZA') return '#ff3b30';
     if (tipo === 'VOLUMEN') return '#ff8c00';
-    return '#ffd60a';
+    return '#e6c8a0'; // nuevo color suave para definición
 }
 function getConfigCiclo() {
     const tipo = getTipoCiclo();
     const configs = { 
         FUERZA: { nombre: '🔴 FUERZA', emoji: '🔴🏋️', color: '#ff3b30', series: '4-5', reps: '3-5', peso: 'PESADO (9.5kg)', objetivo: 'GANAR FUERZA MÁXIMA' }, 
         VOLUMEN: { nombre: '🟠 VOLUMEN', emoji: '🟠💪', color: '#ff8c00', series: '3-4', reps: '8-12', peso: 'MODERADO (7kg)', objetivo: 'HIPERTROFIA' }, 
-        DEFINICIÓN: { nombre: '🟡 DEFINICIÓN', emoji: '🟡🔥', color: '#ffd60a', series: '3-4', reps: '15-20', peso: 'LIGERO (4kg)', objetivo: 'QUEMAR GRASA' } 
+        DEFINICIÓN: { nombre: '🟡 DEFINICIÓN', emoji: '🟡🔥', color: '#e6c8a0', series: '3-4', reps: '15-20', peso: 'LIGERO (4kg)', objetivo: 'QUEMAR GRASA' } 
     };
     return configs[tipo];
 }
 
-// ==================== 72 EJERCICIOS COMPLETOS (TODAS LAS CLAVES EN MINÚSCULA SIN TILDE) ====================
+// ==================== 72 EJERCICIOS COMPLETOS (con definiciones detalladas) ====================
 const ejerciciosPorDiaYCiclo = {
     lunes: {
         fuerza: [{ nombre: "Dominadas (palmas mirando afuera)", musculo: "Espalda", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/e132f3b7-cccc-4098-9b44-1aa9a7954a3e", instrucciones: "1. Agarre prono ancho.\n2. Cuelga con brazos extendidos.\n3. Sube hasta que la barra toque el pecho.\n4. Baja controlado en 3-4 segundos.\n5. Pausa 2 segundos abajo." },{ nombre: "Remo con barra (agarre supino estricto)", musculo: "Espalda", pesoKg: 9.5, img: "https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif", instrucciones: "1. Agarre supino cerrado.\n2. Inclina 45°, espalda recta.\n3. Tira barra al ombligo.\n4. Aprieta omóplatos.\n5. Baja controlado." },{ nombre: "Curl predicador unilateral (con silla)", musculo: "Bíceps", pesoKg: 9.5, img: "https://newlife.com.cy/wp-content/uploads/2019/11/04021301-Dumbbell-Seated-Preacher-Curl_Upper-Arms_360.gif", instrucciones: "1. Apoya codo en respaldo silla.\n2. De pie sobre una pierna.\n3. Curl sin mover hombro.\n4. Baja lento 3 segundos.\n5. Aprieta bíceps." },{ nombre: "Curl araña unilateral (pausa de 2\")", musculo: "Bíceps", pesoKg: 9.5, img: "https://api.smartworkout.app/asset/image/94cdc539-0fda-45a3-b2e5-ca8404a629d7", instrucciones: "1. Tumbado boca abajo.\n2. Brazo colgando, codo fijo.\n3. Curl llevando al hombro.\n4. Pausa 2 segundos arriba.\n5. Baja excéntrica lenta." }],
         volumen: [{ nombre: "Dominadas (palmas mirando hacia ti)", musculo: "Espalda/Bíceps", pesoKg: 0, img: "https://i.pinimg.com/originals/15/98/ec/1598ec2121ef2ac8c5fa0a51c5a16f53.gif", instrucciones: "1. Agarre supino.\n2. Manos ancho hombros.\n3. Sube barra al pecho.\n4. Baja controlado.\n5. 8-12 repes." },{ nombre: "Remo a una mano (normal)", musculo: "Espalda", pesoKg: 7, img: "https://static.wixstatic.com/media/c94d75_c1fe019ba48e4843b63ab9dcc0284c30~mv2.gif", instrucciones: "1. Apoya rodilla y mano.\n2. Rema a cadera.\n3. Aprieta escápula.\n4. Baja controlado.\n5. 8-12 reps." },{ nombre: "Curl martillo normal (dos manos)", musculo: "Braquial/Bíceps", pesoKg: 7, img: "https://rincondelmusculo.com/wp-content/uploads/2014/09/CURL_DE_MARTILLO.gif", instrucciones: "1. De pie, codos pegados.\n2. Palmas enfrentadas.\n3. Sube a hombros.\n4. Aprieta 1 segundo.\n5. Baja controlado." },{ nombre: "Curl araña con mancuerna", musculo: "Bíceps", pesoKg: 7, img: "https://api.smartworkout.app/asset/image/94cdc539-0fda-45a3-b2e5-ca8404a629d7", instrucciones: "1. Tumbado boca abajo.\n2. Curl controlado.\n3. Ritmo constante.\n4. 8-12 repes.\n5. Enfócate en contracción." }],
-        definicion: [{ nombre: "Dominadas con banda elástica", musculo: "Espalda", pesoKg: 0, img: "https://www.inspireusafoundation.org/wp-content/uploads/2023/05/band-assisted-pull-up.gif", instrucciones: "1. Coloca banda elástica.\n2. Asiste con rodilla.\n3. Sube lo posible.\n4. Baja muy lento (5\").\n5. 15-20 reps." },{ nombre: "Remo inclinado con barra ligera", musculo: "Espalda", pesoKg: 4, img: "https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif", instrucciones: "1. Poco peso.\n2. Inclina 45°.\n3. Remo controlado.\n4. 15-20 reps.\n5. Descanso mínimo." },{ nombre: "Curl concentrado sentado", musculo: "Bíceps", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/02971301-Dumbbell-Concentration-Curl_Upper-Arms_720.gif", instrucciones: "1. Siéntate, codo en muslo.\n2. Curl estricto.\n3. Aprieta bíceps.\n4. 15-20 reps.\n5. Control total." },{ nombre: "Curl de bíceps con pausa (1\" arriba)", musculo: "Bíceps", pesoKg: 4, img: "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif", instrucciones: "1. De pie, codos fijos.\n2. Curl normal.\n3. Pausa 1 segundo arriba.\n4. 15-20 reps.\n5. Busca congestión." }]
+        definicion: [{ nombre: "Dominadas con banda elástica", musculo: "Espalda", pesoKg: 0, img: "https://www.inspireusafoundation.org/wp-content/uploads/2023/05/band-assisted-pull-up.gif", instrucciones: "1. Coloca una banda elástica en la barra y apoya una rodilla.\n2. Sube todo lo que puedas, usando la ayuda de la banda.\n3. Baja de forma muy lenta, contando 5 segundos.\n4. Realiza 15-20 repeticiones.\n5. Descansa solo 30 segundos entre series." },{ nombre: "Remo inclinado con barra ligera", musculo: "Espalda", pesoKg: 4, img: "https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif", instrucciones: "1. Coloca poco peso (4 kg por lado).\n2. Inclina el torso 45 grados, espalda recta.\n3. Realiza el remo tirando la barra hacia el ombligo.\n4. Realiza 15-20 repeticiones controladas.\n5. Descansa poco entre series para mantener la intensidad." },{ nombre: "Curl concentrado sentado", musculo: "Bíceps", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/02971301-Dumbbell-Concentration-Curl_Upper-Arms_720.gif", instrucciones: "1. Siéntate en una silla, con las piernas separadas.\n2. Apoya el codo en la parte interna del muslo.\n3. Realiza el curl llevando la mancuerna hacia el hombro.\n4. Aprieta el bíceps en la posición arriba.\n5. Realiza 15-20 repeticiones con control total." },{ nombre: "Curl de bíceps con pausa (1\" arriba)", musculo: "Bíceps", pesoKg: 4, img: "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif", instrucciones: "1. De pie, con los codos pegados al torso.\n2. Realiza el curl de bíceps normal.\n3. En la posición más alta, mantén 1 segundo apretando.\n4. Baja controladamente.\n5. Realiza 15-20 repeticiones buscando la congestión muscular." }]
     },
     martes: {
         fuerza: [{ nombre: "Press banca con pies elevados", musculo: "Pecho", pesoKg: 9.5, img: "https://fitwill.app/api/image/3174?p=1&w=1024&h=576", instrucciones: "1. Pies elevados.\n2. Mancuernas sobre pecho.\n3. Baja a 90°.\n4. Pausa 2\" abajo.\n5. Sube explosivo." },{ nombre: "Flexiones con peso (mochila 9,5kg)", musculo: "Pecho", pesoKg: 9.5, img: "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460", instrucciones: "1. Mochila con 9,5 kg.\n2. Plancha alta.\n3. Baja pecho al suelo.\n4. Sube explosivo.\n5. 3-5 reps." },{ nombre: "Press militar de pie con pausa arriba", musculo: "Hombro", pesoKg: 9.5, img: "https://api.smartworkout.app/asset/image/cb179489-5169-4054-939a-40452492b2f4", instrucciones: "1. De pie, mancuernas a hombros.\n2. Presiona arriba.\n3. Pausa 2 segundos.\n4. Baja controlado.\n5. Espalda recta." },{ nombre: "Elevaciones laterales unilaterales", musculo: "Hombro lateral", pesoKg: 7, img: "https://api.smartworkout.app/asset/image/0f95b85a-7bb1-4013-875d-ad9bcf815c29", instrucciones: "1. Apoya mano en pared.\n2. Eleva lateralmente.\n3. Control total.\n4. Aísla hombro.\n5. 3-5 reps." }],
         volumen: [{ nombre: "Press banca en suelo", musculo: "Pecho", pesoKg: 7, img: "https://api.smartworkout.app/asset/image/567ae9ad-b584-4d53-b400-82b0117a7ce1", instrucciones: "8-12 reps." },{ nombre: "Flexiones normales", musculo: "Pecho", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460", instrucciones: "8-12 reps." },{ nombre: "Press militar sentado", musculo: "Hombro", pesoKg: 7, img: "https://api.smartworkout.app/asset/image/d3878853-0b0e-4888-b3b3-06018f36dc6c", instrucciones: "8-12 reps." },{ nombre: "Elevaciones laterales normales", musculo: "Hombro lateral", pesoKg: 7, img: "https://api.smartworkout.app/asset/image/1ccfc9fb-694b-49ee-bd0d-7035dcbfdd79", instrucciones: "8-12 reps." }],
-        definicion: [{ nombre: "Press banca inclinado (con silla)", musculo: "Pecho superior", pesoKg: 4, img: "https://api.smartworkout.app/asset/image/375218cb-b06e-483b-bf5e-6db89512cc6b", instrucciones: "15-20 reps." },{ nombre: "Flexiones normales", musculo: "Pecho", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460", instrucciones: "15-20 reps." },{ nombre: "Press militar ligero", musculo: "Hombro", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/04261301-Dumbbell-Standing-Overhead-Press_shoulder_720.gif", instrucciones: "15-20 reps." },{ nombre: "Elevaciones frontales alternas", musculo: "Hombro anterior", pesoKg: 4, img: "https://api.smartworkout.app/asset/image/5aec4152-62ab-4bb5-b90b-e472690e5383", instrucciones: "15-20 reps." }]
+        definicion: [{ nombre: "Press banca inclinado (con silla)", musculo: "Pecho superior", pesoKg: 4, img: "https://api.smartworkout.app/asset/image/375218cb-b06e-483b-bf5e-6db89512cc6b", instrucciones: "1. Coloca una silla en posición inclinada (respaldada en una pared).\n2. Túmbate con la espalda apoyada en el respaldo.\n3. Realiza el press de pecho con poco peso.\n4. Realiza 15-20 repeticiones.\n5. Concéntrate en la contracción del pecho superior." },{ nombre: "Flexiones normales", musculo: "Pecho", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460", instrucciones: "1. Colócate en plancha alta, manos bajo los hombros.\n2. Baja el pecho hasta casi tocar el suelo.\n3. Realiza 15-20 repeticiones.\n4. Mantén un ritmo alto, sin pausas largas.\n5. Busca la fatiga muscular." },{ nombre: "Press militar con mancuerna ligera", musculo: "Hombro", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/04261301-Dumbbell-Standing-Overhead-Press_shoulder_720.gif", instrucciones: "1. De pie o sentado, con mancuernas de 4 kg.\n2. Realiza press militar con control.\n3. Llega hasta 20 repeticiones por serie.\n4. Descansa solo 30 segundos entre series.\n5. Concéntrate en la definición, no en el peso." },{ nombre: "Elevaciones frontales alternas", musculo: "Hombro anterior", pesoKg: 4, img: "https://api.smartworkout.app/asset/image/5aec4152-62ab-4bb5-b90b-e472690e5383", instrucciones: "1. De pie, con una mancuerna en cada mano.\n2. Eleva un brazo hacia el frente hasta la altura del hombro.\n3. Baja y alterna con el otro brazo.\n4. Realiza 15-20 repeticiones totales.\n5. Mantén el torso firme, sin balancearte." }]
     },
     miercoles: {
         fuerza: [{ nombre: "Sentadilla búlgara con pausa", musculo: "Pierna", pesoKg: 9.5, img: "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649", instrucciones: "1. Pie trasero en banco.\n2. Pausa 3\" abajo.\n3. Sube con talón.\n4. 3-5 reps." },{ nombre: "Peso muerto rumano a una pierna", musculo: "Isquiotibiales", pesoKg: 9.5, img: "https://fitcron.com/wp-content/uploads/2021/04/17571301-Dumbbell-Single-Leg-Deadlift_Hips_720.gif", instrucciones: "Equilibrio extremo. 3-5 reps." },{ nombre: "Fondos en paralelas", musculo: "Tríceps", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030", instrucciones: "Paralelas torre. SIN PESO. 3-5 reps." },{ nombre: "Press francés unilateral pausa", musculo: "Tríceps", pesoKg: 9.5, img: "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif", instrucciones: "Pausa 2\". 3-5 reps." }],
         volumen: [{ nombre: "Sentadilla común", musculo: "Pierna", pesoKg: 7, img: "https://fitcron.com/wp-content/uploads/2021/04/15551301-Dumbbell-Squat_Thighs_720.gif", instrucciones: "8-12 reps." },{ nombre: "Peso muerto rumano normal", musculo: "Pierna", pesoKg: 7, img: "https://fitcron.com/wp-content/uploads/2021/04/14591301-Dumbbell-Romanian-Deadlift_Hips_720.gif", instrucciones: "8-12 reps." },{ nombre: "Fondos en banco", musculo: "Tríceps", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/14fff202-7bb2-4e35-af03-39b9a58417d2", instrucciones: "8-12 reps." },{ nombre: "Press francés normal", musculo: "Tríceps", pesoKg: 7, img: "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif", instrucciones: "8-12 reps." }],
-        definicion: [{ nombre: "Sentadilla sumo ligera", musculo: "Pierna", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/03711301-Dumbbell-Plyo-Squat_thighs_720.gif", instrucciones: "15-20 reps." },{ nombre: "Peso muerto piernas rectas", musculo: "Pierna", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/04321301-Dumbbell-Stiff-Leg-Deadlift_Waist_720.gif", instrucciones: "15-20 reps." },{ nombre: "Fondos en banco (def)", musculo: "Tríceps", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/14fff202-7bb2-4e35-af03-39b9a58417d2", instrucciones: "15-20 reps." },{ nombre: "Press francés pies juntos", musculo: "Tríceps", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif", instrucciones: "Inestable. 15-20 reps." }]
+        definicion: [{ nombre: "Sentadilla sumo ligera", musculo: "Pierna", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/03711301-Dumbbell-Plyo-Squat_thighs_720.gif", instrucciones: "1. Abre bien las piernas, con las puntas de los pies hacia afuera.\n2. Sujeta una mancuerna verticalmente con ambas manos.\n3. Baja manteniendo la espalda recta.\n4. Realiza 15-20 repeticiones.\n5. Este ejercicio trabaja la parte interna del muslo." },{ nombre: "Peso muerto piernas rectas", musculo: "Pierna", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/04321301-Dumbbell-Stiff-Leg-Deadlift_Waist_720.gif", instrucciones: "1. Ponte de pie con piernas casi rectas (microflexión de rodillas).\n2. Sujeta una mancuerna en cada mano.\n3. Baja el torso manteniendo la espalda recta.\n4. Baja hasta sentir estiramiento máximo en los isquiotibiales.\n5. Realiza 15-20 repeticiones con peso mínimo." },{ nombre: "Fondos en banco (def)", musculo: "Tríceps", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/14fff202-7bb2-4e35-af03-39b9a58417d2", instrucciones: "1. Siéntate en el borde de un banco, con las manos apoyadas a los lados.\n2. Desplaza el cuerpo hacia adelante y baja controladamente.\n3. Baja hasta que los codos estén a 90 grados.\n4. Realiza 15-20 repeticiones.\n5. Mantén los hombros hacia atrás, no los dejes subir." },{ nombre: "Press francés pies juntos", musculo: "Tríceps", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif", instrucciones: "1. De pie, con los pies juntos (sin separarlos).\n2. Sujeta una mancuerna con ambas manos detrás de la cabeza.\n3. Extiende los brazos hacia arriba.\n4. Realiza 15-20 repeticiones.\n5. La inestabilidad de los pies juntos activa el core." }]
     },
     jueves: {
         fuerza: [{ nombre: "Remo a una mano pausa 3\"", musculo: "Espalda", pesoKg: 9.5, img: "https://fitcron.com/wp-content/uploads/2021/04/02921301-Dumbbell-Bent-over-Row_back_Back_720.gif", instrucciones: "Pausa 3\" abajo. 3-5 reps." },{ nombre: "Remo barra agarre cerrado", musculo: "Espalda", pesoKg: 9.5, img: "https://gymvisual.com/img/p/1/0/6/1/7/10617.gif", instrucciones: "Agarre cerrado. 3-5 reps." },{ nombre: "Curl predicador dos brazos", musculo: "Bíceps", pesoKg: 9.5, img: "https://newlife.com.cy/wp-content/uploads/2019/11/04021301-Dumbbell-Seated-Preacher-Curl_Upper-Arms_360.gif", instrucciones: "Dos brazos. 3-5 reps." },{ nombre: "Curl martillo agarre inverso", musculo: "Braquiorradial", pesoKg: 9.5, img: "https://musclemagfitness.com/wp-content/uploads/dumbbell-reverse-grip-curl-exercise.gif", instrucciones: "Palmas abajo. 3-5 reps." }],
         volumen: [{ nombre: "Remo a una mano normal", musculo: "Espalda", pesoKg: 7, img: "https://fitcron.com/wp-content/uploads/2021/04/02921301-Dumbbell-Bent-over-Row_back_Back_720.gif", instrucciones: "8-12 reps." },{ nombre: "Remo inclinado barra", musculo: "Espalda", pesoKg: 7, img: "https://gymvisual.com/img/p/1/0/6/1/7/10617.gif", instrucciones: "8-12 reps." },{ nombre: "Curl de bíceps normal", musculo: "Bíceps", pesoKg: 7, img: "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif", instrucciones: "8-12 reps." },{ nombre: "Curl martillo normal", musculo: "Braquial", pesoKg: 7, img: "https://fitcron.com/wp-content/uploads/2021/04/02981301-Dumbbell-Cross-Body-Hammer-Curl_Forearms_720.gif", instrucciones: "8-12 reps." }],
-        definicion: [{ nombre: "Remo unilateral ligero", musculo: "Espalda", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/02921301-Dumbbell-Bent-over-Row_back_Back_720.gif", instrucciones: "15-20 reps." },{ nombre: "Remo inclinado pausa", musculo: "Espalda", pesoKg: 4, img: "https://gymvisual.com/img/p/1/0/6/1/7/10617.gif", instrucciones: "15-20 reps." },{ nombre: "Curl concentrado", musculo: "Bíceps", pesoKg: 4, img: "https://gymvisual.com/img/p/2/8/1/1/9/28119.gif", instrucciones: "15-20 reps." },{ nombre: "Curl araña ligero", musculo: "Bíceps", pesoKg: 4, img: "https://api.smartworkout.app/asset/image/94cdc539-0fda-45a3-b2e5-ca8404a629d7", instrucciones: "15-20 reps." }]
+        definicion: [{ nombre: "Remo unilateral ligero", musculo: "Espalda", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/02921301-Dumbbell-Bent-over-Row_back_Back_720.gif", instrucciones: "1. Usa una mancuerna de 4 kg.\n2. Realiza el remo a una mano normal.\n3. Realiza 15-20 repeticiones por brazo.\n4. Concéntrate en la contracción de la espalda.\n5. Descansa poco entre series." },{ nombre: "Remo inclinado pausa", musculo: "Espalda", pesoKg: 4, img: "https://gymvisual.com/img/p/1/0/6/1/7/10617.gif", instrucciones: "1. Poco peso en la barra.\n2. Inclina el torso 45 grados.\n3. Realiza el remo y mantén 1 segundo arriba.\n4. Realiza 15-20 repeticiones.\n5. Busca la congestión muscular." },{ nombre: "Curl concentrado", musculo: "Bíceps", pesoKg: 4, img: "https://gymvisual.com/img/p/2/8/1/1/9/28119.gif", instrucciones: "1. Siéntate y apoya el codo en el muslo.\n2. Realiza el curl concentrado.\n3. Realiza 15-20 repeticiones.\n4. Aprieta el bíceps en cada repetición.\n5. Controla la bajada." },{ nombre: "Curl araña ligero", musculo: "Bíceps", pesoKg: 4, img: "https://api.smartworkout.app/asset/image/94cdc539-0fda-45a3-b2e5-ca8404a629d7", instrucciones: "1. Tumbado boca abajo en un banco.\n2. Realiza el curl araña con 4 kg.\n3. Realiza 15-20 repeticiones.\n4. Mantén el codo fijo.\n5. Busca la congestión y el bombeo muscular." }]
     },
     viernes: {
         fuerza: [{ nombre: "Press banca pies elevados pausa", musculo: "Pecho", pesoKg: 9.5, img: "https://fitwill.app/api/image/3174?p=1&w=1024&h=576", instrucciones: "Pausa 2\" abajo. 3-5 reps." },{ nombre: "Flexiones palmada", musculo: "Pecho", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460", instrucciones: "Explosivas. 3-5 reps." },{ nombre: "Pájaro pausa 2\"", musculo: "Hombro posterior", pesoKg: 7, img: "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif", instrucciones: "Pausa arriba 2\". 3-5 reps." },{ nombre: "Face pull mancuerna", musculo: "Hombro posterior", pesoKg: 9.5, img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgv8jgjhBU6du4GuDlHKuSLMV5t6HNH_4w_e1nljS1Zdzqb8uKz6mg4RMyHXN6bHS57yFTtVWi3Q9O0dm6T0j5fhRvUx5CiLLI7Msm1U7rbJDyVC97ao0Sde0rCny7DXcDnE2vGk5qRWm0/s400/remo-menton-mancuernas.gif", instrucciones: "Tira hacia cara. 3-5 reps." }],
         volumen: [{ nombre: "Press banca suelo", musculo: "Pecho", pesoKg: 7, img: "https://api.smartworkout.app/asset/image/567ae9ad-b584-4d53-b400-82b0117a7ce1", instrucciones: "8-12 reps." },{ nombre: "Flexiones normales", musculo: "Pecho", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460", instrucciones: "8-12 reps." },{ nombre: "Pájaro normal", musculo: "Hombro posterior", pesoKg: 7, img: "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif", instrucciones: "8-12 reps." },{ nombre: "Remo al cuello", musculo: "Hombro posterior", pesoKg: 7, img: "https://fitcron.com/wp-content/uploads/2021/04/04371301-Dumbbell-Upright-Row_shoulder_720.gif", instrucciones: "8-12 reps." }],
-        definicion: [{ nombre: "Press banca inclinado ligero", musculo: "Pecho", pesoKg: 4, img: "https://api.smartworkout.app/asset/image/375218cb-b06e-483b-bf5e-6db89512cc6b", instrucciones: "15-20 reps." },{ nombre: "Flexiones normales", musculo: "Pecho", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460", instrucciones: "15-20 reps." },{ nombre: "Pájaro ligero", musculo: "Hombro posterior", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif", instrucciones: "15-20 reps." },{ nombre: "Elevación lateral tumbado", musculo: "Hombro posterior", pesoKg: 4, img: "https://gymvisual.com/animated-gifs/1909-dumbbell-side-lying-one-hand-raise.html", instrucciones: "15-20 reps." }]
+        definicion: [{ nombre: "Press banca inclinado ligero", musculo: "Pecho", pesoKg: 4, img: "https://api.smartworkout.app/asset/image/375218cb-b06e-483b-bf5e-6db89512cc6b", instrucciones: "1. Coloca una silla inclinada.\n2. Realiza press de pecho con 4 kg por mancuerna.\n3. Realiza 15-20 repeticiones.\n4. Concéntrate en el pecho superior.\n5. Descansa poco." },{ nombre: "Flexiones normales", musculo: "Pecho", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460", instrucciones: "1. Plancha alta.\n2. Realiza flexiones normales.\n3. 15-20 repeticiones.\n4. Ritmo alto.\n5. Si puedes, hazlas más rápidas." },{ nombre: "Pájaro ligero", musculo: "Hombro posterior", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif", instrucciones: "1. Inclínate con el pecho en los muslos.\n2. Realiza el pájaro con 4 kg.\n3. 15-20 repeticiones.\n4. Aprieta las escápulas.\n5. Controla el movimiento." },{ nombre: "Elevación lateral tumbado", musculo: "Hombro posterior", pesoKg: 4, img: "https://gymvisual.com/animated-gifs/1909-dumbbell-side-lying-one-hand-raise.html", instrucciones: "1. Tumbado de lado en el suelo.\n2. Eleva la mancuerna con el brazo superior.\n3. Realiza 15-20 repeticiones por lado.\n4. Controla el movimiento.\n5. Aísla el hombro posterior." }]
     },
     sabado: {
         fuerza: [{ nombre: "Sentadilla búlgara pausa", musculo: "Pierna", pesoKg: 9.5, img: "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649", instrucciones: "3-5 reps." },{ nombre: "Peso muerto a una pierna", musculo: "Pierna", pesoKg: 9.5, img: "https://fitcron.com/wp-content/uploads/2021/04/17571301-Dumbbell-Single-Leg-Deadlift_Hips_720.gif", instrucciones: "3-5 reps." },{ nombre: "Fondos paralelas", musculo: "Tríceps", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030", instrucciones: "Paralelas torre. 3-5 reps." },{ nombre: "Press francés unilateral pausa", musculo: "Tríceps", pesoKg: 9.5, img: "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif", instrucciones: "3-5 reps." }],
         volumen: [{ nombre: "Sentadilla común", musculo: "Pierna", pesoKg: 7, img: "https://fitcron.com/wp-content/uploads/2021/04/15551301-Dumbbell-Squat_Thighs_720.gif", instrucciones: "8-12 reps." },{ nombre: "Peso muerto rumano", musculo: "Pierna", pesoKg: 7, img: "https://fitcron.com/wp-content/uploads/2021/04/14591301-Dumbbell-Romanian-Deadlift_Hips_720.gif", instrucciones: "8-12 reps." },{ nombre: "Fondos banco", musculo: "Tríceps", pesoKg: 0, img: "https://api.smartworkout.app/asset/image/14fff202-7bb2-4e35-af03-39b9a58417d2", instrucciones: "8-12 reps." },{ nombre: "Press francés normal", musculo: "Tríceps", pesoKg: 7, img: "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif", instrucciones: "8-12 reps." }],
-        definicion: [{ nombre: "Sentadilla sumo", musculo: "Pierna", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/03711301-Dumbbell-Plyo-Squat_thighs_720.gif", instrucciones: "15-20 reps." },{ nombre: "Peso muerto piernas rectas", musculo: "Pierna", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/04321301-Dumbbell-Stiff-Leg-Deadlift_Waist_720.gif", instrucciones: "15-20 reps." },{ nombre: "Extensión tríceps suelo", musculo: "Tríceps", pesoKg: 0, img: "https://gymvisual.com/img/p/1/0/9/2/5/10925.gif", instrucciones: "15-20 reps." },{ nombre: "Press francés pies juntos", musculo: "Tríceps", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif", instrucciones: "Inestable. 15-20 reps." }]
+        definicion: [{ nombre: "Sentadilla sumo", musculo: "Pierna", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/03711301-Dumbbell-Plyo-Squat_thighs_720.gif", instrucciones: "1. Abre bien las piernas.\n2. Sujeta una mancuerna con ambas manos.\n3. Baja manteniendo la espalda recta.\n4. Realiza 15-20 repeticiones.\n5. Trabaja aductores." },{ nombre: "Peso muerto piernas rectas", musculo: "Pierna", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/04321301-Dumbbell-Stiff-Leg-Deadlift_Waist_720.gif", instrucciones: "1. Piernas casi rectas.\n2. Peso mínimo.\n3. Baja hasta estiramiento.\n4. Realiza 15-20 repeticiones.\n5. Controla la espalda." },{ nombre: "Extensión tríceps suelo", musculo: "Tríceps", pesoKg: 0, img: "https://gymvisual.com/img/p/1/0/9/2/5/10925.gif", instrucciones: "1. Tumbado boca arriba.\n2. Manos en el suelo a los lados.\n3. Extiende los brazos.\n4. Realiza 15-20 repeticiones.\n5. Peso corporal." },{ nombre: "Press francés pies juntos", musculo: "Tríceps", pesoKg: 4, img: "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif", instrucciones: "1. De pie, pies juntos.\n2. Mancuerna con dos manos tras cabeza.\n3. Extiende brazos.\n4. Realiza 15-20 repeticiones.\n5. Inestable, activa el core." }]
     }
 };
 
@@ -311,6 +313,7 @@ function cerrarModalDiscos() { document.querySelectorAll('#modalDiscos, #modalDi
 let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
 let pesosRegistrados = JSON.parse(localStorage.getItem('nico_pesos')) || [];
 let diasFumados = JSON.parse(localStorage.getItem('nico_dias_fumados')) || [];
+let diasCompletados = JSON.parse(localStorage.getItem('diasCompletados')) || []; // fechas YYYY-MM-DD
 let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
 let totalChecksCount = Object.keys(checks).length;
 let semanasCompletadas = JSON.parse(localStorage.getItem('semanasCompletadas')) || [];
@@ -318,6 +321,7 @@ let primeraFechaUso = localStorage.getItem('primeraFechaUso') ? new Date(localSt
 if (!localStorage.getItem('primeraFechaUso')) localStorage.setItem('primeraFechaUso', primeraFechaUso.toISOString());
 if (pesosRegistrados.length === 0) { pesosRegistrados.push({ valor: 84, fecha: new Date().toLocaleDateString('es-ES') }); localStorage.setItem('nico_pesos', JSON.stringify(pesosRegistrados)); }
 function guardarDatosFumados() { localStorage.setItem('nico_dias_fumados', JSON.stringify(diasFumados)); }
+function guardarDiasCompletados() { localStorage.setItem('diasCompletados', JSON.stringify(diasCompletados)); }
 
 // ==================== RENDERIZADO PRINCIPAL ====================
 function renderizarRutinas() {
@@ -337,28 +341,100 @@ function renderizarRutinas() {
     }
 }
 function marcarEjercicio(id) { if (checks[id]) return; checks[id] = true; localStorage.setItem('nico_checks', JSON.stringify(checks)); totalChecksCount = Object.keys(checks).length; renderizarRutinas(); if (navigator.vibrate) navigator.vibrate(50); const dia = id.split('-')[0]; iniciarDescanso(45); actualizarLogros(); }
-function completarDia(dia) { const ejercicios = document.querySelectorAll(`#lista-${dia} .check-box`); const todos = Array.from(ejercicios).every(cb => cb.checked === true); if (!todos && ejercicios.length > 0) { const pendientes = ejercicios.length - Array.from(ejercicios).filter(cb => cb.checked).length; mostrarToast(`❌ Te faltan ${pendientes} ejercicio${pendientes !== 1 ? 's' : ''}`); return; } const semanaKey = getSemanaKey(); const key = `completado_${dia}_${semanaKey}`; if (localStorage.getItem(key)) { mostrarToast("⚠️ Ya completaste este día esta semana"); return; } localStorage.setItem(key, 'true'); const semanaCompletada = `${semanaKey}_${dia}`; if (!semanasCompletadas.includes(semanaCompletada)) { semanasCompletadas.push(semanaCompletada); localStorage.setItem('semanasCompletadas', JSON.stringify(semanasCompletadas)); } actualizarUI(); if (navigator.vibrate) navigator.vibrate([200, 100, 200]); const config = getConfigCiclo(); canvasConfetti({ particleCount: 200, spread: 100, colors: [config.color, '#fff'] }); mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`); actualizarLogros(); }
+function completarDia(dia) { 
+    const ejercicios = document.querySelectorAll(`#lista-${dia} .check-box`); 
+    const todos = Array.from(ejercicios).every(cb => cb.checked === true); 
+    if (!todos && ejercicios.length > 0) { 
+        const pendientes = ejercicios.length - Array.from(ejercicios).filter(cb => cb.checked).length; 
+        mostrarToast(`❌ Te faltan ${pendientes} ejercicio${pendientes !== 1 ? 's' : ''}`); 
+        return; 
+    } 
+    const hoy = getHoyStr();
+    if (!diasCompletados.includes(hoy)) {
+        diasCompletados.push(hoy);
+        guardarDiasCompletados();
+    }
+    const semanaKey = getSemanaKey(); 
+    const key = `completado_${dia}_${semanaKey}`; 
+    if (localStorage.getItem(key)) { 
+        mostrarToast("⚠️ Ya completaste este día esta semana"); 
+        return; 
+    } 
+    localStorage.setItem(key, 'true'); 
+    const semanaCompletada = `${semanaKey}_${dia}`; 
+    if (!semanasCompletadas.includes(semanaCompletada)) { 
+        semanasCompletadas.push(semanaCompletada); 
+        localStorage.setItem('semanasCompletadas', JSON.stringify(semanasCompletadas)); 
+    } 
+    actualizarUI(); 
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200]); 
+    const config = getConfigCiclo(); 
+    canvasConfetti({ particleCount: 200, spread: 100, colors: [config.color, '#fff'] }); 
+    mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`); 
+    actualizarLogros(); 
+}
 
 // ==================== CALENDARIOS ====================
 let mesGym = new Date().getMonth(), añoGym = new Date().getFullYear(), mesSmoke = new Date().getMonth(), añoSmoke = new Date().getFullYear();
 function getHoyStr() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function getSemanaKey() { const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() + 4 - (d.getDay() || 7)); return `${d.getFullYear()}-W${Math.ceil((((d - new Date(d.getFullYear(),0,1))/86400000)+1)/7)}`; }
 function renderizarCalendarios() { renderCalGym(); renderCalSmoke(); }
-function renderCalGym() { const container = document.getElementById('cal-gym'); if (!container) return; container.innerHTML = ''; const nombreMes = new Date(añoGym, mesGym, 1).toLocaleString('es-ES', { month: 'long' }).toUpperCase(); document.getElementById('cal-month-gym').innerText = `${nombreMes} ${añoGym}`; ['L', 'M', 'X', 'J', 'V', 'S', 'D'].forEach(d => { const div = document.createElement('div'); div.className = 'cal-day-label'; div.innerText = d; container.appendChild(div); }); const primerDia = new Date(añoGym, mesGym, 1).getDay(); const offset = primerDia === 0 ? 6 : primerDia - 1; for (let i = 0; i < offset; i++) container.appendChild(document.createElement('div')); const diasMes = new Date(añoGym, mesGym + 1, 0).getDate(); const hoy = getHoyStr(); const hoyDate = new Date(); hoyDate.setHours(23,59,59,999); for (let d = 1; d <= diasMes; d++) { const fecha = new Date(añoGym, mesGym, d); const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`; const semana = getNumeroSemana(fecha); const tipo = getTipoCicloPorSemana(semana); const cicloColor = getCicloColor(tipo); const cell = document.createElement('div'); cell.className = 'cal-cell'; cell.innerText = d; cell.style.borderColor = cicloColor; if (fecha.getDay() === 0) { cell.style.background = '#8b5cf6'; cell.style.borderColor = '#8b5cf6'; } if (fStr === hoy) cell.classList.add('today'); if (fecha > hoyDate) { cell.classList.add('future'); cell.style.borderColor = '#444'; } else { cell.onclick = (function(date, cycleType) { return function() { mostrarPopupPorFecha(date, cycleType); }; })(fecha, tipo); } container.appendChild(cell); } }
+function renderCalGym() { 
+    const container = document.getElementById('cal-gym'); 
+    if (!container) return; 
+    container.innerHTML = ''; 
+    const nombreMes = new Date(añoGym, mesGym, 1).toLocaleString('es-ES', { month: 'long' }).toUpperCase(); 
+    document.getElementById('cal-month-gym').innerText = `${nombreMes} ${añoGym}`; 
+    ['L', 'M', 'X', 'J', 'V', 'S', 'D'].forEach(d => { const div = document.createElement('div'); div.className = 'cal-day-label'; div.innerText = d; container.appendChild(div); }); 
+    const primerDia = new Date(añoGym, mesGym, 1).getDay(); 
+    const offset = primerDia === 0 ? 6 : primerDia - 1; 
+    for (let i = 0; i < offset; i++) container.appendChild(document.createElement('div')); 
+    const diasMes = new Date(añoGym, mesGym + 1, 0).getDate(); 
+    const hoy = getHoyStr(); 
+    const hoyDate = new Date(); 
+    hoyDate.setHours(23,59,59,999); 
+    for (let d = 1; d <= diasMes; d++) { 
+        const fecha = new Date(añoGym, mesGym, d); 
+        const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`; 
+        const semana = getNumeroSemana(fecha); 
+        const tipo = getTipoCicloPorSemana(semana); 
+        const cicloColor = getCicloColor(tipo); 
+        const cell = document.createElement('div'); 
+        cell.className = 'cal-cell'; 
+        cell.innerText = d; 
+        cell.style.borderColor = cicloColor; 
+        if (fecha.getDay() === 0) { 
+            cell.style.background = '#8b5cf6'; 
+            cell.style.borderColor = '#8b5cf6'; 
+        } 
+        if (diasCompletados.includes(fStr)) { 
+            cell.classList.add('completado'); 
+            cell.style.background = '#32d74b'; 
+            cell.style.color = '#000'; 
+        } 
+        if (fStr === hoy) cell.classList.add('today'); 
+        if (fecha > hoyDate) { 
+            cell.classList.add('future'); 
+            cell.style.borderColor = '#444'; 
+        } else { 
+            cell.onclick = (function(date, cycleType) { return function() { mostrarPopupPorFecha(date, cycleType); }; })(fecha, tipo); 
+        } 
+        container.appendChild(cell); 
+    } 
+}
 function renderCalSmoke() { const container = document.getElementById('cal-smoke'); if (!container) return; container.innerHTML = ''; const nombreMes = new Date(añoSmoke, mesSmoke, 1).toLocaleString('es-ES', { month: 'long' }).toUpperCase(); document.getElementById('cal-month-smoke').innerText = `${nombreMes} ${añoSmoke}`; ['L', 'M', 'X', 'J', 'V', 'S', 'D'].forEach(d => { const div = document.createElement('div'); div.className = 'cal-day-label'; div.innerText = d; container.appendChild(div); }); const primerDia = new Date(añoSmoke, mesSmoke, 1).getDay(); const offset = primerDia === 0 ? 6 : primerDia - 1; for (let i = 0; i < offset; i++) container.appendChild(document.createElement('div')); const diasMes = new Date(añoSmoke, mesSmoke + 1, 0).getDate(); const hoy = getHoyStr(); const hoyDate = new Date(); hoyDate.setHours(23,59,59,999); for (let d = 1; d <= diasMes; d++) { const fecha = new Date(añoSmoke, mesSmoke, d); const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`; const cell = document.createElement('div'); cell.className = 'cal-cell'; cell.innerText = d; if (fecha > hoyDate) cell.classList.add('future'); else cell.onclick = () => toggleDiaFumado(fStr, cell); if (fStr === hoy) cell.classList.add('today'); if (diasFumados.includes(fStr)) { cell.classList.add('fumado'); cell.style.background = '#ff3b30'; } else { cell.classList.add('nosmoke'); cell.style.background = '#007aff'; } container.appendChild(cell); } }
 function mostrarPopupPorFecha(fecha, tipoCiclo) { 
     const diaSemana = fecha.getDay(); 
     if (diaSemana === 0) { mostrarToast("📅 Domingo - día de descanso activo"); return; } 
     const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado' }; 
     const diaKey = diasMap[diaSemana]; 
-    // Convertir tipoCiclo a la clave del objeto (minúscula y sin tilde)
     let cicloKey = tipoCiclo.toLowerCase();
-    if (cicloKey === 'definición') cicloKey = 'definicion';  // clave correcta en el objeto
+    if (cicloKey === 'definición') cicloKey = 'definicion'; 
     if (!ejerciciosPorDiaYCiclo[diaKey]) { mostrarToast("Error: No hay ejercicios para este día"); return; }
     if (!ejerciciosPorDiaYCiclo[diaKey][cicloKey]) { mostrarToast(`No hay ejercicios para ${diaKey} en ciclo ${tipoCiclo}`); return; }
     const ejercicios = ejerciciosPorDiaYCiclo[diaKey][cicloKey]; 
     if (!ejercicios || ejercicios.length === 0) { mostrarToast("No hay ejercicios para este día"); return; } 
-    const modalColor = tipoCiclo === 'FUERZA' ? '#ff3b30' : (tipoCiclo === 'VOLUMEN' ? '#ff8c00' : '#ffd60a');
+    const modalColor = tipoCiclo === 'FUERZA' ? '#ff3b30' : (tipoCiclo === 'VOLUMEN' ? '#ff8c00' : '#e6c8a0');
     let html = `<div class="modal-overlay-ejercicios" id="modalOverlayEjercicios"></div><div class="modal-container-ejercicios" id="modalContainerEjercicios" style="border-color: ${modalColor};"><h3 style="color: ${modalColor};">📅 ${fecha.toLocaleDateString('es-ES')}<br>${tipoCiclo} · ${diaKey.toUpperCase()}</h3><ul>`; 
     ejercicios.forEach(ex => { 
         html += `<li><strong style="color: ${modalColor};">${ex.nombre}</strong><br>📊 ${tipoCiclo === 'FUERZA' ? '4-5x3-5' : (tipoCiclo === 'VOLUMEN' ? '3-4x8-12' : '3-4x15-20')}<br>⚖️ ${ex.pesoKg === 0 ? 'Peso corporal' : ex.pesoKg + ' kg por mancuerna'}</li>`; 
@@ -442,7 +518,7 @@ function mostrarToast(msg) { const toast = document.createElement('div'); toast.
 function mostrarReset() { document.getElementById('resetModal').classList.add('show'); }
 function cerrarReset() { document.getElementById('resetModal').classList.remove('show'); }
 function borrarTodo() { const input = document.getElementById('confirmReset'); if (input.value === 'BORRAR') { localStorage.clear(); indexedDB.deleteDatabase('FotosProgresoDB'); location.reload(); } else { mostrarToast('❌ Debes escribir BORRAR'); } }
-function exportarDatos(conEmail) { const datos = { pesos: pesosRegistrados, checks: checks, fumados: diasFumados, logros: logros }; const blob = new Blob([JSON.stringify(datos)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `nicogym_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(a.href); if (conEmail) setTimeout(() => window.location.href = 'mailto:?subject=Backup NICO GYM', 500); mostrarToast('✅ Backup creado'); }
+function exportarDatos(conEmail) { const datos = { pesos: pesosRegistrados, checks: checks, fumados: diasFumados, logros: logros, diasCompletados: diasCompletados, semanasCompletadas: semanasCompletadas }; const blob = new Blob([JSON.stringify(datos)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `nicogym_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(a.href); if (conEmail) setTimeout(() => window.location.href = 'mailto:?subject=Backup NICO GYM', 500); mostrarToast('✅ Backup creado'); }
 
 window.onload = () => { 
     diasFumados = JSON.parse(localStorage.getItem('nico_dias_fumados')) || []; 
@@ -450,6 +526,7 @@ window.onload = () => {
     checks = JSON.parse(localStorage.getItem('nico_checks')) || {}; 
     logros = JSON.parse(localStorage.getItem('nico_logros')) || []; 
     semanasCompletadas = JSON.parse(localStorage.getItem('semanasCompletadas')) || [];
+    diasCompletados = JSON.parse(localStorage.getItem('diasCompletados')) || [];
     totalChecksCount = Object.keys(checks).length;
     actualizarUI(); 
     mostrarHistorialPeso(); 
