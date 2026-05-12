@@ -109,7 +109,7 @@ header{background:#000;border-bottom:2px solid var(--ciclo-color,#ff3b30);displa
 #listaDiasDB{max-height:180px;overflow-y:auto}
 .dia-item{display:flex;justify-content:space-between;align-items:center;background:#0a0a0a;padding:8px;border-radius:10px;margin-bottom:6px}
 .toast-msg{position:fixed;bottom:80px;left:20px;right:20px;background:var(--ciclo-color,#ff3b30);color:#000;padding:10px;border-radius:12px;text-align:center;font-weight:bold;z-index:2000;animation:fadeOut 3s forwards}
-@keyframes fadeOut{0%{opacity:1}70%{opacity:1}100%{opacity:0;visibility:hidden}}
+@keyframes fadeOut{0%{opacity:1}80%{opacity:1}100%{opacity:0;visibility:hidden}}
 .reset-modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a1a;border:2px solid var(--ciclo-color,#ff3b30);border-radius:20px;padding:20px;z-index:3000;width:90%;max-width:300px;text-align:center}
 .reset-modal.show{display:block}
 #descanso-box{position:fixed;inset:0;background:#000f;z-index:4000;display:none;align-items:center;justify-content:center}
@@ -236,7 +236,6 @@ header{background:#000;border-bottom:2px solid var(--ciclo-color,#ff3b30);displa
 
 <div id="logros" class="seccion"><h2>🏆 LOGROS</h2><div id="logrosContainer" class="logros-grid"></div></div>
 
-<!-- RUTINAS DIARIAS -->
 <div id="lunes" class="seccion"><h2>💪 LUNES: ESPALDA / BÍCEPS</h2><div id="badge-lunes" class="exercise-badge" style="display:inline-block; margin-bottom:8px;"></div><div id="lista-lunes"></div><div id="estiramientos-lunes"></div><button class="btn-done" onclick="completarDia('lunes')">✅ COMPLETAR ENTRENO</button></div>
 <div id="martes" class="seccion"><h2>🏋️ MARTES: PECHO / HOMBRO</h2><div id="badge-martes" class="exercise-badge" style="display:inline-block; margin-bottom:8px;"></div><div id="lista-martes"></div><div id="estiramientos-martes"></div><button class="btn-done" onclick="completarDia('martes')">✅ COMPLETAR ENTRENO</button></div>
 <div id="miercoles" class="seccion"><h2>🦵 MIÉRCOLES: PIERNA / TRÍCEPS</h2><div id="badge-miercoles" class="exercise-badge" style="display:inline-block; margin-bottom:8px;"></div><div id="lista-miercoles"></div><div id="estiramientos-miercoles"></div><button class="btn-done" onclick="completarDia('miercoles')">✅ COMPLETAR ENTRENO</button></div>
@@ -352,10 +351,34 @@ function getTipoCiclo() { return getTipoCicloPorSemana(new Date()); }
 function getCicloColor(tipo) { if (tipo === 'FUERZA') return '#ff3b30'; if (tipo === 'DEFINICIÓN') return '#e6c8a0'; if (tipo === 'VOLUMEN') return '#ff8c00'; return '#20c4b8'; }
 function getConfigCiclo() { const tipo = getTipoCiclo(); let emoji = '', color = ''; if (tipo === 'FUERZA') { emoji = '🔥'; color = '#ff3b30'; } else if (tipo === 'DEFINICIÓN') { emoji = '✨'; color = '#e6c8a0'; } else if (tipo === 'VOLUMEN') { emoji = '💪'; color = '#ff8c00'; } else { emoji = '⚡'; color = '#20c4b8'; } return { nombre: `${tipo === 'FUERZA' ? '🔴' : (tipo === 'DEFINICIÓN' ? '🟡' : (tipo === 'VOLUMEN' ? '🟠' : '🔵'))} ${tipo}`, emoji, color, series: tipo === 'FUERZA' ? '4-5' : (tipo === 'VOLUMEN' ? '3-4' : '3-4'), reps: tipo === 'FUERZA' ? '3-5' : (tipo === 'DEFINICIÓN' ? '15-20' : (tipo === 'VOLUMEN' ? '8-12' : '15-20')), peso: tipo === 'FUERZA' ? '9.5kg' : (tipo === 'DEFINICIÓN' ? '2.5kg' : (tipo === 'VOLUMEN' ? '3kg' : '5.5kg')), objetivo: tipo === 'FUERZA' ? 'FUERZA MÁXIMA' : (tipo === 'DEFINICIÓN' ? 'QUEMAR GRASA' : (tipo === 'VOLUMEN' ? 'HIPERTROFIA' : 'RESISTENCIA')) }; }
 
-// ==================== REINICIO SEMANAL ====================
+// ==================== REINICIO SEMANAL (SOLUCIÓN CHECKBOX) ====================
 let ultimaSemanaGlobal = localStorage.getItem('ultimaSemanaGlobal');
 let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
-function reiniciarChecksSiNuevaSemana() { const semanaActual = getWeekNumber(new Date()); if (ultimaSemanaGlobal && ultimaSemanaGlobal !== semanaActual.toString()) { const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado']; let cambios = false; dias.forEach(dia => { for (let i = 0; i < 6; i++) { const id = `${dia}-${i}`; if (checks[id]) { delete checks[id]; cambios = true; } } }); if (cambios) { localStorage.setItem('nico_checks', JSON.stringify(checks)); mostrarToast("🔄 Nueva semana: checkboxes reiniciados"); } } ultimaSemanaGlobal = semanaActual.toString(); localStorage.setItem('ultimaSemanaGlobal', ultimaSemanaGlobal); }
+
+function reiniciarChecksSiNuevaSemana() {
+    const semanaActual = getWeekNumber(new Date());
+    if (ultimaSemanaGlobal && ultimaSemanaGlobal !== semanaActual.toString()) {
+        // Limpiar todos los checkboxes de todos los días (lunes a sábado)
+        const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+        let cambios = false;
+        dias.forEach(dia => {
+            // Hay 4 ejercicios por día
+            for (let i = 0; i < 4; i++) {
+                const id = `${dia}-${i}`;
+                if (checks[id]) {
+                    delete checks[id];
+                    cambios = true;
+                }
+            }
+        });
+        if (cambios) {
+            localStorage.setItem('nico_checks', JSON.stringify(checks));
+            mostrarToast("🔄 Nueva semana: checkboxes reiniciados");
+        }
+    }
+    ultimaSemanaGlobal = semanaActual.toString();
+    localStorage.setItem('ultimaSemanaGlobal', ultimaSemanaGlobal);
+}
 
 // ==================== POPUP BIENVENIDA ====================
 let ultimaSemanaMostrada = localStorage.getItem('ultimaSemanaMostrada');
