@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        /* ========== ESTILOS COMPACTOS Y RESPONSIVE ========== */
+        /* ========== ESTILOS (MANTENIDOS) ========== */
         *{margin:0;padding:0;box-sizing:border-box}
         body{background:radial-gradient(circle at 20% 30%, #0a0a12, #030308);color:#eef5ff;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;padding:0.7rem;padding-bottom:70px}
         .seccion{display:none;animation:fadeSlideIn .3s ease}
@@ -29,6 +29,8 @@
         .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:6px}
         .cal-cell{background:#0a0a1a;border-radius:6px;text-align:center;padding:4px 0;font-size:0.65rem;cursor:pointer;border:1.5px solid #2a2f44}
         .cal-cell.completado{background:#2e7d32;color:#fff}
+        .cal-cell.tabata{background:#a0522d;color:#fff;border-color:#a0522d}
+        .cal-cell.tabata.completado{background:#d2691e;color:#fff}
         .cal-cell.today{border:2px solid white}
         .modal-disk{position:fixed;top:0;left:0;width:100%;height:100%;background:#000000cc;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:2000}
         .disk-panel{background:#0a0c1ae6;border-radius:1.5rem;padding:1rem;max-width:90%;width:auto;min-width:260px;border:2px solid var(--ciclo-color);text-align:center;max-height:80vh;overflow-y:auto}
@@ -40,7 +42,6 @@
         .logo{font-size:1.2rem;font-weight:bold;background:linear-gradient(135deg,#fff,var(--ciclo-color));-webkit-background-clip:text;background-clip:text;color:transparent}
         .btn-ciclo-color{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;transition:0.1s}
         .btn-ciclo-color:active{transform:scale(0.95)}
-        .btn-ciclo-color:hover{opacity:0.8}
         .header-right{display:flex;gap:5px;align-items:center}
         .reloj{font-family:monospace;background:#1a1a2a;padding:2px 6px;border-radius:20px;border:1px solid var(--ciclo-color);font-size:0.7rem}
         #menu-lat{position:fixed;left:-280px;top:0;width:280px;height:100%;background:#0a0c1a;transition:0.3s;z-index:1000;border-right:2px solid var(--ciclo-color);overflow-y:auto}
@@ -116,7 +117,6 @@
 
 <div id="home" class="seccion active">
     <div id="cycleCard" class="neon-card" style="text-align:center;"></div>
-    <!-- Mensaje de día TABATA -->
     <div id="tabataMensaje" class="neon-card" style="text-align:center; background:#a0522d20; border-color:#a0522d; display:none;">
         <div style="font-size:1.5rem;">🔥 ¡HOY ES DÍA TABATA! 🔥</div>
         <button id="btnTabataHome" style="background:#a0522d; border:none; padding:8px 16px; border-radius:30px; color:white; margin-top:8px;">▶️ INICIAR TABATA</button>
@@ -225,19 +225,20 @@ const discosPorPeso = {
     9.5: { izq: ["2","1.5","1.25"], der: ["2","1.5","1.25"] }
 };
 
-function getSemanaGlobal() {
-    const fecha = new Date();
-    const day = fecha.getDay();
-    const diffToMonday = (day === 0 ? 6 : day - 1);
-    const monday = new Date(fecha);
-    monday.setDate(fecha.getDate() - diffToMonday);
-    monday.setHours(0,0,0,0);
-    const refMonday = new Date(2026, 0, 5);
-    const diffDays = Math.floor((monday - refMonday) / (1000 * 60 * 60 * 24));
-    return Math.floor(diffDays / 7) + 1;
+// Cálculo de semana (lunes como inicio) usando una fecha de referencia
+function getNumeroSemana(fecha) {
+    const dia = fecha.getDay();
+    const diffLunes = (dia === 0 ? 6 : dia - 1);
+    const lunes = new Date(fecha);
+    lunes.setDate(fecha.getDate() - diffLunes);
+    lunes.setHours(0,0,0,0);
+    const refLunes = new Date(2026, 0, 5); // lunes 5 de enero de 2026
+    const diffDias = Math.floor((lunes - refLunes) / (1000 * 60 * 60 * 24));
+    return Math.floor(diffDias / 7) + 1;
 }
+
 function getCicloPorSemana() {
-    const semana = getSemanaGlobal();
+    const semana = getNumeroSemana(new Date());
     const resto = (semana - 1) % 4;
     if (resto === 0) return 'FUERZA';
     if (resto === 1) return 'DEFINICIÓN';
@@ -245,14 +246,7 @@ function getCicloPorSemana() {
     return 'RESISTENCIA';
 }
 function getCicloPorFecha(fecha) {
-    const day = fecha.getDay();
-    const diffToMonday = (day === 0 ? 6 : day - 1);
-    const monday = new Date(fecha);
-    monday.setDate(fecha.getDate() - diffToMonday);
-    monday.setHours(0,0,0,0);
-    const refMonday = new Date(2026, 0, 5);
-    const diffDays = Math.floor((monday - refMonday) / (1000 * 60 * 60 * 24));
-    const semana = Math.floor(diffDays / 7) + 1;
+    const semana = getNumeroSemana(fecha);
     const resto = (semana - 1) % 4;
     if (resto === 0) return 'FUERZA';
     if (resto === 1) return 'DEFINICIÓN';
@@ -425,7 +419,7 @@ const URL_MUSICA_TABATA = "https://music.amazon.es/albums/B0F8GR4M77?trackAsin=B
 const URL_MUSICA_TABATA_2 = "https://music.amazon.es/albums/B08GRNQJ65?trackAsin=B08GRY3GWS";
 
 function getDiaTabataSemana() {
-    const semana = getSemanaGlobal();
+    const semana = getNumeroSemana(new Date());
     const clave = `tabata_dia_${semana}`;
     let diaTabata = localStorage.getItem(clave);
     if (!diaTabata) {
@@ -436,16 +430,29 @@ function getDiaTabataSemana() {
     }
     return diaTabata;
 }
-function esHoyTabata() {
-    const hoy = new Date();
-    const diasMap = {1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado'};
-    const hoyKey = diasMap[hoy.getDay()];
-    if (!hoyKey) return false;
-    const diaTabata = getDiaTabataSemana();
-    return hoyKey === diaTabata;
+// Para cualquier fecha, obtener el día TABATA de su semana
+function getDiaTabataPorFecha(fecha) {
+    const semana = getNumeroSemana(fecha);
+    const clave = `tabata_dia_${semana}`;
+    let diaTabata = localStorage.getItem(clave);
+    if (!diaTabata) {
+        const diasSemana = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+        const aleatorio = Math.floor(Math.random() * 6);
+        diaTabata = diasSemana[aleatorio];
+        localStorage.setItem(clave, diaTabata);
+    }
+    return diaTabata;
 }
-function getEjerciciosTabataSemana() {
-    const semana = getSemanaGlobal();
+function esFechaTabata(fecha) {
+    const diaSemana = fecha.getDay();
+    const diasMap = {1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado'};
+    const diaKey = diasMap[diaSemana];
+    if (!diaKey) return false;
+    const diaTabata = getDiaTabataPorFecha(fecha);
+    return diaKey === diaTabata;
+}
+function getEjerciciosTabataPorSemana(fecha) {
+    const semana = getNumeroSemana(fecha);
     const clave = `tabata_ejercicios_${semana}`;
     let guardados = localStorage.getItem(clave);
     if (guardados) return JSON.parse(guardados);
@@ -457,6 +464,12 @@ function getEjerciciosTabataSemana() {
     const seleccionados = mezclados.slice(0, 4);
     localStorage.setItem(clave, JSON.stringify(seleccionados));
     return seleccionados;
+}
+function esHoyTabata() {
+    return esFechaTabata(new Date());
+}
+function getEjerciciosTabataSemana() {
+    return getEjerciciosTabataPorSemana(new Date());
 }
 function reproducirMusicaTabata(opcion) {
     if (opcion === 1) window.open(URL_MUSICA_TABATA, '_blank');
@@ -596,7 +609,7 @@ function mostrarMensajeTabata() {
     }
 }
 
-// ==================== RESTO DE FUNCIONALIDADES (calendario, peso, fotos, logros, etc.) ====================
+// ==================== RESTO DE FUNCIONALIDADES (calendario, peso, fotos, etc.) ====================
 let diasEntrenados = JSON.parse(localStorage.getItem('diasEntrenados')) || [];
 let diasNoFumar = JSON.parse(localStorage.getItem('diasNoFumar')) || [];
 let pesos = JSON.parse(localStorage.getItem('pesos')) || [{valor:84, fecha:new Date().toLocaleDateString()}];
@@ -626,6 +639,7 @@ function getHoyStr() { const d = new Date(); return `${d.getFullYear()}-${String
 function esFechaFutura(fecha) { const hoy = new Date(); hoy.setHours(0,0,0,0); return fecha > hoy; }
 
 function mostrarPopupEjercicios(fecha, cicloSemana) {
+    // Popup normal (sin distinción de Tabata). Siempre muestra los ejercicios del ciclo.
     const diaSemana = fecha.getDay();
     if (diaSemana === 0) { mostrarToast("📅 Domingo - descanso"); return; }
     const diasMap = {1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado'};
@@ -673,9 +687,20 @@ function renderCalendarios() {
             cell.className = 'cal-cell';
             cell.innerText = d;
             cell.style.borderColor = cicloColor;
-            if(diasEntrenados.includes(fStr)) cell.classList.add('completado');
-            if(marcasLesion.includes(fStr)) cell.style.background = '#f9a8d4';
-            if(marcasVacaciones.includes(fStr)) cell.style.background = '#a5d8ff';
+            const esTabata = esFechaTabata(fecha);
+            if(esTabata){
+                cell.classList.add('tabata');
+                if(diasEntrenados.includes(fStr)){
+                    cell.classList.add('completado');
+                    cell.style.background = '#d2691e';
+                } else {
+                    cell.style.background = '#a0522d';
+                }
+            } else {
+                if(diasEntrenados.includes(fStr)) cell.classList.add('completado');
+                if(marcasLesion.includes(fStr)) cell.style.background = '#f9a8d4';
+                if(marcasVacaciones.includes(fStr)) cell.style.background = '#a5d8ff';
+            }
             if(fStr === hoyStr) cell.classList.add('today');
             cell.onclick = (function(f, ciclo){ return function(){ mostrarPopupEjercicios(f, ciclo); }; })(fecha, cicloSemana);
             contGym.appendChild(cell);
@@ -831,7 +856,7 @@ function mostrarVistaPreviaCiclos(){
     const diasSemana=['lunes','martes','miercoles','jueves','viernes','sabado']; let html=`<div class="disk-panel" style="max-width:90vw; overflow-x:auto;"><h3 style="color:var(--ciclo-color);">📋 VISTA PREVIA</h3><table class="preview-table"><thead><tr><th>Día</th>`;
     ciclos.forEach(c=>html+=`<th style="color:${SERIES_REPS_CICLO[nombresCiclo[c]].color}">${nombresCiclo[c]}</th>`);
     html+=`</thead><tbody>`;
-    diasSemana.forEach(dia=>{ html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td>`; ciclos.forEach(cicloKey=>{ const ejercs=ejerciciosPorDia[cicloKey][dia]; if(!ejercs){ html+=`<td>-</td>`; return; } html+=`<td><ul style="margin:0; padding-left:1rem;">`; ejercs.forEach(ej=>html+=`<li>${ej}</li>`); html+=`</ul></td>`; }); html+=`</tr>`; });
+    diasSemana.forEach(dia=>{ html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td>`; ciclos.forEach(cicloKey=>{ const ejercs=ejerciciosPorDia[cicloKey][dia]; if(!ejercs){ html+=`<td>-</td>`; return; } html+=`<td><ul style="margin:0; padding-left:1rem;">`; ejercs.forEach(ej=>html+=`<li>${ej}</li>`); html+=`</ul></td>`; }); html+=`<tr>`; });
     html+=`</tbody></table><button onclick="cerrarModalPopup()" style="background:var(--ciclo-color); border:none; padding:6px 12px; border-radius:30px; margin-top:10px;">CERRAR</button></div>`;
     cerrarModalPopup(); const overlay=document.createElement('div'); overlay.className='modal-disk'; overlay.id='modalPopup'; overlay.innerHTML=html; document.body.appendChild(overlay);
 }
