@@ -183,6 +183,7 @@
             <select id="compararDia1" style="flex:1; background:#000; color:#fff; padding:4px; border-radius:8px;"></select>
             <select id="compararDia2" style="flex:1; background:#000; color:#fff; padding:4px; border-radius:8px;"></select>
             <button onclick="compararFotos()" style="background:var(--ciclo-color); border:none; border-radius:12px; padding:4px 10px; color:#000;">COMPARAR</button>
+            <button onclick="recargarComparacion()" style="background:#333; border:none; border-radius:12px; padding:4px 10px; color:#fff;">🔄 Recargar</button>
         </div>
         <div id="comparadorResultado" class="foto-comparador"></div>
     </div>
@@ -192,7 +193,8 @@
     <h3>⚖️ MI PESO</h3>
     <div class="neon-card" style="display:flex; gap:6px; flex-wrap:wrap;">
         <input type="number" id="nuevoPeso" step="0.1" placeholder="Peso en kg" style="flex:2; background:#000; color:#fff; border-radius:12px; padding:5px;">
-        <button onclick="agregarPeso()" style="background:var(--ciclo-color); border:none; border-radius:12px; padding:0 12px;">AÑADIR</button>
+        <input type="date" id="nuevaFechaPeso" value="" style="flex:1; background:#000; color:#fff; border-radius:12px; padding:5px;">
+        <button onclick="agregarPesoConFecha()" style="background:var(--ciclo-color); border:none; border-radius:12px; padding:0 12px;">AÑADIR</button>
     </div>
     <div id="histPeso" style="font-size:0.7rem; max-height:180px; overflow-y:auto;"></div>
 </div>
@@ -265,7 +267,6 @@ function getCicloActual() {
 
 // ==================== SISTEMA DE NIVELES ====================
 function getNivelActual() {
-    // Contar todos los entrenos completados (claves completado_* en localStorage)
     let total = 0;
     for (let key in localStorage) {
         if (key.startsWith('completado_') && localStorage.getItem(key) === 'true') total++;
@@ -295,7 +296,7 @@ function getProgresoNivel() {
     return { actual: total, requeridos: requeridos, porcentaje: Math.min(100, Math.floor((total / requeridos) * 100)) };
 }
 
-// Ejercicios de nivel 2 (reemplazan el primer ejercicio de cada día en FUERZA, DEFINICIÓN, VOLUMEN)
+// Ejercicios de nivel 2
 const ejerciciosNivel2 = {
     fuerza: {
         lunes: ["Dominadas lastradas (peso extra)", "Remo con barra (agarre supino estricto)", "Curl predicador unilateral (con silla)", "Curl araña unilateral (pausa de 2\")"],
@@ -313,7 +314,6 @@ const ejerciciosNivel2 = {
     }
 };
 
-// ==================== EJERCICIOS BASE ====================
 const ejerciciosBase = {
     fuerza: { lunes: ["Dominadas (palmas mirando afuera)", "Remo con barra (agarre supino estricto)", "Curl predicador unilateral (con silla)", "Curl araña unilateral (pausa de 2\")"], martes: ["Press banca con pies elevados", "Flexiones con peso (mochila opcional)", "Press militar de pie con pausa arriba", "Elevaciones laterales unilaterales (con apoyo de pared)"], miercoles: ["Sentadilla búlgara con pausa abajo", "Peso muerto rumano a una pierna", "Fondos en paralelas (torre de dominadas)", "Press francés unilateral con pausa"], jueves: ["Remo a una mano con pausa de 3\"", "Remo con barra agarre cerrado (supino)", "Curl predicador con silla (dos brazos)", "Curl martillo con agarre inverso (palmas abajo)"], viernes: ["Press banca con pies elevados y pausa", "Flexiones con palmada (explosivas)", "Pájaro (fly invertido) con pausa de 2\"", "Remo al cuello con mancuerna"], sabado: ["Sentadilla búlgara con pausa (sab)", "Peso muerto rumano a una pierna (sab)", "Fondos en paralelas (torre)", "Press francés unilateral con pausa sab"] },
     definicion: { lunes: ["Dominadas con banda elástica (o negativas con silla)", "Remo inclinado con barra ligera", "Curl concentrado sentado", "Curl de bíceps con pausa (1\" arriba)"], martes: ["Press banca inclinado (con silla)", "Flexiones normales", "Press militar con mancuerna ligera", "Elevaciones frontales alternas"], miercoles: ["Sentadilla sumo con mancuerna ligera", "Peso muerto con piernas rectas (muy ligero)", "Fondos entre dos sillas", "Press de hombros con pies juntos (inestable)"], jueves: ["Remo unilateral muy ligero", "Remo inclinado con pausa", "Curl concentrado sentado (jueves def)", "Curl araña con mancuerna ligera"], viernes: ["Press banca inclinado muy ligero", "Flexiones normales", "Pájaro muy ligero (fly invertido)", "Elevación lateral tumbado (en el suelo)"], sabado: ["Sentadilla sumo (sab def)", "Peso muerto con piernas rectas (sab def)", "Fondos entre dos sillas", "Press francés con pies juntos"] },
@@ -336,8 +336,7 @@ function getEjerciciosPorDia(dia, cicloKey) {
     return ejercicios || [];
 }
 
-// Mapa de imágenes (simplificado, pero funcional)
-function getImagen(nombre) { return "https://placehold.co/300x200?text=Ejercicio"; }
+function getImagen(nombre) { return "https://placehold.co/300x200?text=Ejercicio"; } // Placeholder, se puede reemplazar
 
 function getCantidadMancuernas(nombre) {
     if (nombre.includes("Press banca") || nombre.includes("Remo a una mano") || nombre.includes("Curl concentrado") || nombre.includes("Elevaciones laterales unilaterales") || nombre.includes("Curl predicador unilateral") || nombre.includes("Curl araña unilateral") || nombre.includes("Press francés unilateral")) return 1;
@@ -681,7 +680,7 @@ function mostrarMensajeTabata() {
     }
 }
 
-// ==================== RESTO DE FUNCIONALIDADES ====================
+// ==================== RESTO DE FUNCIONALIDADES (editables) ====================
 let diasEntrenados = JSON.parse(localStorage.getItem('diasEntrenados')) || [];
 let diasNoFumar = JSON.parse(localStorage.getItem('diasNoFumar')) || [];
 let pesos = JSON.parse(localStorage.getItem('pesos')) || [];
@@ -819,21 +818,40 @@ function changeMonth(dir, tipo) {
     if(tipo==='gym'){ let nueva = new Date(añoGym, mesGym+dir, 1); mesGym = nueva.getMonth(); añoGym = nueva.getFullYear(); renderCalendarios(); }
     else { let nueva = new Date(añoSmoke, mesSmoke+dir, 1); mesSmoke = nueva.getMonth(); añoSmoke = nueva.getFullYear(); renderCalendarios(); }
 }
-function agregarPeso() {
-    const input = document.getElementById('nuevoPeso');
-    const valor = parseFloat(input.value);
+
+// Peso editable
+function agregarPesoConFecha() {
+    const valor = parseFloat(document.getElementById('nuevoPeso').value);
+    const fecha = document.getElementById('nuevaFechaPeso').value;
     if(isNaN(valor)) return;
-    pesos.push({ valor, fecha: new Date().toLocaleDateString() });
-    guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); input.value = ''; actualizarLogros();
+    let fechaStr = fecha ? fecha : new Date().toLocaleDateString();
+    pesos.push({ valor, fecha: fechaStr });
+    guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); actualizarLogros();
+    document.getElementById('nuevoPeso').value = '';
+    document.getElementById('nuevaFechaPeso').value = '';
+}
+function editarPeso(index) {
+    const p = pesos[index];
+    const nuevoValor = prompt("Nuevo peso (kg):", p.valor);
+    if(nuevoValor === null || isNaN(parseFloat(nuevoValor))) return;
+    const nuevaFecha = prompt("Nueva fecha (ej. 15/5/2026):", p.fecha);
+    if(nuevaFecha === null) return;
+    pesos[index] = { valor: parseFloat(nuevoValor), fecha: nuevaFecha };
+    guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); actualizarLogros();
 }
 function mostrarHistorialPeso() {
     const container = document.getElementById('histPeso');
     if(!container) return;
-    container.innerHTML = pesos.slice().reverse().map(p => `<div>${p.fecha}: <strong>${p.valor} kg</strong> <button onclick="eliminarPeso('${p.fecha}')" style="background:none; border:none; color:#ff3b30;">🗑️</button></div>`).join('');
+    container.innerHTML = pesos.slice().reverse().map((p, i) => {
+        const originalIndex = pesos.length - 1 - i;
+        return `<div>${p.fecha}: <strong>${p.valor} kg</strong> 
+        <button onclick="editarPeso(${originalIndex})" style="background:none; border:none; color:cyan; cursor:pointer;">✏️</button>
+        <button onclick="eliminarPeso(${originalIndex})" style="background:none; border:none; color:#ff3b30;">🗑️</button></div>`;
+    }).join('');
 }
-function eliminarPeso(fecha) {
-    pesos = pesos.filter(p=>p.fecha !== fecha);
-    guardarTodo(); actualizarGrafico(); mostrarHistorialPeso();
+function eliminarPeso(index) {
+    pesos.splice(index, 1);
+    guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); actualizarLogros();
 }
 function actualizarGrafico() {
     const canvas = document.getElementById('graficoPeso');
@@ -915,7 +933,6 @@ function completarDia(dia) {
         canvasConfetti({particleCount:150, spread:100}); 
         actualizarLogros(); 
         actualizarUI();
-        // Verificar nivel después de completar el día
         const nuevoNivel = getNivelActual();
         const nivelAnterior = parseInt(localStorage.getItem('nivelActual')) || 1;
         if (nuevoNivel > nivelAnterior) {
@@ -943,7 +960,7 @@ const listaLogros = [
     { id: "check_100", nombre: "🦾 100 ejercicios", desc: "100 entrenos", cond: () => getEntrenosHistoricos() >= 100, icono: "🦾" },
     { id: "check_250", nombre: "🏆 250 ejercicios", desc: "250 entrenos", cond: () => getEntrenosHistoricos() >= 250, icono: "🏆" },
     { id: "check_500", nombre: "👑 500 ejercicios", desc: "500 entrenos", cond: () => getEntrenosHistoricos() >= 500, icono: "👑" },
-    { id: "semana_fuerza", nombre: "🔴 Ciclo FUERZA", desc: "Completar semana FUERZA", cond: () => false, icono: "🔴" }, // placeholder
+    { id: "semana_fuerza", nombre: "🔴 Ciclo FUERZA", desc: "Completar semana FUERZA", cond: () => false, icono: "🔴" },
     { id: "semana_definicion", nombre: "🟡 Ciclo DEFINICIÓN", desc: "Completar semana DEFINICIÓN", cond: () => false, icono: "🟡" },
     { id: "semana_volumen", nombre: "🟠 Ciclo VOLUMEN", desc: "Completar semana VOLUMEN", cond: () => false, icono: "🟠" },
     { id: "semana_resistencia", nombre: "🔵 Ciclo RESISTENCIA", desc: "Completar semana RESISTENCIA", cond: () => false, icono: "🔵" },
@@ -1009,10 +1026,12 @@ function aplicarColorCiclo() {
 let db = null; const DB_NAME='FotosProgresoDB'; const STORE_NAME='diasFotos';
 function abrirDB(){ return new Promise((resolve)=>{ const req=indexedDB.open(DB_NAME,1); req.onupgradeneeded=e=>{ if(!e.target.result.objectStoreNames.contains(STORE_NAME)) e.target.result.createObjectStore(STORE_NAME,{keyPath:'fecha'}); }; req.onsuccess=e=>{ db=e.target.result; resolve(); }; req.onerror=()=>resolve(); }); }
 async function guardarFoto(){ const file=document.getElementById('fotoInput').files[0]; if(!file) return; await abrirDB(); const reader=new FileReader(); reader.onload=async(e)=>{ const fecha=getHoyStr(); const tx=db.transaction(STORE_NAME,'readwrite'); tx.objectStore(STORE_NAME).put({fecha, timestamp:Date.now(), foto:e.target.result}); document.getElementById('mensajeFotos').innerHTML='✅ Foto guardada'; cargarListaDias(); cargarSelectores(); }; reader.readAsDataURL(file); }
-async function cargarListaDias(){ await abrirDB(); const container=document.getElementById('listaDiasDB'); if(!container) return; const tx=db.transaction(STORE_NAME,'readonly'); const items=await new Promise(resolve=>{ const req=tx.objectStore(STORE_NAME).getAll(); req.onsuccess=()=>resolve(req.result); }); items.sort((a,b)=>b.timestamp-a.timestamp); container.innerHTML=items.map(item=>`<div>📅 ${item.fecha} <button onclick="eliminarDia('${item.fecha}')">🗑️</button></div>`).join(''); cargarSelectores(); }
+async function cargarListaDias(){ await abrirDB(); const container=document.getElementById('listaDiasDB'); if(!container) return; const tx=db.transaction(STORE_NAME,'readonly'); const items=await new Promise(resolve=>{ const req=tx.objectStore(STORE_NAME).getAll(); req.onsuccess=()=>resolve(req.result); }); items.sort((a,b)=>b.timestamp-a.timestamp); container.innerHTML=items.map(item=>`<div>📅 ${item.fecha} <button onclick="eliminarDia('${item.fecha}')">🗑️</button> <button onclick="editarFechaFoto('${item.fecha}')">✏️</button></div>`).join(''); cargarSelectores(); }
+async function editarFechaFoto(fechaVieja){ const nuevaFecha=prompt("Nueva fecha (formato AAAA-MM-DD):", fechaVieja); if(!nuevaFecha) return; await abrirDB(); const tx=db.transaction(STORE_NAME,'readwrite'); const store=tx.objectStore(STORE_NAME); const item=await new Promise(resolve=>store.get(fechaVieja).onsuccess=e=>resolve(e.target.result)); if(item){ item.fecha=nuevaFecha; store.put(item); store.delete(fechaVieja); mostrarToast("Fecha actualizada"); cargarListaDias(); cargarSelectores(); } }
 async function cargarSelectores(){ await abrirDB(); const tx=db.transaction(STORE_NAME,'readonly'); const items=await new Promise(resolve=>{ const req=tx.objectStore(STORE_NAME).getAll(); req.onsuccess=()=>resolve(req.result); }); items.sort((a,b)=>b.timestamp-a.timestamp); const opciones=items.map(item=>`<option value="${item.fecha}">${item.fecha}</option>`); document.getElementById('compararDia1').innerHTML='<option value="">Día 1</option>'+opciones.join(''); document.getElementById('compararDia2').innerHTML='<option value="">Día 2</option>'+opciones.join(''); }
 async function eliminarDia(fecha){ await abrirDB(); const tx=db.transaction(STORE_NAME,'readwrite'); tx.objectStore(STORE_NAME).delete(fecha); cargarListaDias(); cargarSelectores(); document.getElementById('comparadorResultado').innerHTML=''; }
-async function compararFotos(){ const f1=document.getElementById('compararDia1').value, f2=document.getElementById('compararDia2').value; if(!f1||!f2) return; await abrirDB(); const tx=db.transaction(STORE_NAME,'readonly'); const store=tx.objectStore(STORE_NAME); const [d1,d2]=await Promise.all([new Promise(resolve=>store.get(f1).onsuccess=e=>resolve(e.target.result)), new Promise(resolve=>store.get(f2).onsuccess=e=>resolve(e.target.result))]); if(!d1||!d2) return; document.getElementById('comparadorResultado').innerHTML=`<div style="flex:1; background:#0a0a0a; border-radius:12px; padding:8px;"><h4>${f1}</h4><img src="${d1.foto}" width="100%"></div><div style="flex:1; background:#0a0a0a; border-radius:12px; padding:8px;"><h4>${f2}</h4><img src="${d2.foto}" width="100%"></div>`; }
+async function compararFotos(){ const f1=document.getElementById('compararDia1').value, f2=document.getElementById('compararDia2').value; if(!f1||!f2) return; await abrirDB(); const tx=db.transaction(STORE_NAME,'readonly'); const store=tx.objectStore(STORE_NAME); const [d1,d2]=await Promise.all([new Promise(resolve=>store.get(f1).onsuccess=e=>resolve(e.target.result)), new Promise(resolve=>store.get(f2).onsuccess=e=>resolve(e.target.result))]); if(!d1||!d2) return; document.getElementById('comparadorResultado').innerHTML=`<div style="flex:1; background:#0a0a0a; border-radius:12px; padding:8px;"><h4>${f1}</h4><img src="${d1.foto}" width="100%" onerror="this.src='https://placehold.co/300x200?text=Imagen+no+disponible'"></div><div style="flex:1; background:#0a0a0a; border-radius:12px; padding:8px;"><h4>${f2}</h4><img src="${d2.foto}" width="100%" onerror="this.src='https://placehold.co/300x200?text=Imagen+no+disponible'"></div>`; }
+function recargarComparacion(){ compararFotos(); }
 function exportarDatos(){ const data={diasEntrenados, diasNoFumar, pesos, logros, marcasLesion, marcasVacaciones, personalizaciones}; const blob=new Blob([JSON.stringify(data)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='nicogym_backup.json'; a.click(); mostrarToast("✅ Backup"); }
 function mostrarReset(){ document.getElementById('resetModal').style.display='flex'; }
 function cerrarReset(){ document.getElementById('resetModal').style.display='none'; }
@@ -1022,7 +1041,7 @@ function mostrarVistaPreviaCiclos(){
     const diasSemana=['lunes','martes','miercoles','jueves','viernes','sabado']; let html=`<div class="disk-panel" style="max-width:90vw; overflow-x:auto;"><h3 style="color:var(--ciclo-color);">📋 VISTA PREVIA</h3><table class="preview-table"><thead><tr><th>Día</th>`;
     ciclos.forEach(c=>html+=`<th style="color:${SERIES_REPS_CICLO[nombresCiclo[c]].color}">${nombresCiclo[c]}</th>`);
     html+=`</thead><tbody>`;
-    diasSemana.forEach(dia=>{ html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td>`; ciclos.forEach(cicloKey=>{ const ejercs=getEjerciciosPorDia(dia, cicloKey); if(!ejercs){ html+=`<td>-</td>`; return; } html+=`<td><ul style="margin:0; padding-left:1rem;">`; ejercs.forEach(ej=>html+=`<li>${ej}</li>`); html+=`</ul></td>`; }); html+=`</tr>`; });
+    diasSemana.forEach(dia=>{ html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td>`; ciclos.forEach(cicloKey=>{ const ejercs=getEjerciciosPorDia(dia, cicloKey); if(!ejercs){ html+=`<td>-</td>`; return; } html+=`<td><ul style="margin:0; padding-left:1rem;">`; ejercs.forEach(ej=>html+=`<li>${ej}</li>`); html+=`</ul></td>`; }); html+=`<tr>`; });
     html+=`</tbody></table><button onclick="cerrarModalPopup()" style="background:var(--ciclo-color); border:none; padding:6px 12px; border-radius:30px; margin-top:10px;">CERRAR</button></div>`;
     cerrarModalPopup(); const overlay=document.createElement('div'); overlay.className='modal-disk'; overlay.id='modalPopup'; overlay.innerHTML=html; document.body.appendChild(overlay);
 }
