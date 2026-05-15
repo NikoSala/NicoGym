@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>NICO GYM - CICLOS REALES (72+30 ejercicios)</title>
+    <title>NICO GYM - CICLOS REALES + TABATA</title>
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2964/2964514.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
+        /* ========== ESTILOS COMPACTOS Y RESPONSIVE ========== */
         *{margin:0;padding:0;box-sizing:border-box}
         body{background:radial-gradient(circle at 20% 30%, #0a0a12, #030308);color:#eef5ff;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;padding:0.7rem;padding-bottom:70px}
         .seccion{display:none;animation:fadeSlideIn .3s ease}
@@ -37,7 +38,9 @@
         .logo-area{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
         .menu-icon{font-size:1.5rem;cursor:pointer;color:var(--ciclo-color)}
         .logo{font-size:1.2rem;font-weight:bold;background:linear-gradient(135deg,#fff,var(--ciclo-color));-webkit-background-clip:text;background-clip:text;color:transparent}
-        .btn-ciclo{background:linear-gradient(145deg,#1e2a3a,#0e1a2a);border:none;color:white;font-weight:bold;padding:0.2rem 0.5rem;border-radius:1.2rem;font-size:0.6rem;cursor:pointer}
+        .btn-ciclo-color{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;transition:0.1s}
+        .btn-ciclo-color:active{transform:scale(0.95)}
+        .btn-ciclo-color:hover{opacity:0.8}
         .header-right{display:flex;gap:5px;align-items:center}
         .reloj{font-family:monospace;background:#1a1a2a;padding:2px 6px;border-radius:20px;border:1px solid var(--ciclo-color);font-size:0.7rem}
         #menu-lat{position:fixed;left:-280px;top:0;width:280px;height:100%;background:#0a0c1a;transition:0.3s;z-index:1000;border-right:2px solid var(--ciclo-color);overflow-y:auto}
@@ -56,10 +59,13 @@
         .foto-comparador{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:12px}
         .edit-icono{font-size:0.8rem;cursor:pointer;margin-left:6px;opacity:0.7;display:inline-block}
         .edit-icono:hover{opacity:1}
+        .tabata-badge{background:#a0522d;color:#fff;padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:10px}
+        .tabata-timer{font-size:2.5rem;font-family:monospace;margin:15px 0}
+        .tabata-ejercicio-img{width:80px;height:80px;object-fit:contain;border-radius:10px;background:#2a2a2a}
         @media (max-width: 600px) {
             body{padding:0.4rem}
             .grid-dias{grid-template-columns:1fr}
-            .btn-ciclo{font-size:0.55rem;padding:0.15rem 0.4rem}
+            .btn-ciclo-color{width:24px;height:24px}
         }
     </style>
 </head>
@@ -91,11 +97,12 @@
     <div class="logo-area">
         <span class="menu-icon" onclick="openMenu()">☰</span>
         <span class="logo">NICO GYM</span>
-        <div style="display:flex; gap:4px; margin-left:6px;">
-            <button class="btn-ciclo" data-ciclo="FUERZA">🔴 FUERZA</button>
-            <button class="btn-ciclo" data-ciclo="DEFINICIÓN">🟡 DEFINICIÓN</button>
-            <button class="btn-ciclo" data-ciclo="VOLUMEN">🟢 VOLUMEN</button>
-            <button class="btn-ciclo" data-ciclo="RESISTENCIA">🔵 RESISTENCIA</button>
+        <div style="display:flex; gap:6px; margin-left:6px;">
+            <button class="btn-ciclo-color" data-ciclo="FUERZA" style="background-color:#ff3b30;" title="FUERZA"></button>
+            <button class="btn-ciclo-color" data-ciclo="DEFINICIÓN" style="background-color:#e6c8a0;" title="DEFINICIÓN"></button>
+            <button class="btn-ciclo-color" data-ciclo="VOLUMEN" style="background-color:#ff8c00;" title="VOLUMEN"></button>
+            <button class="btn-ciclo-color" data-ciclo="RESISTENCIA" style="background-color:#20c4b8;" title="RESISTENCIA"></button>
+            <button id="btnTabataHeader" class="btn-3d" style="background:#a0522d; color:white;">🔥 TABATA</button>
         </div>
     </div>
     <div class="header-right">
@@ -109,6 +116,11 @@
 
 <div id="home" class="seccion active">
     <div id="cycleCard" class="neon-card" style="text-align:center;"></div>
+    <!-- Mensaje de día TABATA -->
+    <div id="tabataMensaje" class="neon-card" style="text-align:center; background:#a0522d20; border-color:#a0522d; display:none;">
+        <div style="font-size:1.5rem;">🔥 ¡HOY ES DÍA TABATA! 🔥</div>
+        <button id="btnTabataHome" style="background:#a0522d; border:none; padding:8px 16px; border-radius:30px; color:white; margin-top:8px;">▶️ INICIAR TABATA</button>
+    </div>
     <div class="neon-card" style="display: flex; justify-content: space-around; flex-wrap:wrap; padding:0.5rem;">
         <div><span style="font-size:0.7rem;">🚭 SIN FUMAR</span><br><strong id="bannerSinFumar">0</strong></div>
         <div><span style="font-size:0.7rem;">⚖️ PESO</span><br><strong id="bannerPeso">-- kg</strong></div>
@@ -194,9 +206,7 @@
 <div id="descanso-box" class="descanso-box"><div class="descanso-contenido"><h1>💪 ¡DESCANSA!</h1><div class="descanso-timer-num" id="descansoTimer">30</div><div class="descanso-selector" style="display:flex; gap:8px; justify-content:center;"><button onclick="setDescanso(30)">30s</button><button onclick="setDescanso(45)">45s</button><button onclick="setDescanso(60)">60s</button><button onclick="setDescanso(90)">90s</button></div><button onclick="cancelarDescanso()" style="background:var(--ciclo-color); border:none; padding:4px 12px; border-radius:30px; color:#000;">SALTAR</button></div></div>
 
 <script>
-// --------------------------------------------------------------
-// 1. CONFIGURACIÓN DE CICLOS SEMANALES
-// --------------------------------------------------------------
+// ==================== CONFIGURACIÓN DE CICLOS SEMANALES ====================
 const PESOS_CICLO = { FUERZA: 9.5, DEFINICIÓN: 2.5, VOLUMEN: 3, RESISTENCIA: 5.5 };
 const SERIES_REPS_CICLO = {
     FUERZA: { series: "4-5", reps: "3-5", objetivo: "FUERZA MÁXIMA", emoji: "🔥", color: "#ff3b30" },
@@ -261,9 +271,7 @@ function aplicarColorCiclo() {
     document.getElementById('cycleCard').innerHTML = `<div style="font-size:1.8rem">${config.emoji}</div><div style="font-size:1rem">${ciclo}</div><div>${config.series} x ${config.reps}</div><div style="font-size:0.7rem">🎯 ${config.objetivo}</div>`;
 }
 
-// --------------------------------------------------------------
-// 2. EJERCICIOS (DATOS COMPLETOS) + PERSONALIZACIÓN
-// --------------------------------------------------------------
+// ==================== EJERCICIOS + PERSONALIZACIÓN ====================
 const ejerciciosPorDia = {
     fuerza: { lunes: ["Dominadas (palmas mirando afuera)", "Remo con barra (agarre supino estricto)", "Curl predicador unilateral (con silla)", "Curl araña unilateral (pausa de 2\")"], martes: ["Press banca con pies elevados", "Flexiones con peso (mochila opcional)", "Press militar de pie con pausa arriba", "Elevaciones laterales unilaterales (con apoyo de pared)"], miercoles: ["Sentadilla búlgara con pausa abajo", "Peso muerto rumano a una pierna", "Fondos en paralelas (torre de dominadas)", "Press francés unilateral con pausa"], jueves: ["Remo a una mano con pausa de 3\"", "Remo con barra agarre cerrado (supino)", "Curl predicador con silla (dos brazos)", "Curl martillo con agarre inverso (palmas abajo)"], viernes: ["Press banca con pies elevados y pausa", "Flexiones con palmada (explosivas)", "Pájaro (fly invertido) con pausa de 2\"", "Remo al cuello con mancuerna"], sabado: ["Sentadilla búlgara con pausa (sab)", "Peso muerto rumano a una pierna (sab)", "Fondos en paralelas (torre)", "Press francés unilateral con pausa sab"] },
     definicion: { lunes: ["Dominadas con banda elástica (o negativas con silla)", "Remo inclinado con barra ligera", "Curl concentrado sentado", "Curl de bíceps con pausa (1\" arriba)"], martes: ["Press banca inclinado (con silla)", "Flexiones normales", "Press militar con mancuerna ligera", "Elevaciones frontales alternas"], miercoles: ["Sentadilla sumo con mancuerna ligera", "Peso muerto con piernas rectas (muy ligero)", "Fondos entre dos sillas", "Press de hombros con pies juntos (inestable)"], jueves: ["Remo unilateral muy ligero", "Remo inclinado con pausa", "Curl concentrado sentado (jueves def)", "Curl araña con mancuerna ligera"], viernes: ["Press banca inclinado muy ligero", "Flexiones normales", "Pájaro muy ligero (fly invertido)", "Elevación lateral tumbado (en el suelo)"], sabado: ["Sentadilla sumo (sab def)", "Peso muerto con piernas rectas (sab def)", "Fondos entre dos sillas", "Press francés con pies juntos"] },
@@ -271,8 +279,7 @@ const ejerciciosPorDia = {
     resistencia: { lunes: ["Sentadilla copa con mancuerna", "Zancadas alternas con mancuerna", "Press de hombros sentado", "Burpees", "Plancha"], martes: ["Remo a una mano", "Curl de bíceps alterno", "Peso muerto rumano con mancuerna", "Burpees", "Toques talón"], miercoles: ["Aperturas de pecho en suelo", "Press banca en suelo", "Extensión de tríceps tras nuca", "Saltos de tijera", "Plancha"], jueves: ["Sentadilla sumo con mancuerna", "Puente de glúteos con mancuerna", "Elevaciones laterales con mancuerna", "Cinta (correr o caminar)", "V-ups"], viernes: ["Remo inclinado a dos manos", "Curl femoral con mancuerna", "Curl de martillo", "Crunch", "Plancha"], sabado: ["Sentadilla búlgara con mancuerna", "Press francés a dos manos", "Elevaciones frontales alternas", "Rodillas altas", "Cinta (correr o caminar)"] }
 };
 
-// Mapa de imágenes (simplificado, pero funcional)
-function getImagen(nombre) { return "https://placehold.co/300x200?text=Ejercicio"; } // Se puede reemplazar con mapa real
+function getImagen(nombre) { return "https://placehold.co/300x200?text=Ejercicio"; }
 
 function getCantidadMancuernas(nombre) {
     if (nombre.includes("Press banca") || nombre.includes("Remo a una mano") || nombre.includes("Curl concentrado") || nombre.includes("Elevaciones laterales unilaterales") || nombre.includes("Curl predicador unilateral") || nombre.includes("Curl araña unilateral") || nombre.includes("Press francés unilateral")) return 1;
@@ -292,9 +299,7 @@ function getPesoEjercicio(nombre, ciclo, personalizacion) {
     return getPesoEjercicioBase(nombre, ciclo);
 }
 function getSeriesReps(ciclo, personalizacion) {
-    if (personalizacion && personalizacion.series && personalizacion.reps) {
-        return { series: personalizacion.series, reps: personalizacion.reps };
-    }
+    if (personalizacion && personalizacion.series && personalizacion.reps) return { series: personalizacion.series, reps: personalizacion.reps };
     const config = SERIES_REPS_CICLO[ciclo];
     return { series: config.series, reps: config.reps };
 }
@@ -307,14 +312,21 @@ function formatearPeso(nombre, ciclo, personalizacion) {
     return `${kg} kg`;
 }
 
-// Personalizaciones: objeto con clave "dia-idx" (ej: "lunes-0") y valores {series, reps, peso}
 let personalizaciones = JSON.parse(localStorage.getItem('personalizaciones')) || {};
 
 function guardarPersonalizacion(id, series, reps, peso) {
     personalizaciones[id] = { series, reps, peso };
     localStorage.setItem('personalizaciones', JSON.stringify(personalizaciones));
-    renderizarRutinas(); // refrescar vista
+    renderizarRutinas();
 }
+function eliminarPersonalizacion(id) {
+    delete personalizaciones[id];
+    localStorage.setItem('personalizaciones', JSON.stringify(personalizaciones));
+    cerrarEditor();
+    renderizarRutinas();
+}
+window.guardarPersonalizacion = guardarPersonalizacion;
+window.eliminarPersonalizacion = eliminarPersonalizacion;
 
 function abrirEditorEjercicio(id, nombre, ciclo, seriesActual, repsActual, pesoActual) {
     const modalHTML = `
@@ -340,17 +352,7 @@ function abrirEditorEjercicio(id, nombre, ciclo, seriesActual, repsActual, pesoA
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 }
 function cerrarEditor() { document.getElementById('modalEditor')?.remove(); }
-function eliminarPersonalizacion(id) {
-    delete personalizaciones[id];
-    localStorage.setItem('personalizaciones', JSON.stringify(personalizaciones));
-    cerrarEditor();
-    renderizarRutinas();
-}
-window.guardarPersonalizacion = guardarPersonalizacion;
-window.eliminarPersonalizacion = eliminarPersonalizacion;
-window.cerrarEditor = cerrarEditor;
 
-// Función para mostrar discos usando el peso personalizado si existe
 window.mostrarDiscos = function(nombre, ciclo, idEjercicio) {
     const personalizacion = personalizaciones[idEjercicio];
     let kg = getPesoEjercicio(nombre, ciclo, personalizacion);
@@ -376,7 +378,6 @@ function getInstrucciones(nombre) {
 
 function renderizarRutinas() {
     const ciclo = getCicloActual();
-    const configGeneral = SERIES_REPS_CICLO[ciclo];
     const cicloKey = ciclo === 'FUERZA' ? 'fuerza' : (ciclo === 'DEFINICIÓN' ? 'definicion' : (ciclo === 'VOLUMEN' ? 'volumen' : 'resistencia'));
     const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
     for (let dia of dias) {
@@ -411,9 +412,191 @@ function renderizarRutinas() {
 }
 function toggleDetalles(id) { document.getElementById(id)?.classList.toggle('show'); }
 
-// --------------------------------------------------------------
-// 3. RESTO DE FUNCIONALIDADES (calendario, peso, fotos, logros, etc.) - Igual que antes
-// --------------------------------------------------------------
+// ==================== TABATA ====================
+const BANCO_EJERCICIOS_TABATA = [
+    { nombre: "Burpees", instruccion: "Agáchate, salta a plancha, flexión, salta, palmada. Máxima intensidad.", img: "https://gymvisual.com/img/p/2/1/5/0/1/21501.gif" },
+    { nombre: "Press militar", instruccion: "Mancuernas a los hombros, presiona arriba. Máxima intensidad.", img: "https://api.smartworkout.app/asset/image/d3878853-0b0e-4888-b3b3-06018f36dc6c" },
+    { nombre: "Curl de bíceps", instruccion: "Curl simultáneo con dos mancuernas. Máxima intensidad.", img: "https://newlife.com.cy/wp-content/uploads/2019/11/04021301-Dumbbell-Seated-Preacher-Curl_Upper-Arms_360.gif" },
+    { nombre: "Dominadas supinas", instruccion: "Palmas hacia ti. Sube y baja rápido. Si no llegas, haz negativas.", img: "https://i.pinimg.com/originals/15/98/ec/1598ec2121ef2ac8c5fa0a51c5a16f53.gif" },
+    { nombre: "Sentadilla con salto", instruccion: "Baja, salta explosivo, aterriza suave. Máxima intensidad.", img: "https://gymvisual.com/img/p/1/4/5/4/7/14547.gif" },
+    { nombre: "Remo con mancuerna", instruccion: "Remo hacia tu cadera, alterna brazos rápido.", img: "https://gymvisual.com/img/p/2/4/9/8/9/24989.gif" }
+];
+const URL_MUSICA_TABATA = "https://music.amazon.es/albums/B0F8GR4M77?trackAsin=B0F8GN7NBF";
+const URL_MUSICA_TABATA_2 = "https://music.amazon.es/albums/B08GRNQJ65?trackAsin=B08GRY3GWS";
+
+function getDiaTabataSemana() {
+    const semana = getSemanaGlobal();
+    const clave = `tabata_dia_${semana}`;
+    let diaTabata = localStorage.getItem(clave);
+    if (!diaTabata) {
+        const diasSemana = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+        const aleatorio = Math.floor(Math.random() * 6);
+        diaTabata = diasSemana[aleatorio];
+        localStorage.setItem(clave, diaTabata);
+    }
+    return diaTabata;
+}
+function esHoyTabata() {
+    const hoy = new Date();
+    const diasMap = {1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado'};
+    const hoyKey = diasMap[hoy.getDay()];
+    if (!hoyKey) return false;
+    const diaTabata = getDiaTabataSemana();
+    return hoyKey === diaTabata;
+}
+function getEjerciciosTabataSemana() {
+    const semana = getSemanaGlobal();
+    const clave = `tabata_ejercicios_${semana}`;
+    let guardados = localStorage.getItem(clave);
+    if (guardados) return JSON.parse(guardados);
+    const mezclados = [...BANCO_EJERCICIOS_TABATA];
+    for (let i = mezclados.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [mezclados[i], mezclados[j]] = [mezclados[j], mezclados[i]];
+    }
+    const seleccionados = mezclados.slice(0, 4);
+    localStorage.setItem(clave, JSON.stringify(seleccionados));
+    return seleccionados;
+}
+function reproducirMusicaTabata(opcion) {
+    if (opcion === 1) window.open(URL_MUSICA_TABATA, '_blank');
+    else window.open(URL_MUSICA_TABATA_2, '_blank');
+}
+let tabataInterval = null;
+let tabataRondaActual = 1;
+let tabataTiempoRestante = 20;
+let tabataFase = 'trabajo';
+let ejerciciosTabataSeleccionados = [];
+let ejerciciosTabataOrden = [];
+let audioBeepTabata = null;
+function playBeepTabata() {
+    try {
+        if (!audioBeepTabata) {
+            audioBeepTabata = new Audio('https://www.soundjay.com/misc/sounds/beep-07.mp3');
+            audioBeepTabata.volume = 0.5;
+        }
+        audioBeepTabata.currentTime = 0;
+        audioBeepTabata.play().catch(e => console.log("Beep no reproducido"));
+    } catch(e) {}
+}
+function actualizarDisplayTabataModal() {
+    const rondaElem = document.getElementById('tabata-ronda');
+    const timerElem = document.getElementById('tabata-timer');
+    const progresoElem = document.getElementById('tabata-progreso-bar');
+    const ejercicioElem = document.getElementById('tabata-ejercicio');
+    const imgElem = document.getElementById('tabata-ejercicio-img');
+    const instrucElem = document.getElementById('tabata-instruccion');
+    if (rondaElem) rondaElem.innerText = `Ronda ${tabataRondaActual}/8`;
+    if (timerElem) timerElem.innerText = `${tabataTiempoRestante}s`;
+    if (progresoElem) {
+        const pct = tabataFase === 'trabajo' ? (tabataTiempoRestante/20)*100 : (tabataTiempoRestante/10)*100;
+        progresoElem.style.width = `${pct}%`;
+    }
+    if (timerElem) timerElem.style.color = tabataFase === 'trabajo' ? '#ff6666' : '#66ff66';
+    const ejercicio = ejerciciosTabataOrden[tabataRondaActual - 1];
+    if (ejercicio && ejercicioElem) {
+        ejercicioElem.innerText = ejercicio.nombre;
+        if (imgElem) imgElem.src = ejercicio.img;
+        if (instrucElem) instrucElem.innerText = ejercicio.instruccion;
+    }
+}
+function tickTabataModal() {
+    tabataTiempoRestante--;
+    if (tabataTiempoRestante < 0) {
+        if (tabataRondaActual < 8) {
+            tabataRondaActual++;
+            if (tabataFase === 'trabajo') {
+                tabataFase = 'descanso';
+                tabataTiempoRestante = 10;
+            } else {
+                tabataFase = 'trabajo';
+                tabataTiempoRestante = 20;
+            }
+            playBeepTabata();
+            actualizarDisplayTabataModal();
+        } else {
+            clearInterval(tabataInterval);
+            tabataInterval = null;
+            document.getElementById('tabata-timer').innerText = '✅ FINALIZADO';
+            document.getElementById('tabata-ronda').innerText = '¡TABATA COMPLETADO!';
+            document.getElementById('tabata-completar-btn').style.display = 'block';
+            playBeepTabata();
+            playBeepTabata();
+            mostrarToast("🎉 ¡TABATA completado! Marca el día como entrenado.");
+        }
+    } else {
+        actualizarDisplayTabataModal();
+    }
+}
+function iniciarTabataModal() {
+    if (tabataInterval) return;
+    tabataRondaActual = 1;
+    tabataTiempoRestante = 20;
+    tabataFase = 'trabajo';
+    actualizarDisplayTabataModal();
+    playBeepTabata();
+    document.getElementById('tabata-iniciar-btn').disabled = true;
+    tabataInterval = setInterval(tickTabataModal, 1000);
+}
+function marcarTabataCompletado() {
+    const hoy = getHoyStr();
+    if (!diasEntrenados.includes(hoy)) {
+        diasEntrenados.push(hoy);
+        guardarTodo();
+        mostrarToast("✅ Día TABATA marcado como completado");
+        canvasConfetti({ particleCount: 150, spread: 100, colors: ['#a0522d', '#fff'] });
+        renderCalendarios();
+        actualizarUI();
+    } else {
+        mostrarToast("⚠️ Ya marcaste este día como completado");
+    }
+    cerrarTabata();
+}
+function cerrarTabata() {
+    if (tabataInterval) clearInterval(tabataInterval);
+    tabataInterval = null;
+    document.getElementById('modalTabata')?.remove();
+}
+function abrirTabata() {
+    ejerciciosTabataSeleccionados = getEjerciciosTabataSemana();
+    ejerciciosTabataOrden = [...ejerciciosTabataSeleccionados, ...ejerciciosTabataSeleccionados];
+    let html = `
+        <div id="modalTabata" class="modal-disk">
+            <div class="disk-panel" style="max-width:450px;">
+                <span onclick="cerrarTabata()" style="float:right; cursor:pointer;">&times;</span>
+                <h3 style="color:#a0522d;">🔥 DÍA TABATA 🔥</h3>
+                <div style="margin:10px 0;">8 rondas · 20s trabajo / 10s descanso</div>
+                <div id="tabata-ronda" class="tabata-badge">Ronda 1/8</div>
+                <div id="tabata-timer" class="tabata-timer">20s</div>
+                <div class="tabata-progreso" style="background:#333; border-radius:10px; height:10px; margin:10px 0;"><div id="tabata-progreso-bar" style="background:#a0522d; width:0%; height:100%; border-radius:10px;"></div></div>
+                <div id="tabata-ejercicio" style="font-weight:bold; margin:10px 0;">${ejerciciosTabataOrden[0]?.nombre || ''}</div>
+                <div style="display:flex; gap:10px; align-items:center; margin:10px 0;">
+                    <img id="tabata-ejercicio-img" class="tabata-ejercicio-img" src="${ejerciciosTabataOrden[0]?.img || ''}" onerror="this.src='https://placehold.co/80x80?text=Ejercicio'">
+                    <div id="tabata-instruccion" style="font-size:0.8rem; text-align:left;">${ejerciciosTabataOrden[0]?.instruccion || ''}</div>
+                </div>
+                <button id="tabata-iniciar-btn" style="background:#a0522d; width:100%; padding:8px; border:none; border-radius:12px; color:#fff; font-weight:bold; margin:6px 0;">▶️ INICIAR TABATA</button>
+                <button id="tabata-completar-btn" style="display:none; background:#32d74b; width:100%; padding:8px; border:none; border-radius:12px; color:#000; font-weight:bold; margin:6px 0;">✅ MARCAR DÍA COMPLETADO</button>
+                <div style="display:flex; gap:8px; margin:10px 0;">
+                    <button onclick="reproducirMusicaTabata(1)" style="background:#a0522d; border:none; padding:6px; border-radius:30px; color:white; flex:1;">🎵 Música 1</button>
+                    <button onclick="reproducirMusicaTabata(2)" style="background:#a0522d; border:none; padding:6px; border-radius:30px; color:white; flex:1;">🎵 Música 2</button>
+                </div>
+                <button onclick="cerrarTabata()" style="background:#333; width:100%; padding:8px; border:none; border-radius:12px; color:#fff;">CERRAR</button>
+            </div>
+        </div>
+    `;
+    cerrarTabata();
+    document.body.insertAdjacentHTML('beforeend', html);
+    document.getElementById('tabata-iniciar-btn').onclick = iniciarTabataModal;
+    document.getElementById('tabata-completar-btn').onclick = marcarTabataCompletado;
+}
+function mostrarMensajeTabata() {
+    const mensajeDiv = document.getElementById('tabataMensaje');
+    if (mensajeDiv) {
+        mensajeDiv.style.display = esHoyTabata() ? 'block' : 'none';
+    }
+}
+
+// ==================== RESTO DE FUNCIONALIDADES (calendario, peso, fotos, logros, etc.) ====================
 let diasEntrenados = JSON.parse(localStorage.getItem('diasEntrenados')) || [];
 let diasNoFumar = JSON.parse(localStorage.getItem('diasNoFumar')) || [];
 let pesos = JSON.parse(localStorage.getItem('pesos')) || [{valor:84, fecha:new Date().toLocaleDateString()}];
@@ -470,7 +653,6 @@ function mostrarPopupEjercicios(fecha, cicloSemana) {
 function cerrarModalPopup() { document.getElementById('modalPopup')?.remove(); }
 
 function renderCalendarios() {
-    // Gym
     const contGym = document.getElementById('cal-gym');
     if(contGym){
         contGym.innerHTML = '';
@@ -499,7 +681,6 @@ function renderCalendarios() {
             contGym.appendChild(cell);
         }
     }
-    // Smoke
     const contSmoke = document.getElementById('cal-smoke');
     if(contSmoke){
         contSmoke.innerHTML = '';
@@ -613,6 +794,10 @@ function cancelarDescanso() { clearInterval(timerInterval); document.getElementB
 function abrirRespiracion() { alert("Respiración guiada: Inhala 4s, aguanta 4s, exhala 4s, aguanta 4s. Repite 4 veces."); }
 function completarDia(dia) {
     const hoy = getHoyStr();
+    if (esHoyTabata() && dia === getDiaTabataSemana()) {
+        abrirTabata();
+        return;
+    }
     if(!diasEntrenados.includes(hoy)){ diasEntrenados.push(hoy); guardarTodo(); renderCalendarios(); mostrarToast(`🎉 ${dia.toUpperCase()} COMPLETADO!`); canvasConfetti({particleCount:150, spread:100}); actualizarLogros(); actualizarUI(); }
     else mostrarToast("⚠️ Ya marcaste este día");
 }
@@ -651,10 +836,11 @@ function mostrarVistaPreviaCiclos(){
     cerrarModalPopup(); const overlay=document.createElement('div'); overlay.className='modal-disk'; overlay.id='modalPopup'; overlay.innerHTML=html; document.body.appendChild(overlay);
 }
 function actualizarUI(){
-    aplicarColorCiclo(); const ciclo=getCicloActual();
+    aplicarColorCiclo();
     document.getElementById('bannerSinFumar').innerText=calcularDiasSinFumar();
     if(pesos.length) document.getElementById('bannerPeso').innerText=pesos[pesos.length-1].valor+' kg';
     renderizarRutinas(); actualizarGrafico(); renderCalendarios(); actualizarLogros(); mostrarHistorialPeso(); actualizarInfoPausa();
+    mostrarMensajeTabata();
 }
 function go(id){
     document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active'));
@@ -672,7 +858,9 @@ function closeMenu(){ document.getElementById('menu-lat').classList.remove('open
 function setCicloManual(ciclo){ cicloManual=ciclo; actualizarUI(); }
 
 window.onload=()=>{
-    document.querySelectorAll('.btn-ciclo').forEach(btn=>{ btn.addEventListener('click',()=>{ setCicloManual(btn.getAttribute('data-ciclo')); }); });
+    document.querySelectorAll('.btn-ciclo-color').forEach(btn=>{ btn.addEventListener('click',()=>{ setCicloManual(btn.getAttribute('data-ciclo')); }); });
+    document.getElementById('btnTabataHeader')?.addEventListener('click', () => abrirTabata());
+    document.getElementById('btnTabataHome')?.addEventListener('click', () => abrirTabata());
     actualizarUI(); cargarListaDias(); cargarSelectores();
     setInterval(()=>{ const ahora=new Date(); document.getElementById('reloj').innerText=`${ahora.getHours().toString().padStart(2,'0')}:${ahora.getMinutes().toString().padStart(2,'0')}:${ahora.getSeconds().toString().padStart(2,'0')}`; },1000);
 };
