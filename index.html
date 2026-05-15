@@ -55,9 +55,11 @@
         .descanso-timer-num{font-size:3rem;font-weight:bold;color:#32d74b}
         .pausa-botones button{background:#1e2a3a;border:1px solid var(--ciclo-color);color:var(--ciclo-color);border-radius:1.5rem;padding:4px 8px;font-size:0.65rem;cursor:pointer}
         .btn-done{background:linear-gradient(135deg,#2e7d32,#1b5e20);border:none;color:white;font-weight:bold;padding:8px;border-radius:2rem;width:100%;font-size:0.8rem;cursor:pointer;box-shadow:0 2px 0 #0a2e0a;margin-top:0.7rem}
-        .foto-comparador{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:12px}
-        .foto-item{background:#0a0a1a;border-radius:12px;padding:8px;text-align:center;flex:1;min-width:120px}
-        .foto-item img{max-width:100%;border-radius:8px}
+        .foto-comparador{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:12px}
+        .foto-dia{background:#0a0a1a;border-radius:16px;padding:12px;width:100%;max-width:500px}
+        .foto-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+        .foto-item{background:#111;border-radius:12px;padding:6px;text-align:center}
+        .foto-item img{width:100%;border-radius:8px;max-height:200px;object-fit:cover}
         .edit-icono{font-size:0.8rem;cursor:pointer;margin-left:6px;opacity:0.7;display:inline-block}
         .edit-icono:hover{opacity:1}
         .tabata-badge{background:#a0522d;color:#fff;padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:10px}
@@ -71,11 +73,15 @@
         .barra-progreso{background:#2a2f44;border-radius:10px;height:6px;margin:5px 0;overflow:hidden}
         .barra-fill{background:var(--ciclo-color);width:0%;height:100%;border-radius:10px;transition:width 0.3s}
         .nivel-texto{font-size:0.65rem;text-align:center}
+        .subir-fotos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+        .subir-foto-item{background:#0a0a1a;border-radius:12px;padding:6px;text-align:center}
+        .subir-foto-item input{width:100%;margin-top:4px;font-size:0.6rem}
         @media (max-width: 600px) {
             body{padding:0.4rem}
             .grid-dias{grid-template-columns:1fr}
             .btn-ciclo-color{width:20px;height:20px}
             .nivel-progreso{padding:4px 8px}
+            .subir-fotos-grid{grid-template-columns:1fr}
         }
     </style>
 </head>
@@ -167,9 +173,18 @@
 <div id="progreso-fotos" class="seccion">
     <h3>📸 MI PROGRESO</h3>
     <div class="neon-card">
-        <h4>📅 SUBIR FOTO HOY</h4>
-        <input type="file" id="fotoInput" accept="image/*" style="margin:6px 0; width:100%;">
-        <button onclick="guardarFoto()" style="background:var(--ciclo-color); border:none; border-radius:12px; padding:6px; width:100%; color:#000;">💾 GUARDAR FOTO</button>
+        <h4>📅 SUBIR 4 FOTOS PARA UNA FECHA</h4>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+            <input type="date" id="fechaFotos" value="" style="flex:1; background:#000; color:#fff; border-radius:12px; padding:4px;">
+            <button id="cargarFotosFecha" style="background:var(--ciclo-color); border:none; border-radius:12px; padding:4px 8px;">📂 Cargar existentes</button>
+        </div>
+        <div class="subir-fotos-grid">
+            <div class="subir-foto-item">😀 FRENTE<br><input type="file" id="fotoFrente" accept="image/*"></div>
+            <div class="subir-foto-item">🙃 ESPALDA<br><input type="file" id="fotoEspalda" accept="image/*"></div>
+            <div class="subir-foto-item">⬅️ IZQUIERDA<br><input type="file" id="FotoIzquierda" accept="image/*"></div>
+            <div class="subir-foto-item">➡️ DERECHA<br><input type="file" id="fotoDerecha" accept="image/*"></div>
+        </div>
+        <button onclick="guardarFotos()" style="background:var(--ciclo-color); border:none; border-radius:12px; padding:6px; width:100%; color:#000;">💾 GUARDAR FOTOS DEL DÍA</button>
         <div id="mensajeFotos" style="margin-top:5px; font-size:0.7rem;"></div>
     </div>
     <div class="neon-card">
@@ -336,7 +351,7 @@ function getEjerciciosPorDia(dia, cicloKey) {
     return ejercicios || [];
 }
 
-function getImagen(nombre) { return "https://placehold.co/300x200?text=Ejercicio"; } // Placeholder, se puede reemplazar
+function getImagen(nombre) { return "https://placehold.co/300x200?text=Ejercicio"; }
 
 function getCantidadMancuernas(nombre) {
     if (nombre.includes("Press banca") || nombre.includes("Remo a una mano") || nombre.includes("Curl concentrado") || nombre.includes("Elevaciones laterales unilaterales") || nombre.includes("Curl predicador unilateral") || nombre.includes("Curl araña unilateral") || nombre.includes("Press francés unilateral")) return 1;
@@ -819,13 +834,15 @@ function changeMonth(dir, tipo) {
     else { let nueva = new Date(añoSmoke, mesSmoke+dir, 1); mesSmoke = nueva.getMonth(); añoSmoke = nueva.getFullYear(); renderCalendarios(); }
 }
 
-// Peso editable
+// Peso editable con ordenación
 function agregarPesoConFecha() {
     const valor = parseFloat(document.getElementById('nuevoPeso').value);
     const fecha = document.getElementById('nuevaFechaPeso').value;
     if(isNaN(valor)) return;
-    let fechaStr = fecha ? fecha : new Date().toLocaleDateString();
+    let fechaStr = fecha ? fecha : new Date().toISOString().slice(0,10);
     pesos.push({ valor, fecha: fechaStr });
+    // Ordenar por fecha
+    pesos.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
     guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); actualizarLogros();
     document.getElementById('nuevoPeso').value = '';
     document.getElementById('nuevaFechaPeso').value = '';
@@ -834,16 +851,19 @@ function editarPeso(index) {
     const p = pesos[index];
     const nuevoValor = prompt("Nuevo peso (kg):", p.valor);
     if(nuevoValor === null || isNaN(parseFloat(nuevoValor))) return;
-    const nuevaFecha = prompt("Nueva fecha (ej. 15/5/2026):", p.fecha);
+    const nuevaFecha = prompt("Nueva fecha (AAAA-MM-DD):", p.fecha);
     if(nuevaFecha === null) return;
     pesos[index] = { valor: parseFloat(nuevoValor), fecha: nuevaFecha };
+    pesos.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
     guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); actualizarLogros();
 }
 function mostrarHistorialPeso() {
     const container = document.getElementById('histPeso');
     if(!container) return;
-    container.innerHTML = pesos.slice().reverse().map((p, i) => {
-        const originalIndex = pesos.length - 1 - i;
+    // Mostrar orden cronológico descendente (más reciente primero)
+    const sorted = [...pesos].sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+    container.innerHTML = sorted.map((p, i) => {
+        const originalIndex = pesos.findIndex(pp => pp.fecha === p.fecha && pp.valor === p.valor);
         return `<div>${p.fecha}: <strong>${p.valor} kg</strong> 
         <button onclick="editarPeso(${originalIndex})" style="background:none; border:none; color:cyan; cursor:pointer;">✏️</button>
         <button onclick="eliminarPeso(${originalIndex})" style="background:none; border:none; color:#ff3b30;">🗑️</button></div>`;
@@ -858,7 +878,9 @@ function actualizarGrafico() {
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
     if(window.miGrafico) window.miGrafico.destroy();
-    window.miGrafico = new Chart(ctx, { type:'line', data:{ labels:pesos.map(p=>p.fecha), datasets:[{ data:pesos.map(p=>p.valor), borderColor:'#0ff', fill:false, pointBackgroundColor:'#0ff' }] }, options:{ responsive:true, maintainAspectRatio:true } });
+    // Ordenar pesos por fecha para el gráfico
+    const sorted = [...pesos].sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+    window.miGrafico = new Chart(ctx, { type:'line', data:{ labels:sorted.map(p=>p.fecha), datasets:[{ data:sorted.map(p=>p.valor), borderColor:'#0ff', fill:false, pointBackgroundColor:'#0ff' }] }, options:{ responsive:true, maintainAspectRatio:true } });
 }
 function marcarHoyFumado() {
     const hoy = getHoyStr();
@@ -1025,12 +1047,68 @@ function aplicarColorCiclo() {
 }
 let db = null; const DB_NAME='FotosProgresoDB'; const STORE_NAME='diasFotos';
 function abrirDB(){ return new Promise((resolve)=>{ const req=indexedDB.open(DB_NAME,1); req.onupgradeneeded=e=>{ if(!e.target.result.objectStoreNames.contains(STORE_NAME)) e.target.result.createObjectStore(STORE_NAME,{keyPath:'fecha'}); }; req.onsuccess=e=>{ db=e.target.result; resolve(); }; req.onerror=()=>resolve(); }); }
-async function guardarFoto(){ const file=document.getElementById('fotoInput').files[0]; if(!file) return; await abrirDB(); const reader=new FileReader(); reader.onload=async(e)=>{ const fecha=getHoyStr(); const tx=db.transaction(STORE_NAME,'readwrite'); tx.objectStore(STORE_NAME).put({fecha, timestamp:Date.now(), foto:e.target.result}); document.getElementById('mensajeFotos').innerHTML='✅ Foto guardada'; cargarListaDias(); cargarSelectores(); }; reader.readAsDataURL(file); }
+async function guardarFotos() {
+    const fecha = document.getElementById('fechaFotos').value;
+    if(!fecha){ mostrarToast("Selecciona una fecha"); return; }
+    const frente = await leerArchivoComoDataURL(document.getElementById('fotoFrente').files[0]);
+    const espalda = await leerArchivoComoDataURL(document.getElementById('fotoEspalda').files[0]);
+    const izquierda = await leerArchivoComoDataURL(document.getElementById('FotoIzquierda').files[0]);
+    const derecha = await leerArchivoComoDataURL(document.getElementById('fotoDerecha').files[0]);
+    if(!frente && !espalda && !izquierda && !derecha){ mostrarToast("Selecciona al menos una foto"); return; }
+    await abrirDB();
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    const existing = await new Promise(resolve => store.get(fecha).onsuccess = e => resolve(e.target.result));
+    const data = { fecha, timestamp: Date.now(), frente, espalda, izquierda, derecha };
+    await new Promise((resolve, reject) => { const req = store.put(data); req.onsuccess = resolve; req.onerror = reject; });
+    mostrarToast("✅ Fotos guardadas");
+    cargarListaDias();
+    cargarSelectores();
+    document.getElementById('fotoFrente').value = '';
+    document.getElementById('fotoEspalda').value = '';
+    document.getElementById('FotoIzquierda').value = '';
+    document.getElementById('fotoDerecha').value = '';
+}
+function leerArchivoComoDataURL(file) {
+    if(!file) return Promise.resolve(null);
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsDataURL(file);
+    });
+}
+async function cargarFotosExistente() {
+    const fecha = document.getElementById('fechaFotos').value;
+    if(!fecha) return;
+    await abrirDB();
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const data = await new Promise(resolve => store.get(fecha).onsuccess = e => resolve(e.target.result));
+    if(data){
+        if(data.frente) document.getElementById('fotoFrente').src = data.frente;
+        if(data.espalda) document.getElementById('fotoEspalda').src = data.espalda;
+        if(data.izquierda) document.getElementById('FotoIzquierda').src = data.izquierda;
+        if(data.derecha) document.getElementById('fotoDerecha').src = data.derecha;
+        mostrarToast("Fotos cargadas en el formulario");
+    } else {
+        mostrarToast("No hay fotos para esta fecha");
+    }
+}
 async function cargarListaDias(){ await abrirDB(); const container=document.getElementById('listaDiasDB'); if(!container) return; const tx=db.transaction(STORE_NAME,'readonly'); const items=await new Promise(resolve=>{ const req=tx.objectStore(STORE_NAME).getAll(); req.onsuccess=()=>resolve(req.result); }); items.sort((a,b)=>b.timestamp-a.timestamp); container.innerHTML=items.map(item=>`<div>📅 ${item.fecha} <button onclick="eliminarDia('${item.fecha}')">🗑️</button> <button onclick="editarFechaFoto('${item.fecha}')">✏️</button></div>`).join(''); cargarSelectores(); }
-async function editarFechaFoto(fechaVieja){ const nuevaFecha=prompt("Nueva fecha (formato AAAA-MM-DD):", fechaVieja); if(!nuevaFecha) return; await abrirDB(); const tx=db.transaction(STORE_NAME,'readwrite'); const store=tx.objectStore(STORE_NAME); const item=await new Promise(resolve=>store.get(fechaVieja).onsuccess=e=>resolve(e.target.result)); if(item){ item.fecha=nuevaFecha; store.put(item); store.delete(fechaVieja); mostrarToast("Fecha actualizada"); cargarListaDias(); cargarSelectores(); } }
+async function editarFechaFoto(fechaVieja){ const nuevaFecha=prompt("Nueva fecha (AAAA-MM-DD):", fechaVieja); if(!nuevaFecha) return; await abrirDB(); const tx=db.transaction(STORE_NAME,'readwrite'); const store=tx.objectStore(STORE_NAME); const item=await new Promise(resolve=>store.get(fechaVieja).onsuccess=e=>resolve(e.target.result)); if(item){ item.fecha=nuevaFecha; store.put(item); store.delete(fechaVieja); mostrarToast("Fecha actualizada"); cargarListaDias(); cargarSelectores(); } }
 async function cargarSelectores(){ await abrirDB(); const tx=db.transaction(STORE_NAME,'readonly'); const items=await new Promise(resolve=>{ const req=tx.objectStore(STORE_NAME).getAll(); req.onsuccess=()=>resolve(req.result); }); items.sort((a,b)=>b.timestamp-a.timestamp); const opciones=items.map(item=>`<option value="${item.fecha}">${item.fecha}</option>`); document.getElementById('compararDia1').innerHTML='<option value="">Día 1</option>'+opciones.join(''); document.getElementById('compararDia2').innerHTML='<option value="">Día 2</option>'+opciones.join(''); }
 async function eliminarDia(fecha){ await abrirDB(); const tx=db.transaction(STORE_NAME,'readwrite'); tx.objectStore(STORE_NAME).delete(fecha); cargarListaDias(); cargarSelectores(); document.getElementById('comparadorResultado').innerHTML=''; }
-async function compararFotos(){ const f1=document.getElementById('compararDia1').value, f2=document.getElementById('compararDia2').value; if(!f1||!f2) return; await abrirDB(); const tx=db.transaction(STORE_NAME,'readonly'); const store=tx.objectStore(STORE_NAME); const [d1,d2]=await Promise.all([new Promise(resolve=>store.get(f1).onsuccess=e=>resolve(e.target.result)), new Promise(resolve=>store.get(f2).onsuccess=e=>resolve(e.target.result))]); if(!d1||!d2) return; document.getElementById('comparadorResultado').innerHTML=`<div style="flex:1; background:#0a0a0a; border-radius:12px; padding:8px;"><h4>${f1}</h4><img src="${d1.foto}" width="100%" onerror="this.src='https://placehold.co/300x200?text=Imagen+no+disponible'"></div><div style="flex:1; background:#0a0a0a; border-radius:12px; padding:8px;"><h4>${f2}</h4><img src="${d2.foto}" width="100%" onerror="this.src='https://placehold.co/300x200?text=Imagen+no+disponible'"></div>`; }
+async function compararFotos(){ const f1=document.getElementById('compararDia1').value, f2=document.getElementById('compararDia2').value; if(!f1||!f2) return; await abrirDB(); const tx=db.transaction(STORE_NAME,'readonly'); const store=tx.objectStore(STORE_NAME); const [d1,d2]=await Promise.all([new Promise(resolve=>store.get(f1).onsuccess=e=>resolve(e.target.result)), new Promise(resolve=>store.get(f2).onsuccess=e=>resolve(e.target.result))]); if(!d1||!d2) return; const generarFotos = (data, titulo) => {
+    if(!data) return `<div class="foto-dia"><h4>${titulo}</h4><p>No hay fotos</p></div>`;
+    return `<div class="foto-dia"><h4>${titulo}</h4><div class="foto-grid">
+        <div class="foto-item">FRENTE<br><img src="${data.frente || ''}" onerror="this.src='https://placehold.co/200x200?text=No+disponible'"></div>
+        <div class="foto-item">ESPALDA<br><img src="${data.espalda || ''}" onerror="this.src='https://placehold.co/200x200?text=No+disponible'"></div>
+        <div class="foto-item">IZQUIERDA<br><img src="${data.izquierda || ''}" onerror="this.src='https://placehold.co/200x200?text=No+disponible'"></div>
+        <div class="foto-item">DERECHA<br><img src="${data.derecha || ''}" onerror="this.src='https://placehold.co/200x200?text=No+disponible'"></div>
+    </div></div>`;
+};
+    document.getElementById('comparadorResultado').innerHTML = generarFotos(d1, f1) + generarFotos(d2, f2);
+}
 function recargarComparacion(){ compararFotos(); }
 function exportarDatos(){ const data={diasEntrenados, diasNoFumar, pesos, logros, marcasLesion, marcasVacaciones, personalizaciones}; const blob=new Blob([JSON.stringify(data)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='nicogym_backup.json'; a.click(); mostrarToast("✅ Backup"); }
 function mostrarReset(){ document.getElementById('resetModal').style.display='flex'; }
@@ -1069,6 +1147,10 @@ function setCicloManual(ciclo){ cicloManual=ciclo; actualizarUI(); }
 
 window.onload=()=>{
     if(!localStorage.getItem('primeraFechaUso')) localStorage.setItem('primeraFechaUso', new Date().toISOString());
+    // Setear fecha actual en el input de fecha para fotos
+    document.getElementById('fechaFotos').value = new Date().toISOString().slice(0,10);
+    document.getElementById('nuevaFechaPeso').value = new Date().toISOString().slice(0,10);
+    document.getElementById('cargarFotosFecha').onclick = cargarFotosExistente;
     actualizarUI();
     cargarListaDias();
     cargarSelectores();
