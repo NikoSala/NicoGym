@@ -8,7 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        /* ========== ESTILOS ========== */
         *{margin:0;padding:0;box-sizing:border-box}
         body{background:radial-gradient(circle at 20% 30%, #0a0a12, #030308);color:#eef5ff;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;padding:0.7rem;padding-bottom:70px}
         .seccion{display:none;animation:fadeSlideIn .3s ease}
@@ -29,8 +28,6 @@
         .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:6px}
         .cal-cell{background:#0a0a1a;border-radius:6px;text-align:center;padding:4px 0;font-size:0.65rem;cursor:pointer;border:1.5px solid #2a2f44}
         .cal-cell.completado{background:#2e7d32;color:#fff}
-        .cal-cell.tabata{background:#a0522d;color:#fff;border-color:#a0522d}
-        .cal-cell.tabata.completado{background:#d2691e;color:#fff}
         .cal-cell.today{border:2px solid white}
         .modal-disk{position:fixed;top:0;left:0;width:100%;height:100%;background:#000000cc;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:2000}
         .disk-panel{background:#0a0c1ae6;border-radius:1.5rem;padding:1rem;max-width:90%;width:auto;min-width:260px;border:2px solid var(--ciclo-color);text-align:center;max-height:80vh;overflow-y:auto}
@@ -61,9 +58,6 @@
         .foto-item img{width:100%;border-radius:8px;max-height:200px;object-fit:cover}
         .edit-icono{font-size:0.8rem;cursor:pointer;margin-left:6px;opacity:0.7;display:inline-block}
         .edit-icono:hover{opacity:1}
-        .tabata-badge{background:#a0522d;color:#fff;padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:10px}
-        .tabata-timer{font-size:2.5rem;font-family:monospace;margin:15px 0}
-        .tabata-ejercicio-img{width:80px;height:80px;object-fit:contain;border-radius:10px;background:#2a2a2a}
         .ciclo-botones{display:flex;gap:6px;justify-content:center;margin-top:6px}
         .btn-ciclo-color{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.6);cursor:pointer;transition:0.1s}
         .btn-ciclo-color:active{transform:scale(0.95)}
@@ -165,7 +159,6 @@
         <div class="sub-link" onclick="go('viernes')">🏋️ Viernes: Pecho/Hombro</div>
         <div class="sub-link" onclick="go('sabado')">🦵 Sábado: Pierna/Tríceps</div>
         <div class="sub-link" onclick="go('domingo')">😴 Domingo: Descanso</div>
-        <div class="sub-link" onclick="abrirTabata()" style="color:#a0522d;">🔥 TABATA</div>
     </div>
     <div class="nav-btn" onclick="go('calendarios')">📅 CALENDARIOS</div>
     <div class="nav-btn" onclick="go('progreso-fotos')">📸 GALERÍA PROGRESO</div>
@@ -192,10 +185,6 @@
 
 <div id="home" class="seccion active">
     <div id="cycleCard" class="neon-card" style="text-align:center;"></div>
-    <div id="tabataMensaje" class="neon-card" style="text-align:center; background:#a0522d20; border-color:#a0522d; display:none;">
-        <div style="font-size:1.5rem;">🔥 ¡HOY ES DÍA TABATA! 🔥</div>
-        <button id="btnTabataHome" style="background:#a0522d; border:none; padding:8px 16px; border-radius:30px; color:white; margin-top:8px;">▶️ INICIAR TABATA</button>
-    </div>
     <div class="neon-card" style="display: flex; justify-content: space-around; flex-wrap:wrap; padding:0.5rem;">
         <div><span style="font-size:0.7rem;">🚭 SIN FUMAR</span><br><strong id="bannerSinFumar">0</strong></div>
         <div><span style="font-size:0.7rem;">⚖️ PESO</span><br><strong id="bannerPeso">-- kg</strong></div>
@@ -300,7 +289,7 @@ const PESOS_CICLO = { FUERZA: 9.5, DEFINICIÓN: 2.5, VOLUMEN: 3, RESISTENCIA: 5.
 const SERIES_REPS_CICLO = {
     FUERZA: { series: "4-5", reps: "3-5", objetivo: "FUERZA MÁXIMA", emoji: "🔥", color: "#ff3b30" },
     DEFINICIÓN: { series: "3-4", reps: "15-20", objetivo: "QUEMAR GRASA", emoji: "✨", color: "#e6c8a0" },
-    VOLUMEN: { series: "3-4", reps: "8-12", objetivo: "HIPERTROFIA", emoji: "💪", color: "#ff8c00" },
+    VOLUMEN: { series: "3-4", reps: "8-12", objetivo: "HIPERTROFIA", emoji: "💪", color: "#e6b800" },
     RESISTENCIA: { series: "3", reps: "15-20", objetivo: "RESISTENCIA", emoji: "⚡", color: "#20c4b8" }
 };
 
@@ -368,7 +357,7 @@ const imagenesMap = {
     "Curl araña con mancuerna ligera": "https://api.smartworkout.app/asset/image/7a6c7c0b-0480-4c45-ba66-18959ec9001f",
     // DEFINICIÓN - Viernes
     "Press banca inclinado muy ligero": "https://api.smartworkout.app/asset/image/375218cb-b06e-483b-bf5e-6db89512cc6b",
-    "Flexiones con rodillas apoyadas viernes": "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460",
+    "Flexiones normales": "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460",
     "Pájaro muy ligero (fly invertido)": "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
     "Elevación lateral tumbado (en el suelo)": "https://gymvisual.com/animated-gifs/1909-dumbbell-side-lying-one-hand-raise.html",
     // DEFINICIÓN - Sábado
@@ -551,9 +540,7 @@ function getPesoEjercicio(nombre, ciclo, personalizacion) {
     return getPesoEjercicioBase(nombre, ciclo);
 }
 function getSeriesReps(nombre, ciclo, personalizacion) {
-    // Cardio (alta intensidad) -> tiempo
     const cardioEjercicios = ["Burpees", "Saltos de tijera", "Rodillas altas", "Cinta"];
-    // Abdominales y estáticos -> series x reps
     const abdominales = ["Plancha", "Crunch", "Toques talón", "V-ups", "Puente de glúteos"];
     
     if (ciclo === 'RESISTENCIA') {
@@ -697,24 +684,31 @@ function marcarEjercicio(id) {
 function completarDia(dia) {
     const semanaKey = getWeekNumber(new Date()).toString();
     const completadoKey = `completado_${dia}_${semanaKey}`;
+    
     if (localStorage.getItem(completadoKey) === 'true') return;
+    
     localStorage.setItem(completadoKey, 'true');
+    
     const hoy = getHoyStr();
     if (!diasEntrenados.includes(hoy)) {
         diasEntrenados.push(hoy);
         guardarTodo();
     }
+    
     mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`);
     canvasConfetti({ particleCount: 150, spread: 100, colors: [SERIES_REPS_CICLO[getCicloActual()].color, '#fff'] });
-    actualizarLogros();
+    
     const nuevoNivel = getNivelActual();
     const nivelAnterior = parseInt(localStorage.getItem('nivelActual')) || 1;
     if (nuevoNivel > nivelAnterior) {
         mostrarToast(`🏆 ¡SUBES A NIVEL ${nuevoNivel}! Nuevos ejercicios desbloqueados.`);
         localStorage.setItem('nivelActual', nuevoNivel);
     }
+    
     renderizarRutinas();
     actualizarUI();
+    actualizarLogros();
+    renderCalendarios();
 }
 
 function resetDia(dia) {
@@ -896,162 +890,6 @@ function actualizarDisplayRespiracion() {
     if (tiempo) tiempo.innerText = tiempoActual;
 }
 
-// ==================== TABATA ====================
-const BANCO_EJERCICIOS_TABATA = [
-    { nombre: "Press militar (mancuernas)", instruccion: "De pie, mancuernas a los hombros, presiona arriba. Máxima intensidad.", img: "https://api.smartworkout.app/asset/image/d3878853-0b0e-4888-b3b3-06018f36dc6c" },
-    { nombre: "Curl de bíceps (mancuernas)", instruccion: "Curl simultáneo con dos mancuernas, codos fijos. Máxima intensidad.", img: "https://newlife.com.cy/wp-content/uploads/2019/11/04021301-Dumbbell-Seated-Preacher-Curl_Upper-Arms_360.gif" },
-    { nombre: "Remo con mancuerna", instruccion: "Remo hacia tu cadera, alterna brazos rápido.", img: "https://gymvisual.com/img/p/2/4/9/8/9/24989.gif" },
-    { nombre: "Burpees", instruccion: "Agáchate, salta a plancha, flexión, salta, palmada. Máxima intensidad.", img: "https://fitnessprogramer.com/wp-content/uploads/2021/02/burpees.gif" },
-    { nombre: "Sentadilla con salto", instruccion: "Baja, salta explosivo, aterriza suave. Máxima intensidad.", img: "https://gymvisual.com/img/p/1/4/5/4/7/14547.gif" },
-    { nombre: "Saltos de tijera", instruccion: "Salta abriendo y cerrando piernas y brazos. Rápido.", img: "https://gymvisual.com/img/p/1/5/9/8/5/15985.gif" },
-    { nombre: "Rodillas altas", instruccion: "Corre en el sitio elevando rodillas a la altura de la cadera. Rápido.", img: "https://gymvisual.com/img/p/1/4/9/3/4/14934.gif" }
-];
-const URL_MUSICA_TABATA = "https://music.amazon.es/albums/B0F8GR4M77?trackAsin=B0F8GN7NBF";
-
-function getDiaTabataSemana() {
-    const semana = getNumeroSemana(new Date());
-    const clave = `tabata_dia_${semana}`;
-    let diaTabata = localStorage.getItem(clave);
-    if (!diaTabata) {
-        const diasSemana = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
-        const aleatorio = Math.floor(Math.random() * 6);
-        diaTabata = diasSemana[aleatorio];
-        localStorage.setItem(clave, diaTabata);
-    }
-    return diaTabata;
-}
-function getDiaTabataPorFecha(fecha) {
-    const semana = getNumeroSemana(fecha);
-    const clave = `tabata_dia_${semana}`;
-    let diaTabata = localStorage.getItem(clave);
-    if (!diaTabata) {
-        const diasSemana = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
-        const aleatorio = Math.floor(Math.random() * 6);
-        diaTabata = diasSemana[aleatorio];
-        localStorage.setItem(clave, diaTabata);
-    }
-    return diaTabata;
-}
-function esFechaTabata(fecha) {
-    const diaSemana = fecha.getDay();
-    const diasMap = {1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado'};
-    const diaKey = diasMap[diaSemana];
-    if (!diaKey) return false;
-    const diaTabata = getDiaTabataPorFecha(fecha);
-    return diaKey === diaTabata;
-}
-function getEjerciciosTabataPorSemana(fecha) {
-    const semana = getNumeroSemana(fecha);
-    const clave = `tabata_ejercicios_${semana}`;
-    let guardados = localStorage.getItem(clave);
-    if (guardados) return JSON.parse(guardados);
-    const mancuerna = BANCO_EJERCICIOS_TABATA.filter(e => e.nombre.includes("mancuerna"));
-    const cardio = BANCO_EJERCICIOS_TABATA.filter(e => !e.nombre.includes("mancuerna"));
-    const seleccion = [];
-    const numManc = Math.floor(Math.random() * 2) + 1;
-    for (let i = 0; i < numManc && mancuerna.length; i++) {
-        const idx = Math.floor(Math.random() * mancuerna.length);
-        seleccion.push(mancuerna[idx]);
-        mancuerna.splice(idx, 1);
-    }
-    while (seleccion.length < 4 && cardio.length) {
-        const idx = Math.floor(Math.random() * cardio.length);
-        seleccion.push(cardio[idx]);
-        cardio.splice(idx, 1);
-    }
-    localStorage.setItem(clave, JSON.stringify(seleccion));
-    return seleccion;
-}
-function esHoyTabata() { return esFechaTabata(new Date()); }
-function getEjerciciosTabataSemana() { return getEjerciciosTabataPorSemana(new Date()); }
-function reproducirMusicaTabata() { window.open(URL_MUSICA_TABATA, '_blank'); }
-let tabataInterval = null, tabataRondaActual = 1, tabataTiempoRestante = 20, tabataFase = 'trabajo', ejerciciosTabataSeleccionados = [], ejerciciosTabataOrden = [], audioBeepTabata = null;
-let primeraRondaExtendida = false;
-function playBeepTabata() {
-    try { if (!audioBeepTabata) { audioBeepTabata = new Audio('https://www.soundjay.com/misc/sounds/beep-07.mp3'); audioBeepTabata.volume = 0.5; } audioBeepTabata.currentTime = 0; audioBeepTabata.play().catch(e=>{}); } catch(e) {}
-}
-function actualizarDisplayTabataModal() {
-    const rondaElem = document.getElementById('tabata-ronda');
-    const timerElem = document.getElementById('tabata-timer');
-    const progresoElem = document.getElementById('tabata-progreso-bar');
-    const ejercicioElem = document.getElementById('tabata-ejercicio');
-    const imgElem = document.getElementById('tabata-ejercicio-img');
-    const instrucElem = document.getElementById('tabata-instruccion');
-    if (rondaElem) rondaElem.innerText = `Ronda ${tabataRondaActual}/8`;
-    if (timerElem) timerElem.innerText = `${tabataTiempoRestante}s`;
-    if (progresoElem) {
-        let duracion = 20;
-        if (tabataRondaActual === 1 && tabataFase === 'trabajo' && !primeraRondaExtendida) duracion = 35;
-        else if (tabataFase === 'trabajo') duracion = 20;
-        else duracion = 10;
-        const pct = (tabataTiempoRestante / duracion) * 100;
-        progresoElem.style.width = `${pct}%`;
-    }
-    if (timerElem) timerElem.style.color = tabataFase === 'trabajo' ? '#ff6666' : '#66ff66';
-    const ejercicio = ejerciciosTabataOrden[tabataRondaActual - 1];
-    if (ejercicio && ejercicioElem) { ejercicioElem.innerText = ejercicio.nombre; if (imgElem) imgElem.src = ejercicio.img; if (instrucElem) instrucElem.innerText = ejercicio.instruccion; }
-}
-function tickTabataModal() {
-    tabataTiempoRestante--;
-    if (tabataTiempoRestante < 0) {
-        if (tabataRondaActual < 8) {
-            tabataRondaActual++;
-            if (tabataFase === 'trabajo') {
-                tabataFase = 'descanso';
-                tabataTiempoRestante = 10;
-            } else {
-                tabataFase = 'trabajo';
-                if (tabataRondaActual === 2 && !primeraRondaExtendida) {
-                    primeraRondaExtendida = true;
-                    tabataTiempoRestante = 35;
-                } else {
-                    tabataTiempoRestante = 20;
-                }
-            }
-            playBeepTabata();
-            actualizarDisplayTabataModal();
-        } else {
-            clearInterval(tabataInterval);
-            tabataInterval = null;
-            document.getElementById('tabata-timer').innerText = '✅ FINALIZADO';
-            document.getElementById('tabata-ronda').innerText = '¡TABATA COMPLETADO!';
-            document.getElementById('tabata-completar-btn').style.display = 'block';
-            playBeepTabata(); playBeepTabata();
-            mostrarToast("🎉 ¡TABATA completado! Marca el día como entrenado.");
-        }
-    } else {
-        actualizarDisplayTabataModal();
-    }
-}
-function iniciarTabataModal() {
-    if (tabataInterval) return;
-    primeraRondaExtendida = false;
-    tabataRondaActual = 1;
-    tabataTiempoRestante = 35;
-    tabataFase = 'trabajo';
-    actualizarDisplayTabataModal();
-    playBeepTabata();
-    document.getElementById('tabata-iniciar-btn').disabled = true;
-    tabataInterval = setInterval(tickTabataModal, 1000);
-}
-function marcarTabataCompletado() {
-    const hoy = getHoyStr();
-    if (!diasEntrenados.includes(hoy)) { diasEntrenados.push(hoy); guardarTodo(); mostrarToast("✅ Día TABATA marcado como completado"); canvasConfetti({ particleCount: 150, spread: 100, colors: ['#a0522d', '#fff'] }); renderCalendarios(); actualizarUI(); }
-    else mostrarToast("⚠️ Ya marcaste este día como completado");
-    cerrarTabata();
-}
-function cerrarTabata() { if (tabataInterval) clearInterval(tabataInterval); tabataInterval = null; document.getElementById('modalTabata')?.remove(); }
-function abrirTabata() {
-    ejerciciosTabataSeleccionados = getEjerciciosTabataSemana();
-    ejerciciosTabataOrden = [...ejerciciosTabataSeleccionados, ...ejerciciosTabataSeleccionados];
-    let html = `<div id="modalTabata" class="modal-disk"><div class="disk-panel" style="max-width:450px;"><span onclick="cerrarTabata()" style="float:right; cursor:pointer;">&times;</span><h3 style="color:#a0522d;">🔥 TABATA 🔥</h3><div style="margin:10px 0;">8 rondas · 20s trabajo / 10s descanso (1ª ronda: 35s)</div><div id="tabata-ronda" class="tabata-badge">Ronda 1/8</div><div id="tabata-timer" class="tabata-timer">35s</div><div class="tabata-progreso" style="background:#333; border-radius:10px; height:10px; margin:10px 0;"><div id="tabata-progreso-bar" style="background:#a0522d; width:0%; height:100%; border-radius:10px;"></div></div><div id="tabata-ejercicio" style="font-weight:bold; margin:10px 0;">${ejerciciosTabataOrden[0]?.nombre || ''}</div><div style="display:flex; gap:10px; align-items:center; margin:10px 0;"><img id="tabata-ejercicio-img" class="tabata-ejercicio-img" src="${ejerciciosTabataOrden[0]?.img || ''}" onerror="this.src='https://placehold.co/80x80?text=Ejercicio'"><div id="tabata-instruccion" style="font-size:0.8rem; text-align:left;">${ejerciciosTabataOrden[0]?.instruccion || ''}</div></div><button id="tabata-iniciar-btn" style="background:#a0522d; width:100%; padding:8px; border:none; border-radius:12px; color:#fff; font-weight:bold; margin:6px 0;">▶️ INICIAR TABATA</button><button id="tabata-completar-btn" style="display:none; background:#32d74b; width:100%; padding:8px; border:none; border-radius:12px; color:#000; font-weight:bold; margin:6px 0;">✅ MARCAR DÍA COMPLETADO</button><div style="display:flex; gap:8px; margin:10px 0;"><button onclick="reproducirMusicaTabata()" style="background:#a0522d; border:none; padding:6px; border-radius:30px; color:white; flex:1;">🎵 Música TABATA</button></div><button onclick="cerrarTabata()" style="background:#333; width:100%; padding:8px; border:none; border-radius:12px; color:#fff;">CERRAR</button></div></div>`;
-    cerrarTabata();
-    document.body.insertAdjacentHTML('beforeend', html);
-    document.getElementById('tabata-iniciar-btn').onclick = iniciarTabataModal;
-    document.getElementById('tabata-completar-btn').onclick = marcarTabataCompletado;
-}
-function mostrarMensajeTabata() { const mensajeDiv = document.getElementById('tabataMensaje'); if (mensajeDiv) mensajeDiv.style.display = esHoyTabata() ? 'block' : 'none'; }
-
 // ==================== RESTO DE FUNCIONALIDADES ====================
 let diasEntrenados = JSON.parse(localStorage.getItem('diasEntrenados')) || [];
 let diasNoFumar = JSON.parse(localStorage.getItem('diasNoFumar')) || [];
@@ -1121,17 +959,19 @@ function renderCalendarios() {
             const cell = document.createElement('div');
             cell.className = 'cal-cell';
             cell.innerText = d;
-            cell.style.borderColor = cicloColor;
-            const esTabata = esFechaTabata(fecha);
-            if(esTabata){
-                cell.classList.add('tabata');
-                if(diasEntrenados.includes(fStr)){ cell.classList.add('completado'); cell.style.background = '#d2691e'; }
-                else { cell.style.background = '#a0522d'; }
+            
+            // DOMINGOS: borde morado
+            if (fecha.getDay() === 0) {
+                cell.style.borderColor = "#9b59b6";
             } else {
-                if(diasEntrenados.includes(fStr)) cell.classList.add('completado');
-                if(marcasLesion.includes(fStr)) cell.style.background = '#f9a8d4';
-                if(marcasVacaciones.includes(fStr)) cell.style.background = '#a5d8ff';
+                cell.style.borderColor = cicloColor;
             }
+            
+            if(diasEntrenados.includes(fStr)){
+                cell.classList.add('completado');
+            }
+            if(marcasLesion.includes(fStr)) cell.style.background = '#f9a8d4';
+            if(marcasVacaciones.includes(fStr)) cell.style.background = '#a5d8ff';
             if(fStr === hoyStr) cell.classList.add('today');
             cell.onclick = (function(f, ciclo){ return function(){ mostrarPopupEjercicios(f, ciclo); }; })(fecha, cicloSemana);
             contGym.appendChild(cell);
@@ -1330,7 +1170,7 @@ function aplicarColorCiclo() {
         <div class="ciclo-botones">
             <div class="btn-ciclo-color" data-ciclo="FUERZA" style="background-color:#ff3b30;" title="FUERZA"></div>
             <div class="btn-ciclo-color" data-ciclo="DEFINICIÓN" style="background-color:#e6c8a0;" title="DEFINICIÓN"></div>
-            <div class="btn-ciclo-color" data-ciclo="VOLUMEN" style="background-color:#ff8c00;" title="VOLUMEN"></div>
+            <div class="btn-ciclo-color" data-ciclo="VOLUMEN" style="background-color:#e6b800;" title="VOLUMEN"></div>
             <div class="btn-ciclo-color" data-ciclo="RESISTENCIA" style="background-color:#20c4b8;" title="RESISTENCIA"></div>
         </div>
     `;
@@ -1397,7 +1237,7 @@ function mostrarVistaPreviaCiclos(){
     const diasSemana=['lunes','martes','miercoles','jueves','viernes','sabado']; let html=`<div class="disk-panel" style="max-width:90vw; overflow-x:auto;"><h3 style="color:var(--ciclo-color);">📋 VISTA PREVIA</h3><table class="preview-table"><thead><tr><th>Día</th>`;
     ciclos.forEach(c=>html+=`<th style="color:${SERIES_REPS_CICLO[nombresCiclo[c]].color}">${nombresCiclo[c]}</th>`);
     html+=`</thead><tbody>`;
-    diasSemana.forEach(dia=>{ html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td>`; ciclos.forEach(cicloKey=>{ const ejercs=getEjerciciosPorDia(dia, cicloKey); if(!ejercs){ html+=`<td>-</td>`; return; } html+=`<td><ul style="margin:0; padding-left:1rem;">`; ejercs.forEach(ej=>html+=`<li>${ej}</li>`); html+=`</ul></td>`; }); html+=`</tr>`; });
+    diasSemana.forEach(dia=>{ html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td>`; ciclos.forEach(cicloKey=>{ const ejercs=getEjerciciosPorDia(dia, cicloKey); if(!ejercs){ html+=`<td>-</td>`; return; } html+=`<td><ul style="margin:0; padding-left:1rem;">`; ejercs.forEach(ej=>html+=`<li>${ej}</li>`); html+=`</ul></td>`; }); html+=`</table>`; });
     html+=`</tbody></table><button onclick="cerrarModalPopup()" style="background:var(--ciclo-color); border:none; padding:6px 12px; border-radius:30px; margin-top:10px;">CERRAR</button></div>`;
     cerrarModalPopup(); const overlay=document.createElement('div'); overlay.className='modal-disk'; overlay.id='modalPopup'; overlay.innerHTML=html; document.body.appendChild(overlay);
 }
@@ -1407,7 +1247,6 @@ function actualizarUI(){
     document.getElementById('bannerSinFumar').innerText=calcularDiasSinFumar();
     if(pesos.length) document.getElementById('bannerPeso').innerText=pesos[pesos.length-1].valor+' kg';
     renderizarRutinas(); actualizarGrafico(); renderCalendarios(); actualizarLogros(); mostrarHistorialPeso(); actualizarInfoPausa();
-    mostrarMensajeTabata();
 }
 function go(id){
     document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active'));
@@ -1432,8 +1271,6 @@ window.onload=()=>{
     actualizarUI();
     cargarListaDias();
     cargarSelectores();
-    const btnHome = document.getElementById('btnTabataHome');
-    if(btnHome) btnHome.addEventListener('click', () => abrirTabata());
     setInterval(()=>{ const ahora=new Date(); document.getElementById('reloj').innerText=`${ahora.getHours().toString().padStart(2,'0')}:${ahora.getMinutes().toString().padStart(2,'0')}:${ahora.getSeconds().toString().padStart(2,'0')}`; },1000);
 };
 </script>
