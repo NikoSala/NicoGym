@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>NICO GYM - VERSIÓN DEFINITIVA</title>
+    <title>NICO GYM - PESOS AJUSTADOS</title>
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2964/2964514.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -74,7 +74,6 @@
         .btn-reset-dia{background:#1e2a3a;border:1px solid var(--ciclo-color);color:var(--ciclo-color);border-radius:1.5rem;padding:4px 8px;font-size:0.65rem;cursor:pointer;margin-top:8px;width:100%}
         .btn-reset-dia:disabled{opacity:0.5;cursor:not-allowed}
         
-        /* ========== RESPIRACIÓN ========== */
         .respirar-container {
             display: flex;
             flex-direction: column;
@@ -305,67 +304,52 @@ const discosPorPeso = {
 
 // ==================== MAPA DE IMÁGENES ====================
 const imagenesMap = {
-    // FUERZA - Lunes
     "Dominadas (palmas mirando afuera)": "https://api.smartworkout.app/asset/image/e132f3b7-cccc-4098-9b44-1aa9a7954a3e",
     "Remo con barra (agarre supino estricto)": "https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif",
     "Curl predicador unilateral (con silla)": "https://newlife.com.cy/wp-content/uploads/2019/11/04021301-Dumbbell-Seated-Preacher-Curl_Upper-Arms_360.gif",
     "Curl araña unilateral (pausa de 2\")": "https://api.smartworkout.app/asset/image/94cdc539-0fda-45a3-b2e5-ca8404a629d7",
-    // FUERZA - Martes
     "Press banca con pies elevados": "https://fitwill.app/api/image/3174?p=1&w=1024&h=576",
     "Flexiones con peso (mochila opcional)": "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460",
     "Press militar de pie con pausa arriba": "https://api.smartworkout.app/asset/image/cb179489-5169-4054-939a-40452492b2f4",
     "Elevaciones laterales unilaterales (con apoyo de pared)": "https://api.smartworkout.app/asset/image/0f95b85a-7bb1-4013-875d-ad9bcf815c29",
-    // FUERZA - Miércoles
     "Sentadilla búlgara con pausa abajo": "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649",
     "Peso muerto rumano a una pierna": "https://fitcron.com/wp-content/uploads/2021/04/17571301-Dumbbell-Single-Leg-Deadlift_Hips_720.gif",
     "Fondos en paralelas (torre de dominadas)": "https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030",
     "Press francés unilateral con pausa": "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif",
-    // FUERZA - Jueves
     "Remo a una mano con pausa de 3\"": "https://fitcron.com/wp-content/uploads/2021/04/02921301-Dumbbell-Bent-over-Row_back_Back_720.gif",
     "Remo con barra agarre cerrado (supino)": "https://gymvisual.com/img/p/1/0/6/1/7/10617.gif",
     "Curl predicador con silla (dos brazos)": "https://newlife.com.cy/wp-content/uploads/2019/11/04021301-Dumbbell-Seated-Preacher-Curl_Upper-Arms_360.gif",
     "Curl martillo con agarre inverso (palmas abajo)": "https://musclemagfitness.com/wp-content/uploads/dumbbell-reverse-grip-curl-exercise.gif",
-    // FUERZA - Viernes
     "Press banca con pies elevados y pausa": "https://fitwill.app/api/image/3174?p=1&w=1024&h=576",
     "Flexiones con palmada (explosivas)": "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460",
     "Pájaro (fly invertido) con pausa de 2\"": "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
     "Remo al cuello con mancuerna": "https://fitcron.com/wp-content/uploads/2021/04/04371301-Dumbbell-Upright-Row_shoulder_720.gif",
-    // FUERZA - Sábado
     "Sentadilla búlgara con pausa (sab)": "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649",
     "Peso muerto rumano a una pierna (sab)": "https://fitcron.com/wp-content/uploads/2021/04/17571301-Dumbbell-Single-Leg-Deadlift_Hips_720.gif",
-    "Fondos en paralelas (torre)": "https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030",
     "Press francés unilateral con pausa sab": "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif",
-    // DEFINICIÓN - Lunes
     "Dominadas con banda elástica (o negativas con silla)": "https://www.inspireusafoundation.org/wp-content/uploads/2023/05/band-assisted-pull-up.gif",
     "Remo inclinado con barra ligera": "https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif",
     "Curl concentrado sentado": "https://fitcron.com/wp-content/uploads/2021/04/02971301-Dumbbell-Concentration-Curl_Upper-Arms_720.gif",
     "Curl de bíceps con pausa (1\" arriba)": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
-    // DEFINICIÓN - Martes
     "Press banca inclinado (con silla)": "https://api.smartworkout.app/asset/image/375218cb-b06e-483b-bf5e-6db89512cc6b",
     "Flexiones normales": "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460",
     "Press militar con mancuerna ligera": "https://fitcron.com/wp-content/uploads/2021/04/04261301-Dumbbell-Standing-Overhead-Press_shoulder_720.gif",
     "Elevaciones frontales alternas": "https://api.smartworkout.app/asset/image/5aec4152-62ab-4bb5-b90b-e472690e5383",
-    // DEFINICIÓN - Miércoles
     "Sentadilla sumo con mancuerna ligera": "https://fitcron.com/wp-content/uploads/2021/04/03711301-Dumbbell-Plyo-Squat_thighs_720.gif",
     "Peso muerto con piernas rectas (muy ligero)": "https://fitcron.com/wp-content/uploads/2021/04/04321301-Dumbbell-Stiff-Leg-Deadlift_Waist_720.gif",
     "Fondos entre dos sillas": "https://api.smartworkout.app/asset/image/14fff202-7bb2-4e35-af03-39b9a58417d2",
     "Press de hombros con pies juntos (inestable)": "https://api.smartworkout.app/asset/image/9b7605e1-bafa-4acc-9483-1c5553c6e9d9",
-    // DEFINICIÓN - Jueves
     "Remo unilateral muy ligero": "https://fitcron.com/wp-content/uploads/2021/04/02921301-Dumbbell-Bent-over-Row_back_Back_720.gif",
     "Remo inclinado con pausa": "https://gymvisual.com/img/p/1/0/6/1/7/10617.gif",
     "Curl concentrado sentado (jueves def)": "https://gymvisual.com/img/p/2/8/1/1/9/28119.gif",
     "Curl araña con mancuerna ligera": "https://api.smartworkout.app/asset/image/7a6c7c0b-0480-4c45-ba66-18959ec9001f",
-    // DEFINICIÓN - Viernes
     "Press banca inclinado muy ligero": "https://api.smartworkout.app/asset/image/375218cb-b06e-483b-bf5e-6db89512cc6b",
-    "Flexiones normales": "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460",
     "Pájaro muy ligero (fly invertido)": "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
     "Elevación lateral tumbado (en el suelo)": "https://gymvisual.com/animated-gifs/1909-dumbbell-side-lying-one-hand-raise.html",
-    // DEFINICIÓN - Sábado
     "Sentadilla sumo (sab def)": "https://fitcron.com/wp-content/uploads/2021/04/03711301-Dumbbell-Plyo-Squat_thighs_720.gif",
     "Peso muerto con piernas rectas (sab def)": "https://fitcron.com/wp-content/uploads/2021/04/04321301-Dumbbell-Stiff-Leg-Deadlift_Waist_720.gif",
     "Extensión de tríceps en el suelo": "https://gymvisual.com/img/p/1/0/9/2/5/10925.gif",
     "Press francés con pies juntos": "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif",
-    // VOLUMEN
     "Dominadas (palmas mirando hacia ti)": "https://i.pinimg.com/originals/15/98/ec/1598ec2121ef2ac8c5fa0a51c5a16f53.gif",
     "Remo a una mano (normal)": "https://static.wixstatic.com/media/c94d75_c1fe019ba48e4843b63ab9dcc0284c30~mv2.gif",
     "Curl martillo normal (dos manos)": "https://rincondelmusculo.com/wp-content/uploads/2014/09/CURL_DE_MARTILLO.gif",
@@ -380,15 +364,11 @@ const imagenesMap = {
     "Curl de bíceps normal (dos manos)": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
     "Curl martillo normal (dos manos) jueves": "https://fitcron.com/wp-content/uploads/2021/04/02981301-Dumbbell-Cross-Body-Hammer-Curl_Forearms_720.gif",
     "Pájaro (fly invertido) normal": "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
-    "Remo al cuello con mancuerna": "https://fitcron.com/wp-content/uploads/2021/04/04371301-Dumbbell-Upright-Row_shoulder_720.gif",
-    "Fondos entre dos sillas (sab vol)": "https://api.smartworkout.app/asset/image/14fff202-7bb2-4e35-af03-39b9a58417d2",
-    // RESISTENCIA
     "Sentadilla copa con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif",
     "Zancadas alternas con mancuerna": "https://gymvisual.com/img/p/2/3/7/3/9/23739.gif",
     "Press de hombros sentado": "https://api.smartworkout.app/asset/image/d3878853-0b0e-4888-b3b3-06018f36dc6c",
     "Burpees": "https://fitnessprogramer.com/wp-content/uploads/2021/02/burpees.gif",
     "Plancha": "https://www.inspireusafoundation.org/wp-content/uploads/2022/01/plank.gif",
-    "Remo a una mano": "https://fitcron.com/wp-content/uploads/2021/04/02921301-Dumbbell-Bent-over-Row_back_Back_720.gif",
     "Curl de bíceps alterno": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
     "Peso muerto rumano con mancuerna": "https://fitcron.com/wp-content/uploads/2021/04/14591301-Dumbbell-Romanian-Deadlift_Hips_720.gif",
     "Toques talón": "https://gymvisual.com/img/p/1/4/6/6/0/14660.gif",
@@ -401,7 +381,6 @@ const imagenesMap = {
     "V-ups": "https://gymvisual.com/img/p/2/2/5/8/3/22583.gif",
     "Remo inclinado a dos manos": "https://gymvisual.com/img/p/1/0/6/1/7/10617.gif",
     "Curl femoral con mancuerna": "https://gymvisual.com/img/p/2/1/5/6/8/21568.gif",
-    "Curl de martillo": "https://rincondelmusculo.com/wp-content/uploads/2014/09/CURL_DE_MARTILLO.gif",
     "Crunch": "https://fitnessprogramer.com/wp-content/uploads/2015/11/Crunch.gif",
     "Sentadilla búlgara con mancuerna": "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649",
     "Press francés a dos manos": "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif",
@@ -527,14 +506,95 @@ function getCantidadMancuernas(nombre) {
     if (nombre.includes("Dominadas") || nombre.includes("Fondos") || nombre.includes("Burpees") || nombre.includes("Plancha") || nombre.includes("Zancadas") || nombre.includes("Cinta") || nombre.includes("Saltos") || nombre.includes("Toques") || nombre.includes("Crunch") || nombre.includes("V-ups") || nombre.includes("Rodillas")) return 0;
     return 2;
 }
+
+// ==================== PESOS SUGERIDOS POR EJERCICIO (ACTUALIZADO CON TU TABLA) ====================
 function getPesoEjercicioBase(nombre, ciclo) {
-    const pesoBase = PESOS_CICLO[ciclo];
-    if (nombre.includes("Flexiones") || nombre.includes("Fondos") || nombre.includes("Dominadas") || nombre.includes("Plancha") || nombre.includes("Burpees") || nombre.includes("Toques") || nombre.includes("Saltos") || nombre.includes("Crunch") || nombre.includes("Rodillas") || nombre.includes("Cinta") || nombre.includes("V-ups")) {
-        if (ciclo === 'FUERZA' && (nombre.includes("Flexiones con peso") || nombre.includes("mochila"))) return 9.5;
-        return 0;
+    const pesosBase = {
+        FUERZA: 9.5,
+        DEFINICIÓN: 4,
+        VOLUMEN: 5.5,
+        RESISTENCIA: 6.5
+    };
+    
+    const base = pesosBase[ciclo];
+    
+    // Curl predicador, araña, concentrado (los más ligeros)
+    if (nombre.includes("Curl predicador") || nombre.includes("Curl araña") || nombre.includes("Curl concentrado")) {
+        if (ciclo === 'FUERZA') return 5.5;
+        if (ciclo === 'DEFINICIÓN') return 2.5;
+        if (ciclo === 'VOLUMEN') return 3;
+        if (ciclo === 'RESISTENCIA') return 4;
     }
-    return pesoBase;
+    
+    // Curl de bíceps normales y curl martillo
+    if ((nombre.includes("Curl de bíceps") || nombre.includes("Curl martillo")) && 
+        !nombre.includes("predicador") && !nombre.includes("araña") && !nombre.includes("concentrado")) {
+        if (ciclo === 'FUERZA') return 7;
+        if (ciclo === 'DEFINICIÓN') return 2.5;
+        if (ciclo === 'VOLUMEN') return 3;
+        if (ciclo === 'RESISTENCIA') return 4;
+    }
+    
+    // Press francés / tríceps
+    if (nombre.includes("Press francés") || nombre.includes("Extensión de tríceps")) {
+        if (ciclo === 'FUERZA') return 7;
+        if (ciclo === 'DEFINICIÓN') return 2.5;
+        if (ciclo === 'VOLUMEN') return 3;
+        if (ciclo === 'RESISTENCIA') return 4;
+    }
+    
+    // Elevaciones laterales y frontales
+    if (nombre.includes("Elevaciones laterales") || nombre.includes("Elevación lateral") || nombre.includes("Elevaciones frontales")) {
+        if (ciclo === 'FUERZA') return 4;
+        if (ciclo === 'DEFINICIÓN') return 2.5;
+        if (ciclo === 'VOLUMEN') return 3;
+        if (ciclo === 'RESISTENCIA') return 4;
+    }
+    
+    // Pájaro / fly invertido
+    if (nombre.includes("Pájaro") || nombre.includes("fly invertido")) {
+        if (ciclo === 'FUERZA') return 4;
+        if (ciclo === 'DEFINICIÓN') return 2.5;
+        if (ciclo === 'VOLUMEN') return 3;
+        if (ciclo === 'RESISTENCIA') return 4;
+    }
+    
+    // Aperturas de pecho
+    if (nombre.includes("Aperturas")) {
+        if (ciclo === 'FUERZA') return 5.5;
+        if (ciclo === 'DEFINICIÓN') return 2.5;
+        if (ciclo === 'VOLUMEN') return 3;
+        if (ciclo === 'RESISTENCIA') return 4;
+    }
+    
+    // Sentadilla búlgara
+    if (nombre.includes("Sentadilla búlgara")) {
+        if (ciclo === 'FUERZA') return 7;
+        if (ciclo === 'DEFINICIÓN') return 2.5;
+        if (ciclo === 'VOLUMEN') return 3;
+        if (ciclo === 'RESISTENCIA') return 4;
+    }
+    
+    // Curl femoral
+    if (nombre.includes("Curl femoral")) {
+        if (ciclo === 'FUERZA') return 7;
+        if (ciclo === 'DEFINICIÓN') return 2.5;
+        if (ciclo === 'VOLUMEN') return 3;
+        if (ciclo === 'RESISTENCIA') return 4;
+    }
+    
+    // Remo a una mano (unilateral)
+    if (nombre.includes("Remo a una mano") || nombre.includes("Remo unilateral")) {
+        if (ciclo === 'FUERZA') return 7;
+        if (ciclo === 'DEFINICIÓN') return 2.5;
+        if (ciclo === 'VOLUMEN') return 3;
+        if (ciclo === 'RESISTENCIA') return 4;
+    }
+    
+    // Por defecto, peso base del ciclo
+    return base;
 }
+
 function getPesoEjercicio(nombre, ciclo, personalizacion) {
     if (personalizacion && personalizacion.peso !== undefined) return personalizacion.peso;
     return getPesoEjercicioBase(nombre, ciclo);
@@ -805,7 +865,7 @@ function reiniciarChecksSiNuevaSemana() {
     }
 }
 
-// ==================== RESPIRACIÓN (4 CICLOS) ====================
+// ==================== RESPIRACIÓN ====================
 function abrirRespiracionModerno() {
     const modalHTML = `
         <div id="modalRespiracion" class="modal-disk">
@@ -960,7 +1020,6 @@ function renderCalendarios() {
             cell.className = 'cal-cell';
             cell.innerText = d;
             
-            // DOMINGOS: borde morado
             if (fecha.getDay() === 0) {
                 cell.style.borderColor = "#9b59b6";
             } else {
@@ -1237,8 +1296,8 @@ function mostrarVistaPreviaCiclos(){
     const diasSemana=['lunes','martes','miercoles','jueves','viernes','sabado']; let html=`<div class="disk-panel" style="max-width:90vw; overflow-x:auto;"><h3 style="color:var(--ciclo-color);">📋 VISTA PREVIA</h3><table class="preview-table"><thead><tr><th>Día</th>`;
     ciclos.forEach(c=>html+=`<th style="color:${SERIES_REPS_CICLO[nombresCiclo[c]].color}">${nombresCiclo[c]}</th>`);
     html+=`</thead><tbody>`;
-    diasSemana.forEach(dia=>{ html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td>`; ciclos.forEach(cicloKey=>{ const ejercs=getEjerciciosPorDia(dia, cicloKey); if(!ejercs){ html+=`<td>-</td>`; return; } html+=`<td><ul style="margin:0; padding-left:1rem;">`; ejercs.forEach(ej=>html+=`<li>${ej}</li>`); html+=`</ul></td>`; }); html+=`</table>`; });
-    html+=`</tbody></table><button onclick="cerrarModalPopup()" style="background:var(--ciclo-color); border:none; padding:6px 12px; border-radius:30px; margin-top:10px;">CERRAR</button></div>`;
+    diasSemana.forEach(dia=>{ html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td>`; ciclos.forEach(cicloKey=>{ const ejercs=getEjerciciosPorDia(dia, cicloKey); if(!ejercs){ html+=`<td>-</td>`; return; } html+=`<td><ul style="margin:0; padding-left:1rem;">`; ejercs.forEach(ej=>html+=`<li>${ej}</li>`); html+=`</ul></td>`; }); html+=`<tr>`; });
+    html+=`</tbody></td><button onclick="cerrarModalPopup()" style="background:var(--ciclo-color); border:none; padding:6px 12px; border-radius:30px; margin-top:10px;">CERRAR</button></div>`;
     cerrarModalPopup(); const overlay=document.createElement('div'); overlay.className='modal-disk'; overlay.id='modalPopup'; overlay.innerHTML=html; document.body.appendChild(overlay);
 }
 function actualizarUI(){
