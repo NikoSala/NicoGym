@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>NICO GYM - PESOS AJUSTADOS</title>
+    <title>NICO GYM - RUTINA BANCO + OBJETIVOS</title>
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2964/2964514.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -17,16 +17,17 @@
         .neon-card{background:rgba(20,25,45,0.7);backdrop-filter:blur(4px);border-radius:1.3rem;border:1px solid var(--ciclo-color);box-shadow:0 0 12px var(--ciclo-color);padding:0.7rem;margin-bottom:0.7rem}
         .btn-3d{background:linear-gradient(145deg,#1e2a3a,#0e1a2a);border:none;color:var(--ciclo-color);font-weight:bold;padding:0.2rem 0.5rem;border-radius:1.2rem;box-shadow:0 2px 0 #0a0e1a;cursor:pointer;font-size:0.7rem}
         .btn-3d:active{transform:translateY(2px)}
-        .day-card{background:#11141fe0;border-radius:1.2rem;padding:0.7rem;border-left:4px solid var(--ciclo-color);margin-bottom:0.7rem}
-        .exercise-card{background:#0b0e1ad9;border-radius:1rem;margin:0.5rem 0;padding:0.5rem;border:1px solid var(--ciclo-color)}
+        .exercise-card{background:#0b0e1ad9;border-radius:1rem;margin:0.5rem 0;padding:0.5rem;border:1px solid var(--ciclo-color);transition:0.2s}
+        .exercise-card:hover{border-color:var(--ciclo-color);box-shadow:0 0 8px var(--ciclo-color)}
         .weight-badge{background:#2a2f44;border-radius:2rem;padding:0.1rem 0.7rem;font-weight:bold;display:inline-block;box-shadow:inset 0 0 4px gold,0 0 6px var(--ciclo-color);cursor:pointer;font-size:0.75rem}
-        .btn-main{background:#1e2a3a;border:1px solid var(--ciclo-color);color:var(--ciclo-color);border-radius:1.5rem;padding:0.3rem;width:100%;margin-top:0.4rem;cursor:pointer;font-size:0.7rem}
+        .btn-main{background:#1e2a3a;border:1px solid var(--ciclo-color);color:var(--ciclo-color);border-radius:1.5rem;padding:0.3rem;width:100%;margin-top:0.4rem;cursor:pointer;font-size:0.7rem;transition:0.2s}
+        .btn-main:hover{background:var(--ciclo-color);color:#000}
         .detalles{display:none;background:#000000aa;border-radius:1rem;padding:0.5rem;margin-top:0.4rem}
         .detalles.show{display:block}
         .ex-img{width:100%;max-width:140px;border-radius:10px;margin:6px auto;display:block}
-        .grid-dias{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:0.7rem}
         .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:6px}
-        .cal-cell{background:#0a0a1a;border-radius:6px;text-align:center;padding:4px 0;font-size:0.65rem;cursor:pointer;border:1.5px solid #2a2f44}
+        .cal-cell{background:#0a0a1a;border-radius:6px;text-align:center;padding:4px 0;font-size:0.65rem;cursor:pointer;border:1.5px solid #2a2f44;transition:0.1s}
+        .cal-cell:hover{transform:scale(1.02);background:#1a1a2a}
         .cal-cell.completado{background:#2e7d32;color:#fff}
         .cal-cell.today{border:2px solid white}
         .modal-disk{position:fixed;top:0;left:0;width:100%;height:100%;background:#000000cc;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:2000}
@@ -42,11 +43,13 @@
         #menu-lat{position:fixed;left:-280px;top:0;width:280px;height:100%;background:#0a0c1a;transition:0.3s;z-index:1000;border-right:2px solid var(--ciclo-color);overflow-y:auto}
         #menu-lat.open{left:0}
         #overlay{position:fixed;inset:0;background:#000c;display:none;z-index:999}
-        .nav-btn{padding:12px 16px;border-bottom:1px solid #222;display:block;font-weight:bold;cursor:pointer}
+        .nav-btn{padding:12px 16px;border-bottom:1px solid #222;display:block;font-weight:bold;cursor:pointer;transition:0.2s}
+        .nav-btn:hover{background:#1e2a3a;color:var(--ciclo-color)}
         .submenu-btn{padding:12px 16px;border-bottom:1px solid #222;display:flex;justify-content:space-between;cursor:pointer}
         .submenu-items{max-height:0;overflow:hidden;transition:max-height 0.3s;background:#05070f}
         .submenu-items.show{max-height:400px}
         .sub-link{padding:8px 16px;color:#aaa;display:block;cursor:pointer}
+        .sub-link:hover{background:#1e2a3a;color:var(--ciclo-color)}
         .descanso-box{position:fixed;inset:0;background:#000f;z-index:4000;display:none;align-items:center;justify-content:center}
         .descanso-contenido{background:#1a1a2a;border-radius:30px;padding:20px;text-align:center;border:3px solid #32d74b}
         .descanso-timer-num{font-size:3rem;font-weight:bold;color:#32d74b}
@@ -58,8 +61,8 @@
         .foto-item img{width:100%;border-radius:8px;max-height:200px;object-fit:cover}
         .edit-icono{font-size:0.8rem;cursor:pointer;margin-left:6px;opacity:0.7;display:inline-block}
         .edit-icono:hover{opacity:1}
-        .ciclo-botones{display:flex;gap:6px;justify-content:center;margin-top:6px}
-        .btn-ciclo-color{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.6);cursor:pointer;transition:0.1s}
+        .ciclo-botones{display:flex;gap:12px;justify-content:center;margin-top:12px}
+        .btn-ciclo-color{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.6);cursor:pointer;transition:0.1s}
         .btn-ciclo-color:active{transform:scale(0.95)}
         .nivel-progreso{background:#1e2a3a;border-radius:12px;padding:6px 10px;margin-top:8px}
         .nivel-titulo{font-size:0.7rem;font-weight:bold;display:flex;justify-content:space-between}
@@ -73,75 +76,11 @@
         .check-box{width:20px;height:20px;accent-color:#32d74b;cursor:pointer}
         .btn-reset-dia{background:#1e2a3a;border:1px solid var(--ciclo-color);color:var(--ciclo-color);border-radius:1.5rem;padding:4px 8px;font-size:0.65rem;cursor:pointer;margin-top:8px;width:100%}
         .btn-reset-dia:disabled{opacity:0.5;cursor:not-allowed}
-        
-        .respirar-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
-        }
-        .circulo-respiracion {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,255,255,0.2), rgba(0,255,255,0.05));
-            border: 3px solid var(--ciclo-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px var(--ciclo-color);
-        }
-        .circulo-respiracion.animar {
-            animation: latir 4s ease-in-out infinite;
-        }
-        @keyframes latir {
-            0% { transform: scale(1); box-shadow: 0 0 20px var(--ciclo-color); }
-            25% { transform: scale(1.3); box-shadow: 0 0 40px var(--ciclo-color); }
-            50% { transform: scale(1); box-shadow: 0 0 20px var(--ciclo-color); }
-            75% { transform: scale(0.8); box-shadow: 0 0 10px var(--ciclo-color); }
-            100% { transform: scale(1); box-shadow: 0 0 20px var(--ciclo-color); }
-        }
-        .texto-respiracion {
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 10px;
-        }
-        .tiempo-respiracion {
-            font-size: 2.5rem;
-            font-family: monospace;
-            font-weight: bold;
-            color: var(--ciclo-color);
-        }
-        .paso-respiracion {
-            font-size: 0.8rem;
-            color: #aaa;
-            text-align: center;
-        }
-        .btn-respiracion {
-            background: var(--ciclo-color);
-            border: none;
-            padding: 8px 20px;
-            border-radius: 30px;
-            color: #000;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .btn-respiracion:active { transform: translateY(2px); }
-        
-        @media (max-width: 600px) {
-            body{padding:0.4rem}
-            .grid-dias{grid-template-columns:1fr}
-            .btn-ciclo-color{width:20px;height:20px}
-            .nivel-progreso{padding:4px 8px}
-            .subir-fotos-grid{grid-template-columns:1fr}
-            .circulo-respiracion { width: 120px; height: 120px; }
-            .tiempo-respiracion { font-size: 2rem; }
-        }
+        .badge-card{background:#1e2a3a;border-radius:2rem;padding:0.3rem 0.8rem;display:inline-block;margin:3px;font-size:0.7rem}
+        .badge-card[style*="border:1px solid gold"]{background:linear-gradient(135deg,#2a3a2a,#1a2a1a)}
+        .cinta-info{background:#1e2a3a;border-radius:1rem;padding:0.5rem;text-align:center;font-size:0.7rem;margin-top:0.5rem}
+        .piramide-detalle{font-size:0.65rem;background:#1e2a3a;border-radius:0.8rem;padding:0.3rem;margin-top:0.3rem;text-align:center}
+        @media (max-width:600px){body{padding:0.4rem}}
     </style>
 </head>
 <body>
@@ -163,7 +102,7 @@
     <div class="nav-btn" onclick="go('progreso-fotos')">📸 GALERÍA PROGRESO</div>
     <div class="nav-btn" onclick="go('peso')">⚖️ PESO CORPORAL</div>
     <div class="nav-btn" onclick="go('logros')">🏆 LOGROS</div>
-    <div class="nav-btn" onclick="mostrarVistaPreviaCiclos()">📋 VISTA PREVIA DE CICLOS</div>
+    <div class="nav-btn" onclick="mostrarVistaPreviaCiclos()">📋 VISTA PREVIA</div>
     <div class="nav-btn" onclick="exportarDatos()">📧 COPIA SEGURIDAD</div>
     <div class="nav-btn" onclick="mostrarReset()">⚙️ RESET</div>
 </nav>
@@ -176,7 +115,6 @@
     <div class="header-right">
         <span id="reloj" class="reloj">--:--:--</span>
         <div class="amazon-music-btn" onclick="window.open('https://music.amazon.com/playlists/B0H12P9V4K', '_blank')" style="cursor:pointer; background:#1a1a2a; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-size:0.8rem; border:1px solid var(--ciclo-color);">🎵</div>
-        <div class="control-btn" onclick="abrirRespiracionModerno()" style="cursor:pointer; background:#1a1a2a; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-size:0.8rem; border:1px solid var(--ciclo-color);">🧘</div>
         <span id="cicloIconoHeader" style="font-size:1rem;">🏋️</span>
         <span class="home-icon" onclick="go('home')" style="font-size:1.3rem; cursor:pointer;">🏠</span>
     </div>
@@ -184,13 +122,13 @@
 
 <div id="home" class="seccion active">
     <div id="cycleCard" class="neon-card" style="text-align:center;"></div>
-    <div class="neon-card" style="display: flex; justify-content: space-around; flex-wrap:wrap; padding:0.5rem;">
+    <div class="neon-card" style="display:flex; justify-content:space-around; flex-wrap:wrap; padding:0.5rem;">
         <div><span style="font-size:0.7rem;">🚭 SIN FUMAR</span><br><strong id="bannerSinFumar">0</strong></div>
         <div><span style="font-size:0.7rem;">⚖️ PESO</span><br><strong id="bannerPeso">-- kg</strong></div>
-        <div><span style="font-size:0.7rem;">🎯 OBJETIVO</span><br><strong>75 kg</strong></div>
+        <div><span style="font-size:0.7rem;">🎯 OBJETIVO</span><br><strong id="bannerObjetivo">80 kg</strong></div>
     </div>
-    <div class="neon-card" style="height: 150px;"><canvas id="graficoPeso"></canvas></div>
-    <div class="neon-card" style="text-align: center;">
+    <div class="neon-card" style="height:150px;"><canvas id="graficoPeso"></canvas></div>
+    <div class="neon-card" style="text-align:center;">
         <button onclick="marcarHoyFumado()" style="background:#222; border:1px solid var(--ciclo-color); color:var(--ciclo-color); padding:6px; border-radius:12px; width:100%; font-size:0.75rem;">🚬 Marcar hoy como fumado</button>
         <div class="pausa-botones" style="display:flex; gap:5px; justify-content:center; margin-top:6px; flex-wrap:wrap;">
             <button onclick="abrirModalMarcar('lesion')">🤕 Lesión</button>
@@ -206,18 +144,18 @@
     <h3>📅 CALENDARIO DE ENTRENOS</h3>
     <div class="neon-card">
         <div class="cal-nav" style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
-            <button onclick="changeMonth(-1,'gym')">←</button>
+            <button class="btn-3d" onclick="changeMonth(-1,'gym')">←</button>
             <span id="cal-month-gym" style="font-weight:bold;"></span>
-            <button onclick="changeMonth(1,'gym')">→</button>
+            <button class="btn-3d" onclick="changeMonth(1,'gym')">→</button>
         </div>
         <div id="cal-gym" class="cal-grid"></div>
     </div>
     <h3>📅 CALENDARIO SIN FUMAR</h3>
     <div class="neon-card">
         <div class="cal-nav" style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
-            <button onclick="changeMonth(-1,'smoke')">←</button>
+            <button class="btn-3d" onclick="changeMonth(-1,'smoke')">←</button>
             <span id="cal-month-smoke" style="font-weight:bold;"></span>
-            <button onclick="changeMonth(1,'smoke')">→</button>
+            <button class="btn-3d" onclick="changeMonth(1,'smoke')">→</button>
         </div>
         <div id="cal-smoke" class="cal-grid"></div>
         <div class="cal-legend" style="font-size:0.6rem; margin-top:6px;">🔴 fumado &nbsp;🔵 no fumado &nbsp;⚫ futuro</div>
@@ -232,7 +170,7 @@
             <input type="date" id="fechaFotos" value="" style="flex:1; background:#000; color:#fff; border-radius:12px; padding:4px;">
             <button id="cargarFotosFecha" style="background:var(--ciclo-color); border:none; border-radius:12px; padding:4px 8px;">📂 Cargar existentes</button>
         </div>
-        <div class="subir-fotos-grid">
+        <div class="subir-fotos-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px;">
             <div class="subir-foto-item">😀 FRENTE<br><input type="file" id="fotoFrente" accept="image/*"></div>
             <div class="subir-foto-item">🙃 ESPALDA<br><input type="file" id="fotoEspalda" accept="image/*"></div>
             <div class="subir-foto-item">⬅️ IZQUIERDA<br><input type="file" id="FotoIzquierda" accept="image/*"></div>
@@ -268,28 +206,26 @@
     <div id="histPeso" style="font-size:0.7rem; max-height:180px; overflow-y:auto;"></div>
 </div>
 
-<div id="logros" class="seccion"><h3>🏆 LOGROS</h3><div id="logrosContainer" style="display:flex; flex-wrap:wrap; gap:5px;"></div></div>
+<div id="logros" class="seccion"><h3>🏆 LOGROS</h3><div class="neon-card"><div id="logrosContainer" style="display:flex; flex-wrap:wrap; gap:5px;"></div></div></div>
 
 <!-- RUTINAS DIARIAS -->
-<div id="lunes" class="seccion"><h3>💪 LUNES: ESPALDA / BÍCEPS</h3><div id="lista-lunes"></div><button class="btn-reset-dia" data-dia="lunes">🗑️ Desmarcar todos</button></div>
-<div id="martes" class="seccion"><h3>🏋️ MARTES: PECHO / HOMBRO</h3><div id="lista-martes"></div><button class="btn-reset-dia" data-dia="martes">🗑️ Desmarcar todos</button></div>
-<div id="miercoles" class="seccion"><h3>🦵 MIÉRCOLES: PIERNA / TRÍCEPS</h3><div id="lista-miercoles"></div><button class="btn-reset-dia" data-dia="miercoles">🗑️ Desmarcar todos</button></div>
-<div id="jueves" class="seccion"><h3>💪 JUEVES: ESPALDA / BÍCEPS</h3><div id="lista-jueves"></div><button class="btn-reset-dia" data-dia="jueves">🗑️ Desmarcar todos</button></div>
-<div id="viernes" class="seccion"><h3>🏋️ VIERNES: PECHO / HOMBRO</h3><div id="lista-viernes"></div><button class="btn-reset-dia" data-dia="viernes">🗑️ Desmarcar todos</button></div>
-<div id="sabado" class="seccion"><h3>🦵 SÁBADO: PIERNA / TRÍCEPS</h3><div id="lista-sabado"></div><button class="btn-reset-dia" data-dia="sabado">🗑️ Desmarcar todos</button></div>
-<div id="domingo" class="seccion"><div class="neon-card" style="text-align:center;"><div style="font-size:2rem;">🔋✨😴✨💪</div><div>DÍA DE RECARGA</div></div></div>
+<div id="lunes" class="seccion"><h3>💪 LUNES: ESPALDA / BÍCEPS</h3><div id="lista-lunes"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" data-dia="lunes">🗑️ Desmarcar todos</button></div>
+<div id="martes" class="seccion"><h3>🏋️ MARTES: PECHO / HOMBRO</h3><div id="lista-martes"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" data-dia="martes">🗑️ Desmarcar todos</button></div>
+<div id="miercoles" class="seccion"><h3>🦵 MIÉRCOLES: PIERNA / TRÍCEPS</h3><div id="lista-miercoles"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" data-dia="miercoles">🗑️ Desmarcar todos</button></div>
+<div id="jueves" class="seccion"><h3>💪 JUEVES: ESPALDA / BÍCEPS</h3><div id="lista-jueves"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" data-dia="jueves">🗑️ Desmarcar todos</button></div>
+<div id="viernes" class="seccion"><h3>🏋️ VIERNES: PECHO / HOMBRO</h3><div id="lista-viernes"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" data-dia="viernes">🗑️ Desmarcar todos</button></div>
+<div id="sabado" class="seccion"><h3>🦵 SÁBADO: PIERNA / TRÍCEPS</h3><div id="lista-sabado"></div><div class="cinta-info">🚶 CINTA: 45-50 min a 4.5 km/h</div><button class="btn-reset-dia" data-dia="sabado">🗑️ Desmarcar todos</button></div>
+<div id="domingo" class="seccion"><div class="neon-card" style="text-align:center;"><div style="font-size:2rem;">🔋✨😴✨💪</div><div>DÍA DE RECARGA</div><div class="cinta-info" style="margin-top:10px;">🚶 CINTA: 50-60 min a 4 km/h (caminata suave)</div></div></div>
 
 <div id="resetModal" class="modal-disk" style="display:none;"><div class="disk-panel"><h3>⚠️ BORRAR TODO</h3><p>Escribe <strong>"BORRAR"</strong>:</p><input type="text" id="confirmReset" placeholder="BORRAR"><div style="display:flex; gap:8px; margin-top:12px;"><button onclick="cerrarReset()">Cancelar</button><button onclick="borrarTodo()" style="background:#ff3b30;">Borrar</button></div></div></div>
 <div id="descanso-box" class="descanso-box"><div class="descanso-contenido"><h1>💪 ¡DESCANSA!</h1><div class="descanso-timer-num" id="descansoTimer">30</div><div class="descanso-selector" style="display:flex; gap:8px; justify-content:center;"><button onclick="setDescanso(30)">30s</button><button onclick="setDescanso(45)">45s</button><button onclick="setDescanso(60)">60s</button><button onclick="setDescanso(90)">90s</button></div><button onclick="cancelarDescanso()" style="background:var(--ciclo-color); border:none; padding:4px 12px; border-radius:30px; color:#000;">SALTAR</button></div></div>
 
 <script>
-// ==================== CONFIGURACIÓN DE CICLOS SEMANALES ====================
-const PESOS_CICLO = { FUERZA: 9.5, DEFINICIÓN: 2.5, VOLUMEN: 3, RESISTENCIA: 5.5 };
+// ==================== CONFIGURACIÓN DE CICLOS ====================
 const SERIES_REPS_CICLO = {
-    FUERZA: { series: "4-5", reps: "3-5", objetivo: "FUERZA MÁXIMA", emoji: "🔥", color: "#ff3b30" },
-    DEFINICIÓN: { series: "3-4", reps: "15-20", objetivo: "QUEMAR GRASA", emoji: "✨", color: "#e6c8a0" },
-    VOLUMEN: { series: "3-4", reps: "8-12", objetivo: "HIPERTROFIA", emoji: "💪", color: "#e6b800" },
-    RESISTENCIA: { series: "3", reps: "15-20", objetivo: "RESISTENCIA", emoji: "⚡", color: "#20c4b8" }
+    FUERZA: { series: "Pirámide", reps: "Progresión", objetivo: "FUERZA MÁXIMA", emoji: "🔥", color: "#ff3b30", cinta: "30-40 min", velCinta: "4.5-5 km/h" },
+    DEFINICIÓN: { series: "3-4", reps: "15-20", objetivo: "TONIFICAR + QUEMAR", emoji: "✨", color: "#e6c8a0", cinta: "35-45 min", velCinta: "5 km/h" },
+    QUEMA_GRASA: { series: "3", reps: "15-20", objetivo: "QUEMA GRASA MÁXIMA", emoji: "🔥", color: "#20c4b8", cinta: "45-60 min", velCinta: "4.5-5.5 km/h" }
 };
 
 const discosPorPeso = {
@@ -305,89 +241,73 @@ const discosPorPeso = {
 // ==================== MAPA DE IMÁGENES ====================
 const imagenesMap = {
     "Dominadas (palmas mirando afuera)": "https://api.smartworkout.app/asset/image/e132f3b7-cccc-4098-9b44-1aa9a7954a3e",
+    "Dominadas (palmas mirando hacia ti)": "https://i.pinimg.com/originals/15/98/ec/1598ec2121ef2ac8c5fa0a51c5a16f53.gif",
+    "Remo en banco": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
     "Remo con barra (agarre supino estricto)": "https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif",
     "Curl predicador unilateral (con silla)": "https://newlife.com.cy/wp-content/uploads/2019/11/04021301-Dumbbell-Seated-Preacher-Curl_Upper-Arms_360.gif",
     "Curl araña unilateral (pausa de 2\")": "https://api.smartworkout.app/asset/image/94cdc539-0fda-45a3-b2e5-ca8404a629d7",
-    "Press banca con pies elevados": "https://fitwill.app/api/image/3174?p=1&w=1024&h=576",
-    "Flexiones con peso (mochila opcional)": "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460",
-    "Press militar de pie con pausa arriba": "https://api.smartworkout.app/asset/image/cb179489-5169-4054-939a-40452492b2f4",
-    "Elevaciones laterales unilaterales (con apoyo de pared)": "https://api.smartworkout.app/asset/image/0f95b85a-7bb1-4013-875d-ad9bcf815c29",
-    "Sentadilla búlgara con pausa abajo": "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649",
-    "Peso muerto rumano a una pierna": "https://fitcron.com/wp-content/uploads/2021/04/17571301-Dumbbell-Single-Leg-Deadlift_Hips_720.gif",
-    "Fondos en paralelas (torre de dominadas)": "https://api.smartworkout.app/asset/image/bc13ac85-0d15-4e4b-af8a-2b3367a40030",
-    "Press francés unilateral con pausa": "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif",
-    "Remo a una mano con pausa de 3\"": "https://fitcron.com/wp-content/uploads/2021/04/02921301-Dumbbell-Bent-over-Row_back_Back_720.gif",
-    "Remo con barra agarre cerrado (supino)": "https://gymvisual.com/img/p/1/0/6/1/7/10617.gif",
-    "Curl predicador con silla (dos brazos)": "https://newlife.com.cy/wp-content/uploads/2019/11/04021301-Dumbbell-Seated-Preacher-Curl_Upper-Arms_360.gif",
-    "Curl martillo con agarre inverso (palmas abajo)": "https://musclemagfitness.com/wp-content/uploads/dumbbell-reverse-grip-curl-exercise.gif",
-    "Press banca con pies elevados y pausa": "https://fitwill.app/api/image/3174?p=1&w=1024&h=576",
-    "Flexiones con palmada (explosivas)": "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460",
-    "Pájaro (fly invertido) con pausa de 2\"": "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
-    "Remo al cuello con mancuerna": "https://fitcron.com/wp-content/uploads/2021/04/04371301-Dumbbell-Upright-Row_shoulder_720.gif",
-    "Sentadilla búlgara con pausa (sab)": "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649",
-    "Peso muerto rumano a una pierna (sab)": "https://fitcron.com/wp-content/uploads/2021/04/17571301-Dumbbell-Single-Leg-Deadlift_Hips_720.gif",
-    "Press francés unilateral con pausa sab": "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif",
-    "Dominadas con banda elástica (o negativas con silla)": "https://www.inspireusafoundation.org/wp-content/uploads/2023/05/band-assisted-pull-up.gif",
-    "Remo inclinado con barra ligera": "https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif",
-    "Curl concentrado sentado": "https://fitcron.com/wp-content/uploads/2021/04/02971301-Dumbbell-Concentration-Curl_Upper-Arms_720.gif",
-    "Curl de bíceps con pausa (1\" arriba)": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
-    "Press banca inclinado (con silla)": "https://api.smartworkout.app/asset/image/375218cb-b06e-483b-bf5e-6db89512cc6b",
-    "Flexiones normales": "https://api.smartworkout.app/asset/image/bc89a57b-6727-4c29-9776-ca455c2e9460",
-    "Press militar con mancuerna ligera": "https://fitcron.com/wp-content/uploads/2021/04/04261301-Dumbbell-Standing-Overhead-Press_shoulder_720.gif",
-    "Elevaciones frontales alternas": "https://api.smartworkout.app/asset/image/5aec4152-62ab-4bb5-b90b-e472690e5383",
-    "Sentadilla sumo con mancuerna ligera": "https://fitcron.com/wp-content/uploads/2021/04/03711301-Dumbbell-Plyo-Squat_thighs_720.gif",
-    "Peso muerto con piernas rectas (muy ligero)": "https://fitcron.com/wp-content/uploads/2021/04/04321301-Dumbbell-Stiff-Leg-Deadlift_Waist_720.gif",
-    "Fondos entre dos sillas": "https://api.smartworkout.app/asset/image/14fff202-7bb2-4e35-af03-39b9a58417d2",
-    "Press de hombros con pies juntos (inestable)": "https://api.smartworkout.app/asset/image/9b7605e1-bafa-4acc-9483-1c5553c6e9d9",
-    "Remo unilateral muy ligero": "https://fitcron.com/wp-content/uploads/2021/04/02921301-Dumbbell-Bent-over-Row_back_Back_720.gif",
-    "Remo inclinado con pausa": "https://gymvisual.com/img/p/1/0/6/1/7/10617.gif",
-    "Curl concentrado sentado (jueves def)": "https://gymvisual.com/img/p/2/8/1/1/9/28119.gif",
-    "Curl araña con mancuerna ligera": "https://api.smartworkout.app/asset/image/7a6c7c0b-0480-4c45-ba66-18959ec9001f",
-    "Press banca inclinado muy ligero": "https://api.smartworkout.app/asset/image/375218cb-b06e-483b-bf5e-6db89512cc6b",
-    "Pájaro muy ligero (fly invertido)": "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
-    "Elevación lateral tumbado (en el suelo)": "https://gymvisual.com/animated-gifs/1909-dumbbell-side-lying-one-hand-raise.html",
-    "Sentadilla sumo (sab def)": "https://fitcron.com/wp-content/uploads/2021/04/03711301-Dumbbell-Plyo-Squat_thighs_720.gif",
-    "Peso muerto con piernas rectas (sab def)": "https://fitcron.com/wp-content/uploads/2021/04/04321301-Dumbbell-Stiff-Leg-Deadlift_Waist_720.gif",
-    "Extensión de tríceps en el suelo": "https://gymvisual.com/img/p/1/0/9/2/5/10925.gif",
-    "Press francés con pies juntos": "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif",
-    "Dominadas (palmas mirando hacia ti)": "https://i.pinimg.com/originals/15/98/ec/1598ec2121ef2ac8c5fa0a51c5a16f53.gif",
-    "Remo a una mano (normal)": "https://static.wixstatic.com/media/c94d75_c1fe019ba48e4843b63ab9dcc0284c30~mv2.gif",
-    "Curl martillo normal (dos manos)": "https://rincondelmusculo.com/wp-content/uploads/2014/09/CURL_DE_MARTILLO.gif",
-    "Curl araña con mancuerna": "https://api.smartworkout.app/asset/image/8a4f493f-cb2e-476d-ac61-6dc614bb27ba",
-    "Press banca en suelo (normal)": "https://api.smartworkout.app/asset/image/567ae9ad-b584-4d53-b400-82b0117a7ce1",
-    "Press militar sentado (con respaldo)": "https://api.smartworkout.app/asset/image/d3878853-0b0e-4888-b3b3-06018f36dc6c",
-    "Elevaciones laterales normales (dos brazos)": "https://api.smartworkout.app/asset/image/1ccfc9fb-694b-49ee-bd0d-7035dcbfdd79",
-    "Sentadilla común (con mancuernas)": "https://fitcron.com/wp-content/uploads/2021/04/15551301-Dumbbell-Squat_Thighs_720.gif",
-    "Peso muerto rumano normal": "https://fitcron.com/wp-content/uploads/2021/04/14591301-Dumbbell-Romanian-Deadlift_Hips_720.gif",
-    "Press francés normal (dos manos)": "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif",
-    "Remo inclinado con barra": "https://gymvisual.com/img/p/1/0/6/1/7/10617.gif",
-    "Curl de bíceps normal (dos manos)": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
-    "Curl martillo normal (dos manos) jueves": "https://fitcron.com/wp-content/uploads/2021/04/02981301-Dumbbell-Cross-Body-Hammer-Curl_Forearms_720.gif",
-    "Pájaro (fly invertido) normal": "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
-    "Sentadilla copa con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif",
-    "Zancadas alternas con mancuerna": "https://gymvisual.com/img/p/2/3/7/3/9/23739.gif",
-    "Press de hombros sentado": "https://api.smartworkout.app/asset/image/d3878853-0b0e-4888-b3b3-06018f36dc6c",
-    "Burpees": "https://fitnessprogramer.com/wp-content/uploads/2021/02/burpees.gif",
-    "Plancha": "https://www.inspireusafoundation.org/wp-content/uploads/2022/01/plank.gif",
+    "Curl de bíceps": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
+    "Curl martillo": "https://rincondelmusculo.com/wp-content/uploads/2014/09/CURL_DE_MARTILLO.gif",
     "Curl de bíceps alterno": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
-    "Peso muerto rumano con mancuerna": "https://fitcron.com/wp-content/uploads/2021/04/14591301-Dumbbell-Romanian-Deadlift_Hips_720.gif",
-    "Toques talón": "https://gymvisual.com/img/p/1/4/6/6/0/14660.gif",
-    "Aperturas de pecho en suelo": "https://api.smartworkout.app/asset/image/ea0950f5-a1f1-4982-886a-9c2ffbcf0f89",
-    "Saltos de tijera": "https://gymvisual.com/img/p/1/5/9/8/5/15985.gif",
-    "Sentadilla sumo con mancuerna": "https://fitcron.com/wp-content/uploads/2021/04/03711301-Dumbbell-Plyo-Squat_thighs_720.gif",
-    "Puente de glúteos con mancuerna": "https://gymvisual.com/img/p/2/1/5/6/7/21567.gif",
-    "Elevaciones laterales con mancuerna": "https://api.smartworkout.app/asset/image/1ccfc9fb-694b-49ee-bd0d-7035dcbfdd79",
-    "Cinta (correr o caminar)": "https://gymvisual.com/img/p/9/3/9/4/9394.gif",
+    "Curl concentrado": "https://fitcron.com/wp-content/uploads/2021/04/02971301-Dumbbell-Concentration-Curl_Upper-Arms_720.gif",
+    "Curl de bíceps con pausa": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
+    "Remo inclinado apoyado": "https://i.pinimg.com/originals/02/0c/e3/020ce342326488f3a0a44d754e962f1f.gif",
+    "Remo al cuello": "https://fitcron.com/wp-content/uploads/2021/04/04371301-Dumbbell-Upright-Row_shoulder_720.gif",
+    "Dominadas con banda elástica": "https://www.inspireusafoundation.org/wp-content/uploads/2023/05/band-assisted-pull-up.gif",
+    "Press banca plano": "https://newlife.com.cy/wp-content/uploads/2019/11/16241301-Dumbbell-Reverse-Bench-Press_Chest_360-360x200.gif",
+    "Press banca inclinado": "https://bodybuilding-wizard.com/wp-content/uploads/2026/02/incline-dumbbell-bench-press-gif-animation.gif",
+    "Press militar sentado": "https://rincondelmusculo.com/wp-content/uploads/2015/02/press_militar.gif",
+    "Elevaciones laterales sentado": "https://gymvisual.com/img/p/5/1/3/7/5137.gif",
+    "Elevaciones frontales alternas": "https://api.smartworkout.app/asset/image/5aec4152-62ab-4bb5-b90b-e472690e5383",
+    "Pájaro (fly invertido)": "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
+    "Aperturas en banco": "https://media.tenor.com/oJXOnsC72qMAAAAM/crussifixo-no-banco-com-halteres.gif",
+    "Press de hombros en banco": "https://fitcron.com/wp-content/uploads/2021/04/21371301-Dumbbell-Arnold-Press_Shoulders_720.gif",
+    "Press inclinado": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
+    "Press banca con agarre cerrado": "https://fitnessprogramer.com/wp-content/uploads/2021/10/Close-Grip-Dumbbell-Press.gif",
+    "Press declinado": "https://gymvisual.com/img/p/5/0/3/4/5034.gif",
+    "Sentadilla frontal": "https://gymvisual.com/img/p/1/2/2/9/3/12293.gif",
+    "Peso muerto a una pierna": "https://gymvisual.com/img/p/7/5/6/1/7561.gif",
+    "Extensiones tríceps sobre cabeza": "https://gymvisual.com/img/p/8/8/0/6/8806.gif",
+    "Sentadilla búlgara": "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649",
+    "Peso muerto rumano": "https://fitcron.com/wp-content/uploads/2021/04/14591301-Dumbbell-Romanian-Deadlift_Hips_720.gif",
+    "Fondos en banco": "https://api.smartworkout.app/asset/image/14fff202-7bb2-4e35-af03-39b9a58417d2",
+    "Press francés en banco": "https://i.pinimg.com/originals/62/ff/4e/62ff4eb464ca363520a54544a4ce8e0a.gif",
+    "Zancadas con mancuerna": "https://gymvisual.com/img/p/2/3/7/3/9/23739.gif",
+    "Curl femoral": "https://gymvisual.com/img/p/2/1/5/6/8/21568.gif",
+    "Fondos en banco para pecho": "https://api.smartworkout.app/asset/image/14fff202-7bb2-4e35-af03-39b9a58417d2",
+    "Plancha": "https://www.inspireusafoundation.org/wp-content/uploads/2022/01/plank.gif",
+    "Burpees": "https://fitnessprogramer.com/wp-content/uploads/2021/02/burpees.gif",
+    "Saltos tijera": "https://gymvisual.com/img/p/1/5/9/8/5/15985.gif",
+    "Rodillas altas": "https://gymvisual.com/img/p/1/4/9/3/4/14934.gif",
     "V-ups": "https://gymvisual.com/img/p/2/2/5/8/3/22583.gif",
-    "Remo inclinado a dos manos": "https://gymvisual.com/img/p/1/0/6/1/7/10617.gif",
-    "Curl femoral con mancuerna": "https://gymvisual.com/img/p/2/1/5/6/8/21568.gif",
     "Crunch": "https://fitnessprogramer.com/wp-content/uploads/2015/11/Crunch.gif",
-    "Sentadilla búlgara con mancuerna": "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649",
-    "Press francés a dos manos": "https://fitcron.com/wp-content/uploads/2021/04/03521301-Dumbbell-Neutral-Grip-Bench-Press_Upper-Arms_720.gif",
-    "Rodillas altas": "https://gymvisual.com/img/p/1/4/9/3/4/14934.gif"
+    "Toques talón": "https://gymvisual.com/img/p/1/4/6/6/0/14660.gif",
+    "Cinta": "https://gymvisual.com/img/p/9/3/9/4/9394.gif",
+    // Nivel 2
+    "Dominadas lastradas (peso extra)": "https://api.smartworkout.app/asset/image/e132f3b7-cccc-4098-9b44-1aa9a7954a3e",
+    "Remo en banco con pausa": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
+    "Curl predicador unilateral": "https://newlife.com.cy/wp-content/uploads/2019/11/04021301-Dumbbell-Seated-Preacher-Curl_Upper-Arms_360.gif",
+    "Curl martillo pesado": "https://rincondelmusculo.com/wp-content/uploads/2014/09/CURL_DE_MARTILLO.gif",
+    "Press banca plano con pausa": "https://newlife.com.cy/wp-content/uploads/2019/11/16241301-Dumbbell-Reverse-Bench-Press_Chest_360-360x200.gif",
+    "Press banca inclinado pesado": "https://bodybuilding-wizard.com/wp-content/uploads/2026/02/incline-dumbbell-bench-press-gif-animation.gif",
+    "Press militar sentado con pausa": "https://rincondelmusculo.com/wp-content/uploads/2015/02/press_militar.gif",
+    "Sentadilla búlgara pesada": "https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649",
+    "Peso muerto rumano a una pierna": "https://fitcron.com/wp-content/uploads/2021/04/17571301-Dumbbell-Single-Leg-Deadlift_Hips_720.gif",
+    "Fondos en banco con peso": "https://api.smartworkout.app/asset/image/14fff202-7bb2-4e35-af03-39b9a58417d2",
+    "Press francés en banco (nivel2)": "https://i.pinimg.com/originals/62/ff/4e/62ff4eb464ca363520a54544a4ce8e0a.gif",
+    "Remo con barra agarre supino": "https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif",
+    "Curl predicador con mancuerna": "https://newlife.com.cy/wp-content/uploads/2019/11/04021301-Dumbbell-Seated-Preacher-Curl_Upper-Arms_360.gif",
+    "Curl araña unilateral": "https://api.smartworkout.app/asset/image/94cdc539-0fda-45a3-b2e5-ca8404a629d7",
+    "Press inclinado con pausa": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
+    "Pájaro con pausa": "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
+    "Dominadas con banda": "https://www.inspireusafoundation.org/wp-content/uploads/2023/05/band-assisted-pull-up.gif",
+    "Remo inclinado apoyado (nivel2)": "https://i.pinimg.com/originals/02/0c/e3/020ce342326488f3a0a44d754e962f1f.gif",
+    "Curl de bíceps alterno (nivel2)": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif"
 };
 
-function getImagen(nombre) { return imagenesMap[nombre] || null; }
+function getImagen(nombre) {
+    return imagenesMap[nombre] || null;
+}
 
 // ==================== FUNCIONES AUXILIARES ====================
 function getNumeroSemana(fecha) {
@@ -400,39 +320,35 @@ function getNumeroSemana(fecha) {
     const diffDias = Math.floor((lunes - refLunes) / (1000 * 60 * 60 * 24));
     return Math.floor(diffDias / 7) + 1;
 }
+
 function getCicloPorSemana() {
     const semana = getNumeroSemana(new Date());
-    const resto = (semana - 1) % 4;
+    const resto = (semana - 1) % 3;
     if (resto === 0) return 'FUERZA';
     if (resto === 1) return 'DEFINICIÓN';
-    if (resto === 2) return 'VOLUMEN';
-    return 'RESISTENCIA';
+    return 'QUEMA_GRASA';
 }
 function getCicloPorFecha(fecha) {
     const semana = getNumeroSemana(fecha);
-    const resto = (semana - 1) % 4;
+    const resto = (semana - 1) % 3;
     if (resto === 0) return 'FUERZA';
     if (resto === 1) return 'DEFINICIÓN';
-    if (resto === 2) return 'VOLUMEN';
-    return 'RESISTENCIA';
+    return 'QUEMA_GRASA';
 }
+
 let cicloManual = null;
 function getCicloActual() {
     return cicloManual ? cicloManual : getCicloPorSemana();
 }
-function getWeekNumber(d) {
-    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+function setCicloManual(ciclo) {
+    cicloManual = ciclo;
+    actualizarUI();
+    renderCalendarios();
+    mostrarToast(`✅ Cambiado a ciclo ${ciclo}`);
 }
-function getSemanaKey() {
-    const fecha = new Date();
-    const lunes = new Date(fecha);
-    lunes.setDate(fecha.getDate() - (fecha.getDay() === 0 ? 6 : fecha.getDay() - 1));
-    lunes.setHours(0,0,0,0);
-    return `semana_${lunes.toISOString().slice(0,10)}`;
-}
+
+function getWeekNumber(d) { return getNumeroSemana(d); }
+function getSemanaKey() { return `semana_${new Date().toISOString().slice(0,10)}`; }
 
 // ==================== SISTEMA DE NIVELES ====================
 function getNivelActual() {
@@ -465,40 +381,61 @@ function getProgresoNivel() {
     return { actual: total, requeridos: requeridos, porcentaje: Math.min(100, Math.floor((total / requeridos) * 100)) };
 }
 
-// ==================== EJERCICIOS Y CHECKBOX ====================
+// ==================== EJERCICIOS ====================
 const ejerciciosNivel2 = {
     fuerza: {
-        lunes: ["Dominadas lastradas (peso extra)", "Remo con barra (agarre supino estricto)", "Curl predicador unilateral (con silla)", "Curl araña unilateral (pausa de 2\")"],
-        martes: ["Press banca con pausa prolongada", "Flexiones con peso (mochila opcional)", "Press militar de pie con pausa arriba", "Elevaciones laterales unilaterales (con apoyo de pared)"],
-        miercoles: ["Sentadilla búlgara pesada", "Peso muerto rumano a una pierna", "Fondos en paralelas (torre de dominadas)", "Press francés unilateral con pausa"],
-        jueves: ["Remo a una mano con pausa de 3\"", "Remo con barra agarre cerrado (supino)", "Curl predicador con silla (dos brazos)", "Curl martillo con agarre inverso (palmas abajo)"],
-        viernes: ["Press banca con pausa doble", "Flexiones con palmada (explosivas)", "Pájaro (fly invertido) con pausa de 2\"", "Remo al cuello con mancuerna"],
-        sabado: ["Sentadilla búlgara con pausa larga", "Peso muerto rumano a una pierna (sab)", "Fondos en paralelas (torre)", "Press francés unilateral con pausa sab"]
+        lunes: ["Dominadas lastradas (peso extra)", "Remo en banco con pausa", "Curl predicador unilateral", "Curl martillo pesado"],
+        martes: ["Press banca plano con pausa", "Press banca inclinado pesado", "Press militar sentado con pausa", "Elevaciones laterales sentado"],
+        miercoles: ["Sentadilla búlgara pesada", "Peso muerto rumano a una pierna", "Fondos en banco con peso", "Press francés en banco (nivel2)"],
+        jueves: ["Remo con barra agarre supino", "Curl predicador con mancuerna", "Curl araña unilateral", "Remo al cuello"],
+        viernes: ["Press banca plano con pausa doble", "Press declinado con pausa", "Pájaro con pausa", "Fondos en banco para pecho"],
+        sabado: ["Sentadilla frontal pesada", "Peso muerto a una pierna", "Fondos en banco con peso", "Extensiones tríceps sobre cabeza"]
     },
-    definicion: { lunes: ["Dominadas rápidas con pausa", "Remo inclinado con barra ligera", "Curl concentrado sentado", "Curl de bíceps con pausa (1\" arriba)"] },
-    volumen: { lunes: ["Dominadas con lastre (volumen)", "Remo a una mano (normal)", "Curl martillo normal (dos manos)", "Curl araña con mancuerna"] }
+    definicion: {
+        lunes: ["Dominadas con banda", "Remo inclinado apoyado (nivel2)", "Curl concentrado", "Curl de bíceps con pausa"]
+    },
+    quema_grasa: {
+        lunes: ["Remo en banco", "Curl de bíceps alterno (nivel2)", "Elevaciones laterales sentado"]
+    }
 };
 
 const ejerciciosBase = {
-    fuerza: { lunes: ["Dominadas (palmas mirando afuera)", "Remo con barra (agarre supino estricto)", "Curl predicador unilateral (con silla)", "Curl araña unilateral (pausa de 2\")"], martes: ["Press banca con pies elevados", "Flexiones con peso (mochila opcional)", "Press militar de pie con pausa arriba", "Elevaciones laterales unilaterales (con apoyo de pared)"], miercoles: ["Sentadilla búlgara con pausa abajo", "Peso muerto rumano a una pierna", "Fondos en paralelas (torre de dominadas)", "Press francés unilateral con pausa"], jueves: ["Remo a una mano con pausa de 3\"", "Remo con barra agarre cerrado (supino)", "Curl predicador con silla (dos brazos)", "Curl martillo con agarre inverso (palmas abajo)"], viernes: ["Press banca con pies elevados y pausa", "Flexiones con palmada (explosivas)", "Pájaro (fly invertido) con pausa de 2\"", "Remo al cuello con mancuerna"], sabado: ["Sentadilla búlgara con pausa (sab)", "Peso muerto rumano a una pierna (sab)", "Fondos en paralelas (torre)", "Press francés unilateral con pausa sab"] },
-    definicion: { lunes: ["Dominadas con banda elástica (o negativas con silla)", "Remo inclinado con barra ligera", "Curl concentrado sentado", "Curl de bíceps con pausa (1\" arriba)"], martes: ["Press banca inclinado (con silla)", "Flexiones normales", "Press militar con mancuerna ligera", "Elevaciones frontales alternas"], miercoles: ["Sentadilla sumo con mancuerna ligera", "Peso muerto con piernas rectas (muy ligero)", "Fondos entre dos sillas", "Press de hombros con pies juntos (inestable)"], jueves: ["Remo unilateral muy ligero", "Remo inclinado con pausa", "Curl concentrado sentado (jueves def)", "Curl araña con mancuerna ligera"], viernes: ["Press banca inclinado muy ligero", "Flexiones normales", "Pájaro muy ligero (fly invertido)", "Elevación lateral tumbado (en el suelo)"], sabado: ["Sentadilla sumo (sab def)", "Peso muerto con piernas rectas (sab def)", "Fondos entre dos sillas", "Press francés con pies juntos"] },
-    volumen: { lunes: ["Dominadas (palmas mirando hacia ti)", "Remo a una mano (normal)", "Curl martillo normal (dos manos)", "Curl araña con mancuerna"], martes: ["Press banca en suelo (normal)", "Flexiones normales", "Press militar sentado (con respaldo)", "Elevaciones laterales normales (dos brazos)"], miercoles: ["Sentadilla común (con mancuernas)", "Peso muerto rumano normal", "Fondos entre dos sillas", "Press francés normal (dos manos)"], jueves: ["Remo a una mano normal (jueves vol)", "Remo inclinado con barra", "Curl de bíceps normal (dos manos)", "Curl martillo normal (dos manos) jueves"], viernes: ["Press banca en suelo (normal) viernes", "Flexiones normales", "Pájaro (fly invertido) normal", "Remo al cuello con mancuerna"], sabado: ["Sentadilla común (sab vol)", "Peso muerto rumano normal (sab vol)", "Fondos entre dos sillas", "Press francés normal (sab vol)"] },
-    resistencia: { lunes: ["Sentadilla copa con mancuerna", "Zancadas alternas con mancuerna", "Press de hombros sentado", "Burpees", "Plancha"], martes: ["Remo a una mano", "Curl de bíceps alterno", "Peso muerto rumano con mancuerna", "Burpees", "Toques talón"], miercoles: ["Aperturas de pecho en suelo", "Press banca en suelo", "Extensión de tríceps tras nuca", "Saltos de tijera", "Plancha"], jueves: ["Sentadilla sumo con mancuerna", "Puente de glúteos con mancuerna", "Elevaciones laterales con mancuerna", "Cinta (correr o caminar)", "V-ups"], viernes: ["Remo inclinado a dos manos", "Curl femoral con mancuerna", "Curl de martillo", "Crunch", "Plancha"], sabado: ["Sentadilla búlgara con mancuerna", "Press francés a dos manos", "Elevaciones frontales alternas", "Rodillas altas", "Cinta (correr o caminar)"] }
+    fuerza: {
+        lunes: ["Dominadas (palmas mirando afuera)", "Remo en banco", "Curl de bíceps", "Curl martillo"],
+        martes: ["Press banca plano", "Press banca inclinado", "Press militar sentado", "Elevaciones laterales sentado"],
+        miercoles: ["Sentadilla búlgara", "Peso muerto rumano", "Fondos en banco", "Press francés en banco"],
+        jueves: ["Remo con barra (agarre supino estricto)", "Curl predicador unilateral (con silla)", "Curl araña unilateral (pausa de 2\")", "Remo al cuello"],
+        viernes: ["Press banca con agarre cerrado", "Press declinado", "Pájaro (fly invertido)", "Fondos en banco para pecho"],
+        sabado: ["Sentadilla frontal", "Peso muerto a una pierna", "Fondos en banco", "Extensiones tríceps sobre cabeza"]
+    },
+    definicion: {
+        lunes: ["Dominadas con banda elástica", "Remo inclinado apoyado", "Curl concentrado", "Curl de bíceps con pausa"],
+        martes: ["Press banca inclinado", "Press banca plano", "Press militar sentado", "Elevaciones frontales alternas"],
+        miercoles: ["Sentadilla búlgara", "Peso muerto rumano", "Fondos en banco", "Press francés en banco"],
+        jueves: ["Remo en banco", "Curl predicador unilateral (con silla)", "Curl araña unilateral (pausa de 2\")", "Elevaciones laterales sentado"],
+        viernes: ["Press inclinado", "Aperturas en banco", "Pájaro (fly invertido)", "Plancha"],
+        sabado: ["Zancadas con mancuerna", "Curl femoral", "Fondos en banco", "Crunch"]
+    },
+    quema_grasa: {
+        lunes: ["Remo en banco", "Curl de bíceps alterno", "Elevaciones laterales sentado", "Plancha", "Saltos tijera"],
+        martes: ["Press banca plano", "Press militar sentado", "Pájaro (fly invertido)", "Aperturas en banco", "Rodillas altas"],
+        miercoles: ["Sentadilla búlgara", "Press francés en banco", "Fondos en banco", "Crunch", "V-ups"],
+        jueves: ["Remo inclinado apoyado", "Curl martillo", "Elevaciones frontales alternas", "Toques talón", "Cinta (correr o caminar)"],
+        viernes: ["Press inclinado", "Press de hombros en banco", "Aperturas en banco", "Plancha", "Burpees"],
+        sabado: ["Sentadilla sumo", "Press francés en banco", "Fondos en banco", "Crunch", "Cinta (correr o caminar)"]
+    }
 };
 
 function getEjerciciosPorDia(dia, cicloKey) {
     const nivel = getNivelActual();
-    let ejercicios;
-    if (cicloKey === 'fuerza' || cicloKey === 'definicion' || cicloKey === 'volumen') {
-        if (nivel >= 2 && ejerciciosNivel2[cicloKey] && ejerciciosNivel2[cicloKey][dia]) {
-            ejercicios = ejerciciosNivel2[cicloKey][dia];
-        } else {
-            ejercicios = ejerciciosBase[cicloKey][dia];
-        }
+    const cicloMap = { FUERZA: 'fuerza', DEFINICIÓN: 'definicion', QUEMA_GRASA: 'quema_grasa' };
+    const cicloBase = cicloMap[cicloKey];
+    if (!cicloBase) return [];
+    if (nivel >= 2 && ejerciciosNivel2[cicloBase] && ejerciciosNivel2[cicloBase][dia]) {
+        return ejerciciosNivel2[cicloBase][dia];
     } else {
-        ejercicios = ejerciciosBase[cicloKey][dia];
+        return ejerciciosBase[cicloBase][dia] || [];
     }
-    return ejercicios || [];
 }
 
 function getCantidadMancuernas(nombre) {
@@ -507,91 +444,48 @@ function getCantidadMancuernas(nombre) {
     return 2;
 }
 
-// ==================== PESOS SUGERIDOS POR EJERCICIO (ACTUALIZADO CON TU TABLA) ====================
+// ==================== PESOS SUGERIDOS ====================
 function getPesoEjercicioBase(nombre, ciclo) {
-    const pesosBase = {
-        FUERZA: 9.5,
-        DEFINICIÓN: 4,
-        VOLUMEN: 5.5,
-        RESISTENCIA: 6.5
-    };
-    
+    const pesosBase = { FUERZA: 9.5, DEFINICIÓN: 4, QUEMA_GRASA: 4 };
     const base = pesosBase[ciclo];
     
-    // Curl predicador, araña, concentrado (los más ligeros)
+    const pesoCorporal = ["Dominadas", "Fondos", "Plancha", "Burpees", "Saltos tijera", "Rodillas altas", "V-ups", "Crunch", "Toques talón", "Cinta"];
+    if (pesoCorporal.some(p => nombre.includes(p))) {
+        return 0;
+    }
+    
     if (nombre.includes("Curl predicador") || nombre.includes("Curl araña") || nombre.includes("Curl concentrado")) {
         if (ciclo === 'FUERZA') return 5.5;
-        if (ciclo === 'DEFINICIÓN') return 2.5;
-        if (ciclo === 'VOLUMEN') return 3;
-        if (ciclo === 'RESISTENCIA') return 4;
+        return 2.5;
     }
-    
-    // Curl de bíceps normales y curl martillo
-    if ((nombre.includes("Curl de bíceps") || nombre.includes("Curl martillo")) && 
-        !nombre.includes("predicador") && !nombre.includes("araña") && !nombre.includes("concentrado")) {
+    if ((nombre.includes("Curl de bíceps") || nombre.includes("Curl martillo")) && !nombre.includes("predicador") && !nombre.includes("araña")) {
         if (ciclo === 'FUERZA') return 7;
-        if (ciclo === 'DEFINICIÓN') return 2.5;
-        if (ciclo === 'VOLUMEN') return 3;
-        if (ciclo === 'RESISTENCIA') return 4;
+        return 2.5;
     }
-    
-    // Press francés / tríceps
     if (nombre.includes("Press francés") || nombre.includes("Extensión de tríceps")) {
         if (ciclo === 'FUERZA') return 7;
-        if (ciclo === 'DEFINICIÓN') return 2.5;
-        if (ciclo === 'VOLUMEN') return 3;
-        if (ciclo === 'RESISTENCIA') return 4;
+        return 2.5;
     }
-    
-    // Elevaciones laterales y frontales
     if (nombre.includes("Elevaciones laterales") || nombre.includes("Elevación lateral") || nombre.includes("Elevaciones frontales")) {
         if (ciclo === 'FUERZA') return 4;
-        if (ciclo === 'DEFINICIÓN') return 2.5;
-        if (ciclo === 'VOLUMEN') return 3;
-        if (ciclo === 'RESISTENCIA') return 4;
+        return 2.5;
     }
-    
-    // Pájaro / fly invertido
     if (nombre.includes("Pájaro") || nombre.includes("fly invertido")) {
         if (ciclo === 'FUERZA') return 4;
-        if (ciclo === 'DEFINICIÓN') return 2.5;
-        if (ciclo === 'VOLUMEN') return 3;
-        if (ciclo === 'RESISTENCIA') return 4;
+        return 2.5;
     }
-    
-    // Aperturas de pecho
     if (nombre.includes("Aperturas")) {
         if (ciclo === 'FUERZA') return 5.5;
-        if (ciclo === 'DEFINICIÓN') return 2.5;
-        if (ciclo === 'VOLUMEN') return 3;
-        if (ciclo === 'RESISTENCIA') return 4;
+        return 2.5;
     }
-    
-    // Sentadilla búlgara
-    if (nombre.includes("Sentadilla búlgara")) {
+    if (nombre.includes("Sentadilla") || nombre.includes("Peso muerto") || nombre.includes("Zancadas")) {
         if (ciclo === 'FUERZA') return 7;
-        if (ciclo === 'DEFINICIÓN') return 2.5;
-        if (ciclo === 'VOLUMEN') return 3;
-        if (ciclo === 'RESISTENCIA') return 4;
+        return 2.5;
     }
-    
-    // Curl femoral
-    if (nombre.includes("Curl femoral")) {
-        if (ciclo === 'FUERZA') return 7;
-        if (ciclo === 'DEFINICIÓN') return 2.5;
-        if (ciclo === 'VOLUMEN') return 3;
-        if (ciclo === 'RESISTENCIA') return 4;
+    if (nombre.includes("Remo en banco") || nombre.includes("Remo con barra")) {
+        if (ciclo === 'FUERZA') return 9.5;
+        return base;
     }
-    
-    // Remo a una mano (unilateral)
-    if (nombre.includes("Remo a una mano") || nombre.includes("Remo unilateral")) {
-        if (ciclo === 'FUERZA') return 7;
-        if (ciclo === 'DEFINICIÓN') return 2.5;
-        if (ciclo === 'VOLUMEN') return 3;
-        if (ciclo === 'RESISTENCIA') return 4;
-    }
-    
-    // Por defecto, peso base del ciclo
     return base;
 }
 
@@ -599,24 +493,35 @@ function getPesoEjercicio(nombre, ciclo, personalizacion) {
     if (personalizacion && personalizacion.peso !== undefined) return personalizacion.peso;
     return getPesoEjercicioBase(nombre, ciclo);
 }
-function getSeriesReps(nombre, ciclo, personalizacion) {
-    const cardioEjercicios = ["Burpees", "Saltos de tijera", "Rodillas altas", "Cinta"];
-    const abdominales = ["Plancha", "Crunch", "Toques talón", "V-ups", "Puente de glúteos"];
-    
-    if (ciclo === 'RESISTENCIA') {
-        if (cardioEjercicios.some(c => nombre.includes(c))) {
-            if (nombre.includes("Cinta")) return { series: "15-20 min", reps: "", esTiempo: true };
-            return { series: "3", reps: "20-30 seg", esTiempo: true };
-        }
-        if (abdominales.some(a => nombre.includes(a))) {
-            if (nombre.includes("Plancha")) return { series: "3", reps: "30-60 seg", esTiempo: true };
-            return { series: "3", reps: "15-20", esTiempo: false };
-        }
+
+function getPiramideEscalones(nombre, ciclo) {
+    if (ciclo !== 'FUERZA') return null;
+    const pesoBase = getPesoEjercicioBase(nombre, ciclo);
+    let escalones = [];
+    if (pesoBase === 9.5) {
+        escalones = [9.5, 7, 5.5];
+    } else if (pesoBase === 7) {
+        escalones = [7, 5.5, 4];
+    } else if (pesoBase === 5.5) {
+        escalones = [5.5, 4, 2.5];
+    } else if (pesoBase === 4) {
+        escalones = [4, 2.5, 2.5];
+    } else {
+        escalones = [pesoBase, pesoBase, pesoBase];
     }
-    if (personalizacion && personalizacion.series && personalizacion.reps) return { series: personalizacion.series, reps: personalizacion.reps, esTiempo: false };
-    const config = SERIES_REPS_CICLO[ciclo];
-    return { series: config.series, reps: config.reps, esTiempo: false };
+    return escalones;
 }
+
+function getSeriesReps(nombre, ciclo, personalizacion) {
+    if (personalizacion && personalizacion.series && personalizacion.reps) return { series: personalizacion.series, reps: personalizacion.reps, esTiempo: false, esPiramide: false };
+    
+    if (ciclo === 'FUERZA') {
+        return { series: "Pirámide (3 escalones)", reps: "Progresión al fallo", esTiempo: false, esPiramide: true };
+    }
+    const config = SERIES_REPS_CICLO[ciclo];
+    return { series: config.series, reps: config.reps, esTiempo: false, esPiramide: false };
+}
+
 function formatearPeso(nombre, ciclo, personalizacion) {
     const kg = getPesoEjercicio(nombre, ciclo, personalizacion);
     if (kg === 0) return "Peso corporal";
@@ -626,6 +531,634 @@ function formatearPeso(nombre, ciclo, personalizacion) {
     return `${kg} kg`;
 }
 
+// ==================== INSTRUCCIONES DETALLADAS PARA TODOS LOS EJERCICIOS ====================
+function getInstrucciones(nombre) {
+    const instrucciones = {
+        // ESPALDA / BÍCEPS
+        "Dominadas (palmas mirando afuera)": `📍 POSICIÓN INICIAL:
+- Coge la barra con agarre prono (palmas hacia AFUERA), manos separadas al ancho de hombros.
+- Cuélgate con brazos completamente extendidos, sin que los pies toquen el suelo.
+- Activa los omóplatos: tíralos hacia abajo y atrás como si quisieras guardarlos en los bolsillos traseros.
+
+📐 MOVIMIENTO:
+1. Inspira y, manteniendo el core firme, sube tirando con la ESPALDA, no con los brazos.
+2. Lleva el pecho hacia la barra, intentando que esta toque la parte alta del pecho.
+3. En la posición más alta, aprieta los omóplatos y mantén la contracción 1 segundo.
+4. Baja de forma controlada y lenta (unos 2 segundos) hasta extender completamente los brazos.
+
+❗ ERRORES COMUNES:
+- Balancearse. Si te balanceas, baja el peso o usa banda elástica.
+- No bajar del todo. Asegúrate de estirar completamente los brazos en cada repetición.
+- Usar solo los brazos. Piensa en "tirar con los codos hacia abajo".
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
+🎯 CONSEJO: Si no puedes hacer dominadas, empieza con negativas (sube con salto y baja lento en 5 segundos).`,
+
+        "Dominadas (palmas mirando hacia ti)": `📍 POSICIÓN INICIAL:
+- Coge la barra con agarre supino (palmas hacia TI), manos separadas al ancho de hombros.
+- Cuélgate con brazos extendidos.
+
+📐 MOVIMIENTO:
+1. Sube tirando con la espalda baja y los bíceps.
+2. Lleva la barra hacia la parte baja del pecho.
+3. Baja controladamente.
+
+❗ ERRORES COMUNES: Balancearse.
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
+🎯 CONSEJO: Este agarre trabaja más los bíceps y la parte baja de la espalda.`,
+
+        "Remo en banco": `📍 POSICIÓN INICIAL:
+- Apoya la rodilla y la mano del mismo lado sobre un banco plano.
+- La otra mano agarra la mancuerna con la palma hacia el cuerpo (agarre neutral).
+- Espalda completamente plana, casi paralela al suelo. Cabeza alineada con la columna.
+- El brazo que sostiene la mancuerna cuelga verticalmente hacia el suelo.
+
+📐 MOVIMIENTO:
+1. Sin mover el torso, lleva la mancuerna hacia tu cadera, manteniendo el codo pegado al cuerpo.
+2. Aprieta la escápula (omóplato) con fuerza en la parte superior.
+3. Haz una pequeña pausa de 1 segundo en la contracción máxima.
+4. Baja la mancuerna lentamente hasta estirar el brazo, sintiendo el estiramiento en la espalda.
+
+❗ ERRORES COMUNES:
+- Redondear la espalda. Mantén la columna neutra en todo momento.
+- Levantar el torso. El movimiento debe venir solo del brazo, no del tronco.
+- Tirar con el brazo en lugar de con la espalda. Concéntrate en mover el codo hacia atrás.
+
+💨 RESPIRACIÓN: Exhala al subir (remar), inhala al bajar.
+🎯 CONSEJO: Imagina que tu brazo es un gancho y que tiras de la mancuerna con el codo.`,
+
+        "Remo con barra (agarre supino estricto)": `📍 POSICIÓN INICIAL:
+- Sujeta la barra con agarre supino (palmas hacia ARRIBA), manos separadas al ancho de los hombros.
+- Inclina el torso hacia adelante hasta casi la horizontal (aproximadamente 45 grados).
+- Espalda recta, rodillas ligeramente flexionadas.
+
+📐 MOVIMIENTO:
+1. Rema la barra hacia la parte baja del abdomen, manteniendo los codos cerca del cuerpo.
+2. Aprieta los omóplatos al final.
+3. Baja la barra controladamente hasta estirar los brazos.
+
+❗ ERRORES COMUNES:
+- Usar impulso de las piernas o la espalda. Debes mantener el torso fijo.
+- Redondear la espalda. Mantén la curvatura natural.
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`,
+
+        "Curl de bíceps": `📍 POSICIÓN INICIAL:
+- De pie o sentado, agarra una mancuerna en cada mano con las palmas hacia ARRIBA (agarre supino).
+- Los codos deben permanecer PEGADOS a los costados del torso durante todo el ejercicio.
+- Separa ligeramente los pies a la anchura de los hombros.
+
+📐 MOVIMIENTO:
+1. Sin mover los codos, curva las mancuernas hacia los hombros.
+2. En la parte superior, aprieta el bíceps con fuerza durante 1 segundo.
+3. Baja las mancuernas de forma LENTA y CONTROLADA (2-3 segundos) hasta casi estirar los brazos, pero sin bloquear los codos.
+
+❗ ERRORES COMUNES:
+- Balancear el cuerpo hacia atrás para ayudar a subir el peso. Si te balanceas, baja el peso.
+- Separar los codos del cuerpo. Mantenlos fijos.
+- Bajar demasiado rápido. El control en la bajada es clave para el crecimiento muscular.
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
+🎯 CONSEJO: Haz el movimiento lento y siente la contracción del bíceps. No te preocupes por el peso, preocúpate por la técnica.`,
+
+        "Curl martillo": `📍 POSICIÓN INICIAL:
+- Igual que el curl normal, pero con las palmas una frente a la otra (agarre neutral, como si sostuvieras un martillo).
+- Los codos pegados al cuerpo.
+
+📐 MOVIMIENTO:
+1. Sube las mancuernas hacia los hombros manteniendo ese agarre.
+2. Aprieta el bíceps y el braquiorradial (músculo del antebrazo).
+3. Baja controladamente.
+
+❗ ERRORES COMUNES:
+- Separar los codos.
+- Girar las muñecas durante el movimiento (debes mantener el agarre neutral todo el tiempo).
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
+🎯 CONSEJO: Este agarre es más suave para las muñecas y trabaja también el antebrazo.`,
+
+        "Curl concentrado": `📍 POSICIÓN INICIAL:
+- Siéntate en un banco, con las piernas abiertas.
+- Apoya el codo en la cara interna del muslo (el mismo lado del brazo que trabajas).
+- La palma de la mano mira hacia arriba.
+
+📐 MOVIMIENTO:
+1. Sin mover el codo, curva la mancuerna hacia el hombro.
+2. Aprieta el bíceps en la parte superior.
+3. Baja controladamente hasta casi extender el brazo, pero sin bloquear el codo.
+
+❗ ERRORES COMUNES:
+- Levantar el codo del muslo.
+- No extender completamente el brazo al bajar.
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
+🎯 CONSEJO: Este ejercicio aísla muy bien el bíceps. Usa un peso más ligero y concéntrate en la contracción.`,
+
+        "Curl predicador unilateral (con silla)": `📍 POSICIÓN INICIAL:
+- Usa un banco o silla para apoyar el brazo. El brazo debe quedar extendido sobre el respaldo (el hueco de la axila apoyado).
+- La palma mira hacia arriba.
+
+📐 MOVIMIENTO:
+1. Curva la mancuerna hacia el hombro sin levantar el brazo del apoyo.
+2. Aprieta el bíceps.
+3. Baja controladamente.
+
+❗ ERRORES COMUNES:
+- Levantar el codo del apoyo.
+- Usar impulso del hombro.
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`,
+
+        "Curl araña unilateral (pausa de 2\")": `📍 POSICIÓN INICIAL:
+- Túmbate boca abajo en un banco inclinado (30-45 grados). Los brazos cuelgan hacia el suelo.
+- La palma mira hacia arriba.
+
+📐 MOVIMIENTO:
+1. Curva la mancuerna hacia el hombro.
+2. Haz una pausa de 2 segundos en la parte de máxima contracción.
+3. Baja controladamente.
+
+❗ ERRORES COMUNES:
+- Balancear el cuerpo. El banco evita el balanceo, así que concéntrate.
+- Usar impulso.
+
+💨 RESPIRACIÓN: Exhala al subir, mantén la respiración en la pausa, inhala al bajar.`,
+
+        "Remo inclinado apoyado": `📍 POSICIÓN INICIAL:
+- Apoya el pecho en un banco inclinado (30-45 grados) o colócate de pie inclinando el torso.
+- Sujeta una mancuerna en cada mano con las palmas una frente a la otra.
+
+📐 MOVIMIENTO:
+1. Rema las mancuernas hacia tu cadera, manteniendo los codos cerca del cuerpo.
+2. Aprieta los omóplatos.
+3. Baja controladamente.
+
+❗ ERRORES COMUNES: Redondear la espalda.
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`,
+
+        "Remo al cuello": `📍 POSICIÓN INICIAL:
+- De pie, con una barra o mancuernas. Sujeta con agarre prono (palmas hacia abajo), manos separadas al ancho de hombros.
+- Barra a la altura de los muslos.
+
+📐 MOVIMIENTO:
+1. Sube la barra verticalmente hasta la altura del cuello, separando los codos hacia los lados.
+2. Baja controladamente.
+
+❗ ERRORES COMUNES:
+- Usar las muñecas para subir la barra. El movimiento debe venir de los hombros.
+- Subir la barra por delante de la cara. Debe ir pegada al torso.
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
+🎯 CONSEJO: Enfócate en mover los hombros, no en levantar el peso con los brazos.`,
+
+        "Dominadas con banda elástica": `📍 POSICIÓN INICIAL:
+- Coloca una banda elástica en la barra y pasa un pie o rodilla por el lazo inferior.
+- Coge la barra con agarre prono o supino.
+
+📐 MOVIMIENTO:
+- Realiza el mismo movimiento que las dominadas normales, la banda te ayudará a subir.
+
+❗ ERRORES COMUNES: Usar solo los brazos.
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
+🎯 CONSEJO: La banda es ideal para progresar hacia las dominadas sin asistencia.`,
+
+        // PECHO / HOMBRO
+        "Press banca plano": `📍 POSICIÓN INICIAL:
+- Túmbate en un banco plano con los pies FIRMES en el suelo.
+- Sujeta dos mancuernas a la altura del pecho, con las palmas hacia adelante.
+- Los codos deben estar en un ángulo de aproximadamente 45 grados respecto al torso.
+
+📐 MOVIMIENTO:
+1. Baja las mancuernas lentamente hasta que los codos formen un ángulo de 90 grados (o justo antes de que sientas molestia en el hombro).
+2. Haz una pequeña pausa.
+3. Sube las mancuernas de forma explosiva apretando los pectorales, pero sin bloquear los codos.
+
+❗ ERRORES COMUNES:
+- Arquear la espalda exageradamente. Mantén los glúteos y la espalda baja en contacto con el banco.
+- Bajar demasiado las mancuernas (puede lesionar el hombro).
+- Separar los codos en exceso (deben estar a 45 grados).
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
+🎯 CONSEJO: No rebotes las mancuernas en el pecho. Controla el peso en todo momento.`,
+
+        "Press banca inclinado": `📍 POSICIÓN INICIAL:
+- Ajusta el banco a 30-45 grados.
+- Túmbate en el banco con los pies apoyados en el suelo o en los soportes.
+- Sujeta las mancuernas a la altura de los hombros, palmas hacia adelante.
+
+📐 MOVIMIENTO:
+1. Baja las mancuernas hasta la altura de los hombros (o ligeramente por debajo).
+2. Sube apretando la parte SUPERIOR del pecho.
+
+❗ ERRORES COMUNES:
+- Bajar demasiado. Al ser inclinado, el rango de movimiento es menor.
+- Usar las piernas para ayudar a subir.
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
+🎯 CONSEJO: Este ejercicio enfatiza el pectoral superior, importante para un pecho completo.`,
+
+        "Press militar sentado": `📍 POSICIÓN INICIAL:
+- Siéntate en un banco con respaldo vertical o ligeramente inclinado.
+- Sujeta las mancuernas a la altura de los hombros, con las palmas hacia adelante.
+- Mantén la espalda apoyada en el respaldo.
+
+📐 MOVIMIENTO:
+1. Presiona las mancuernas hacia arriba sin bloquear los codos por completo.
+2. Baja controladamente hasta la posición inicial.
+
+❗ ERRORES COMUNES:
+- Arquear la espalda. Mantén la espalda apoyada en el respaldo.
+- Usar impulso de las piernas. Siéntate firme.
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`,
+
+        "Elevaciones laterales sentado": `📍 POSICIÓN INICIAL:
+- Siéntate en un banco, con las piernas juntas o ligeramente separadas.
+- Sujeta una mancuerna en cada mano con los brazos a los lados, palmas hacia el cuerpo.
+- Espalda recta.
+
+📐 MOVIMIENTO:
+1. Eleva los brazos lateralmente hasta la altura de los hombros, manteniendo los codos ligeramente flexionados.
+2. Baja controladamente.
+
+❗ ERRORES COMUNES:
+- Usar impulso. Haz el movimiento lento y controlado.
+- Elevar los brazos por encima de los hombros (puede lesionar el manguito rotador).
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
+🎯 CONSEJO: Imagina que estás vertiendo una jarra de agua hacia afuera (gira ligeramente las muñecas).`,
+
+        "Elevaciones frontales alternas": `📍 POSICIÓN INICIAL:
+- De pie, con una mancuerna en cada mano, brazos extendidos al frente, palmas hacia abajo.
+
+📐 MOVIMIENTO:
+1. Eleva un brazo hacia adelante hasta la altura de los hombros.
+2. Baja y repite con el otro brazo.
+
+❗ ERRORES COMUNES: Usar impulso.
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`,
+
+        "Pájaro (fly invertido)": `📍 POSICIÓN INICIAL:
+- Inclina el torso hacia adelante hasta casi la horizontal, manteniendo la espalda recta.
+- Sujeta las mancuernas con las palmas una frente a la otra.
+- Brazos colgando hacia el suelo.
+
+📐 MOVIMIENTO:
+1. Eleva los brazos lateralmente hasta que estén paralelos al suelo (como un pájaro batiendo alas).
+2. Baja controladamente.
+
+❗ ERRORES COMUNES:
+- Balancear el cuerpo. Mantén el torso firme.
+- Usar los brazos en lugar de los hombros.
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
+🎯 CONSEJO: Trabaja la parte posterior del hombro, crucial para la salud del manguito rotador.`,
+
+        "Aperturas en banco": `📍 POSICIÓN INICIAL:
+- Túmbate en un banco plano con mancuernas.
+- Brazos extendidos hacia arriba, con las palmas una frente a la otra.
+
+📐 MOVIMIENTO:
+1. Baja las mancuernas en un arco amplio, manteniendo los codos ligeramente flexionados.
+2. Siente el estiramiento en el pecho.
+3. Sube juntando las mancuernas como si abrazaras un árbol.
+
+❗ ERRORES COMUNES:
+- Bajar demasiado, lo que puede lesionar el hombro (no bajes más allá del nivel del torso).
+- Extender los brazos por completo (mantén la flexión).
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+
+        "Press de hombros en banco": `📍 POSICIÓN INICIAL:
+- Siéntate en un banco con respaldo. Sujeta las mancuernas a la altura de los hombros.
+- Palmas hacia adelante o una frente a la otra (como prefieras).
+
+📐 MOVIMIENTO:
+1. Presiona las mancuernas hacia arriba rotando ligeramente las muñecas (al estilo Arnold).
+2. Baja controladamente.
+
+❗ ERRORES COMUNES:
+- Usar impulso de las piernas.
+- Bloquear los codos arriba.
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`,
+
+        "Press inclinado": `📍 POSICIÓN INICIAL:
+- Banco inclinado 30-45 grados. Sujeta las mancuernas a los hombros.
+
+📐 MOVIMIENTO:
+- Press hacia arriba enfocando la parte superior del pecho.
+
+❗ ERRORES COMUNES: Bajar demasiado.
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+
+        "Press banca con agarre cerrado": `📍 POSICIÓN INICIAL:
+- Tumbado en el banco, sujeta las mancuernas con las manos juntas (una al lado de la otra).
+- Palmas una frente a la otra.
+
+📐 MOVIMIENTO:
+1. Baja las mancuernas hacia el centro del pecho.
+2. Sube apretando el pecho interno y los tríceps.
+
+❗ ERRORES COMUNES:
+- Separar las manos.
+- Bajar demasiado.
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+
+        "Press declinado": `📍 POSICIÓN INICIAL:
+- Colócate en un banco en declive (la cabeza más baja que las piernas). Si no tienes banco declinable, puedes poner una toalla bajo la espalda baja.
+- Sujeta las mancuernas a la altura del pecho.
+
+📐 MOVIMIENTO:
+1. Baja las mancuernas hacia los lados del pecho.
+2. Sube apretando la parte BAJA del pecho.
+
+❗ ERRORES COMUNES:
+- Bajar demasiado.
+- No mantener los pies firmes.
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+
+        // PIERNA / TRÍCEPS
+        "Sentadilla búlgara": `📍 POSICIÓN INICIAL:
+- Colócate de espaldas a un banco, a una distancia de aproximadamente un paso.
+- Apoya la parte superior de un pie en el banco (el empeine).
+- El pie delantero debe estar lo suficientemente adelantado para que al bajar la rodilla trasera no choque con el suelo.
+- Sujeta una mancuerna en cada mano.
+
+📐 MOVIMIENTO:
+1. Baja la rodilla trasera hacia el suelo, manteniendo el torso erguido.
+2. La rodilla delantera NO debe sobrepasar la punta del pie.
+3. Sube apretando el glúteo y el cuádriceps de la pierna delantera.
+
+❗ ERRORES COMUNES:
+- Dejar caer la rodilla trasera. Baja controladamente.
+- Inclinar el torso hacia adelante.
+- Apoyar la rodilla trasera en el suelo.
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
+🎯 CONSEJO: Si pierdes el equilibrio, sostente ligeramente con una mano en una pared.`,
+
+        "Peso muerto rumano": `📍 POSICIÓN INICIAL:
+- De pie, con mancuernas al frente. Espalda recta, piernas semiflexionadas.
+- Las mancuernas deben estar cerca del cuerpo.
+
+📐 MOVIMIENTO:
+1. Flexiona la cadera hacia atrás (como si cerraras un cajón con el trasero), deslizando las mancuernas por las espinillas.
+2. Baja hasta sentir un estiramiento intenso en los isquiotibiales (parte trasera del muslo).
+3. Sube apretando los glúteos y extendiendo la cadera, manteniendo la espalda recta.
+
+❗ ERRORES COMUNES:
+- Redondear la espalda. Es el error más grave. Mantén la espalda recta.
+- Bajar demasiado. Baja solo hasta donde sientas el estiramiento, no más.
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+
+        "Fondos en banco": `📍 POSICIÓN INICIAL:
+- Coloca las manos en un banco a la altura de las caderas, con los dedos apuntando hacia adelante.
+- Extiende las piernas hacia adelante con los talones apoyados en el suelo (o piernas flexionadas para menos intensidad).
+
+📐 MOVIMIENTO:
+1. Baja el cuerpo doblando los codos hasta un ángulo de 90 grados.
+2. Sube extendiendo los brazos.
+
+❗ ERRORES COMUNES:
+- Bajar demasiado (puede lesionar los hombros).
+- Dejar caer los hombros hacia adelante.
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+
+        "Press francés en banco": `📍 POSICIÓN INICIAL:
+- Túmbate en un banco plano o inclinado.
+- Sujeta una mancuerna con ambas manos sobre la cabeza, brazos extendidos.
+- Los codos apuntan hacia arriba.
+
+📐 MOVIMIENTO:
+1. Baja la mancuerna detrás de la cabeza doblando los codos (solo antebrazos se mueven).
+2. Sube extendiendo los brazos.
+
+❗ ERRORES COMUNES:
+- Abrir los codos hacia los lados. Mantenlos apuntando hacia arriba.
+- Bajar demasiado (peligro para los codos).
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+
+        "Zancadas con mancuerna": `📍 POSICIÓN INICIAL:
+- De pie, con una mancuerna en cada mano.
+- Da un paso largo hacia adelante.
+
+📐 MOVIMIENTO:
+1. Baja la rodilla trasera hasta casi tocar el suelo.
+2. La rodilla delantera no debe sobrepasar la punta del pie.
+3. Impúlsate con la pierna delantera para volver a la posición inicial.
+
+❗ ERRORES COMUNES:
+- Apoyar la rodilla trasera en el suelo.
+- Dejar caer el torso hacia adelante.
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+
+        "Curl femoral": `📍 POSICIÓN INICIAL:
+- Túmbate boca abajo en un banco, asegurando una mancuerna entre los pies (o usando una polea).
+- Piernas extendidas.
+
+📐 MOVIMIENTO:
+1. Curla los pies hacia los glúteos flexionando las rodillas.
+2. Baja controladamente.
+
+❗ ERRORES COMUNES:
+- Usar impulso.
+- Levantar la cadera del banco.
+
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`,
+
+        "Sentadilla frontal": `📍 POSICIÓN INICIAL:
+- De pie, sostén una mancuerna en posición vertical contra el pecho, con ambas manos.
+- Pies al ancho de los hombros.
+
+📐 MOVIMIENTO:
+1. Baja en cuclillas manteniendo el torso erguido y la mancuerna pegada al pecho.
+2. Sube apretando los cuádriceps.
+
+❗ ERRORES COMUNES:
+- Inclinar el torso hacia adelante.
+- No bajar lo suficiente (busca al menos 90 grados).
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+
+        "Peso muerto a una pierna": `📍 POSICIÓN INICIAL:
+- De pie, con una mancuerna en la mano contraria a la pierna de apoyo.
+- Espalda recta.
+
+📐 MOVIMIENTO:
+1. Inclina el torso hacia adelante mientras levantas la pierna contraria hacia atrás (como si formaras una "T").
+2. Baja hasta sentir el estiramiento en el isquio.
+3. Sube apretando el glúteo.
+
+❗ ERRORES COMUNES:
+- Redondear la espalda.
+- Girar la cadera (debe mantenerse alineada).
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+
+        "Extensiones tríceps sobre cabeza": `📍 POSICIÓN INICIAL:
+- Sentado en un banco con respaldo. Sujeta una mancuerna con ambas manos sobre la cabeza.
+- Codos apuntando hacia arriba.
+
+📐 MOVIMIENTO:
+1. Baja la mancuerna detrás de la cabeza doblando los codos.
+2. Sube extendiendo los brazos.
+
+❗ ERRORES COMUNES:
+- Abrir los codos.
+- Bajar demasiado.
+
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+
+        "Fondos en banco para pecho": `📍 POSICIÓN INICIAL:
+- Manos en el banco, piernas extendidas.
+- Separa los codos hacia los lados (en lugar de pegarlos al cuerpo).
+
+📐 MOVIMIENTO:
+1. Baja el cuerpo abriendo los codos.
+2. Sube apretando el pecho.
+
+❗ ERRORES COMUNES: Pegar los codos al cuerpo (eso trabaja tríceps).`,
+
+        "Sentadilla sumo": `📍 POSICIÓN INICIAL:
+- Piernas abiertas más allá del ancho de hombros, puntas de los pies hacia afuera.
+- Sujeta una mancuerna en posición vertical contra el pecho.
+
+📐 MOVIMIENTO:
+1. Baja la cadera como si te sentaras, manteniendo el torso erguido.
+2. Sube apretando los glúteos.
+
+❗ ERRORES COMUNES: Inclinar el torso.`,
+
+        // CARDIO Y CORE
+        "Plancha": `📍 POSICIÓN INICIAL:
+- Apoya los antebrazos y las puntas de los pies en el suelo.
+- Los codos deben estar alineados con los hombros.
+- Cuerpo recto desde los hombros hasta los tobillos.
+
+📐 MOVIMIENTO:
+1. Contrae el abdomen y los glúteos con fuerza.
+2. Aguanta la posición sin arquear la espalda ni bajar la cadera.
+
+❗ ERRORES COMUNES:
+- Bajar la cadera (descansar en las caderas).
+- Elevar los glúteos en exceso.
+
+💨 RESPIRACIÓN: Mantén una respiración constante y controlada.`,
+
+        "Burpees": `📍 POSICIÓN INICIAL:
+- Ponte en cuclillas y apoya las manos en el suelo.
+
+📐 MOVIMIENTO:
+1. Salta hacia atrás hasta quedar en posición de plancha.
+2. Haz una flexión de pecho (baja el pecho hasta casi tocar el suelo).
+3. Salta hacia adelante para volver a la posición de cuclillas.
+4. Salta explosivo con una palmada por encima de la cabeza.
+
+❗ ERRORES COMUNES:
+- No hacer la flexión.
+- No saltar lo suficiente.
+
+💨 RESPIRACIÓN: Respira de forma constante, no te aguantes la respiración.`,
+
+        "Saltos tijera": `📍 POSICIÓN INICIAL:
+- De pie, con los brazos a los lados.
+
+📐 MOVIMIENTO:
+1. Salta abriendo las piernas y levantando los brazos por encima de la cabeza.
+2. Salta de nuevo para cerrar las piernas y bajar los brazos.
+3. Repite rápidamente.
+
+❗ ERRORES COMUNES: Separar demasiado los brazos.
+💨 RESPIRACIÓN: Mantén un ritmo constante.`,
+
+        "Rodillas altas": `📍 POSICIÓN INICIAL:
+- De pie, con los brazos flexionados como si corrieras.
+
+📐 MOVIMIENTO:
+1. Corre en el sitio elevando las rodillas a la altura de la cadera.
+2. Marca el ritmo con los brazos.
+3. Mantén el torso erguido.
+
+❗ ERRORES COMUNES: Inclinar el torso hacia atrás.
+💨 RESPIRACIÓN: Mantén un ritmo constante.`,
+
+        "V-ups": `📍 POSICIÓN INICIAL:
+- Túmbate boca arriba con los brazos extendidos detrás de la cabeza.
+- Piernas estiradas.
+
+📐 MOVIMIENTO:
+1. Eleva las piernas y el torso a la vez, intentando tocar los pies con las manos.
+2. Baja controladamente sin golpear el suelo.
+
+❗ ERRORES COMUNES: Usar impulso.
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`,
+
+        "Crunch": `📍 POSICIÓN INICIAL:
+- Túmbate boca arriba con las rodillas flexionadas.
+- Coloca las manos detrás de la nuca sin tirar del cuello.
+
+📐 MOVIMIENTO:
+1. Eleva solo los omóplatos del suelo (la zona lumbar debe permanecer apoyada).
+2. Baja controladamente.
+
+❗ ERRORES COMUNES: Tirar del cuello con las manos.
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`,
+
+        "Toques talón": `📍 POSICIÓN INICIAL:
+- Túmbate boca arriba con las rodillas flexionadas.
+- Brazos extendidos a los lados del cuerpo.
+
+📐 MOVIMIENTO:
+1. Eleva ligeramente los hombros y lleva una mano a tocar el talón del mismo lado.
+2. Alterna rápidamente.
+
+❗ ERRORES COMUNES: No mantener el abdomen contraído.`,
+
+        "Cinta (correr o caminar)": `📍 POSICIÓN INICIAL:
+- Sube a la cinta, sujeta las asas si es necesario.
+
+📐 MOVIMIENTO:
+1. Calienta 2 minutos caminando suave.
+2. Aumenta la velocidad a un ritmo que te permita caminar rápido o trotar sin ahogarte.
+3. Mantén una postura erguida, sin apoyarte en las asas.
+4. Termina con 2 minutos de enfriamiento caminando lento.
+
+❗ ERRORES COMUNES: Agarrarse fuerte a las asas, inclinar el torso hacia adelante.
+💨 RESPIRACIÓN: Mantén un ritmo respiratorio constante (por ejemplo, inhala 3 pasos, exhala 3 pasos).
+🎯 CONSEJO: Si te ahogas, baja la velocidad. No necesitas correr, caminar rápido ya quema calorías.`,
+
+        // NIVEL 2 (algunos ya están cubiertos, pero añado los que faltan)
+        "Dominadas lastradas (peso extra)": `Igual que las dominadas normales, pero con peso adicional sujeto entre las piernas o en un cinturón. Aumenta la carga progresivamente.`,
+        "Remo en banco con pausa": `Igual que el remo en banco, pero añade una pausa de 2 segundos en la contracción máxima.`,
+        "Curl predicador unilateral": `Ya está definido arriba.`,
+        "Curl martillo pesado": `Igual que el curl martillo, pero con mayor peso y menos repeticiones.`,
+        "Press banca plano con pausa": `Igual que el press banca plano, pero añade una pausa de 2 segundos en la posición de abajo.`,
+        "Press banca inclinado pesado": `Igual que el press inclinado, pero con mayor peso.`,
+        "Press militar sentado con pausa": `Igual que el press militar, pero con pausa arriba o abajo.`,
+        "Sentadilla búlgara pesada": `Igual que la sentadilla búlgara, pero con mayor peso.`,
+        "Peso muerto rumano a una pierna": `Ya está definido.`,
+        "Fondos en banco con peso": `Igual que los fondos en banco, pero con peso adicional sobre el regazo.`,
+        "Press francés en banco (nivel2)": `Ya está definido.`,
+        "Remo con barra agarre supino": `Ya está definido.`,
+        "Curl predicador con mancuerna": `Ya está definido.`,
+        "Curl araña unilateral": `Ya está definido.`,
+        "Press inclinado con pausa": `Igual que press inclinado, con pausa.`,
+        "Pájaro con pausa": `Igual que pájaro, con pausa arriba.`,
+        "Dominadas con banda": `Ya está definido.`,
+        "Remo inclinado apoyado (nivel2)": `Ya está definido.`,
+        "Curl de bíceps alterno (nivel2)": `Ya está definido.`
+    };
+    return instrucciones[nombre] || "1. Mantén la espalda recta.\n2. Controla el movimiento.\n3. Prioriza técnica sobre peso.";
+}
+
+// ==================== FUNCIONES DE MARCACIÓN Y RENDERIZADO ====================
 let personalizaciones = JSON.parse(localStorage.getItem('personalizaciones')) || {};
 let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
 
@@ -641,31 +1174,9 @@ function eliminarPersonalizacion(id) {
     renderizarRutinas();
 }
 function abrirEditorEjercicio(id, nombre, ciclo, seriesActual, repsActual, pesoActual, esTiempo) {
-    if (esTiempo) {
-        mostrarToast("Los ejercicios de cardio usan tiempo, no series x repeticiones");
-        return;
-    }
-    const modalHTML = `
-        <div id="modalEditor" class="modal-disk">
-            <div class="disk-panel">
-                <span onclick="cerrarEditor()" style="float:right; cursor:pointer;">&times;</span>
-                <h3>✏️ Personalizar: ${nombre}</h3>
-                <label>📊 Series:</label>
-                <input type="text" id="editSeries" value="${seriesActual}" style="width:100%; margin:5px 0; padding:4px; border-radius:8px;">
-                <label>🔁 Repeticiones:</label>
-                <input type="text" id="editReps" value="${repsActual}" style="width:100%; margin:5px 0; padding:4px; border-radius:8px;">
-                <label>⚖️ Peso (kg por mancuerna):</label>
-                <input type="number" id="editPeso" value="${pesoActual}" step="0.5" style="width:100%; margin:5px 0; padding:4px; border-radius:8px;">
-                <div style="display:flex; gap:8px; margin-top:12px;">
-                    <button onclick="guardarPersonalizacion('${id}', document.getElementById('editSeries').value, document.getElementById('editReps').value, parseFloat(document.getElementById('editPeso').value))" style="background:var(--ciclo-color); border:none; border-radius:20px; padding:4px 12px; color:#000;">💾 GUARDAR</button>
-                    <button onclick="eliminarPersonalizacion('${id}')" style="background:#ff3b30; border:none; border-radius:20px; padding:4px 12px; color:#fff;">🗑️ RESTABLECER</button>
-                    <button onclick="cerrarEditor()" style="background:#333; border:none; border-radius:20px; padding:4px 12px;">CANCELAR</button>
-                </div>
-            </div>
-        </div>
-    `;
-    cerrarEditor();
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    if (esTiempo) { mostrarToast("Cardio usa tiempo, no series x repeticiones"); return; }
+    const modalHTML = `<div id="modalEditor" class="modal-disk"><div class="disk-panel"><span onclick="cerrarEditor()">&times;</span><h3>✏️ Personalizar: ${nombre}</h3><label>Series:</label><input type="text" id="editSeries" value="${seriesActual}"><label>Reps:</label><input type="text" id="editReps" value="${repsActual}"><label>Peso (kg):</label><input type="number" id="editPeso" value="${pesoActual}" step="0.5"><div style="display:flex; gap:8px; margin-top:12px;"><button onclick="guardarPersonalizacion('${id}', document.getElementById('editSeries').value, document.getElementById('editReps').value, parseFloat(document.getElementById('editPeso').value))">💾 GUARDAR</button><button onclick="eliminarPersonalizacion('${id}')">🗑️ RESET</button><button onclick="cerrarEditor()">CANCELAR</button></div></div></div>`;
+    cerrarEditor(); document.body.insertAdjacentHTML('beforeend', modalHTML);
 }
 function cerrarEditor() { document.getElementById('modalEditor')?.remove(); }
 
@@ -675,96 +1186,37 @@ window.mostrarDiscos = function(nombre, ciclo, idEjercicio) {
     if (kg === 0) { mostrarToast("Peso corporal - no requiere discos"); return; }
     const combo = discosPorPeso[kg];
     if (!combo) { mostrarToast(`Peso ${kg} kg: ajusta con tus discos (2, 1.5, 1.25 kg)`); return; }
-    const numManc = getCantidadMancuernas(nombre);
-    let mensaje = "";
-    if (numManc === 1) mensaje = "Usa UNA mancuerna. Coloca:";
-    else if (numManc === 2) mensaje = "Usa DOS mancuernas. En CADA mancuerna coloca:";
-    else mensaje = "Peso corporal - no aplica.";
-    const modalHTML = `<div id="modalDiscos" class="modal-disk"><div class="disk-panel"><span onclick="cerrarModalDiscos()" style="float:right; cursor:pointer;">&times;</span><div style="font-weight:bold;">🏋️ ${nombre}</div><div>Peso objetivo: ${kg} kg</div><div style="background:#0a0a0a; padding:8px; border-radius:12px; margin:10px 0; text-align:left;">📌 ${mensaje}<br><span style="color:cyan;">Lado IZQUIERDO:</span> ${combo.izq.join(" + ")} kg<br><span style="color:cyan;">Lado DERECHO:</span> ${combo.der.join(" + ")} kg${numManc===2 ? '<br>⚠️ Repite para la segunda mancuerna.' : ''}</div><button onclick="cerrarModalDiscos()" style="background:var(--ciclo-color); border:none; padding:6px 12px; border-radius:30px; color:#000;">CERRAR</button></div></div>`;
-    cerrarModalDiscos();
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    const modalHTML = `<div id="modalDiscos" class="modal-disk"><div class="disk-panel"><span onclick="cerrarModalDiscos()">&times;</span><div style="font-weight:bold;">🏋️ ${nombre}</div><div>Peso objetivo: ${kg} kg</div><div style="background:#0a0a0a; padding:8px; border-radius:12px; margin:10px 0; text-align:left;">Coloca:<br><span style="color:cyan;">Lado IZQUIERDO:</span> ${combo.izq.join(" + ")} kg<br><span style="color:cyan;">Lado DERECHO:</span> ${combo.der.join(" + ")} kg<br>⚠️ Repite para la segunda mancuerna.</div><button onclick="cerrarModalDiscos()">CERRAR</button></div></div>`;
+    cerrarModalDiscos(); document.body.insertAdjacentHTML('beforeend', modalHTML);
 };
 function cerrarModalDiscos() { document.getElementById('modalDiscos')?.remove(); }
-
-function getInstrucciones(nombre) {
-    if (nombre.includes("Dominadas")) return "1. Coge la barra con agarre prono (palmas hacia afuera) o supino (palmas hacia ti).\n2. Cuelga con brazos extendidos.\n3. Sube hasta que el pecho toque la barra.\n4. Baja controlado en 2 segundos.\n5. Mantén el core activo y no te balancees.";
-    if (nombre.includes("Remo")) return "1. Espalda recta, inclina torso 45 grados.\n2. Tira la mancuerna/barra hacia el abdomen.\n3. Aprieta los omóplatos al final del movimiento.\n4. Baja lentamente hasta estirar el brazo.\n5. No uses impulso, controla el peso.";
-    if (nombre.includes("Curl")) return "1. Codos pegados al cuerpo o apoyados en silla.\n2. Curla la mancuerna hacia el hombro sin mover el codo.\n3. Aprieta el bíceps al final.\n4. Baja controlado en 2 segundos.\n5. No balancees el cuerpo.";
-    if (nombre.includes("Press banca")) return "1. Tumbado boca arriba, pies apoyados en el suelo o elevados.\n2. Baja las mancuernas hasta que los codos lleguen a 90 grados.\n3. Pausa 1 segundo abajo.\n4. Sube explosivamente apretando el pecho.\n5. No arquees la espalda en exceso.";
-    if (nombre.includes("Flexiones")) return "1. Manos al ancho de hombros, cuerpo recto.\n2. Baja el pecho hasta casi tocar el suelo.\n3. Sube con fuerza.\n4. Mantén el abdomen contraído.\n5. No dejes que la cadera se hunda o se eleve.";
-    if (nombre.includes("Press militar")) return "1. De pie o sentado, mancuernas a los hombros.\n2. Presiona hacia arriba sin bloquear los codos.\n3. Pausa 1 segundo arriba.\n4. Baja controlado hasta los hombros.\n5. Mantén el core activo.";
-    if (nombre.includes("Elevaciones laterales")) return "1. De pie, mancuernas a los lados.\n2. Eleva los brazos lateralmente hasta la altura de los hombros.\n3. Baja controlado.\n4. No uses impulso.\n5. Los codos deben estar ligeramente flexionados.";
-    if (nombre.includes("Sentadilla")) return "1. Espalda recta, pecho arriba.\n2. Baja como si te sentaras en una silla.\n3. Las rodillas deben alinearse con los pies.\n4. Sube apretando los glúteos.\n5. Mantén el peso en los talones.";
-    if (nombre.includes("Peso muerto")) return "1. Espalda recta, piernas ligeramente flexionadas.\n2. Flexiona la cadera, no la espalda.\n3. Baja hasta sentir el estiramiento en los isquios.\n4. Sube apretando los glúteos.\n5. Mantén la barra/mancuerna pegada al cuerpo.";
-    if (nombre.includes("Fondos")) return "1. Sujeta dos sillas o una torre de fondos.\n2. Baja el cuerpo hasta que los codos lleguen a 90 grados.\n3. Sube con fuerza hasta estirar los brazos.\n4. Mantén los hombros hacia abajo.\n5. No bloquees los codos arriba.";
-    if (nombre.includes("Press francés")) return "1. Tumbado, mancuerna detrás de la cabeza.\n2. Baja lentamente hasta que el antebrazo toque el bíceps.\n3. Sube extendiendo el brazo.\n4. Mantén el codo fijo apuntando al techo.\n5. No extiendas completamente el codo para proteger la articulación.";
-    if (nombre.includes("Burpees")) return "1. En cuclillas, manos en el suelo.\n2. Salta hacia atrás a posición de plancha.\n3. Haz una flexión.\n4. Salta hacia adelante con los pies.\n5. Salta explosivo con palmada arriba. Repite rápido.";
-    if (nombre.includes("Plancha")) return "1. Apoya antebrazos y puntas de pies.\n2. Cuerpo recto, abdomen contraído.\n3. No bajes la cadera ni la eleves.\n4. Aguanta sin arquear la espalda.\n5. Respira de forma continua.";
-    if (nombre.includes("Zancadas")) return "1. Da un paso largo hacia adelante.\n2. Baja la rodilla trasera hasta casi tocar el suelo.\n3. La rodilla delantera no debe pasar la punta del pie.\n4. Impúlsate con el talón del pie delantero para volver.\n5. Alterna piernas.";
-    if (nombre.includes("Puente de glúteos")) return "1. Tumbado boca arriba, rodillas flexionadas, pies apoyados.\n2. Eleva la cadera apretando los glúteos.\n3. Llega hasta formar una línea recta con el cuerpo.\n4. Baja controlado sin apoyar el glúteo del todo.\n5. Repite sin descanso.";
-    if (nombre.includes("V-ups")) return "1. Tumbado boca arriba, brazos extendidos detrás de la cabeza.\n2. Eleva piernas y torso a la vez.\n3. Intenta tocar tus pies con las manos.\n4. Baja controlado sin golpear el suelo.\n5. Mantén el abdomen contraído todo el tiempo.";
-    if (nombre.includes("Crunch")) return "1. Tumbado boca arriba, rodillas flexionadas.\n2. Manos tras la nuca (sin tirar del cuello).\n3. Eleva solo los omóplatos del suelo.\n4. Baja controlado.\n5. Mantén el mentón separado del pecho.";
-    if (nombre.includes("Rodillas altas")) return "1. De pie, corre en el sitio.\n2. Eleva las rodillas hasta la altura de la cadera.\n3. Marca el ritmo con los brazos.\n4. Mantén el torso erguido.\n5. Máxima intensidad durante el tiempo indicado.";
-    if (nombre.includes("Cinta")) return "1. Calienta 2 minutos caminando suave.\n2. Aumenta la velocidad progresivamente.\n3. Corre o camina a ritmo constante.\n4. Mantén una postura erguida.\n5. Termina con 2 minutos de enfriamiento caminando.";
-    return "1. Postura correcta y espalda recta.\n2. Controla el movimiento en todo momento.\n3. Respira de forma controlada (inhala al bajar, exhala al subir).\n4. Siente el músculo trabajar.\n5. No uses impulso, prioriza la técnica sobre el peso.";
-}
 
 function marcarEjercicio(id) {
     const dia = id.split('-')[0];
     const semanaKey = getWeekNumber(new Date()).toString();
     const completadoKey = `completado_${dia}_${semanaKey}`;
-    if (localStorage.getItem(completadoKey) === 'true') {
-        mostrarToast("⚠️ Este día ya está completado, no puedes modificar los ejercicios");
-        return;
-    }
-    if (checks[id]) {
-        delete checks[id];
-    } else {
-        checks[id] = true;
-    }
+    if (localStorage.getItem(completadoKey) === 'true') { mostrarToast("⚠️ Este día ya está completado"); return; }
+    if (checks[id]) delete checks[id];
+    else checks[id] = true;
     localStorage.setItem('nico_checks', JSON.stringify(checks));
     renderizarRutinas();
     const container = document.getElementById(`lista-${dia}`);
     if (container) {
         const checkboxes = container.querySelectorAll('.check-box');
         const todos = Array.from(checkboxes).every(cb => cb.checked === true);
-        if (todos && checkboxes.length > 0) {
-            completarDia(dia);
-        } else {
-            if (localStorage.getItem(completadoKey) === 'true') {
-                localStorage.removeItem(completadoKey);
-                mostrarToast(`⚠️ Día ${dia} incompleto, se ha desmarcado el entrenamiento`);
-                renderizarRutinas();
-                actualizarUI();
-            }
-        }
+        if (todos && checkboxes.length > 0) completarDia(dia);
     }
 }
 
 function completarDia(dia) {
     const semanaKey = getWeekNumber(new Date()).toString();
     const completadoKey = `completado_${dia}_${semanaKey}`;
-    
     if (localStorage.getItem(completadoKey) === 'true') return;
-    
     localStorage.setItem(completadoKey, 'true');
-    
     const hoy = getHoyStr();
-    if (!diasEntrenados.includes(hoy)) {
-        diasEntrenados.push(hoy);
-        guardarTodo();
-    }
-    
+    if (!diasEntrenados.includes(hoy)) { diasEntrenados.push(hoy); guardarTodo(); }
     mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`);
-    canvasConfetti({ particleCount: 150, spread: 100, colors: [SERIES_REPS_CICLO[getCicloActual()].color, '#fff'] });
-    
-    const nuevoNivel = getNivelActual();
-    const nivelAnterior = parseInt(localStorage.getItem('nivelActual')) || 1;
-    if (nuevoNivel > nivelAnterior) {
-        mostrarToast(`🏆 ¡SUBES A NIVEL ${nuevoNivel}! Nuevos ejercicios desbloqueados.`);
-        localStorage.setItem('nivelActual', nuevoNivel);
-    }
-    
+    canvasConfetti({ particleCount: 150, spread: 100 });
     renderizarRutinas();
     actualizarUI();
     actualizarLogros();
@@ -774,39 +1226,26 @@ function completarDia(dia) {
 function resetDia(dia) {
     const semanaKey = getWeekNumber(new Date()).toString();
     const completadoKey = `completado_${dia}_${semanaKey}`;
-    if (localStorage.getItem(completadoKey) === 'true') {
-        mostrarToast("⚠️ Este día ya está completado, no puedes desmarcar los ejercicios");
-        return;
-    }
+    if (localStorage.getItem(completadoKey) === 'true') { mostrarToast("⚠️ Día completado, no se puede desmarcar"); return; }
     const container = document.getElementById(`lista-${dia}`);
     if (container) {
-        const checkboxes = container.querySelectorAll('.check-box');
         let cambios = false;
-        checkboxes.forEach((cb, idx) => {
+        container.querySelectorAll('.check-box').forEach((cb, idx) => {
             const id = `${dia}-${idx}`;
-            if (checks[id]) {
-                delete checks[id];
-                cambios = true;
-            }
+            if (checks[id]) { delete checks[id]; cambios = true; }
         });
-        if (cambios) {
-            localStorage.setItem('nico_checks', JSON.stringify(checks));
-            renderizarRutinas();
-            mostrarToast(`✅ Ejercicios de ${dia} desmarcados`);
-        }
+        if (cambios) { localStorage.setItem('nico_checks', JSON.stringify(checks)); renderizarRutinas(); mostrarToast(`✅ Ejercicios de ${dia} desmarcados`); }
     }
 }
 
 function renderizarRutinas() {
     const ciclo = getCicloActual();
-    const cicloKey = ciclo === 'FUERZA' ? 'fuerza' : (ciclo === 'DEFINICIÓN' ? 'definicion' : (ciclo === 'VOLUMEN' ? 'volumen' : 'resistencia'));
     const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
     const semanaKey = getWeekNumber(new Date()).toString();
     for (let dia of dias) {
         const container = document.getElementById(`lista-${dia}`);
         if (!container) continue;
-        const nombres = getEjerciciosPorDia(dia, cicloKey);
-        if (!nombres) continue;
+        const nombres = getEjerciciosPorDia(dia, ciclo);
         const completadoKey = `completado_${dia}_${semanaKey}`;
         const isDiaCompletado = localStorage.getItem(completadoKey) === 'true';
         container.innerHTML = '';
@@ -814,41 +1253,47 @@ function renderizarRutinas() {
             const id = `${dia}-${idx}`;
             const isChecked = checks[id] === true;
             const personalizacion = personalizaciones[id];
-            const { series, reps, esTiempo } = getSeriesReps(nombre, ciclo, personalizacion);
+            const { series, reps, esTiempo, esPiramide } = getSeriesReps(nombre, ciclo, personalizacion);
             const pesoMostrado = formatearPeso(nombre, ciclo, personalizacion);
             const img = getImagen(nombre);
             const instrucciones = getInstrucciones(nombre);
             const idDet = `det-${dia}-${idx}`;
-            const nombreEsc = nombre.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const disabledAttr = isDiaCompletado ? 'disabled' : '';
             const checkedAttr = isChecked ? 'checked' : '';
-            let tiempoTexto = '';
-            if (esTiempo) {
-                tiempoTexto = `<span style="font-size:0.6rem;">⏱️ TIEMPO</span><br><strong>${series} ${reps}</strong>`;
-            } else {
-                tiempoTexto = `<span style="font-size:0.6rem;">📊 SERIES</span><br><strong>${series} x ${reps}</strong>`;
+            let tiempoTexto = esTiempo ? `<span style="font-size:0.6rem;">⏱️ TIEMPO</span><br><strong>${series} ${reps}</strong>` : `<span style="font-size:0.6rem;">📊 SERIES</span><br><strong>${series} x ${reps}</strong>`;
+            
+            let piramideHtml = '';
+            if (esPiramide && ciclo === 'FUERZA') {
+                const escalones = getPiramideEscalones(nombre, ciclo);
+                if (escalones) {
+                    piramideHtml = `<div class="piramide-detalle">
+                        🏔️ PIRÁMIDE:<br>
+                        🔹 1ª serie: ${escalones[0]} kg → MAX reps<br>
+                        🔹 2ª serie: ${escalones[1]} kg → MAX+2-4 reps<br>
+                        🔹 3ª serie: ${escalones[2]} kg → MAX+4-6 reps
+                    </div>`;
+                }
             }
-            const ejercicioDiv = document.createElement('div');
-            ejercicioDiv.className = 'exercise-card';
-            ejercicioDiv.innerHTML = `
+            
+            const card = document.createElement('div');
+            card.className = 'exercise-card';
+            card.innerHTML = `
                 <div style="display:flex; align-items:center; justify-content:space-between;">
-                    <div><strong>${nombre}</strong> ${!esTiempo ? `<span class="edit-icono" onclick="abrirEditorEjercicio('${id}', '${nombreEsc}', '${ciclo}', '${series}', '${reps}', ${personalizacion?.peso !== undefined ? personalizacion.peso : getPesoEjercicioBase(nombre, ciclo)}, ${esTiempo})">✏️</span>` : ''} <span style="font-size:0.6rem;">${dia==='lunes'||dia==='jueves'?'💪 Espalda/Bíceps':(dia==='martes'||dia==='viernes'?'🏋️ Pecho/Hombro':'🦵 Pierna/Tríceps')}</span></div>
+                    <div><strong>${nombre}</strong> ${!esTiempo ? `<span class="edit-icono" onclick="abrirEditorEjercicio('${id}', '${nombre.replace(/'/g, "\\'")}', '${ciclo}', '${series}', '${reps}', ${personalizacion?.peso !== undefined ? personalizacion.peso : getPesoEjercicioBase(nombre, ciclo)}, ${esTiempo})">✏️</span>` : ''}</div>
                     <div class="check-wrapper"><input type="checkbox" class="check-box" ${checkedAttr} ${disabledAttr} onchange="marcarEjercicio('${id}')"></div>
                 </div>
                 <div style="display:flex; gap:8px; margin:6px 0;">
                     <div>${tiempoTexto}</div>
-                    <div><span style="font-size:0.6rem;">⚖️ PESO</span><br><strong class="weight-badge" onclick="window.mostrarDiscos('${nombreEsc}', '${ciclo}', '${id}')">📦 ${pesoMostrado}</strong></div>
+                    <div><span style="font-size:0.6rem;">⚖️ PESO</span><br><strong class="weight-badge" onclick="window.mostrarDiscos('${nombre.replace(/'/g, "\\'")}', '${ciclo}', '${id}')">📦 ${pesoMostrado}</strong></div>
                 </div>
+                ${piramideHtml}
                 <button class="btn-main" onclick="toggleDetalles('${idDet}')">📋 VER INSTRUCCIONES ▾</button>
                 <div id="${idDet}" class="detalles">${img ? `<img src="${img}" class="ex-img" loading="lazy" onerror="this.style.display='none'">` : `<div style="text-align:center; padding:10px; color:var(--ciclo-color);">🏋️ ${nombre}</div>`}<div><strong>📝 CÓMO HACERLO:</strong><br>${instrucciones.replace(/\n/g, '<br>')}</div></div>
             `;
-            container.appendChild(ejercicioDiv);
+            container.appendChild(card);
         });
         const resetBtn = document.querySelector(`.btn-reset-dia[data-dia="${dia}"]`);
-        if (resetBtn) {
-            resetBtn.disabled = isDiaCompletado;
-            resetBtn.onclick = () => resetDia(dia);
-        }
+        if (resetBtn) { resetBtn.disabled = isDiaCompletado; resetBtn.onclick = () => resetDia(dia); }
     }
 }
 function toggleDetalles(id) { document.getElementById(id)?.classList.toggle('show'); }
@@ -865,89 +1310,31 @@ function reiniciarChecksSiNuevaSemana() {
     }
 }
 
-// ==================== RESPIRACIÓN ====================
-function abrirRespiracionModerno() {
-    const modalHTML = `
-        <div id="modalRespiracion" class="modal-disk">
-            <div class="disk-panel" style="max-width: 350px;">
-                <span onclick="cerrarRespiracionModerno()" style="float:right; cursor:pointer; font-size:1.5rem;">&times;</span>
-                <h3 style="color:var(--ciclo-color);">🧘 RESPIRACIÓN GUIADA</h3>
-                <div class="respirar-container">
-                    <div class="circulo-respiracion" id="circuloRespiracion">
-                        <div class="tiempo-respiracion" id="tiempoRespiracion">4</div>
-                    </div>
-                    <div class="texto-respiracion" id="textoRespiracion">INHALA</div>
-                    <div class="paso-respiracion" id="pasoRespiracion">Ciclo 1 de 4</div>
-                    <button class="btn-respiracion" id="btnIniciarRespiracion">▶️ INICIAR</button>
-                </div>
-            </div>
-        </div>
-    `;
-    cerrarRespiracionModerno();
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    document.getElementById('btnIniciarRespiracion').onclick = iniciarCicloRespiracion;
+// ==================== OBJETIVO AUTOMÁTICO (SIN DESPLEGABLE) ====================
+let objetivoActual = localStorage.getItem('objetivoPeso') ? parseInt(localStorage.getItem('objetivoPeso')) : 80;
+const listaObjetivos = [80, 75, 70, 65];
+
+function actualizarBannerObjetivo() {
+    document.getElementById('bannerObjetivo').innerText = objetivoActual + ' kg';
 }
-function cerrarRespiracionModerno() { document.getElementById('modalRespiracion')?.remove(); }
-let respiracionInterval = null;
-let cicloActual = 1;
-let pasoActual = 1;
-let tiempoActual = 4;
-function iniciarCicloRespiracion() {
-    if (respiracionInterval) clearInterval(respiracionInterval);
-    cicloActual = 1;
-    pasoActual = 1;
-    tiempoActual = 4;
-    actualizarDisplayRespiracion();
-    const btn = document.getElementById('btnIniciarRespiracion');
-    if (btn) btn.disabled = true;
-    respiracionInterval = setInterval(() => {
-        tiempoActual--;
-        if (tiempoActual <= 0) {
-            pasoActual++;
-            if (pasoActual > 4) {
-                cicloActual++;
-                if (cicloActual > 4) {
-                    clearInterval(respiracionInterval);
-                    document.getElementById('textoRespiracion').innerHTML = "✅ ¡COMPLETADO!";
-                    document.getElementById('pasoRespiracion').innerHTML = "4 ciclos completados";
-                    if (btn) btn.disabled = false;
-                    return;
-                }
-                pasoActual = 1;
-                tiempoActual = 4;
-            } else {
-                if (pasoActual === 2) tiempoActual = 4;
-                else if (pasoActual === 3) tiempoActual = 4;
-                else if (pasoActual === 4) tiempoActual = 4;
-                else tiempoActual = 4;
-            }
+
+function revisarYActualizarObjetivo() {
+    if (pesos.length === 0) return;
+    const ultimoPeso = pesos[pesos.length-1].valor;
+    let nuevoObjetivo = objetivoActual;
+    for (let i = listaObjetivos.length-1; i >= 0; i--) {
+        if (listaObjetivos[i] < objetivoActual && ultimoPeso <= listaObjetivos[i]) {
+            nuevoObjetivo = listaObjetivos[i];
+            break;
         }
-        actualizarDisplayRespiracion();
-    }, 1000);
-}
-function actualizarDisplayRespiracion() {
-    const texto = document.getElementById('textoRespiracion');
-    const tiempo = document.getElementById('tiempoRespiracion');
-    const pasoDiv = document.getElementById('pasoRespiracion');
-    const circulo = document.getElementById('circuloRespiracion');
-    if (pasoActual === 1) {
-        texto.innerHTML = "🌬️ INHALA";
-        pasoDiv.innerHTML = `Ciclo ${cicloActual} de 4 - Paso 1/4`;
-        if (circulo) circulo.style.animation = "latir 4s ease-in-out infinite";
-    } else if (pasoActual === 2) {
-        texto.innerHTML = "⏸️ AGUANTA";
-        pasoDiv.innerHTML = `Ciclo ${cicloActual} de 4 - Paso 2/4`;
-        if (circulo) circulo.style.animation = "none";
-    } else if (pasoActual === 3) {
-        texto.innerHTML = "🌊 EXHALA";
-        pasoDiv.innerHTML = `Ciclo ${cicloActual} de 4 - Paso 3/4`;
-        if (circulo) circulo.style.animation = "latir 4s ease-in-out infinite reverse";
-    } else if (pasoActual === 4) {
-        texto.innerHTML = "🧘 VACÍO";
-        pasoDiv.innerHTML = `Ciclo ${cicloActual} de 4 - Paso 4/4`;
-        if (circulo) circulo.style.animation = "none";
     }
-    if (tiempo) tiempo.innerText = tiempoActual;
+    if (nuevoObjetivo !== objetivoActual) {
+        objetivoActual = nuevoObjetivo;
+        localStorage.setItem('objetivoPeso', objetivoActual);
+        actualizarBannerObjetivo();
+        mostrarToast(`🎉 ¡Has superado el objetivo! Nuevo objetivo: ${objetivoActual} kg`);
+        canvasConfetti({ particleCount: 150, spread: 100 });
+    }
 }
 
 // ==================== RESTO DE FUNCIONALIDADES ====================
@@ -957,8 +1344,7 @@ let pesos = JSON.parse(localStorage.getItem('pesos')) || [];
 let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
 let marcasLesion = JSON.parse(localStorage.getItem('marcasLesion')) || [];
 let marcasVacaciones = JSON.parse(localStorage.getItem('marcasVacaciones')) || [];
-
-if (pesos.length === 0) { pesos.push({ valor: 84, fecha: new Date().toLocaleDateString() }); localStorage.setItem('pesos', JSON.stringify(pesos)); }
+if (pesos.length === 0) pesos.push({ valor: 84, fecha: new Date().toISOString().slice(0,10) });
 
 function guardarTodo() {
     localStorage.setItem('diasEntrenados', JSON.stringify(diasEntrenados));
@@ -968,36 +1354,12 @@ function guardarTodo() {
     localStorage.setItem('marcasLesion', JSON.stringify(marcasLesion));
     localStorage.setItem('marcasVacaciones', JSON.stringify(marcasVacaciones));
 }
-function mostrarToast(msg) {
-    const toast = document.createElement('div');
-    toast.className = 'toast-msg';
-    toast.innerText = msg;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
-}
+function mostrarToast(msg) { const t=document.createElement('div'); t.className='toast-msg'; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
 
 let mesGym = new Date().getMonth(), añoGym = new Date().getFullYear();
 let mesSmoke = new Date().getMonth(), añoSmoke = new Date().getFullYear();
-function getHoyStr() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-function esFechaFutura(fecha) { const hoy = new Date(); hoy.setHours(0,0,0,0); return fecha > hoy; }
-
-function mostrarPopupEjercicios(fecha, cicloSemana) {
-    const diaSemana = fecha.getDay();
-    if (diaSemana === 0) { mostrarToast("📅 Domingo - descanso"); return; }
-    const diasMap = {1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado'};
-    const diaKey = diasMap[diaSemana];
-    const cicloKey = cicloSemana === 'FUERZA' ? 'fuerza' : (cicloSemana === 'DEFINICIÓN' ? 'definicion' : (cicloSemana === 'VOLUMEN' ? 'volumen' : 'resistencia'));
-    const ejercicios = getEjerciciosPorDia(diaKey, cicloKey);
-    if (!ejercicios) return;
-    const html = `<div class="disk-panel"><h3 style="color:var(--ciclo-color);">📅 ${fecha.toLocaleDateString('es-ES')} · ${cicloSemana}</h3><ul style="text-align:left;">${ejercicios.map(ej => `<li><strong>${ej}</strong></li>`).join('')}</ul><button onclick="cerrarModalPopup()" style="background:var(--ciclo-color); border:none; padding:6px 12px; border-radius:30px; margin-top:8px;">CERRAR</button></div>`;
-    cerrarModalPopup();
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-disk';
-    overlay.id = 'modalPopup';
-    overlay.innerHTML = html;
-    document.body.appendChild(overlay);
-}
-function cerrarModalPopup() { document.getElementById('modalPopup')?.remove(); }
+function getHoyStr() { return new Date().toISOString().slice(0,10); }
+function esFechaFutura(fecha) { return fecha > new Date(); }
 
 function renderCalendarios() {
     const contGym = document.getElementById('cal-gym');
@@ -1005,7 +1367,7 @@ function renderCalendarios() {
         contGym.innerHTML = '';
         const nombreMes = new Date(añoGym, mesGym, 1).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
         document.getElementById('cal-month-gym').innerText = `${nombreMes} ${añoGym}`;
-        ['L','M','X','J','V','S','D'].forEach(d => { let div = document.createElement('div'); div.className = 'cal-day-label'; div.innerText = d; contGym.appendChild(div); });
+        ['L','M','X','J','V','S','D'].forEach(d => { let div = document.createElement('div'); div.innerText = d; div.style.fontWeight='bold'; div.style.textAlign='center'; contGym.appendChild(div); });
         const primerDia = new Date(añoGym, mesGym, 1).getDay();
         let offset = primerDia === 0 ? 6 : primerDia - 1;
         for(let i=0;i<offset;i++) contGym.appendChild(document.createElement('div'));
@@ -1014,25 +1376,14 @@ function renderCalendarios() {
         for(let d=1; d<=diasMes; d++){
             const fecha = new Date(añoGym, mesGym, d);
             const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`;
-            const cicloSemana = getCicloPorFecha(fecha);
-            const cicloColor = SERIES_REPS_CICLO[cicloSemana].color;
+            const ciclo = getCicloPorFecha(fecha);
             const cell = document.createElement('div');
             cell.className = 'cal-cell';
             cell.innerText = d;
-            
-            if (fecha.getDay() === 0) {
-                cell.style.borderColor = "#9b59b6";
-            } else {
-                cell.style.borderColor = cicloColor;
-            }
-            
-            if(diasEntrenados.includes(fStr)){
-                cell.classList.add('completado');
-            }
-            if(marcasLesion.includes(fStr)) cell.style.background = '#f9a8d4';
-            if(marcasVacaciones.includes(fStr)) cell.style.background = '#a5d8ff';
+            cell.style.borderColor = fecha.getDay() === 0 ? "#9b59b6" : SERIES_REPS_CICLO[ciclo].color;
+            if(diasEntrenados.includes(fStr)) cell.classList.add('completado');
             if(fStr === hoyStr) cell.classList.add('today');
-            cell.onclick = (function(f, ciclo){ return function(){ mostrarPopupEjercicios(f, ciclo); }; })(fecha, cicloSemana);
+            cell.onclick = (function(f,c){ return function(){ mostrarPopupEjercicios(f,c); }; })(fecha, ciclo);
             contGym.appendChild(cell);
         }
     }
@@ -1041,7 +1392,7 @@ function renderCalendarios() {
         contSmoke.innerHTML = '';
         const nombreMes = new Date(añoSmoke, mesSmoke, 1).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
         document.getElementById('cal-month-smoke').innerText = `${nombreMes} ${añoSmoke}`;
-        ['L','M','X','J','V','S','D'].forEach(d => { let div = document.createElement('div'); div.className = 'cal-day-label'; div.innerText = d; contSmoke.appendChild(div); });
+        ['L','M','X','J','V','S','D'].forEach(d => { let div = document.createElement('div'); div.innerText = d; div.style.fontWeight='bold'; div.style.textAlign='center'; contSmoke.appendChild(div); });
         const primerDia = new Date(añoSmoke, mesSmoke, 1).getDay();
         let offset = primerDia === 0 ? 6 : primerDia - 1;
         for(let i=0;i<offset;i++) contSmoke.appendChild(document.createElement('div'));
@@ -1057,8 +1408,8 @@ function renderCalendarios() {
             if(fecha < fechaInicio){ cell.style.background = '#2a2a2a'; cell.style.color = '#555'; cell.style.pointerEvents = 'none'; }
             else if(esFechaFutura(fecha)){ cell.style.background = '#2a2a2a'; cell.style.color = '#666'; cell.style.pointerEvents = 'none'; }
             else {
-                if(diasNoFumar.includes(fStr)){ cell.style.background = '#ff3b30'; cell.style.borderColor = '#ff3b30'; }
-                else { cell.style.background = '#0d47a1'; cell.style.borderColor = '#0d47a1'; }
+                if(diasNoFumar.includes(fStr)) cell.style.background = '#ff3b30';
+                else cell.style.background = '#0d47a1';
                 cell.onclick = (function(fs){ return function(){ toggleDiaFumado(fs); }; })(fStr);
             }
             if(fStr === hoyStr) cell.classList.add('today');
@@ -1066,132 +1417,117 @@ function renderCalendarios() {
         }
     }
 }
-function toggleDiaFumado(fStr) {
+function mostrarPopupEjercicios(fecha, ciclo) {
+    const diaSemana = fecha.getDay();
+    if(diaSemana === 0){ mostrarToast("📅 Domingo - descanso"); return; }
+    const diasMap = {1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado'};
+    const dia = diasMap[diaSemana];
+    const ejercicios = getEjerciciosPorDia(dia, ciclo);
+    if(!ejercicios.length){ mostrarToast("No hay ejercicios"); return; }
+    const html = `<div class="disk-panel"><h3 style="color:var(--ciclo-color);">📅 ${fecha.toLocaleDateString('es-ES')} · ${ciclo}</h3><ul style="text-align:left;">${ejercicios.map(e=>`<li><strong>${e}</strong></li>`).join('')}</ul><button onclick="cerrarModalPopup()">CERRAR</button></div>`;
+    cerrarModalPopup();
+    const overlay = document.createElement('div'); overlay.className='modal-disk'; overlay.id='modalPopup'; overlay.innerHTML=html; document.body.appendChild(overlay);
+}
+function cerrarModalPopup(){ document.getElementById('modalPopup')?.remove(); }
+function toggleDiaFumado(fStr){
     if(diasNoFumar.includes(fStr)){ diasNoFumar = diasNoFumar.filter(d=>d!==fStr); mostrarToast("✅ Día sin fumar"); }
     else { diasNoFumar.push(fStr); mostrarToast("🚬 Marcado como fumado"); }
     guardarTodo(); renderCalendarios(); actualizarUI();
 }
-function changeMonth(dir, tipo) {
-    if(tipo==='gym'){ let nueva = new Date(añoGym, mesGym+dir, 1); mesGym = nueva.getMonth(); añoGym = nueva.getFullYear(); renderCalendarios(); }
-    else { let nueva = new Date(añoSmoke, mesSmoke+dir, 1); mesSmoke = nueva.getMonth(); añoSmoke = nueva.getFullYear(); renderCalendarios(); }
+function changeMonth(dir, tipo){
+    if(tipo==='gym'){ let n = new Date(añoGym, mesGym+dir, 1); mesGym = n.getMonth(); añoGym = n.getFullYear(); renderCalendarios(); }
+    else { let n = new Date(añoSmoke, mesSmoke+dir, 1); mesSmoke = n.getMonth(); añoSmoke = n.getFullYear(); renderCalendarios(); }
 }
-
-function agregarPesoConFecha() {
-    const valor = parseFloat(document.getElementById('nuevoPeso').value);
+function agregarPesoConFecha(){
+    const val = parseFloat(document.getElementById('nuevoPeso').value);
     const fecha = document.getElementById('nuevaFechaPeso').value;
-    if(isNaN(valor)) return;
-    let fechaStr = fecha ? fecha : new Date().toISOString().slice(0,10);
-    pesos.push({ valor, fecha: fechaStr });
+    if(isNaN(val)) return;
+    const fechaStr = fecha || getHoyStr();
+    pesos.push({ valor: val, fecha: fechaStr });
     pesos.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
-    guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); actualizarLogros();
+    guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); 
+    revisarYActualizarObjetivo();
+    actualizarLogros();
     document.getElementById('nuevoPeso').value = '';
-    document.getElementById('nuevaFechaPeso').value = '';
 }
-function editarPeso(index) {
-    const p = pesos[index];
-    const nuevoValor = prompt("Nuevo peso (kg):", p.valor);
-    if(nuevoValor === null || isNaN(parseFloat(nuevoValor))) return;
-    const nuevaFecha = prompt("Nueva fecha (AAAA-MM-DD):", p.fecha);
-    if(nuevaFecha === null) return;
-    pesos[index] = { valor: parseFloat(nuevoValor), fecha: nuevaFecha };
-    pesos.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
-    guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); actualizarLogros();
-}
-function mostrarHistorialPeso() {
-    const container = document.getElementById('histPeso');
-    if(!container) return;
+function editarPeso(i){ let n = prompt("Nuevo peso:", pesos[i].valor); if(n){ pesos[i].valor = parseFloat(n); guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); revisarYActualizarObjetivo(); actualizarLogros(); } }
+function eliminarPeso(i){ pesos.splice(i,1); guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); revisarYActualizarObjetivo(); actualizarLogros(); }
+function mostrarHistorialPeso(){
+    const cont = document.getElementById('histPeso');
+    if(!cont) return;
     const sorted = [...pesos].sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
-    container.innerHTML = sorted.map((p, i) => {
-        const originalIndex = pesos.findIndex(pp => pp.fecha === p.fecha && pp.valor === p.valor);
-        return `<div>${p.fecha}: <strong>${p.valor} kg</strong> <button onclick="editarPeso(${originalIndex})" style="background:none; border:none; color:cyan; cursor:pointer;">✏️</button> <button onclick="eliminarPeso(${originalIndex})" style="background:none; border:none; color:#ff3b30;">🗑️</button></div>`;
-    }).join('');
+    cont.innerHTML = sorted.map((p,i) => `<div>${p.fecha}: <strong>${p.valor} kg</strong> <button onclick="editarPeso(${i})">✏️</button> <button onclick="eliminarPeso(${i})">🗑️</button></div>`).join('');
 }
-function eliminarPeso(index) { pesos.splice(index,1); guardarTodo(); actualizarGrafico(); mostrarHistorialPeso(); actualizarLogros(); }
-function actualizarGrafico() {
+function actualizarGrafico(){
     const canvas = document.getElementById('graficoPeso');
     if(!canvas) return;
-    const ctx = canvas.getContext('2d');
     if(window.miGrafico) window.miGrafico.destroy();
     const sorted = [...pesos].sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
-    window.miGrafico = new Chart(ctx, { type:'line', data:{ labels:sorted.map(p=>p.fecha), datasets:[{ data:sorted.map(p=>p.valor), borderColor:'#0ff', fill:false, pointBackgroundColor:'#0ff' }] }, options:{ responsive:true, maintainAspectRatio:true } });
+    window.miGrafico = new Chart(canvas, { type:'line', data:{ labels:sorted.map(p=>p.fecha), datasets:[{ data:sorted.map(p=>p.valor), borderColor:'#0ff', fill:false, pointBackgroundColor:'#0ff' }] }, options:{ responsive:true, maintainAspectRatio:true } });
 }
-function marcarHoyFumado() { const hoy = getHoyStr(); if(!diasNoFumar.includes(hoy)){ diasNoFumar.push(hoy); guardarTodo(); mostrarToast("🚬 Marcado como fumado"); actualizarUI(); renderCalendarios(); } }
-function calcularDiasSinFumar() { let total=0; let f = new Date(2026,1,23); const hoy = new Date(); while(f<=hoy){ const fStr = `${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}-${String(f.getDate()).padStart(2,'0')}`; if(!diasNoFumar.includes(fStr)) total++; f.setDate(f.getDate()+1); } return total; }
-function calcularDiasDesdePrimerUso() { const primeraFecha = localStorage.getItem('primeraFechaUso'); if(!primeraFecha) return 0; const inicio = new Date(primeraFecha); const hoy = new Date(); const diff = Math.floor((hoy - inicio) / (1000*60*60*24)); return diff; }
-function actualizarInfoPausa() {
-    const info = document.getElementById('infoPausa');
-    if(!info) return;
-    if(marcasLesion.length && marcasVacaciones.length) info.innerText = `🩷 Lesión: ${marcasLesion.length} | 💙 Vacaciones: ${marcasVacaciones.length}`;
-    else if(marcasLesion.length) info.innerText = `🩷 Lesión activa: ${marcasLesion.length} días`;
-    else if(marcasVacaciones.length) info.innerText = `💙 Vacaciones: ${marcasVacaciones.length} días`;
-    else info.innerText = "✅ Sin marcas";
+function marcarHoyFumado(){ const hoy = getHoyStr(); if(!diasNoFumar.includes(hoy)){ diasNoFumar.push(hoy); guardarTodo(); mostrarToast("🚬 Marcado"); actualizarUI(); renderCalendarios(); } }
+function calcularDiasSinFumar(){ let t=0; let f = new Date(2026,1,23); const hoy = new Date(); while(f<=hoy){ if(!diasNoFumar.includes(f.toISOString().slice(0,10))) t++; f.setDate(f.getDate()+1); } return t; }
+function calcularDiasDesdePrimerUso(){ const pf = localStorage.getItem('primeraFechaUso'); return pf ? Math.floor((new Date() - new Date(pf))/(1000*60*60*24)) : 0; }
+function actualizarInfoPausa(){
+    const i = document.getElementById('infoPausa');
+    if(i) i.innerText = marcasLesion.length||marcasVacaciones.length ? `🩷 Lesión:${marcasLesion.length} 💙 Vacaciones:${marcasVacaciones.length}` : "✅ Sin marcas";
 }
-function reanudarEntrenos() { marcasLesion=[]; marcasVacaciones=[]; guardarTodo(); mostrarToast("✅ Eliminadas"); renderCalendarios(); actualizarInfoPausa(); }
-function abrirModalMarcar(tipo) {
-    let html = `<div id="modalPausa" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid var(--ciclo-color); border-radius:20px; padding:15px; z-index:8000; width:280px;"><div>${tipo==='lesion'?'🤕 MARCAR LESIÓN':'🌴 MARCAR VACACIONES'}</div><input type="date" id="fechaInicio" value="${new Date().toISOString().slice(0,10)}" style="width:100%; margin:6px 0;"><input type="date" id="fechaFin" style="width:100%; margin:6px 0;"><button onclick="confirmarMarcarDias('${tipo}')" style="background:var(--ciclo-color); border:none; border-radius:20px; padding:4px 12px;">MARCAR</button><button onclick="cerrarModalPausa()" style="background:#333; border:none; border-radius:20px; padding:4px 12px;">CANCELAR</button></div><div id="modalPausaOverlay" style="position:fixed; inset:0; background:#000c; z-index:7999;"></div>`;
+function reanudarEntrenos(){ marcasLesion=[]; marcasVacaciones=[]; guardarTodo(); renderCalendarios(); actualizarInfoPausa(); }
+function abrirModalMarcar(t){
+    let html = `<div id="modalPausa" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border-radius:20px; padding:15px; z-index:8000;"><div>${t==='lesion'?'🤕 LESIÓN':'🌴 VACACIONES'}</div><input type="date" id="fechaInicio" value="${getHoyStr()}"><input type="date" id="fechaFin" style="margin-top:5px;"><button onclick="confirmarMarcarDias('${t}')">MARCAR</button><button onclick="cerrarModalPausa()">CANCELAR</button></div><div id="modalPausaOverlay" style="position:fixed; inset:0; background:#000c;"></div>`;
     cerrarModalPausa(); document.body.insertAdjacentHTML('beforeend',html);
 }
-function cerrarModalPausa() { document.querySelectorAll('#modalPausa, #modalPausaOverlay').forEach(el=>el.remove()); }
-function confirmarMarcarDias(tipo) {
+function cerrarModalPausa(){ document.querySelectorAll('#modalPausa, #modalPausaOverlay').forEach(el=>el.remove()); }
+function confirmarMarcarDias(t){
     const inicio = document.getElementById('fechaInicio').value;
-    let fin = document.getElementById('fechaFin').value;
-    if(!inicio) return;
-    if(!fin) fin = inicio;
-    const start = new Date(inicio), end = new Date(fin);
-    if(start>end){ mostrarToast("❌ Fecha fin posterior"); return; }
+    let fin = document.getElementById('fechaFin').value || inicio;
     let dias = [];
-    for(let d=new Date(start); d<=end; d.setDate(d.getDate()+1)) dias.push(d.toISOString().slice(0,10));
-    if(tipo==='lesion') marcasLesion = [...new Set([...marcasLesion,...dias])];
+    for(let d=new Date(inicio); d<=new Date(fin); d.setDate(d.getDate()+1)) dias.push(d.toISOString().slice(0,10));
+    if(t==='lesion') marcasLesion = [...new Set([...marcasLesion,...dias])];
     else marcasVacaciones = [...new Set([...marcasVacaciones,...dias])];
-    guardarTodo(); mostrarToast(`✅ ${dias.length} día(s)`); cerrarModalPausa(); renderCalendarios(); actualizarInfoPausa();
+    guardarTodo(); cerrarModalPausa(); renderCalendarios(); actualizarInfoPausa();
 }
-function abrirModalEliminarMarcas() {
-    let html = `<div id="modalPausa" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border:2px solid var(--ciclo-color); border-radius:20px; padding:15px; z-index:8000; width:280px;"><button onclick="eliminarTodasMarcas('lesion')">Eliminar LESIÓN</button><button onclick="eliminarTodasMarcas('vacaciones')">Eliminar VACACIONES</button><button onclick="eliminarTodasMarcas('todas')">ELIMINAR TODAS</button><button onclick="cerrarModalPausa()">CERRAR</button></div><div id="modalPausaOverlay" style="position:fixed; inset:0; background:#000c; z-index:7999;"></div>`;
+function abrirModalEliminarMarcas(){
+    let html = `<div id="modalPausa" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; border-radius:20px; padding:15px; z-index:8000;"><button onclick="eliminarTodasMarcas('lesion')">Eliminar LESIÓN</button><button onclick="eliminarTodasMarcas('vacaciones')">Eliminar VACACIONES</button><button onclick="eliminarTodasMarcas('todas')">ELIMINAR TODAS</button><button onclick="cerrarModalPausa()">CERRAR</button></div><div id="modalPausaOverlay" style="position:fixed; inset:0; background:#000c;"></div>`;
     cerrarModalPausa(); document.body.insertAdjacentHTML('beforeend',html);
 }
-function eliminarTodasMarcas(tipo) {
-    if(tipo==='lesion') marcasLesion=[];
-    else if(tipo==='vacaciones') marcasVacaciones=[];
+function eliminarTodasMarcas(t){
+    if(t==='lesion') marcasLesion=[];
+    else if(t==='vacaciones') marcasVacaciones=[];
     else { marcasLesion=[]; marcasVacaciones=[]; }
-    guardarTodo(); mostrarToast("✅ Marcas eliminadas"); cerrarModalPausa(); renderCalendarios(); actualizarInfoPausa();
+    guardarTodo(); cerrarModalPausa(); renderCalendarios(); actualizarInfoPausa();
 }
 let descansoSegundos=45, timerInterval;
-function setDescanso(seg) { descansoSegundos=seg; if(document.getElementById('descanso-box').style.display==='flex'){ cancelarDescanso(); iniciarDescanso(descansoSegundos); } }
-function iniciarDescanso(seg) { const box = document.getElementById('descanso-box'); box.style.display='flex'; document.getElementById('descansoTimer').innerText=seg; if(timerInterval) clearInterval(timerInterval); timerInterval = setInterval(()=>{ seg--; document.getElementById('descansoTimer').innerText=seg; if(seg<=0){ clearInterval(timerInterval); box.style.display='none'; } },1000); }
-function cancelarDescanso() { clearInterval(timerInterval); document.getElementById('descanso-box').style.display='none'; }
+function setDescanso(seg){
+    if(document.getElementById('descanso-box').style.display==='flex') cancelarDescanso();
+    const box = document.getElementById('descanso-box');
+    box.style.display='flex';
+    let s = seg;
+    document.getElementById('descansoTimer').innerText = s;
+    timerInterval = setInterval(()=>{ s--; document.getElementById('descansoTimer').innerText = s; if(s<=0){ clearInterval(timerInterval); box.style.display='none'; } },1000);
+}
+function cancelarDescanso(){ clearInterval(timerInterval); document.getElementById('descanso-box').style.display='none'; }
 
 // ==================== LOGROS ====================
 const listaLogros = [
-    { id: "ns_7", nombre: "🌱 1 semana sin fumar", desc: "7 días sin tabaco", cond: () => calcularDiasSinFumar() >= 7, icono: "🌱" },
-    { id: "ns_14", nombre: "🍃 2 semanas sin fumar", desc: "14 días", cond: () => calcularDiasSinFumar() >= 14, icono: "🍃" },
-    { id: "ns_30", nombre: "🚭 1 mes sin fumar", desc: "30 días", cond: () => calcularDiasSinFumar() >= 30, icono: "🚭" },
-    { id: "ns_60", nombre: "💨 2 meses sin fumar", desc: "60 días", cond: () => calcularDiasSinFumar() >= 60, icono: "💨" },
-    { id: "ns_90", nombre: "🎉 3 meses sin fumar", desc: "90 días", cond: () => calcularDiasSinFumar() >= 90, icono: "🎉" },
-    { id: "ns_100", nombre: "💪 100 días sin fumar", desc: "100 días", cond: () => calcularDiasSinFumar() >= 100, icono: "💪" },
-    { id: "ns_180", nombre: "🥳 6 meses sin fumar", desc: "180 días", cond: () => calcularDiasSinFumar() >= 180, icono: "🥳" },
-    { id: "ns_365", nombre: "🎊 1 año sin fumar", desc: "365 días", cond: () => calcularDiasSinFumar() >= 365, icono: "🎊" },
-    { id: "primer_peso", nombre: "⚖️ Primer peso", desc: "Registrar peso", cond: () => pesos.length >= 1, icono: "⚖️" },
-    { id: "menos_5kg", nombre: "🎉 -5 kg", desc: "Perder 5 kg", cond: () => (pesos[0]?.valor || 0) - (pesos[pesos.length-1]?.valor || 0) >= 5, icono: "🎉" },
-    { id: "primer_check", nombre: "🏁 Primer ejercicio", desc: "Completar 1 ejercicio", cond: () => getEntrenosHistoricos() >= 1, icono: "🏁" },
-    { id: "check_50", nombre: "💪 50 ejercicios", desc: "50 entrenos", cond: () => getEntrenosHistoricos() >= 50, icono: "💪" },
-    { id: "check_100", nombre: "🦾 100 ejercicios", desc: "100 entrenos", cond: () => getEntrenosHistoricos() >= 100, icono: "🦾" },
-    { id: "check_250", nombre: "🏆 250 ejercicios", desc: "250 entrenos", cond: () => getEntrenosHistoricos() >= 250, icono: "🏆" },
-    { id: "check_500", nombre: "👑 500 ejercicios", desc: "500 entrenos", cond: () => getEntrenosHistoricos() >= 500, icono: "👑" },
-    { id: "semana_fuerza", nombre: "🔴 Ciclo FUERZA", desc: "Completar semana FUERZA", cond: () => false, icono: "🔴" },
-    { id: "semana_definicion", nombre: "🟡 Ciclo DEFINICIÓN", desc: "Completar semana DEFINICIÓN", cond: () => false, icono: "🟡" },
-    { id: "semana_volumen", nombre: "🟠 Ciclo VOLUMEN", desc: "Completar semana VOLUMEN", cond: () => false, icono: "🟠" },
-    { id: "semana_resistencia", nombre: "🔵 Ciclo RESISTENCIA", desc: "Completar semana RESISTENCIA", cond: () => false, icono: "🔵" },
-    { id: "cardio_10", nombre: "🏃 10 días cardio", desc: "10 días con cardio", cond: () => false, icono: "🏃" },
-    { id: "uso_30", nombre: "📆 1 mes uso", desc: "30 días usando app", cond: () => calcularDiasDesdePrimerUso() >= 30, icono: "📆" },
-    { id: "uso_90", nombre: "📆 3 meses uso", desc: "90 días", cond: () => calcularDiasDesdePrimerUso() >= 90, icono: "📆" },
-    { id: "uso_180", nombre: "📆 6 meses uso", desc: "180 días", cond: () => calcularDiasDesdePrimerUso() >= 180, icono: "📆" },
-    { id: "uso_365", nombre: "🎂 1 año uso", desc: "365 días", cond: () => calcularDiasDesdePrimerUso() >= 365, icono: "🎂" },
-    { id: "nivel_2", nombre: "⭐ Nivel 2 alcanzado", desc: "10 entrenos completados", cond: () => getNivelActual() >= 2, icono: "⭐" },
-    { id: "nivel_3", nombre: "⭐⭐ Nivel 3 alcanzado", desc: "25 entrenos completados", cond: () => getNivelActual() >= 3, icono: "⭐⭐" },
-    { id: "nivel_4", nombre: "⭐⭐⭐ Nivel 4 alcanzado", desc: "50 entrenos completados", cond: () => getNivelActual() >= 4, icono: "⭐⭐⭐" },
-    { id: "nivel_5", nombre: "🏅 Nivel 5 Élite", desc: "100 entrenos completados", cond: () => getNivelActual() >= 5, icono: "🏅" }
+    { id: "ns_7", nombre: "🌱 1 semana sin fumar", cond: () => calcularDiasSinFumar() >= 7, icono: "🌱" },
+    { id: "ns_30", nombre: "🚭 1 mes sin fumar", cond: () => calcularDiasSinFumar() >= 30, icono: "🚭" },
+    { id: "ns_90", nombre: "🎉 3 meses sin fumar", cond: () => calcularDiasSinFumar() >= 90, icono: "🎉" },
+    { id: "primer_peso", nombre: "⚖️ Primer peso", cond: () => pesos.length >= 1, icono: "⚖️" },
+    { id: "primer_check", nombre: "🏁 Primer ejercicio", cond: () => getEntrenosHistoricos() >= 1, icono: "🏁" },
+    { id: "check_50", nombre: "💪 50 ejercicios", cond: () => getEntrenosHistoricos() >= 50, icono: "💪" },
+    { id: "check_100", nombre: "🦾 100 ejercicios", cond: () => getEntrenosHistoricos() >= 100, icono: "🦾" },
+    { id: "uso_30", nombre: "📆 1 mes uso", cond: () => calcularDiasDesdePrimerUso() >= 30, icono: "📆" },
+    { id: "nivel_2", nombre: "⭐ Nivel 2", cond: () => getNivelActual() >= 2, icono: "⭐" },
+    { id: "nivel_3", nombre: "⭐⭐ Nivel 3", cond: () => getNivelActual() >= 3, icono: "⭐⭐" },
+    { id: "nivel_4", nombre: "⭐⭐⭐ Nivel 4", cond: () => getNivelActual() >= 4, icono: "⭐⭐⭐" },
+    { id: "nivel_5", nombre: "🏅 Nivel 5 Élite", cond: () => getNivelActual() >= 5, icono: "🏅" },
+    { id: "objetivo_80", nombre: "🎯 Primer objetivo: 80 kg", cond: () => pesos.length && pesos[pesos.length-1].valor <= 80, icono: "🎯" },
+    { id: "objetivo_75", nombre: "🎯 Objetivo: 75 kg", cond: () => pesos.length && pesos[pesos.length-1].valor <= 75, icono: "🎯" },
+    { id: "objetivo_70", nombre: "🔥 70 kg - ¡Vas genial!", cond: () => pesos.length && pesos[pesos.length-1].valor <= 70, icono: "🔥" },
+    { id: "objetivo_65", nombre: "🏆 OBJETIVO FINAL: 65 kg", cond: () => pesos.length && pesos[pesos.length-1].valor <= 65, icono: "🏆" }
 ];
-function actualizarLogros() {
+function actualizarLogros(){
     const container = document.getElementById('logrosContainer');
     if(!container) return;
     let nuevos = false;
@@ -1199,17 +1535,14 @@ function actualizarLogros() {
         if (!logros.includes(l.id) && l.cond()) {
             logros.push(l.id);
             nuevos = true;
-            mostrarToast(`🏆 Logro desbloqueado: ${l.nombre}`);
-            canvasConfetti({ particleCount: 100, spread: 70, colors: ['#ffd700', '#ffaa00'] });
+            mostrarToast(`🏆 ${l.nombre}`);
+            canvasConfetti({ particleCount:100, spread:70 });
         }
     });
     if (nuevos) guardarTodo();
-    container.innerHTML = listaLogros.map(l => {
-        const obtenido = logros.includes(l.id);
-        return `<div class="badge-card" style="background:#1e2a3a; border-radius:2rem; padding:0.3rem 0.8rem; display:inline-block; margin:3px; ${obtenido ? 'border:1px solid gold;' : 'opacity:0.6;'}">${l.icono} ${l.nombre}</div>`;
-    }).join('');
+    container.innerHTML = listaLogros.map(l => `<div class="badge-card" style="${logros.includes(l.id) ? 'border:1px solid gold;' : 'opacity:0.6;'}">${l.icono} ${l.nombre}</div>`).join('');
 }
-function aplicarColorCiclo() {
+function aplicarColorCiclo(){
     const ciclo = getCicloActual();
     const config = SERIES_REPS_CICLO[ciclo];
     document.documentElement.style.setProperty('--ciclo-color', config.color);
@@ -1222,15 +1555,14 @@ function aplicarColorCiclo() {
         <div>${config.series} x ${config.reps}</div>
         <div style="font-size:0.7rem">🎯 ${config.objetivo}</div>
         <div class="nivel-progreso">
-            <div class="nivel-titulo"><span>🏅 NIVEL ${nivel}</span><span>${progreso.actual}/${progreso.requeridos} entrenos</span></div>
+            <div class="nivel-titulo"><span>🏅 NIVEL ${nivel}</span><span>${progreso.actual}/${progreso.requeridos}</span></div>
             <div class="barra-progreso"><div class="barra-fill" style="width:${progreso.porcentaje}%;"></div></div>
-            <div class="nivel-texto">${progreso.actual < progreso.requeridos ? `Faltan ${progreso.requeridos - progreso.actual} entrenos para nivel ${nivel+1}` : '¡Máximo nivel alcanzado!'}</div>
+            <div class="nivel-texto">${progreso.actual < progreso.requeridos ? `Faltan ${progreso.requeridos - progreso.actual} para nivel ${nivel+1}` : '¡Máximo nivel!'}</div>
         </div>
         <div class="ciclo-botones">
             <div class="btn-ciclo-color" data-ciclo="FUERZA" style="background-color:#ff3b30;" title="FUERZA"></div>
             <div class="btn-ciclo-color" data-ciclo="DEFINICIÓN" style="background-color:#e6c8a0;" title="DEFINICIÓN"></div>
-            <div class="btn-ciclo-color" data-ciclo="VOLUMEN" style="background-color:#e6b800;" title="VOLUMEN"></div>
-            <div class="btn-ciclo-color" data-ciclo="RESISTENCIA" style="background-color:#20c4b8;" title="RESISTENCIA"></div>
+            <div class="btn-ciclo-color" data-ciclo="QUEMA_GRASA" style="background-color:#20c4b8;" title="QUEMA GRASA"></div>
         </div>
     `;
     document.querySelectorAll('.ciclo-botones .btn-ciclo-color').forEach(btn => {
@@ -1240,72 +1572,48 @@ function aplicarColorCiclo() {
         });
     });
 }
-let db = null; const DB_NAME='FotosProgresoDB'; const STORE_NAME='diasFotos';
-function abrirDB(){ return new Promise((resolve)=>{ const req=indexedDB.open(DB_NAME,1); req.onupgradeneeded=e=>{ if(!e.target.result.objectStoreNames.contains(STORE_NAME)) e.target.result.createObjectStore(STORE_NAME,{keyPath:'fecha'}); }; req.onsuccess=e=>{ db=e.target.result; resolve(); }; req.onerror=()=>resolve(); }); }
-async function guardarFotos() {
-    const fecha = document.getElementById('fechaFotos').value;
-    if(!fecha){ mostrarToast("Selecciona una fecha"); return; }
-    const frente = await leerArchivoComoDataURL(document.getElementById('fotoFrente').files[0]);
-    const espalda = await leerArchivoComoDataURL(document.getElementById('fotoEspalda').files[0]);
-    const izquierda = await leerArchivoComoDataURL(document.getElementById('FotoIzquierda').files[0]);
-    const derecha = await leerArchivoComoDataURL(document.getElementById('fotoDerecha').files[0]);
-    if(!frente && !espalda && !izquierda && !derecha){ mostrarToast("Selecciona al menos una foto"); return; }
-    await abrirDB();
-    const tx = db.transaction(STORE_NAME, 'readwrite');
-    const store = tx.objectStore(STORE_NAME);
-    const data = { fecha, timestamp: Date.now(), frente, espalda, izquierda, derecha };
-    await new Promise((resolve, reject) => { const req = store.put(data); req.onsuccess = resolve; req.onerror = reject; });
-    mostrarToast("✅ Fotos guardadas");
-    cargarListaDias();
-    cargarSelectores();
-    document.getElementById('fotoFrente').value = '';
-    document.getElementById('fotoEspalda').value = '';
-    document.getElementById('FotoIzquierda').value = '';
-    document.getElementById('fotoDerecha').value = '';
+function mostrarVistaPreviaCiclos(){
+    const ciclos = ['FUERZA','DEFINICIÓN','QUEMA_GRASA'];
+    const dias = ['lunes','martes','miercoles','jueves','viernes','sabado'];
+    let html = `<div class="disk-panel"><h3>📋 VISTA PREVIA</h3><table style="width:100%;border-collapse:collapse;"><thead><tr><th>Día</th>`;
+    ciclos.forEach(c => html += `<th style="color:${SERIES_REPS_CICLO[c].color}">${c}</th>`);
+    html += `</thead><tbody>`;
+    for(let dia of dias){
+        html += `<tr><td><strong>${dia.toUpperCase()}</strong></td>`;
+        for(let ciclo of ciclos){
+            const ej = getEjerciciosPorDia(dia, ciclo);
+            html += `<td><ul style="margin:0; padding-left:1rem;">${ej.map(e=>`<li>${e}</li>`).join('')}</ul></td>`;
+        }
+        html += `</tr>`;
+    }
+    html += `</tbody><tr><button onclick="cerrarModalPopup()">CERRAR</button></div>`;
+    cerrarModalPopup();
+    const overlay = document.createElement('div'); overlay.className='modal-disk'; overlay.id='modalPopup'; overlay.innerHTML=html; document.body.appendChild(overlay);
 }
-function leerArchivoComoDataURL(file) { if(!file) return Promise.resolve(null); return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (e) => resolve(e.target.result); reader.readAsDataURL(file); }); }
-async function cargarFotosExistente() {
-    const fecha = document.getElementById('fechaFotos').value;
-    if(!fecha) return;
-    await abrirDB();
-    const tx = db.transaction(STORE_NAME, 'readonly');
-    const store = tx.objectStore(STORE_NAME);
-    const data = await new Promise(resolve => store.get(fecha).onsuccess = e => resolve(e.target.result));
-    if(data){
-        if(data.frente) document.getElementById('fotoFrente').src = data.frente;
-        if(data.espalda) document.getElementById('fotoEspalda').src = data.espalda;
-        if(data.izquierda) document.getElementById('FotoIzquierda').src = data.izquierda;
-        if(data.derecha) document.getElementById('fotoDerecha').src = data.derecha;
-        mostrarToast("Fotos cargadas en el formulario");
-    } else mostrarToast("No hay fotos para esta fecha");
+function exportarDatos(){
+    const data = { diasEntrenados, diasNoFumar, pesos, logros, marcasLesion, marcasVacaciones, personalizaciones, checks };
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data)]));
+    a.download = 'nicogym_backup.json';
+    a.click();
 }
-async function cargarListaDias(){ await abrirDB(); const container=document.getElementById('listaDiasDB'); if(!container) return; const tx=db.transaction(STORE_NAME,'readonly'); const items=await new Promise(resolve=>{ const req=tx.objectStore(STORE_NAME).getAll(); req.onsuccess=()=>resolve(req.result); }); items.sort((a,b)=>b.timestamp-a.timestamp); container.innerHTML=items.map(item=>`<div>📅 ${item.fecha} <button onclick="eliminarDia('${item.fecha}')">🗑️</button> <button onclick="editarFechaFoto('${item.fecha}')">✏️</button></div>`).join(''); cargarSelectores(); }
-async function editarFechaFoto(fechaVieja){ const nuevaFecha=prompt("Nueva fecha (AAAA-MM-DD):", fechaVieja); if(!nuevaFecha) return; await abrirDB(); const tx=db.transaction(STORE_NAME,'readwrite'); const store=tx.objectStore(STORE_NAME); const item=await new Promise(resolve=>store.get(fechaVieja).onsuccess=e=>resolve(e.target.result)); if(item){ item.fecha=nuevaFecha; store.put(item); store.delete(fechaVieja); mostrarToast("Fecha actualizada"); cargarListaDias(); cargarSelectores(); } }
-async function cargarSelectores(){ await abrirDB(); const tx=db.transaction(STORE_NAME,'readonly'); const items=await new Promise(resolve=>{ const req=tx.objectStore(STORE_NAME).getAll(); req.onsuccess=()=>resolve(req.result); }); items.sort((a,b)=>b.timestamp-a.timestamp); const opciones=items.map(item=>`<option value="${item.fecha}">${item.fecha}</option>`); document.getElementById('compararDia1').innerHTML='<option value="">Día 1</option>'+opciones.join(''); document.getElementById('compararDia2').innerHTML='<option value="">Día 2</option>'+opciones.join(''); }
-async function eliminarDia(fecha){ await abrirDB(); const tx=db.transaction(STORE_NAME,'readwrite'); tx.objectStore(STORE_NAME).delete(fecha); cargarListaDias(); cargarSelectores(); document.getElementById('comparadorResultado').innerHTML=''; }
-async function compararFotos(){ const f1=document.getElementById('compararDia1').value, f2=document.getElementById('compararDia2').value; if(!f1||!f2) return; await abrirDB(); const tx=db.transaction(STORE_NAME,'readonly'); const store=tx.objectStore(STORE_NAME); const [d1,d2]=await Promise.all([new Promise(resolve=>store.get(f1).onsuccess=e=>resolve(e.target.result)), new Promise(resolve=>store.get(f2).onsuccess=e=>resolve(e.target.result))]); if(!d1||!d2) return; const generarFotos = (data, titulo) => { if(!data) return `<div class="foto-dia"><h4>${titulo}</h4><p>No hay fotos</p></div>`; return `<div class="foto-dia"><h4>${titulo}</h4><div class="foto-grid"><div class="foto-item">FRENTE<br><img src="${data.frente || ''}" onerror="this.src='https://placehold.co/200x200?text=No+disponible'"></div><div class="foto-item">ESPALDA<br><img src="${data.espalda || ''}" onerror="this.src='https://placehold.co/200x200?text=No+disponible'"></div><div class="foto-item">IZQUIERDA<br><img src="${data.izquierda || ''}" onerror="this.src='https://placehold.co/200x200?text=No+disponible'"></div><div class="foto-item">DERECHA<br><img src="${data.derecha || ''}" onerror="this.src='https://placehold.co/200x200?text=No+disponible'"></div></div></div>`; };
-    document.getElementById('comparadorResultado').innerHTML = generarFotos(d1, f1) + generarFotos(d2, f2);
-}
-function recargarComparacion(){ compararFotos(); }
-function exportarDatos(){ const data={diasEntrenados, diasNoFumar, pesos, logros, marcasLesion, marcasVacaciones, personalizaciones, checks}; const blob=new Blob([JSON.stringify(data)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='nicogym_backup.json'; a.click(); mostrarToast("✅ Backup"); }
 function mostrarReset(){ document.getElementById('resetModal').style.display='flex'; }
 function cerrarReset(){ document.getElementById('resetModal').style.display='none'; }
-function borrarTodo(){ const input=document.getElementById('confirmReset'); if(input.value==='BORRAR'){ localStorage.clear(); indexedDB.deleteDatabase(DB_NAME); location.reload(); } else mostrarToast('❌ Escribe BORRAR'); }
-function mostrarVistaPreviaCiclos(){
-    const ciclos=['fuerza','definicion','volumen','resistencia']; const nombresCiclo={fuerza:'FUERZA',definicion:'DEFINICIÓN',volumen:'VOLUMEN',resistencia:'RESISTENCIA'};
-    const diasSemana=['lunes','martes','miercoles','jueves','viernes','sabado']; let html=`<div class="disk-panel" style="max-width:90vw; overflow-x:auto;"><h3 style="color:var(--ciclo-color);">📋 VISTA PREVIA</h3><table class="preview-table"><thead><tr><th>Día</th>`;
-    ciclos.forEach(c=>html+=`<th style="color:${SERIES_REPS_CICLO[nombresCiclo[c]].color}">${nombresCiclo[c]}</th>`);
-    html+=`</thead><tbody>`;
-    diasSemana.forEach(dia=>{ html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td>`; ciclos.forEach(cicloKey=>{ const ejercs=getEjerciciosPorDia(dia, cicloKey); if(!ejercs){ html+=`<td>-</td>`; return; } html+=`<td><ul style="margin:0; padding-left:1rem;">`; ejercs.forEach(ej=>html+=`<li>${ej}</li>`); html+=`</ul></td>`; }); html+=`<tr>`; });
-    html+=`</tbody></td><button onclick="cerrarModalPopup()" style="background:var(--ciclo-color); border:none; padding:6px 12px; border-radius:30px; margin-top:10px;">CERRAR</button></div>`;
-    cerrarModalPopup(); const overlay=document.createElement('div'); overlay.className='modal-disk'; overlay.id='modalPopup'; overlay.innerHTML=html; document.body.appendChild(overlay);
-}
+function borrarTodo(){ if(document.getElementById('confirmReset').value==='BORRAR'){ localStorage.clear(); location.reload(); } else mostrarToast('❌ Escribe BORRAR'); }
+
 function actualizarUI(){
     reiniciarChecksSiNuevaSemana();
     aplicarColorCiclo();
-    document.getElementById('bannerSinFumar').innerText=calcularDiasSinFumar();
-    if(pesos.length) document.getElementById('bannerPeso').innerText=pesos[pesos.length-1].valor+' kg';
-    renderizarRutinas(); actualizarGrafico(); renderCalendarios(); actualizarLogros(); mostrarHistorialPeso(); actualizarInfoPausa();
+    document.getElementById('bannerSinFumar').innerText = calcularDiasSinFumar();
+    if(pesos.length) document.getElementById('bannerPeso').innerText = pesos[pesos.length-1].valor+' kg';
+    renderizarRutinas();
+    actualizarGrafico();
+    renderCalendarios();
+    actualizarLogros();
+    mostrarHistorialPeso();
+    actualizarInfoPausa();
+    const cinta = SERIES_REPS_CICLO[getCicloActual()];
+    document.querySelectorAll('.cinta-info').forEach(el => { if(el && !el.closest('#domingo')) el.innerHTML = `🚶 CINTA: ${cinta.cinta} a ${cinta.velCinta} (no corras, no te ahogues)`; });
 }
 function go(id){
     document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('active'));
@@ -1313,24 +1621,69 @@ function go(id){
     if(id==='home') actualizarUI();
     if(id==='peso') mostrarHistorialPeso();
     if(id==='logros') actualizarLogros();
-    if(id==='progreso-fotos') { cargarListaDias(); cargarSelectores(); }
-    if(id==='calendarios') renderCalendarios();
     closeMenu();
 }
 function toggleSubmenu(btn){ btn.classList.toggle('open'); btn.nextElementSibling.classList.toggle('show'); }
 function openMenu(){ document.getElementById('menu-lat').classList.add('open'); document.getElementById('overlay').style.display='block'; }
 function closeMenu(){ document.getElementById('menu-lat').classList.remove('open'); document.getElementById('overlay').style.display='none'; }
-function setCicloManual(ciclo){ cicloManual=ciclo; actualizarUI(); }
 
-window.onload=()=>{
+// ==================== FOTOS (IndexedDB) ====================
+let db = null;
+const DB_NAME='FotosProgresoDB', STORE_NAME='diasFotos';
+function abrirDB(){ return new Promise(r=>{ const req=indexedDB.open(DB_NAME,1); req.onupgradeneeded=e=>{ if(!e.target.result.objectStoreNames.contains(STORE_NAME)) e.target.result.createObjectStore(STORE_NAME,{keyPath:'fecha'}); }; req.onsuccess=e=>{ db=e.target.result; r(); }; req.onerror=()=>r(); }); }
+async function guardarFotos(){
+    const fecha = document.getElementById('fechaFotos').value;
+    if(!fecha){ mostrarToast("Selecciona fecha"); return; }
+    const frente = await leerArchivoComoDataURL(document.getElementById('fotoFrente').files[0]);
+    const espalda = await leerArchivoComoDataURL(document.getElementById('fotoEspalda').files[0]);
+    const izquierda = await leerArchivoComoDataURL(document.getElementById('FotoIzquierda').files[0]);
+    const derecha = await leerArchivoComoDataURL(document.getElementById('fotoDerecha').files[0]);
+    if(!frente && !espalda && !izquierda && !derecha){ mostrarToast("Selecciona al menos una foto"); return; }
+    await abrirDB();
+    await db.transaction(STORE_NAME,'readwrite').objectStore(STORE_NAME).put({ fecha, timestamp: Date.now(), frente, espalda, izquierda, derecha });
+    mostrarToast("✅ Fotos guardadas");
+    cargarListaDias(); cargarSelectores();
+    document.getElementById('fotoFrente').value = ''; document.getElementById('fotoEspalda').value = ''; document.getElementById('FotoIzquierda').value = ''; document.getElementById('fotoDerecha').value = '';
+}
+function leerArchivoComoDataURL(file){ if(!file) return Promise.resolve(null); return new Promise(r=>{ const reader=new FileReader(); reader.onload=e=>r(e.target.result); reader.readAsDataURL(file); }); }
+async function cargarFotosExistente(){
+    const fecha = document.getElementById('fechaFotos').value;
+    if(!fecha) return;
+    await abrirDB();
+    const data = await new Promise(r=>db.transaction(STORE_NAME,'readonly').objectStore(STORE_NAME).get(fecha).onsuccess=e=>r(e.target.result));
+    if(data){
+        if(data.frente) document.getElementById('fotoFrente').src = data.frente;
+        if(data.espalda) document.getElementById('fotoEspalda').src = data.espalda;
+        if(data.izquierda) document.getElementById('FotoIzquierda').src = data.izquierda;
+        if(data.derecha) document.getElementById('fotoDerecha').src = data.derecha;
+        mostrarToast("Fotos cargadas");
+    } else mostrarToast("No hay fotos");
+}
+async function cargarListaDias(){ await abrirDB(); const items = await new Promise(r=>db.transaction(STORE_NAME,'readonly').objectStore(STORE_NAME).getAll().onsuccess=e=>r(e.target.result)); items.sort((a,b)=>b.timestamp-a.timestamp); document.getElementById('listaDiasDB').innerHTML = items.map(i=>`<div>📅 ${i.fecha} <button onclick="eliminarDia('${i.fecha}')">🗑️</button></div>`).join(''); cargarSelectores(); }
+async function cargarSelectores(){ await abrirDB(); const items = await new Promise(r=>db.transaction(STORE_NAME,'readonly').objectStore(STORE_NAME).getAll().onsuccess=e=>r(e.target.result)); items.sort((a,b)=>b.timestamp-a.timestamp); const opts = items.map(i=>`<option value="${i.fecha}">${i.fecha}</option>`); document.getElementById('compararDia1').innerHTML = '<option value="">Día 1</option>'+opts.join(''); document.getElementById('compararDia2').innerHTML = '<option value="">Día 2</option>'+opts.join(''); }
+async function eliminarDia(fecha){ await abrirDB(); db.transaction(STORE_NAME,'readwrite').objectStore(STORE_NAME).delete(fecha); cargarListaDias(); cargarSelectores(); document.getElementById('comparadorResultado').innerHTML = ''; }
+async function compararFotos(){
+    const f1 = document.getElementById('compararDia1').value, f2 = document.getElementById('compararDia2').value;
+    if(!f1||!f2) return;
+    await abrirDB();
+    const store = db.transaction(STORE_NAME,'readonly').objectStore(STORE_NAME);
+    const d1 = await new Promise(r=>store.get(f1).onsuccess=e=>r(e.target.result));
+    const d2 = await new Promise(r=>store.get(f2).onsuccess=e=>r(e.target.result));
+    const gen = (d,t) => `<div class="foto-dia"><h4>${t}</h4><div class="foto-grid"><div class="foto-item">FRENTE<br><img src="${d?.frente||''}"></div><div class="foto-item">ESPALDA<br><img src="${d?.espalda||''}"></div><div class="foto-item">IZQUIERDA<br><img src="${d?.izquierda||''}"></div><div class="foto-item">DERECHA<br><img src="${d?.derecha||''}"></div></div></div>`;
+    document.getElementById('comparadorResultado').innerHTML = gen(d1,f1)+gen(d2,f2);
+}
+function recargarComparacion(){ compararFotos(); }
+
+window.onload = () => {
     if(!localStorage.getItem('primeraFechaUso')) localStorage.setItem('primeraFechaUso', new Date().toISOString());
-    document.getElementById('fechaFotos').value = new Date().toISOString().slice(0,10);
-    document.getElementById('nuevaFechaPeso').value = new Date().toISOString().slice(0,10);
+    document.getElementById('fechaFotos').value = getHoyStr();
+    document.getElementById('nuevaFechaPeso').value = getHoyStr();
     document.getElementById('cargarFotosFecha').onclick = cargarFotosExistente;
+    actualizarBannerObjetivo();
     actualizarUI();
     cargarListaDias();
     cargarSelectores();
-    setInterval(()=>{ const ahora=new Date(); document.getElementById('reloj').innerText=`${ahora.getHours().toString().padStart(2,'0')}:${ahora.getMinutes().toString().padStart(2,'0')}:${ahora.getSeconds().toString().padStart(2,'0')}`; },1000);
+    setInterval(()=>{ const a=new Date(); document.getElementById('reloj').innerText=`${a.getHours().toString().padStart(2,'0')}:${a.getMinutes().toString().padStart(2,'0')}:${a.getSeconds().toString().padStart(2,'0')}`; },1000);
 };
 </script>
 </body>
