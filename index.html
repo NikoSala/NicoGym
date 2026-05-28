@@ -250,7 +250,6 @@ const imagenesMap = {
     "Fondo de tríceps en suelo": "https://api.smartworkout.app/asset/image/14fff202-7bb2-4e35-af03-39b9a58417d2",
     "Extensión en banco declinado": "https://gymvisual.com/img/p/1/5/2/7/1/15271.gif",
     "Press francés en banco inclinado": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
-    "Extensión con dos mancuernas": "https://gymvisual.com/img/p/2/7/4/4/8/27448.gif",
     // ESPALDA / BÍCEPS
     "Dominadas (palmas mirando afuera)": "https://api.smartworkout.app/asset/image/e132f3b7-cccc-4098-9b44-1aa9a7954a3e",
     "Dominadas (palmas mirando hacia ti)": "https://i.pinimg.com/originals/15/98/ec/1598ec2121ef2ac8c5fa0a51c5a16f53.gif",
@@ -351,7 +350,7 @@ function getProgresoNivel() {
     return { actual: total, requeridos: requeridos, porcentaje: Math.min(100, Math.floor((total / requeridos) * 100)) };
 }
 
-// ==================== EJERCICIOS (CON NUEVOS TRÍCEPS) ====================
+// ==================== EJERCICIOS (CON TRÍCEPS MODIFICADOS) ====================
 const ejerciciosBase = {
     fuerza: {
         lunes: ["Dominadas (palmas mirando afuera)", "Remo en banco", "Curl de bíceps", "Curl martillo"],
@@ -359,7 +358,7 @@ const ejerciciosBase = {
         miercoles: ["Sentadilla búlgara", "Peso muerto rumano", "Patada de tríceps", "Extensión de tríceps tumbado"],
         jueves: ["Remo con barra (agarre supino estricto)", "Curl predicador unilateral (con silla)", "Curl araña unilateral (pausa de 2\")", "Remo al cuello"],
         viernes: ["Press banca con agarre cerrado", "Press declinado", "Pájaro (fly invertido)", "Press de banca agarre cerrado"],
-        sabado: ["Sentadilla frontal", "Peso muerto a una pierna", "Extensión a una mano tras nuca", "Extensión con dos mancuernas"]
+        sabado: ["Sentadilla frontal", "Peso muerto a una pierna", "Extensión a una mano tras nuca", "Extensión de tríceps tumbado"]   // cambiado
     },
     definicion: {
         lunes: ["Dominadas con banda elástica", "Remo inclinado apoyado", "Curl concentrado", "Curl de bíceps con pausa"],
@@ -375,11 +374,14 @@ const ejerciciosBase = {
         miercoles: ["Sentadilla búlgara", "Press francés en banco inclinado", "Extensión en banco declinado", "Crunch", "V-ups"],
         jueves: ["Remo inclinado apoyado", "Curl martillo", "Elevaciones frontales alternas", "Toques talón", "Cinta"],
         viernes: ["Press inclinado", "Press de hombros en banco", "Aperturas en banco", "Plancha", "Burpees"],
-        sabado: ["Sentadilla sumo", "Extensión con dos mancuernas", "Press de banca agarre cerrado", "Crunch", "Cinta"]
+        sabado: ["Sentadilla sumo", "Extensión de tríceps tumbado", "Press de banca agarre cerrado", "Crunch", "Cinta"]   // cambiado
     }
 };
 const ejerciciosNivel2 = {
-    fuerza: { miercoles: ["Sentadilla búlgara pesada", "Peso muerto rumano a una pierna", "Patada de tríceps", "Extensión de tríceps tumbado"], sabado: ["Sentadilla frontal pesada", "Peso muerto a una pierna", "Extensión a una mano tras nuca", "Extensión con dos mancuernas"] }
+    fuerza: { 
+        miercoles: ["Sentadilla búlgara pesada", "Peso muerto rumano a una pierna", "Patada de tríceps", "Extensión de tríceps tumbado"], 
+        sabado: ["Sentadilla frontal pesada", "Peso muerto a una pierna", "Extensión a una mano tras nuca", "Extensión de tríceps tumbado"]   // cambiado
+    }
 };
 function getEjerciciosPorDia(dia, cicloKey) {
     const nivel = getNivelActual();
@@ -392,7 +394,7 @@ function getEjerciciosPorDia(dia, cicloKey) {
 
 function getCantidadMancuernas(nombre) {
     if(nombre.includes("Patada de tríceps") || nombre.includes("Extensión de tríceps tumbado") || nombre.includes("Extensión a una mano tras nuca") || nombre.includes("Extensión en banco declinado") || nombre.includes("Press francés en banco inclinado") || nombre.includes("Curl concentrado") || nombre.includes("Curl predicador unilateral")) return 1;
-    if(nombre.includes("Press de banca agarre cerrado") || nombre.includes("Extensión con dos mancuernas") || nombre.includes("Press banca") || nombre.includes("Remo en banco")) return 2;
+    if(nombre.includes("Press de banca agarre cerrado") || nombre.includes("Press banca") || nombre.includes("Remo en banco")) return 2;
     if(nombre.includes("Dominadas") || nombre.includes("Fondo de tríceps en suelo") || nombre.includes("Plancha") || nombre.includes("Burpees") || nombre.includes("Saltos") || nombre.includes("Crunch") || nombre.includes("Cinta")) return 0;
     return 2;
 }
@@ -429,7 +431,7 @@ function formatearPeso(nombre, ciclo, pers) {
     return `${kg} kg`;
 }
 
-// ==================== INSTRUCCIONES DETALLADAS PARA TODOS LOS EJERCICIOS ====================
+// ==================== INSTRUCCIONES DETALLADAS PARA TODOS LOS EJERCICIOS (SIN MODIFICAR) ====================
 function getInstrucciones(nombre) {
     const instrucciones = {
         // --- NUEVOS TRÍCEPS (DETALLADAS) ---
@@ -512,16 +514,6 @@ function getInstrucciones(nombre) {
 ❗ ERRORES COMUNES: Abrir codos, usar muñecas.
 💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
 🎯 CONSEJO: La inclinación cambia el ángulo de trabajo, muy efectivo.`,
-        "Extensión con dos mancuernas": `📍 POSICIÓN INICIAL:
-- Túmbate en banco plano, sujeta una mancuerna en cada mano, brazos extendidos sobre la cabeza.
-
-📐 MOVIMIENTO:
-1. Baja ambas mancuernas hacia la cabeza doblando los codos a 90 grados.
-2. Sube extendiendo los brazos.
-
-❗ ERRORES COMUNES: No bajar las dos a la vez, separar codos.
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
-🎯 CONSEJO: Permite usar más peso total que con una sola mancuerna.`,
 
         // --- EJERCICIOS PRINCIPALES (DETALLADOS) ---
         "Dominadas (palmas mirando afuera)": `📍 POSICIÓN INICIAL:
