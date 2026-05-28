@@ -129,6 +129,10 @@
         <div><span style="font-size:0.7rem;">⚖️ PESO</span><br><strong id="bannerPeso">-- kg</strong></div>
         <div><span style="font-size:0.7rem;">🎯 OBJETIVO</span><br><strong id="bannerObjetivo">80 kg</strong></div>
     </div>
+    <!-- BOTÓN NUEVO: IR AL ENTRENAMIENTO DE HOY -->
+    <div class="neon-card" style="text-align:center; padding:0.4rem;">
+        <button onclick="irADiaActual()" style="background:var(--ciclo-color); border:none; border-radius:2rem; padding:0.3rem 0.8rem; font-size:0.75rem; cursor:pointer; color:#000; font-weight:bold;">🏋️ ENTRENO DE HOY</button>
+    </div>
     <div class="neon-card" style="height:150px;"><canvas id="graficoPeso"></canvas></div>
     <div class="neon-card" style="text-align:center;">
         <button onclick="marcarHoyFumado()" style="background:#222; border:1px solid var(--ciclo-color); color:var(--ciclo-color); padding:6px; border-radius:12px; width:100%; font-size:0.75rem;">🚬 Marcar hoy como fumado</button>
@@ -358,7 +362,7 @@ const ejerciciosBase = {
         miercoles: ["Sentadilla búlgara", "Peso muerto rumano", "Patada de tríceps", "Extensión de tríceps tumbado"],
         jueves: ["Remo con barra (agarre supino estricto)", "Curl predicador unilateral (con silla)", "Curl araña unilateral (pausa de 2\")", "Remo al cuello"],
         viernes: ["Press banca con agarre cerrado", "Press declinado", "Pájaro (fly invertido)", "Press de banca agarre cerrado"],
-        sabado: ["Sentadilla frontal", "Peso muerto a una pierna", "Extensión a una mano tras nuca", "Extensión de tríceps tumbado"]   // cambiado
+        sabado: ["Sentadilla frontal", "Peso muerto a una pierna", "Extensión a una mano tras nuca", "Extensión de tríceps tumbado"]
     },
     definicion: {
         lunes: ["Dominadas con banda elástica", "Remo inclinado apoyado", "Curl concentrado", "Curl de bíceps con pausa"],
@@ -374,13 +378,13 @@ const ejerciciosBase = {
         miercoles: ["Sentadilla búlgara", "Press francés en banco inclinado", "Extensión en banco declinado", "Crunch", "V-ups"],
         jueves: ["Remo inclinado apoyado", "Curl martillo", "Elevaciones frontales alternas", "Toques talón", "Cinta"],
         viernes: ["Press inclinado", "Press de hombros en banco", "Aperturas en banco", "Plancha", "Burpees"],
-        sabado: ["Sentadilla sumo", "Extensión de tríceps tumbado", "Press de banca agarre cerrado", "Crunch", "Cinta"]   // cambiado
+        sabado: ["Sentadilla sumo", "Extensión de tríceps tumbado", "Press de banca agarre cerrado", "Crunch", "Cinta"]
     }
 };
 const ejerciciosNivel2 = {
     fuerza: { 
         miercoles: ["Sentadilla búlgara pesada", "Peso muerto rumano a una pierna", "Patada de tríceps", "Extensión de tríceps tumbado"], 
-        sabado: ["Sentadilla frontal pesada", "Peso muerto a una pierna", "Extensión a una mano tras nuca", "Extensión de tríceps tumbado"]   // cambiado
+        sabado: ["Sentadilla frontal pesada", "Peso muerto a una pierna", "Extensión a una mano tras nuca", "Extensión de tríceps tumbado"]
     }
 };
 function getEjerciciosPorDia(dia, cicloKey) {
@@ -757,7 +761,7 @@ window.mostrarDiscos = function(nombre, ciclo, id){
     let kg = getPesoEjercicio(nombre, ciclo, personalizaciones[id]);
     if(kg===0){ mostrarToast("Peso corporal"); return; }
     let combo = discosPorPeso[kg];
-    if(!combo){ mostrarToast(`Peso ${kg}kg: ajusta con discos (2,1.5,1.25)`); return; }
+    if(!combo){ mostrarToast(`Peso ${kg}kg: ajusta con tus discos (2,1.5,1.25)`); return; }
     let num = getCantidadMancuernas(nombre);
     let msg = (num===1)? "Usa UNA mancuerna:" : (num===2?"Usa DOS mancuernas, CADA una:":"");
     let html = `<div id="modalDiscos" class="modal-disk"><div class="disk-panel"><span onclick="cerrarModalDiscos()">&times;</span><div>${nombre} - ${kg}kg</div><div>${msg}<br>IZQ: ${combo.izq.join("+")} kg<br>DER: ${combo.der.join("+")} kg</div><button onclick="cerrarModalDiscos()">CERRAR</button></div></div>`;
@@ -1008,7 +1012,7 @@ function mostrarVistaPreviaCiclos(){
     ciclos.forEach(c => html += `<th style="color:${SERIES_REPS_CICLO[c].color}">${c}</th>`);
     html += `</thead><tbody>`;
     for(let dia of dias){
-        html += `<tr><td><strong>${dia.toUpperCase()}</strong></td>`;
+        html += `</tr><td><strong>${dia.toUpperCase()}</strong></td>`;
         for(let ciclo of ciclos){
             const ej = getEjerciciosPorDia(dia, ciclo);
             html += `<td><ul style="margin:0; padding-left:1rem;">${ej.map(e=>`<li>${e}</li>`).join('')}</ul></td>`;
@@ -1055,6 +1059,14 @@ function go(id){
 function toggleSubmenu(btn){ btn.classList.toggle('open'); btn.nextElementSibling.classList.toggle('show'); }
 function openMenu(){ document.getElementById('menu-lat').classList.add('open'); document.getElementById('overlay').style.display='block'; }
 function closeMenu(){ document.getElementById('menu-lat').classList.remove('open'); document.getElementById('overlay').style.display='none'; }
+
+// ==================== NUEVA FUNCIÓN: IR AL DÍA ACTUAL ====================
+function irADiaActual() {
+    const diasSemana = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+    const hoy = new Date().getDay(); // 0 domingo, 1 lunes...
+    const diaId = diasSemana[hoy];
+    go(diaId);
+}
 
 // ==================== FOTOS (IndexedDB) ====================
 let db = null;
