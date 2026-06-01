@@ -405,7 +405,7 @@ body::before{
 </div>
 
 <script>
-// ==================== CONFIGURACIÓN ÚNICA (UN SOLO CICLO ORIENTADO A ADELGAZAR) ====================
+// ==================== CONFIGURACIÓN ÚNICA ====================
 const SERIES_REPS = { series: "3-4", reps: "15-20" };
 const COLOR_POR_DIA = {
   lunes: "#4caf50", martes: "#ff9800", miercoles: "#2196f3",
@@ -413,12 +413,12 @@ const COLOR_POR_DIA = {
 };
 const discosPorPeso = {2.5:{izq:["1.25"],der:["1.25"]},3:{izq:["1.5"],der:["1.5"]},4:{izq:["2"],der:["2"]},5.5:{izq:["1.5","1.25"],der:["1.5","1.25"]},6.5:{izq:["2","1.25"],der:["2","1.25"]},7:{izq:["2","1.5"],der:["2","1.5"]},9.5:{izq:["2","1.5","1.25"],der:["2","1.5","1.25"]}};
 
-// ==================== MAPA DE IMÁGENES (CORREGIDO CON TU URL DE CURL MARTILLO) ====================
+// ==================== MAPA DE IMÁGENES (CORREGIDO) ====================
 const imagenesMap = {
     "Dominadas (palmas mirando hacia ti)": "https://i.pinimg.com/originals/15/98/ec/1598ec2121ef2ac8c5fa0a51c5a16f53.gif",
     "Remo en banco": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
-    "Curl de biceps alterno": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
-    "Curl martillo": "https://rincondelmusculo.com/wp-content/uploads/2014/09/CURL_DE_MARTILLO.gif",  // TU URL ORIGINAL
+    "Curl de bíceps alterno": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
+    "Curl martillo": "https://rincondelmusculo.com/wp-content/uploads/2014/09/CURL_DE_MARTILLO.gif",
     "Pullover con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Pullover.gif",
     "Aperturas inclinadas con mancuernas": "https://media.tenor.com/oJXOnsC72qMAAAAM/crussifixo-no-banco-com-halteres.gif",
     "Press de hombros sentado": "https://gymvisual.com/img/p/1/4/4/9/3/14493.gif",
@@ -439,7 +439,6 @@ const imagenesMap = {
     "Peso muerto a una pierna": "https://gymvisual.com/img/p/7/5/6/1/7561.gif",
     "Extensión en banco declinado": "https://gymvisual.com/img/p/1/5/2/7/1/15271.gif",
     "Press francés en banco inclinado": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
-    // Cardio / core (no se usan en rutina, pero por si acaso)
     "Plancha": "https://www.inspireusafoundation.org/wp-content/uploads/2022/01/plank.gif",
     "Burpees": "https://fitnessprogramer.com/wp-content/uploads/2021/02/burpees.gif",
     "Saltos tijera": "https://gymvisual.com/img/p/1/5/9/8/5/15985.gif",
@@ -519,7 +518,7 @@ function getInstrucciones(nombre){
     return inst[nombre] || "📍 Realiza el movimiento con control, prioriza técnica.";
 }
 
-// ==================== VARIABLES GLOBALES (LOCALSTORAGE) ====================
+// ==================== VARIABLES GLOBALES ====================
 let personalizaciones = JSON.parse(localStorage.getItem('personalizaciones')) || {};
 let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
 let diasEntrenados = JSON.parse(localStorage.getItem('diasEntrenados')) || [];
@@ -595,7 +594,7 @@ function getNivelActual(){ let t=0; for(let k in localStorage) if(k.startsWith('
 function getEntrenosHistoricos(){ let t=0; for(let k in localStorage) if(k.startsWith('completado_')&&localStorage.getItem(k)==='true') t++; return t; }
 function actualizarLogros(){const container=document.getElementById('logrosContainer');if(!container)return;let nuevos=false;listaLogros.forEach(l=>{if(!logros.includes(l.id)&&l.cond()){logros.push(l.id);nuevos=true;mostrarToast(`🏆 ${l.nombre}`);canvasConfetti({particleCount:100,spread:70});}});if(nuevos)guardarTodo();container.innerHTML=listaLogros.map(l=>`<div class="badge-card" style="${logros.includes(l.id)?'border:1px solid gold;':'opacity:0.6;'}">${l.icono} ${l.nombre}</div>`).join('');}
 function aplicarColorCiclo(){const hoy=new Date().getDay();const diasMap=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];const diaStr=diasMap[hoy];const color=COLOR_POR_DIA[diaStr] || "#20c4b8";document.documentElement.style.setProperty('--ciclo-color',color);document.getElementById('cicloIconoHeader').innerHTML="🔥";const nivel=getNivelActual();const total=getEntrenosHistoricos();let req=0;if(nivel===1)req=10;else if(nivel===2)req=25;else if(nivel===3)req=50;else if(nivel===4)req=100;else req=total;const porcentaje=Math.min(100,Math.floor((total/req)*100));document.getElementById('cycleCard').innerHTML=`<div style="font-size:.55rem;letter-spacing:.2em;color:var(--ciclo-color);text-transform:uppercase;">// ENTRENO PARA ADELGAZAR</div><div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem;"><span style="font-size:1.6rem;">🔥</span><span style="font-family:'Bebas Neue';font-size:1.8rem;color:var(--ciclo-color);">PÉRDIDA DE GRASA</span></div><div style="font-size:.62rem;color:var(--muted);margin-bottom:.2rem;">${SERIES_REPS.series} × ${SERIES_REPS.reps}</div><div style="font-size:.58rem;color:var(--muted);margin-bottom:.8rem;">🎯 ALTA REPETICIÓN · DESCANSO CORTO</div><div class="nivel-progreso"><div class="nivel-titulo"><span>🏅 NIVEL ${nivel}</span><span>${total}/${req}</span></div><div class="barra-progreso"><div class="barra-fill" style="width:${porcentaje}%;"></div></div><div class="nivel-texto">${total<req?`Faltan ${req-total} entrenos para nivel ${nivel+1}`:'¡Máximo nivel!'}</div></div>`;}
-function mostrarVistaPreviaEjercicios(){const dias=['lunes','martes','miercoles','jueves','viernes','sabado'];let html=`<div class="disk-panel"><h3>📋 VISTA PREVIA</h3><table><thead><th>Día</th><th>Ejercicios</th></thead><tbody>`;for(let dia of dias){html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td><td><ul style="margin:0;padding-left:1rem;">${ejerciciosUnicos[dia].map(e=>`<li>${e}</li>`).join('')}</ul></td></tr>`;}html+=`</tbody></table><button onclick="cerrarModalPopup()">CERRAR</button></div>`;cerrarModalPopup();const overlay=document.createElement('div');overlay.className='modal-disk';overlay.id='modalPopup';overlay.innerHTML=html;document.body.appendChild(overlay);}
+function mostrarVistaPreviaEjercicios(){const dias=['lunes','martes','miercoles','jueves','viernes','sabado'];let html=`<div class="disk-panel"><h3>📋 VISTA PREVIA</h3><table><thead><th>Día</th><th>Ejercicios</th></thead><tbody>`;for(let dia of dias){html+=`</td><td><strong>${dia.toUpperCase()}</strong></td><td><ul style="margin:0;padding-left:1rem;">${ejerciciosUnicos[dia].map(e=>`<li>${e}</li>`).join('')}</ul></td></tr>`;}html+=`</tbody></table><button onclick="cerrarModalPopup()">CERRAR</button></div>`;cerrarModalPopup();const overlay=document.createElement('div');overlay.className='modal-disk';overlay.id='modalPopup';overlay.innerHTML=html;document.body.appendChild(overlay);}
 function exportarDatos(){const data={diasEntrenados,diasNoFumar,pesos,logros,marcasLesion,marcasVacaciones,personalizaciones,checks};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data)]));a.download='nicogym_backup.json';a.click();}
 function mostrarReset(){document.getElementById('resetModal').style.display='flex';}
 function cerrarReset(){document.getElementById('resetModal').style.display='none';}
