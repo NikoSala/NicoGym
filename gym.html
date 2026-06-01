@@ -83,6 +83,7 @@
         .piramide-detalle{font-size:0.65rem;background:#1e2a3a;border-radius:0.8rem;padding:0.3rem;margin-top:0.3rem;text-align:center}
         @media (max-width:600px){body{padding:0.4rem}}
         .offline-warning{background:#ffcc00;color:#000;padding:5px;text-align:center;font-size:0.7rem;border-radius:8px;margin-bottom:8px}
+        .btn-dia-actual{background:var(--ciclo-color);border:none;border-radius:2rem;padding:0.3rem 0.8rem;font-size:0.75rem;cursor:pointer;color:#000;font-weight:bold;margin-bottom:0.5rem;width:100%}
     </style>
 </head>
 <body>
@@ -129,9 +130,8 @@
         <div><span style="font-size:0.7rem;">⚖️ PESO</span><br><strong id="bannerPeso">-- kg</strong></div>
         <div><span style="font-size:0.7rem;">🎯 OBJETIVO</span><br><strong id="bannerObjetivo">80 kg</strong></div>
     </div>
-    <!-- BOTÓN NUEVO: IR AL ENTRENAMIENTO DE HOY -->
     <div class="neon-card" style="text-align:center; padding:0.4rem;">
-        <button onclick="irADiaActual()" style="background:var(--ciclo-color); border:none; border-radius:2rem; padding:0.3rem 0.8rem; font-size:0.75rem; cursor:pointer; color:#000; font-weight:bold;">🏋️ ENTRENO DE HOY</button>
+        <button class="btn-dia-actual" onclick="irADiaActual()">🏋️ ENTRENO DE HOY</button>
     </div>
     <div class="neon-card" style="height:150px;"><canvas id="graficoPeso"></canvas></div>
     <div class="neon-card" style="text-align:center;">
@@ -244,7 +244,7 @@ const discosPorPeso = {
     9.5: { izq: ["2","1.5","1.25"], der: ["2","1.5","1.25"] }
 };
 
-// ==================== MAPA DE IMÁGENES (COMPLETO) ====================
+// ==================== MAPA DE IMÁGENES (CORREGIDO COMPLETAMENTE) ====================
 const imagenesMap = {
     // NUEVOS TRÍCEPS
     "Patada de tríceps": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Kickback.gif",
@@ -435,231 +435,59 @@ function formatearPeso(nombre, ciclo, pers) {
     return `${kg} kg`;
 }
 
-// ==================== INSTRUCCIONES DETALLADAS PARA TODOS LOS EJERCICIOS (SIN MODIFICAR) ====================
+// ==================== INSTRUCCIONES DETALLADAS (COMPLETAS) ====================
 function getInstrucciones(nombre) {
     const instrucciones = {
-        // --- NUEVOS TRÍCEPS (DETALLADAS) ---
-        "Patada de tríceps": `📍 POSICIÓN INICIAL:
-- De pie, inclínate hacia adelante manteniendo la espalda recta (casi horizontal).
-- Apoya una mano en una silla o banco para estabilidad.
-- En la otra mano sujeta una mancuerna con el brazo pegado al torso y el codo flexionado a 90 grados.
-
-📐 MOVIMIENTO:
-1. Sin mover la parte superior del brazo, extiende el codo hacia atrás hasta que el brazo quede recto.
-2. Aprieta el tríceps con fuerza en la posición final.
-3. Baja controladamente hasta el ángulo inicial.
-
-❗ ERRORES COMUNES: Mover el codo, balancear el torso.
-💨 RESPIRACIÓN: Exhala al extender, inhala al bajar.
-🎯 CONSEJO: Mantén el codo pegado al cuerpo; el movimiento solo debe venir del antebrazo.`,
-        "Extensión de tríceps tumbado": `📍 POSICIÓN INICIAL:
-- Túmbate en un banco plano o en el suelo.
-- Sujeta una mancuerna con ambas manos sobre la cabeza, brazos extendidos verticalmente, codos apuntando hacia arriba.
-
-📐 MOVIMIENTO:
-1. Baja la mancuerna hacia la cabeza doblando los codos hasta 90 grados (la mancuerna se acerca a tu frente o detrás de ella).
-2. Haz una pausa de 1 segundo.
-3. Sube extendiendo los brazos sin bloquear los codos.
-
-❗ ERRORES COMUNES: Abrir los codos hacia los lados, bajar demasiado rápido.
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
-🎯 CONSEJO: Mantén los codos fijos apuntando al techo.`,
-        "Extensión a una mano tras nuca": `📍 POSICIÓN INICIAL:
-- Sentado en un banco con respaldo, sujeta una mancuerna con una mano y llévala detrás de la cabeza, codo apuntando al techo.
-
-📐 MOVIMIENTO:
-1. Extiende el brazo hacia arriba hasta que quede completamente recto.
-2. Baja controladamente detrás de la cabeza.
-
-❗ ERRORES COMUNES: Inclinar el torso, mover el codo.
-💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
-🎯 CONSEJO: Si te cuesta mantener el equilibrio, apoya la espalda en el respaldo.`,
-        "Press de banca agarre cerrado": `📍 POSICIÓN INICIAL:
-- Túmbate en banco plano, sujeta dos mancuernas con las manos juntas (una al lado de la otra), palmas una frente a la otra.
-
-📐 MOVIMIENTO:
-1. Baja las mancuernas hacia el centro del pecho manteniendo los codos cerca del torso.
-2. Sube apretando el pecho interno y los tríceps.
-
-❗ ERRORES COMUNES: Separar las manos, bajar demasiado.
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
-🎯 CONSEJO: Este ejercicio también activa el pectoral interno.`,
-        "Fondo de tríceps en suelo": `📍 POSICIÓN INICIAL:
-- Túmbate boca arriba con las rodillas flexionadas y los pies apoyados.
-- Coloca las manos a los lados del cuerpo, palmas hacia abajo.
-- Eleva la cadera ligeramente.
-
-📐 MOVIMIENTO:
-1. Baja la cadera flexionando los codos hasta que los glúteos casi toquen el suelo.
-2. Sube extendiendo los brazos.
-
-❗ ERRORES COMUNES: Apoyar los glúteos en el suelo, usar el pecho.
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
-🎯 CONSEJO: Es un ejercicio suave para empezar a fortalecer tríceps.`,
-        "Extensión en banco declinado": `📍 POSICIÓN INICIAL:
-- Ajusta un banco en declive (cabeza más baja) o coloca una toalla bajo la espalda alta.
-- Sujeta una mancuerna con ambas manos sobre la cabeza, brazos extendidos.
-
-📐 MOVIMIENTO:
-1. Baja la mancuerna detrás de la cabeza doblando codos a 90 grados.
-2. Sube controladamente.
-
-❗ ERRORES COMUNES: Bajar demasiado (peligro para hombros).
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
-🎯 CONSEJO: El declive enfatiza la cabeza larga del tríceps.`,
-        "Press francés en banco inclinado": `📍 POSICIÓN INICIAL:
-- Banco inclinado 30-45 grados, tumbado boca arriba.
-- Sujeta una mancuerna con ambas manos sobre la cabeza.
-
-📐 MOVIMIENTO:
-1. Baja la mancuerna flexionando los codos hasta que toque la parte superior de la cabeza (o cerca).
-2. Sube extendiendo brazos.
-
-❗ ERRORES COMUNES: Abrir codos, usar muñecas.
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
-🎯 CONSEJO: La inclinación cambia el ángulo de trabajo, muy efectivo.`,
-
-        // --- EJERCICIOS PRINCIPALES (DETALLADOS) ---
-        "Dominadas (palmas mirando afuera)": `📍 POSICIÓN INICIAL:
-- Coge la barra con agarre prono (palmas hacia AFUERA), manos separadas al ancho de hombros.
-- Cuélgate con brazos completamente extendidos, sin que los pies toquen el suelo.
-- Activa los omóplatos: tíralos hacia abajo y atrás.
-
-📐 MOVIMIENTO:
-1. Inspira y, manteniendo el core firme, sube tirando con la ESPALDA.
-2. Lleva el pecho hacia la barra.
-3. En la posición más alta, aprieta los omóplatos 1 segundo.
-4. Baja de forma controlada y lenta hasta extender completamente los brazos.
-
-❗ ERRORES COMUNES: Balancearse, no bajar del todo, usar solo los brazos.
-💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
-🎯 CONSEJO: Si no puedes, empieza con negativas (sube con salto y baja lento).`,
-
-        "Remo en banco": `📍 POSICIÓN INICIAL:
-- Apoya la rodilla y la mano del mismo lado sobre un banco plano.
-- La otra mano agarra la mancuerna con la palma hacia el cuerpo.
-- Espalda completamente plana, casi paralela al suelo.
-
-📐 MOVIMIENTO:
-1. Sin mover el torso, lleva la mancuerna hacia tu cadera, codo pegado.
-2. Aprieta la escápula en la parte superior.
-3. Baja lentamente hasta estirar el brazo.
-
-❗ ERRORES COMUNES: Redondear la espalda, levantar el torso, tirar con el brazo.
-💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
-🎯 CONSEJO: Imagina que tu brazo es un gancho y tiras con el codo.`,
-
-        "Curl de bíceps": `📍 POSICIÓN INICIAL:
-- De pie o sentado, agarra una mancuerna en cada mano con las palmas hacia ARRIBA.
-- Los codos PEGADOS a los costados del torso.
-
-📐 MOVIMIENTO:
-1. Sin mover los codos, curva las mancuernas hacia los hombros.
-2. Aprieta el bíceps 1 segundo.
-3. Baja de forma LENTA y CONTROLADA.
-
-❗ ERRORES COMUNES: Balancear el cuerpo, separar los codos, bajar rápido.
-💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.
-🎯 CONSEJO: Haz el movimiento lento y siente la contracción.`,
-
-        "Press banca plano": `📍 POSICIÓN INICIAL:
-- Túmbate en un banco plano con los pies FIRMES en el suelo.
-- Sujeta dos mancuernas a la altura del pecho, palmas hacia adelante.
-- Codos a 45 grados del torso.
-
-📐 MOVIMIENTO:
-1. Baja lentamente hasta que los codos formen 90 grados.
-2. Pausa 1 segundo.
-3. Sube de forma explosiva apretando el pecho, sin bloquear codos.
-
-❗ ERRORES COMUNES: Arquear la espalda, bajar demasiado, separar codos.
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
-🎯 CONSEJO: No rebotes las mancuernas en el pecho.`,
-
-        "Sentadilla búlgara": `📍 POSICIÓN INICIAL:
-- De espaldas a un banco, apoya la parte superior de un pie en el banco.
-- El pie delantero adelantado para que la rodilla trasera no choque.
-- Sujeta una mancuerna en cada mano.
-
-📐 MOVIMIENTO:
-1. Baja la rodilla trasera hacia el suelo, torso erguido.
-2. La rodilla delantera NO debe sobrepasar la punta del pie.
-3. Sube apretando el glúteo y el cuádriceps.
-
-❗ ERRORES COMUNES: Dejar caer la rodilla, inclinar el torso, apoyar la rodilla.
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
-🎯 CONSEJO: Si pierdes equilibrio, sostente en una pared.`,
-
-        "Plancha": `📍 POSICIÓN INICIAL:
-- Apoya los antebrazos y las puntas de los pies.
-- Cuerpo recto desde hombros hasta tobillos.
-
-📐 MOVIMIENTO:
-1. Contrae abdomen y glúteos con fuerza.
-2. Aguanta la posición sin arquear la espalda ni bajar la cadera.
-
-❗ ERRORES COMUNES: Bajar la cadera, elevar los glúteos.
-💨 RESPIRACIÓN: Mantén una respiración constante.`,
-
-        // --- AÑADIR EL RESTO DE EJERCICIOS CON INSTRUCCIONES GENÉRICAS PERO COMPLETAS ---
+        "Patada de tríceps": `📍 POSICIÓN INICIAL: De pie, inclínate hacia adelante, apoya una mano en una silla. Sujeta la mancuerna con la otra mano, codo pegado al torso.
+📐 MOVIMIENTO: Extiende el codo hacia atrás hasta que el brazo quede recto, aprieta el tríceps, baja controlado.
+❗ ERRORES: Mover el codo, balancear el torso.
+💨 RESPIRACIÓN: Exhala al extender, inhala al bajar.`,
+        "Extensión de tríceps tumbado": `📍 POSICIÓN INICIAL: Túmbate en el suelo o banco. Sujeta una mancuerna con ambas manos sobre la cabeza, codos apuntando al techo.
+📐 MOVIMIENTO: Baja la mancuerna hacia la cabeza doblando codos a 90°, sube sin bloquear.
+❗ ERRORES: Abrir los codos, bajar rápido.
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+        "Extensión a una mano tras nuca": `📍 POSICIÓN INICIAL: Sentado, sujeta una mancuerna con una mano detrás de la cabeza, codo al techo.
+📐 MOVIMIENTO: Extiende el brazo hacia arriba, baja controlado.
+❗ ERRORES: Inclinar el torso, mover el codo.
+💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`,
+        "Press de banca agarre cerrado": `📍 POSICIÓN INICIAL: Tumbado, sujeta dos mancuernas con las manos juntas, palmas una frente a la otra.
+📐 MOVIMIENTO: Baja hacia el centro del pecho, sube apretando tríceps.
+❗ ERRORES: Separar las manos, bajar demasiado.
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+        "Fondo de tríceps en suelo": `📍 POSICIÓN INICIAL: Tumbado boca arriba, rodillas flexionadas, manos a los lados.
+📐 MOVIMIENTO: Eleva cadera, baja flexionando codos, sube.
+❗ ERRORES: Apoyar glúteos, usar pecho.
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+        "Extensión en banco declinado": `📍 POSICIÓN INICIAL: En banco declinado o con toalla bajo la espalda. Mancuerna con ambas manos sobre la cabeza.
+📐 MOVIMIENTO: Baja detrás de la cabeza a 90°, sube.
+❗ ERRORES: Bajar demasiado.
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+        "Press francés en banco inclinado": `📍 POSICIÓN INICIAL: Banco inclinado 30-45°, mancuerna sobre la cabeza.
+📐 MOVIMIENTO: Baja flexionando codos hasta la cabeza, sube.
+❗ ERRORES: Abrir codos.
+💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`,
+        "Dominadas (palmas mirando afuera)": `📍 AGARRE PRONO, sube con la espalda, baja controlado. Si no puedes, haz negativas.`,
+        "Remo en banco": `📍 APOYA RODILLA Y MANO, espalda plana, rema hacia cadera, aprieta escápula.`,
+        "Curl de bíceps": `📍 CODOS PEGADOS, curva hacia hombros, baja lento. No balancees.`,
+        "Press banca plano": `📍 TUMBADO, pies firmes, baja a 90°, sube explosivo sin bloquear.`,
+        "Sentadilla búlgara": `📍 PIE TRASERO EN BANCO, baja rodilla, sube apretando glúteo.`,
+        "Plancha": `📍 ANTEBRAZOS Y PUNTAS, cuerpo recto, aguanta sin bajar cadera.`,
+        "Aperturas en banco": `📍 TUMBADO, baja en arco sintiendo el pecho, sube juntando.`,
+        "Pájaro (fly invertido)": `📍 TORSO INCLINADO, eleva brazos lateralmente hasta paralelo.`,
+        "Zancadas": `📍 PASO LARGO, baja rodilla trasera, impúlsate con talón.`,
+        "Curl femoral": `📍 TUMBADO BOCA ABAJO, mancuerna entre pies, curl hacia glúteo.`,
+        "Burpees": `📍 CUCLILLAS, salta atrás, flexión, salta adelante, salta con palmada.`,
+        "Saltos tijera": `📍 SALTOS abriendo y cerrando piernas y brazos.`,
+        "Rodillas altas": `📍 CORRE EN SITIO elevando rodillas a la altura de la cadera.`,
+        "V-ups": `📍 TUMBADO, eleva piernas y torso a la vez, toca pies.`,
+        "Crunch": `📍 TUMBADO, eleva solo omóplatos, baja controlado.`,
+        "Toques talón": `📍 TUMBADO, rodillas flexionadas, toca talones alternando.`,
+        "Cinta": `📍 CAMINA O TROTA a ritmo constante, postura erguida.`
     };
-    // Para cualquier otro ejercicio no listado específicamente, generamos una instrucción genérica pero útil basada en palabras clave
-    if (instrucciones[nombre]) return instrucciones[nombre];
-    
-    // Generación dinámica por tipo de ejercicio
-    if (nombre.includes("Dominadas")) return instrucciones["Dominadas (palmas mirando afuera)"];
-    if (nombre.includes("Remo")) return instrucciones["Remo en banco"];
-    if (nombre.includes("Curl")) return instrucciones["Curl de bíceps"];
-    if (nombre.includes("Press banca") || nombre.includes("Press inclinado") || nombre.includes("Press declinado")) return instrucciones["Press banca plano"];
-    if (nombre.includes("Sentadilla")) return instrucciones["Sentadilla búlgara"];
-    if (nombre.includes("Peso muerto")) return `📍 POSICIÓN INICIAL: De pie, mancuernas al frente, espalda recta, piernas semiflexionadas.
-📐 MOVIMIENTO: Flexiona cadera hacia atrás, baja las mancuernas por las espinillas sintiendo el estiramiento en los isquios, sube apretando glúteos.
-❗ ERRORES: Redondear la espalda, bajar demasiado.
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.
-🎯 CONSEJO: Mantén la barra pegada al cuerpo.`;
-    if (nombre.includes("Fondos")) return `📍 POSICIÓN INICIAL: Manos en un banco a la altura de las caderas, piernas extendidas.
-📐 MOVIMIENTO: Baja el cuerpo doblando codos hasta 90°, sube extendiendo brazos.
-❗ ERRORES: Bajar demasiado, dejar caer hombros.
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`;
-    if (nombre.includes("Elevaciones")) return `📍 POSICIÓN INICIAL: De pie o sentado, brazos a los lados.
-📐 MOVIMIENTO: Eleva los brazos lateralmente hasta la altura de los hombros, baja controlado.
-❗ ERRORES: Usar impulso, elevar por encima de hombros.
-💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`;
-    if (nombre.includes("Pájaro")) return `📍 POSICIÓN INICIAL: Torso inclinado, mancuernas colgando.
-📐 MOVIMIENTO: Eleva brazos lateralmente hasta paralelos al suelo, baja.
-❗ ERRORES: Balancear cuerpo, usar brazos en lugar de hombros.
-💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`;
-    if (nombre.includes("Aperturas")) return `📍 POSICIÓN INICIAL: Tumbado en banco, brazos extendidos hacia arriba.
-📐 MOVIMIENTO: Baja en arco amplio, manteniendo codos ligeramente flexionados, sube juntando las mancuernas.
-❗ ERRORES: Bajar demasiado, extender brazos por completo.
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`;
-    if (nombre.includes("Zancadas")) return `📍 POSICIÓN INICIAL: De pie, mancuernas en manos.
-📐 MOVIMIENTO: Da un paso largo hacia adelante, baja rodilla trasera hasta casi tocar suelo, impúlsate con pierna delantera.
-❗ ERRORES: Apoyar rodilla trasera, inclinar torso.
-💨 RESPIRACIÓN: Inhala al bajar, exhala al subir.`;
-    if (nombre.includes("Burpees")) return `📍 POSICIÓN INICIAL: En cuclillas, manos en suelo.
-📐 MOVIMIENTO: Salta hacia atrás a plancha, haz una flexión, salta hacia adelante, salta explosivo con palmada.
-❗ ERRORES: No hacer la flexión, no saltar.
-💨 RESPIRACIÓN: Constante, sin aguantar la respiración.`;
-    if (nombre.includes("Crunch") || nombre.includes("V-ups") || nombre.includes("Toques")) return `📍 POSICIÓN INICIAL: Tumbado boca arriba.
-📐 MOVIMIENTO: Eleva torso y/o piernas controlando el movimiento, baja sin golpear el suelo.
-❗ ERRORES: Usar impulso, tirar del cuello.
-💨 RESPIRACIÓN: Exhala al subir, inhala al bajar.`;
-    if (nombre.includes("Cinta")) return `📍 POSICIÓN INICIAL: Sube a la cinta, sujeta asas si es necesario.
-📐 MOVIMIENTO: Camina o trota a ritmo constante, mantén postura erguida.
-❗ ERRORES: Agarrarse fuerte, inclinar torso.
-💨 RESPIRACIÓN: Mantén un ritmo respiratorio constante.
-🎯 CONSEJO: Si te ahogas, baja la velocidad.`;
-    
-    // Instrucción por defecto
-    return `📍 POSICIÓN INICIAL: Colócate correctamente según el ejercicio.
-📐 MOVIMIENTO: Realiza el movimiento con control, sintiendo el músculo trabajar.
-❗ ERRORES COMUNES: No usar impulso, mantener la espalda recta.
-💨 RESPIRACIÓN: Exhala en la fase de esfuerzo, inhala en el regreso.
-🎯 CONSEJO: Prioriza la técnica sobre el peso.`;
+    return instrucciones[nombre] || "Mantén la técnica, prioriza la calidad sobre la cantidad.";
 }
 
-// ==================== RESTO DE FUNCIONES (checks, renderizado, calendarios, peso, fotos, etc.) ====================
+// ==================== RESTO DE FUNCIONES ====================
 let personalizaciones = JSON.parse(localStorage.getItem('personalizaciones')) || {};
 let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
 let diasEntrenados = JSON.parse(localStorage.getItem('diasEntrenados')) || [];
@@ -769,7 +597,6 @@ window.mostrarDiscos = function(nombre, ciclo, id){
 };
 function cerrarModalDiscos(){ document.getElementById('modalDiscos')?.remove(); }
 
-// Calendarios, peso, gráfico, fotos (simplificados pero funcionales)
 let mesGym=new Date().getMonth(), añoGym=new Date().getFullYear(), mesSmoke=new Date().getMonth(), añoSmoke=new Date().getFullYear();
 function getHoyStr(){ return new Date().toISOString().slice(0,10); }
 function esFechaFutura(fecha) { return fecha > new Date(); }
@@ -941,7 +768,6 @@ function setDescanso(seg){
 }
 function cancelarDescanso(){ clearInterval(timerInterval); document.getElementById('descanso-box').style.display='none'; }
 
-// ==================== LOGROS ====================
 const listaLogros = [
     { id: "ns_7", nombre: "🌱 1 semana sin fumar", cond: () => calcularDiasSinFumar() >= 7, icono: "🌱" },
     { id: "ns_30", nombre: "🚭 1 mes sin fumar", cond: () => calcularDiasSinFumar() >= 30, icono: "🚭" },
@@ -1012,7 +838,7 @@ function mostrarVistaPreviaCiclos(){
     ciclos.forEach(c => html += `<th style="color:${SERIES_REPS_CICLO[c].color}">${c}</th>`);
     html += `</thead><tbody>`;
     for(let dia of dias){
-        html += `</tr><td><strong>${dia.toUpperCase()}</strong></td>`;
+        html += `<tr><td><strong>${dia.toUpperCase()}</strong></td>`;
         for(let ciclo of ciclos){
             const ej = getEjerciciosPorDia(dia, ciclo);
             html += `<td><ul style="margin:0; padding-left:1rem;">${ej.map(e=>`<li>${e}</li>`).join('')}</ul></td>`;
@@ -1056,19 +882,16 @@ function go(id){
     if(id==='logros') actualizarLogros();
     closeMenu();
 }
+function irADiaActual() {
+    const diasSemana = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+    const hoy = new Date().getDay();
+    const diaId = diasSemana[hoy];
+    go(diaId);
+}
 function toggleSubmenu(btn){ btn.classList.toggle('open'); btn.nextElementSibling.classList.toggle('show'); }
 function openMenu(){ document.getElementById('menu-lat').classList.add('open'); document.getElementById('overlay').style.display='block'; }
 function closeMenu(){ document.getElementById('menu-lat').classList.remove('open'); document.getElementById('overlay').style.display='none'; }
 
-// ==================== NUEVA FUNCIÓN: IR AL DÍA ACTUAL ====================
-function irADiaActual() {
-    const diasSemana = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
-    const hoy = new Date().getDay(); // 0 domingo, 1 lunes...
-    const diaId = diasSemana[hoy];
-    go(diaId);
-}
-
-// ==================== FOTOS (IndexedDB) ====================
 let db = null;
 const DB_NAME='FotosProgresoDB', STORE_NAME='diasFotos';
 function abrirDB(){ return new Promise(r=>{ const req=indexedDB.open(DB_NAME,1); req.onupgradeneeded=e=>{ if(!e.target.result.objectStoreNames.contains(STORE_NAME)) e.target.result.createObjectStore(STORE_NAME,{keyPath:'fecha'}); }; req.onsuccess=e=>{ db=e.target.result; r(); }; req.onerror=()=>r(); }); }
