@@ -8,7 +8,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <style>
-/* ========== ESTILOS (iguales a la versión anterior, no los repito por brevedad pero están completos) ========== */
+/* ========== ESTILOS (igual que la última versión funcional) ========== */
+/* ... (copia aquí todos los estilos que ya tenías, no los repito por brevedad pero deben estar completos) ... */
 :root {
   --bg:       #080a0d;
   --surface:  #0e1117;
@@ -146,6 +147,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 <body>
 
 <div id="overlay" onclick="closeMenu()"></div>
+
 <nav id="menu-lat">
   <div class="menu-header">// NICO GYM</div>
   <div class="nav-btn" onclick="go('home')">🏠 &nbsp;Inicio</div>
@@ -264,7 +266,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 </div>
 
 <!-- RUTINAS DIARIAS -->
-<div id="lunes" class="seccion"><div class="page-wrap"><div class="sec-title">LUNES <span class="muscle">· ESPALDA/BÍCEPS</span></div><div id="lista-lunes"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" data-dia="lunes" id="resetLunes">🗑️ Desmarcar todos</button></div></div>
+<div id="lunes" class="seccion"><div class="page-wrap"><div class="sec-title">LUNES <span class="muscle">· ESPALDA/BÍCEPS</span></div><div id="lista-lunes"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" data-dia="lunes">🗑️ Desmarcar todos</button></div></div>
 <div id="martes" class="seccion"><div class="page-wrap"><div class="sec-title">MARTES <span class="muscle">· PECHO/HOMBRO</span></div><div id="lista-martes"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" data-dia="martes">🗑️ Desmarcar todos</button></div></div>
 <div id="miercoles" class="seccion"><div class="page-wrap"><div class="sec-title">MIÉRCOLES <span class="muscle">· PIERNA/TRÍCEPS</span></div><div id="lista-miercoles"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" data-dia="miercoles">🗑️ Desmarcar todos</button></div></div>
 <div id="jueves" class="seccion"><div class="page-wrap"><div class="sec-title">JUEVES <span class="muscle">· ESPALDA/BÍCEPS</span></div><div id="lista-jueves"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" data-dia="jueves">🗑️ Desmarcar todos</button></div></div>
@@ -420,11 +422,11 @@ if(pesos.length===0) pesos.push({valor:84,fecha:new Date().toISOString().slice(0
 function guardarTodo() { localStorage.setItem('diasEntrenados',JSON.stringify(diasEntrenados)); localStorage.setItem('diasNoFumar',JSON.stringify(diasNoFumar)); localStorage.setItem('pesos',JSON.stringify(pesos)); localStorage.setItem('nico_logros',JSON.stringify(logros)); localStorage.setItem('marcasLesion',JSON.stringify(marcasLesion)); localStorage.setItem('marcasVacaciones',JSON.stringify(marcasVacaciones)); }
 function mostrarToast(msg){const t=document.createElement('div');t.className='toast-msg';t.innerText=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000);}
 
+// ========== FUNCIÓN MARCAR EJERCICIO MODIFICADA (cierra instrucciones) ==========
 function marcarEjercicio(id){
     const dia = id.split('-')[0];
     const semanaKey = getNumeroSemana(new Date()).toString();
     const completadoKey = `completado_${dia}_${semanaKey}`;
-    // Permitir marcar/desmarcar aunque el día esté completado (se puede desmarcar)
     if (checks[id]) delete checks[id];
     else checks[id] = true;
     localStorage.setItem('nico_checks', JSON.stringify(checks));
@@ -433,14 +435,11 @@ function marcarEjercicio(id){
     if (container) {
         const checkboxes = container.querySelectorAll('.check-box');
         const todos = Array.from(checkboxes).every(cb => cb.checked === true);
-        // Si todos están marcados, completar el día (solo si no estaba ya completado)
         if (todos && checkboxes.length > 0 && localStorage.getItem(completadoKey) !== 'true') {
             completarDia(dia);
         }
-        // Si no todos están marcados, pero el día estaba completado, lo desmarcamos
         if (!todos && localStorage.getItem(completadoKey) === 'true') {
             localStorage.removeItem(completadoKey);
-            // También quitar el día de diasEntrenados si es hoy
             const hoy = getHoyStr();
             if (diasEntrenados.includes(hoy)) {
                 diasEntrenados = diasEntrenados.filter(d => d !== hoy);
@@ -450,7 +449,14 @@ function marcarEjercicio(id){
             renderCalendarios();
         }
     }
+    // 🔁 Cerrar el desplegable de instrucciones de este ejercicio
+    const detalleDiv = document.getElementById(`det-${id}`);
+    if (detalleDiv && detalleDiv.classList.contains('show')) {
+        detalleDiv.classList.remove('show');
+    }
 }
+// ========== FIN MODIFICACIÓN ==========
+
 function completarDia(dia){
     const semanaKey = getNumeroSemana(new Date()).toString();
     const completadoKey = `completado_${dia}_${semanaKey}`;
@@ -468,7 +474,6 @@ function completarDia(dia){
 function resetDia(dia){
     const semanaKey = getNumeroSemana(new Date()).toString();
     const completadoKey = `completado_${dia}_${semanaKey}`;
-    // Limpiar checks individuales
     const container = document.getElementById(`lista-${dia}`);
     if (container) {
         let cambios = false;
@@ -478,7 +483,6 @@ function resetDia(dia){
         });
         if (cambios) { localStorage.setItem('nico_checks', JSON.stringify(checks)); }
     }
-    // Si el día estaba completado, lo desmarcamos
     if (localStorage.getItem(completadoKey) === 'true') {
         localStorage.removeItem(completadoKey);
         const hoy = getHoyStr();
@@ -514,13 +518,12 @@ function renderizarRutinas(){
             const isChecked=!!checks[id];
             const card=document.createElement('div');
             card.className='exercise-card'+(isChecked?' checked':'');
-            // El checkbox ya no se deshabilita por completado, así que siempre se puede marcar/desmarcar
             card.innerHTML=`<div class="ex-header"><div class="ex-name">${nombre}</div><input type="checkbox" class="check-box" ${isChecked?'checked':''} onchange="marcarEjercicio('${id}')"></div><div class="ex-meta"><span class="ex-meta-tag">${series} × ${reps}</span><span class="weight-badge" onclick="window.mostrarDiscos('${nombre.replace(/'/g,"\\'")}','${id}')">📦 ${pesoTexto}</span></div><button class="btn-instruc" onclick="toggleDetalles('${detId}')">📋 Instrucciones</button><div id="${detId}" class="detalles">${img?`<img src="${img}" class="ex-img" onerror="this.style.display='none'">`:''}<div>${instruc.replace(/\n/g,'<br>')}</div></div>`;
             container.appendChild(card);
         });
         const resetBtn=document.querySelector(`.btn-reset-dia[data-dia="${dia}"]`);
         if(resetBtn){
-            resetBtn.disabled=false; // siempre activo
+            resetBtn.disabled=false;
             resetBtn.onclick=()=>resetDia(dia);
         }
     }
@@ -583,7 +586,7 @@ function getNivelActual(){ let t=0; for(let k in localStorage) if(k.startsWith('
 function getEntrenosHistoricos(){ let t=0; for(let k in localStorage) if(k.startsWith('completado_')&&localStorage.getItem(k)==='true') t++; return t; }
 function actualizarLogros(){const container=document.getElementById('logrosContainer');if(!container)return;let nuevos=false;listaLogros.forEach(l=>{if(!logros.includes(l.id)&&l.cond()){logros.push(l.id);nuevos=true;mostrarToast(`🏆 ${l.nombre}`);canvasConfetti({particleCount:100,spread:70});}});if(nuevos)guardarTodo();container.innerHTML=listaLogros.map(l=>`<div class="badge-card" style="${logros.includes(l.id)?'border:1px solid gold;':'opacity:0.6;'}">${l.icono} ${l.nombre}</div>`).join('');}
 function aplicarColorCiclo(){const hoy=new Date().getDay();const diasMap=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];const diaStr=diasMap[hoy];const color=COLOR_POR_DIA[diaStr] || "#20c4b8";document.documentElement.style.setProperty('--ciclo-color',color);document.getElementById('cicloIconoHeader').innerHTML="🔥";const nivel=getNivelActual();const total=getEntrenosHistoricos();let req=0;if(nivel===1)req=10;else if(nivel===2)req=25;else if(nivel===3)req=50;else if(nivel===4)req=100;else req=total;const porcentaje=Math.min(100,Math.floor((total/req)*100));document.getElementById('cycleCard').innerHTML=`<div style="font-size:.55rem;letter-spacing:.2em;color:var(--ciclo-color);text-transform:uppercase;">// ENTRENO PARA ADELGAZAR</div><div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem;"><span style="font-size:1.6rem;">🔥</span><span style="font-family:'Bebas Neue';font-size:1.8rem;color:var(--ciclo-color);">PÉRDIDA DE GRASA</span></div><div style="font-size:.62rem;color:var(--muted);margin-bottom:.2rem;">${SERIES_REPS.series} × ${SERIES_REPS.reps}</div><div style="font-size:.58rem;color:var(--muted);margin-bottom:.8rem;">🎯 ALTA REPETICIÓN · DESCANSO CORTO</div><div class="nivel-progreso"><div class="nivel-titulo"><span>🏅 NIVEL ${nivel}</span><span>${total}/${req}</span></div><div class="barra-progreso"><div class="barra-fill" style="width:${porcentaje}%;"></div></div><div class="nivel-texto">${total<req?`Faltan ${req-total} entrenos para nivel ${nivel+1}`:'¡Máximo nivel!'}</div></div>`;}
-function mostrarVistaPreviaEjercicios(){const dias=['lunes','martes','miercoles','jueves','viernes','sabado'];let html=`<div class="disk-panel"><h3>📋 VISTA PREVIA</h3></td><thead><th>Día</th><th>Ejercicios</th></thead><tbody>`;for(let dia of dias){html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td><td><ul style="margin:0;padding-left:1rem;">${ejerciciosUnicos[dia].map(e=>`<li>${e}</li>`).join('')}</ul></td></tr>`;}html+=`</tbody></table><button onclick="cerrarModalPopup()">CERRAR</button></div>`;cerrarModalPopup();const overlay=document.createElement('div');overlay.className='modal-disk';overlay.id='modalPopup';overlay.innerHTML=html;document.body.appendChild(overlay);}
+function mostrarVistaPreviaEjercicios(){const dias=['lunes','martes','miercoles','jueves','viernes','sabado'];let html=`<div class="disk-panel"><h3>📋 VISTA PREVIA</h3><table><thead><th>Día</th><th>Ejercicios</th></thead><tbody>`;for(let dia of dias){html+=`<tr><td><strong>${dia.toUpperCase()}</strong></td><td><ul style="margin:0;padding-left:1rem;">${ejerciciosUnicos[dia].map(e=>`<li>${e}</li>`).join('')}</ul></td></tr>`;}html+=`</tbody></table><button onclick="cerrarModalPopup()">CERRAR</button></div>`;cerrarModalPopup();const overlay=document.createElement('div');overlay.className='modal-disk';overlay.id='modalPopup';overlay.innerHTML=html;document.body.appendChild(overlay);}
 function exportarDatos(){const data={diasEntrenados,diasNoFumar,pesos,logros,marcasLesion,marcasVacaciones,personalizaciones,checks};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data)]));a.download='nicogym_backup.json';a.click();}
 function mostrarReset(){document.getElementById('resetModal').style.display='flex';}
 function cerrarReset(){document.getElementById('resetModal').style.display='none';}
