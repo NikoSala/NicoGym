@@ -26,20 +26,6 @@
       font-size: 14px;
       overflow-x: hidden;
     }
-    /* Efecto de fondo de llamas en el gráfico */
-    @keyframes flame {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .flame-bg {
-      position: relative;
-      background: linear-gradient(270deg, #ff4d0010, #ffb30010, #ff4d0010);
-      background-size: 200% 200%;
-      animation: flame 4s ease infinite;
-      border-radius: 20px;
-      padding: 8px;
-    }
     nav {
       position: fixed;
       top: 0;
@@ -184,20 +170,38 @@
     .qstat:last-child { border-right: none; }
     .qnum { font-family: 'Bebas Neue', cursive; font-size: 22px; color: var(--acc); }
     .qlbl { font-size: 8px; text-transform: uppercase; color: var(--muted); }
+    /* Contenedor del gráfico con indicador animado */
+    .graph-wrapper {
+      margin: 16px 0;
+    }
+    .progress-indicator {
+      background: var(--s2);
+      border-radius: 20px 20px 0 0;
+      padding: 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      transition: background 0.3s;
+    }
+    .progress-gif {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      display: inline-block;
+    }
+    .progress-text {
+      font-size: 12px;
+      margin-top: 6px;
+      color: var(--muted2);
+    }
     .graph-card {
       background: var(--s2);
-      border-radius: 20px;
+      border-radius: 0 0 20px 20px;
       padding: 12px;
-      margin: 16px 0;
       border: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
+      border-top: none;
     }
     .graph-title { font-size: 11px; font-weight: 600; color: var(--muted2); margin-bottom: 8px; }
-    .equip-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; }
-    .equip-card { background: var(--s2); border-radius: 14px; padding: 12px; text-align: center; }
-    .equip-icon { font-size: 24px; }
-    .equip-name { font-size: 12px; }
     .day-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 16px; scrollbar-width: none; }
     .day-tabs::-webkit-scrollbar { display: none; }
     .dtab {
@@ -333,7 +337,6 @@
       animation: fadeOut 3s forwards;
     }
     @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
-    /* Lightbox para imágenes */
     .lightbox {
       position: fixed;
       top: 0;
@@ -380,7 +383,7 @@
     .splash-autor { font-size: 0.65rem; color: var(--muted); letter-spacing: 1px; }
     .splash-tap { margin-top: 30px; font-size: 0.55rem; animation: pulse 1.5s infinite; }
     @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
-    @media (max-width: 480px) { .nav-menu { display: none; } .burger { display: flex; } .equip-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .nav-menu { display: none; } .burger { display: flex; } }
   </style>
 </head>
 <body>
@@ -452,19 +455,18 @@
     </div>
   </div>
   <div class="sec-body">
-    <div class="flame-bg">
+    <!-- Indicador de progreso animado y gráfico -->
+    <div class="graph-wrapper">
+      <div class="progress-indicator" id="progressIndicator">
+        <img id="progressGif" class="progress-gif" src="https://i.pinimg.com/originals/a1/7d/6c/a17d6c95b9b8aac5b978abb229cd7e0d.gif" alt="progreso">
+        <div id="progressText" class="progress-text">Cargando...</div>
+      </div>
       <div class="graph-card">
         <div class="graph-title">📈 EVOLUCIÓN DE PESO</div>
         <canvas id="homeGraficoPeso" style="height: 180px; width: 100%;"></canvas>
       </div>
     </div>
-    <div class="sec-tag">🏠 EQUIPO</div>
-    <div class="equip-grid">
-      <div class="equip-card"><div class="equip-icon">🏋️</div><div class="equip-name">Mancuernas</div><div class="equip-det">hasta 9.5 kg</div></div>
-      <div class="equip-card"><div class="equip-icon">🔰</div><div class="equip-name">Torre dominadas</div></div>
-      <div class="equip-card"><div class="equip-icon">🏃</div><div class="equip-name">Cinta correr</div></div>
-      <div class="equip-card"><div class="equip-icon">🪑</div><div class="equip-name">Banco multi</div></div>
-    </div>
+    <!-- Sección EQUIPO eliminada -->
   </div>
 </div>
 
@@ -542,7 +544,7 @@
 const coloresDia = { 0: "#e8ff47", 1: "#4caf50", 2: "#ff9800", 3: "#2196f3", 4: "#9c27b0", 5: "#ff5722", 6: "#00bcd4" };
 function setColorPorDia() { const hoy = new Date().getDay(); document.documentElement.style.setProperty('--acc', coloresDia[hoy]); }
 
-// ========== PERFIL USUARIO (con sincronización con historial de pesos) ==========
+// ========== PERFIL USUARIO ==========
 let userData = { peso: 84, altura: 165, cumple: "1996-08-01" };
 
 function sincronizarPesoDesdeHistorial() {
@@ -551,6 +553,7 @@ function sincronizarPesoDesdeHistorial() {
     userData.peso = sorted[0].valor;
   }
   actualizarPerfil();
+  actualizarIndicadorProgreso();  // Actualiza el GIF y el color del indicador
 }
 
 function calcularEdad() {
@@ -575,7 +578,39 @@ function actualizarPerfil() {
 function editarPeso() { let n = prompt("Nuevo peso (kg):", userData.peso); if (n && !isNaN(n)) { userData.peso = parseFloat(n); actualizarPerfil(); actualizarGraficoHome(); actualizarGrafico(); sincronizarPesoDesdeHistorial(); } }
 function editarAltura() { let n = prompt("Nueva altura (cm):", userData.altura); if (n && !isNaN(n)) { userData.altura = parseInt(n); actualizarPerfil(); } }
 
-// ========== EJERCICIOS E INSTRUCCIONES ==========
+// ========== INDICADOR DE PROGRESO ANIMADO ==========
+function actualizarIndicadorProgreso() {
+  if (pesos.length < 2) {
+    document.getElementById('progressGif').src = "https://i.pinimg.com/originals/a1/7d/6c/a17d6c95b9b8aac5b978abb229cd7e0d.gif";
+    document.getElementById('progressText').innerText = "Registra más pesos para ver tu tendencia";
+    document.getElementById('progressIndicator').style.backgroundColor = "var(--s2)";
+    return;
+  }
+  const sorted = [...pesos].sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+  const ultimo = sorted[sorted.length-1].valor;
+  const anterior = sorted[sorted.length-2].valor;
+  let gifUrl = "";
+  let mensaje = "";
+  let colorFondo = "";
+  if (ultimo < anterior) {
+    gifUrl = "https://em-content.zobj.net/source/animated-noto-color-emoji/356/flexed-biceps_1f4aa.gif";
+    mensaje = "¡Bajaste de peso! Sigue así 💪";
+    colorFondo = "rgba(16,185,129,0.15)"; // verde claro
+  } else if (ultimo > anterior) {
+    gifUrl = "https://i.pinimg.com/originals/d6/bd/8f/d6bd8fa0f3ed91065ce301993b97f11a.gif";
+    mensaje = "Subiste de peso. ¡Reenfócate! 😞";
+    colorFondo = "rgba(239,68,68,0.15)"; // rojo claro
+  } else {
+    gifUrl = "https://i.pinimg.com/originals/a1/7d/6c/a17d6c95b9b8aac5b978abb229cd7e0d.gif";
+    mensaje = "Peso estable. Sigue trabajando 😐";
+    colorFondo = "rgba(107,114,128,0.15)"; // gris claro
+  }
+  document.getElementById('progressGif').src = gifUrl;
+  document.getElementById('progressText').innerText = mensaje;
+  document.getElementById('progressIndicator').style.backgroundColor = colorFondo;
+}
+
+// ========== EJERCICIOS ==========
 const ejerciciosUnicos = {
   lunes: ["Dominadas (palmas mirando hacia ti)", "Remo en banco", "Curl de bíceps alterno", "Curl martillo", "Plancha"],
   martes: ["Pullover con mancuerna", "Aperturas inclinadas con mancuernas", "Press de hombros sentado", "Elevaciones laterales sentado", "Flexiones", "Abdominal bicicleta"],
@@ -789,7 +824,6 @@ function renderizarRutinas() {
     const resetBtn = document.querySelector(`.btn-reset-dia[data-dia="${dia}"]`);
     if (resetBtn) resetBtn.onclick = () => resetDia(dia);
   }
-  // Añadir evento click a todas las imágenes de ejercicios para abrir lightbox
   document.querySelectorAll('.ex-img').forEach(img => {
     img.removeEventListener('click', openLightbox);
     img.addEventListener('click', (e) => { e.stopPropagation(); openLightbox(img.src); });
@@ -810,11 +844,8 @@ function toggleDetalles(btn, imgUrl, instrucHtml) {
     `;
     detDiv.classList.add('open');
     btn.textContent = "Ocultar ↑";
-    // Re-asignar evento click a la nueva imagen
     const newImg = detDiv.querySelector('.ex-img');
-    if (newImg) {
-      newImg.addEventListener('click', (e) => { e.stopPropagation(); openLightbox(newImg.src); });
-    }
+    if (newImg) newImg.addEventListener('click', (e) => { e.stopPropagation(); openLightbox(newImg.src); });
   }
 }
 function openLightbox(src) {
@@ -823,10 +854,7 @@ function openLightbox(src) {
   img.src = src;
   lb.classList.add('active');
 }
-function closeLightbox() {
-  const lb = document.getElementById('lightbox');
-  lb.classList.remove('active');
-}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
 window.mostrarDiscos = function(nombre, id) {
   let kg = getPesoEjercicio(nombre, personalizaciones[id]);
   if (kg === 0) { mostrarToast("Peso corporal"); return; }
@@ -944,12 +972,10 @@ function mostrarHistorialPeso() {
   const sorted = [...pesos].sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
   cont.innerHTML = sorted.map((p,i) => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">${p.fecha}: <strong>${p.valor} kg</strong> <span><button onclick="editarPesoHistorial(${i})">✏️</button> <button onclick="eliminarPesoHistorial(${i})">🗑️</button></span></div>`).join('');
 }
-
-// Colores dinámicos para el gráfico
 function getPointColor(prevVal, currVal) {
-  if (currVal < prevVal) return '#10b981'; // verde: bajó
-  if (currVal > prevVal) return '#ef4444'; // rojo: subió
-  return '#6b7280'; // gris: igual
+  if (currVal < prevVal) return '#10b981';
+  if (currVal > prevVal) return '#ef4444';
+  return '#6b7280';
 }
 function actualizarGrafico() {
   const canvas = document.getElementById('graficoPeso');
@@ -960,43 +986,15 @@ function actualizarGrafico() {
   const grad = ctx.createLinearGradient(0,0,0,150);
   grad.addColorStop(0, 'rgba(255,77,0,0.4)');
   grad.addColorStop(1, 'rgba(255,77,0,0.02)');
-  
-  // Colores de puntos
   const pointColors = [];
   for (let i = 0; i < sorted.length; i++) {
     if (i === 0) pointColors.push('#FF4D00');
     else pointColors.push(getPointColor(sorted[i-1].valor, sorted[i].valor));
   }
-  
   window.miGrafico = new Chart(ctx, {
     type: 'line',
-    data: {
-      labels: sorted.map(p => p.fecha),
-      datasets: [{
-        data: sorted.map(p => p.valor),
-        borderColor: '#FF4D00',
-        borderWidth: 2,
-        pointBackgroundColor: pointColors,
-        pointBorderColor: '#fff',
-        pointRadius: 5,
-        pointHoverRadius: 7,
-        fill: true,
-        backgroundColor: grad,
-        tension: 0.2
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: { backgroundColor: '#181818', titleColor: '#FF4D00', callbacks: { label: (ctx) => `${ctx.raw} kg` } }
-      },
-      scales: {
-        y: { grid: { color: 'rgba(255,255,255,0.05)' }, title: { display: true, text: 'kg', color: '#999', font: { size: 10 } } },
-        x: { grid: { display: false }, ticks: { maxRotation: 45, autoSkip: true, color: '#999' } }
-      }
-    }
+    data: { labels: sorted.map(p => p.fecha), datasets: [{ data: sorted.map(p => p.valor), borderColor: '#FF4D00', borderWidth: 2, pointBackgroundColor: pointColors, pointBorderColor: '#fff', pointRadius: 5, pointHoverRadius: 7, fill: true, backgroundColor: grad, tension: 0.2 }] },
+    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#181818', titleColor: '#FF4D00', callbacks: { label: (ctx) => `${ctx.raw} kg` } } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, title: { display: true, text: 'kg', color: '#999', font: { size: 10 } } }, x: { grid: { display: false }, ticks: { maxRotation: 45, autoSkip: true, color: '#999' } } } }
   });
 }
 function actualizarGraficoHome() {
@@ -1008,42 +1006,15 @@ function actualizarGraficoHome() {
   const grad = ctx.createLinearGradient(0,0,0,150);
   grad.addColorStop(0, 'rgba(255,77,0,0.35)');
   grad.addColorStop(1, 'rgba(255,77,0,0)');
-  
   const pointColors = [];
   for (let i = 0; i < sorted.length; i++) {
     if (i === 0) pointColors.push('#FF4D00');
     else pointColors.push(getPointColor(sorted[i-1].valor, sorted[i].valor));
   }
-  
   window.homeGrafico = new Chart(ctx, {
     type: 'line',
-    data: {
-      labels: sorted.map(p => p.fecha),
-      datasets: [{
-        data: sorted.map(p => p.valor),
-        borderColor: '#FF4D00',
-        borderWidth: 3,
-        pointBackgroundColor: pointColors,
-        pointBorderColor: '#fff',
-        pointRadius: 4,
-        pointHoverRadius: 6,
-        fill: true,
-        backgroundColor: grad,
-        tension: 0.3
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: { backgroundColor: '#181818', titleColor: '#FF4D00', callbacks: { label: (ctx) => `${ctx.raw} kg` } }
-      },
-      scales: {
-        y: { grid: { color: 'rgba(255,255,255,0.05)' }, title: { display: true, text: 'kg', color: '#999', font: { size: 9 } } },
-        x: { grid: { display: false }, ticks: { maxRotation: 45, autoSkip: true, maxTicksLimit: 5, color: '#999' } }
-      }
-    }
+    data: { labels: sorted.map(p => p.fecha), datasets: [{ data: sorted.map(p => p.valor), borderColor: '#FF4D00', borderWidth: 3, pointBackgroundColor: pointColors, pointBorderColor: '#fff', pointRadius: 4, pointHoverRadius: 6, fill: true, backgroundColor: grad, tension: 0.3 }] },
+    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#181818', titleColor: '#FF4D00', callbacks: { label: (ctx) => `${ctx.raw} kg` } } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, title: { display: true, text: 'kg', color: '#999', font: { size: 9 } } }, x: { grid: { display: false }, ticks: { maxRotation: 45, autoSkip: true, maxTicksLimit: 5, color: '#999' } } } }
   });
 }
 
@@ -1111,6 +1082,7 @@ function actualizarUI() {
   actualizarPerfil();
   renderizarRutinas(); renderCalendarios(); actualizarLogros(); mostrarHistorialPeso();
   actualizarGraficoHome();
+  actualizarIndicadorProgreso();
 }
 
 function goPage(id) {
