@@ -8,7 +8,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <style>
-    /* ========== ESTILOS COMPACTOS MÓVIL ========== */
     :root {
       --bg: #070707;
       --s1: #101010;
@@ -89,8 +88,34 @@
     .sec-title { font-family: 'Bebas Neue', cursive; font-size: 26px; letter-spacing: 1px; margin-bottom: 4px; }
     .sec-body { padding: 16px 12px 70px; max-width: 600px; margin: 0 auto; }
     .home-split { display: flex; flex-direction: column; gap: 16px; }
-    .h1 { font-family: 'Bebas Neue', cursive; font-size: 36px; line-height: 1; margin-bottom: 6px; }
+    .h1 {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 36px;
+      line-height: 1;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
     .h1 span { color: var(--acc); }
+    .home-quick-icons {
+      display: flex;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      padding: 4px 8px;
+      border-radius: 40px;
+    }
+    .quick-icon {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+    .quick-icon:active { background: rgba(255,77,0,0.3); }
     .home-sub { font-size: 12px; margin-bottom: 12px; }
     .home-btns { display: flex; gap: 10px; }
     .btn-p {
@@ -336,11 +361,19 @@
     <div class="home-split">
       <div>
         <div class="sec-tag">⚡ HOY</div>
-        <h1 class="h1">TRANSFORMA<br>TU <span>CUERPO</span></h1>
+        <div class="h1">
+          TRANSFORMA<br>TU <span>CUERPO</span>
+          <div class="home-quick-icons">
+            <button class="quick-icon" onclick="goPage('rutinas')" title="Rutinas">💪</button>
+            <button class="quick-icon" onclick="goPage('calendarios')" title="Calendario">📅</button>
+            <button class="quick-icon" onclick="goPage('peso')" title="Peso">⚖️</button>
+            <button class="quick-icon" onclick="goPage('logros')" title="Logros">🏆</button>
+            <button class="quick-icon" onclick="goPage('progreso-fotos')" title="Fotos">📸</button>
+          </div>
+        </div>
         <p class="home-sub">Plan con mancuernas, dominadas y cinta.</p>
         <div class="home-btns">
           <button class="btn-p" id="goHoyBtn">📅 Ir a rutina de hoy</button>
-          <button class="btn-g" onclick="mostrarReset()">⚙️ Reset</button>
         </div>
       </div>
       <div class="profile-card">
@@ -448,8 +481,18 @@
 const coloresDia = { 0: "#e8ff47", 1: "#4caf50", 2: "#ff9800", 3: "#2196f3", 4: "#9c27b0", 5: "#ff5722", 6: "#00bcd4" };
 function setColorPorDia() { const hoy = new Date().getDay(); document.documentElement.style.setProperty('--acc', coloresDia[hoy]); }
 
-// ========== PERFIL USUARIO ==========
+// ========== PERFIL USUARIO (con sincronización con historial de pesos) ==========
 let userData = { peso: 84, altura: 165, cumple: "1996-08-01" };
+
+// Sincroniza userData.peso con el último peso registrado en el historial
+function sincronizarPesoDesdeHistorial() {
+  if (pesos.length > 0) {
+    const sorted = [...pesos].sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+    userData.peso = sorted[0].valor;
+  }
+  actualizarPerfil();
+}
+
 function calcularEdad() {
   const hoy = new Date(), nac = new Date(userData.cumple);
   let edad = hoy.getFullYear() - nac.getFullYear();
@@ -469,10 +512,10 @@ function actualizarPerfil() {
   localStorage.setItem('userPeso', userData.peso);
   localStorage.setItem('userAltura', userData.altura);
 }
-function editarPeso() { let n = prompt("Nuevo peso (kg):", userData.peso); if (n && !isNaN(n)) { userData.peso = parseFloat(n); actualizarPerfil(); actualizarGraficoHome(); actualizarGrafico(); } }
+function editarPeso() { let n = prompt("Nuevo peso (kg):", userData.peso); if (n && !isNaN(n)) { userData.peso = parseFloat(n); actualizarPerfil(); actualizarGraficoHome(); actualizarGrafico(); sincronizarPesoDesdeHistorial(); } }
 function editarAltura() { let n = prompt("Nueva altura (cm):", userData.altura); if (n && !isNaN(n)) { userData.altura = parseInt(n); actualizarPerfil(); } }
 
-// ========== EJERCICIOS E INSTRUCCIONES EXTREMADAMENTE DETALLADAS ==========
+// ========== EJERCICIOS E INSTRUCCIONES ==========
 const ejerciciosUnicos = {
   lunes: ["Dominadas (palmas mirando hacia ti)", "Remo en banco", "Curl de bíceps alterno", "Curl martillo", "Plancha"],
   martes: ["Pullover con mancuerna", "Aperturas inclinadas con mancuernas", "Press de hombros sentado", "Elevaciones laterales sentado", "Flexiones", "Abdominal bicicleta"],
@@ -522,44 +565,6 @@ const imagenesMap = {
   "Abdominal bicicleta": "https://meutreinador.com/wp-content/uploads/2024/04/abdominal-bicicleta.gif"
 };
 
-// INSTRUCCIONES EXTREMADAMENTE DETALLADAS (manos, pies, espalda, respiración, errores)
-function getInstruccionDetallada(nombre) {
-  const base = {
-    "Dominadas (palmas mirando hacia ti)": "1️⃣ Manos: Agarre supino (palmas hacia ti), separación ligeramente más ancha que hombros. Dedos envolviendo la barra.\n2️⃣ Cuerpo: Cuélgate con brazos extendidos, escápulas hacia abajo y atrás. Piernas juntas o ligeramente cruzadas.\n3️⃣ Movimiento: Tira de los codos hacia las caderas, lleva la barbilla por encima de la barra. Baja controlado hasta extensión completa.\n4️⃣ Respiración: Exhala al subir (esfuerzo), inhala al bajar.\n5️⃣ Error común: Balancear el cuerpo. Evítalo manteniendo el core firme.",
-    "Remo en banco": "1️⃣ Manos: Agarre prono (palmas abajo) o neutro según mancuerna. Muñeca recta.\n2️⃣ Piernas: Rodilla y mano del mismo lado apoyadas en banco, la otra pierna al suelo con pie firme.\n3️⃣ Espalda: Totalmente recta, paralela al suelo, hombro retraído hacia abajo.\n4️⃣ Movimiento: Rema la mancuerna hacia tu cadera, aprieta la escápula al final. Baja controlado.\n5️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Curl de bíceps alterno": "1️⃣ Manos: Agarre supino (palmas arriba), codos pegados al torso. Muñeca recta.\n2️⃣ Piernas: Separación ancho de hombros, rodillas ligeramente flexionadas, torso firme.\n3️⃣ Espalda: Recta, sin balanceos. Contrae el abdomen.\n4️⃣ Movimiento: Curva un brazo llevando la mancuerna al hombro, baja controlado. Alterna.\n5️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Curl martillo": "1️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos al cuerpo.\n2️⃣ Movimiento: Curva hacia el hombro manteniendo la muñeca recta. No gires la palma.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Pullover con mancuerna": "1️⃣ Posición: Tumbado transversal en banco, hombros apoyados, caderas hacia el suelo. Pies firmes.\n2️⃣ Manos: Sujeta una mancuerna con ambas manos sobre el pecho, codos ligeramente flexionados.\n3️⃣ Movimiento: Baja la mancuerna tras la cabeza en arco sintiendo el dorsal. Sube controlado.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Aperturas inclinadas con mancuernas": "1️⃣ Banco inclinado 30-45°, pies apoyados en el suelo.\n2️⃣ Manos: Palmas enfrentadas, codos ligeramente flexionados (fijos).\n3️⃣ Movimiento: Baja las mancuernas en arco hasta sentir estiramiento de pecho. Sube juntándolas sin chocar.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Press de hombros sentado": "1️⃣ Sentado con respaldo vertical, pies planos. Mancuernas a la altura de los hombros.\n2️⃣ Manos: Palmas hacia adelante, codos a 90°.\n3️⃣ Movimiento: Presiona verticalmente sin bloquear codos. Baja controlado.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Elevaciones laterales sentado": "1️⃣ Sentado, brazos a los lados, ligera flexión de codo (casi fija).\n2️⃣ Movimiento: Sube los brazos hasta la altura de los hombros, con el codo ligeramente más alto que la muñeca.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Sentadilla búlgara": "1️⃣ Pie trasero apoyado en banco, el delantero adelante (talón alineado con rodilla).\n2️⃣ Manos: Mancuernas a los lados o una en cada mano.\n3️⃣ Movimiento: Baja la rodilla trasera hacia el suelo, mantén torso recto. Sube empujando con el talón del pie delantero.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Peso muerto rumano": "1️⃣ Pies ancho de caderas, rodillas ligeramente flexionadas (sin bloquear).\n2️⃣ Espalda: Recta todo el tiempo, hombros hacia atrás.\n3️⃣ Movimiento: Flexiona cadera hacia atrás, baja mancuernas rozando espinillas. Sube extendiendo cadera.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Patada de tríceps": "1️⃣ Apoya rodilla y mano en banco, espalda paralela al suelo. Brazo activo pegado al torso.\n2️⃣ Brazo: Codo pegado al torso, a 90°.\n3️⃣ Movimiento: Extiende el brazo hacia atrás sin mover el codo. Contrae el tríceps.\n4️⃣ Respiración: Exhala al extender, inhala al volver.",
-    "Extensión de tríceps tumbado": "1️⃣ Tumbado en banco, mancuerna con ambas manos sobre cabeza. Codos apuntando al techo.\n2️⃣ Movimiento: Baja la mancuerna tras la cabeza hasta 90° (antebrazos paralelos al suelo). Sube.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Remo con barra (agarre supino estricto)": "1️⃣ Torso inclinado, barra con agarre supino (palmas arriba), manos separación hombros.\n2️⃣ Movimiento: Rema la barra hacia el abdomen, aprieta la espalda. Baja controlado.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Curl concentrado": "1️⃣ Sentado, codo apoyado en el muslo interior (mismo lado).\n2️⃣ Movimiento: Curva la mancuerna hacia el hombro, mantén la contracción 1 segundo.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Curl araña (pausa de 2\")": "1️⃣ Posición: Tumbado boca abajo en banco inclinado (30°), brazos colgando.\n2️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos.\n3️⃣ Movimiento: Curva la mancuerna hacia el hombro, mantén 2 segundos arriba. Baja controlado.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.\n5️⃣ Error: No balances el cuerpo; concéntrate en la contracción del bíceps.",
-    "Remo al cuello": "1️⃣ De pie, barra al frente con agarre prono (palmas abajo), manos separación hombros.\n2️⃣ Movimiento: Sube la barra verticalmente hasta la altura del cuello, codos hacia afuera.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Press inclinado con mancuernas (agarre neutro)": "1️⃣ Banco inclinado 30°, agarre neutro (palmas enfrentadas). Pies firmes.\n2️⃣ Movimiento: Presiona hacia arriba sin bloquear codos. Baja controlado.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Aperturas en banco": "1️⃣ Tumbado en banco plano, palmas enfrentadas, codos ligeramente flexionados.\n2️⃣ Movimiento: Abre en arco hasta sentir estiramiento de pecho. Sube juntando sin chocar.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Pájaro (fly invertido)": "1️⃣ Torso inclinado hasta casi paralelo al suelo, rodillas ligeramente flexionadas.\n2️⃣ Movimiento: Eleva brazos lateralmente con codos ligeramente flexionados, como si abrieras alas.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Press de banca agarre cerrado": "1️⃣ Tumbado, mancuernas juntas y paralelas (agarre neutro). Codos pegados al cuerpo.\n2️⃣ Movimiento: Presiona hacia arriba, enfatizando tríceps y pecho interno.\n3️⃣ Respiración: Exhala al subir.",
-    "Zancadas con mancuerna": "1️⃣ Paso largo hacia adelante, mantén torso recto, rodilla delantera no supera la punta del pie.\n2️⃣ Movimiento: Baja rodilla trasera hasta casi tocar suelo. Sube empujando con el talón delantero.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Peso muerto a una pierna": "1️⃣ De pie, mancuerna en mano contraria a la pierna que trabaja. Pierna de apoyo ligeramente flexionada.\n2️⃣ Movimiento: Flexiona cadera manteniendo espalda recta, baja la mancuerna por la espinilla. Sube con glúteo.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Extensión en banco declinado": "1️⃣ Banco declinado (-15°), cabeza abajo. Mancuerna tras cabeza con ambas manos.\n2️⃣ Movimiento: Extiende codos hasta casi extender brazos (sin bloquear). Baja controlado.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Press francés en banco inclinado": "1️⃣ Banco inclinado (30°), mancuerna con ambas manos tras cabeza. Codos apuntando al techo.\n2️⃣ Movimiento: Extiende codos, solo antebrazos se mueven. Baja hasta 90°.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Flexiones": "1️⃣ Manos: Apoyo más ancho que hombros, dedos hacia adelante, cuerpo recto.\n2️⃣ Cuerpo: Línea recta de cabeza a talones, abdomen y glúteos contraídos.\n3️⃣ Movimiento: Baja hasta que el pecho casi toque el suelo, luego empuja explosivamente.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Sentadilla Goblet": "1️⃣ Sujeta UNA mancuerna verticalmente al pecho con ambas manos (como una copa).\n2️⃣ Pies: Ancho de hombros, puntas ligeramente hacia afuera.\n3️⃣ Movimiento: Baja como si te sentaras en una silla, mantén talones pegados al suelo. Sube.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Hip Thrust": "1️⃣ Hombros apoyados en banco, mancuerna sobre cadera (usa toalla para acolchar).\n2️⃣ Pies: Apoyados, rodillas a 90°, talones firmes.\n3️⃣ Movimiento: Sube cadera apretando glúteo hasta que el cuerpo forme línea recta. Baja sin apoyar del todo.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Elevación de gemelos": "1️⃣ De pie, puntas en escalón o borde elevado (opcional para más rango).\n2️⃣ Movimiento: Sube talones lo más alto posible, aguanta 2 segundos. Baja controlado hasta estiramiento.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Plancha": "1️⃣ Apoyo sobre antebrazos y puntas de pies. Codos alineados con hombros.\n2️⃣ Cuerpo: Línea recta, caderas sin hundirse ni elevarse. Contrae abdomen y glúteos.\n3️⃣ Respiración: Normal, no aguantes la respiración.\n4️⃣ Error: Caderas altas o hundidas. Ajusta la posición.",
-    "Abdominal bicicleta": "1️⃣ Tumbado boca arriba, manos tras cabeza sin tirar del cuello.\n2️⃣ Movimiento: Alterna codo con rodilla contraria, estira la otra pierna. Mantén el core contraído.\n3️⃣ Respiración: Exhala al girar, inhala al volver."
-  };
-  return base[nombre] || "1️⃣ Posición inicial correcta.\n2️⃣ Movimiento controlado.\n3️⃣ Respiración adecuada.\n4️⃣ Concéntrate en el músculo trabajado.";
-}
-
-// Funciones auxiliares para pesos
 function getCantidadMancuernas(n) {
   if (n.includes("Patada")||n.includes("Extensión de tríceps")||n.includes("Extensión en banco")||n.includes("Press francés")||n.includes("Curl concentrado")||n.includes("Hip Thrust")) return 1;
   if (n.includes("Sentadilla Goblet")) return 1;
@@ -590,8 +595,14 @@ function formatearPeso(n, pers) {
   if (num === 2) return `${kg} kg c/u`;
   return `${kg} kg`;
 }
+function getInstruccionDetallada(nombre) {
+  const base = {
+    "Curl araña (pausa de 2\")": "1️⃣ Posición: Tumbado boca abajo en banco inclinado (30°), brazos colgando.\n2️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos.\n3️⃣ Movimiento: Curva la mancuerna hacia el hombro, mantén 2 segundos arriba.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.\n5️⃣ Error: No balances el cuerpo; concéntrate en la contracción del bíceps."
+  };
+  return base[nombre] || "1️⃣ Posición inicial correcta.\n2️⃣ Movimiento controlado.\n3️⃣ Respiración adecuada.";
+}
 
-// ========== STORAGE Y ESTADO GLOBAL ==========
+// ========== STORAGE ==========
 let personalizaciones = JSON.parse(localStorage.getItem('personalizaciones')) || {};
 let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
 let diasEntrenados = JSON.parse(localStorage.getItem('diasEntrenados')) || [];
@@ -599,7 +610,6 @@ let diasNoFumar = JSON.parse(localStorage.getItem('diasNoFumar')) || [];
 let pesos = JSON.parse(localStorage.getItem('pesos')) || [];
 let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
 if (pesos.length === 0) pesos.push({ valor: 84, fecha: new Date().toISOString().slice(0,10) });
-
 function guardarTodo() {
   localStorage.setItem('diasEntrenados', JSON.stringify(diasEntrenados));
   localStorage.setItem('diasNoFumar', JSON.stringify(diasNoFumar));
@@ -647,7 +657,6 @@ function marcarEjercicio(id) {
     }
   }
 }
-
 function completarDia(dia) {
   const semanaKey = getNumeroSemana(new Date()).toString();
   const completadoKey = `completado_${dia}_${semanaKey}`;
@@ -659,7 +668,6 @@ function completarDia(dia) {
   canvasConfetti({ particleCount: 100, spread: 70 });
   renderizarRutinas(); actualizarUI(); actualizarLogros(); renderCalendarios();
 }
-
 function resetDia(dia) {
   const semanaKey = getNumeroSemana(new Date()).toString();
   const completadoKey = `completado_${dia}_${semanaKey}`;
@@ -683,8 +691,6 @@ function resetDia(dia) {
   }
   renderizarRutinas(); actualizarUI(); renderCalendarios();
 }
-
-// ========== RENDERIZAR RUTINAS (con botón de instrucciones para TODOS) ==========
 function renderizarRutinas() {
   const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
   for (let dia of dias) {
@@ -700,7 +706,6 @@ function renderizarRutinas() {
       const imgUrl = imagenesMap[nombre] || '';
       const instrucHtml = getInstruccionDetallada(nombre).replace(/\n/g, '<br>');
       const isChecked = !!checks[id];
-      
       const card = document.createElement('div');
       card.className = `ex-card ${isChecked ? 'checked' : ''}`;
       card.innerHTML = `
@@ -725,8 +730,6 @@ function renderizarRutinas() {
     if (resetBtn) resetBtn.onclick = () => resetDia(dia);
   }
 }
-
-// Función global para desplegar instrucciones (recibe imagen y texto)
 window.toggleDetalles = function(btn, imgUrl, instrucHtml) {
   const detDiv = btn.nextElementSibling;
   if (detDiv.classList.contains('open')) {
@@ -744,7 +747,6 @@ window.toggleDetalles = function(btn, imgUrl, instrucHtml) {
     btn.textContent = "Ocultar ↑";
   }
 };
-
 window.mostrarDiscos = function(nombre, id) {
   let kg = getPesoEjercicio(nombre, personalizaciones[id]);
   if (kg === 0) { mostrarToast("Peso corporal"); return; }
@@ -842,7 +844,9 @@ function agregarPesoConFecha() {
   pesos.push({ valor: val, fecha: fechaStr });
   pesos.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
   guardarTodo(); actualizarGrafico(); actualizarGraficoHome(); mostrarHistorialPeso(); revisarYActualizarObjetivo(); actualizarLogros();
-  document.getElementById('nuevoPeso').value = ''; actualizarUI();
+  document.getElementById('nuevoPeso').value = '';
+  sincronizarPesoDesdeHistorial();
+  actualizarUI();
 }
 function revisarYActualizarObjetivo() {
   if (pesos.length === 0) return;
@@ -852,8 +856,8 @@ function revisarYActualizarObjetivo() {
   for (let i = lista.length-1; i >= 0; i--) if (lista[i] < objetivoActual && ultimoPeso <= lista[i]) nuevo = lista[i];
   if (nuevo !== objetivoActual) { objetivoActual = nuevo; localStorage.setItem('objetivoPeso', objetivoActual); mostrarToast(`🎉 Nuevo objetivo: ${objetivoActual} kg`); canvasConfetti({ particleCount: 100, spread: 70 }); }
 }
-function editarPesoHistorial(i) { let n = prompt("Nuevo peso:", pesos[i].valor); if (n) { pesos[i].valor = parseFloat(n); guardarTodo(); actualizarGrafico(); actualizarGraficoHome(); mostrarHistorialPeso(); revisarYActualizarObjetivo(); actualizarLogros(); } }
-function eliminarPesoHistorial(i) { pesos.splice(i,1); guardarTodo(); actualizarGrafico(); actualizarGraficoHome(); mostrarHistorialPeso(); revisarYActualizarObjetivo(); actualizarLogros(); }
+function editarPesoHistorial(i) { let n = prompt("Nuevo peso:", pesos[i].valor); if (n) { pesos[i].valor = parseFloat(n); guardarTodo(); actualizarGrafico(); actualizarGraficoHome(); mostrarHistorialPeso(); revisarYActualizarObjetivo(); actualizarLogros(); sincronizarPesoDesdeHistorial(); actualizarUI(); } }
+function eliminarPesoHistorial(i) { pesos.splice(i,1); guardarTodo(); actualizarGrafico(); actualizarGraficoHome(); mostrarHistorialPeso(); revisarYActualizarObjetivo(); actualizarLogros(); sincronizarPesoDesdeHistorial(); actualizarUI(); }
 function mostrarHistorialPeso() {
   const cont = document.getElementById('histPeso');
   if (!cont) return;
@@ -951,6 +955,7 @@ function actualizarUI() {
   document.getElementById('statPesoObjetivo').innerText = objetivoActual;
   document.getElementById('statNivel').innerText = nivel;
   document.getElementById('statEntrenosCompletados').innerText = total;
+  sincronizarPesoDesdeHistorial();   // <-- clave para sincronizar peso
   actualizarPerfil();
   renderizarRutinas(); renderCalendarios(); actualizarLogros(); mostrarHistorialPeso();
   actualizarGraficoHome();
