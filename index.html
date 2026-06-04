@@ -524,6 +524,18 @@
     }
     .lightbox.active { visibility: visible; opacity: 1; }
     .lightbox img { max-width: 90%; max-height: 90%; object-fit: contain; pointer-events: auto; cursor: zoom-in; }
+    /* Estilos para la galería de fotos */
+    .equip-card {
+      background: var(--s1);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+    .foto-preview {
+      margin-top: 8px;
+      max-width: 100%;
+      border-radius: 8px;
+    }
     @media (max-width: 480px) {
       .top-info { gap: 6px; font-size: 9px; }
     }
@@ -609,22 +621,51 @@
 <div class="page" id="page-progreso-fotos">
   <div class="container">
     <div style="background: var(--s2); border-radius: 18px; padding: 12px; margin-bottom: 12px;">
-      <div style="display: flex; gap: 8px; margin-bottom: 12px;"><input type="date" id="fechaFotos" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px; color:white;"><button id="cargarFotosFecha" class="btn-p" style="background:var(--acc); border:none; border-radius:40px; padding:8px 16px;">Cargar</button></div>
+      <div class="sec-tag" style="font-size:9px; color:var(--acc); margin-bottom:8px;">📸 SUBIR FOTOS</div>
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <input type="date" id="fechaFotos" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px; color:white;">
+        <button id="cargarFotosFecha" class="btn-p" style="background:var(--acc); border:none; border-radius:40px; padding:8px 16px;">Cargar</button>
+      </div>
       <div style="display: grid; grid-template-columns: repeat(2,1fr); gap: 8px;">
-        <div class="equip-card" style="background:var(--s1); border-radius:14px; padding:12px; text-align:center;"><div>FRENTE</div><input type="file" id="fotoFrente" accept="image/*" style="margin-top: 5px;"></div>
-        <div class="equip-card" style="background:var(--s1); border-radius:14px; padding:12px; text-align:center;"><div>ESPALDA</div><input type="file" id="fotoEspalda" accept="image/*" style="margin-top: 5px;"></div>
-        <div class="equip-card" style="background:var(--s1); border-radius:14px; padding:12px; text-align:center;"><div>IZQUIERDA</div><input type="file" id="FotoIzquierda" accept="image/*" style="margin-top: 5px;"></div>
-        <div class="equip-card" style="background:var(--s1); border-radius:14px; padding:12px; text-align:center;"><div>DERECHA</div><input type="file" id="fotoDerecha" accept="image/*" style="margin-top: 5px;"></div>
+        <div class="equip-card">
+          <div>😀 FRENTE</div>
+          <input type="file" id="fotoFrente" accept="image/*" onchange="previewFrente(this)">
+          <img id="previewFrente" class="foto-preview" style="display:none;">
+        </div>
+        <div class="equip-card">
+          <div>🙃 ESPALDA</div>
+          <input type="file" id="fotoEspalda" accept="image/*" onchange="previewEspalda(this)">
+          <img id="previewEspalda" class="foto-preview" style="display:none;">
+        </div>
+        <div class="equip-card">
+          <div>⬅️ IZQUIERDA</div>
+          <input type="file" id="fotoIzquierda" accept="image/*" onchange="previewIzquierda(this)">
+          <img id="previewIzquierda" class="foto-preview" style="display:none;">
+        </div>
+        <div class="equip-card">
+          <div>➡️ DERECHA</div>
+          <input type="file" id="fotoDerecha" accept="image/*" onchange="previewDerecha(this)">
+          <img id="previewDerecha" class="foto-preview" style="display:none;">
+        </div>
       </div>
       <button onclick="guardarFotos()" class="btn-p" style="width:100%; margin-top: 12px; background:var(--acc); border:none; border-radius:40px; padding:12px; font-weight:700;">💾 Guardar día</button>
     </div>
     <div style="background: var(--s2); border-radius: 18px; padding: 12px;">
-      <div style="display: flex; justify-content: space-between;"><div class="sec-tag" style="font-size:9px; color:var(--acc);">DÍAS</div><button onclick="cargarListaDias()" class="btn-3d">🔄</button></div>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+        <div class="sec-tag" style="font-size:9px; color:var(--acc);">📅 DÍAS GUARDADOS</div>
+        <button onclick="cargarListaDias()" class="btn-3d" style="background:rgba(255,255,255,.05); border-radius:20px; padding:4px 12px;">🔄</button>
+      </div>
       <div id="listaDiasDB" style="max-height: 100px; overflow-y: auto;"></div>
-      <div class="sec-tag" style="margin-top: 12px; font-size:9px; color:var(--acc);">COMPARAR</div>
-      <div style="display: flex; gap: 8px; margin: 8px 0;"><select id="compararDia1" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;"></select><select id="compararDia2" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;"></select></div>
-      <div style="display: flex; gap: 8px;"><button onclick="compararFotos()" class="btn-p" style="flex:1; background:var(--acc); border:none; border-radius:40px; padding:8px;">Comparar</button><button onclick="recargarComparacion()" class="btn-g" style="background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;">🔄</button></div>
-      <div id="comparadorResultado" style="margin-top: 12px;"></div>
+      <div class="sec-tag" style="margin-top: 16px; font-size:9px; color:var(--acc);">🔄 COMPARAR DOS DÍAS</div>
+      <div style="display: flex; gap: 8px; margin: 12px 0;">
+        <select id="compararDia1" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;"></select>
+        <select id="compararDia2" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;"></select>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button onclick="compararFotos()" class="btn-p" style="flex:1; background:var(--acc); border:none; border-radius:40px; padding:8px;">Comparar</button>
+        <button onclick="recargarComparacion()" class="btn-g" style="background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;">🔄</button>
+      </div>
+      <div id="comparadorResultado" style="margin-top: 16px;"></div>
     </div>
   </div>
 </div>
@@ -646,6 +687,7 @@
 </div>
 
 <script>
+  // ========== COMPOSICIÓN CORPORAL ==========
   let mediciones = JSON.parse(localStorage.getItem('bodyComposition')) || [];
   const OBJETIVO_PESO = 75;
   const OBJETIVO_CINTURA = 90;
@@ -963,6 +1005,158 @@
   function getHoyStr() { return new Date().toISOString().slice(0, 10); }
   function mostrarToast(msg) { const t = document.createElement('div'); t.className = 'toast-msg'; t.innerText = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
 
+  // Previsualización de fotos
+  function previewFrente(input) {
+    const preview = document.getElementById('previewFrente');
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  function previewEspalda(input) {
+    const preview = document.getElementById('previewEspalda');
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  function previewIzquierda(input) {
+    const preview = document.getElementById('previewIzquierda');
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  function previewDerecha(input) {
+    const preview = document.getElementById('previewDerecha');
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  // ========== FOTOS INDEXEDDB ==========
+  let db = null;
+  const DB_NAME = 'FotosProgresoDB', STORE_NAME = 'diasFotos';
+
+  function abrirDB() {
+    return new Promise(r => {
+      const req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = e => {
+        if (!e.target.result.objectStoreNames.contains(STORE_NAME)) {
+          e.target.result.createObjectStore(STORE_NAME, { keyPath: 'fecha' });
+        }
+      };
+      req.onsuccess = e => { db = e.target.result; r(); };
+      req.onerror = () => r();
+    });
+  }
+
+  async function guardarFotos() {
+    const fecha = document.getElementById('fechaFotos').value;
+    if (!fecha) { mostrarToast("Selecciona fecha"); return; }
+    const frente = await leerArchivoComoDataURL(document.getElementById('fotoFrente').files[0]);
+    const espalda = await leerArchivoComoDataURL(document.getElementById('fotoEspalda').files[0]);
+    const izquierda = await leerArchivoComoDataURL(document.getElementById('fotoIzquierda').files[0]);
+    const derecha = await leerArchivoComoDataURL(document.getElementById('fotoDerecha').files[0]);
+    if (!frente && !espalda && !izquierda && !derecha) {
+      mostrarToast("Selecciona al menos una foto");
+      return;
+    }
+    await abrirDB();
+    await db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).put({
+      fecha,
+      timestamp: Date.now(),
+      frente,
+      espalda,
+      izquierda,
+      derecha
+    });
+    mostrarToast("✅ Fotos guardadas");
+    cargarListaDias();
+    cargarSelectores();
+    // Limpiar previsualizaciones
+    document.getElementById('fotoFrente').value = '';
+    document.getElementById('fotoEspalda').value = '';
+    document.getElementById('fotoIzquierda').value = '';
+    document.getElementById('fotoDerecha').value = '';
+    document.getElementById('previewFrente').style.display = 'none';
+    document.getElementById('previewEspalda').style.display = 'none';
+    document.getElementById('previewIzquierda').style.display = 'none';
+    document.getElementById('previewDerecha').style.display = 'none';
+  }
+
+  function leerArchivoComoDataURL(file) {
+    if (!file) return Promise.resolve(null);
+    return new Promise(r => {
+      const reader = new FileReader();
+      reader.onload = e => r(e.target.result);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function cargarListaDias() {
+    await abrirDB();
+    const items = await new Promise(r => db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).getAll().onsuccess = e => r(e.target.result));
+    items.sort((a, b) => b.timestamp - a.timestamp);
+    document.getElementById('listaDiasDB').innerHTML = items.map(i => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">📅 ${i.fecha}<button onclick="eliminarDia('${i.fecha}')" class="btn-3d" style="padding:2px 8px;">🗑️</button></div>`).join('');
+    cargarSelectores();
+  }
+
+  async function cargarSelectores() {
+    await abrirDB();
+    const items = await new Promise(r => db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).getAll().onsuccess = e => r(e.target.result));
+    items.sort((a, b) => b.timestamp - a.timestamp);
+    const opts = items.map(i => `<option value="${i.fecha}">${i.fecha}</option>`);
+    document.getElementById('compararDia1').innerHTML = '<option value="">Día 1</option>' + opts.join('');
+    document.getElementById('compararDia2').innerHTML = '<option value="">Día 2</option>' + opts.join('');
+  }
+
+  async function eliminarDia(fecha) {
+    await abrirDB();
+    db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).delete(fecha);
+    cargarListaDias();
+    cargarSelectores();
+    document.getElementById('comparadorResultado').innerHTML = '';
+  }
+
+  async function compararFotos() {
+    const f1 = document.getElementById('compararDia1').value;
+    const f2 = document.getElementById('compararDia2').value;
+    if (!f1 || !f2) return;
+    await abrirDB();
+    const store = db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME);
+    const d1 = await new Promise(r => store.get(f1).onsuccess = e => r(e.target.result));
+    const d2 = await new Promise(r => store.get(f2).onsuccess = e => r(e.target.result));
+    // Comparar por posición: frente con frente, espalda con espalda, etc.
+    const genComparacion = (d1, d2, titulo, campo) => {
+      if (!d1?.[campo] && !d2?.[campo]) return '';
+      return `
+        <div style="background:var(--s1);border-radius:16px;padding:12px;margin-bottom:12px;">
+          <h4 style="color:var(--acc);margin-bottom:8px;text-align:center;">${titulo}</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${f1}</div><img src="${d1?.[campo] || ''}" style="width:100%;border-radius:12px;min-height:100px;object-fit:cover;background:#000;"></div>
+            <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${f2}</div><img src="${d2?.[campo] || ''}" style="width:100%;border-radius:12px;min-height:100px;object-fit:cover;background:#000;"></div>
+          </div>
+        </div>
+      `;
+    };
+    let html = '';
+    html += genComparacion(d1, d2, '😀 FRENTE', 'frente');
+    html += genComparacion(d1, d2, '🙃 ESPALDA', 'espalda');
+    html += genComparacion(d1, d2, '⬅️ IZQUIERDA', 'izquierda');
+    html += genComparacion(d1, d2, '➡️ DERECHA', 'derecha');
+    if (html === '') html = '<div style="text-align:center;padding:20px;">No hay fotos para comparar</div>';
+    document.getElementById('comparadorResultado').innerHTML = html;
+  }
+
+  function recargarComparacion() { compararFotos(); }
+
+  // ========== INSTRUCCIONES Y RUTINAS ==========
   function getInstruccionDetallada(nombre) {
     const instrucciones = {
       "Dominadas (palmas mirando hacia ti)": "1️⃣ Manos: Agarre supino (palmas hacia ti), separación ligeramente más ancha que hombros.\n2️⃣ Cuerpo: Cuélgate con brazos extendidos, escápulas hacia abajo y atrás.\n3️⃣ Movimiento: Tira de los codos hacia las caderas, lleva la barbilla por encima de la barra.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.\n5️⃣ Error común: Balancear el cuerpo. Mantén el core firme.",
@@ -1294,50 +1488,7 @@
   function setDescanso(seg) { if (document.getElementById('descanso-box').style.display === 'flex') cancelarDescanso(); const box = document.getElementById('descanso-box'); box.style.display = 'flex'; let s = seg; document.getElementById('descansoTimer').innerText = s; timerInterval = setInterval(() => { s--; document.getElementById('descansoTimer').innerText = s; if (s <= 0) { clearInterval(timerInterval); box.style.display = 'none'; } }, 1000); }
   function cancelarDescanso() { clearInterval(timerInterval); document.getElementById('descanso-box').style.display = 'none'; }
   function resetAllData() { if (confirm("¿Borrar TODOS los datos?")) { localStorage.clear(); location.reload(); } }
-
-  let db = null; const DB_NAME = 'FotosProgresoDB', STORE_NAME = 'diasFotos';
-  function abrirDB() { return new Promise(r => { const req = indexedDB.open(DB_NAME, 1); req.onupgradeneeded = e => { if (!e.target.result.objectStoreNames.contains(STORE_NAME)) e.target.result.createObjectStore(STORE_NAME, { keyPath: 'fecha' }); }; req.onsuccess = e => { db = e.target.result; r(); }; req.onerror = () => r(); }); }
-  async function guardarFotos() {
-    const fecha = document.getElementById('fechaFotos').value;
-    if (!fecha) { mostrarToast("Selecciona fecha"); return; }
-    const frente = await leerArchivoComoDataURL(document.getElementById('fotoFrente').files[0]);
-    const espalda = await leerArchivoComoDataURL(document.getElementById('fotoEspalda').files[0]);
-    const izquierda = await leerArchivoComoDataURL(document.getElementById('FotoIzquierda').files[0]);
-    const derecha = await leerArchivoComoDataURL(document.getElementById('fotoDerecha').files[0]);
-    if (!frente && !espalda && !izquierda && !derecha) { mostrarToast("Selecciona al menos una foto"); return; }
-    await abrirDB();
-    await db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).put({ fecha, timestamp: Date.now(), frente, espalda, izquierda, derecha });
-    mostrarToast("✅ Fotos guardadas");
-    cargarListaDias(); cargarSelectores();
-    document.getElementById('fotoFrente').value = ''; document.getElementById('fotoEspalda').value = '';
-    document.getElementById('FotoIzquierda').value = ''; document.getElementById('fotoDerecha').value = '';
-  }
-  function leerArchivoComoDataURL(file) { if (!file) return Promise.resolve(null); return new Promise(r => { const reader = new FileReader(); reader.onload = e => r(e.target.result); reader.readAsDataURL(file); }); }
-  async function cargarListaDias() {
-    await abrirDB(); const items = await new Promise(r => db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).getAll().onsuccess = e => r(e.target.result));
-    items.sort((a, b) => b.timestamp - a.timestamp);
-    document.getElementById('listaDiasDB').innerHTML = items.map(i => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">📅 ${i.fecha}<button onclick="eliminarDia('${i.fecha}')" class="btn-3d" style="padding:2px 8px;">🗑️</button></div>`).join('');
-    cargarSelectores();
-  }
-  async function cargarSelectores() {
-    await abrirDB(); const items = await new Promise(r => db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).getAll().onsuccess = e => r(e.target.result));
-    items.sort((a, b) => b.timestamp - a.timestamp);
-    const opts = items.map(i => `<option value="${i.fecha}">${i.fecha}</option>`);
-    document.getElementById('compararDia1').innerHTML = '<option value="">Día 1</option>' + opts.join('');
-    document.getElementById('compararDia2').innerHTML = '<option value="">Día 2</option>' + opts.join('');
-  }
-  async function eliminarDia(fecha) { await abrirDB(); db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).delete(fecha); cargarListaDias(); cargarSelectores(); document.getElementById('comparadorResultado').innerHTML = ''; }
-  async function compararFotos() {
-    const f1 = document.getElementById('compararDia1').value, f2 = document.getElementById('compararDia2').value;
-    if (!f1 || !f2) return;
-    await abrirDB(); const store = db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME);
-    const d1 = await new Promise(r => store.get(f1).onsuccess = e => r(e.target.result));
-    const d2 = await new Promise(r => store.get(f2).onsuccess = e => r(e.target.result));
-    const gen = (d, t) => `<div style="background:var(--s1);border-radius:14px;padding:10px;margin-bottom:12px;"><h4 style="color:var(--acc);margin-bottom:8px;">${t}</h4><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;"><div>FRENTE<br><img src="${d?.frente || ''}" style="width:100%;border-radius:10px;margin-top:4px;"></div><div>ESPALDA<br><img src="${d?.espalda || ''}" style="width:100%;border-radius:10px;"></div><div>IZQUIERDA<br><img src="${d?.izquierda || ''}" style="width:100%;border-radius:10px;"></div><div>DERECHA<br><img src="${d?.derecha || ''}" style="width:100%;border-radius:10px;"></div></div></div>`;
-    document.getElementById('comparadorResultado').innerHTML = gen(d1, f1) + gen(d2, f2);
-  }
-  function recargarComparacion() { compararFotos(); }
-
+  document.getElementById('cargarFotosFecha').onclick = () => { const fecha = document.getElementById('fechaFotos').value; if (fecha) mostrarToast("Selecciona fotos y guarda"); };
   function setColorPorDia() { const hoy = new Date().getDay(); const colores = { 0: "#e8ff47", 1: "#4caf50", 2: "#ff9800", 3: "#2196f3", 4: "#9c27b0", 5: "#ff5722", 6: "#00bcd4" }; document.documentElement.style.setProperty('--acc', colores[hoy]); }
 
   window.onload = () => {
