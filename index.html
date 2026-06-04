@@ -524,20 +524,45 @@
     }
     .lightbox.active { visibility: visible; opacity: 1; }
     .lightbox img { max-width: 90%; max-height: 90%; object-fit: contain; pointer-events: auto; cursor: zoom-in; }
-    /* Estilos para la galería de fotos */
+    /* Estilos compactos para la galería de fotos */
     .equip-card {
       background: var(--s1);
-      border-radius: 14px;
-      padding: 12px;
+      border-radius: 12px;
+      padding: 8px;
       text-align: center;
     }
+    .equip-card .label {
+      font-size: 10px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .equip-card input[type="file"] {
+      font-size: 9px;
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 6px;
+      color: var(--text);
+    }
     .foto-preview {
-      margin-top: 8px;
+      margin-top: 4px;
       max-width: 100%;
-      border-radius: 8px;
+      max-height: 60px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+    .foto-grid-upload {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
     }
     @media (max-width: 480px) {
       .top-info { gap: 6px; font-size: 9px; }
+      .foto-grid-upload { gap: 6px; }
+      .equip-card { padding: 6px; }
+      .equip-card input[type="file"] { font-size: 8px; padding: 3px 4px; }
     }
   </style>
 </head>
@@ -623,49 +648,49 @@
     <div style="background: var(--s2); border-radius: 18px; padding: 12px; margin-bottom: 12px;">
       <div class="sec-tag" style="font-size:9px; color:var(--acc); margin-bottom:8px;">📸 SUBIR FOTOS</div>
       <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-        <input type="date" id="fechaFotos" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px; color:white;">
-        <button id="cargarFotosFecha" class="btn-p" style="background:var(--acc); border:none; border-radius:40px; padding:8px 16px;">Cargar</button>
+        <input type="date" id="fechaFotos" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:6px 8px; color:white; font-size:11px;">
+        <button id="cargarFotosFecha" class="btn-p" style="background:var(--acc); border:none; border-radius:40px; padding:6px 12px; font-size:11px;">Cargar</button>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(2,1fr); gap: 8px;">
+      <div class="foto-grid-upload">
         <div class="equip-card">
-          <div>😀 FRENTE</div>
+          <div class="label">😀 FRENTE</div>
           <input type="file" id="fotoFrente" accept="image/*" onchange="previewFrente(this)">
           <img id="previewFrente" class="foto-preview" style="display:none;">
         </div>
         <div class="equip-card">
-          <div>🙃 ESPALDA</div>
+          <div class="label">🙃 ESPALDA</div>
           <input type="file" id="fotoEspalda" accept="image/*" onchange="previewEspalda(this)">
           <img id="previewEspalda" class="foto-preview" style="display:none;">
         </div>
         <div class="equip-card">
-          <div>⬅️ IZQUIERDA</div>
+          <div class="label">⬅️ IZQUIERDA</div>
           <input type="file" id="fotoIzquierda" accept="image/*" onchange="previewIzquierda(this)">
           <img id="previewIzquierda" class="foto-preview" style="display:none;">
         </div>
         <div class="equip-card">
-          <div>➡️ DERECHA</div>
+          <div class="label">➡️ DERECHA</div>
           <input type="file" id="fotoDerecha" accept="image/*" onchange="previewDerecha(this)">
           <img id="previewDerecha" class="foto-preview" style="display:none;">
         </div>
       </div>
-      <button onclick="guardarFotos()" class="btn-p" style="width:100%; margin-top: 12px; background:var(--acc); border:none; border-radius:40px; padding:12px; font-weight:700;">💾 Guardar día</button>
+      <button onclick="guardarFotos()" class="btn-p" style="width:100%; margin-top: 8px; background:var(--acc); border:none; border-radius:40px; padding:10px; font-weight:700;">💾 Guardar día</button>
     </div>
     <div style="background: var(--s2); border-radius: 18px; padding: 12px;">
       <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
         <div class="sec-tag" style="font-size:9px; color:var(--acc);">📅 DÍAS GUARDADOS</div>
         <button onclick="cargarListaDias()" class="btn-3d" style="background:rgba(255,255,255,.05); border-radius:20px; padding:4px 12px;">🔄</button>
       </div>
-      <div id="listaDiasDB" style="max-height: 100px; overflow-y: auto;"></div>
+      <div id="listaDiasDB" style="max-height: 100px; overflow-y: auto; font-size: 12px;"></div>
       <div class="sec-tag" style="margin-top: 16px; font-size:9px; color:var(--acc);">🔄 COMPARAR DOS DÍAS</div>
       <div style="display: flex; gap: 8px; margin: 12px 0;">
-        <select id="compararDia1" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;"></select>
-        <select id="compararDia2" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;"></select>
+        <select id="compararDia1" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:6px 8px; font-size:11px;"></select>
+        <select id="compararDia2" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:6px 8px; font-size:11px;"></select>
       </div>
       <div style="display: flex; gap: 8px;">
-        <button onclick="compararFotos()" class="btn-p" style="flex:1; background:var(--acc); border:none; border-radius:40px; padding:8px;">Comparar</button>
+        <button onclick="compararFotos()" class="btn-p" style="flex:1; background:var(--acc); border:none; border-radius:40px; padding:8px; font-size:11px;">Comparar</button>
         <button onclick="recargarComparacion()" class="btn-g" style="background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;">🔄</button>
       </div>
-      <div id="comparadorResultado" style="margin-top: 16px;"></div>
+      <div id="comparadorResultado" style="margin-top: 12px;"></div>
     </div>
   </div>
 </div>
@@ -1079,7 +1104,6 @@
     mostrarToast("✅ Fotos guardadas");
     cargarListaDias();
     cargarSelectores();
-    // Limpiar previsualizaciones
     document.getElementById('fotoFrente').value = '';
     document.getElementById('fotoEspalda').value = '';
     document.getElementById('fotoIzquierda').value = '';
@@ -1132,7 +1156,6 @@
     const store = db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME);
     const d1 = await new Promise(r => store.get(f1).onsuccess = e => r(e.target.result));
     const d2 = await new Promise(r => store.get(f2).onsuccess = e => r(e.target.result));
-    // Comparar por posición: frente con frente, espalda con espalda, etc.
     const genComparacion = (d1, d2, titulo, campo) => {
       if (!d1?.[campo] && !d2?.[campo]) return '';
       return `
