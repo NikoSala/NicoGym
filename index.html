@@ -27,7 +27,6 @@
       overflow-x: hidden;
       padding-bottom: 70px;
     }
-    /* BARRA SUPERIOR COMPACTA */
     .top-bar {
       position: fixed;
       top: 0;
@@ -73,7 +72,6 @@
       border-radius: 10px;
       cursor: pointer;
     }
-    /* Botón hoy */
     .btn-hoy {
       background: var(--acc);
       border: none;
@@ -82,11 +80,10 @@
       padding: 8px 20px;
       border-radius: 40px;
       font-size: 12px;
-      margin: 60px 12px 8px 12px;
+      margin: 60px 12px 0 12px;
       width: calc(100% - 24px);
       cursor: pointer;
     }
-    /* Menú lateral */
     .side-menu {
       position: fixed;
       top: 0;
@@ -119,12 +116,10 @@
       border-bottom: 1px solid var(--border);
       cursor: pointer;
     }
-    /* Páginas */
     .page { display: none; padding-top: 60px; min-height: 100vh; }
     .page.active { display: block; animation: fadeIn .2s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     .container { max-width: 600px; margin: 0 auto; padding: 0 12px; }
-    /* Tarjeta última medición */
     .last-measure-card {
       background: var(--s2);
       border-radius: 20px;
@@ -159,10 +154,7 @@
       font-weight: 700;
       font-family: 'Bebas Neue', cursive;
     }
-    .metric-delta {
-      font-size: 11px;
-      margin-left: 6px;
-    }
+    .metric-delta { font-size: 11px; margin-left: 6px; }
     .delta-up { color: #10b981; }
     .delta-down { color: #ef4444; }
     .progress-text {
@@ -196,7 +188,7 @@
     .bmi-fill {
       height: 100%;
       width: 100%;
-      background: linear-gradient(90deg,#10B981 0%,#FBBF24 55%,#F87171 100%);
+      background: linear-gradient(90deg, #10B981 0%, #FBBF24 55%, #F87171 100%);
       border-radius: 5px;
     }
     .bmi-pin {
@@ -222,7 +214,6 @@
     .status-good { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
     .status-neutral { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
     .status-bad { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
-    /* Gráfico */
     .graph-container {
       background: var(--s2);
       border-radius: 20px;
@@ -243,7 +234,6 @@
       text-align: center;
       margin-top: 6px;
     }
-    /* Bottom nav */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -269,8 +259,14 @@
     }
     .nav-item.active { color: var(--acc); background: rgba(255,107,53,0.1); }
     .nav-icon { font-size: 18px; display: block; margin-bottom: 2px; }
-    /* Ejercicios */
-    .day-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 16px; scrollbar-width: none; }
+    .day-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
+    }
     .day-tabs::-webkit-scrollbar { display: none; }
     .dtab {
       flex-shrink: 0;
@@ -334,12 +330,47 @@
     .ex-det { display: none; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
     .ex-det.open { display: block; }
     .steps { list-style: none; margin-bottom: 8px; }
-    .steps li { font-size: 12px; color: var(--muted2); padding: 5px 0; display: flex; gap: 8px; border-bottom: 1px solid var(--border); }
+    .steps li {
+      font-size: 12px;
+      color: var(--muted2);
+      padding: 5px 0;
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
     .steps li:last-child { border-bottom: none; }
-    .steps li::before { content: attr(data-n); font-family: 'Bebas Neue', cursive; font-size: 14px; color: var(--acc); min-width: 20px; }
-    .tip { background: rgba(255,179,0,.07); border-radius: 10px; padding: 8px; font-size: 11px; display: flex; gap: 6px; margin-top: 6px; }
-    .ex-img { width: 100%; max-width: 160px; border-radius: 12px; margin: 8px auto; display: block; cursor: pointer; }
-    .cinta-info { background: rgba(255,255,255,.03); border-radius: 14px; padding: 8px; font-size: 11px; text-align: center; margin: 12px 0; }
+    .steps li::before {
+      content: attr(data-n);
+      font-family: 'Bebas Neue', cursive;
+      font-size: 14px;
+      color: var(--acc);
+      min-width: 20px;
+    }
+    .tip {
+      background: rgba(255,179,0,.07);
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 11px;
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .ex-img {
+      width: 100%;
+      max-width: 160px;
+      border-radius: 12px;
+      margin: 8px auto;
+      display: block;
+      cursor: pointer;
+    }
+    .cinta-info {
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      padding: 8px;
+      font-size: 11px;
+      text-align: center;
+      margin: 12px 0;
+    }
     .btn-reset-dia {
       background: transparent;
       border: 1px solid rgba(255,77,109,.3);
@@ -351,18 +382,48 @@
       margin-top: 12px;
       cursor: pointer;
     }
-    /* Calendarios */
-    .calendar-card { background: var(--s2); border-radius: 18px; padding: 12px; margin-bottom: 16px; }
-    .cal-nav { display: flex; justify-content: space-between; margin-bottom: 10px; }
-    .cal-month { font-family: 'Bebas Neue', cursive; font-size: 18px; }
-    .btn-3d { background: rgba(255,255,255,.05); border-radius: 20px; padding: 4px 12px; font-size: 12px; cursor: pointer; border: none; color: var(--text); }
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
-    .cal-cell { background: rgba(255,255,255,.04); border-radius: 8px; text-align: center; padding: 6px 0; font-size: 11px; cursor: pointer; border: 1px solid transparent; }
+    .calendar-card {
+      background: var(--s2);
+      border-radius: 18px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+    .cal-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .cal-month {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 18px;
+    }
+    .btn-3d {
+      background: rgba(255,255,255,.05);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      border: none;
+      color: var(--text);
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
+    .cal-cell {
+      background: rgba(255,255,255,.04);
+      border-radius: 8px;
+      text-align: center;
+      padding: 6px 0;
+      font-size: 11px;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
     .cal-cell.completado { background: #1a3a2a; color: #4caf50; }
     .cal-cell.today { border-color: var(--acc); color: var(--acc); font-weight: bold; }
     .cal-cell.cumple { border-color: gold; background: rgba(255,215,0,0.15); position: relative; }
     .cal-cell.cumple::after { content: "🎂"; font-size: 8px; position: absolute; top: 0px; right: 2px; }
-    /* Formulario composición */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -411,9 +472,24 @@
       justify-content: center;
       z-index: 2000;
     }
-    .disk-panel { background: var(--s2); border-radius: 24px; padding: 16px; width: 85%; max-width: 320px; text-align: center; }
+    .disk-panel {
+      background: var(--s2);
+      border-radius: 24px;
+      padding: 16px;
+      width: 85%;
+      max-width: 320px;
+      text-align: center;
+    }
     .disk-panel h3 { font-family: 'Bebas Neue', cursive; font-size: 20px; }
-    .disk-panel button { background: var(--acc); border: none; border-radius: 30px; padding: 6px 14px; margin: 4px; font-weight: bold; cursor: pointer; }
+    .disk-panel button {
+      background: var(--acc);
+      border: none;
+      border-radius: 30px;
+      padding: 6px 14px;
+      margin: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
     .toast-msg {
       position: fixed;
       bottom: 80px;
@@ -428,7 +504,11 @@
       z-index: 3000;
       animation: fadeOut 3s forwards;
     }
-    @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      70% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
     .lightbox {
       position: fixed;
       inset: 0;
@@ -444,31 +524,13 @@
     }
     .lightbox.active { visibility: visible; opacity: 1; }
     .lightbox img { max-width: 90%; max-height: 90%; object-fit: contain; pointer-events: auto; cursor: zoom-in; }
-    .splash-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      background: #070707;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      cursor: pointer;
-      transition: opacity 0.5s ease;
+    @media (max-width: 480px) {
+      .top-info { gap: 6px; font-size: 9px; }
     }
-    .splash-logo { font-family: 'Bebas Neue', cursive; font-size: 2.8rem; background: linear-gradient(135deg, #fff, var(--acc)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .splash-line { width: 40px; height: 2px; background: var(--acc); margin: 16px auto; }
-    .splash-frase { font-size: 1rem; font-weight: 600; max-width: 260px; margin-bottom: 8px; }
-    .splash-autor { font-size: 0.65rem; color: var(--muted); letter-spacing: 1px; }
-    .splash-tap { margin-top: 30px; font-size: 0.55rem; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
-    @media (max-width: 480px) { .top-info { gap: 6px; font-size: 9px; } }
   </style>
 </head>
 <body>
 
-<!-- BARRA SUPERIOR COMPACTA -->
 <div class="top-bar">
   <div class="logo">NICO GYM</div>
   <div class="top-info">
@@ -480,10 +542,8 @@
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
 </div>
 
-<!-- BOTÓN IR A RUTINA DE HOY -->
 <button class="btn-hoy" id="goHoyBtn">📅 Ir a rutina de hoy</button>
 
-<!-- MENÚ LATERAL -->
 <div class="side-menu" id="sideMenu">
   <div class="menu-item" onclick="goPage('inicio')">🏠 Inicio</div>
   <div class="menu-item" onclick="goPage('rutinas')">💪 Rutinas</div>
@@ -495,7 +555,6 @@
 </div>
 <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
 
-<!-- ==================== INICIO (HOME REDISEÑADO) ==================== -->
 <div class="page active" id="page-inicio">
   <div class="container">
     <div id="ultimaMedicionContainer"></div>
@@ -507,7 +566,6 @@
   </div>
 </div>
 
-<!-- ==================== RUTINAS ==================== -->
 <div class="page" id="page-rutinas">
   <div class="container">
     <div class="day-tabs" id="dayTabs"></div>
@@ -515,7 +573,6 @@
   </div>
 </div>
 
-<!-- ==================== CALENDARIOS ==================== -->
 <div class="page" id="page-calendarios">
   <div class="container">
     <div class="calendar-card"><div class="sec-tag" style="font-size:9px; color:var(--acc); margin-bottom:8px;">🏋️ ENTRENOS</div><div class="cal-nav"><button class="btn-3d" onclick="changeMonth(-1,'gym')">←</button><span id="cal-month-gym" class="cal-month"></span><button class="btn-3d" onclick="changeMonth(1,'gym')">→</button></div><div id="cal-gym" class="cal-grid"></div></div>
@@ -523,7 +580,6 @@
   </div>
 </div>
 
-<!-- ==================== COMPOSICIÓN CORPORAL ==================== -->
 <div class="page" id="page-composicion">
   <div class="container">
     <div style="background: var(--s2); border-radius: 18px; padding: 16px; margin-bottom: 20px;">
@@ -546,12 +602,10 @@
   </div>
 </div>
 
-<!-- ==================== LOGROS ==================== -->
 <div class="page" id="page-logros">
   <div class="container"><div style="background: var(--s2); border-radius: 18px; padding: 12px;"><div id="logrosContainer" class="logros-grid"></div></div></div>
 </div>
 
-<!-- ==================== FOTOS PROGRESO ==================== -->
 <div class="page" id="page-progreso-fotos">
   <div class="container">
     <div style="background: var(--s2); border-radius: 18px; padding: 12px; margin-bottom: 12px;">
@@ -575,7 +629,6 @@
   </div>
 </div>
 
-<!-- Lightbox -->
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
   <img id="lightboxImg" src="" alt="Ampliar imagen">
 </div>
@@ -592,118 +645,109 @@
   <button class="nav-item" onclick="goPage('progreso-fotos')"><span class="nav-icon">📸</span>FOTOS</button>
 </div>
 
-<div class="splash-overlay" id="splashScreen">
-  <div class="splash-logo">NICO GYM</div>
-  <div class="splash-line"></div>
-  <div class="splash-frase">"El único mal entreno es el que no hiciste."</div>
-  <div class="splash-autor">— Anónimo</div>
-  <div class="splash-tap">Toca para comenzar</div>
-</div>
-
 <script>
-// ========== COMPOSICIÓN CORPORAL ==========
-let mediciones = JSON.parse(localStorage.getItem('bodyComposition')) || [];
-const OBJETIVO_PESO = 75;
-const OBJETIVO_CINTURA = 90;
+  let mediciones = JSON.parse(localStorage.getItem('bodyComposition')) || [];
+  const OBJETIVO_PESO = 75;
+  const OBJETIVO_CINTURA = 90;
 
-if (localStorage.getItem('pesos') && mediciones.length === 0) {
-  try {
-    const oldPesos = JSON.parse(localStorage.getItem('pesos'));
-    if (Array.isArray(oldPesos) && oldPesos.length) {
-      mediciones = oldPesos.map(p => ({
-        fecha: p.fecha,
-        peso: p.valor,
-        cintura: null,
-        grasaPorcentaje: null,
-        masaMuscular: null,
-        grasaVisceral: null,
-        pesoLibreGrasa: null,
-        masaGrasa: null,
-        indiceRecomp: null
-      }));
-      localStorage.setItem('bodyComposition', JSON.stringify(mediciones));
+  if (localStorage.getItem('pesos') && mediciones.length === 0) {
+    try {
+      const oldPesos = JSON.parse(localStorage.getItem('pesos'));
+      if (Array.isArray(oldPesos) && oldPesos.length) {
+        mediciones = oldPesos.map(p => ({
+          fecha: p.fecha,
+          peso: p.valor,
+          cintura: null,
+          grasaPorcentaje: null,
+          masaMuscular: null,
+          grasaVisceral: null,
+          pesoLibreGrasa: null,
+          masaGrasa: null,
+          indiceRecomp: null
+        }));
+        localStorage.setItem('bodyComposition', JSON.stringify(mediciones));
+      }
+    } catch (e) {}
+  }
+
+  let diasNoFumar = JSON.parse(localStorage.getItem('diasNoFumar')) || [];
+  let diasEntrenados = JSON.parse(localStorage.getItem('diasEntrenados')) || [];
+  let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
+  let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
+  let personalizaciones = JSON.parse(localStorage.getItem('personalizaciones')) || {};
+
+  const FECHA_INICIO_NO_FUMAR = new Date(2026, 1, 22);
+
+  function calcularDiasSinFumar() {
+    const hoy = new Date();
+    let count = 0;
+    let fecha = new Date(FECHA_INICIO_NO_FUMAR);
+    while (fecha <= hoy) {
+      const fStr = fecha.toISOString().slice(0, 10);
+      if (!diasNoFumar.includes(fStr)) count++;
+      fecha.setDate(fecha.getDate() + 1);
     }
-  } catch(e) {}
-}
-
-let diasNoFumar = JSON.parse(localStorage.getItem('diasNoFumar')) || [];
-let diasEntrenados = JSON.parse(localStorage.getItem('diasEntrenados')) || [];
-let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
-let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
-let personalizaciones = JSON.parse(localStorage.getItem('personalizaciones')) || {};
-
-const FECHA_INICIO_NO_FUMAR = new Date(2026, 1, 22);
-
-function calcularDiasSinFumar() {
-  const hoy = new Date();
-  let count = 0;
-  let fecha = new Date(FECHA_INICIO_NO_FUMAR);
-  while (fecha <= hoy) {
-    const fStr = fecha.toISOString().slice(0,10);
-    if (!diasNoFumar.includes(fStr)) count++;
-    fecha.setDate(fecha.getDate() + 1);
+    return count;
   }
-  return count;
-}
 
-function actualizarTopBar() {
-  const edad = calcularEdad();
-  document.getElementById('topEdad').innerText = edad;
-  const ultimoPeso = mediciones.length > 0 ? mediciones[mediciones.length-1].peso : '--';
-  document.getElementById('topPeso').innerHTML = ultimoPeso;
-  document.getElementById('topObjetivo').innerText = OBJETIVO_PESO;
-  document.getElementById('topDiasSinFumar').innerText = calcularDiasSinFumar();
-}
-
-function guardarMedicion() {
-  const fecha = document.getElementById('medFecha').value;
-  if (!fecha) { mostrarToast("Selecciona una fecha"); return; }
-  const peso = parseFloat(document.getElementById('medPeso').value);
-  const cintura = parseFloat(document.getElementById('medCintura').value);
-  const grasaPorcentaje = parseFloat(document.getElementById('medGrasaPorc').value);
-  const masaMuscular = parseFloat(document.getElementById('medMasaMuscular').value);
-  const grasaVisceral = parseInt(document.getElementById('medGrasaVisceral').value);
-  const pesoLibreGrasa = parseFloat(document.getElementById('medPesoLibreGrasa').value);
-  if (isNaN(peso) || isNaN(cintura) || isNaN(grasaPorcentaje) || isNaN(masaMuscular) || isNaN(grasaVisceral) || isNaN(pesoLibreGrasa)) {
-    mostrarToast("Completa todos los campos correctamente");
-    return;
+  function actualizarTopBar() {
+    const edad = calcularEdad();
+    document.getElementById('topEdad').innerText = edad;
+    const ultimoPeso = mediciones.length > 0 ? mediciones[mediciones.length - 1].peso : '--';
+    document.getElementById('topPeso').innerHTML = ultimoPeso;
+    document.getElementById('topObjetivo').innerText = OBJETIVO_PESO;
+    document.getElementById('topDiasSinFumar').innerText = calcularDiasSinFumar();
   }
-  const masaGrasa = +(peso * (grasaPorcentaje / 100)).toFixed(1);
-  const indiceRecomp = +(masaMuscular - masaGrasa).toFixed(1);
-  const nuevaMed = { fecha, peso, cintura, grasaPorcentaje, masaMuscular, grasaVisceral, pesoLibreGrasa, masaGrasa, indiceRecomp };
-  const index = mediciones.findIndex(m => m.fecha === fecha);
-  if (index !== -1) mediciones[index] = nuevaMed;
-  else mediciones.push(nuevaMed);
-  mediciones.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
-  localStorage.setItem('bodyComposition', JSON.stringify(mediciones));
-  mostrarToast("Medición guardada");
-  cargarHistorialMediciones();
-  actualizarUICompleta();
-  limpiarFormularioMedicion();
-}
 
-function limpiarFormularioMedicion() {
-  document.getElementById('medFecha').value = new Date().toISOString().slice(0,10);
-  document.getElementById('medPeso').value = '';
-  document.getElementById('medCintura').value = '';
-  document.getElementById('medGrasaPorc').value = '';
-  document.getElementById('medMasaMuscular').value = '';
-  document.getElementById('medGrasaVisceral').value = '';
-  document.getElementById('medPesoLibreGrasa').value = '';
-}
-
-function cargarHistorialMediciones() {
-  const cont = document.getElementById('historialMediciones');
-  if (!cont) return;
-  if (mediciones.length === 0) {
-    cont.innerHTML = '<div style="padding:12px; text-align:center; color:var(--muted2)">Sin registros.</div>';
-    return;
+  function guardarMedicion() {
+    const fecha = document.getElementById('medFecha').value;
+    if (!fecha) { mostrarToast("Selecciona una fecha"); return; }
+    const peso = parseFloat(document.getElementById('medPeso').value);
+    const cintura = parseFloat(document.getElementById('medCintura').value);
+    const grasaPorcentaje = parseFloat(document.getElementById('medGrasaPorc').value);
+    const masaMuscular = parseFloat(document.getElementById('medMasaMuscular').value);
+    const grasaVisceral = parseInt(document.getElementById('medGrasaVisceral').value);
+    const pesoLibreGrasa = parseFloat(document.getElementById('medPesoLibreGrasa').value);
+    if (isNaN(peso) || isNaN(cintura) || isNaN(grasaPorcentaje) || isNaN(masaMuscular) || isNaN(grasaVisceral) || isNaN(pesoLibreGrasa)) {
+      mostrarToast("Completa todos los campos correctamente");
+      return;
+    }
+    const masaGrasa = +(peso * (grasaPorcentaje / 100)).toFixed(1);
+    const indiceRecomp = +(masaMuscular - masaGrasa).toFixed(1);
+    const nuevaMed = { fecha, peso, cintura, grasaPorcentaje, masaMuscular, grasaVisceral, pesoLibreGrasa, masaGrasa, indiceRecomp };
+    const index = mediciones.findIndex(m => m.fecha === fecha);
+    if (index !== -1) mediciones[index] = nuevaMed;
+    else mediciones.push(nuevaMed);
+    mediciones.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    localStorage.setItem('bodyComposition', JSON.stringify(mediciones));
+    mostrarToast("Medición guardada");
+    cargarHistorialMediciones();
+    actualizarUICompleta();
+    limpiarFormularioMedicion();
   }
-  const sorted = [...mediciones].reverse();
-  cont.innerHTML = sorted.map(m => {
-    const fecha = new Date(m.fecha).toLocaleDateString('es-ES');
-    const masaGrasa = (m.peso * (m.grasaPorcentaje / 100)).toFixed(1);
-    return `
+
+  function limpiarFormularioMedicion() {
+    document.getElementById('medFecha').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('medPeso').value = '';
+    document.getElementById('medCintura').value = '';
+    document.getElementById('medGrasaPorc').value = '';
+    document.getElementById('medMasaMuscular').value = '';
+    document.getElementById('medGrasaVisceral').value = '';
+    document.getElementById('medPesoLibreGrasa').value = '';
+  }
+
+  function cargarHistorialMediciones() {
+    const cont = document.getElementById('historialMediciones');
+    if (!cont) return;
+    if (mediciones.length === 0) {
+      cont.innerHTML = '<div style="padding:12px; text-align:center; color:var(--muted2)">Sin registros.</div>';
+      return;
+    }
+    const sorted = [...mediciones].reverse();
+    cont.innerHTML = sorted.map(m => {
+      const fecha = new Date(m.fecha).toLocaleDateString('es-ES');
+      const masaGrasa = (m.peso * (m.grasaPorcentaje / 100)).toFixed(1);
+      return `
       <div class="historial-item">
         <div><span class="historial-date">${fecha}</span>
         <div class="historial-data">⚖️ ${m.peso} kg | 📏 ${m.cintura} cm | 💪 ${m.masaMuscular} kg | 🔥 ${masaGrasa} kg</div></div>
@@ -713,94 +757,86 @@ function cargarHistorialMediciones() {
         </div>
       </div>
     `;
-  }).join('');
-}
-
-function editarMedicion(fecha) {
-  const med = mediciones.find(m => m.fecha === fecha);
-  if (!med) return;
-  document.getElementById('medFecha').value = med.fecha;
-  document.getElementById('medPeso').value = med.peso;
-  document.getElementById('medCintura').value = med.cintura;
-  document.getElementById('medGrasaPorc').value = med.grasaPorcentaje;
-  document.getElementById('medMasaMuscular').value = med.masaMuscular;
-  document.getElementById('medGrasaVisceral').value = med.grasaVisceral;
-  document.getElementById('medPesoLibreGrasa').value = med.pesoLibreGrasa;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function eliminarMedicion(fecha) {
-  if (confirm("¿Eliminar esta medición?")) {
-    mediciones = mediciones.filter(m => m.fecha !== fecha);
-    localStorage.setItem('bodyComposition', JSON.stringify(mediciones));
-    cargarHistorialMediciones();
-    actualizarUICompleta();
+    }).join('');
   }
-}
 
-// ========== RENDERIZADO TARJETA ÚLTIMA MEDICIÓN ==========
-let userData = { altura: 165, cumple: "1996-08-01" };
-function calcularEdad() {
-  const hoy = new Date(), nac = new Date(userData.cumple);
-  let edad = hoy.getFullYear() - nac.getFullYear();
-  if (hoy.getMonth() < nac.getMonth() || (hoy.getMonth() === nac.getMonth() && hoy.getDate() < nac.getDate())) edad--;
-  return edad;
-}
+  function editarMedicion(fecha) {
+    const med = mediciones.find(m => m.fecha === fecha);
+    if (!med) return;
+    document.getElementById('medFecha').value = med.fecha;
+    document.getElementById('medPeso').value = med.peso;
+    document.getElementById('medCintura').value = med.cintura;
+    document.getElementById('medGrasaPorc').value = med.grasaPorcentaje;
+    document.getElementById('medMasaMuscular').value = med.masaMuscular;
+    document.getElementById('medGrasaVisceral').value = med.grasaVisceral;
+    document.getElementById('medPesoLibreGrasa').value = med.pesoLibreGrasa;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-function renderizarUltimaMedicion() {
-  const container = document.getElementById('ultimaMedicionContainer');
-  if (!container) return;
-  if (mediciones.length === 0) {
-    container.innerHTML = `<div class="last-measure-card"><div class="last-measure-title">📊 Sin mediciones</div><div>Registra tu primera medición en "Composición".</div></div>`;
-    return;
+  function eliminarMedicion(fecha) {
+    if (confirm("¿Eliminar esta medición?")) {
+      mediciones = mediciones.filter(m => m.fecha !== fecha);
+      localStorage.setItem('bodyComposition', JSON.stringify(mediciones));
+      cargarHistorialMediciones();
+      actualizarUICompleta();
+    }
   }
-  const ultima = mediciones[mediciones.length-1];
-  const anterior = mediciones.length >= 2 ? mediciones[mediciones.length-2] : null;
-  const masaGrasa = (ultima.peso * (ultima.grasaPorcentaje / 100)).toFixed(1);
-  const indiceRecomp = (ultima.masaMuscular - masaGrasa).toFixed(1);
-  const fechaFormateada = new Date(ultima.fecha).toLocaleDateString('es-ES');
-  const ratioCinturaAltura = (ultima.cintura / userData.altura).toFixed(2);
-  const ratioOk = ratioCinturaAltura < 0.5;
-  
-  const pesoInicial = mediciones[0].peso;
-  const progresoPeso = Math.min(100, Math.max(0, ((pesoInicial - ultima.peso) / (pesoInicial - OBJETIVO_PESO)) * 100)).toFixed(0);
-  const cinturaInicial = mediciones[0].cintura;
-  const progresoCintura = Math.min(100, Math.max(0, ((cinturaInicial - ultima.cintura) / (cinturaInicial - OBJETIVO_CINTURA)) * 100)).toFixed(0);
-  
-  let diffPeso = '', diffCintura = '', diffMusculo = '', diffGrasa = '', diffVisceral = '', diffRecomp = '';
-  if (anterior) {
-    const antMasaGrasa = (anterior.peso * (anterior.grasaPorcentaje / 100)).toFixed(1);
-    const antIndice = (anterior.masaMuscular - antMasaGrasa).toFixed(1);
-    const deltaPeso = (ultima.peso - anterior.peso).toFixed(1);
-    diffPeso = deltaPeso != 0 ? `<span class="metric-delta ${deltaPeso < 0 ? 'delta-up' : 'delta-down'}">${deltaPeso < 0 ? '↓' : '↑'} ${Math.abs(deltaPeso)}</span>` : '';
-    const deltaCintura = (ultima.cintura - anterior.cintura).toFixed(1);
-    diffCintura = deltaCintura != 0 ? `<span class="metric-delta ${deltaCintura < 0 ? 'delta-up' : 'delta-down'}">${deltaCintura < 0 ? '↓' : '↑'} ${Math.abs(deltaCintura)}</span>` : '';
-    const deltaMusculo = (ultima.masaMuscular - anterior.masaMuscular).toFixed(1);
-    diffMusculo = deltaMusculo != 0 ? `<span class="metric-delta ${deltaMusculo > 0 ? 'delta-up' : 'delta-down'}">${deltaMusculo > 0 ? '↑' : '↓'} ${Math.abs(deltaMusculo)}</span>` : '';
-    const deltaGrasa = (masaGrasa - antMasaGrasa).toFixed(1);
-    diffGrasa = deltaGrasa != 0 ? `<span class="metric-delta ${deltaGrasa < 0 ? 'delta-up' : 'delta-down'}">${deltaGrasa < 0 ? '↓' : '↑'} ${Math.abs(deltaGrasa)}</span>` : '';
-    const deltaVisceral = ultima.grasaVisceral - anterior.grasaVisceral;
-    diffVisceral = deltaVisceral != 0 ? `<span class="metric-delta ${deltaVisceral < 0 ? 'delta-up' : 'delta-down'}">${deltaVisceral < 0 ? '↓' : '↑'} ${Math.abs(deltaVisceral)}</span>` : '';
-    const deltaRecomp = (indiceRecomp - antIndice).toFixed(1);
-    diffRecomp = deltaRecomp != 0 ? `<span class="metric-delta ${deltaRecomp > 0 ? 'delta-up' : 'delta-down'}">${deltaRecomp > 0 ? '↑' : '↓'} ${Math.abs(deltaRecomp)}</span>` : '';
+
+  let userData = { altura: 165, cumple: "1996-08-01" };
+  function calcularEdad() {
+    const hoy = new Date(), nac = new Date(userData.cumple);
+    let edad = hoy.getFullYear() - nac.getFullYear();
+    if (hoy.getMonth() < nac.getMonth() || (hoy.getMonth() === nac.getMonth() && hoy.getDate() < nac.getDate())) edad--;
+    return edad;
   }
-  
-  let estado = "", estadoClase = "";
-  if (mediciones.length >= 2 && anterior) {
-    const cinturaBaja = ultima.cintura < anterior.cintura;
-    const recompSube = indiceRecomp > (anterior.indiceRecomp || (anterior.masaMuscular - (anterior.peso * (anterior.grasaPorcentaje / 100))).toFixed(1));
-    if (cinturaBaja && recompSube) { estado = "🚀 Excelente"; estadoClase = "status-good"; }
-    else if (cinturaBaja || recompSube) { estado = "✅ Mejorando"; estadoClase = "status-good"; }
-    else if (Math.abs(ultima.cintura - anterior.cintura) <= 0.5 && Math.abs(indiceRecomp - (anterior.indiceRecomp || 0)) <= 0.5) { estado = "⚖️ Estable"; estadoClase = "status-neutral"; }
-    else { estado = "⚠️ Atención"; estadoClase = "status-bad"; }
-  } else {
-    estado = "📌 Añade más mediciones"; estadoClase = "status-neutral";
-  }
-  
-  const imc = (ultima.peso / ((userData.altura/100) ** 2)).toFixed(1);
-  const pinPercent = Math.min(95, Math.max(5, (imc/40)*100));
-  
-  container.innerHTML = `
+
+  function renderizarUltimaMedicion() {
+    const container = document.getElementById('ultimaMedicionContainer');
+    if (!container) return;
+    if (mediciones.length === 0) {
+      container.innerHTML = `<div class="last-measure-card"><div class="last-measure-title">📊 Sin mediciones</div><div>Registra tu primera medición en "Composición".</div></div>`;
+      return;
+    }
+    const ultima = mediciones[mediciones.length - 1];
+    const anterior = mediciones.length >= 2 ? mediciones[mediciones.length - 2] : null;
+    const masaGrasa = (ultima.peso * (ultima.grasaPorcentaje / 100)).toFixed(1);
+    const indiceRecomp = (ultima.masaMuscular - masaGrasa).toFixed(1);
+    const fechaFormateada = new Date(ultima.fecha).toLocaleDateString('es-ES');
+    const ratioCinturaAltura = (ultima.cintura / userData.altura).toFixed(2);
+    const ratioOk = ratioCinturaAltura < 0.5;
+    const pesoInicial = mediciones[0].peso;
+    const progresoPeso = Math.min(100, Math.max(0, ((pesoInicial - ultima.peso) / (pesoInicial - OBJETIVO_PESO)) * 100)).toFixed(0);
+    const cinturaInicial = mediciones[0].cintura;
+    const progresoCintura = Math.min(100, Math.max(0, ((cinturaInicial - ultima.cintura) / (cinturaInicial - OBJETIVO_CINTURA)) * 100)).toFixed(0);
+    let diffPeso = '', diffCintura = '', diffMusculo = '', diffGrasa = '', diffVisceral = '', diffRecomp = '';
+    if (anterior) {
+      const antMasaGrasa = (anterior.peso * (anterior.grasaPorcentaje / 100)).toFixed(1);
+      const antIndice = (anterior.masaMuscular - antMasaGrasa).toFixed(1);
+      const deltaPeso = (ultima.peso - anterior.peso).toFixed(1);
+      diffPeso = deltaPeso != 0 ? `<span class="metric-delta ${deltaPeso < 0 ? 'delta-up' : 'delta-down'}">${deltaPeso < 0 ? '↓' : '↑'} ${Math.abs(deltaPeso)}</span>` : '';
+      const deltaCintura = (ultima.cintura - anterior.cintura).toFixed(1);
+      diffCintura = deltaCintura != 0 ? `<span class="metric-delta ${deltaCintura < 0 ? 'delta-up' : 'delta-down'}">${deltaCintura < 0 ? '↓' : '↑'} ${Math.abs(deltaCintura)}</span>` : '';
+      const deltaMusculo = (ultima.masaMuscular - anterior.masaMuscular).toFixed(1);
+      diffMusculo = deltaMusculo != 0 ? `<span class="metric-delta ${deltaMusculo > 0 ? 'delta-up' : 'delta-down'}">${deltaMusculo > 0 ? '↑' : '↓'} ${Math.abs(deltaMusculo)}</span>` : '';
+      const deltaGrasa = (masaGrasa - antMasaGrasa).toFixed(1);
+      diffGrasa = deltaGrasa != 0 ? `<span class="metric-delta ${deltaGrasa < 0 ? 'delta-up' : 'delta-down'}">${deltaGrasa < 0 ? '↓' : '↑'} ${Math.abs(deltaGrasa)}</span>` : '';
+      const deltaVisceral = ultima.grasaVisceral - anterior.grasaVisceral;
+      diffVisceral = deltaVisceral != 0 ? `<span class="metric-delta ${deltaVisceral < 0 ? 'delta-up' : 'delta-down'}">${deltaVisceral < 0 ? '↓' : '↑'} ${Math.abs(deltaVisceral)}</span>` : '';
+      const deltaRecomp = (indiceRecomp - antIndice).toFixed(1);
+      diffRecomp = deltaRecomp != 0 ? `<span class="metric-delta ${deltaRecomp > 0 ? 'delta-up' : 'delta-down'}">${deltaRecomp > 0 ? '↑' : '↓'} ${Math.abs(deltaRecomp)}</span>` : '';
+    }
+    let estado = "", estadoClase = "";
+    if (mediciones.length >= 2 && anterior) {
+      const cinturaBaja = ultima.cintura < anterior.cintura;
+      const recompSube = indiceRecomp > (anterior.indiceRecomp || (anterior.masaMuscular - (anterior.peso * (anterior.grasaPorcentaje / 100))).toFixed(1));
+      if (cinturaBaja && recompSube) { estado = "🚀 Excelente"; estadoClase = "status-good"; }
+      else if (cinturaBaja || recompSube) { estado = "✅ Mejorando"; estadoClase = "status-good"; }
+      else if (Math.abs(ultima.cintura - anterior.cintura) <= 0.5 && Math.abs(indiceRecomp - (anterior.indiceRecomp || 0)) <= 0.5) { estado = "⚖️ Estable"; estadoClase = "status-neutral"; }
+      else { estado = "⚠️ Atención"; estadoClase = "status-bad"; }
+    } else { estado = "📌 Añade más mediciones"; estadoClase = "status-neutral"; }
+    const imc = (ultima.peso / ((userData.altura / 100) ** 2)).toFixed(1);
+    const pinPercent = Math.min(95, Math.max(5, (imc / 40) * 100));
+    container.innerHTML = `
     <div class="last-measure-card">
       <div class="last-measure-title">📅 Última medición (${fechaFormateada})</div>
       <div class="metrics-grid">
@@ -820,513 +856,499 @@ function renderizarUltimaMedicion() {
       <div class="status-badge ${estadoClase}">${estado}</div>
     </div>
   `;
-}
+  }
 
-// ========== GRÁFICO ÚNICO ==========
-let graficoUnico = null;
-function renderizarGraficoUnico() {
-  const canvas = document.getElementById('graficoUnico');
-  if (!canvas) return;
-  if (mediciones.length === 0) {
+  let graficoUnico = null;
+  function renderizarGraficoUnico() {
+    const canvas = document.getElementById('graficoUnico');
+    if (!canvas) return;
+    if (mediciones.length === 0) {
+      if (graficoUnico) graficoUnico.destroy();
+      return;
+    }
+    const fechas = mediciones.map(m => new Date(m.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }));
+    const masasMusculares = mediciones.map(m => m.masaMuscular);
+    const masasGrasas = mediciones.map(m => (m.peso * (m.grasaPorcentaje / 100)).toFixed(1));
+    const cinturas = mediciones.map(m => m.cintura);
+    const pesos = mediciones.map(m => m.peso);
+    const viscerales = mediciones.map(m => m.grasaVisceral);
+    const recomps = mediciones.map(m => (m.masaMuscular - (m.peso * (m.grasaPorcentaje / 100))).toFixed(1));
     if (graficoUnico) graficoUnico.destroy();
-    return;
-  }
-  const fechas = mediciones.map(m => new Date(m.fecha).toLocaleDateString('es-ES', {day:'numeric', month:'short'}));
-  const masasMusculares = mediciones.map(m => m.masaMuscular);
-  const masasGrasas = mediciones.map(m => (m.peso * (m.grasaPorcentaje / 100)).toFixed(1));
-  const cinturas = mediciones.map(m => m.cintura);
-  const pesos = mediciones.map(m => m.peso);
-  const viscerales = mediciones.map(m => m.grasaVisceral);
-  const recomps = mediciones.map(m => (m.masaMuscular - (m.peso * (m.grasaPorcentaje / 100))).toFixed(1));
-  
-  if (graficoUnico) graficoUnico.destroy();
-  graficoUnico = new Chart(canvas, {
-    type: 'line',
-    data: {
-      labels: fechas,
-      datasets: [
-        { label: '💪 Masa muscular (kg)', data: masasMusculares, borderColor: '#10b981', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3, borderWidth: 2 },
-        { label: '🔥 Masa grasa (kg)', data: masasGrasas, borderColor: '#f97316', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3, borderWidth: 2 },
-        { label: '📏 Cintura (cm)', data: cinturas, borderColor: '#8b5cf6', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3, borderWidth: 2 },
-        { label: '⚖️ Peso (kg)', data: pesos, borderColor: '#6b7280', backgroundColor: 'transparent', tension: 0.2, pointRadius: 2, borderWidth: 1.5, hidden: true },
-        { label: '❤️ Grasa visceral', data: viscerales, borderColor: '#ef4444', backgroundColor: 'transparent', tension: 0.2, pointRadius: 2, borderWidth: 1.5, hidden: true },
-        { label: '📊 Índice recomposición', data: recomps, borderColor: '#22c55e', backgroundColor: 'transparent', tension: 0.2, pointRadius: 2, borderWidth: 1.5, hidden: true }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: { legend: { position: 'top', labels: { font: { size: 9 }, color: '#999', boxWidth: 10, padding: 8 } }, tooltip: { mode: 'index', intersect: false } },
-      scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, title: { display: true, text: 'kg / cm / nivel', color: '#888', font: { size: 9 } } }, x: { ticks: { maxRotation: 45, autoSkip: true, font: { size: 9 } } } }
-    }
-  });
-}
-
-// ========== CALENDARIOS ==========
-let mesGym = new Date().getMonth(), añoGym = new Date().getFullYear(), mesSmoke = new Date().getMonth(), añoSmoke = new Date().getFullYear();
-function renderCalendarios() {
-  const contGym = document.getElementById('cal-gym');
-  if (contGym) {
-    contGym.innerHTML = '';
-    const nombreMes = new Date(añoGym, mesGym, 1).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
-    document.getElementById('cal-month-gym').innerText = `${nombreMes} ${añoGym}`;
-    ['L','M','X','J','V','S','D'].forEach(d => { let div = document.createElement('div'); div.innerText = d; div.style.fontWeight = 'bold'; div.style.textAlign = 'center'; div.style.color = '#999'; contGym.appendChild(div); });
-    let primerDia = new Date(añoGym, mesGym, 1).getDay(), offset = primerDia === 0 ? 6 : primerDia - 1;
-    for (let i = 0; i < offset; i++) contGym.appendChild(document.createElement('div'));
-    const diasMes = new Date(añoGym, mesGym+1, 0).getDate();
-    const hoyStr = getHoyStr();
-    for (let d = 1; d <= diasMes; d++) {
-      const fecha = new Date(añoGym, mesGym, d);
-      const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`;
-      const cell = document.createElement('div'); cell.className = 'cal-cell'; cell.innerText = d; cell.setAttribute('data-day', fecha.getDay());
-      if (diasEntrenados.includes(fStr)) cell.classList.add('completado');
-      if (fStr === getHoyStr()) cell.classList.add('today');
-      if (fecha.getDate() === 1 && fecha.getMonth() === 7) cell.classList.add('cumple');
-      cell.onclick = (function(f) { return function() { mostrarPopupEjercicios(f); }; })(fecha);
-      contGym.appendChild(cell);
-    }
-  }
-  const contSmoke = document.getElementById('cal-smoke');
-  if (contSmoke) {
-    contSmoke.innerHTML = '';
-    const nombreMes = new Date(añoSmoke, mesSmoke, 1).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
-    document.getElementById('cal-month-smoke').innerText = `${nombreMes} ${añoSmoke}`;
-    ['L','M','X','J','V','S','D'].forEach(d => { let div = document.createElement('div'); div.innerText = d; div.style.fontWeight = 'bold'; div.style.textAlign = 'center'; div.style.color = '#999'; contSmoke.appendChild(div); });
-    let primerDia = new Date(añoSmoke, mesSmoke, 1).getDay(), offset = primerDia === 0 ? 6 : primerDia - 1;
-    for (let i = 0; i < offset; i++) contSmoke.appendChild(document.createElement('div'));
-    const diasMes = new Date(añoSmoke, mesSmoke+1, 0).getDate();
-    const hoyStr = getHoyStr();
-    for (let d = 1; d <= diasMes; d++) {
-      const fecha = new Date(añoSmoke, mesSmoke, d);
-      const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`;
-      const cell = document.createElement('div'); cell.className = 'cal-cell'; cell.innerText = d;
-      if (fecha < FECHA_INICIO_NO_FUMAR) { cell.style.background = '#2a2a2a'; cell.style.color = '#555'; cell.style.pointerEvents = 'none'; }
-      else if (fecha > new Date()) { cell.style.background = '#2a2a2a'; cell.style.color = '#666'; cell.style.pointerEvents = 'none'; }
-      else {
-        if (diasNoFumar.includes(fStr)) { cell.style.background = '#ff3b30'; cell.style.color = '#fff'; }
-        else { cell.style.background = '#0d47a1'; cell.style.color = '#fff'; }
-        cell.onclick = (function(fs) { return function() { toggleDiaFumado(fs); }; })(fStr);
+    graficoUnico = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: fechas,
+        datasets: [
+          { label: '💪 Masa muscular (kg)', data: masasMusculares, borderColor: '#10b981', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3, borderWidth: 2 },
+          { label: '🔥 Masa grasa (kg)', data: masasGrasas, borderColor: '#f97316', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3, borderWidth: 2 },
+          { label: '📏 Cintura (cm)', data: cinturas, borderColor: '#8b5cf6', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3, borderWidth: 2 },
+          { label: '⚖️ Peso (kg)', data: pesos, borderColor: '#6b7280', backgroundColor: 'transparent', tension: 0.2, pointRadius: 2, borderWidth: 1.5, hidden: true },
+          { label: '❤️ Grasa visceral', data: viscerales, borderColor: '#ef4444', backgroundColor: 'transparent', tension: 0.2, pointRadius: 2, borderWidth: 1.5, hidden: true },
+          { label: '📊 Índice recomposición', data: recomps, borderColor: '#22c55e', backgroundColor: 'transparent', tension: 0.2, pointRadius: 2, borderWidth: 1.5, hidden: true }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: { legend: { position: 'top', labels: { font: { size: 9 }, color: '#999', boxWidth: 10, padding: 8 } }, tooltip: { mode: 'index', intersect: false } },
+        scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, title: { display: true, text: 'kg / cm / nivel', color: '#888', font: { size: 9 } } }, x: { ticks: { maxRotation: 45, autoSkip: true, font: { size: 9 } } } }
       }
-      if (fStr === hoyStr) cell.classList.add('today');
-      if (fecha.getDate() === 1 && fecha.getMonth() === 7) cell.classList.add('cumple');
-      contSmoke.appendChild(cell);
-    }
-  }
-}
-
-function toggleDiaFumado(fStr) {
-  if (diasNoFumar.includes(fStr)) { diasNoFumar = diasNoFumar.filter(d => d !== fStr); mostrarToast("✅ Día sin fumar"); }
-  else { diasNoFumar.push(fStr); mostrarToast("🚬 Marcado fumado"); }
-  localStorage.setItem('diasNoFumar', JSON.stringify(diasNoFumar));
-  renderCalendarios();
-  actualizarUICompleta();
-}
-
-function changeMonth(dir, tipo) {
-  if (tipo === 'gym') { let n = new Date(añoGym, mesGym + dir, 1); mesGym = n.getMonth(); añoGym = n.getFullYear(); renderCalendarios(); }
-  else { let n = new Date(añoSmoke, mesSmoke + dir, 1); mesSmoke = n.getMonth(); añoSmoke = n.getFullYear(); renderCalendarios(); }
-}
-
-// ========== FUNCIONES AUXILIARES ==========
-function getHoyStr() { return new Date().toISOString().slice(0,10); }
-function mostrarToast(msg) { const t = document.createElement('div'); t.className = 'toast-msg'; t.innerText = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
-
-// ========== INSTRUCCIONES DETALLADAS PARA CADA EJERCICIO ==========
-function getInstruccionDetallada(nombre) {
-  const instrucciones = {
-    "Dominadas (palmas mirando hacia ti)": "1️⃣ Manos: Agarre supino (palmas hacia ti), separación ligeramente más ancha que hombros. Dedos envolviendo la barra.\n2️⃣ Cuerpo: Cuélgate con brazos extendidos, escápulas hacia abajo y atrás. Piernas juntas o ligeramente cruzadas.\n3️⃣ Movimiento: Tira de los codos hacia las caderas, lleva la barbilla por encima de la barra. Baja controlado hasta extensión completa.\n4️⃣ Respiración: Exhala al subir (esfuerzo), inhala al bajar.\n5️⃣ Error común: Balancear el cuerpo. Evítalo manteniendo el core firme.",
-    "Remo en banco": "1️⃣ Manos: Agarre prono (palmas abajo) o neutro según mancuerna. Muñeca recta.\n2️⃣ Piernas: Rodilla y mano del mismo lado apoyadas en banco, la otra pierna al suelo con pie firme.\n3️⃣ Espalda: Totalmente recta, paralela al suelo, hombro retraído hacia abajo.\n4️⃣ Movimiento: Rema la mancuerna hacia tu cadera, aprieta la escápula al final. Baja controlado.\n5️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Curl de bíceps alterno": "1️⃣ Manos: Agarre supino (palmas arriba), codos pegados al torso. Muñeca recta.\n2️⃣ Piernas: Separación ancho de hombros, rodillas ligeramente flexionadas, torso firme.\n3️⃣ Espalda: Recta, sin balanceos. Contrae el abdomen.\n4️⃣ Movimiento: Curva un brazo llevando la mancuerna al hombro, baja controlado. Alterna.\n5️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Curl martillo": "1️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos al cuerpo.\n2️⃣ Movimiento: Curva hacia el hombro manteniendo la muñeca recta. No gires la palma.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Pullover con mancuerna": "1️⃣ Posición: Tumbado transversal en banco, hombros apoyados, caderas hacia el suelo. Pies firmes.\n2️⃣ Manos: Sujeta una mancuerna con ambas manos sobre el pecho, codos ligeramente flexionados.\n3️⃣ Movimiento: Baja la mancuerna tras la cabeza en arco sintiendo el dorsal. Sube controlado.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Aperturas inclinadas con mancuernas": "1️⃣ Banco inclinado 30-45°, pies apoyados en el suelo.\n2️⃣ Manos: Palmas enfrentadas, codos ligeramente flexionados (fijos).\n3️⃣ Movimiento: Baja las mancuernas en arco hasta sentir estiramiento de pecho. Sube juntándolas sin chocar.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Press de hombros sentado": "1️⃣ Sentado con respaldo vertical, pies planos. Mancuernas a la altura de los hombros.\n2️⃣ Manos: Palmas hacia adelante, codos a 90°.\n3️⃣ Movimiento: Presiona verticalmente sin bloquear codos. Baja controlado.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Elevaciones laterales sentado": "1️⃣ Sentado, brazos a los lados, ligera flexión de codo (casi fija).\n2️⃣ Movimiento: Sube los brazos hasta la altura de los hombros, con el codo ligeramente más alto que la muñeca.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Sentadilla búlgara": "1️⃣ Pie trasero apoyado en banco, el delantero adelante (talón alineado con rodilla).\n2️⃣ Manos: Mancuernas a los lados o una en cada mano.\n3️⃣ Movimiento: Baja la rodilla trasera hacia el suelo, mantén torso recto. Sube empujando con el talón del pie delantero.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Peso muerto rumano": "1️⃣ Pies ancho de caderas, rodillas ligeramente flexionadas (sin bloquear).\n2️⃣ Espalda: Recta todo el tiempo, hombros hacia atrás.\n3️⃣ Movimiento: Flexiona cadera hacia atrás, baja mancuernas rozando espinillas. Sube extendiendo cadera.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Patada de tríceps": "1️⃣ Apoya rodilla y mano en banco, espalda paralela al suelo. Brazo activo pegado al torso.\n2️⃣ Brazo: Codo pegado al torso, a 90°.\n3️⃣ Movimiento: Extiende el brazo hacia atrás sin mover el codo. Contrae el tríceps.\n4️⃣ Respiración: Exhala al extender, inhala al volver.",
-    "Extensión de tríceps tumbado": "1️⃣ Tumbado en banco, mancuerna con ambas manos sobre cabeza. Codos apuntando al techo.\n2️⃣ Movimiento: Baja la mancuerna tras la cabeza hasta 90° (antebrazos paralelos al suelo). Sube.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Remo con barra (agarre supino estricto)": "1️⃣ Torso inclinado, barra con agarre supino (palmas arriba), manos separación hombros.\n2️⃣ Movimiento: Rema la barra hacia el abdomen, aprieta la espalda. Baja controlado.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Curl concentrado": "1️⃣ Sentado, codo apoyado en el muslo interior (mismo lado).\n2️⃣ Movimiento: Curva la mancuerna hacia el hombro, mantén la contracción 1 segundo.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Curl araña (pausa de 2\")": "1️⃣ Posición: Tumbado boca abajo en banco inclinado (30°), brazos colgando.\n2️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos.\n3️⃣ Movimiento: Curva la mancuerna hacia el hombro, mantén 2 segundos arriba. Baja controlado.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.\n5️⃣ Error: No balances el cuerpo; concéntrate en la contracción del bíceps.",
-    "Remo al cuello": "1️⃣ De pie, barra al frente con agarre prono (palmas abajo), manos separación hombros.\n2️⃣ Movimiento: Sube la barra verticalmente hasta la altura del cuello, codos hacia afuera.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Press inclinado con mancuernas (agarre neutro)": "1️⃣ Banco inclinado 30°, agarre neutro (palmas enfrentadas). Pies firmes.\n2️⃣ Movimiento: Presiona hacia arriba sin bloquear codos. Baja controlado.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Aperturas en banco": "1️⃣ Tumbado en banco plano, palmas enfrentadas, codos ligeramente flexionados.\n2️⃣ Movimiento: Abre en arco hasta sentir estiramiento de pecho. Sube juntando sin chocar.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Pájaro (fly invertido)": "1️⃣ Torso inclinado hasta casi paralelo al suelo, rodillas ligeramente flexionadas.\n2️⃣ Movimiento: Eleva brazos lateralmente con codos ligeramente flexionados, como si abrieras alas.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Press de banca agarre cerrado": "1️⃣ Tumbado, mancuernas juntas y paralelas (agarre neutro). Codos pegados al cuerpo.\n2️⃣ Movimiento: Presiona hacia arriba, enfatizando tríceps y pecho interno.\n3️⃣ Respiración: Exhala al subir.",
-    "Zancadas con mancuerna": "1️⃣ Paso largo hacia adelante, mantén torso recto, rodilla delantera no supera la punta del pie.\n2️⃣ Movimiento: Baja rodilla trasera hasta casi tocar suelo. Sube empujando con el talón delantero.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Peso muerto a una pierna": "1️⃣ De pie, mancuerna en mano contraria a la pierna que trabaja. Pierna de apoyo ligeramente flexionada.\n2️⃣ Movimiento: Flexiona cadera manteniendo espalda recta, baja la mancuerna por la espinilla. Sube con glúteo.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Extensión en banco declinado": "1️⃣ Banco declinado (-15°), cabeza abajo. Mancuerna tras cabeza con ambas manos.\n2️⃣ Movimiento: Extiende codos hasta casi extender brazos (sin bloquear). Baja controlado.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Press francés en banco inclinado": "1️⃣ Banco inclinado (30°), mancuerna con ambas manos tras cabeza. Codos apuntando al techo.\n2️⃣ Movimiento: Extiende codos, solo antebrazos se mueven. Baja hasta 90°.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Flexiones": "1️⃣ Manos: Apoyo más ancho que hombros, dedos hacia adelante, cuerpo recto.\n2️⃣ Cuerpo: Línea recta de cabeza a talones, abdomen y glúteos contraídos.\n3️⃣ Movimiento: Baja hasta que el pecho casi toque el suelo, luego empuja explosivamente.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Sentadilla Goblet": "1️⃣ Sujeta UNA mancuerna verticalmente al pecho con ambas manos (como una copa).\n2️⃣ Pies: Ancho de hombros, puntas ligeramente hacia afuera.\n3️⃣ Movimiento: Baja como si te sentaras en una silla, mantén talones pegados al suelo. Sube.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-    "Hip Thrust": "1️⃣ Hombros apoyados en banco, mancuerna sobre cadera (usa toalla para acolchar).\n2️⃣ Pies: Apoyados, rodillas a 90°, talones firmes.\n3️⃣ Movimiento: Sube cadera apretando glúteo hasta que el cuerpo forme línea recta. Baja sin apoyar del todo.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Elevación de gemelos": "1️⃣ De pie, puntas en escalón o borde elevado (opcional para más rango).\n2️⃣ Movimiento: Sube talones lo más alto posible, aguanta 2 segundos. Baja controlado hasta estiramiento.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-    "Plancha": "1️⃣ Apoyo sobre antebrazos y puntas de pies. Codos alineados con hombros.\n2️⃣ Cuerpo: Línea recta, caderas sin hundirse ni elevarse. Contrae abdomen y glúteos.\n3️⃣ Respiración: Normal, no aguantes la respiración.\n4️⃣ Error: Caderas altas o hundidas. Ajusta la posición.",
-    "Abdominal bicicleta": "1️⃣ Tumbado boca arriba, manos tras cabeza sin tirar del cuello.\n2️⃣ Movimiento: Alterna codo con rodilla contraria, estira la otra pierna. Mantén el core contraído.\n3️⃣ Respiración: Exhala al girar, inhala al volver."
-  };
-  return instrucciones[nombre] || "1️⃣ Posición inicial correcta.\n2️⃣ Movimiento controlado.\n3️⃣ Respiración adecuada.\n4️⃣ Concéntrate en el músculo trabajado.";
-}
-
-// ========== RUTINAS (ejercicios) ==========
-const ejerciciosUnicos = {
-  lunes: ["Dominadas (palmas mirando hacia ti)", "Remo en banco", "Curl de bíceps alterno", "Curl martillo", "Plancha"],
-  martes: ["Pullover con mancuerna", "Aperturas inclinadas con mancuernas", "Press de hombros sentado", "Elevaciones laterales sentado", "Flexiones", "Abdominal bicicleta"],
-  miercoles: ["Sentadilla búlgara", "Peso muerto rumano", "Patada de tríceps", "Extensión de tríceps tumbado", "Sentadilla Goblet", "Hip Thrust", "Elevación de gemelos", "Plancha"],
-  jueves: ["Remo con barra (agarre supino estricto)", "Curl concentrado", "Curl araña (pausa de 2\")", "Remo al cuello", "Plancha"],
-  viernes: ["Press inclinado con mancuernas (agarre neutro)", "Aperturas en banco", "Pájaro (fly invertido)", "Press de banca agarre cerrado", "Flexiones", "Abdominal bicicleta"],
-  sabado: ["Zancadas con mancuerna", "Peso muerto a una pierna", "Extensión en banco declinado", "Press francés en banco inclinado", "Sentadilla Goblet", "Hip Thrust", "Elevación de gemelos", "Plancha"]
-};
-const discosPorPeso = { 2.5:{izq:["1.25"],der:["1.25"]},3:{izq:["1.5"],der:["1.5"]},4:{izq:["2"],der:["2"]},5.5:{izq:["1.5","1.25"],der:["1.5","1.25"]},6.5:{izq:["2","1.25"],der:["2","1.25"]},7:{izq:["2","1.5"],der:["2","1.5"]},9.5:{izq:["2","1.5","1.25"],der:["2","1.5","1.25"]} };
-const imagenesMap = {
-  "Dominadas (palmas mirando hacia ti)":"https://i.pinimg.com/originals/15/98/ec/1598ec2121ef2ac8c5fa0a51c5a16f53.gif",
-  "Remo en banco":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
-  "Curl de bíceps alterno":"https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
-  "Curl martillo":"https://rincondelmusculo.com/wp-content/uploads/2014/09/CURL_DE_MARTILLO.gif",
-  "Pullover con mancuerna":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Pullover.gif",
-  "Aperturas inclinadas con mancuernas":"https://media.tenor.com/oJXOnsC72qMAAAAM/crussifixo-no-banco-com-halteres.gif",
-  "Press de hombros sentado":"https://gymvisual.com/img/p/1/4/4/9/3/14493.gif",
-  "Elevaciones laterales sentado":"https://gymvisual.com/img/p/5/1/3/7/5137.gif",
-  "Sentadilla búlgara":"https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649",
-  "Peso muerto rumano":"https://fitcron.com/wp-content/uploads/2021/04/14591301-Dumbbell-Romanian-Deadlift_Hips_720.gif",
-  "Patada de tríceps":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Kickback.gif",
-  "Extensión de tríceps tumbado":"https://fitnessprogramer.com/wp-content/uploads/2021/06/Dumbbell-Skull-Crusher.gif",
-  "Remo con barra (agarre supino estricto)":"https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif",
-  "Curl concentrado":"https://fitcron.com/wp-content/uploads/2021/04/02971301-Dumbbell-Concentration-Curl_Upper-Arms_720.gif",
-  "Curl araña (pausa de 2\")":"https://api.smartworkout.app/asset/image/94cdc539-0fda-45a3-b2e5-ca8404a629d7",
-  "Remo al cuello":"https://fitcron.com/wp-content/uploads/2021/04/04371301-Dumbbell-Upright-Row_shoulder_720.gif",
-  "Press inclinado con mancuernas (agarre neutro)":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
-  "Aperturas en banco":"https://media.tenor.com/oJXOnsC72qMAAAAM/crussifixo-no-banco-com-halteres.gif",
-  "Pájaro (fly invertido)":"https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
-  "Press de banca agarre cerrado":"https://fitnessprogramer.com/wp-content/uploads/2021/10/Close-Grip-Dumbbell-Press.gif",
-  "Zancadas con mancuerna":"https://gymvisual.com/img/p/2/3/7/3/9/23739.gif",
-  "Peso muerto a una pierna":"https://gymvisual.com/img/p/7/5/6/1/7561.gif",
-  "Extensión en banco declinado":"https://gymvisual.com/img/p/1/5/2/7/1/15271.gif",
-  "Press francés en banco inclinado":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
-  "Flexiones":"https://fitnessprogramer.com/wp-content/uploads/2021/06/Push-Up-Plus.gif",
-  "Sentadilla Goblet":"https://enfaf.com/wp-content/uploads/2026/04/sentadilla-globet.gif",
-  "Hip Thrust":"https://gymvisual.com/img/p/2/0/9/5/6/20956.gif",
-  "Elevación de gemelos":"https://fitcron.com/wp-content/uploads/2021/04/04171301-Dumbbell-Standing-Calf-Raise_Calf_720.gif",
-  "Plancha":"https://api.smartworkout.app/asset/image/606defc2-dc68-41d8-bea0-41a8d68aaa71",
-  "Abdominal bicicleta":"https://meutreinador.com/wp-content/uploads/2024/04/abdominal-bicicleta.gif"
-};
-function getEjerciciosPorDia(dia) { return ejerciciosUnicos[dia] || []; }
-function getCantidadMancuernas(n) {
-  if(n.includes("Patada")||n.includes("Extensión de tríceps")||n.includes("Extensión en banco")||n.includes("Press francés")||n.includes("Curl concentrado")||n.includes("Hip Thrust")) return 1;
-  if(n.includes("Sentadilla Goblet")) return 1;
-  if(n.includes("Press de banca")||n.includes("Pullover")||n.includes("Press de hombros")||n.includes("Aperturas")||n.includes("Press inclinado")) return 2;
-  if(n.includes("Dominadas")||n.includes("Plancha")||n.includes("Flexiones")||n.includes("Abdominal")) return 0;
-  return 2;
-}
-function getPesoEjercicioBase(n) {
-  if(n.includes("Curl") && !n.includes("martillo")) return 2.5;
-  if(n.includes("Elevaciones") || n.includes("Pájaro")) return 2.5;
-  if(n.includes("Press") || n.includes("Pullover") || n.includes("Aperturas") || n.includes("Sentadilla") || n.includes("Peso muerto")) return 4;
-  if(n.includes("Remo")) return 5.5;
-  if(n.includes("Hip Thrust")) return 9.5;
-  if(n.includes("Elevación de gemelos")) return 9.5;
-  return 4;
-}
-function getPesoEjercicio(n, pers){ return pers?.peso !== undefined ? pers.peso : getPesoEjercicioBase(n); }
-function getSeriesReps(n, pers){
-  if(pers?.series && pers?.reps) return { series: pers.series, reps: pers.reps };
-  if(n==="Plancha"||n==="Abdominal bicicleta"||n==="Flexiones") return { series: "3", reps: "15-20" };
-  return { series: "3-4", reps: "15-20" };
-}
-function formatearPeso(n, pers){
-  let kg = getPesoEjercicio(n, pers);
-  if(kg===0 || n.includes("Plancha")||n.includes("Flexiones")||n.includes("Dominadas")||n.includes("Abdominal")) return "Peso corporal";
-  let num = getCantidadMancuernas(n);
-  if(num===1) return `${kg} kg (1 mancuerna)`;
-  if(num===2) return `${kg} kg c/u`;
-  return `${kg} kg`;
-}
-function marcarEjercicio(id){
-  const dia=id.split('-')[0];
-  const semanaKey=Math.floor((new Date()-new Date(2026,0,5))/(1000*60*60*24*7))+1;
-  const completadoKey=`completado_${dia}_${semanaKey}`;
-  if(checks[id]) delete checks[id]; else checks[id]=true;
-  localStorage.setItem('nico_checks',JSON.stringify(checks));
-  renderizarRutinas();
-  const container=document.getElementById(`lista-${dia}`);
-  if(container){
-    const checkboxes=container.querySelectorAll('.check-box');
-    const todos=Array.from(checkboxes).every(cb=>cb.checked);
-    if(todos && checkboxes.length>0 && localStorage.getItem(completadoKey)!=='true') completarDia(dia);
-    if(!todos && localStorage.getItem(completadoKey)==='true'){
-      localStorage.removeItem(completadoKey);
-      const hoy=getHoyStr();
-      if(diasEntrenados.includes(hoy)) diasEntrenados=diasEntrenados.filter(d=>d!==hoy);
-      localStorage.setItem('diasEntrenados',JSON.stringify(diasEntrenados));
-      mostrarToast(`⚠️ Día ${dia} incompleto`); renderCalendarios();
-    }
-  }
-}
-function completarDia(dia){
-  const semanaKey=Math.floor((new Date()-new Date(2026,0,5))/(1000*60*60*24*7))+1;
-  const completadoKey=`completado_${dia}_${semanaKey}`;
-  if(localStorage.getItem(completadoKey)==='true') return;
-  localStorage.setItem(completadoKey,'true');
-  const hoy=getHoyStr();
-  if(!diasEntrenados.includes(hoy)){ diasEntrenados.push(hoy); localStorage.setItem('diasEntrenados',JSON.stringify(diasEntrenados)); }
-  mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`);
-  canvasConfetti({particleCount:100,spread:70});
-  renderizarRutinas(); actualizarUICompleta(); actualizarLogros(); renderCalendarios();
-}
-function resetDia(dia){
-  const semanaKey=Math.floor((new Date()-new Date(2026,0,5))/(1000*60*60*24*7))+1;
-  const completadoKey=`completado_${dia}_${semanaKey}`;
-  const container=document.getElementById(`lista-${dia}`);
-  if(container){
-    let cambios=false;
-    container.querySelectorAll('.check-box').forEach((cb,idx)=>{ const id=`${dia}-${idx}`; if(checks[id]){ delete checks[id]; cambios=true; } });
-    if(cambios) localStorage.setItem('nico_checks',JSON.stringify(checks));
-  }
-  if(localStorage.getItem(completadoKey)==='true'){
-    localStorage.removeItem(completadoKey);
-    const hoy=getHoyStr();
-    if(diasEntrenados.includes(hoy)) diasEntrenados=diasEntrenados.filter(d=>d!==hoy);
-    localStorage.setItem('diasEntrenados',JSON.stringify(diasEntrenados));
-    mostrarToast(`✅ Día ${dia} reiniciado`);
-  } else mostrarToast(`✅ Ejercicios desmarcados`);
-  renderizarRutinas(); actualizarUICompleta(); renderCalendarios();
-}
-function renderizarRutinas(){
-  const dias=['lunes','martes','miercoles','jueves','viernes','sabado'];
-  for(let dia of dias){
-    const container=document.getElementById(`lista-${dia}`);
-    if(!container) continue;
-    const ejercicios=getEjerciciosPorDia(dia);
-    container.innerHTML='';
-    ejercicios.forEach((nombre,idx)=>{
-      const id=`${dia}-${idx}`;
-      const pers=personalizaciones[id];
-      const {series,reps}=getSeriesReps(nombre,pers);
-      const pesoTexto=formatearPeso(nombre,pers);
-      const imgUrl=imagenesMap[nombre]||'';
-      const instrucHtml=getInstruccionDetallada(nombre).replace(/\n/g,'<br>');
-      const isChecked=!!checks[id];
-      const card=document.createElement('div');
-      card.className=`ex-card ${isChecked?'checked':''}`;
-      card.innerHTML=`
-        <div class="ex-head"><div class="ex-name">${nombre}</div><input type="checkbox" class="check-box" ${isChecked?'checked':''} onchange="marcarEjercicio('${id}')"></div>
-        <div class="ex-body">
-          <div class="ex-meta"><div class="em"><div class="em-n">${series}</div><div class="em-k">series</div></div><div class="em"><div class="em-n">${reps}</div><div class="em-k">reps</div></div><div class="em"><div class="em-n">60"</div><div class="em-k">descanso</div></div></div>
-          <div class="weight-badge" onclick="window.mostrarDiscos('${nombre.replace(/'/g,"\\'")}','${id}')">📦 ${pesoTexto}</div>
-          <button class="ex-tog" onclick="toggleDetalles(this, '${imgUrl}', \`${instrucHtml}\`)">Ver técnica ↓</button>
-          <div class="ex-det"></div>
-        </div>
-      `;
-      container.appendChild(card);
     });
-    const resetBtn=document.querySelector(`.btn-reset-dia[data-dia="${dia}"]`);
-    if(resetBtn) resetBtn.onclick=()=>resetDia(dia);
   }
-  document.querySelectorAll('.ex-img').forEach(img => { img.addEventListener('click', (e) => { e.stopPropagation(); openLightbox(img.src); }); });
-}
-function toggleDetalles(btn, imgUrl, instrucHtml){
-  const detDiv=btn.nextElementSibling;
-  if(detDiv.classList.contains('open')){
-    detDiv.classList.remove('open'); btn.textContent="Ver técnica ↓";
-  }else{
-    detDiv.innerHTML=`${imgUrl?`<img src="${imgUrl}" class="ex-img" onerror="this.style.display='none'">`:''}<ul class="steps">${instrucHtml.split('<br>').map((line,i)=>`<li data-n="${i+1}">${line.replace(/^\d+️⃣/,'').trim()}</li>`).join('')}</ul><div class="tip"><span>💡</span>Respira correctamente.</div>`;
-    detDiv.classList.add('open'); btn.textContent="Ocultar ↑";
-    const newImg = detDiv.querySelector('.ex-img');
-    if(newImg) newImg.addEventListener('click', (e) => { e.stopPropagation(); openLightbox(newImg.src); });
+
+  let mesGym = new Date().getMonth(), añoGym = new Date().getFullYear(), mesSmoke = new Date().getMonth(), añoSmoke = new Date().getFullYear();
+  function renderCalendarios() {
+    const contGym = document.getElementById('cal-gym');
+    if (contGym) {
+      contGym.innerHTML = '';
+      const nombreMes = new Date(añoGym, mesGym, 1).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+      document.getElementById('cal-month-gym').innerText = `${nombreMes} ${añoGym}`;
+      ['L', 'M', 'X', 'J', 'V', 'S', 'D'].forEach(d => { let div = document.createElement('div'); div.innerText = d; div.style.fontWeight = 'bold'; div.style.textAlign = 'center'; div.style.color = '#999'; contGym.appendChild(div); });
+      let primerDia = new Date(añoGym, mesGym, 1).getDay(), offset = primerDia === 0 ? 6 : primerDia - 1;
+      for (let i = 0; i < offset; i++) contGym.appendChild(document.createElement('div'));
+      const diasMes = new Date(añoGym, mesGym + 1, 0).getDate();
+      const hoyStr = getHoyStr();
+      for (let d = 1; d <= diasMes; d++) {
+        const fecha = new Date(añoGym, mesGym, d);
+        const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}`;
+        const cell = document.createElement('div'); cell.className = 'cal-cell'; cell.innerText = d; cell.setAttribute('data-day', fecha.getDay());
+        if (diasEntrenados.includes(fStr)) cell.classList.add('completado');
+        if (fStr === getHoyStr()) cell.classList.add('today');
+        if (fecha.getDate() === 1 && fecha.getMonth() === 7) cell.classList.add('cumple');
+        cell.onclick = (function(f) { return function() { mostrarPopupEjercicios(f); }; })(fecha);
+        contGym.appendChild(cell);
+      }
+    }
+    const contSmoke = document.getElementById('cal-smoke');
+    if (contSmoke) {
+      contSmoke.innerHTML = '';
+      const nombreMes = new Date(añoSmoke, mesSmoke, 1).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+      document.getElementById('cal-month-smoke').innerText = `${nombreMes} ${añoSmoke}`;
+      ['L', 'M', 'X', 'J', 'V', 'S', 'D'].forEach(d => { let div = document.createElement('div'); div.innerText = d; div.style.fontWeight = 'bold'; div.style.textAlign = 'center'; div.style.color = '#999'; contSmoke.appendChild(div); });
+      let primerDia = new Date(añoSmoke, mesSmoke, 1).getDay(), offset = primerDia === 0 ? 6 : primerDia - 1;
+      for (let i = 0; i < offset; i++) contSmoke.appendChild(document.createElement('div'));
+      const diasMes = new Date(añoSmoke, mesSmoke + 1, 0).getDate();
+      const hoyStr = getHoyStr();
+      for (let d = 1; d <= diasMes; d++) {
+        const fecha = new Date(añoSmoke, mesSmoke, d);
+        const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}`;
+        const cell = document.createElement('div'); cell.className = 'cal-cell'; cell.innerText = d;
+        if (fecha < FECHA_INICIO_NO_FUMAR) { cell.style.background = '#2a2a2a'; cell.style.color = '#555'; cell.style.pointerEvents = 'none'; }
+        else if (fecha > new Date()) { cell.style.background = '#2a2a2a'; cell.style.color = '#666'; cell.style.pointerEvents = 'none'; }
+        else {
+          if (diasNoFumar.includes(fStr)) { cell.style.background = '#ff3b30'; cell.style.color = '#fff'; }
+          else { cell.style.background = '#0d47a1'; cell.style.color = '#fff'; }
+          cell.onclick = (function(fs) { return function() { toggleDiaFumado(fs); }; })(fStr);
+        }
+        if (fStr === hoyStr) cell.classList.add('today');
+        if (fecha.getDate() === 1 && fecha.getMonth() === 7) cell.classList.add('cumple');
+        contSmoke.appendChild(cell);
+      }
+    }
   }
-}
-function openLightbox(src){ const lb=document.getElementById('lightbox'); document.getElementById('lightboxImg').src=src; lb.classList.add('active'); }
-function closeLightbox(){ document.getElementById('lightbox').classList.remove('active'); }
-window.mostrarDiscos=function(nombre,id){
-  let kg=getPesoEjercicio(nombre,personalizaciones[id]);
-  if(kg===0){mostrarToast("Peso corporal");return;}
-  let combo=discosPorPeso[kg];
-  if(!combo){mostrarToast(`Ajusta con discos`);return;}
-  let num=getCantidadMancuernas(nombre);
-  let msg=num===1?"Usa UNA mancuerna:":num===2?"Usa DOS mancuernas, CADA una:":"";
-  let html=`<div id="modalDiscos" class="modal-disk"><div class="disk-panel"><h3>⚙️ ${nombre}</h3><div><strong>${kg} kg</strong></div><div>${msg}<br>IZQ: ${combo.izq.join("+")} kg<br>DER: ${combo.der.join("+")} kg</div><button onclick="cerrarModalDiscos()">CERRAR</button></div></div>`;
-  cerrarModalDiscos(); document.body.insertAdjacentHTML('beforeend',html);
-};
-function cerrarModalDiscos(){document.getElementById('modalDiscos')?.remove();}
-function mostrarPopupEjercicios(fecha){
-  const diaSemana=fecha.getDay();
-  if(diaSemana===0){mostrarToast("📅 Domingo - descanso");return;}
-  const diasMap={1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado'};
-  const ejercicios=getEjerciciosPorDia(diasMap[diaSemana]);
-  if(!ejercicios.length){mostrarToast("No hay ejercicios");return;}
-  const html=`<div class="disk-panel"><h3>📅 ${fecha.toLocaleDateString('es-ES')}</h3><ul style="text-align:left;">${ejercicios.map(e=>`<li>${e}</li>`).join('')}</ul><button onclick="cerrarModalPopup()">CERRAR</button></div>`;
-  cerrarModalPopup(); const overlay=document.createElement('div'); overlay.className='modal-disk'; overlay.id='modalPopup'; overlay.innerHTML=html; document.body.appendChild(overlay);
-}
-function cerrarModalPopup(){document.getElementById('modalPopup')?.remove();}
-function getRachaEntrenos(){
-  let racha=0, hoy=new Date();
-  for(let i=0;i<100;i++){ let fecha=new Date(hoy); fecha.setDate(hoy.getDate()-i); if(diasEntrenados.includes(fecha.toISOString().slice(0,10))) racha++; else break; }
-  return racha;
-}
-function getNivelActual(){
-  let total=0; for(let k in localStorage) if(k.startsWith('completado_')&&localStorage.getItem(k)==='true') total++;
-  if(total>=100)return 5; if(total>=50)return 4; if(total>=25)return 3; if(total>=10)return 2; return 1;
-}
-function getEntrenosHistoricos(){
-  let total=0; for(let k in localStorage) if(k.startsWith('completado_')&&localStorage.getItem(k)==='true') total++;
-  return total;
-}
-const listaLogros=[
-  {id:"ns_7",nombre:"🌱 1 semana sin fumar",cond:()=>calcularDiasSinFumar()>=7},
-  {id:"ns_30",nombre:"🚭 1 mes sin fumar",cond:()=>calcularDiasSinFumar()>=30},
-  {id:"ns_90",nombre:"🎉 3 meses sin fumar",cond:()=>calcularDiasSinFumar()>=90},
-  {id:"ns_180",nombre:"💪 6 meses sin fumar",cond:()=>calcularDiasSinFumar()>=180},
-  {id:"ns_365",nombre:"🏆 1 año sin fumar",cond:()=>calcularDiasSinFumar()>=365},
-  {id:"primer_peso",nombre:"⚖️ Primer peso",cond:()=>mediciones.length>=1},
-  {id:"primer_check",nombre:"🏁 Primer ejercicio",cond:()=>getEntrenosHistoricos()>=1},
-  {id:"check_25",nombre:"🟢 25 ejercicios",cond:()=>getEntrenosHistoricos()>=25},
-  {id:"check_50",nombre:"💪 50 ejercicios",cond:()=>getEntrenosHistoricos()>=50},
-  {id:"check_100",nombre:"🦾 100 ejercicios",cond:()=>getEntrenosHistoricos()>=100},
-  {id:"racha_3",nombre:"📅 3 días seguidos",cond:()=>getRachaEntrenos()>=3},
-  {id:"racha_7",nombre:"✨ 1 semana seguida",cond:()=>getRachaEntrenos()>=7},
-  {id:"racha_14",nombre:"⚡ 2 semanas seguidas",cond:()=>getRachaEntrenos()>=14},
-  {id:"nivel_2",nombre:"⭐ Nivel 2",cond:()=>getNivelActual()>=2},
-  {id:"nivel_3",nombre:"⭐⭐ Nivel 3",cond:()=>getNivelActual()>=3},
-  {id:"nivel_4",nombre:"⭐⭐⭐ Nivel 4",cond:()=>getNivelActual()>=4},
-  {id:"nivel_5",nombre:"🏅 Nivel 5 Élite",cond:()=>getNivelActual()>=5}
-];
-function actualizarLogros(){
-  const container=document.getElementById('logrosContainer');
-  if(!container)return;
-  let nuevos=false;
-  listaLogros.forEach(l=>{if(!logros.includes(l.id) && l.cond()){logros.push(l.id);nuevos=true;mostrarToast(`🏆 ${l.nombre}`);canvasConfetti({particleCount:100,spread:70});}});
-  if(nuevos)localStorage.setItem('nico_logros',JSON.stringify(logros));
-  container.innerHTML=listaLogros.map(l=>`<div class="logro-badge ${logros.includes(l.id)?'obtenido':''}">${l.nombre}</div>`).join('');
-}
-function actualizarUICompleta() {
-  renderizarUltimaMedicion();
-  renderizarGraficoUnico();
-  actualizarTopBar();
-  renderizarRutinas();
-  renderCalendarios();
-  actualizarLogros();
-  cargarHistorialMediciones();
-}
-function goPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(`page-${id}`).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(b=>{ if(b.innerText.toLowerCase().includes(id.substring(0,4))) b.classList.add('active'); });
-  window.scrollTo(0,0);
-  if(id==='inicio') actualizarUICompleta();
-  if(id==='composicion') cargarHistorialMediciones();
-  if(id==='logros') actualizarLogros();
-  if(id==='rutinas') cargarTabs();
-}
-function cargarTabs(){
-  const tabsContainer=document.getElementById('dayTabs'), panelsContainer=document.getElementById('dayPanelsContainer');
-  if(!tabsContainer)return;
-  const dias=['lunes','martes','miercoles','jueves','viernes','sabado','domingo'], nombres=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'], iconos=['💪','🏋️','🦵','💪','🏋️','🦵','😴'];
-  tabsContainer.innerHTML=''; panelsContainer.innerHTML='';
-  dias.forEach((dia,idx)=>{
-    const btn=document.createElement('button'); btn.className='dtab'+(idx===0?' active':''); btn.innerText=`${iconos[idx]} ${nombres[idx]}`; btn.onclick=()=>switchDay(dia,btn); tabsContainer.appendChild(btn);
-    const panel=document.createElement('div'); panel.className='day-panel'+(idx===0?' active':''); panel.id=`dp-${dia}`;
-    if(dia==='domingo'){panel.innerHTML=`<div class="rest-big"><div style="font-size:48px">😴</div><h3>DESCANSO TOTAL</h3><p>Recuperación activa. Camina 20-40 min si quieres.</p></div>`;}
-    else{panel.innerHTML=`<div class="day-hdr"><div class="day-ico">${iconos[idx]}</div><div class="day-info"><h2>${nombres[idx]} · ${dia==='lunes'||dia==='jueves'?'ESPALDA/BÍCEPS':dia==='martes'||dia==='viernes'?'PECHO/HOMBRO':'PIERNA/TRÍCEPS'}</h2><div class="badges"><span class="badge">⏱ 45-55 min</span><span class="badge">🔥 ~380 kcal</span></div></div></div><div id="lista-${dia}" class="ex-grid"></div><div class="cinta-info">🚶 CINTA: ${dia==='sabado'?'45-50 min a 4.5 km/h':'30-40 min a 4.5-5 km/h'}</div><button class="btn-reset-dia" data-dia="${dia}">🗑️ Desmarcar todos</button>`;}
-    panelsContainer.appendChild(panel);
-  });
-  renderizarRutinas();
-}
-function switchDay(day,btn){
-  document.querySelectorAll('.day-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.dtab').forEach(b=>b.classList.remove('active'));
-  document.getElementById(`dp-${day}`).classList.add('active');
-  btn.classList.add('active');
-}
-function toggleMenu(){
-  const menu=document.getElementById('sideMenu');
-  const overlay=document.getElementById('menuOverlay');
-  if(menu.classList.contains('open')){
-    menu.classList.remove('open');
-    overlay.classList.remove('show');
-  }else{
-    menu.classList.add('open');
-    overlay.classList.add('show');
+
+  function toggleDiaFumado(fStr) {
+    if (diasNoFumar.includes(fStr)) { diasNoFumar = diasNoFumar.filter(d => d !== fStr); mostrarToast("✅ Día sin fumar"); }
+    else { diasNoFumar.push(fStr); mostrarToast("🚬 Marcado fumado"); }
+    localStorage.setItem('diasNoFumar', JSON.stringify(diasNoFumar));
+    renderCalendarios();
+    actualizarUICompleta();
   }
-}
-function irHoy(){ const hoy=new Date().getDay(), diasMap={1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado',0:'domingo'}; goPage('rutinas'); setTimeout(()=>{ const tabs=document.querySelectorAll('.dtab'); const idx={lunes:0,martes:1,miercoles:2,jueves:3,viernes:4,sabado:5,domingo:6}[diasMap[hoy]]; if(tabs[idx]) switchDay(diasMap[hoy],tabs[idx]); },100); }
-function mostrarReset(){document.getElementById('resetModal').style.display='flex';}
-function cerrarReset(){document.getElementById('resetModal').style.display='none';}
-function borrarTodo(){if(document.getElementById('confirmReset').value==='BORRAR'){localStorage.clear();location.reload();}else mostrarToast('❌ Escribe BORRAR');}
-function setDescanso(seg){if(document.getElementById('descanso-box').style.display==='flex')cancelarDescanso();const box=document.getElementById('descanso-box');box.style.display='flex';let s=seg;document.getElementById('descansoTimer').innerText=s;timerInterval=setInterval(()=>{s--;document.getElementById('descansoTimer').innerText=s;if(s<=0){clearInterval(timerInterval);box.style.display='none';}},1000);}
-function cancelarDescanso(){clearInterval(timerInterval);document.getElementById('descanso-box').style.display='none';}
-function resetAllData(){if(confirm("¿Borrar TODOS los datos?")){localStorage.clear();location.reload();}}
-let db=null; const DB_NAME='FotosProgresoDB', STORE_NAME='diasFotos';
-function abrirDB(){return new Promise(r=>{const req=indexedDB.open(DB_NAME,1);req.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE_NAME))e.target.result.createObjectStore(STORE_NAME,{keyPath:'fecha'});};req.onsuccess=e=>{db=e.target.result;r();};req.onerror=()=>r();});}
-async function guardarFotos(){
-  const fecha=document.getElementById('fechaFotos').value;
-  if(!fecha){mostrarToast("Selecciona fecha");return;}
-  const frente=await leerArchivoComoDataURL(document.getElementById('fotoFrente').files[0]);
-  const espalda=await leerArchivoComoDataURL(document.getElementById('fotoEspalda').files[0]);
-  const izquierda=await leerArchivoComoDataURL(document.getElementById('FotoIzquierda').files[0]);
-  const derecha=await leerArchivoComoDataURL(document.getElementById('fotoDerecha').files[0]);
-  if(!frente&&!espalda&&!izquierda&&!derecha){mostrarToast("Selecciona al menos una foto");return;}
-  await abrirDB();
-  await db.transaction(STORE_NAME,'readwrite').objectStore(STORE_NAME).put({fecha,timestamp:Date.now(),frente,espalda,izquierda,derecha});
-  mostrarToast("✅ Fotos guardadas");
-  cargarListaDias(); cargarSelectores();
-  document.getElementById('fotoFrente').value='';document.getElementById('fotoEspalda').value='';
-  document.getElementById('FotoIzquierda').value='';document.getElementById('fotoDerecha').value='';
-}
-function leerArchivoComoDataURL(file){if(!file)return Promise.resolve(null);return new Promise(r=>{const reader=new FileReader();reader.onload=e=>r(e.target.result);reader.readAsDataURL(file);});}
-async function cargarListaDias(){
-  await abrirDB(); const items=await new Promise(r=>db.transaction(STORE_NAME,'readonly').objectStore(STORE_NAME).getAll().onsuccess=e=>r(e.target.result));
-  items.sort((a,b)=>b.timestamp-a.timestamp);
-  document.getElementById('listaDiasDB').innerHTML=items.map(i=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">📅 ${i.fecha}<button onclick="eliminarDia('${i.fecha}')" class="btn-3d" style="padding:2px 8px;">🗑️</button></div>`).join('');
-  cargarSelectores();
-}
-async function cargarSelectores(){
-  await abrirDB(); const items=await new Promise(r=>db.transaction(STORE_NAME,'readonly').objectStore(STORE_NAME).getAll().onsuccess=e=>r(e.target.result));
-  items.sort((a,b)=>b.timestamp-a.timestamp);
-  const opts=items.map(i=>`<option value="${i.fecha}">${i.fecha}</option>`);
-  document.getElementById('compararDia1').innerHTML='<option value="">Día 1</option>'+opts.join('');
-  document.getElementById('compararDia2').innerHTML='<option value="">Día 2</option>'+opts.join('');
-}
-async function eliminarDia(fecha){await abrirDB();db.transaction(STORE_NAME,'readwrite').objectStore(STORE_NAME).delete(fecha);cargarListaDias();cargarSelectores();document.getElementById('comparadorResultado').innerHTML='';}
-async function compararFotos(){
-  const f1=document.getElementById('compararDia1').value,f2=document.getElementById('compararDia2').value;
-  if(!f1||!f2)return;
-  await abrirDB(); const store=db.transaction(STORE_NAME,'readonly').objectStore(STORE_NAME);
-  const d1=await new Promise(r=>store.get(f1).onsuccess=e=>r(e.target.result));
-  const d2=await new Promise(r=>store.get(f2).onsuccess=e=>r(e.target.result));
-  const gen=(d,t)=>`<div style="background:var(--s1);border-radius:14px;padding:10px;margin-bottom:12px;"><h4 style="color:var(--acc);margin-bottom:8px;">${t}</h4><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;"><div>FRENTE<br><img src="${d?.frente||''}" style="width:100%;border-radius:10px;margin-top:4px;"></div><div>ESPALDA<br><img src="${d?.espalda||''}" style="width:100%;border-radius:10px;"></div><div>IZQUIERDA<br><img src="${d?.izquierda||''}" style="width:100%;border-radius:10px;"></div><div>DERECHA<br><img src="${d?.derecha||''}" style="width:100%;border-radius:10px;"></div></div></div>`;
-  document.getElementById('comparadorResultado').innerHTML=gen(d1,f1)+gen(d2,f2);
-}
-function recargarComparacion(){compararFotos();}
-const frasesSplash = [
-  { frase: "El único mal entreno es el que no hiciste." },
-  { frase: "No pares cuando estés cansado. Para cuando hayas terminado." },
-  { frase: "Tu cuerpo puede casi cualquier cosa. Es tu mente a quien tienes que convencer." },
-  { frase: "El dolor que sientes hoy será la fuerza que sientas mañana."}
-];
-function mostrarSplash() {
-  const splash = document.getElementById('splashScreen');
-  if (!splash) return;
-  const r = frasesSplash[Math.floor(Math.random() * frasesSplash.length)];
-  splash.innerHTML = `<div class="splash-logo">NICO GYM</div><div class="splash-line"></div><div class="splash-frase">"${r.frase}"<div class="splash-tap">Toca para comenzar</div>`;
-  splash.style.display = 'flex';
-  splash.onclick = () => {
-    splash.style.opacity = '0';
-    setTimeout(() => { splash.style.display = 'none'; }, 600);
+
+  function changeMonth(dir, tipo) {
+    if (tipo === 'gym') { let n = new Date(añoGym, mesGym + dir, 1); mesGym = n.getMonth(); añoGym = n.getFullYear(); renderCalendarios(); }
+    else { let n = new Date(añoSmoke, mesSmoke + dir, 1); mesSmoke = n.getMonth(); añoSmoke = n.getFullYear(); renderCalendarios(); }
+  }
+
+  function getHoyStr() { return new Date().toISOString().slice(0, 10); }
+  function mostrarToast(msg) { const t = document.createElement('div'); t.className = 'toast-msg'; t.innerText = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+
+  function getInstruccionDetallada(nombre) {
+    const instrucciones = {
+      "Dominadas (palmas mirando hacia ti)": "1️⃣ Manos: Agarre supino (palmas hacia ti), separación ligeramente más ancha que hombros.\n2️⃣ Cuerpo: Cuélgate con brazos extendidos, escápulas hacia abajo y atrás.\n3️⃣ Movimiento: Tira de los codos hacia las caderas, lleva la barbilla por encima de la barra.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.\n5️⃣ Error común: Balancear el cuerpo. Mantén el core firme.",
+      "Remo en banco": "1️⃣ Manos: Agarre prono (palmas abajo) o neutro. Muñeca recta.\n2️⃣ Piernas: Rodilla y mano del mismo lado apoyadas en banco, la otra pierna al suelo.\n3️⃣ Espalda: Totalmente recta, paralela al suelo, hombro retraído.\n4️⃣ Movimiento: Rema la mancuerna hacia tu cadera, aprieta la escápula.\n5️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Curl de bíceps alterno": "1️⃣ Manos: Agarre supino (palmas arriba), codos pegados al torso.\n2️⃣ Piernas: Separación ancho de hombros, rodillas ligeramente flexionadas.\n3️⃣ Espalda: Recta, sin balanceos. Contrae el abdomen.\n4️⃣ Movimiento: Curva un brazo llevando la mancuerna al hombro, baja controlado.\n5️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Curl martillo": "1️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos al cuerpo.\n2️⃣ Movimiento: Curva hacia el hombro manteniendo la muñeca recta.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Pullover con mancuerna": "1️⃣ Posición: Tumbado transversal en banco, hombros apoyados, caderas hacia el suelo.\n2️⃣ Manos: Sujeta una mancuerna con ambas manos sobre el pecho.\n3️⃣ Movimiento: Baja la mancuerna tras la cabeza en arco sintiendo el dorsal.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Aperturas inclinadas con mancuernas": "1️⃣ Banco inclinado 30-45°, pies apoyados.\n2️⃣ Manos: Palmas enfrentadas, codos ligeramente flexionados.\n3️⃣ Movimiento: Baja las mancuernas en arco hasta sentir estiramiento de pecho.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Press de hombros sentado": "1️⃣ Sentado con respaldo vertical, pies planos.\n2️⃣ Manos: Palmas hacia adelante, codos a 90°.\n3️⃣ Movimiento: Presiona verticalmente sin bloquear codos.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Elevaciones laterales sentado": "1️⃣ Sentado, brazos a los lados, ligera flexión de codo.\n2️⃣ Movimiento: Sube los brazos hasta la altura de los hombros.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Sentadilla búlgara": "1️⃣ Pie trasero apoyado en banco, el delantero adelante.\n2️⃣ Manos: Mancuernas a los lados.\n3️⃣ Movimiento: Baja la rodilla trasera hacia el suelo, mantén torso recto.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Peso muerto rumano": "1️⃣ Pies ancho de caderas, rodillas ligeramente flexionadas.\n2️⃣ Espalda: Recta todo el tiempo.\n3️⃣ Movimiento: Flexiona cadera hacia atrás, baja mancuernas rozando espinillas.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Patada de tríceps": "1️⃣ Apoya rodilla y mano en banco, espalda paralela.\n2️⃣ Brazo: Codo pegado al torso, a 90°.\n3️⃣ Movimiento: Extiende el brazo hacia atrás sin mover el codo.\n4️⃣ Respiración: Exhala al extender, inhala al volver.",
+      "Extensión de tríceps tumbado": "1️⃣ Tumbado en banco, mancuerna con ambas manos sobre cabeza.\n2️⃣ Codos apuntando al techo.\n3️⃣ Movimiento: Baja la mancuerna tras la cabeza hasta 90°.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Remo con barra (agarre supino estricto)": "1️⃣ Torso inclinado, barra con agarre supino (palmas arriba).\n2️⃣ Movimiento: Rema la barra hacia el abdomen, aprieta la espalda.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Curl concentrado": "1️⃣ Sentado, codo apoyado en el muslo interior.\n2️⃣ Movimiento: Curva la mancuerna hacia el hombro.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Curl araña (pausa de 2\")": "1️⃣ Posición: Tumbado boca abajo en banco inclinado (30°), brazos colgando.\n2️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos.\n3️⃣ Movimiento: Curva la mancuerna hacia el hombro, mantén 2 segundos arriba.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.\n5️⃣ Error: No balances el cuerpo.",
+      "Remo al cuello": "1️⃣ De pie, barra al frente con agarre prono.\n2️⃣ Movimiento: Sube la barra verticalmente hasta la altura del cuello.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Press inclinado con mancuernas (agarre neutro)": "1️⃣ Banco inclinado 30°, agarre neutro.\n2️⃣ Movimiento: Presiona hacia arriba sin bloquear codos.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Aperturas en banco": "1️⃣ Tumbado en banco plano, palmas enfrentadas.\n2️⃣ Movimiento: Abre en arco hasta sentir estiramiento.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Pájaro (fly invertido)": "1️⃣ Torso inclinado hasta casi paralelo al suelo.\n2️⃣ Movimiento: Eleva brazos lateralmente como si abrieras alas.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Press de banca agarre cerrado": "1️⃣ Tumbado, mancuernas juntas y paralelas.\n2️⃣ Movimiento: Presiona hacia arriba, enfatizando tríceps.\n3️⃣ Respiración: Exhala al subir.",
+      "Zancadas con mancuerna": "1️⃣ Paso largo hacia adelante, torso recto.\n2️⃣ Movimiento: Baja rodilla trasera hasta casi tocar suelo.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Peso muerto a una pierna": "1️⃣ De pie, mancuerna en mano contraria.\n2️⃣ Movimiento: Flexiona cadera manteniendo espalda recta.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Extensión en banco declinado": "1️⃣ Banco declinado, mancuerna tras cabeza.\n2️⃣ Movimiento: Extiende codos, baja controlado.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Press francés en banco inclinado": "1️⃣ Banco inclinado, mancuerna tras cabeza.\n2️⃣ Movimiento: Extiende codos, solo antebrazos se mueven.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Flexiones": "1️⃣ Manos: Apoyo más ancho que hombros, cuerpo recto.\n2️⃣ Cuerpo: Línea recta de cabeza a talones.\n3️⃣ Movimiento: Baja hasta que el pecho casi toque el suelo.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Sentadilla Goblet": "1️⃣ Sujeta UNA mancuerna al pecho como una copa.\n2️⃣ Pies: Ancho de hombros, puntas hacia afuera.\n3️⃣ Movimiento: Baja como si te sentaras, talones pegados.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+      "Hip Thrust": "1️⃣ Hombros en banco, mancuerna sobre cadera.\n2️⃣ Pies apoyados, rodillas a 90°.\n3️⃣ Movimiento: Sube cadera apretando glúteo.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Elevación de gemelos": "1️⃣ De pie, puntas en escalón.\n2️⃣ Movimiento: Sube talones lo más alto posible, aguanta 2 seg.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+      "Plancha": "1️⃣ Apoyo sobre antebrazos y puntas de pies.\n2️⃣ Cuerpo: Línea recta, caderas sin hundirse.\n3️⃣ Contracción: Abdomen y glúteos firmes.\n4️⃣ Respiración: Normal, no aguantes la respiración.",
+      "Abdominal bicicleta": "1️⃣ Tumbado boca arriba, manos tras cabeza.\n2️⃣ Movimiento: Alterna codo con rodilla contraria.\n3️⃣ Respiración: Exhala al girar, inhala al volver."
+    };
+    return instrucciones[nombre] || "1️⃣ Posición inicial correcta.\n2️⃣ Movimiento controlado.\n3️⃣ Respiración adecuada.";
+  }
+
+  const ejerciciosUnicos = {
+    lunes: ["Dominadas (palmas mirando hacia ti)", "Remo en banco", "Curl de bíceps alterno", "Curl martillo", "Plancha"],
+    martes: ["Pullover con mancuerna", "Aperturas inclinadas con mancuernas", "Press de hombros sentado", "Elevaciones laterales sentado", "Flexiones", "Abdominal bicicleta"],
+    miercoles: ["Sentadilla búlgara", "Peso muerto rumano", "Patada de tríceps", "Extensión de tríceps tumbado", "Sentadilla Goblet", "Hip Thrust", "Elevación de gemelos", "Plancha"],
+    jueves: ["Remo con barra (agarre supino estricto)", "Curl concentrado", "Curl araña (pausa de 2\")", "Remo al cuello", "Plancha"],
+    viernes: ["Press inclinado con mancuernas (agarre neutro)", "Aperturas en banco", "Pájaro (fly invertido)", "Press de banca agarre cerrado", "Flexiones", "Abdominal bicicleta"],
+    sabado: ["Zancadas con mancuerna", "Peso muerto a una pierna", "Extensión en banco declinado", "Press francés en banco inclinado", "Sentadilla Goblet", "Hip Thrust", "Elevación de gemelos", "Plancha"]
   };
-  setTimeout(() => { if (splash.style.display !== 'none') splash.click(); }, 3500);
-}
-function setColorPorDia() { const hoy = new Date().getDay(); const colores = {0:"#e8ff47",1:"#4caf50",2:"#ff9800",3:"#2196f3",4:"#9c27b0",5:"#ff5722",6:"#00bcd4"}; document.documentElement.style.setProperty('--acc', colores[hoy]); }
-window.onload = () => {
-  setColorPorDia();
-  if (!localStorage.getItem('primeraFechaUso')) localStorage.setItem('primeraFechaUso', new Date().toISOString());
-  document.getElementById('fechaFotos').value = getHoyStr();
-  document.getElementById('medFecha').value = getHoyStr();
-  actualizarUICompleta();
-  cargarListaDias(); cargarSelectores(); cargarTabs();
-  document.getElementById('goHoyBtn').onclick = irHoy;
-  mostrarSplash();
-};
+  const discosPorPeso = { 2.5:{izq:["1.25"],der:["1.25"]},3:{izq:["1.5"],der:["1.5"]},4:{izq:["2"],der:["2"]},5.5:{izq:["1.5","1.25"],der:["1.5","1.25"]},6.5:{izq:["2","1.25"],der:["2","1.25"]},7:{izq:["2","1.5"],der:["2","1.5"]},9.5:{izq:["2","1.5","1.25"],der:["2","1.5","1.25"]} };
+  const imagenesMap = {
+    "Dominadas (palmas mirando hacia ti)":"https://i.pinimg.com/originals/15/98/ec/1598ec2121ef2ac8c5fa0a51c5a16f53.gif",
+    "Remo en banco":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
+    "Curl de bíceps alterno":"https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
+    "Curl martillo":"https://rincondelmusculo.com/wp-content/uploads/2014/09/CURL_DE_MARTILLO.gif",
+    "Pullover con mancuerna":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Pullover.gif",
+    "Aperturas inclinadas con mancuernas":"https://media.tenor.com/oJXOnsC72qMAAAAM/crussifixo-no-banco-com-halteres.gif",
+    "Press de hombros sentado":"https://gymvisual.com/img/p/1/4/4/9/3/14493.gif",
+    "Elevaciones laterales sentado":"https://gymvisual.com/img/p/5/1/3/7/5137.gif",
+    "Sentadilla búlgara":"https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649",
+    "Peso muerto rumano":"https://fitcron.com/wp-content/uploads/2021/04/14591301-Dumbbell-Romanian-Deadlift_Hips_720.gif",
+    "Patada de tríceps":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Kickback.gif",
+    "Extensión de tríceps tumbado":"https://fitnessprogramer.com/wp-content/uploads/2021/06/Dumbbell-Skull-Crusher.gif",
+    "Remo con barra (agarre supino estricto)":"https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif",
+    "Curl concentrado":"https://fitcron.com/wp-content/uploads/2021/04/02971301-Dumbbell-Concentration-Curl_Upper-Arms_720.gif",
+    "Curl araña (pausa de 2\")":"https://api.smartworkout.app/asset/image/94cdc539-0fda-45a3-b2e5-ca8404a629d7",
+    "Remo al cuello":"https://fitcron.com/wp-content/uploads/2021/04/04371301-Dumbbell-Upright-Row_shoulder_720.gif",
+    "Press inclinado con mancuernas (agarre neutro)":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
+    "Aperturas en banco":"https://media.tenor.com/oJXOnsC72qMAAAAM/crussifixo-no-banco-com-halteres.gif",
+    "Pájaro (fly invertido)":"https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
+    "Press de banca agarre cerrado":"https://fitnessprogramer.com/wp-content/uploads/2021/10/Close-Grip-Dumbbell-Press.gif",
+    "Zancadas con mancuerna":"https://gymvisual.com/img/p/2/3/7/3/9/23739.gif",
+    "Peso muerto a una pierna":"https://gymvisual.com/img/p/7/5/6/1/7561.gif",
+    "Extensión en banco declinado":"https://gymvisual.com/img/p/1/5/2/7/1/15271.gif",
+    "Press francés en banco inclinado":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
+    "Flexiones":"https://fitnessprogramer.com/wp-content/uploads/2021/06/Push-Up-Plus.gif",
+    "Sentadilla Goblet":"https://enfaf.com/wp-content/uploads/2026/04/sentadilla-globet.gif",
+    "Hip Thrust":"https://gymvisual.com/img/p/2/0/9/5/6/20956.gif",
+    "Elevación de gemelos":"https://fitcron.com/wp-content/uploads/2021/04/04171301-Dumbbell-Standing-Calf-Raise_Calf_720.gif",
+    "Plancha":"https://api.smartworkout.app/asset/image/606defc2-dc68-41d8-bea0-41a8d68aaa71",
+    "Abdominal bicicleta":"https://meutreinador.com/wp-content/uploads/2024/04/abdominal-bicicleta.gif"
+  };
+  function getEjerciciosPorDia(dia) { return ejerciciosUnicos[dia] || []; }
+  function getCantidadMancuernas(n) {
+    if(n.includes("Patada")||n.includes("Extensión de tríceps")||n.includes("Extensión en banco")||n.includes("Press francés")||n.includes("Curl concentrado")||n.includes("Hip Thrust")) return 1;
+    if(n.includes("Sentadilla Goblet")) return 1;
+    if(n.includes("Press de banca")||n.includes("Pullover")||n.includes("Press de hombros")||n.includes("Aperturas")||n.includes("Press inclinado")) return 2;
+    if(n.includes("Dominadas")||n.includes("Plancha")||n.includes("Flexiones")||n.includes("Abdominal")) return 0;
+    return 2;
+  }
+  function getPesoEjercicioBase(n) {
+    if(n.includes("Curl") && !n.includes("martillo")) return 2.5;
+    if(n.includes("Elevaciones") || n.includes("Pájaro")) return 2.5;
+    if(n.includes("Press") || n.includes("Pullover") || n.includes("Aperturas") || n.includes("Sentadilla") || n.includes("Peso muerto")) return 4;
+    if(n.includes("Remo")) return 5.5;
+    if(n.includes("Hip Thrust")) return 9.5;
+    if(n.includes("Elevación de gemelos")) return 9.5;
+    return 4;
+  }
+  function getPesoEjercicio(n, pers){ return pers?.peso !== undefined ? pers.peso : getPesoEjercicioBase(n); }
+  function getSeriesReps(n, pers){
+    if(pers?.series && pers?.reps) return { series: pers.series, reps: pers.reps };
+    if(n==="Plancha"||n==="Abdominal bicicleta"||n==="Flexiones") return { series: "3", reps: "15-20" };
+    return { series: "3-4", reps: "15-20" };
+  }
+  function formatearPeso(n, pers){
+    let kg = getPesoEjercicio(n, pers);
+    if(kg===0 || n.includes("Plancha")||n.includes("Flexiones")||n.includes("Dominadas")||n.includes("Abdominal")) return "Peso corporal";
+    let num = getCantidadMancuernas(n);
+    if(num===1) return `${kg} kg (1 mancuerna)`;
+    if(num===2) return `${kg} kg c/u`;
+    return `${kg} kg`;
+  }
+
+  function marcarEjercicio(id) {
+    const dia = id.split('-')[0];
+    const semanaKey = Math.floor((new Date() - new Date(2026, 0, 5)) / (1000 * 60 * 60 * 24 * 7)) + 1;
+    const completadoKey = `completado_${dia}_${semanaKey}`;
+    if (checks[id]) delete checks[id];
+    else checks[id] = true;
+    localStorage.setItem('nico_checks', JSON.stringify(checks));
+    renderizarRutinas();
+    const container = document.getElementById(`lista-${dia}`);
+    if (container) {
+      const checkboxes = container.querySelectorAll('.check-box');
+      const todos = Array.from(checkboxes).every(cb => cb.checked);
+      if (todos && checkboxes.length > 0 && localStorage.getItem(completadoKey) !== 'true') completarDia(dia);
+      if (!todos && localStorage.getItem(completadoKey) === 'true') {
+        localStorage.removeItem(completadoKey);
+        const hoy = getHoyStr();
+        if (diasEntrenados.includes(hoy)) diasEntrenados = diasEntrenados.filter(d => d !== hoy);
+        localStorage.setItem('diasEntrenados', JSON.stringify(diasEntrenados));
+        mostrarToast(`⚠️ Día ${dia} incompleto`);
+        renderCalendarios();
+      }
+    }
+  }
+
+  function completarDia(dia) {
+    const semanaKey = Math.floor((new Date() - new Date(2026, 0, 5)) / (1000 * 60 * 60 * 24 * 7)) + 1;
+    const completadoKey = `completado_${dia}_${semanaKey}`;
+    if (localStorage.getItem(completadoKey) === 'true') return;
+    localStorage.setItem(completadoKey, 'true');
+    const hoy = getHoyStr();
+    if (!diasEntrenados.includes(hoy)) { diasEntrenados.push(hoy); localStorage.setItem('diasEntrenados', JSON.stringify(diasEntrenados)); }
+    mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`);
+    canvasConfetti({ particleCount: 100, spread: 70 });
+    renderizarRutinas(); actualizarUICompleta(); actualizarLogros(); renderCalendarios();
+  }
+
+  function resetDia(dia) {
+    const semanaKey = Math.floor((new Date() - new Date(2026, 0, 5)) / (1000 * 60 * 60 * 24 * 7)) + 1;
+    const completadoKey = `completado_${dia}_${semanaKey}`;
+    const container = document.getElementById(`lista-${dia}`);
+    if (container) {
+      let cambios = false;
+      container.querySelectorAll('.check-box').forEach((cb, idx) => {
+        const id = `${dia}-${idx}`;
+        if (checks[id]) { delete checks[id]; cambios = true; }
+      });
+      if (cambios) localStorage.setItem('nico_checks', JSON.stringify(checks));
+    }
+    if (localStorage.getItem(completadoKey) === 'true') {
+      localStorage.removeItem(completadoKey);
+      const hoy = getHoyStr();
+      if (diasEntrenados.includes(hoy)) diasEntrenados = diasEntrenados.filter(d => d !== hoy);
+      localStorage.setItem('diasEntrenados', JSON.stringify(diasEntrenados));
+      mostrarToast(`✅ Día ${dia} reiniciado`);
+    } else { mostrarToast(`✅ Ejercicios desmarcados`); }
+    renderizarRutinas(); actualizarUICompleta(); renderCalendarios();
+  }
+
+  function renderizarRutinas() {
+    const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+    for (let dia of dias) {
+      const container = document.getElementById(`lista-${dia}`);
+      if (!container) continue;
+      const ejercicios = getEjerciciosPorDia(dia);
+      container.innerHTML = '';
+      ejercicios.forEach((nombre, idx) => {
+        const id = `${dia}-${idx}`;
+        const pers = personalizaciones[id];
+        const { series, reps } = getSeriesReps(nombre, pers);
+        const pesoTexto = formatearPeso(nombre, pers);
+        const imgUrl = imagenesMap[nombre] || '';
+        const instrucHtml = getInstruccionDetallada(nombre).replace(/\n/g, '<br>');
+        const isChecked = !!checks[id];
+        const card = document.createElement('div');
+        card.className = `ex-card ${isChecked ? 'checked' : ''}`;
+        card.innerHTML = `
+          <div class="ex-head"><div class="ex-name">${nombre}</div><input type="checkbox" class="check-box" ${isChecked ? 'checked' : ''} onchange="marcarEjercicio('${id}')"></div>
+          <div class="ex-body">
+            <div class="ex-meta"><div class="em"><div class="em-n">${series}</div><div class="em-k">series</div></div><div class="em"><div class="em-n">${reps}</div><div class="em-k">reps</div></div><div class="em"><div class="em-n">60"</div><div class="em-k">descanso</div></div></div>
+            <div class="weight-badge" onclick="window.mostrarDiscos('${nombre.replace(/'/g, "\\'")}', '${id}')">📦 ${pesoTexto}</div>
+            <button class="ex-tog" onclick="toggleDetalles(this, '${imgUrl}', \`${instrucHtml}\`)">Ver técnica ↓</button>
+            <div class="ex-det"></div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+      const resetBtn = document.querySelector(`.btn-reset-dia[data-dia="${dia}"]`);
+      if (resetBtn) resetBtn.onclick = () => resetDia(dia);
+    }
+    document.querySelectorAll('.ex-img').forEach(img => { img.addEventListener('click', (e) => { e.stopPropagation(); openLightbox(img.src); }); });
+  }
+
+  function toggleDetalles(btn, imgUrl, instrucHtml) {
+    const detDiv = btn.nextElementSibling;
+    if (detDiv.classList.contains('open')) {
+      detDiv.classList.remove('open');
+      btn.textContent = "Ver técnica ↓";
+    } else {
+      detDiv.innerHTML = `${imgUrl ? `<img src="${imgUrl}" class="ex-img" onerror="this.style.display='none'">` : ''}<ul class="steps">${instrucHtml.split('<br>').map((line, i) => `<li data-n="${i + 1}">${line.replace(/^\d+️⃣/, '').trim()}</li>`).join('')}</ul><div class="tip"><span>💡</span>Respira correctamente.</div>`;
+      detDiv.classList.add('open');
+      btn.textContent = "Ocultar ↑";
+      const newImg = detDiv.querySelector('.ex-img');
+      if (newImg) newImg.addEventListener('click', (e) => { e.stopPropagation(); openLightbox(newImg.src); });
+    }
+  }
+
+  function openLightbox(src) { const lb = document.getElementById('lightbox'); document.getElementById('lightboxImg').src = src; lb.classList.add('active'); }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
+  window.mostrarDiscos = function(nombre, id) {
+    let kg = getPesoEjercicio(nombre, personalizaciones[id]);
+    if (kg === 0) { mostrarToast("Peso corporal"); return; }
+    let combo = discosPorPeso[kg];
+    if (!combo) { mostrarToast(`Ajusta con discos`); return; }
+    let num = getCantidadMancuernas(nombre);
+    let msg = num === 1 ? "Usa UNA mancuerna:" : num === 2 ? "Usa DOS mancuernas, CADA una:" : "";
+    let html = `<div id="modalDiscos" class="modal-disk"><div class="disk-panel"><h3>⚙️ ${nombre}</h3><div><strong>${kg} kg</strong></div><div>${msg}<br>IZQ: ${combo.izq.join("+")} kg<br>DER: ${combo.der.join("+")} kg</div><button onclick="cerrarModalDiscos()">CERRAR</button></div></div>`;
+    cerrarModalDiscos(); document.body.insertAdjacentHTML('beforeend', html);
+  };
+  function cerrarModalDiscos() { document.getElementById('modalDiscos')?.remove(); }
+  function mostrarPopupEjercicios(fecha) {
+    const diaSemana = fecha.getDay();
+    if (diaSemana === 0) { mostrarToast("📅 Domingo - descanso"); return; }
+    const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado' };
+    const ejercicios = getEjerciciosPorDia(diasMap[diaSemana]);
+    if (!ejercicios.length) { mostrarToast("No hay ejercicios"); return; }
+    const html = `<div class="disk-panel"><h3>📅 ${fecha.toLocaleDateString('es-ES')}</h3><ul style="text-align:left;">${ejercicios.map(e => `<li>${e}</li>`).join('')}</ul><button onclick="cerrarModalPopup()">CERRAR</button></div>`;
+    cerrarModalPopup(); const overlay = document.createElement('div'); overlay.className = 'modal-disk'; overlay.id = 'modalPopup'; overlay.innerHTML = html; document.body.appendChild(overlay);
+  }
+  function cerrarModalPopup() { document.getElementById('modalPopup')?.remove(); }
+  function getRachaEntrenos() {
+    let racha = 0, hoy = new Date();
+    for (let i = 0; i < 100; i++) { let fecha = new Date(hoy); fecha.setDate(hoy.getDate() - i); if (diasEntrenados.includes(fecha.toISOString().slice(0, 10))) racha++; else break; }
+    return racha;
+  }
+  function getNivelActual() {
+    let total = 0; for (let k in localStorage) if (k.startsWith('completado_') && localStorage.getItem(k) === 'true') total++;
+    if (total >= 100) return 5; if (total >= 50) return 4; if (total >= 25) return 3; if (total >= 10) return 2; return 1;
+  }
+  function getEntrenosHistoricos() {
+    let total = 0; for (let k in localStorage) if (k.startsWith('completado_') && localStorage.getItem(k) === 'true') total++;
+    return total;
+  }
+  const listaLogros = [
+    { id: "ns_7", nombre: "🌱 1 semana sin fumar", cond: () => calcularDiasSinFumar() >= 7 },
+    { id: "ns_30", nombre: "🚭 1 mes sin fumar", cond: () => calcularDiasSinFumar() >= 30 },
+    { id: "ns_90", nombre: "🎉 3 meses sin fumar", cond: () => calcularDiasSinFumar() >= 90 },
+    { id: "ns_180", nombre: "💪 6 meses sin fumar", cond: () => calcularDiasSinFumar() >= 180 },
+    { id: "ns_365", nombre: "🏆 1 año sin fumar", cond: () => calcularDiasSinFumar() >= 365 },
+    { id: "primer_peso", nombre: "⚖️ Primer peso", cond: () => mediciones.length >= 1 },
+    { id: "primer_check", nombre: "🏁 Primer ejercicio", cond: () => getEntrenosHistoricos() >= 1 },
+    { id: "check_25", nombre: "🟢 25 ejercicios", cond: () => getEntrenosHistoricos() >= 25 },
+    { id: "check_50", nombre: "💪 50 ejercicios", cond: () => getEntrenosHistoricos() >= 50 },
+    { id: "check_100", nombre: "🦾 100 ejercicios", cond: () => getEntrenosHistoricos() >= 100 },
+    { id: "racha_3", nombre: "📅 3 días seguidos", cond: () => getRachaEntrenos() >= 3 },
+    { id: "racha_7", nombre: "✨ 1 semana seguida", cond: () => getRachaEntrenos() >= 7 },
+    { id: "racha_14", nombre: "⚡ 2 semanas seguidas", cond: () => getRachaEntrenos() >= 14 },
+    { id: "nivel_2", nombre: "⭐ Nivel 2", cond: () => getNivelActual() >= 2 },
+    { id: "nivel_3", nombre: "⭐⭐ Nivel 3", cond: () => getNivelActual() >= 3 },
+    { id: "nivel_4", nombre: "⭐⭐⭐ Nivel 4", cond: () => getNivelActual() >= 4 },
+    { id: "nivel_5", nombre: "🏅 Nivel 5 Élite", cond: () => getNivelActual() >= 5 }
+  ];
+  function actualizarLogros() {
+    const container = document.getElementById('logrosContainer');
+    if (!container) return;
+    let nuevos = false;
+    listaLogros.forEach(l => { if (!logros.includes(l.id) && l.cond()) { logros.push(l.id); nuevos = true; mostrarToast(`🏆 ${l.nombre}`); canvasConfetti({ particleCount: 100, spread: 70 }); } });
+    if (nuevos) localStorage.setItem('nico_logros', JSON.stringify(logros));
+    container.innerHTML = listaLogros.map(l => `<div class="logro-badge ${logros.includes(l.id) ? 'obtenido' : ''}">${l.nombre}</div>`).join('');
+  }
+
+  function actualizarUICompleta() {
+    renderizarUltimaMedicion();
+    renderizarGraficoUnico();
+    actualizarTopBar();
+    renderizarRutinas();
+    renderCalendarios();
+    actualizarLogros();
+    cargarHistorialMediciones();
+  }
+
+  function goPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(`page-${id}`).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(b => { if (b.innerText.toLowerCase().includes(id.substring(0, 4))) b.classList.add('active'); });
+    window.scrollTo(0, 0);
+    if (id === 'inicio') actualizarUICompleta();
+    if (id === 'composicion') cargarHistorialMediciones();
+    if (id === 'logros') actualizarLogros();
+    if (id === 'rutinas') cargarTabs();
+  }
+
+  function cargarTabs() {
+    const tabsContainer = document.getElementById('dayTabs'), panelsContainer = document.getElementById('dayPanelsContainer');
+    if (!tabsContainer) return;
+    const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'], nombres = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'], iconos = ['💪', '🏋️', '🦵', '💪', '🏋️', '🦵', '😴'];
+    tabsContainer.innerHTML = ''; panelsContainer.innerHTML = '';
+    dias.forEach((dia, idx) => {
+      const btn = document.createElement('button'); btn.className = 'dtab' + (idx === 0 ? ' active' : ''); btn.innerText = `${iconos[idx]} ${nombres[idx]}`; btn.onclick = () => switchDay(dia, btn); tabsContainer.appendChild(btn);
+      const panel = document.createElement('div'); panel.className = 'day-panel' + (idx === 0 ? ' active' : ''); panel.id = `dp-${dia}`;
+      if (dia === 'domingo') { panel.innerHTML = `<div class="rest-big"><div style="font-size:48px">😴</div><h3>DESCANSO TOTAL</h3><p>Recuperación activa. Camina 20-40 min si quieres.</p></div>`; }
+      else { panel.innerHTML = `<div class="day-hdr"><div class="day-ico">${iconos[idx]}</div><div class="day-info"><h2>${nombres[idx]} · ${dia === 'lunes' || dia === 'jueves' ? 'ESPALDA/BÍCEPS' : (dia === 'martes' || dia === 'viernes' ? 'PECHO/HOMBRO' : 'PIERNA/TRÍCEPS')}</h2><div class="badges"><span class="badge">⏱ 45-55 min</span><span class="badge">🔥 ~380 kcal</span></div></div></div><div id="lista-${dia}" class="ex-grid"></div><div class="cinta-info">🚶 CINTA: ${dia === 'sabado' ? '45-50 min a 4.5 km/h' : '30-40 min a 4.5-5 km/h'}</div><button class="btn-reset-dia" data-dia="${dia}">🗑️ Desmarcar todos</button>`; }
+      panelsContainer.appendChild(panel);
+    });
+    renderizarRutinas();
+  }
+
+  function switchDay(day, btn) {
+    document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.dtab').forEach(b => b.classList.remove('active'));
+    document.getElementById(`dp-${day}`).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleMenu() { const menu = document.getElementById('sideMenu'); const overlay = document.getElementById('menuOverlay'); if (menu.classList.contains('open')) { menu.classList.remove('open'); overlay.classList.remove('show'); } else { menu.classList.add('open'); overlay.classList.add('show'); } }
+  function irHoy() { const hoy = new Date().getDay(), diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' }; goPage('rutinas'); setTimeout(() => { const tabs = document.querySelectorAll('.dtab'); const idx = { lunes: 0, martes: 1, miercoles: 2, jueves: 3, viernes: 4, sabado: 5, domingo: 6 }[diasMap[hoy]]; if (tabs[idx]) switchDay(diasMap[hoy], tabs[idx]); }, 100); }
+  function mostrarReset() { document.getElementById('resetModal').style.display = 'flex'; }
+  function cerrarReset() { document.getElementById('resetModal').style.display = 'none'; }
+  function borrarTodo() { if (document.getElementById('confirmReset').value === 'BORRAR') { localStorage.clear(); location.reload(); } else mostrarToast('❌ Escribe BORRAR'); }
+  function setDescanso(seg) { if (document.getElementById('descanso-box').style.display === 'flex') cancelarDescanso(); const box = document.getElementById('descanso-box'); box.style.display = 'flex'; let s = seg; document.getElementById('descansoTimer').innerText = s; timerInterval = setInterval(() => { s--; document.getElementById('descansoTimer').innerText = s; if (s <= 0) { clearInterval(timerInterval); box.style.display = 'none'; } }, 1000); }
+  function cancelarDescanso() { clearInterval(timerInterval); document.getElementById('descanso-box').style.display = 'none'; }
+  function resetAllData() { if (confirm("¿Borrar TODOS los datos?")) { localStorage.clear(); location.reload(); } }
+
+  let db = null; const DB_NAME = 'FotosProgresoDB', STORE_NAME = 'diasFotos';
+  function abrirDB() { return new Promise(r => { const req = indexedDB.open(DB_NAME, 1); req.onupgradeneeded = e => { if (!e.target.result.objectStoreNames.contains(STORE_NAME)) e.target.result.createObjectStore(STORE_NAME, { keyPath: 'fecha' }); }; req.onsuccess = e => { db = e.target.result; r(); }; req.onerror = () => r(); }); }
+  async function guardarFotos() {
+    const fecha = document.getElementById('fechaFotos').value;
+    if (!fecha) { mostrarToast("Selecciona fecha"); return; }
+    const frente = await leerArchivoComoDataURL(document.getElementById('fotoFrente').files[0]);
+    const espalda = await leerArchivoComoDataURL(document.getElementById('fotoEspalda').files[0]);
+    const izquierda = await leerArchivoComoDataURL(document.getElementById('FotoIzquierda').files[0]);
+    const derecha = await leerArchivoComoDataURL(document.getElementById('fotoDerecha').files[0]);
+    if (!frente && !espalda && !izquierda && !derecha) { mostrarToast("Selecciona al menos una foto"); return; }
+    await abrirDB();
+    await db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).put({ fecha, timestamp: Date.now(), frente, espalda, izquierda, derecha });
+    mostrarToast("✅ Fotos guardadas");
+    cargarListaDias(); cargarSelectores();
+    document.getElementById('fotoFrente').value = ''; document.getElementById('fotoEspalda').value = '';
+    document.getElementById('FotoIzquierda').value = ''; document.getElementById('fotoDerecha').value = '';
+  }
+  function leerArchivoComoDataURL(file) { if (!file) return Promise.resolve(null); return new Promise(r => { const reader = new FileReader(); reader.onload = e => r(e.target.result); reader.readAsDataURL(file); }); }
+  async function cargarListaDias() {
+    await abrirDB(); const items = await new Promise(r => db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).getAll().onsuccess = e => r(e.target.result));
+    items.sort((a, b) => b.timestamp - a.timestamp);
+    document.getElementById('listaDiasDB').innerHTML = items.map(i => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">📅 ${i.fecha}<button onclick="eliminarDia('${i.fecha}')" class="btn-3d" style="padding:2px 8px;">🗑️</button></div>`).join('');
+    cargarSelectores();
+  }
+  async function cargarSelectores() {
+    await abrirDB(); const items = await new Promise(r => db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).getAll().onsuccess = e => r(e.target.result));
+    items.sort((a, b) => b.timestamp - a.timestamp);
+    const opts = items.map(i => `<option value="${i.fecha}">${i.fecha}</option>`);
+    document.getElementById('compararDia1').innerHTML = '<option value="">Día 1</option>' + opts.join('');
+    document.getElementById('compararDia2').innerHTML = '<option value="">Día 2</option>' + opts.join('');
+  }
+  async function eliminarDia(fecha) { await abrirDB(); db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).delete(fecha); cargarListaDias(); cargarSelectores(); document.getElementById('comparadorResultado').innerHTML = ''; }
+  async function compararFotos() {
+    const f1 = document.getElementById('compararDia1').value, f2 = document.getElementById('compararDia2').value;
+    if (!f1 || !f2) return;
+    await abrirDB(); const store = db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME);
+    const d1 = await new Promise(r => store.get(f1).onsuccess = e => r(e.target.result));
+    const d2 = await new Promise(r => store.get(f2).onsuccess = e => r(e.target.result));
+    const gen = (d, t) => `<div style="background:var(--s1);border-radius:14px;padding:10px;margin-bottom:12px;"><h4 style="color:var(--acc);margin-bottom:8px;">${t}</h4><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;"><div>FRENTE<br><img src="${d?.frente || ''}" style="width:100%;border-radius:10px;margin-top:4px;"></div><div>ESPALDA<br><img src="${d?.espalda || ''}" style="width:100%;border-radius:10px;"></div><div>IZQUIERDA<br><img src="${d?.izquierda || ''}" style="width:100%;border-radius:10px;"></div><div>DERECHA<br><img src="${d?.derecha || ''}" style="width:100%;border-radius:10px;"></div></div></div>`;
+    document.getElementById('comparadorResultado').innerHTML = gen(d1, f1) + gen(d2, f2);
+  }
+  function recargarComparacion() { compararFotos(); }
+
+  function setColorPorDia() { const hoy = new Date().getDay(); const colores = { 0: "#e8ff47", 1: "#4caf50", 2: "#ff9800", 3: "#2196f3", 4: "#9c27b0", 5: "#ff5722", 6: "#00bcd4" }; document.documentElement.style.setProperty('--acc', colores[hoy]); }
+
+  window.onload = () => {
+    setColorPorDia();
+    if (!localStorage.getItem('primeraFechaUso')) localStorage.setItem('primeraFechaUso', new Date().toISOString());
+    document.getElementById('fechaFotos').value = getHoyStr();
+    document.getElementById('medFecha').value = getHoyStr();
+    actualizarUICompleta();
+    cargarListaDias(); cargarSelectores(); cargarTabs();
+    document.getElementById('goHoyBtn').onclick = irHoy;
+  };
 </script>
 </body>
 </html>
