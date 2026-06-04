@@ -25,14 +25,15 @@
       color: var(--text);
       font-size: 14px;
       overflow-x: hidden;
+      padding-bottom: 70px;
     }
-    nav {
+    /* HEADER SUPERIOR COMPACTO */
+    .top-bar {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 999;
-      height: 52px;
       background: rgba(7,7,7,.95);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
@@ -40,6 +41,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 14px;
+      height: 52px;
     }
     .logo {
       font-family: 'Bebas Neue', cursive;
@@ -49,183 +51,170 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      cursor: pointer;
     }
-    .nav-menu { display: flex; gap: 2px; list-style: none; }
-    .nav-btn {
-      padding: 5px 10px;
-      border-radius: 30px;
-      border: none;
-      background: transparent;
-      color: var(--muted2);
+    .top-info {
+      display: flex;
+      gap: 12px;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 500;
+      background: rgba(255,255,255,0.05);
+      padding: 4px 12px;
+      border-radius: 30px;
+    }
+    .top-info span { color: var(--muted2); }
+    .top-info strong { color: var(--acc); }
+    .menu-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: white;
+      font-size: 20px;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       cursor: pointer;
     }
-    .nav-btn.active { background: var(--acc); color: #000; }
-    .burger { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
-    .burger span { width: 20px; height: 2px; background: var(--text); }
-    .mob-menu {
-      display: none;
+    /* Menú lateral */
+    .side-menu {
       position: fixed;
-      top: 52px;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100%;
+      background: #0f0f0f;
+      border-right: 1px solid var(--border);
+      z-index: 1000;
+      transition: left 0.3s ease;
+      padding: 60px 16px 20px;
+    }
+    .side-menu.open { left: 0; }
+    .menu-overlay {
+      position: fixed;
+      top: 0;
       left: 0;
       right: 0;
-      background: rgba(10,10,10,.98);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      padding: 10px;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
       z-index: 998;
+      display: none;
     }
-    .mob-menu.open { display: block; }
-    .mob-menu .nav-btn { display: block; width: 100%; text-align: left; padding: 10px 14px; border-radius: 12px; margin-bottom: 2px; }
-    .page { display: none; min-height: 100vh; padding-top: 52px; }
+    .menu-overlay.show { display: block; }
+    .menu-item {
+      display: block;
+      padding: 12px 0;
+      color: #aaa;
+      font-size: 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+    /* Páginas */
+    .page { display: none; padding-top: 60px; min-height: 100vh; }
     .page.active { display: block; animation: fadeIn .2s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     .container { max-width: 600px; margin: 0 auto; padding: 0 12px; }
-    .page-hero { padding: 16px 12px 12px; background: radial-gradient(ellipse at 85% 0%, rgba(255,77,0,.1) 0%, transparent 55%); border-bottom: 1px solid var(--border); }
-    .sec-tag { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--acc); margin-bottom: 4px; }
-    .sec-title { font-family: 'Bebas Neue', cursive; font-size: 26px; letter-spacing: 1px; margin-bottom: 4px; }
-    .sec-body { padding: 16px 12px 70px; max-width: 600px; margin: 0 auto; }
-    .home-split { display: flex; flex-direction: column; gap: 16px; }
-    .h1 {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 36px;
-      line-height: 1;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    .h1 span { color: var(--acc); }
-    .home-quick-icons {
-      display: flex;
-      gap: 8px;
-      background: rgba(255,255,255,0.05);
-      padding: 4px 8px;
-      border-radius: 40px;
-    }
-    .quick-icon {
-      background: transparent;
-      border: none;
-      font-size: 18px;
-      cursor: pointer;
-      padding: 4px;
-      border-radius: 50%;
-      transition: background 0.2s;
-    }
-    .quick-icon:active { background: rgba(255,77,0,0.3); }
-    .home-sub { font-size: 12px; margin-bottom: 12px; }
-    .home-btns { display: flex; gap: 10px; }
-    .btn-p {
-      padding: 8px 16px;
-      border-radius: 40px;
-      background: var(--acc);
-      color: #000;
-      border: none;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .btn-g {
-      padding: 8px 16px;
-      border-radius: 40px;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .profile-card {
-      background: var(--s2);
-      border-radius: 18px;
-      padding: 14px;
-      border: 1px solid var(--border);
-    }
-    .p-label { font-size: 8px; letter-spacing: 1.5px; margin-bottom: 8px; }
-    .p-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-    .sbox {
-      background: var(--s1);
-      border-radius: 12px;
-      padding: 8px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .sbox.editable:hover { background: rgba(255,77,0,0.2); }
-    .slbl { font-size: 8px; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center; }
-    .edit-icon { font-size: 8px; opacity: 0.6; }
-    .sval { font-family: 'Bebas Neue', cursive; font-size: 22px; display: flex; align-items: baseline; gap: 4px; }
-    .sunit { font-size: 10px; }
-    .bmi-box { background: var(--s1); border-radius: 12px; padding: 10px; }
-    .bmi-row { font-size: 8px; margin-bottom: 4px; display: flex; justify-content: space-between; }
-    .bmi-track { height: 5px; background: var(--s2); border-radius: 5px; position: relative; }
-    .bmi-fill { height: 100%; width: 100%; background: linear-gradient(90deg,#10B981 0%,#FBBF24 55%,#F87171 100%); border-radius: 5px; }
-    .bmi-pin { position: absolute; width: 12px; height: 12px; background: #fff; border-radius: 50%; border: 2px solid var(--bg); box-shadow: 0 0 0 2px rgba(255,77,0,.5); top: -3.5px; }
-    .bmi-note { font-size: 10px; margin-top: 6px; color: var(--muted2); }
-    .qstats { background: var(--s1); border-bottom: 1px solid var(--border); }
-    .qstats-in { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 600px; margin: 0 auto; }
-    .qstat { padding: 8px; text-align: center; border-right: 1px solid var(--border); }
-    .qstat:last-child { border-right: none; }
-    .qnum { font-family: 'Bebas Neue', cursive; font-size: 22px; color: var(--acc); }
-    .qlbl { font-size: 8px; text-transform: uppercase; color: var(--muted); }
     /* Tarjeta última medición */
     .last-measure-card {
       background: var(--s2);
-      border-radius: 18px;
-      padding: 14px;
-      margin: 16px 0;
+      border-radius: 20px;
+      padding: 16px;
+      margin: 12px 0;
       border: 1px solid var(--border);
     }
     .last-measure-title {
       font-size: 12px;
       font-weight: 600;
       color: var(--acc);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
-    .last-measure-grid {
+    .metrics-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 8px;
+      gap: 10px;
+      margin-bottom: 12px;
     }
-    .last-measure-item {
+    .metric-card {
       background: var(--s1);
-      border-radius: 12px;
-      padding: 6px 8px;
+      border-radius: 14px;
+      padding: 10px;
     }
-    .last-measure-label {
-      font-size: 9px;
+    .metric-label {
+      font-size: 10px;
       color: var(--muted);
+      margin-bottom: 4px;
     }
-    .last-measure-value {
-      font-size: 16px;
+    .metric-value {
+      font-size: 18px;
       font-weight: 700;
-      color: var(--text);
+      font-family: 'Bebas Neue', cursive;
     }
+    .metric-delta {
+      font-size: 11px;
+      margin-left: 6px;
+    }
+    .delta-up { color: #10b981; }
+    .delta-down { color: #ef4444; }
     .progress-text {
       font-size: 9px;
       color: var(--muted);
+      margin-top: 4px;
+    }
+    .ratio-text {
+      font-size: 11px;
+      margin-top: 4px;
+    }
+    .bmi-bar-container {
+      background: var(--s1);
+      border-radius: 12px;
+      padding: 10px;
+      margin: 12px 0;
+    }
+    .bmi-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .bmi-track {
+      height: 6px;
+      background: var(--s2);
+      border-radius: 5px;
+      position: relative;
+    }
+    .bmi-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg,#10B981 0%,#FBBF24 55%,#F87171 100%);
+      border-radius: 5px;
+    }
+    .bmi-pin {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 2px rgba(255,77,0,.5);
+      top: -4px;
     }
     .status-badge {
       display: inline-block;
-      background: rgba(16,185,129,0.2);
-      color: #10b981;
+      padding: 6px 16px;
       border-radius: 30px;
-      padding: 4px 12px;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
       margin-top: 8px;
+      width: 100%;
+      text-align: center;
     }
-    .status-badge.warning { background: rgba(239,68,68,0.2); color: #ef4444; }
-    .status-badge.neutral { background: rgba(107,114,128,0.2); color: #9ca3af; }
-    /* Gráfico único */
+    .status-good { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    .status-neutral { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
+    .status-bad { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+    /* Gráfico */
     .graph-container {
       background: var(--s2);
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 12px;
-      margin-bottom: 20px;
+      margin: 12px 0;
       border: 1px solid var(--border);
     }
     .graph-title {
@@ -234,70 +223,40 @@
       margin-bottom: 8px;
       color: var(--muted2);
     }
+    canvas { max-height: 220px; width: 100%; }
     .graph-subtitle {
       font-size: 9px;
       color: var(--muted);
       text-align: center;
       margin-top: 6px;
     }
-    canvas { max-height: 220px; width: 100%; }
-    /* Formulario composición */
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .form-field {
-      background: var(--s1);
-      border-radius: 12px;
-      padding: 8px;
-    }
-    .form-field label {
-      font-size: 9px;
-      color: var(--muted);
-      display: block;
-      margin-bottom: 4px;
-    }
-    .form-field input {
-      background: transparent;
-      border: none;
-      color: var(--text);
-      font-size: 14px;
-      width: 100%;
-      outline: none;
-    }
-    /* Historial */
-    .historial-item {
-      background: var(--s1);
-      border-radius: 14px;
-      padding: 10px;
-      margin-bottom: 8px;
+    /* Bottom nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15,15,15,.95);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 100;
     }
-    .historial-date {
-      font-weight: 700;
-      color: var(--acc);
-      font-size: 12px;
-    }
-    .historial-data {
-      font-size: 11px;
-      color: var(--muted2);
-    }
-    .historial-buttons button {
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 4px 10px;
-      margin-left: 6px;
-      color: var(--text);
+    .nav-item {
+      background: none;
+      border: none;
+      color: #666;
       font-size: 10px;
+      text-align: center;
       cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 20px;
     }
-    /* Rutinas (ejercicios) */
+    .nav-item.active { color: var(--acc); background: rgba(255,107,53,0.1); }
+    .nav-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+    /* Resto de estilos (rutinas, composición, etc.) se mantienen */
     .day-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 16px; scrollbar-width: none; }
     .day-tabs::-webkit-scrollbar { display: none; }
     .dtab {
@@ -314,12 +273,6 @@
     .dtab.active { background: var(--acc); color: #000; }
     .day-panel { display: none; }
     .day-panel.active { display: block; }
-    .day-hdr { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-    .day-ico { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; background: var(--acc); }
-    .day-info h2 { font-family: 'Bebas Neue', cursive; font-size: 24px; }
-    .day-info p { font-size: 11px; }
-    .badges { gap: 5px; margin-top: 4px; }
-    .badge { font-size: 9px; padding: 2px 8px; border-radius: 20px; border: 1px solid var(--border); }
     .ex-grid { display: flex; flex-direction: column; gap: 12px; }
     .ex-card {
       background: var(--s2);
@@ -372,14 +325,7 @@
     .steps li:last-child { border-bottom: none; }
     .steps li::before { content: attr(data-n); font-family: 'Bebas Neue', cursive; font-size: 14px; color: var(--acc); min-width: 20px; }
     .tip { background: rgba(255,179,0,.07); border-radius: 10px; padding: 8px; font-size: 11px; display: flex; gap: 6px; margin-top: 6px; }
-    .ex-img {
-      width: 100%;
-      max-width: 160px;
-      border-radius: 12px;
-      margin: 8px auto;
-      display: block;
-      cursor: pointer;
-    }
+    .ex-img { width: 100%; max-width: 160px; border-radius: 12px; margin: 8px auto; display: block; cursor: pointer; }
     .cinta-info { background: rgba(255,255,255,.03); border-radius: 14px; padding: 8px; font-size: 11px; text-align: center; margin: 12px 0; }
     .btn-reset-dia {
       background: transparent;
@@ -392,7 +338,6 @@
       margin-top: 12px;
       cursor: pointer;
     }
-    /* Calendarios */
     .calendar-card { background: var(--s2); border-radius: 18px; padding: 12px; margin-bottom: 16px; }
     .cal-nav { display: flex; justify-content: space-between; margin-bottom: 10px; }
     .cal-month { font-family: 'Bebas Neue', cursive; font-size: 18px; }
@@ -403,11 +348,44 @@
     .cal-cell.today { border-color: var(--acc); color: var(--acc); font-weight: bold; }
     .cal-cell.cumple { border-color: gold; background: rgba(255,215,0,0.15); position: relative; }
     .cal-cell.cumple::after { content: "🎂"; font-size: 8px; position: absolute; top: 0px; right: 2px; }
-    /* Logros */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .form-field {
+      background: var(--s1);
+      border-radius: 12px;
+      padding: 8px;
+    }
+    .form-field label { font-size: 9px; color: var(--muted); display: block; margin-bottom: 4px; }
+    .form-field input { background: transparent; border: none; color: var(--text); font-size: 14px; width: 100%; outline: none; }
+    .historial-item {
+      background: var(--s1);
+      border-radius: 14px;
+      padding: 10px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .historial-date { font-weight: 700; color: var(--acc); font-size: 12px; }
+    .historial-data { font-size: 11px; color: var(--muted2); }
+    .historial-buttons button {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 10px;
+      margin-left: 6px;
+      color: var(--text);
+      font-size: 10px;
+      cursor: pointer;
+    }
     .logros-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
     .logro-badge { background: rgba(255,255,255,.05); border-radius: 30px; padding: 4px 12px; font-size: 11px; }
     .logro-badge.obtenido { border-color: gold; color: gold; }
-    /* Modales, toast, lightbox */
     .modal-disk {
       position: fixed;
       inset: 0;
@@ -423,7 +401,7 @@
     .disk-panel button { background: var(--acc); border: none; border-radius: 30px; padding: 6px 14px; margin: 4px; font-weight: bold; cursor: pointer; }
     .toast-msg {
       position: fixed;
-      bottom: 20px;
+      bottom: 80px;
       left: 16px;
       right: 16px;
       background: var(--acc);
@@ -438,10 +416,7 @@
     @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
     .lightbox {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       background: rgba(0,0,0,0.95);
       display: flex;
       align-items: center;
@@ -452,17 +427,8 @@
       opacity: 0;
       transition: opacity 0.3s;
     }
-    .lightbox.active {
-      visibility: visible;
-      opacity: 1;
-    }
-    .lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-      object-fit: contain;
-      pointer-events: auto;
-      cursor: zoom-in;
-    }
+    .lightbox.active { visibility: visible; opacity: 1; }
+    .lightbox img { max-width: 90%; max-height: 90%; object-fit: contain; pointer-events: auto; cursor: zoom-in; }
     .splash-overlay {
       position: fixed;
       inset: 0;
@@ -482,80 +448,39 @@
     .splash-autor { font-size: 0.65rem; color: var(--muted); letter-spacing: 1px; }
     .splash-tap { margin-top: 30px; font-size: 0.55rem; animation: pulse 1.5s infinite; }
     @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
-    @media (max-width: 480px) { .nav-menu { display: none; } .burger { display: flex; } }
+    @media (max-width: 480px) { .top-info { gap: 6px; font-size: 9px; } }
   </style>
 </head>
 <body>
 
-<nav>
-  <div class="logo" onclick="goPage('inicio')">NICO GYM</div>
-  <ul class="nav-menu">
-    <li><button class="nav-btn active" onclick="goPage('inicio')">🏠</button></li>
-    <li><button class="nav-btn" onclick="goPage('rutinas')">💪</button></li>
-    <li><button class="nav-btn" onclick="goPage('calendarios')">📅</button></li>
-    <li><button class="nav-btn" onclick="goPage('composicion')">⚖️</button></li>
-    <li><button class="nav-btn" onclick="goPage('logros')">🏆</button></li>
-    <li><button class="nav-btn" onclick="goPage('progreso-fotos')">📸</button></li>
-  </ul>
-  <div class="burger" onclick="toggleMob()"><span></span><span></span><span></span></div>
-</nav>
-<div class="mob-menu" id="mobMenu">
-  <button class="nav-btn" onclick="goPage('inicio');toggleMob()">🏠 Inicio</button>
-  <button class="nav-btn" onclick="goPage('rutinas');toggleMob()">💪 Rutinas</button>
-  <button class="nav-btn" onclick="goPage('calendarios');toggleMob()">📅 Calendario</button>
-  <button class="nav-btn" onclick="goPage('composicion');toggleMob()">⚖️ Composición</button>
-  <button class="nav-btn" onclick="goPage('logros');toggleMob()">🏆 Logros</button>
-  <button class="nav-btn" onclick="goPage('progreso-fotos');toggleMob()">📸 Fotos</button>
+<!-- BARRA SUPERIOR COMPACTA -->
+<div class="top-bar">
+  <div class="logo">NICO GYM</div>
+  <div class="top-info">
+    <span id="topEdad">--</span><strong>a</strong>
+    <span id="topPeso">--</span><strong>kg</strong>
+    <span>🎯<strong id="topObjetivo">75</strong></span>
+    <span>🚭<strong id="topDiasSinFumar">0</strong></span>
+  </div>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
 </div>
 
-<!-- ==================== INICIO ==================== -->
+<!-- MENÚ LATERAL -->
+<div class="side-menu" id="sideMenu">
+  <div class="menu-item" onclick="goPage('inicio')">🏠 Inicio</div>
+  <div class="menu-item" onclick="goPage('rutinas')">💪 Rutinas</div>
+  <div class="menu-item" onclick="goPage('calendarios')">📅 Calendarios</div>
+  <div class="menu-item" onclick="goPage('composicion')">⚖️ Composición</div>
+  <div class="menu-item" onclick="goPage('logros')">🏆 Logros</div>
+  <div class="menu-item" onclick="goPage('progreso-fotos')">📸 Fotos</div>
+  <div class="menu-item" onclick="resetAllData()">🗑️ Reset todo</div>
+</div>
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+
+<!-- ==================== INICIO (HOME REDISEÑADO) ==================== -->
 <div class="page active" id="page-inicio">
-  <div class="page-hero"><div class="container">
-    <div class="home-split">
-      <div>
-        <div class="sec-tag">⚡ HOY</div>
-        <div class="h1">
-          TRANSFORMA<br>TU <span>CUERPO</span>
-          <div class="home-quick-icons">
-            <button class="quick-icon" onclick="goPage('rutinas')" title="Rutinas">💪</button>
-            <button class="quick-icon" onclick="goPage('calendarios')" title="Calendario">📅</button>
-            <button class="quick-icon" onclick="goPage('composicion')" title="Composición">⚖️</button>
-            <button class="quick-icon" onclick="goPage('logros')" title="Logros">🏆</button>
-            <button class="quick-icon" onclick="goPage('progreso-fotos')" title="Fotos">📸</button>
-          </div>
-        </div>
-        <p class="home-sub">Plan con mancuernas, dominadas y cinta.</p>
-        <div class="home-btns">
-          <button class="btn-p" id="goHoyBtn">📅 Ir a rutina de hoy</button>
-        </div>
-      </div>
-      <div class="profile-card">
-        <div class="p-label">📊 MI PERFIL (editable)</div>
-        <div class="p-grid">
-          <div class="sbox editable" id="editEdad"><div class="slbl">Edad <span class="edit-icon">✏️</span></div><div class="sval" id="edadValor">--<span class="sunit"> años</span></div></div>
-          <div class="sbox editable" id="editPeso"><div class="slbl">Peso <span class="edit-icon">✏️</span></div><div class="sval" id="pesoActual">84<span class="sunit"> kg</span></div></div>
-          <div class="sbox editable" id="editAltura"><div class="slbl">Altura <span class="edit-icon">✏️</span></div><div class="sval" id="alturaValor">165<span class="sunit"> cm</span></div></div>
-          <div class="sbox"><div class="slbl">IMC</div><div class="sval hi" id="imcValor">30.9</div></div>
-        </div>
-        <div class="bmi-box">
-          <div class="bmi-row"><span>Bajo</span><span>Normal</span><span>Sobre</span><span>Obesidad</span></div>
-          <div class="bmi-track"><div class="bmi-fill"></div><div class="bmi-pin" id="bmiPin"></div></div>
-          <div class="bmi-note" id="bmiNota">📍 Mantén el enfoque en tu progreso</div>
-        </div>
-      </div>
-    </div>
-  </div></div>
-  <div class="qstats">
-    <div class="qstats-in">
-      <div class="qstat"><div class="qnum" id="statDiasSinFumar">0</div><div class="qlbl">sin fumar</div></div>
-      <div class="qstat"><div class="qnum" id="statPesoObjetivo">75</div><div class="qlbl">kg objetivo</div></div>
-      <div class="qstat"><div class="qnum" id="statNivel">1</div><div class="qlbl">nivel</div></div>
-      <div class="qstat"><div class="qnum" id="statEntrenosCompletados">0</div><div class="qlbl">entrenos</div></div>
-    </div>
-  </div>
-  <div class="sec-body">
+  <div class="container">
     <div id="ultimaMedicionContainer"></div>
-    <!-- GRÁFICO ÚNICO -->
     <div class="graph-container">
       <div class="graph-title">📊 EVOLUCIÓN COMPOSICIÓN CORPORAL</div>
       <canvas id="graficoUnico"></canvas>
@@ -566,8 +491,7 @@
 
 <!-- ==================== RUTINAS ==================== -->
 <div class="page" id="page-rutinas">
-  <div class="page-hero"><div class="container"><div class="sec-tag">💪 ENTRENO</div><h1 class="sec-title">RUTINAS</h1></div></div>
-  <div class="sec-body">
+  <div class="container">
     <div class="day-tabs" id="dayTabs"></div>
     <div id="dayPanelsContainer"></div>
   </div>
@@ -575,19 +499,17 @@
 
 <!-- ==================== CALENDARIOS ==================== -->
 <div class="page" id="page-calendarios">
-  <div class="page-hero"><div class="container"><div class="sec-tag">📅 SEGUIMIENTO</div><h1 class="sec-title">CALENDARIO</h1></div></div>
-  <div class="sec-body">
-    <div class="calendar-card"><div class="sec-tag">🏋️ ENTRENOS</div><div class="cal-nav"><button class="btn-3d" onclick="changeMonth(-1,'gym')">←</button><span id="cal-month-gym" class="cal-month"></span><button class="btn-3d" onclick="changeMonth(1,'gym')">→</button></div><div id="cal-gym" class="cal-grid"></div></div>
-    <div class="calendar-card"><div class="sec-tag">🚭 SIN FUMAR</div><div class="cal-nav"><button class="btn-3d" onclick="changeMonth(-1,'smoke')">←</button><span id="cal-month-smoke" class="cal-month"></span><button class="btn-3d" onclick="changeMonth(1,'smoke')">→</button></div><div id="cal-smoke" class="cal-grid"></div><div style="font-size: 10px; margin-top: 8px;">🔴 fumado &nbsp;🔵 no fumado &nbsp;🎂 cumpleaños</div></div>
+  <div class="container">
+    <div class="calendar-card"><div class="sec-tag" style="font-size:9px; color:var(--acc); margin-bottom:8px;">🏋️ ENTRENOS</div><div class="cal-nav"><button class="btn-3d" onclick="changeMonth(-1,'gym')">←</button><span id="cal-month-gym" class="cal-month"></span><button class="btn-3d" onclick="changeMonth(1,'gym')">→</button></div><div id="cal-gym" class="cal-grid"></div></div>
+    <div class="calendar-card"><div class="sec-tag" style="font-size:9px; color:var(--acc); margin-bottom:8px;">🚭 SIN FUMAR</div><div class="cal-nav"><button class="btn-3d" onclick="changeMonth(-1,'smoke')">←</button><span id="cal-month-smoke" class="cal-month"></span><button class="btn-3d" onclick="changeMonth(1,'smoke')">→</button></div><div id="cal-smoke" class="cal-grid"></div><div style="font-size: 10px; margin-top: 8px;">🔴 fumado &nbsp;🔵 no fumado &nbsp;🎂 cumpleaños</div></div>
   </div>
 </div>
 
 <!-- ==================== COMPOSICIÓN CORPORAL ==================== -->
 <div class="page" id="page-composicion">
-  <div class="page-hero"><div class="container"><div class="sec-tag">⚖️ ANÁLISIS AVANZADO</div><h1 class="sec-title">COMPOSICIÓN CORPORAL</h1></div></div>
-  <div class="sec-body">
+  <div class="container">
     <div style="background: var(--s2); border-radius: 18px; padding: 16px; margin-bottom: 20px;">
-      <div class="sec-tag">➕ NUEVA MEDICIÓN</div>
+      <div class="sec-tag" style="font-size:9px; color:var(--acc); margin-bottom:8px;">➕ NUEVA MEDICIÓN</div>
       <div class="form-grid">
         <div class="form-field"><label>📅 Fecha</label><input type="date" id="medFecha" value=""></div>
         <div class="form-field"><label>⚖️ Peso (kg)</label><input type="number" id="medPeso" step="0.1" placeholder="ej. 84.3"></div>
@@ -597,10 +519,10 @@
         <div class="form-field"><label>❤️ Grasa visceral (nivel)</label><input type="number" id="medGrasaVisceral" step="1" placeholder="ej. 11"></div>
         <div class="form-field"><label>🏋️ Peso libre grasa (kg)</label><input type="number" id="medPesoLibreGrasa" step="0.1" placeholder="ej. 61.2"></div>
       </div>
-      <button class="btn-p" onclick="guardarMedicion()" style="width:100%">💾 Guardar medición</button>
+      <button class="btn-p" onclick="guardarMedicion()" style="width:100%; background:var(--acc); border:none; color:#000; padding:12px; border-radius:40px; font-weight:700;">💾 Guardar medición</button>
     </div>
     <div style="background: var(--s2); border-radius: 18px; padding: 16px;">
-      <div class="sec-tag">📜 HISTORIAL</div>
+      <div class="sec-tag" style="font-size:9px; color:var(--acc); margin-bottom:8px;">📜 HISTORIAL</div>
       <div id="historialMediciones"></div>
     </div>
   </div>
@@ -608,30 +530,28 @@
 
 <!-- ==================== LOGROS ==================== -->
 <div class="page" id="page-logros">
-  <div class="page-hero"><div class="container"><div class="sec-tag">🏆 RECOMPENSAS</div><h1 class="sec-title">LOGROS</h1></div></div>
-  <div class="sec-body"><div style="background: var(--s2); border-radius: 18px; padding: 12px;"><div id="logrosContainer" class="logros-grid"></div></div></div>
+  <div class="container"><div style="background: var(--s2); border-radius: 18px; padding: 12px;"><div id="logrosContainer" class="logros-grid"></div></div></div>
 </div>
 
 <!-- ==================== FOTOS PROGRESO ==================== -->
 <div class="page" id="page-progreso-fotos">
-  <div class="page-hero"><div class="container"><div class="sec-tag">📸 MEMORIA</div><h1 class="sec-title">GALERÍA</h1></div></div>
-  <div class="sec-body">
+  <div class="container">
     <div style="background: var(--s2); border-radius: 18px; padding: 12px; margin-bottom: 12px;">
-      <div style="display: flex; gap: 8px; margin-bottom: 12px;"><input type="date" id="fechaFotos" class="btn-g" style="flex:1;"><button id="cargarFotosFecha" class="btn-p">Cargar</button></div>
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;"><input type="date" id="fechaFotos" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px; color:white;"><button id="cargarFotosFecha" class="btn-p" style="background:var(--acc); border:none; border-radius:40px; padding:8px 16px;">Cargar</button></div>
       <div style="display: grid; grid-template-columns: repeat(2,1fr); gap: 8px;">
-        <div class="equip-card"><div>FRENTE</div><input type="file" id="fotoFrente" accept="image/*" style="margin-top: 5px;"></div>
-        <div class="equip-card"><div>ESPALDA</div><input type="file" id="fotoEspalda" accept="image/*" style="margin-top: 5px;"></div>
-        <div class="equip-card"><div>IZQUIERDA</div><input type="file" id="FotoIzquierda" accept="image/*" style="margin-top: 5px;"></div>
-        <div class="equip-card"><div>DERECHA</div><input type="file" id="fotoDerecha" accept="image/*" style="margin-top: 5px;"></div>
+        <div class="equip-card" style="background:var(--s1); border-radius:14px; padding:12px; text-align:center;"><div>FRENTE</div><input type="file" id="fotoFrente" accept="image/*" style="margin-top: 5px;"></div>
+        <div class="equip-card" style="background:var(--s1); border-radius:14px; padding:12px; text-align:center;"><div>ESPALDA</div><input type="file" id="fotoEspalda" accept="image/*" style="margin-top: 5px;"></div>
+        <div class="equip-card" style="background:var(--s1); border-radius:14px; padding:12px; text-align:center;"><div>IZQUIERDA</div><input type="file" id="FotoIzquierda" accept="image/*" style="margin-top: 5px;"></div>
+        <div class="equip-card" style="background:var(--s1); border-radius:14px; padding:12px; text-align:center;"><div>DERECHA</div><input type="file" id="fotoDerecha" accept="image/*" style="margin-top: 5px;"></div>
       </div>
-      <button onclick="guardarFotos()" class="btn-p" style="width:100%; margin-top: 12px;">💾 Guardar día</button>
+      <button onclick="guardarFotos()" class="btn-p" style="width:100%; margin-top: 12px; background:var(--acc); border:none; border-radius:40px; padding:12px; font-weight:700;">💾 Guardar día</button>
     </div>
     <div style="background: var(--s2); border-radius: 18px; padding: 12px;">
-      <div style="display: flex; justify-content: space-between;"><div class="sec-tag">DÍAS</div><button onclick="cargarListaDias()" class="btn-3d">🔄</button></div>
+      <div style="display: flex; justify-content: space-between;"><div class="sec-tag" style="font-size:9px; color:var(--acc);">DÍAS</div><button onclick="cargarListaDias()" class="btn-3d">🔄</button></div>
       <div id="listaDiasDB" style="max-height: 100px; overflow-y: auto;"></div>
-      <div class="sec-tag" style="margin-top: 12px;">COMPARAR</div>
-      <div style="display: flex; gap: 8px; margin: 8px 0;"><select id="compararDia1" class="btn-g" style="flex:1;"></select><select id="compararDia2" class="btn-g" style="flex:1;"></select></div>
-      <div style="display: flex; gap: 8px;"><button onclick="compararFotos()" class="btn-p" style="flex:1;">Comparar</button><button onclick="recargarComparacion()" class="btn-g">🔄</button></div>
+      <div class="sec-tag" style="margin-top: 12px; font-size:9px; color:var(--acc);">COMPARAR</div>
+      <div style="display: flex; gap: 8px; margin: 8px 0;"><select id="compararDia1" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;"></select><select id="compararDia2" class="btn-g" style="flex:1; background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;"></select></div>
+      <div style="display: flex; gap: 8px;"><button onclick="compararFotos()" class="btn-p" style="flex:1; background:var(--acc); border:none; border-radius:40px; padding:8px;">Comparar</button><button onclick="recargarComparacion()" class="btn-g" style="background:transparent; border:1px solid var(--border); border-radius:40px; padding:8px;">🔄</button></div>
       <div id="comparadorResultado" style="margin-top: 12px;"></div>
     </div>
   </div>
@@ -643,10 +563,27 @@
 </div>
 
 <div id="resetModal" class="modal-disk" style="display:none;"><div class="disk-panel"><h3>⚠️ BORRAR TODO</h3><p>Escribe <strong>"BORRAR"</strong>:</p><input type="text" id="confirmReset" placeholder="BORRAR"><div><button onclick="cerrarReset()">Cancelar</button><button onclick="borrarTodo()">Borrar</button></div></div></div>
-<div id="descanso-box" class="modal-disk" style="display:none;"><div class="disk-panel"><div style="font-size: 20px;">💪 DESCANSA</div><div id="descansoTimer" style="font-size: 44px;">30</div><div style="display: flex; gap: 8px; justify-content: center; margin: 10px 0;"><button onclick="setDescanso(30)">30s</button><button onclick="setDescanso(45)">45s</button><button onclick="setDescanso(60)">60s</button><button onclick="setDescanso(90)">90s</button></div><button onclick="cancelarDescanso()" class="btn-p">Saltar</button></div></div>
+<div id="descanso-box" class="modal-disk" style="display:none;"><div class="disk-panel"><div style="font-size: 20px;">💪 DESCANSA</div><div id="descansoTimer" style="font-size: 44px;">30</div><div style="display: flex; gap: 8px; justify-content: center; margin: 10px 0;"><button onclick="setDescanso(30)">30s</button><button onclick="setDescanso(45)">45s</button><button onclick="setDescanso(60)">60s</button><button onclick="setDescanso(90)">90s</button></div><button onclick="cancelarDescanso()" class="btn-p" style="background:var(--acc); border:none; border-radius:40px; padding:8px;">Saltar</button></div></div>
+
+<div class="bottom-nav">
+  <button class="nav-item" onclick="goPage('inicio')"><span class="nav-icon">🏠</span>INICIO</button>
+  <button class="nav-item" onclick="goPage('rutinas')"><span class="nav-icon">💪</span>RUTINA</button>
+  <button class="nav-item" onclick="goPage('calendarios')"><span class="nav-icon">📅</span>AGENDA</button>
+  <button class="nav-item" onclick="goPage('composicion')"><span class="nav-icon">⚖️</span>PESO</button>
+  <button class="nav-item" onclick="goPage('logros')"><span class="nav-icon">🏆</span>LOGROS</button>
+  <button class="nav-item" onclick="goPage('progreso-fotos')"><span class="nav-icon">📸</span>FOTOS</button>
+</div>
+
+<div class="splash-overlay" id="splashScreen">
+  <div class="splash-logo">NICO GYM</div>
+  <div class="splash-line"></div>
+  <div class="splash-frase">"El único mal entreno es el que no hiciste."</div>
+  <div class="splash-autor">— Anónimo</div>
+  <div class="splash-tap">Toca para comenzar</div>
+</div>
 
 <script>
-// ========== 1. COMPOSICIÓN CORPORAL ==========
+// ========== COMPOSICIÓN CORPORAL ==========
 let mediciones = JSON.parse(localStorage.getItem('bodyComposition')) || [];
 const OBJETIVO_PESO = 75;
 const OBJETIVO_CINTURA = 90;
@@ -671,6 +608,36 @@ if (localStorage.getItem('pesos') && mediciones.length === 0) {
   } catch(e) {}
 }
 
+let diasNoFumar = JSON.parse(localStorage.getItem('diasNoFumar')) || [];
+let diasEntrenados = JSON.parse(localStorage.getItem('diasEntrenados')) || [];
+let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
+let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
+let personalizaciones = JSON.parse(localStorage.getItem('personalizaciones')) || {};
+
+// Fecha inicio para contar días sin fumar (22 de febrero de 2026)
+const FECHA_INICIO_NO_FUMAR = new Date(2026, 1, 22);
+
+function calcularDiasSinFumar() {
+  const hoy = new Date();
+  let count = 0;
+  let fecha = new Date(FECHA_INICIO_NO_FUMAR);
+  while (fecha <= hoy) {
+    const fStr = fecha.toISOString().slice(0,10);
+    if (!diasNoFumar.includes(fStr)) count++;
+    fecha.setDate(fecha.getDate() + 1);
+  }
+  return count;
+}
+
+function actualizarTopBar() {
+  const edad = calcularEdad();
+  document.getElementById('topEdad').innerText = edad;
+  const ultimoPeso = mediciones.length > 0 ? mediciones[mediciones.length-1].peso : '--';
+  document.getElementById('topPeso').innerHTML = ultimoPeso;
+  document.getElementById('topObjetivo').innerText = OBJETIVO_PESO;
+  document.getElementById('topDiasSinFumar').innerText = calcularDiasSinFumar();
+}
+
 function guardarMedicion() {
   const fecha = document.getElementById('medFecha').value;
   if (!fecha) { mostrarToast("Selecciona una fecha"); return; }
@@ -684,8 +651,8 @@ function guardarMedicion() {
     mostrarToast("Completa todos los campos correctamente");
     return;
   }
-  const masaGrasa = peso * (grasaPorcentaje / 100);
-  const indiceRecomp = masaMuscular - masaGrasa;
+  const masaGrasa = +(peso * (grasaPorcentaje / 100)).toFixed(1);
+  const indiceRecomp = +(masaMuscular - masaGrasa).toFixed(1);
   const nuevaMed = { fecha, peso, cintura, grasaPorcentaje, masaMuscular, grasaVisceral, pesoLibreGrasa, masaGrasa, indiceRecomp };
   const index = mediciones.findIndex(m => m.fecha === fecha);
   if (index !== -1) mediciones[index] = nuevaMed;
@@ -712,7 +679,7 @@ function cargarHistorialMediciones() {
   const cont = document.getElementById('historialMediciones');
   if (!cont) return;
   if (mediciones.length === 0) {
-    cont.innerHTML = '<div style="padding:12px; text-align:center; color:var(--muted2)">Sin registros. Añade tu primera medición.</div>';
+    cont.innerHTML = '<div style="padding:12px; text-align:center; color:var(--muted2)">Sin registros.</div>';
     return;
   }
   const sorted = [...mediciones].reverse();
@@ -754,12 +721,20 @@ function eliminarMedicion(fecha) {
   }
 }
 
-// ========== 2. RENDERIZADO DE TARJETA DE ÚLTIMA MEDICIÓN ==========
+// ========== RENDERIZADO TARJETA ÚLTIMA MEDICIÓN ==========
+let userData = { altura: 165, cumple: "1996-08-01" };
+function calcularEdad() {
+  const hoy = new Date(), nac = new Date(userData.cumple);
+  let edad = hoy.getFullYear() - nac.getFullYear();
+  if (hoy.getMonth() < nac.getMonth() || (hoy.getMonth() === nac.getMonth() && hoy.getDate() < nac.getDate())) edad--;
+  return edad;
+}
+
 function renderizarUltimaMedicion() {
   const container = document.getElementById('ultimaMedicionContainer');
   if (!container) return;
   if (mediciones.length === 0) {
-    container.innerHTML = `<div class="last-measure-card"><div class="last-measure-title">📊 Sin mediciones aún</div><div class="last-measure-item">Registra tu primera medición en la sección "Composición Corporal".</div></div>`;
+    container.innerHTML = `<div class="last-measure-card"><div class="last-measure-title">📊 Sin mediciones</div><div>Registra tu primera medición en "Composición".</div></div>`;
     return;
   }
   const ultima = mediciones[mediciones.length-1];
@@ -767,80 +742,70 @@ function renderizarUltimaMedicion() {
   const masaGrasa = (ultima.peso * (ultima.grasaPorcentaje / 100)).toFixed(1);
   const indiceRecomp = (ultima.masaMuscular - masaGrasa).toFixed(1);
   const fechaFormateada = new Date(ultima.fecha).toLocaleDateString('es-ES');
-  
-  // Ratio cintura-altura
-  const alturaCm = userData.altura;
-  const ratioCinturaAltura = (ultima.cintura / alturaCm).toFixed(2);
+  const ratioCinturaAltura = (ultima.cintura / userData.altura).toFixed(2);
   const ratioOk = ratioCinturaAltura < 0.5;
   
-  // Progreso peso (basado en la primera medición)
   const pesoInicial = mediciones[0].peso;
   const progresoPeso = Math.min(100, Math.max(0, ((pesoInicial - ultima.peso) / (pesoInicial - OBJETIVO_PESO)) * 100)).toFixed(0);
-  
-  // Progreso cintura (basado en la primera medición)
   const cinturaInicial = mediciones[0].cintura;
   const progresoCintura = Math.min(100, Math.max(0, ((cinturaInicial - ultima.cintura) / (cinturaInicial - OBJETIVO_CINTURA)) * 100)).toFixed(0);
   
-  // Diferencias respecto a la anterior
   let diffPeso = '', diffCintura = '', diffMusculo = '', diffGrasa = '', diffVisceral = '', diffRecomp = '';
   if (anterior) {
     const antMasaGrasa = (anterior.peso * (anterior.grasaPorcentaje / 100)).toFixed(1);
     const antIndice = (anterior.masaMuscular - antMasaGrasa).toFixed(1);
     const deltaPeso = (ultima.peso - anterior.peso).toFixed(1);
-    diffPeso = deltaPeso != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaPeso < 0 ? '#10b981' : '#ef4444'}">${deltaPeso < 0 ? '↓' : '↑'} ${Math.abs(deltaPeso)} kg</span>` : '';
+    diffPeso = deltaPeso != 0 ? `<span class="metric-delta ${deltaPeso < 0 ? 'delta-up' : 'delta-down'}">${deltaPeso < 0 ? '↓' : '↑'} ${Math.abs(deltaPeso)}</span>` : '';
     const deltaCintura = (ultima.cintura - anterior.cintura).toFixed(1);
-    diffCintura = deltaCintura != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaCintura < 0 ? '#10b981' : '#ef4444'}">${deltaCintura < 0 ? '↓' : '↑'} ${Math.abs(deltaCintura)} cm</span>` : '';
+    diffCintura = deltaCintura != 0 ? `<span class="metric-delta ${deltaCintura < 0 ? 'delta-up' : 'delta-down'}">${deltaCintura < 0 ? '↓' : '↑'} ${Math.abs(deltaCintura)}</span>` : '';
     const deltaMusculo = (ultima.masaMuscular - anterior.masaMuscular).toFixed(1);
-    diffMusculo = deltaMusculo != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaMusculo > 0 ? '#10b981' : '#ef4444'}">${deltaMusculo > 0 ? '↑' : '↓'} ${Math.abs(deltaMusculo)} kg</span>` : '';
+    diffMusculo = deltaMusculo != 0 ? `<span class="metric-delta ${deltaMusculo > 0 ? 'delta-up' : 'delta-down'}">${deltaMusculo > 0 ? '↑' : '↓'} ${Math.abs(deltaMusculo)}</span>` : '';
     const deltaGrasa = (masaGrasa - antMasaGrasa).toFixed(1);
-    diffGrasa = deltaGrasa != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaGrasa < 0 ? '#10b981' : '#ef4444'}">${deltaGrasa < 0 ? '↓' : '↑'} ${Math.abs(deltaGrasa)} kg</span>` : '';
+    diffGrasa = deltaGrasa != 0 ? `<span class="metric-delta ${deltaGrasa < 0 ? 'delta-up' : 'delta-down'}">${deltaGrasa < 0 ? '↓' : '↑'} ${Math.abs(deltaGrasa)}</span>` : '';
     const deltaVisceral = ultima.grasaVisceral - anterior.grasaVisceral;
-    diffVisceral = deltaVisceral != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaVisceral < 0 ? '#10b981' : '#ef4444'}">${deltaVisceral < 0 ? '↓' : '↑'} ${Math.abs(deltaVisceral)}</span>` : '';
+    diffVisceral = deltaVisceral != 0 ? `<span class="metric-delta ${deltaVisceral < 0 ? 'delta-up' : 'delta-down'}">${deltaVisceral < 0 ? '↓' : '↑'} ${Math.abs(deltaVisceral)}</span>` : '';
     const deltaRecomp = (indiceRecomp - antIndice).toFixed(1);
-    diffRecomp = deltaRecomp != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaRecomp > 0 ? '#10b981' : '#ef4444'}">${deltaRecomp > 0 ? '↑' : '↓'} ${Math.abs(deltaRecomp)}</span>` : '';
+    diffRecomp = deltaRecomp != 0 ? `<span class="metric-delta ${deltaRecomp > 0 ? 'delta-up' : 'delta-down'}">${deltaRecomp > 0 ? '↑' : '↓'} ${Math.abs(deltaRecomp)}</span>` : '';
   }
   
-  // Estado mejorado basado en cintura + índice recomposición
   let estado = "", estadoClase = "";
   if (mediciones.length >= 2 && anterior) {
     const cinturaBaja = ultima.cintura < anterior.cintura;
     const recompSube = indiceRecomp > (anterior.indiceRecomp || (anterior.masaMuscular - (anterior.peso * (anterior.grasaPorcentaje / 100))).toFixed(1));
-    if (cinturaBaja && recompSube) {
-      estado = "🚀 Excelente";
-      estadoClase = "";
-    } else if (cinturaBaja || recompSube) {
-      estado = "✅ Mejorando";
-      estadoClase = "";
-    } else if (Math.abs(ultima.cintura - anterior.cintura) <= 0.5 && Math.abs(indiceRecomp - (anterior.indiceRecomp || 0)) <= 0.5) {
-      estado = "⚖️ Estable";
-      estadoClase = "neutral";
-    } else {
-      estado = "⚠️ Atención";
-      estadoClase = "warning";
-    }
+    if (cinturaBaja && recompSube) { estado = "🚀 Excelente"; estadoClase = "status-good"; }
+    else if (cinturaBaja || recompSube) { estado = "✅ Mejorando"; estadoClase = "status-good"; }
+    else if (Math.abs(ultima.cintura - anterior.cintura) <= 0.5 && Math.abs(indiceRecomp - (anterior.indiceRecomp || 0)) <= 0.5) { estado = "⚖️ Estable"; estadoClase = "status-neutral"; }
+    else { estado = "⚠️ Atención"; estadoClase = "status-bad"; }
   } else {
-    estado = "📌 Registra más mediciones para ver tendencia";
-    estadoClase = "neutral";
+    estado = "📌 Añade más mediciones"; estadoClase = "status-neutral";
   }
+  
+  const imc = (ultima.peso / ((userData.altura/100) ** 2)).toFixed(1);
+  const pinPercent = Math.min(95, Math.max(5, (imc/40)*100));
   
   container.innerHTML = `
     <div class="last-measure-card">
       <div class="last-measure-title">📅 Última medición (${fechaFormateada})</div>
-      <div class="last-measure-grid">
-        <div class="last-measure-item"><div class="last-measure-label">⚖️ Peso</div><div class="last-measure-value">${ultima.peso} kg ${diffPeso}</div><div class="progress-text">🎯 Objetivo: ${OBJETIVO_PESO} kg | Progreso: ${progresoPeso}%</div></div>
-        <div class="last-measure-item"><div class="last-measure-label">📏 Cintura</div><div class="last-measure-value">${ultima.cintura} cm ${diffCintura}</div><div class="progress-text">🎯 Objetivo: ${OBJETIVO_CINTURA} cm | Progreso: ${progresoCintura}%</div></div>
-        <div class="last-measure-item"><div class="last-measure-label">💪 Masa muscular</div><div class="last-measure-value">${ultima.masaMuscular} kg ${diffMusculo}</div></div>
-        <div class="last-measure-item"><div class="last-measure-label">🔥 Masa grasa</div><div class="last-measure-value">${masaGrasa} kg ${diffGrasa}</div></div>
-        <div class="last-measure-item"><div class="last-measure-label">❤️ Grasa visceral</div><div class="last-measure-value">${ultima.grasaVisceral} ${diffVisceral}</div></div>
-        <div class="last-measure-item"><div class="last-measure-label">📊 Índice recomposición</div><div class="last-measure-value">${indiceRecomp} ${diffRecomp}</div></div>
-        <div class="last-measure-item"><div class="last-measure-label">📏 Ratio cintura-altura</div><div class="last-measure-value">${ratioCinturaAltura}</div><div class="progress-text" style="color:${ratioOk ? '#10b981' : '#ef4444'};">${ratioOk ? '✅ Objetivo (<0.5)' : '⚠️ Por encima de 0.5'}</div></div>
+      <div class="metrics-grid">
+        <div class="metric-card"><div class="metric-label">⚖️ Peso</div><div class="metric-value">${ultima.peso} kg ${diffPeso}</div><div class="progress-text">🎯 ${OBJETIVO_PESO} kg (${progresoPeso}%)</div></div>
+        <div class="metric-card"><div class="metric-label">📏 Cintura</div><div class="metric-value">${ultima.cintura} cm ${diffCintura}</div><div class="progress-text">🎯 ${OBJETIVO_CINTURA} cm (${progresoCintura}%)</div></div>
+        <div class="metric-card"><div class="metric-label">💪 Masa muscular</div><div class="metric-value">${ultima.masaMuscular} kg ${diffMusculo}</div></div>
+        <div class="metric-card"><div class="metric-label">🔥 Masa grasa</div><div class="metric-value">${masaGrasa} kg ${diffGrasa}</div></div>
+        <div class="metric-card"><div class="metric-label">❤️ Grasa visceral</div><div class="metric-value">${ultima.grasaVisceral} ${diffVisceral}</div></div>
+        <div class="metric-card"><div class="metric-label">📊 Índice recomposición</div><div class="metric-value">${indiceRecomp} ${diffRecomp}</div></div>
+      </div>
+      <div class="ratio-text">📏 Ratio cintura-altura: ${ratioCinturaAltura} <span style="color:${ratioOk ? '#10b981' : '#ef4444'}">${ratioOk ? '✅ Objetivo (<0.5)' : '⚠️ Por encima de 0.5'}</span></div>
+      <div class="bmi-bar-container">
+        <div class="bmi-row"><span>Bajo</span><span>Normal</span><span>Sobre</span><span>Obesidad</span></div>
+        <div class="bmi-track"><div class="bmi-fill"></div><div class="bmi-pin" style="left:calc(${pinPercent}% - 7px);"></div></div>
+        <div class="bmi-note" style="font-size:10px; color:var(--muted2); text-align:center;">IMC: ${imc}</div>
       </div>
       <div class="status-badge ${estadoClase}">${estado}</div>
     </div>
   `;
 }
 
-// ========== 3. GRÁFICO ÚNICO CON TODAS LAS MÉTRICAS ==========
+// ========== GRÁFICO ÚNICO ==========
 let graficoUnico = null;
 function renderizarGraficoUnico() {
   const canvas = document.getElementById('graficoUnico');
@@ -874,45 +839,82 @@ function renderizarGraficoUnico() {
     options: {
       responsive: true,
       maintainAspectRatio: true,
-      plugins: {
-        legend: { position: 'top', labels: { font: { size: 9 }, color: '#999', boxWidth: 10, padding: 8 } },
-        tooltip: { mode: 'index', intersect: false }
-      },
-      scales: {
-        y: { grid: { color: 'rgba(255,255,255,0.05)' }, title: { display: true, text: 'kg / cm / nivel', color: '#888', font: { size: 9 } } },
-        x: { ticks: { maxRotation: 45, autoSkip: true, font: { size: 9 } } }
-      }
+      plugins: { legend: { position: 'top', labels: { font: { size: 9 }, color: '#999', boxWidth: 10, padding: 8 } }, tooltip: { mode: 'index', intersect: false } },
+      scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, title: { display: true, text: 'kg / cm / nivel', color: '#888', font: { size: 9 } } }, x: { ticks: { maxRotation: 45, autoSkip: true, font: { size: 9 } } } }
     }
   });
 }
 
-// ========== 4. PERFIL Y UTILIDADES ==========
-let userData = { peso: 84, altura: 165, cumple: "1996-08-01" };
-function sincronizarPesoDesdeHistorial() {
-  if (mediciones.length > 0) {
-    const ultimo = mediciones[mediciones.length-1];
-    userData.peso = ultimo.peso;
+// ========== CALENDARIOS ==========
+let mesGym = new Date().getMonth(), añoGym = new Date().getFullYear(), mesSmoke = new Date().getMonth(), añoSmoke = new Date().getFullYear();
+function renderCalendarios() {
+  const contGym = document.getElementById('cal-gym');
+  if (contGym) {
+    contGym.innerHTML = '';
+    const nombreMes = new Date(añoGym, mesGym, 1).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+    document.getElementById('cal-month-gym').innerText = `${nombreMes} ${añoGym}`;
+    ['L','M','X','J','V','S','D'].forEach(d => { let div = document.createElement('div'); div.innerText = d; div.style.fontWeight = 'bold'; div.style.textAlign = 'center'; div.style.color = '#999'; contGym.appendChild(div); });
+    let primerDia = new Date(añoGym, mesGym, 1).getDay(), offset = primerDia === 0 ? 6 : primerDia - 1;
+    for (let i = 0; i < offset; i++) contGym.appendChild(document.createElement('div'));
+    const diasMes = new Date(añoGym, mesGym+1, 0).getDate();
+    const hoyStr = getHoyStr();
+    for (let d = 1; d <= diasMes; d++) {
+      const fecha = new Date(añoGym, mesGym, d);
+      const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`;
+      const cell = document.createElement('div'); cell.className = 'cal-cell'; cell.innerText = d; cell.setAttribute('data-day', fecha.getDay());
+      if (diasEntrenados.includes(fStr)) cell.classList.add('completado');
+      if (fStr === getHoyStr()) cell.classList.add('today');
+      if (fecha.getDate() === 1 && fecha.getMonth() === 7) cell.classList.add('cumple');
+      cell.onclick = (function(f) { return function() { mostrarPopupEjercicios(f); }; })(fecha);
+      contGym.appendChild(cell);
+    }
   }
-  actualizarPerfil();
+  const contSmoke = document.getElementById('cal-smoke');
+  if (contSmoke) {
+    contSmoke.innerHTML = '';
+    const nombreMes = new Date(añoSmoke, mesSmoke, 1).toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+    document.getElementById('cal-month-smoke').innerText = `${nombreMes} ${añoSmoke}`;
+    ['L','M','X','J','V','S','D'].forEach(d => { let div = document.createElement('div'); div.innerText = d; div.style.fontWeight = 'bold'; div.style.textAlign = 'center'; div.style.color = '#999'; contSmoke.appendChild(div); });
+    let primerDia = new Date(añoSmoke, mesSmoke, 1).getDay(), offset = primerDia === 0 ? 6 : primerDia - 1;
+    for (let i = 0; i < offset; i++) contSmoke.appendChild(document.createElement('div'));
+    const diasMes = new Date(añoSmoke, mesSmoke+1, 0).getDate();
+    const hoyStr = getHoyStr();
+    for (let d = 1; d <= diasMes; d++) {
+      const fecha = new Date(añoSmoke, mesSmoke, d);
+      const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`;
+      const cell = document.createElement('div'); cell.className = 'cal-cell'; cell.innerText = d;
+      if (fecha < FECHA_INICIO_NO_FUMAR) { cell.style.background = '#2a2a2a'; cell.style.color = '#555'; cell.style.pointerEvents = 'none'; }
+      else if (fecha > new Date()) { cell.style.background = '#2a2a2a'; cell.style.color = '#666'; cell.style.pointerEvents = 'none'; }
+      else {
+        if (diasNoFumar.includes(fStr)) { cell.style.background = '#ff3b30'; cell.style.color = '#fff'; }
+        else { cell.style.background = '#0d47a1'; cell.style.color = '#fff'; }
+        cell.onclick = (function(fs) { return function() { toggleDiaFumado(fs); }; })(fStr);
+      }
+      if (fStr === hoyStr) cell.classList.add('today');
+      if (fecha.getDate() === 1 && fecha.getMonth() === 7) cell.classList.add('cumple');
+      contSmoke.appendChild(cell);
+    }
+  }
 }
-function calcularEdad() { const hoy = new Date(), nac = new Date(userData.cumple); let edad = hoy.getFullYear() - nac.getFullYear(); if (hoy.getMonth() < nac.getMonth() || (hoy.getMonth() === nac.getMonth() && hoy.getDate() < nac.getDate())) edad--; return edad; }
-function actualizarPerfil() {
-  document.getElementById('edadValor').innerHTML = calcularEdad() + '<span class="sunit"> años</span>';
-  document.getElementById('pesoActual').innerHTML = userData.peso + '<span class="sunit"> kg</span>';
-  document.getElementById('alturaValor').innerHTML = userData.altura + '<span class="sunit"> cm</span>';
-  const alturaM = userData.altura / 100;
-  const imc = mediciones.length > 0 ? (mediciones[mediciones.length-1].peso / (alturaM * alturaM)).toFixed(1) : (userData.peso / (alturaM * alturaM)).toFixed(1);
-  document.getElementById('imcValor').innerText = imc;
-  const pinPercent = Math.min(95, Math.max(5, (imc/40)*100));
-  document.getElementById('bmiPin').style.left = `calc(${pinPercent}% - 6px)`;
-  localStorage.setItem('userPeso', userData.peso);
-  localStorage.setItem('userAltura', userData.altura);
+
+function toggleDiaFumado(fStr) {
+  if (diasNoFumar.includes(fStr)) { diasNoFumar = diasNoFumar.filter(d => d !== fStr); mostrarToast("✅ Día sin fumar"); }
+  else { diasNoFumar.push(fStr); mostrarToast("🚬 Marcado fumado"); }
+  localStorage.setItem('diasNoFumar', JSON.stringify(diasNoFumar));
+  renderCalendarios();
+  actualizarUICompleta();
 }
-function editarPeso() { let n = prompt("Nuevo peso (kg):", userData.peso); if (n && !isNaN(n)) { userData.peso = parseFloat(n); actualizarPerfil(); } }
-function editarAltura() { let n = prompt("Nueva altura (cm):", userData.altura); if (n && !isNaN(n)) { userData.altura = parseInt(n); actualizarPerfil(); } }
+
+function changeMonth(dir, tipo) {
+  if (tipo === 'gym') { let n = new Date(añoGym, mesGym + dir, 1); mesGym = n.getMonth(); añoGym = n.getFullYear(); renderCalendarios(); }
+  else { let n = new Date(añoSmoke, mesSmoke + dir, 1); mesSmoke = n.getMonth(); añoSmoke = n.getFullYear(); renderCalendarios(); }
+}
+
+// ========== FUNCIONES AUXILIARES ==========
+function getHoyStr() { return new Date().toISOString().slice(0,10); }
 function mostrarToast(msg) { const t = document.createElement('div'); t.className = 'toast-msg'; t.innerText = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
 
-// ========== 5. RUTINAS (ejercicios) - Código completo ==========
+// ========== RUTINAS (ejercicios - igual que antes) ==========
 const ejerciciosUnicos = {
   lunes: ["Dominadas (palmas mirando hacia ti)", "Remo en banco", "Curl de bíceps alterno", "Curl martillo", "Plancha"],
   martes: ["Pullover con mancuerna", "Aperturas inclinadas con mancuernas", "Press de hombros sentado", "Elevaciones laterales sentado", "Flexiones", "Abdominal bicicleta"],
@@ -986,22 +988,12 @@ function formatearPeso(n, pers){
   return `${kg} kg`;
 }
 function getInstruccionDetallada(nombre) {
-  const base = {
-    "Curl araña (pausa de 2\")": "1️⃣ Posición: Tumbado boca abajo en banco inclinado (30°), brazos colgando.\n2️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos.\n3️⃣ Movimiento: Curva la mancuerna hacia el hombro, mantén 2 segundos arriba.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.\n5️⃣ Error: No balances el cuerpo."
-  };
+  const base = { "Curl araña (pausa de 2\")": "1️⃣ Posición: Tumbado boca abajo en banco inclinado (30°), brazos colgando.\n2️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos.\n3️⃣ Movimiento: Curva la mancuerna hacia el hombro, mantén 2 segundos arriba.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.\n5️⃣ Error: No balances el cuerpo." };
   return base[nombre] || "1️⃣ Posición inicial correcta.\n2️⃣ Movimiento controlado.\n3️⃣ Respiración adecuada.";
 }
-let personalizaciones = JSON.parse(localStorage.getItem('personalizaciones')) || {};
-let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
-let diasEntrenados = JSON.parse(localStorage.getItem('diasEntrenados')) || [];
-let diasNoFumar = JSON.parse(localStorage.getItem('diasNoFumar')) || [];
-let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
-function guardarTodo() { localStorage.setItem('diasEntrenados',JSON.stringify(diasEntrenados)); localStorage.setItem('diasNoFumar',JSON.stringify(diasNoFumar)); localStorage.setItem('nico_logros',JSON.stringify(logros)); }
-function getHoyStr() { return new Date().toISOString().slice(0,10); }
-function getNumeroSemana(fecha) { const dia=fecha.getDay(); const diffLunes=(dia===0?6:dia-1); const lunes=new Date(fecha); lunes.setDate(fecha.getDate()-diffLunes); lunes.setHours(0,0,0,0); const refLunes=new Date(2026,0,5); return Math.floor((lunes-refLunes)/(1000*60*60*24)/7)+1; }
 function marcarEjercicio(id){
   const dia=id.split('-')[0];
-  const semanaKey=getNumeroSemana(new Date()).toString();
+  const semanaKey=Math.floor((new Date()-new Date(2026,0,5))/(1000*60*60*24*7))+1;
   const completadoKey=`completado_${dia}_${semanaKey}`;
   if(checks[id]) delete checks[id]; else checks[id]=true;
   localStorage.setItem('nico_checks',JSON.stringify(checks));
@@ -1015,23 +1007,24 @@ function marcarEjercicio(id){
       localStorage.removeItem(completadoKey);
       const hoy=getHoyStr();
       if(diasEntrenados.includes(hoy)) diasEntrenados=diasEntrenados.filter(d=>d!==hoy);
-      guardarTodo(); mostrarToast(`⚠️ Día ${dia} incompleto`); renderCalendarios();
+      localStorage.setItem('diasEntrenados',JSON.stringify(diasEntrenados));
+      mostrarToast(`⚠️ Día ${dia} incompleto`); renderCalendarios();
     }
   }
 }
 function completarDia(dia){
-  const semanaKey=getNumeroSemana(new Date()).toString();
+  const semanaKey=Math.floor((new Date()-new Date(2026,0,5))/(1000*60*60*24*7))+1;
   const completadoKey=`completado_${dia}_${semanaKey}`;
   if(localStorage.getItem(completadoKey)==='true') return;
   localStorage.setItem(completadoKey,'true');
   const hoy=getHoyStr();
-  if(!diasEntrenados.includes(hoy)){ diasEntrenados.push(hoy); guardarTodo(); }
+  if(!diasEntrenados.includes(hoy)){ diasEntrenados.push(hoy); localStorage.setItem('diasEntrenados',JSON.stringify(diasEntrenados)); }
   mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`);
   canvasConfetti({particleCount:100,spread:70});
   renderizarRutinas(); actualizarUICompleta(); actualizarLogros(); renderCalendarios();
 }
 function resetDia(dia){
-  const semanaKey=getNumeroSemana(new Date()).toString();
+  const semanaKey=Math.floor((new Date()-new Date(2026,0,5))/(1000*60*60*24*7))+1;
   const completadoKey=`completado_${dia}_${semanaKey}`;
   const container=document.getElementById(`lista-${dia}`);
   if(container){
@@ -1043,7 +1036,8 @@ function resetDia(dia){
     localStorage.removeItem(completadoKey);
     const hoy=getHoyStr();
     if(diasEntrenados.includes(hoy)) diasEntrenados=diasEntrenados.filter(d=>d!==hoy);
-    guardarTodo(); mostrarToast(`✅ Día ${dia} reiniciado`);
+    localStorage.setItem('diasEntrenados',JSON.stringify(diasEntrenados));
+    mostrarToast(`✅ Día ${dia} reiniciado`);
   } else mostrarToast(`✅ Ejercicios desmarcados`);
   renderizarRutinas(); actualizarUICompleta(); renderCalendarios();
 }
@@ -1083,12 +1077,10 @@ function renderizarRutinas(){
 function toggleDetalles(btn, imgUrl, instrucHtml){
   const detDiv=btn.nextElementSibling;
   if(detDiv.classList.contains('open')){
-    detDiv.classList.remove('open');
-    btn.textContent="Ver técnica ↓";
+    detDiv.classList.remove('open'); btn.textContent="Ver técnica ↓";
   }else{
     detDiv.innerHTML=`${imgUrl?`<img src="${imgUrl}" class="ex-img" onerror="this.style.display='none'">`:''}<ul class="steps">${instrucHtml.split('<br>').map((line,i)=>`<li data-n="${i+1}">${line.replace(/^\d+️⃣/,'').trim()}</li>`).join('')}</ul><div class="tip"><span>💡</span>Respira correctamente.</div>`;
-    detDiv.classList.add('open');
-    btn.textContent="Ocultar ↑";
+    detDiv.classList.add('open'); btn.textContent="Ocultar ↑";
     const newImg = detDiv.querySelector('.ex-img');
     if(newImg) newImg.addEventListener('click', (e) => { e.stopPropagation(); openLightbox(newImg.src); });
   }
@@ -1106,52 +1098,6 @@ window.mostrarDiscos=function(nombre,id){
   cerrarModalDiscos(); document.body.insertAdjacentHTML('beforeend',html);
 };
 function cerrarModalDiscos(){document.getElementById('modalDiscos')?.remove();}
-let mesGym=new Date().getMonth(), añoGym=new Date().getFullYear(), mesSmoke=new Date().getMonth(), añoSmoke=new Date().getFullYear();
-function renderCalendarios(){
-  const contGym=document.getElementById('cal-gym');
-  if(contGym){
-    contGym.innerHTML='';
-    const nombreMes=new Date(añoGym,mesGym,1).toLocaleString('es-ES',{month:'long'}).toUpperCase();
-    document.getElementById('cal-month-gym').innerText=`${nombreMes} ${añoGym}`;
-    ['L','M','X','J','V','S','D'].forEach(d=>{let div=document.createElement('div');div.innerText=d;div.style.fontWeight='bold';div.style.textAlign='center';div.style.color='#999';contGym.appendChild(div);});
-    let primerDia=new Date(añoGym,mesGym,1).getDay(), offset=primerDia===0?6:primerDia-1;
-    for(let i=0;i<offset;i++) contGym.appendChild(document.createElement('div'));
-    const diasMes=new Date(añoGym,mesGym+1,0).getDate(), hoyStr=getHoyStr();
-    for(let d=1;d<=diasMes;d++){
-      const fecha=new Date(añoGym,mesGym,d), fStr=`${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`;
-      const cell=document.createElement('div'); cell.className='cal-cell'; cell.innerText=d; cell.setAttribute('data-day',fecha.getDay());
-      if(diasEntrenados.includes(fStr))cell.classList.add('completado');
-      if(fStr===hoyStr)cell.classList.add('today');
-      if(fecha.getDate()===1 && fecha.getMonth()===7) cell.classList.add('cumple');
-      cell.onclick=(function(f){return function(){mostrarPopupEjercicios(f);};})(fecha);
-      contGym.appendChild(cell);
-    }
-  }
-  const contSmoke=document.getElementById('cal-smoke');
-  if(contSmoke){
-    contSmoke.innerHTML='';
-    const nombreMes=new Date(añoSmoke,mesSmoke,1).toLocaleString('es-ES',{month:'long'}).toUpperCase();
-    document.getElementById('cal-month-smoke').innerText=`${nombreMes} ${añoSmoke}`;
-    ['L','M','X','J','V','S','D'].forEach(d=>{let div=document.createElement('div');div.innerText=d;div.style.fontWeight='bold';div.style.textAlign='center';div.style.color='#999';contSmoke.appendChild(div);});
-    let primerDia=new Date(añoSmoke,mesSmoke,1).getDay(), offset=primerDia===0?6:primerDia-1;
-    for(let i=0;i<offset;i++) contSmoke.appendChild(document.createElement('div'));
-    const diasMes=new Date(añoSmoke,mesSmoke+1,0).getDate(), hoyStr=getHoyStr(), fechaInicio=new Date(2026,1,23);
-    for(let d=1;d<=diasMes;d++){
-      const fecha=new Date(añoSmoke,mesSmoke,d), fStr=`${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}`;
-      const cell=document.createElement('div'); cell.className='cal-cell'; cell.innerText=d;
-      if(fecha<fechaInicio){cell.style.background='#2a2a2a';cell.style.color='#555';cell.style.pointerEvents='none';}
-      else if(fecha>new Date()){cell.style.background='#2a2a2a';cell.style.color='#666';cell.style.pointerEvents='none';}
-      else{
-        if(diasNoFumar.includes(fStr)){cell.style.background='#ff3b30';cell.style.color='#fff';}
-        else{cell.style.background='#0d47a1';cell.style.color='#fff';}
-        cell.onclick=(function(fs){return function(){toggleDiaFumado(fs);};})(fStr);
-      }
-      if(fStr===hoyStr)cell.classList.add('today');
-      if(fecha.getDate()===1 && fecha.getMonth()===7) cell.classList.add('cumple');
-      contSmoke.appendChild(cell);
-    }
-  }
-}
 function mostrarPopupEjercicios(fecha){
   const diaSemana=fecha.getDay();
   if(diaSemana===0){mostrarToast("📅 Domingo - descanso");return;}
@@ -1162,20 +1108,6 @@ function mostrarPopupEjercicios(fecha){
   cerrarModalPopup(); const overlay=document.createElement('div'); overlay.className='modal-disk'; overlay.id='modalPopup'; overlay.innerHTML=html; document.body.appendChild(overlay);
 }
 function cerrarModalPopup(){document.getElementById('modalPopup')?.remove();}
-function toggleDiaFumado(fStr){
-  if(diasNoFumar.includes(fStr)){diasNoFumar=diasNoFumar.filter(d=>d!==fStr);mostrarToast("✅ Día sin fumar");}
-  else{diasNoFumar.push(fStr);mostrarToast("🚬 Marcado fumado");}
-  guardarTodo(); renderCalendarios(); actualizarUICompleta();
-}
-function changeMonth(dir,tipo){
-  if(tipo==='gym'){let n=new Date(añoGym,mesGym+dir,1);mesGym=n.getMonth();añoGym=n.getFullYear();renderCalendarios();}
-  else{let n=new Date(añoSmoke,mesSmoke+dir,1);mesSmoke=n.getMonth();añoSmoke=n.getFullYear();renderCalendarios();}
-}
-function calcularDiasSinFumar(){
-  let count=0, f=new Date(2026,1,23), hoy=new Date();
-  while(f<=hoy){if(!diasNoFumar.includes(f.toISOString().slice(0,10)))count++;f.setDate(f.getDate()+1);}
-  return count;
-}
 function getRachaEntrenos(){
   let racha=0, hoy=new Date();
   for(let i=0;i<100;i++){ let fecha=new Date(hoy); fecha.setDate(hoy.getDate()-i); if(diasEntrenados.includes(fecha.toISOString().slice(0,10))) racha++; else break; }
@@ -1206,39 +1138,31 @@ const listaLogros=[
   {id:"nivel_2",nombre:"⭐ Nivel 2",cond:()=>getNivelActual()>=2},
   {id:"nivel_3",nombre:"⭐⭐ Nivel 3",cond:()=>getNivelActual()>=3},
   {id:"nivel_4",nombre:"⭐⭐⭐ Nivel 4",cond:()=>getNivelActual()>=4},
-  {id:"nivel_5",nombre:"🏅 Nivel 5 Élite",cond:()=>getNivelActual()>=5},
-  {id:"objetivo_80",nombre:"🎯 Objetivo 80 kg",cond:()=>mediciones.length&&mediciones[mediciones.length-1].peso<=80},
-  {id:"objetivo_75",nombre:"🎯 Objetivo 75 kg",cond:()=>mediciones.length&&mediciones[mediciones.length-1].peso<=75},
-  {id:"objetivo_70",nombre:"🔥 70 kg",cond:()=>mediciones.length&&mediciones[mediciones.length-1].peso<=70},
-  {id:"objetivo_65",nombre:"🏆 OBJETIVO FINAL",cond:()=>mediciones.length&&mediciones[mediciones.length-1].peso<=65},
-  {id:"semana_completa",nombre:"🗓️ Semana completa",cond:()=>{let s=0;for(let i=0;i<7;i++){let d=new Date();d.setDate(d.getDate()-i);if(diasEntrenados.includes(d.toISOString().slice(0,10)))s++;}return s>=5;}},
+  {id:"nivel_5",nombre:"🏅 Nivel 5 Élite",cond:()=>getNivelActual()>=5}
 ];
 function actualizarLogros(){
   const container=document.getElementById('logrosContainer');
   if(!container)return;
   let nuevos=false;
   listaLogros.forEach(l=>{if(!logros.includes(l.id) && l.cond()){logros.push(l.id);nuevos=true;mostrarToast(`🏆 ${l.nombre}`);canvasConfetti({particleCount:100,spread:70});}});
-  if(nuevos)guardarTodo();
+  if(nuevos)localStorage.setItem('nico_logros',JSON.stringify(logros));
   container.innerHTML=listaLogros.map(l=>`<div class="logro-badge ${logros.includes(l.id)?'obtenido':''}">${l.nombre}</div>`).join('');
 }
 function actualizarUICompleta() {
   renderizarUltimaMedicion();
   renderizarGraficoUnico();
-  sincronizarPesoDesdeHistorial();
-  actualizarPerfil();
+  actualizarTopBar();
   renderizarRutinas();
   renderCalendarios();
   actualizarLogros();
   cargarHistorialMediciones();
-  const statObjetivo = document.getElementById('statPesoObjetivo');
-  if (statObjetivo) statObjetivo.innerText = OBJETIVO_PESO;
 }
 function goPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(`page-${id}`).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes(`'${id}'`))b.classList.add('active');});
-  window.scrollTo({top:0,behavior:'smooth'});
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>{ if(b.innerText.toLowerCase().includes(id.substring(0,4))) b.classList.add('active'); });
+  window.scrollTo(0,0);
   if(id==='inicio') actualizarUICompleta();
   if(id==='composicion') cargarHistorialMediciones();
   if(id==='logros') actualizarLogros();
@@ -1264,14 +1188,24 @@ function switchDay(day,btn){
   document.getElementById(`dp-${day}`).classList.add('active');
   btn.classList.add('active');
 }
-function toggleMob(){document.getElementById('mobMenu').classList.toggle('open');}
+function toggleMenu(){
+  const menu=document.getElementById('sideMenu');
+  const overlay=document.getElementById('menuOverlay');
+  if(menu.classList.contains('open')){
+    menu.classList.remove('open');
+    overlay.classList.remove('show');
+  }else{
+    menu.classList.add('open');
+    overlay.classList.add('show');
+  }
+}
 function irHoy(){ const hoy=new Date().getDay(), diasMap={1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado',0:'domingo'}; goPage('rutinas'); setTimeout(()=>{ const tabs=document.querySelectorAll('.dtab'); const idx={lunes:0,martes:1,miercoles:2,jueves:3,viernes:4,sabado:5,domingo:6}[diasMap[hoy]]; if(tabs[idx]) switchDay(diasMap[hoy],tabs[idx]); },100); }
 function mostrarReset(){document.getElementById('resetModal').style.display='flex';}
 function cerrarReset(){document.getElementById('resetModal').style.display='none';}
 function borrarTodo(){if(document.getElementById('confirmReset').value==='BORRAR'){localStorage.clear();location.reload();}else mostrarToast('❌ Escribe BORRAR');}
-let descansoSegundos=45,timerInterval;
 function setDescanso(seg){if(document.getElementById('descanso-box').style.display==='flex')cancelarDescanso();const box=document.getElementById('descanso-box');box.style.display='flex';let s=seg;document.getElementById('descansoTimer').innerText=s;timerInterval=setInterval(()=>{s--;document.getElementById('descansoTimer').innerText=s;if(s<=0){clearInterval(timerInterval);box.style.display='none';}},1000);}
 function cancelarDescanso(){clearInterval(timerInterval);document.getElementById('descanso-box').style.display='none';}
+function resetAllData(){if(confirm("¿Borrar TODOS los datos?")){localStorage.clear();location.reload();}}
 let db=null; const DB_NAME='FotosProgresoDB', STORE_NAME='diasFotos';
 function abrirDB(){return new Promise(r=>{const req=indexedDB.open(DB_NAME,1);req.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE_NAME))e.target.result.createObjectStore(STORE_NAME,{keyPath:'fecha'});};req.onsuccess=e=>{db=e.target.result;r();};req.onerror=()=>r();});}
 async function guardarFotos(){
@@ -1315,27 +1249,24 @@ async function compararFotos(){
 }
 function recargarComparacion(){compararFotos();}
 const frasesSplash = [
-  { frase: "El único mal entreno es el que no hiciste.", autor: "— Anónimo" },
-  { frase: "No pares cuando estés cansado. Para cuando hayas terminado.", autor: "— Anónimo" },
-  { frase: "Tu cuerpo puede casi cualquier cosa. Es tu mente a quien tienes que convencer.", autor: "— Anónimo" },
-  { frase: "El dolor que sientes hoy será la fuerza que sientas mañana.", autor: "— Anónimo" }
+  { frase: "El único mal entreno es el que no hiciste."},
+  { frase: "No pares cuando estés cansado. Para cuando hayas terminado."},
+  { frase: "Tu cuerpo puede casi cualquier cosa. Es tu mente a quien tienes que convencer." },
+  { frase: "El dolor que sientes hoy será la fuerza que sientas mañana."}
 ];
 function mostrarSplash() {
   const splash = document.getElementById('splashScreen');
   if (!splash) return;
   const r = frasesSplash[Math.floor(Math.random() * frasesSplash.length)];
-  splash.innerHTML = `<div class="splash-logo">NICO GYM</div><div class="splash-line"></div><div class="splash-frase">"${r.frase}"</div><div class="splash-autor">${r.autor}</div><div class="splash-tap">Toca para comenzar</div>`;
+  splash.innerHTML = `<div class="splash-logo">NICO GYM</div><div class="splash-line"></div><div class="splash-frase">"${r.frase}"<div class="splash-tap">Toca para comenzar</div>`;
   splash.style.display = 'flex';
   splash.onclick = () => {
     splash.style.opacity = '0';
-    setTimeout(() => {
-      splash.style.display = 'none';
-    }, 600);
+    setTimeout(() => { splash.style.display = 'none'; }, 600);
   };
-  setTimeout(() => {
-    if (splash.style.display !== 'none') splash.click();
-  }, 3500);
+  setTimeout(() => { if (splash.style.display !== 'none') splash.click(); }, 3500);
 }
+function setColorPorDia() { const hoy = new Date().getDay(); const colores = {0:"#e8ff47",1:"#4caf50",2:"#ff9800",3:"#2196f3",4:"#9c27b0",5:"#ff5722",6:"#00bcd4"}; document.documentElement.style.setProperty('--acc', colores[hoy]); }
 window.onload = () => {
   setColorPorDia();
   if (!localStorage.getItem('primeraFechaUso')) localStorage.setItem('primeraFechaUso', new Date().toISOString());
@@ -1343,15 +1274,9 @@ window.onload = () => {
   document.getElementById('medFecha').value = getHoyStr();
   actualizarUICompleta();
   cargarListaDias(); cargarSelectores(); cargarTabs();
-  document.getElementById('goHoyBtn').onclick = irHoy;
-  document.getElementById('editPeso').onclick = editarPeso;
-  document.getElementById('editAltura').onclick = editarAltura;
-  document.getElementById('editEdad').onclick = () => mostrarToast("La edad se calcula automáticamente desde el 1/8/1996");
+  document.getElementById('goHoyBtn')?.setAttribute('onclick','irHoy()');
   mostrarSplash();
 };
-function setColorPorDia() { const hoy = new Date().getDay(); const colores = {0:"#e8ff47",1:"#4caf50",2:"#ff9800",3:"#2196f3",4:"#9c27b0",5:"#ff5722",6:"#00bcd4"}; document.documentElement.style.setProperty('--acc', colores[hoy]); }
 </script>
-
-<div id="splashScreen" class="splash-overlay"></div>
 </body>
 </html>
