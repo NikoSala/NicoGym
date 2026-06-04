@@ -27,7 +27,7 @@
       overflow-x: hidden;
       padding-bottom: 70px;
     }
-    /* HEADER SUPERIOR COMPACTO */
+    /* BARRA SUPERIOR COMPACTA */
     .top-bar {
       position: fixed;
       top: 0;
@@ -73,6 +73,19 @@
       border-radius: 10px;
       cursor: pointer;
     }
+    /* Botón hoy */
+    .btn-hoy {
+      background: var(--acc);
+      border: none;
+      color: #000;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 12px;
+      margin: 60px 12px 8px 12px;
+      width: calc(100% - 24px);
+      cursor: pointer;
+    }
     /* Menú lateral */
     .side-menu {
       position: fixed;
@@ -116,7 +129,7 @@
       background: var(--s2);
       border-radius: 20px;
       padding: 16px;
-      margin: 12px 0;
+      margin: 12px;
       border: 1px solid var(--border);
     }
     .last-measure-title {
@@ -214,7 +227,7 @@
       background: var(--s2);
       border-radius: 20px;
       padding: 12px;
-      margin: 12px 0;
+      margin: 12px;
       border: 1px solid var(--border);
     }
     .graph-title {
@@ -256,7 +269,7 @@
     }
     .nav-item.active { color: var(--acc); background: rgba(255,107,53,0.1); }
     .nav-icon { font-size: 18px; display: block; margin-bottom: 2px; }
-    /* Resto de estilos (rutinas, composición, etc.) se mantienen */
+    /* Ejercicios */
     .day-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 16px; scrollbar-width: none; }
     .day-tabs::-webkit-scrollbar { display: none; }
     .dtab {
@@ -338,6 +351,7 @@
       margin-top: 12px;
       cursor: pointer;
     }
+    /* Calendarios */
     .calendar-card { background: var(--s2); border-radius: 18px; padding: 12px; margin-bottom: 16px; }
     .cal-nav { display: flex; justify-content: space-between; margin-bottom: 10px; }
     .cal-month { font-family: 'Bebas Neue', cursive; font-size: 18px; }
@@ -348,6 +362,7 @@
     .cal-cell.today { border-color: var(--acc); color: var(--acc); font-weight: bold; }
     .cal-cell.cumple { border-color: gold; background: rgba(255,215,0,0.15); position: relative; }
     .cal-cell.cumple::after { content: "🎂"; font-size: 8px; position: absolute; top: 0px; right: 2px; }
+    /* Formulario composición */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -464,6 +479,9 @@
   </div>
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
 </div>
+
+<!-- BOTÓN IR A RUTINA DE HOY -->
+<button class="btn-hoy" id="goHoyBtn">📅 Ir a rutina de hoy</button>
 
 <!-- MENÚ LATERAL -->
 <div class="side-menu" id="sideMenu">
@@ -614,7 +632,6 @@ let checks = JSON.parse(localStorage.getItem('nico_checks')) || {};
 let logros = JSON.parse(localStorage.getItem('nico_logros')) || [];
 let personalizaciones = JSON.parse(localStorage.getItem('personalizaciones')) || {};
 
-// Fecha inicio para contar días sin fumar (22 de febrero de 2026)
 const FECHA_INICIO_NO_FUMAR = new Date(2026, 1, 22);
 
 function calcularDiasSinFumar() {
@@ -914,7 +931,44 @@ function changeMonth(dir, tipo) {
 function getHoyStr() { return new Date().toISOString().slice(0,10); }
 function mostrarToast(msg) { const t = document.createElement('div'); t.className = 'toast-msg'; t.innerText = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
 
-// ========== RUTINAS (ejercicios - igual que antes) ==========
+// ========== INSTRUCCIONES DETALLADAS PARA CADA EJERCICIO ==========
+function getInstruccionDetallada(nombre) {
+  const instrucciones = {
+    "Dominadas (palmas mirando hacia ti)": "1️⃣ Manos: Agarre supino (palmas hacia ti), separación ligeramente más ancha que hombros. Dedos envolviendo la barra.\n2️⃣ Cuerpo: Cuélgate con brazos extendidos, escápulas hacia abajo y atrás. Piernas juntas o ligeramente cruzadas.\n3️⃣ Movimiento: Tira de los codos hacia las caderas, lleva la barbilla por encima de la barra. Baja controlado hasta extensión completa.\n4️⃣ Respiración: Exhala al subir (esfuerzo), inhala al bajar.\n5️⃣ Error común: Balancear el cuerpo. Evítalo manteniendo el core firme.",
+    "Remo en banco": "1️⃣ Manos: Agarre prono (palmas abajo) o neutro según mancuerna. Muñeca recta.\n2️⃣ Piernas: Rodilla y mano del mismo lado apoyadas en banco, la otra pierna al suelo con pie firme.\n3️⃣ Espalda: Totalmente recta, paralela al suelo, hombro retraído hacia abajo.\n4️⃣ Movimiento: Rema la mancuerna hacia tu cadera, aprieta la escápula al final. Baja controlado.\n5️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Curl de bíceps alterno": "1️⃣ Manos: Agarre supino (palmas arriba), codos pegados al torso. Muñeca recta.\n2️⃣ Piernas: Separación ancho de hombros, rodillas ligeramente flexionadas, torso firme.\n3️⃣ Espalda: Recta, sin balanceos. Contrae el abdomen.\n4️⃣ Movimiento: Curva un brazo llevando la mancuerna al hombro, baja controlado. Alterna.\n5️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Curl martillo": "1️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos al cuerpo.\n2️⃣ Movimiento: Curva hacia el hombro manteniendo la muñeca recta. No gires la palma.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Pullover con mancuerna": "1️⃣ Posición: Tumbado transversal en banco, hombros apoyados, caderas hacia el suelo. Pies firmes.\n2️⃣ Manos: Sujeta una mancuerna con ambas manos sobre el pecho, codos ligeramente flexionados.\n3️⃣ Movimiento: Baja la mancuerna tras la cabeza en arco sintiendo el dorsal. Sube controlado.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Aperturas inclinadas con mancuernas": "1️⃣ Banco inclinado 30-45°, pies apoyados en el suelo.\n2️⃣ Manos: Palmas enfrentadas, codos ligeramente flexionados (fijos).\n3️⃣ Movimiento: Baja las mancuernas en arco hasta sentir estiramiento de pecho. Sube juntándolas sin chocar.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Press de hombros sentado": "1️⃣ Sentado con respaldo vertical, pies planos. Mancuernas a la altura de los hombros.\n2️⃣ Manos: Palmas hacia adelante, codos a 90°.\n3️⃣ Movimiento: Presiona verticalmente sin bloquear codos. Baja controlado.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Elevaciones laterales sentado": "1️⃣ Sentado, brazos a los lados, ligera flexión de codo (casi fija).\n2️⃣ Movimiento: Sube los brazos hasta la altura de los hombros, con el codo ligeramente más alto que la muñeca.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Sentadilla búlgara": "1️⃣ Pie trasero apoyado en banco, el delantero adelante (talón alineado con rodilla).\n2️⃣ Manos: Mancuernas a los lados o una en cada mano.\n3️⃣ Movimiento: Baja la rodilla trasera hacia el suelo, mantén torso recto. Sube empujando con el talón del pie delantero.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Peso muerto rumano": "1️⃣ Pies ancho de caderas, rodillas ligeramente flexionadas (sin bloquear).\n2️⃣ Espalda: Recta todo el tiempo, hombros hacia atrás.\n3️⃣ Movimiento: Flexiona cadera hacia atrás, baja mancuernas rozando espinillas. Sube extendiendo cadera.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Patada de tríceps": "1️⃣ Apoya rodilla y mano en banco, espalda paralela al suelo. Brazo activo pegado al torso.\n2️⃣ Brazo: Codo pegado al torso, a 90°.\n3️⃣ Movimiento: Extiende el brazo hacia atrás sin mover el codo. Contrae el tríceps.\n4️⃣ Respiración: Exhala al extender, inhala al volver.",
+    "Extensión de tríceps tumbado": "1️⃣ Tumbado en banco, mancuerna con ambas manos sobre cabeza. Codos apuntando al techo.\n2️⃣ Movimiento: Baja la mancuerna tras la cabeza hasta 90° (antebrazos paralelos al suelo). Sube.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Remo con barra (agarre supino estricto)": "1️⃣ Torso inclinado, barra con agarre supino (palmas arriba), manos separación hombros.\n2️⃣ Movimiento: Rema la barra hacia el abdomen, aprieta la espalda. Baja controlado.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Curl concentrado": "1️⃣ Sentado, codo apoyado en el muslo interior (mismo lado).\n2️⃣ Movimiento: Curva la mancuerna hacia el hombro, mantén la contracción 1 segundo.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Curl araña (pausa de 2\")": "1️⃣ Posición: Tumbado boca abajo en banco inclinado (30°), brazos colgando.\n2️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos.\n3️⃣ Movimiento: Curva la mancuerna hacia el hombro, mantén 2 segundos arriba. Baja controlado.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.\n5️⃣ Error: No balances el cuerpo; concéntrate en la contracción del bíceps.",
+    "Remo al cuello": "1️⃣ De pie, barra al frente con agarre prono (palmas abajo), manos separación hombros.\n2️⃣ Movimiento: Sube la barra verticalmente hasta la altura del cuello, codos hacia afuera.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Press inclinado con mancuernas (agarre neutro)": "1️⃣ Banco inclinado 30°, agarre neutro (palmas enfrentadas). Pies firmes.\n2️⃣ Movimiento: Presiona hacia arriba sin bloquear codos. Baja controlado.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Aperturas en banco": "1️⃣ Tumbado en banco plano, palmas enfrentadas, codos ligeramente flexionados.\n2️⃣ Movimiento: Abre en arco hasta sentir estiramiento de pecho. Sube juntando sin chocar.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Pájaro (fly invertido)": "1️⃣ Torso inclinado hasta casi paralelo al suelo, rodillas ligeramente flexionadas.\n2️⃣ Movimiento: Eleva brazos lateralmente con codos ligeramente flexionados, como si abrieras alas.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Press de banca agarre cerrado": "1️⃣ Tumbado, mancuernas juntas y paralelas (agarre neutro). Codos pegados al cuerpo.\n2️⃣ Movimiento: Presiona hacia arriba, enfatizando tríceps y pecho interno.\n3️⃣ Respiración: Exhala al subir.",
+    "Zancadas con mancuerna": "1️⃣ Paso largo hacia adelante, mantén torso recto, rodilla delantera no supera la punta del pie.\n2️⃣ Movimiento: Baja rodilla trasera hasta casi tocar suelo. Sube empujando con el talón delantero.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Peso muerto a una pierna": "1️⃣ De pie, mancuerna en mano contraria a la pierna que trabaja. Pierna de apoyo ligeramente flexionada.\n2️⃣ Movimiento: Flexiona cadera manteniendo espalda recta, baja la mancuerna por la espinilla. Sube con glúteo.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Extensión en banco declinado": "1️⃣ Banco declinado (-15°), cabeza abajo. Mancuerna tras cabeza con ambas manos.\n2️⃣ Movimiento: Extiende codos hasta casi extender brazos (sin bloquear). Baja controlado.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Press francés en banco inclinado": "1️⃣ Banco inclinado (30°), mancuerna con ambas manos tras cabeza. Codos apuntando al techo.\n2️⃣ Movimiento: Extiende codos, solo antebrazos se mueven. Baja hasta 90°.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Flexiones": "1️⃣ Manos: Apoyo más ancho que hombros, dedos hacia adelante, cuerpo recto.\n2️⃣ Cuerpo: Línea recta de cabeza a talones, abdomen y glúteos contraídos.\n3️⃣ Movimiento: Baja hasta que el pecho casi toque el suelo, luego empuja explosivamente.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Sentadilla Goblet": "1️⃣ Sujeta UNA mancuerna verticalmente al pecho con ambas manos (como una copa).\n2️⃣ Pies: Ancho de hombros, puntas ligeramente hacia afuera.\n3️⃣ Movimiento: Baja como si te sentaras en una silla, mantén talones pegados al suelo. Sube.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
+    "Hip Thrust": "1️⃣ Hombros apoyados en banco, mancuerna sobre cadera (usa toalla para acolchar).\n2️⃣ Pies: Apoyados, rodillas a 90°, talones firmes.\n3️⃣ Movimiento: Sube cadera apretando glúteo hasta que el cuerpo forme línea recta. Baja sin apoyar del todo.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Elevación de gemelos": "1️⃣ De pie, puntas en escalón o borde elevado (opcional para más rango).\n2️⃣ Movimiento: Sube talones lo más alto posible, aguanta 2 segundos. Baja controlado hasta estiramiento.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
+    "Plancha": "1️⃣ Apoyo sobre antebrazos y puntas de pies. Codos alineados con hombros.\n2️⃣ Cuerpo: Línea recta, caderas sin hundirse ni elevarse. Contrae abdomen y glúteos.\n3️⃣ Respiración: Normal, no aguantes la respiración.\n4️⃣ Error: Caderas altas o hundidas. Ajusta la posición.",
+    "Abdominal bicicleta": "1️⃣ Tumbado boca arriba, manos tras cabeza sin tirar del cuello.\n2️⃣ Movimiento: Alterna codo con rodilla contraria, estira la otra pierna. Mantén el core contraído.\n3️⃣ Respiración: Exhala al girar, inhala al volver."
+  };
+  return instrucciones[nombre] || "1️⃣ Posición inicial correcta.\n2️⃣ Movimiento controlado.\n3️⃣ Respiración adecuada.\n4️⃣ Concéntrate en el músculo trabajado.";
+}
+
+// ========== RUTINAS (ejercicios) ==========
 const ejerciciosUnicos = {
   lunes: ["Dominadas (palmas mirando hacia ti)", "Remo en banco", "Curl de bíceps alterno", "Curl martillo", "Plancha"],
   martes: ["Pullover con mancuerna", "Aperturas inclinadas con mancuernas", "Press de hombros sentado", "Elevaciones laterales sentado", "Flexiones", "Abdominal bicicleta"],
@@ -986,10 +1040,6 @@ function formatearPeso(n, pers){
   if(num===1) return `${kg} kg (1 mancuerna)`;
   if(num===2) return `${kg} kg c/u`;
   return `${kg} kg`;
-}
-function getInstruccionDetallada(nombre) {
-  const base = { "Curl araña (pausa de 2\")": "1️⃣ Posición: Tumbado boca abajo en banco inclinado (30°), brazos colgando.\n2️⃣ Manos: Agarre neutro (palmas enfrentadas), codos fijos.\n3️⃣ Movimiento: Curva la mancuerna hacia el hombro, mantén 2 segundos arriba.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.\n5️⃣ Error: No balances el cuerpo." };
-  return base[nombre] || "1️⃣ Posición inicial correcta.\n2️⃣ Movimiento controlado.\n3️⃣ Respiración adecuada.";
 }
 function marcarEjercicio(id){
   const dia=id.split('-')[0];
@@ -1249,8 +1299,8 @@ async function compararFotos(){
 }
 function recargarComparacion(){compararFotos();}
 const frasesSplash = [
-  { frase: "El único mal entreno es el que no hiciste."},
-  { frase: "No pares cuando estés cansado. Para cuando hayas terminado."},
+  { frase: "El único mal entreno es el que no hiciste." },
+  { frase: "No pares cuando estés cansado. Para cuando hayas terminado." },
   { frase: "Tu cuerpo puede casi cualquier cosa. Es tu mente a quien tienes que convencer." },
   { frase: "El dolor que sientes hoy será la fuerza que sientas mañana."}
 ];
@@ -1274,7 +1324,7 @@ window.onload = () => {
   document.getElementById('medFecha').value = getHoyStr();
   actualizarUICompleta();
   cargarListaDias(); cargarSelectores(); cargarTabs();
-  document.getElementById('goHoyBtn')?.setAttribute('onclick','irHoy()');
+  document.getElementById('goHoyBtn').onclick = irHoy;
   mostrarSplash();
 };
 </script>
