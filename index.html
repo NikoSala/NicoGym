@@ -1504,8 +1504,33 @@
   }
 
   function toggleMenu() { const menu = document.getElementById('sideMenu'); const overlay = document.getElementById('menuOverlay'); if (menu.classList.contains('open')) { menu.classList.remove('open'); overlay.classList.remove('show'); } else { menu.classList.add('open'); overlay.classList.add('show'); } }
-  function irHoy() { const hoy = new Date().getDay(), diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' }; goPage('rutinas'); setTimeout(() => { const tabs = document.querySelectorAll('.dtab'); const idx = { lunes: 0, martes: 1, miercoles: 2, jueves: 3, viernes: 4, sabado: 5, domingo: 6 }[diasMap[hoy]]; if (tabs[idx]) switchDay(diasMap[hoy], tabs[idx]); }, 100); }
-  function mostrarReset() { document.getElementById('resetModal').style.display = 'flex'; }
+   function irHoy() {
+    const hoy = new Date().getDay();
+    const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' };
+    const diaActual = diasMap[hoy];
+    
+    // Primero ir a la página de rutinas
+    goPage('rutinas');
+    
+    // Esperar a que se carguen las pestañas y luego seleccionar la del día actual
+    setTimeout(() => {
+      const tabs = document.querySelectorAll('.dtab');
+      const idxMap = { lunes: 0, martes: 1, miercoles: 2, jueves: 3, viernes: 4, sabado: 5, domingo: 6 };
+      const idx = idxMap[diaActual];
+      
+      if (tabs[idx]) {
+        // Simular el click en la pestaña correspondiente
+        tabs[idx].click();
+      } else {
+        // Si no encuentra las pestañas, recargar las tabs y volver a intentar
+        cargarTabs();
+        setTimeout(() => {
+          const newTabs = document.querySelectorAll('.dtab');
+          if (newTabs[idx]) newTabs[idx].click();
+        }, 100);
+      }
+    }, 150);
+  }  function mostrarReset() { document.getElementById('resetModal').style.display = 'flex'; }
   function cerrarReset() { document.getElementById('resetModal').style.display = 'none'; }
   function borrarTodo() { if (document.getElementById('confirmReset').value === 'BORRAR') { localStorage.clear(); location.reload(); } else mostrarToast('❌ Escribe BORRAR'); }
   function setDescanso(seg) { if (document.getElementById('descanso-box').style.display === 'flex') cancelarDescanso(); const box = document.getElementById('descanso-box'); box.style.display = 'flex'; let s = seg; document.getElementById('descansoTimer').innerText = s; timerInterval = setInterval(() => { s--; document.getElementById('descansoTimer').innerText = s; if (s <= 0) { clearInterval(timerInterval); box.style.display = 'none'; } }, 1000); }
