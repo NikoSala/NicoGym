@@ -204,6 +204,10 @@
       font-weight: 700;
       color: var(--text);
     }
+    .progress-text {
+      font-size: 9px;
+      color: var(--muted);
+    }
     .status-badge {
       display: inline-block;
       background: rgba(16,185,129,0.2);
@@ -216,7 +220,7 @@
     }
     .status-badge.warning { background: rgba(239,68,68,0.2); color: #ef4444; }
     .status-badge.neutral { background: rgba(107,114,128,0.2); color: #9ca3af; }
-    /* Gráficos */
+    /* Gráfico único */
     .graph-container {
       background: var(--s2);
       border-radius: 18px;
@@ -230,7 +234,13 @@
       margin-bottom: 8px;
       color: var(--muted2);
     }
-    canvas { max-height: 180px; width: 100%; }
+    .graph-subtitle {
+      font-size: 9px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 6px;
+    }
+    canvas { max-height: 220px; width: 100%; }
     /* Formulario composición */
     .form-grid {
       display: grid;
@@ -538,15 +548,19 @@
   <div class="qstats">
     <div class="qstats-in">
       <div class="qstat"><div class="qnum" id="statDiasSinFumar">0</div><div class="qlbl">sin fumar</div></div>
-      <div class="qstat"><div class="qnum" id="statPesoObjetivo">80</div><div class="qlbl">kg objetivo</div></div>
+      <div class="qstat"><div class="qnum" id="statPesoObjetivo">75</div><div class="qlbl">kg objetivo</div></div>
       <div class="qstat"><div class="qnum" id="statNivel">1</div><div class="qlbl">nivel</div></div>
       <div class="qstat"><div class="qnum" id="statEntrenosCompletados">0</div><div class="qlbl">entrenos</div></div>
     </div>
   </div>
   <div class="sec-body">
     <div id="ultimaMedicionContainer"></div>
-    <div id="graficosContainer"></div>
-    <!-- Sección EQUIPO eliminada -->
+    <!-- GRÁFICO ÚNICO -->
+    <div class="graph-container">
+      <div class="graph-title">📊 EVOLUCIÓN COMPOSICIÓN CORPORAL</div>
+      <canvas id="graficoUnico"></canvas>
+      <div class="graph-subtitle">💡 Haz clic en la leyenda para ocultar/mostrar cada línea</div>
+    </div>
   </div>
 </div>
 
@@ -634,7 +648,9 @@
 <script>
 // ========== 1. COMPOSICIÓN CORPORAL ==========
 let mediciones = JSON.parse(localStorage.getItem('bodyComposition')) || [];
-// Migrar datos antiguos de peso si existen
+const OBJETIVO_PESO = 75;
+const OBJETIVO_CINTURA = 90;
+
 if (localStorage.getItem('pesos') && mediciones.length === 0) {
   try {
     const oldPesos = JSON.parse(localStorage.getItem('pesos'));
@@ -738,6 +754,7 @@ function eliminarMedicion(fecha) {
   }
 }
 
+// ========== 2. RENDERIZADO DE TARJETA DE ÚLTIMA MEDICIÓN ==========
 function renderizarUltimaMedicion() {
   const container = document.getElementById('ultimaMedicionContainer');
   if (!container) return;
@@ -746,79 +763,130 @@ function renderizarUltimaMedicion() {
     return;
   }
   const ultima = mediciones[mediciones.length-1];
+  const anterior = mediciones.length >= 2 ? mediciones[mediciones.length-2] : null;
   const masaGrasa = (ultima.peso * (ultima.grasaPorcentaje / 100)).toFixed(1);
   const indiceRecomp = (ultima.masaMuscular - masaGrasa).toFixed(1);
   const fechaFormateada = new Date(ultima.fecha).toLocaleDateString('es-ES');
+  
+  // Ratio cintura-altura
+  const alturaCm = userData.altura;
+  const ratioCinturaAltura = (ultima.cintura / alturaCm).toFixed(2);
+  const ratioOk = ratioCinturaAltura < 0.5;
+  
+  // Progreso peso (basado en la primera medición)
+  const pesoInicial = mediciones[0].peso;
+  const progresoPeso = Math.min(100, Math.max(0, ((pesoInicial - ultima.peso) / (pesoInicial - OBJETIVO_PESO)) * 100)).toFixed(0);
+  
+  // Progreso cintura (basado en la primera medición)
+  const cinturaInicial = mediciones[0].cintura;
+  const progresoCintura = Math.min(100, Math.max(0, ((cinturaInicial - ultima.cintura) / (cinturaInicial - OBJETIVO_CINTURA)) * 100)).toFixed(0);
+  
+  // Diferencias respecto a la anterior
+  let diffPeso = '', diffCintura = '', diffMusculo = '', diffGrasa = '', diffVisceral = '', diffRecomp = '';
+  if (anterior) {
+    const antMasaGrasa = (anterior.peso * (anterior.grasaPorcentaje / 100)).toFixed(1);
+    const antIndice = (anterior.masaMuscular - antMasaGrasa).toFixed(1);
+    const deltaPeso = (ultima.peso - anterior.peso).toFixed(1);
+    diffPeso = deltaPeso != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaPeso < 0 ? '#10b981' : '#ef4444'}">${deltaPeso < 0 ? '↓' : '↑'} ${Math.abs(deltaPeso)} kg</span>` : '';
+    const deltaCintura = (ultima.cintura - anterior.cintura).toFixed(1);
+    diffCintura = deltaCintura != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaCintura < 0 ? '#10b981' : '#ef4444'}">${deltaCintura < 0 ? '↓' : '↑'} ${Math.abs(deltaCintura)} cm</span>` : '';
+    const deltaMusculo = (ultima.masaMuscular - anterior.masaMuscular).toFixed(1);
+    diffMusculo = deltaMusculo != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaMusculo > 0 ? '#10b981' : '#ef4444'}">${deltaMusculo > 0 ? '↑' : '↓'} ${Math.abs(deltaMusculo)} kg</span>` : '';
+    const deltaGrasa = (masaGrasa - antMasaGrasa).toFixed(1);
+    diffGrasa = deltaGrasa != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaGrasa < 0 ? '#10b981' : '#ef4444'}">${deltaGrasa < 0 ? '↓' : '↑'} ${Math.abs(deltaGrasa)} kg</span>` : '';
+    const deltaVisceral = ultima.grasaVisceral - anterior.grasaVisceral;
+    diffVisceral = deltaVisceral != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaVisceral < 0 ? '#10b981' : '#ef4444'}">${deltaVisceral < 0 ? '↓' : '↑'} ${Math.abs(deltaVisceral)}</span>` : '';
+    const deltaRecomp = (indiceRecomp - antIndice).toFixed(1);
+    diffRecomp = deltaRecomp != 0 ? `<span style="font-size:12px; margin-left:6px; color:${deltaRecomp > 0 ? '#10b981' : '#ef4444'}">${deltaRecomp > 0 ? '↑' : '↓'} ${Math.abs(deltaRecomp)}</span>` : '';
+  }
+  
+  // Estado mejorado basado en cintura + índice recomposición
   let estado = "", estadoClase = "";
-  if (mediciones.length >= 2) {
-    const anterior = mediciones[mediciones.length-2];
-    const musculoSube = ultima.masaMuscular > anterior.masaMuscular;
-    const grasaBaja = ultima.grasaPorcentaje < anterior.grasaPorcentaje;
-    if (musculoSube && grasaBaja) { estado = "✅ Mejorando"; estadoClase = ""; }
-    else if (Math.abs(ultima.masaMuscular - anterior.masaMuscular) <= 0.5 && Math.abs(ultima.grasaPorcentaje - anterior.grasaPorcentaje) <= 0.5) { estado = "⚖️ Estable"; estadoClase = "neutral"; }
-    else { estado = "⚠️ Atención (revisa hábitos)"; estadoClase = "warning"; }
+  if (mediciones.length >= 2 && anterior) {
+    const cinturaBaja = ultima.cintura < anterior.cintura;
+    const recompSube = indiceRecomp > (anterior.indiceRecomp || (anterior.masaMuscular - (anterior.peso * (anterior.grasaPorcentaje / 100))).toFixed(1));
+    if (cinturaBaja && recompSube) {
+      estado = "🚀 Excelente";
+      estadoClase = "";
+    } else if (cinturaBaja || recompSube) {
+      estado = "✅ Mejorando";
+      estadoClase = "";
+    } else if (Math.abs(ultima.cintura - anterior.cintura) <= 0.5 && Math.abs(indiceRecomp - (anterior.indiceRecomp || 0)) <= 0.5) {
+      estado = "⚖️ Estable";
+      estadoClase = "neutral";
+    } else {
+      estado = "⚠️ Atención";
+      estadoClase = "warning";
+    }
   } else {
     estado = "📌 Registra más mediciones para ver tendencia";
     estadoClase = "neutral";
   }
+  
   container.innerHTML = `
     <div class="last-measure-card">
       <div class="last-measure-title">📅 Última medición (${fechaFormateada})</div>
       <div class="last-measure-grid">
-        <div class="last-measure-item"><div class="last-measure-label">Peso</div><div class="last-measure-value">${ultima.peso} kg</div></div>
-        <div class="last-measure-item"><div class="last-measure-label">Cintura</div><div class="last-measure-value">${ultima.cintura} cm</div></div>
-        <div class="last-measure-item"><div class="last-measure-label">💪 Masa muscular</div><div class="last-measure-value">${ultima.masaMuscular} kg</div></div>
-        <div class="last-measure-item"><div class="last-measure-label">🔥 Masa grasa</div><div class="last-measure-value">${masaGrasa} kg</div></div>
-        <div class="last-measure-item"><div class="last-measure-label">❤️ Grasa visceral</div><div class="last-measure-value">${ultima.grasaVisceral}</div></div>
-        <div class="last-measure-item"><div class="last-measure-label">📊 Índice recomposición</div><div class="last-measure-value">${indiceRecomp}</div></div>
+        <div class="last-measure-item"><div class="last-measure-label">⚖️ Peso</div><div class="last-measure-value">${ultima.peso} kg ${diffPeso}</div><div class="progress-text">🎯 Objetivo: ${OBJETIVO_PESO} kg | Progreso: ${progresoPeso}%</div></div>
+        <div class="last-measure-item"><div class="last-measure-label">📏 Cintura</div><div class="last-measure-value">${ultima.cintura} cm ${diffCintura}</div><div class="progress-text">🎯 Objetivo: ${OBJETIVO_CINTURA} cm | Progreso: ${progresoCintura}%</div></div>
+        <div class="last-measure-item"><div class="last-measure-label">💪 Masa muscular</div><div class="last-measure-value">${ultima.masaMuscular} kg ${diffMusculo}</div></div>
+        <div class="last-measure-item"><div class="last-measure-label">🔥 Masa grasa</div><div class="last-measure-value">${masaGrasa} kg ${diffGrasa}</div></div>
+        <div class="last-measure-item"><div class="last-measure-label">❤️ Grasa visceral</div><div class="last-measure-value">${ultima.grasaVisceral} ${diffVisceral}</div></div>
+        <div class="last-measure-item"><div class="last-measure-label">📊 Índice recomposición</div><div class="last-measure-value">${indiceRecomp} ${diffRecomp}</div></div>
+        <div class="last-measure-item"><div class="last-measure-label">📏 Ratio cintura-altura</div><div class="last-measure-value">${ratioCinturaAltura}</div><div class="progress-text" style="color:${ratioOk ? '#10b981' : '#ef4444'};">${ratioOk ? '✅ Objetivo (<0.5)' : '⚠️ Por encima de 0.5'}</div></div>
       </div>
       <div class="status-badge ${estadoClase}">${estado}</div>
     </div>
   `;
 }
 
-function renderizarGraficosHome() {
-  const container = document.getElementById('graficosContainer');
-  if (!container) return;
+// ========== 3. GRÁFICO ÚNICO CON TODAS LAS MÉTRICAS ==========
+let graficoUnico = null;
+function renderizarGraficoUnico() {
+  const canvas = document.getElementById('graficoUnico');
+  if (!canvas) return;
   if (mediciones.length === 0) {
-    container.innerHTML = `<div class="graph-container"><div class="graph-title">Gráficos</div><div style="padding:20px; text-align:center">Añade mediciones para ver tu evolución.</div></div>`;
+    if (graficoUnico) graficoUnico.destroy();
     return;
   }
-  container.innerHTML = `
-    <div class="graph-container"><div class="graph-title">📊 1. Masa muscular vs Masa grasa</div><canvas id="chartMusculoGrasa"></canvas></div>
-    <div class="graph-container"><div class="graph-title">📏 2. Cintura (cm)</div><canvas id="chartCintura"></canvas></div>
-    <div class="graph-container"><div class="graph-title">⚖️ 3. Peso (kg) - Referencia</div><canvas id="chartPesoRef"></canvas></div>
-    <div class="graph-container"><div class="graph-title">❤️ 4. Grasa visceral</div><canvas id="chartVisceral"></canvas></div>
-  `;
   const fechas = mediciones.map(m => new Date(m.fecha).toLocaleDateString('es-ES', {day:'numeric', month:'short'}));
   const masasMusculares = mediciones.map(m => m.masaMuscular);
   const masasGrasas = mediciones.map(m => (m.peso * (m.grasaPorcentaje / 100)).toFixed(1));
   const cinturas = mediciones.map(m => m.cintura);
   const pesos = mediciones.map(m => m.peso);
   const viscerales = mediciones.map(m => m.grasaVisceral);
-  new Chart(document.getElementById('chartMusculoGrasa'), {
+  const recomps = mediciones.map(m => (m.masaMuscular - (m.peso * (m.grasaPorcentaje / 100))).toFixed(1));
+  
+  if (graficoUnico) graficoUnico.destroy();
+  graficoUnico = new Chart(canvas, {
     type: 'line',
-    data: { labels: fechas, datasets: [
-      { label: 'Masa muscular (kg)', data: masasMusculares, borderColor: '#10b981', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3 },
-      { label: 'Masa grasa (kg)', data: masasGrasas, borderColor: '#f97316', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3 }
-    ] },
-    options: { responsive: true, maintainAspectRatio: true }
-  });
-  new Chart(document.getElementById('chartCintura'), {
-    type: 'line', data: { labels: fechas, datasets: [{ label: 'Cintura (cm)', data: cinturas, borderColor: '#8b5cf6', tension: 0.2, pointRadius: 3 }] },
-    options: { responsive: true }
-  });
-  new Chart(document.getElementById('chartPesoRef'), {
-    type: 'line', data: { labels: fechas, datasets: [{ label: 'Peso (kg)', data: pesos, borderColor: '#6b7280', tension: 0.2, pointRadius: 3 }] },
-    options: { responsive: true }
-  });
-  new Chart(document.getElementById('chartVisceral'), {
-    type: 'line', data: { labels: fechas, datasets: [{ label: 'Nivel grasa visceral', data: viscerales, borderColor: '#ef4444', tension: 0.2, pointRadius: 3 }] },
-    options: { responsive: true }
+    data: {
+      labels: fechas,
+      datasets: [
+        { label: '💪 Masa muscular (kg)', data: masasMusculares, borderColor: '#10b981', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3, borderWidth: 2 },
+        { label: '🔥 Masa grasa (kg)', data: masasGrasas, borderColor: '#f97316', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3, borderWidth: 2 },
+        { label: '📏 Cintura (cm)', data: cinturas, borderColor: '#8b5cf6', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3, borderWidth: 2 },
+        { label: '⚖️ Peso (kg)', data: pesos, borderColor: '#6b7280', backgroundColor: 'transparent', tension: 0.2, pointRadius: 2, borderWidth: 1.5, hidden: true },
+        { label: '❤️ Grasa visceral', data: viscerales, borderColor: '#ef4444', backgroundColor: 'transparent', tension: 0.2, pointRadius: 2, borderWidth: 1.5, hidden: true },
+        { label: '📊 Índice recomposición', data: recomps, borderColor: '#22c55e', backgroundColor: 'transparent', tension: 0.2, pointRadius: 2, borderWidth: 1.5, hidden: true }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 9 }, color: '#999', boxWidth: 10, padding: 8 } },
+        tooltip: { mode: 'index', intersect: false }
+      },
+      scales: {
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, title: { display: true, text: 'kg / cm / nivel', color: '#888', font: { size: 9 } } },
+        x: { ticks: { maxRotation: 45, autoSkip: true, font: { size: 9 } } }
+      }
+    }
   });
 }
 
-// ========== 2. PERFIL Y UTILIDADES ==========
+// ========== 4. PERFIL Y UTILIDADES ==========
 let userData = { peso: 84, altura: 165, cumple: "1996-08-01" };
 function sincronizarPesoDesdeHistorial() {
   if (mediciones.length > 0) {
@@ -833,7 +901,7 @@ function actualizarPerfil() {
   document.getElementById('pesoActual').innerHTML = userData.peso + '<span class="sunit"> kg</span>';
   document.getElementById('alturaValor').innerHTML = userData.altura + '<span class="sunit"> cm</span>';
   const alturaM = userData.altura / 100;
-  const imc = (userData.peso / (alturaM * alturaM)).toFixed(1);
+  const imc = mediciones.length > 0 ? (mediciones[mediciones.length-1].peso / (alturaM * alturaM)).toFixed(1) : (userData.peso / (alturaM * alturaM)).toFixed(1);
   document.getElementById('imcValor').innerText = imc;
   const pinPercent = Math.min(95, Math.max(5, (imc/40)*100));
   document.getElementById('bmiPin').style.left = `calc(${pinPercent}% - 6px)`;
@@ -844,7 +912,7 @@ function editarPeso() { let n = prompt("Nuevo peso (kg):", userData.peso); if (n
 function editarAltura() { let n = prompt("Nueva altura (cm):", userData.altura); if (n && !isNaN(n)) { userData.altura = parseInt(n); actualizarPerfil(); } }
 function mostrarToast(msg) { const t = document.createElement('div'); t.className = 'toast-msg'; t.innerText = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
 
-// ========== 3. RUTINAS (ejercicios) ==========
+// ========== 5. RUTINAS (ejercicios) - Código completo ==========
 const ejerciciosUnicos = {
   lunes: ["Dominadas (palmas mirando hacia ti)", "Remo en banco", "Curl de bíceps alterno", "Curl martillo", "Plancha"],
   martes: ["Pullover con mancuerna", "Aperturas inclinadas con mancuernas", "Press de hombros sentado", "Elevaciones laterales sentado", "Flexiones", "Abdominal bicicleta"],
@@ -1155,13 +1223,15 @@ function actualizarLogros(){
 }
 function actualizarUICompleta() {
   renderizarUltimaMedicion();
-  renderizarGraficosHome();
+  renderizarGraficoUnico();
   sincronizarPesoDesdeHistorial();
   actualizarPerfil();
   renderizarRutinas();
   renderCalendarios();
   actualizarLogros();
   cargarHistorialMediciones();
+  const statObjetivo = document.getElementById('statPesoObjetivo');
+  if (statObjetivo) statObjetivo.innerText = OBJETIVO_PESO;
 }
 function goPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
