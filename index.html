@@ -1148,7 +1148,7 @@
     document.getElementById('comparadorResultado').innerHTML = '';
   }
 
-  async function compararFotos() {
+async function compararFotos() {
   const f1 = document.getElementById('compararDia1').value;
   const f2 = document.getElementById('compararDia2').value;
   if (!f1 || !f2) return;
@@ -1186,30 +1186,6 @@
   html += genComparacion(d1, d2, '➡️ DERECHA', 'derecha', f1, f2);
   if (html === '') html = '<div style="text-align:center;padding:20px;">No hay fotos para comparar</div>';
   document.getElementById('comparadorResultado').innerHTML = html;
-}
-  function openDualLightbox(imgSrc1, imgSrc2, fecha1, fecha2) {
-  const lb = document.getElementById('lightbox');
-  // Crear contenido con dos imágenes lado a lado
-  lb.innerHTML = `
-    <div style="position:relative; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.95);">
-      <button onclick="closeLightbox()" style="position:absolute; top:20px; right:20px; background:none; border:none; color:white; font-size:28px; cursor:pointer; z-index:100;">✖</button>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; max-width:95%; max-height:90%;">
-        <div style="text-align:center;">
-          <div style="font-size:12px; color:var(--acc); margin-bottom:8px;">${fecha1}</div>
-          <img src="${imgSrc1}" style="width:100%; max-height:70vh; object-fit:contain; cursor:zoom-in;" onclick="event.stopPropagation(); this.requestFullscreen?.()">
-        </div>
-        <div style="text-align:center;">
-          <div style="font-size:12px; color:var(--acc); margin-bottom:8px;">${fecha2}</div>
-          <img src="${imgSrc2}" style="width:100%; max-height:70vh; object-fit:contain; cursor:zoom-in;" onclick="event.stopPropagation(); this.requestFullscreen?.()">
-        </div>
-      </div>
-      <div style="position:absolute; bottom:20px; left:0; right:0; text-align:center; font-size:11px; color:var(--muted);">Toca una imagen para verla a pantalla completa</div>
-    </div>
-  `;
-  lb.classList.add('active');
-}
-
-
 }
   function recargarComparacion() { compararFotos(); }
 
