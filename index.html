@@ -1148,7 +1148,7 @@
     document.getElementById('comparadorResultado').innerHTML = '';
   }
 
-  async function compararFotos() {
+   async function compararFotos() {
     const f1 = document.getElementById('compararDia1').value;
     const f2 = document.getElementById('compararDia2').value;
     if (!f1 || !f2) return;
@@ -1156,18 +1156,29 @@
     const store = db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME);
     const d1 = await new Promise(r => store.get(f1).onsuccess = e => r(e.target.result));
     const d2 = await new Promise(r => store.get(f2).onsuccess = e => r(e.target.result));
+    
+    // Función para generar el bloque comparativo con imágenes clickeables
     const genComparacion = (d1, d2, titulo, campo) => {
       if (!d1?.[campo] && !d2?.[campo]) return '';
+      const img1Src = d1?.[campo] || '';
+      const img2Src = d2?.[campo] || '';
       return `
         <div style="background:var(--s1);border-radius:16px;padding:12px;margin-bottom:12px;">
           <h4 style="color:var(--acc);margin-bottom:8px;text-align:center;">${titulo}</h4>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${f1}</div><img src="${d1?.[campo] || ''}" style="width:100%;border-radius:12px;min-height:100px;object-fit:cover;background:#000;"></div>
-            <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${f2}</div><img src="${d2?.[campo] || ''}" style="width:100%;border-radius:12px;min-height:100px;object-fit:cover;background:#000;"></div>
+            <div style="cursor:pointer;" onclick="openLightbox('${img1Src}')">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${f1}</div>
+              <img src="${img1Src}" style="width:100%;border-radius:12px;min-height:100px;object-fit:cover;background:#000;">
+            </div>
+            <div style="cursor:pointer;" onclick="openLightbox('${img2Src}')">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${f2}</div>
+              <img src="${img2Src}" style="width:100%;border-radius:12px;min-height:100px;object-fit:cover;background:#000;">
+            </div>
           </div>
         </div>
       `;
     };
+    
     let html = '';
     html += genComparacion(d1, d2, '😀 FRENTE', 'frente');
     html += genComparacion(d1, d2, '🙃 ESPALDA', 'espalda');
@@ -1176,7 +1187,6 @@
     if (html === '') html = '<div style="text-align:center;padding:20px;">No hay fotos para comparar</div>';
     document.getElementById('comparadorResultado').innerHTML = html;
   }
-
   function recargarComparacion() { compararFotos(); }
 
   // ========== INSTRUCCIONES Y RUTINAS ==========
@@ -1396,6 +1406,7 @@
   }
 
   function openLightbox(src) { const lb = document.getElementById('lightbox'); document.getElementById('lightboxImg').src = src; lb.classList.add('active'); }
+  
   function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
   window.mostrarDiscos = function(nombre, id) {
     let kg = getPesoEjercicio(nombre, personalizaciones[id]);
