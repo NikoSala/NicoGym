@@ -509,6 +509,7 @@
       70% { opacity: 1; }
       100% { opacity: 0; visibility: hidden; }
     }
+    /* Lightbox para ejercicios (original) */
     .lightbox {
       position: fixed;
       inset: 0;
@@ -522,8 +523,17 @@
       opacity: 0;
       transition: opacity 0.3s;
     }
-    .lightbox.active { visibility: visible; opacity: 1; }
-    .lightbox img { max-width: 90%; max-height: 90%; object-fit: contain; pointer-events: auto; cursor: zoom-in; }
+    .lightbox.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      pointer-events: auto;
+      cursor: zoom-in;
+    }
     /* Estilos compactos para la galería de fotos */
     .equip-card {
       background: var(--s1);
@@ -695,6 +705,14 @@
   </div>
 </div>
 
+<!-- LIGHTBOX DUAL PARA COMPARACIÓN DE FOTOS (no interfiere con el de ejercicios) -->
+<div id="lightboxDual" style="position:fixed; inset:0; background:rgba(0,0,0,0.95); display:none; align-items:center; justify-content:center; z-index:10002; flex-direction:column;">
+  <button onclick="cerrarLightboxDual()" style="position:absolute; top:20px; right:20px; background:none; border:none; color:white; font-size:28px; cursor:pointer; z-index:100;">✖</button>
+  <div id="dualContent" style="display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:95%; max-height:90%;"></div>
+  <div style="position:absolute; bottom:20px; left:0; right:0; text-align:center; font-size:11px; color:var(--muted);">Toca una imagen para ampliarla</div>
+</div>
+
+<!-- LIGHTBOX ORIGINAL PARA EJERCICIOS -->
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
   <img id="lightboxImg" src="" alt="Ampliar imagen">
 </div>
@@ -1148,45 +1166,73 @@
     document.getElementById('comparadorResultado').innerHTML = '';
   }
 
-async function compararFotos() {
-  const f1 = document.getElementById('compararDia1').value;
-  const f2 = document.getElementById('compararDia2').value;
-  if (!f1 || !f2) return;
-  await abrirDB();
-  const store = db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME);
-  const d1 = await new Promise(r => store.get(f1).onsuccess = e => r(e.target.result));
-  const d2 = await new Promise(r => store.get(f2).onsuccess = e => r(e.target.result));
-  
-  // Generar bloque con las dos imágenes clickeables para abrir el comparador dual
-  const genComparacion = (d1, d2, titulo, campo, fecha1, fecha2) => {
-    if (!d1?.[campo] && !d2?.[campo]) return '';
-    const img1Src = d1?.[campo] || '';
-    const img2Src = d2?.[campo] || '';
-    return `
-      <div style="background:var(--s1);border-radius:16px;padding:12px;margin-bottom:12px;">
-        <h4 style="color:var(--acc);margin-bottom:8px;text-align:center;">${titulo}</h4>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <div style="cursor:pointer;" onclick="openDualLightbox('${img1Src}', '${img2Src}', '${fecha1}', '${fecha2}')">
-            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${fecha1}</div>
-            <img src="${img1Src}" style="width:100%;border-radius:12px;min-height:100px;object-fit:cover;background:#000;" onerror="this.style.display='none'">
-          </div>
-          <div style="cursor:pointer;" onclick="openDualLightbox('${img1Src}', '${img2Src}', '${fecha1}', '${fecha2}')">
-            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${fecha2}</div>
-            <img src="${img2Src}" style="width:100%;border-radius:12px;min-height:100px;object-fit:cover;background:#000;" onerror="this.style.display='none'">
-          </div>
-        </div>
+  // Función para abrir el lightbox dual (comparación lado a lado)
+  function openDualLightbox(img1Src, img2Src, fecha1, fecha2) {
+    const dualBox = document.getElementById('lightboxDual');
+    const content = document.getElementById('dualContent');
+    content.innerHTML = `
+      <div style="text-align:center;">
+        <div style="font-size:12px; color:var(--acc); margin-bottom:8px;">${fecha1}</div>
+        <img src="${img1Src}" style="width:100%; max-height:70vh; object-fit:contain; cursor:pointer; border-radius:12px;" onclick="ampliarImagen(this.src)">
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:12px; color:var(--acc); margin-bottom:8px;">${fecha2}</div>
+        <img src="${img2Src}" style="width:100%; max-height:70vh; object-fit:contain; cursor:pointer; border-radius:12px;" onclick="ampliarImagen(this.src)">
       </div>
     `;
-  };
-  
-  let html = '';
-  html += genComparacion(d1, d2, '😀 FRENTE', 'frente', f1, f2);
-  html += genComparacion(d1, d2, '🙃 ESPALDA', 'espalda', f1, f2);
-  html += genComparacion(d1, d2, '⬅️ IZQUIERDA', 'izquierda', f1, f2);
-  html += genComparacion(d1, d2, '➡️ DERECHA', 'derecha', f1, f2);
-  if (html === '') html = '<div style="text-align:center;padding:20px;">No hay fotos para comparar</div>';
-  document.getElementById('comparadorResultado').innerHTML = html;
-}
+    dualBox.style.display = 'flex';
+  }
+
+  function ampliarImagen(src) {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightboxImg');
+    img.src = src;
+    lb.classList.add('active');
+  }
+
+  function cerrarLightboxDual() {
+    document.getElementById('lightboxDual').style.display = 'none';
+  }
+
+  async function compararFotos() {
+    const f1 = document.getElementById('compararDia1').value;
+    const f2 = document.getElementById('compararDia2').value;
+    if (!f1 || !f2) return;
+    await abrirDB();
+    const store = db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME);
+    const d1 = await new Promise(r => store.get(f1).onsuccess = e => r(e.target.result));
+    const d2 = await new Promise(r => store.get(f2).onsuccess = e => r(e.target.result));
+    
+    const genComparacion = (d1, d2, titulo, campo) => {
+      if (!d1?.[campo] && !d2?.[campo]) return '';
+      const img1Src = d1?.[campo] || '';
+      const img2Src = d2?.[campo] || '';
+      return `
+        <div style="background:var(--s1);border-radius:16px;padding:12px;margin-bottom:12px;">
+          <h4 style="color:var(--acc);margin-bottom:8px;text-align:center;">${titulo}</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="cursor:pointer;" onclick="openDualLightbox('${img1Src}', '${img2Src}', '${f1}', '${f2}')">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${f1}</div>
+              <img src="${img1Src}" style="width:100%;border-radius:12px;min-height:100px;object-fit:cover;background:#000;" onerror="this.style.display='none'">
+            </div>
+            <div style="cursor:pointer;" onclick="openDualLightbox('${img1Src}', '${img2Src}', '${f1}', '${f2}')">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${f2}</div>
+              <img src="${img2Src}" style="width:100%;border-radius:12px;min-height:100px;object-fit:cover;background:#000;" onerror="this.style.display='none'">
+            </div>
+          </div>
+        </div>
+      `;
+    };
+    
+    let html = '';
+    html += genComparacion(d1, d2, '😀 FRENTE', 'frente');
+    html += genComparacion(d1, d2, '🙃 ESPALDA', 'espalda');
+    html += genComparacion(d1, d2, '⬅️ IZQUIERDA', 'izquierda');
+    html += genComparacion(d1, d2, '➡️ DERECHA', 'derecha');
+    if (html === '') html = '<div style="text-align:center;padding:20px;">No hay fotos para comparar</div>';
+    document.getElementById('comparadorResultado').innerHTML = html;
+  }
+
   function recargarComparacion() { compararFotos(); }
 
   // ========== INSTRUCCIONES Y RUTINAS ==========
@@ -1405,9 +1451,17 @@ async function compararFotos() {
     }
   }
 
-  function openLightbox(src) { const lb = document.getElementById('lightbox'); document.getElementById('lightboxImg').src = src; lb.classList.add('active'); }
-  
-  function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
+  function openLightbox(src) {
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = src;
+    lb.classList.add('active');
+  }
+
+  function closeLightbox() {
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('active');
+  }
+
   window.mostrarDiscos = function(nombre, id) {
     let kg = getPesoEjercicio(nombre, personalizaciones[id]);
     if (kg === 0) { mostrarToast("Peso corporal"); return; }
@@ -1515,25 +1569,19 @@ async function compararFotos() {
   }
 
   function toggleMenu() { const menu = document.getElementById('sideMenu'); const overlay = document.getElementById('menuOverlay'); if (menu.classList.contains('open')) { menu.classList.remove('open'); overlay.classList.remove('show'); } else { menu.classList.add('open'); overlay.classList.add('show'); } }
-   function irHoy() {
+  
+  function irHoy() {
     const hoy = new Date().getDay();
     const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' };
     const diaActual = diasMap[hoy];
-    
-    // Primero ir a la página de rutinas
     goPage('rutinas');
-    
-    // Esperar a que se carguen las pestañas y luego seleccionar la del día actual
     setTimeout(() => {
       const tabs = document.querySelectorAll('.dtab');
       const idxMap = { lunes: 0, martes: 1, miercoles: 2, jueves: 3, viernes: 4, sabado: 5, domingo: 6 };
       const idx = idxMap[diaActual];
-      
       if (tabs[idx]) {
-        // Simular el click en la pestaña correspondiente
         tabs[idx].click();
       } else {
-        // Si no encuentra las pestañas, recargar las tabs y volver a intentar
         cargarTabs();
         setTimeout(() => {
           const newTabs = document.querySelectorAll('.dtab');
@@ -1541,7 +1589,9 @@ async function compararFotos() {
         }, 100);
       }
     }, 150);
-  }  function mostrarReset() { document.getElementById('resetModal').style.display = 'flex'; }
+  }
+
+  function mostrarReset() { document.getElementById('resetModal').style.display = 'flex'; }
   function cerrarReset() { document.getElementById('resetModal').style.display = 'none'; }
   function borrarTodo() { if (document.getElementById('confirmReset').value === 'BORRAR') { localStorage.clear(); location.reload(); } else mostrarToast('❌ Escribe BORRAR'); }
   function setDescanso(seg) { if (document.getElementById('descanso-box').style.display === 'flex') cancelarDescanso(); const box = document.getElementById('descanso-box'); box.style.display = 'flex'; let s = seg; document.getElementById('descansoTimer').innerText = s; timerInterval = setInterval(() => { s--; document.getElementById('descansoTimer').innerText = s; if (s <= 0) { clearInterval(timerInterval); box.style.display = 'none'; } }, 1000); }
