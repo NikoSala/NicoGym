@@ -120,6 +120,133 @@
     .page.active { display: block; animation: fadeIn .2s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     .container { max-width: 600px; margin: 0 auto; padding: 0 12px; }
+    
+    /* ESTILOS CHILL RELAX PARA DOMINGO */
+    .sunday-chill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 70vh;
+      padding: 20px;
+      text-align: center;
+      background: linear-gradient(145deg, rgba(30,20,40,0.4), rgba(15,10,25,0.6));
+      border-radius: 48px;
+      margin: 12px 0;
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(255,200,150,0.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .sunday-emoji {
+      font-size: 90px;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+      animation: float 4s ease-in-out infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+    .sunday-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 52px;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #FFD6A5, #FFAD6A, #FF6B4A);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px rgba(255,107,74,0.3);
+    }
+    .sunday-sub {
+      font-size: 18px;
+      font-weight: 500;
+      color: #FFD6A5;
+      margin-bottom: 24px;
+      letter-spacing: 2px;
+    }
+    .relax-card {
+      background: rgba(20,15,30,0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 32px;
+      padding: 24px;
+      margin: 16px 0;
+      border: 1px solid rgba(255,200,150,0.25);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .relax-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+    .relax-text {
+      font-size: 16px;
+      font-weight: 400;
+      color: #DDD;
+      line-height: 1.5;
+    }
+    .relax-quote {
+      font-style: italic;
+      font-size: 18px;
+      font-weight: 500;
+      color: #FFD6A5;
+      margin: 16px 0;
+      padding: 16px;
+      border-left: 3px solid #FFAD6A;
+      background: rgba(255,173,106,0.05);
+      border-radius: 16px;
+    }
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .activity-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 16px 8px;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255,200,150,0.1);
+    }
+    .activity-item:hover {
+      background: rgba(255,173,106,0.1);
+      transform: scale(1.02);
+    }
+    .activity-emoji {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+    .activity-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #FFD6A5;
+    }
+    .activity-desc {
+      font-size: 10px;
+      color: #AAA;
+      margin-top: 4px;
+    }
+    .mindfulness-tip {
+      background: rgba(255,173,106,0.08);
+      border-radius: 24px;
+      padding: 16px;
+      margin-top: 16px;
+      border: 1px solid rgba(255,173,106,0.2);
+    }
+    .tip-icon {
+      font-size: 24px;
+      display: inline-block;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+    .tip-text {
+      font-size: 13px;
+      color: #CCC;
+      display: inline-block;
+      width: calc(100% - 40px);
+      vertical-align: middle;
+    }
+    
     .last-measure-card {
       background: var(--s2);
       border-radius: 20px;
@@ -595,62 +722,33 @@
   const OBJETIVO_CINTURA = 90;
   const FECHA_INICIO_NO_FUMAR = new Date(2026, 1, 22);
   let userData = { altura: 165, cumple: "1996-08-01" };
-
-  // Colores por día para bordes del calendario (coinciden con setColorPorDia)
   const coloresPorDia = { 0: "#e8ff47", 1: "#4caf50", 2: "#ff9800", 3: "#2196f3", 4: "#9c27b0", 5: "#ff5722", 6: "#00bcd4" };
 
-  function setColorPorDia() { 
-    const hoy = new Date().getDay(); 
-    const colores = { 0: "#e8ff47", 1: "#4caf50", 2: "#ff9800", 3: "#2196f3", 4: "#9c27b0", 5: "#ff5722", 6: "#00bcd4" }; 
-    document.documentElement.style.setProperty('--acc', colores[hoy] || "#FF4D00"); 
-  }
-
+  function setColorPorDia() { const hoy = new Date().getDay(); const colores = { 0: "#e8ff47", 1: "#4caf50", 2: "#ff9800", 3: "#2196f3", 4: "#9c27b0", 5: "#ff5722", 6: "#00bcd4" }; document.documentElement.style.setProperty('--acc', colores[hoy] || "#FF4D00"); }
   function calcularDiasSinFumar() { let count = 0; let fecha = new Date(FECHA_INICIO_NO_FUMAR); const hoy = new Date(); while (fecha <= hoy) { const fStr = fecha.toISOString().slice(0, 10); if (!diasNoFumar.includes(fStr)) count++; fecha.setDate(fecha.getDate() + 1); } return count; }
   function actualizarTopBar() { document.getElementById('topEdad').innerText = calcularEdad(); const ultimoPeso = mediciones.length > 0 ? mediciones[mediciones.length - 1].peso : '--'; document.getElementById('topPeso').innerHTML = ultimoPeso; document.getElementById('topObjetivo').innerText = OBJETIVO_PESO; document.getElementById('topDiasSinFumar').innerText = calcularDiasSinFumar(); }
   function calcularEdad() { const hoy = new Date(), nac = new Date(userData.cumple); let edad = hoy.getFullYear() - nac.getFullYear(); if (hoy.getMonth() < nac.getMonth() || (hoy.getMonth() === nac.getMonth() && hoy.getDate() < nac.getDate())) edad--; return edad; }
   function getHoyStr() { return new Date().toISOString().slice(0, 10); }
   function mostrarToast(msg) { const t = document.createElement('div'); t.className = 'toast-msg'; t.innerText = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
 
-  // ========== RESET SEMANAL DE CHECKS SOLO LOS LUNES ==========
-  function resetearChecksLunes() {
-    const hoy = new Date();
-    const esLunes = hoy.getDay() === 1; // 1 = lunes
-    if (esLunes) {
-      const ultimoReset = localStorage.getItem('ultimoResetLunes');
-      const hoyStr = getHoyStr();
-      if (ultimoReset !== hoyStr) {
-        checks = {};
-        localStorage.setItem('nico_checks', JSON.stringify(checks));
-        localStorage.setItem('ultimoResetLunes', hoyStr);
-        mostrarToast("🔄 Nuevo lunes: checks reiniciados");
-      }
-    }
-  }
+  function resetearChecksLunes() { const hoy = new Date(); if (hoy.getDay() === 1) { const ultimoReset = localStorage.getItem('ultimoResetLunes'); const hoyStr = getHoyStr(); if (ultimoReset !== hoyStr) { checks = {}; localStorage.setItem('nico_checks', JSON.stringify(checks)); localStorage.setItem('ultimoResetLunes', hoyStr); mostrarToast("🔄 Nuevo lunes: checks reiniciados"); } } }
 
-  // ========== BOTÓN IR A RUTINA DE HOY ==========
   function irHoy() {
     goPage('rutinas');
     setTimeout(() => {
-      const hoyNum = new Date().getDay(); // 0 domingo, 1 lunes...
+      const hoyNum = new Date().getDay();
       const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' };
       const diaActual = diasMap[hoyNum];
       const idxMap = { lunes: 0, martes: 1, miercoles: 2, jueves: 3, viernes: 4, sabado: 5, domingo: 6 };
       const idx = idxMap[diaActual];
       const tabs = document.querySelectorAll('.dtab');
-      if (tabs[idx]) {
-        tabs[idx].click();
-      } else {
-        cargarTabs();
-        setTimeout(() => { const newTabs = document.querySelectorAll('.dtab'); if (newTabs[idx]) newTabs[idx].click(); }, 100);
-      }
+      if (tabs[idx]) { tabs[idx].click(); } else { cargarTabs(); setTimeout(() => { const newTabs = document.querySelectorAll('.dtab'); if (newTabs[idx]) newTabs[idx].click(); }, 100); }
       if (diaActual === 'domingo') mostrarToast("📅 Domingo - día de descanso");
     }, 100);
   }
 
-  // ========== CALENDARIO CON BORDES COLORES (mismo color que home) ==========
   let mesGym = new Date().getMonth(), añoGym = new Date().getFullYear(), mesSmoke = new Date().getMonth(), añoSmoke = new Date().getFullYear();
   function renderCalendarios() {
-    // Calendario gym con bordes de colores por día de semana
     const contGym = document.getElementById('cal-gym');
     if (contGym) {
       contGym.innerHTML = '';
@@ -665,9 +763,8 @@
         const fecha = new Date(añoGym, mesGym, d);
         const fStr = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}`;
         const cell = document.createElement('div'); cell.className = 'cal-cell'; cell.innerText = d;
-        const diaSemana = fecha.getDay(); // 0 domingo a 6 sábado
-        const colorBorde = coloresPorDia[diaSemana] || "#FF4D00";
-        cell.style.borderColor = colorBorde;
+        const diaSemana = fecha.getDay();
+        cell.style.borderColor = coloresPorDia[diaSemana] || "#FF4D00";
         if (diasEntrenados.includes(fStr)) cell.classList.add('completado');
         if (fStr === hoyStr) cell.classList.add('today');
         if (fecha.getDate() === 1 && fecha.getMonth() === 7) cell.classList.add('cumple');
@@ -675,7 +772,6 @@
         contGym.appendChild(cell);
       }
     }
-    // Calendario sin fumar (sin cambios)
     const contSmoke = document.getElementById('cal-smoke');
     if (contSmoke) {
       contSmoke.innerHTML = '';
@@ -706,16 +802,14 @@
   function changeMonth(dir, tipo) { if (tipo === 'gym') { let n = new Date(añoGym, mesGym + dir, 1); mesGym = n.getMonth(); añoGym = n.getFullYear(); renderCalendarios(); } else { let n = new Date(añoSmoke, mesSmoke + dir, 1); mesSmoke = n.getMonth(); añoSmoke = n.getFullYear(); renderCalendarios(); } }
   function toggleDiaFumado(fStr) { if (diasNoFumar.includes(fStr)) { diasNoFumar = diasNoFumar.filter(d => d !== fStr); mostrarToast("✅ Día sin fumar"); } else { diasNoFumar.push(fStr); mostrarToast("🚬 Marcado fumado"); } localStorage.setItem('diasNoFumar', JSON.stringify(diasNoFumar)); renderCalendarios(); actualizarUICompleta(); }
 
-  // ========== MEDICIONES Y GRÁFICOS (funciones resumidas pero completas) ==========
-  function guardarMedicion() { /* igual que antes */ const fecha = document.getElementById('medFecha').value; if (!fecha) return; const peso = parseFloat(document.getElementById('medPeso').value); const cintura = parseFloat(document.getElementById('medCintura').value); const grasaPorcentaje = parseFloat(document.getElementById('medGrasaPorc').value); const masaMuscular = parseFloat(document.getElementById('medMasaMuscular').value); const grasaVisceral = parseInt(document.getElementById('medGrasaVisceral').value); const pesoLibreGrasa = parseFloat(document.getElementById('medPesoLibreGrasa').value); if (isNaN(peso) || isNaN(cintura) || isNaN(grasaPorcentaje) || isNaN(masaMuscular) || isNaN(grasaVisceral) || isNaN(pesoLibreGrasa)) { mostrarToast("Completa todos los campos"); return; } const masaGrasa = +(peso * (grasaPorcentaje / 100)).toFixed(1); const indiceRecomp = +(masaMuscular - masaGrasa).toFixed(1); const nuevaMed = { fecha, peso, cintura, grasaPorcentaje, masaMuscular, grasaVisceral, pesoLibreGrasa, masaGrasa, indiceRecomp }; const index = mediciones.findIndex(m => m.fecha === fecha); if (index !== -1) mediciones[index] = nuevaMed; else mediciones.push(nuevaMed); mediciones.sort((a, b) => new Date(a.fecha) - new Date(b.fecha)); localStorage.setItem('bodyComposition', JSON.stringify(mediciones)); mostrarToast("Medición guardada"); cargarHistorialMediciones(); actualizarUICompleta(); document.getElementById('medFecha').value = getHoyStr(); ['medPeso','medCintura','medGrasaPorc','medMasaMuscular','medGrasaVisceral','medPesoLibreGrasa'].forEach(id => document.getElementById(id).value = ''); }
+  function guardarMedicion() { const fecha = document.getElementById('medFecha').value; if (!fecha) return; const peso = parseFloat(document.getElementById('medPeso').value); const cintura = parseFloat(document.getElementById('medCintura').value); const grasaPorcentaje = parseFloat(document.getElementById('medGrasaPorc').value); const masaMuscular = parseFloat(document.getElementById('medMasaMuscular').value); const grasaVisceral = parseInt(document.getElementById('medGrasaVisceral').value); const pesoLibreGrasa = parseFloat(document.getElementById('medPesoLibreGrasa').value); if (isNaN(peso) || isNaN(cintura) || isNaN(grasaPorcentaje) || isNaN(masaMuscular) || isNaN(grasaVisceral) || isNaN(pesoLibreGrasa)) { mostrarToast("Completa todos los campos"); return; } const masaGrasa = +(peso * (grasaPorcentaje / 100)).toFixed(1); const indiceRecomp = +(masaMuscular - masaGrasa).toFixed(1); const nuevaMed = { fecha, peso, cintura, grasaPorcentaje, masaMuscular, grasaVisceral, pesoLibreGrasa, masaGrasa, indiceRecomp }; const index = mediciones.findIndex(m => m.fecha === fecha); if (index !== -1) mediciones[index] = nuevaMed; else mediciones.push(nuevaMed); mediciones.sort((a, b) => new Date(a.fecha) - new Date(b.fecha)); localStorage.setItem('bodyComposition', JSON.stringify(mediciones)); mostrarToast("Medición guardada"); cargarHistorialMediciones(); actualizarUICompleta(); document.getElementById('medFecha').value = getHoyStr(); ['medPeso','medCintura','medGrasaPorc','medMasaMuscular','medGrasaVisceral','medPesoLibreGrasa'].forEach(id => document.getElementById(id).value = ''); }
   function cargarHistorialMediciones() { const cont = document.getElementById('historialMediciones'); if (!cont) return; if (mediciones.length === 0) { cont.innerHTML = '<div style="padding:12px; text-align:center; color:var(--muted2)">Sin registros.</div>'; return; } const sorted = [...mediciones].reverse(); cont.innerHTML = sorted.map(m => `<div class="historial-item"><div><span class="historial-date">${new Date(m.fecha).toLocaleDateString('es-ES')}</span><div class="historial-data">⚖️ ${m.peso} kg | 📏 ${m.cintura} cm | 💪 ${m.masaMuscular} kg</div></div><div class="historial-buttons"><button onclick="editarMedicion('${m.fecha}')">✏️</button><button onclick="eliminarMedicion('${m.fecha}')">🗑️</button></div></div>`).join(''); }
   function editarMedicion(fecha) { const med = mediciones.find(m => m.fecha === fecha); if (!med) return; document.getElementById('medFecha').value = med.fecha; document.getElementById('medPeso').value = med.peso; document.getElementById('medCintura').value = med.cintura; document.getElementById('medGrasaPorc').value = med.grasaPorcentaje; document.getElementById('medMasaMuscular').value = med.masaMuscular; document.getElementById('medGrasaVisceral').value = med.grasaVisceral; document.getElementById('medPesoLibreGrasa').value = med.pesoLibreGrasa; window.scrollTo({ top: 0, behavior: 'smooth' }); }
   function eliminarMedicion(fecha) { if (confirm("¿Eliminar esta medición?")) { mediciones = mediciones.filter(m => m.fecha !== fecha); localStorage.setItem('bodyComposition', JSON.stringify(mediciones)); cargarHistorialMediciones(); actualizarUICompleta(); } }
   let graficoUnico = null;
   function renderizarGraficoUnico() { const canvas = document.getElementById('graficoUnico'); if (!canvas || mediciones.length === 0) { if (graficoUnico) graficoUnico.destroy(); return; } const fechas = mediciones.map(m => new Date(m.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })); const masasMusculares = mediciones.map(m => m.masaMuscular); const masasGrasas = mediciones.map(m => (m.peso * (m.grasaPorcentaje / 100)).toFixed(1)); const cinturas = mediciones.map(m => m.cintura); if (graficoUnico) graficoUnico.destroy(); graficoUnico = new Chart(canvas, { type: 'line', data: { labels: fechas, datasets: [{ label: '💪 Masa muscular (kg)', data: masasMusculares, borderColor: '#10b981', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3 }, { label: '🔥 Masa grasa (kg)', data: masasGrasas, borderColor: '#f97316', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3 }, { label: '📏 Cintura (cm)', data: cinturas, borderColor: '#8b5cf6', backgroundColor: 'transparent', tension: 0.2, pointRadius: 3 }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top', labels: { font: { size: 9 }, color: '#999' } } } } }); }
-  function renderizarUltimaMedicion() { /* resumido */ const container = document.getElementById('ultimaMedicionContainer'); if (!container) return; if (mediciones.length === 0) { container.innerHTML = `<div class="last-measure-card"><div class="last-measure-title">📊 Sin mediciones</div><div>Registra tu primera medición en "Composición".</div></div>`; return; } const ultima = mediciones[mediciones.length - 1]; container.innerHTML = `<div class="last-measure-card"><div class="last-measure-title">📅 Última medición (${new Date(ultima.fecha).toLocaleDateString('es-ES')})</div><div class="metrics-grid"><div class="metric-card"><div class="metric-label">⚖️ Peso</div><div class="metric-value">${ultima.peso} kg</div></div><div class="metric-card"><div class="metric-label">📏 Cintura</div><div class="metric-value">${ultima.cintura} cm</div></div><div class="metric-card"><div class="metric-label">💪 Masa muscular</div><div class="metric-value">${ultima.masaMuscular} kg</div></div><div class="metric-card"><div class="metric-label">🔥 Masa grasa</div><div class="metric-value">${(ultima.peso * (ultima.grasaPorcentaje / 100)).toFixed(1)} kg</div></div></div></div>`; }
+  function renderizarUltimaMedicion() { const container = document.getElementById('ultimaMedicionContainer'); if (!container) return; if (mediciones.length === 0) { container.innerHTML = `<div class="last-measure-card"><div class="last-measure-title">📊 Sin mediciones</div><div>Registra tu primera medición en "Composición".</div></div>`; return; } const ultima = mediciones[mediciones.length - 1]; container.innerHTML = `<div class="last-measure-card"><div class="last-measure-title">📅 Última medición (${new Date(ultima.fecha).toLocaleDateString('es-ES')})</div><div class="metrics-grid"><div class="metric-card"><div class="metric-label">⚖️ Peso</div><div class="metric-value">${ultima.peso} kg</div></div><div class="metric-card"><div class="metric-label">📏 Cintura</div><div class="metric-value">${ultima.cintura} cm</div></div><div class="metric-card"><div class="metric-label">💪 Masa muscular</div><div class="metric-value">${ultima.masaMuscular} kg</div></div><div class="metric-card"><div class="metric-label">🔥 Masa grasa</div><div class="metric-value">${(ultima.peso * (ultima.grasaPorcentaje / 100)).toFixed(1)} kg</div></div></div></div>`; }
 
-  // ========== RUTINAS Y EJERCICIOS ==========
   const ejerciciosUnicos = { lunes: ["Dominadas (palmas mirando hacia ti)", "Remo en banco", "Curl de bíceps alterno", "Curl martillo", "Plancha"], martes: ["Pullover con mancuerna", "Aperturas inclinadas con mancuernas", "Press de hombros sentado", "Elevaciones laterales sentado", "Flexiones", "Abdominal bicicleta"], miercoles: ["Sentadilla búlgara", "Peso muerto rumano", "Patada de tríceps", "Extensión de tríceps tumbado", "Sentadilla Goblet", "Hip Thrust", "Elevación de gemelos", "Plancha"], jueves: ["Remo con barra (agarre supino estricto)", "Curl concentrado", "Curl araña (pausa de 2\")", "Remo al cuello", "Plancha"], viernes: ["Press inclinado con mancuernas (agarre neutro)", "Aperturas en banco", "Pájaro (fly invertido)", "Press de banca agarre cerrado", "Flexiones", "Abdominal bicicleta"], sabado: ["Zancadas con mancuerna", "Peso muerto a una pierna", "Extensión en banco declinado", "Press francés en banco inclinado", "Sentadilla Goblet", "Hip Thrust", "Elevación de gemelos", "Plancha"] };
   const imagenesMap = { "Dominadas (palmas mirando hacia ti)":"https://i.pinimg.com/originals/15/98/ec/1598ec2121ef2ac8c5fa0a51c5a16f53.gif", "Remo en banco":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif", "Curl de bíceps alterno":"https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif", "Curl martillo":"https://rincondelmusculo.com/wp-content/uploads/2014/09/CURL_DE_MARTILLO.gif", "Pullover con mancuerna":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Pullover.gif", "Plancha":"https://api.smartworkout.app/asset/image/606defc2-dc68-41d8-bea0-41a8d68aaa71", "Flexiones":"https://fitnessprogramer.com/wp-content/uploads/2021/06/Push-Up-Plus.gif", "Abdominal bicicleta":"https://meutreinador.com/wp-content/uploads/2024/04/abdominal-bicicleta.gif", "Sentadilla Goblet":"https://enfaf.com/wp-content/uploads/2026/04/sentadilla-globet.gif", "Hip Thrust":"https://gymvisual.com/img/p/2/0/9/5/6/20956.gif", "Elevación de gemelos":"https://fitcron.com/wp-content/uploads/2021/04/04171301-Dumbbell-Standing-Calf-Raise_Calf_720.gif" };
   function getEjerciciosPorDia(dia) { return ejerciciosUnicos[dia] || []; }
@@ -727,10 +821,46 @@
   function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
   function mostrarPopupEjercicios(fecha) { const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado' }; const ejercicios = getEjerciciosPorDia(diasMap[fecha.getDay()]); if (!ejercicios.length) { mostrarToast("Descanso o domingo"); return; } const html = `<div class="disk-panel"><h3>📅 ${fecha.toLocaleDateString('es-ES')}</h3><ul style="text-align:left;">${ejercicios.map(e => `<li>${e}</li>`).join('')}</ul><button onclick="cerrarModalPopup()">CERRAR</button></div>`; cerrarModalPopup(); const overlay = document.createElement('div'); overlay.className = 'modal-disk'; overlay.id = 'modalPopup'; overlay.innerHTML = html; document.body.appendChild(overlay); }
   function cerrarModalPopup() { document.getElementById('modalPopup')?.remove(); }
-  function cargarTabs() { const tabsContainer = document.getElementById('dayTabs'), panelsContainer = document.getElementById('dayPanelsContainer'); if (!tabsContainer) return; const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'], nombres = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'], iconos = ['💪', '🏋️', '🦵', '💪', '🏋️', '🦵', '😴']; tabsContainer.innerHTML = ''; panelsContainer.innerHTML = ''; dias.forEach((dia, idx) => { const btn = document.createElement('button'); btn.className = 'dtab' + (idx === 0 ? ' active' : ''); btn.innerText = `${iconos[idx]} ${nombres[idx]}`; btn.onclick = () => { document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active')); document.querySelectorAll('.dtab').forEach(b => b.classList.remove('active')); document.getElementById(`dp-${dia}`).classList.add('active'); btn.classList.add('active'); }; tabsContainer.appendChild(btn); const panel = document.createElement('div'); panel.className = 'day-panel' + (idx === 0 ? ' active' : ''); panel.id = `dp-${dia}`; if (dia === 'domingo') { panel.innerHTML = `<div class="rest-big"><div style="font-size:48px">😴</div><h3>DESCANSO TOTAL</h3><p>Recuperación activa. Camina 20-40 min si quieres.</p></div>`; } else { panel.innerHTML = `<div class="day-hdr"><div class="day-info"><h2>${nombres[idx]}</h2></div></div><div id="lista-${dia}" class="ex-grid"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" onclick="resetDia('${dia}')">🗑️ Desmarcar todos</button>`; } panelsContainer.appendChild(panel); }); renderizarRutinas(); }
+  function cargarTabs() { 
+    const tabsContainer = document.getElementById('dayTabs'), panelsContainer = document.getElementById('dayPanelsContainer');
+    if (!tabsContainer) return;
+    const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'], nombres = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'], iconos = ['💪', '🏋️', '🦵', '💪', '🏋️', '🦵', '🧘'];
+    tabsContainer.innerHTML = ''; panelsContainer.innerHTML = '';
+    dias.forEach((dia, idx) => {
+      const btn = document.createElement('button'); btn.className = 'dtab' + (idx === 0 ? ' active' : ''); btn.innerText = `${iconos[idx]} ${nombres[idx]}`; btn.onclick = () => { document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active')); document.querySelectorAll('.dtab').forEach(b => b.classList.remove('active')); document.getElementById(`dp-${dia}`).classList.add('active'); btn.classList.add('active'); }; tabsContainer.appendChild(btn);
+      const panel = document.createElement('div'); panel.className = 'day-panel' + (idx === 0 ? ' active' : ''); panel.id = `dp-${dia}`;
+      if (dia === 'domingo') {
+        panel.innerHTML = `
+          <div class="sunday-chill">
+            <div class="sunday-emoji">😌🌿✨</div>
+            <div class="sunday-title">SUNDAY CHILL</div>
+            <div class="sunday-sub">Día de descanso activo</div>
+            <div class="relax-card">
+              <div class="relax-icon">🧘‍♂️</div>
+              <div class="relax-text">Tu cuerpo se recupera, tu mente se renueva.<br>Hoy es para respirar, estirar y conectar.</div>
+              <div class="relax-quote">"El descanso es parte del entrenamiento. Escucha a tu cuerpo."</div>
+            </div>
+            <div class="activity-grid">
+              <div class="activity-item"><div class="activity-emoji">🚶‍♂️</div><div class="activity-name">Caminata suave</div><div class="activity-desc">20-30 min al aire libre</div></div>
+              <div class="activity-item"><div class="activity-emoji">🧘‍♀️</div><div class="activity-name">Estiramientos</div><div class="activity-desc">Movilidad y flexibilidad</div></div>
+              <div class="activity-item"><div class="activity-emoji">💧</div><div class="activity-name">Hidratación</div><div class="activity-desc">Bebe 2-3 litros</div></div>
+              <div class="activity-item"><div class="activity-emoji">😴</div><div class="activity-name">Siesta reparadora</div><div class="activity-desc">20 min de power nap</div></div>
+            </div>
+            <div class="mindfulness-tip">
+              <span class="tip-icon">🌅</span>
+              <span class="tip-text">Tómate 5 minutos para respirar profundo y agradecer el progreso de esta semana.</span>
+            </div>
+            <div style="margin-top: 16px; font-size: 11px; color: #FFAD6A;">✨ Recarga energía para la próxima semana ✨</div>
+          </div>
+        `;
+      } else {
+        panel.innerHTML = `<div class="day-hdr"><div class="day-info"><h2>${nombres[idx]}</h2></div></div><div id="lista-${dia}" class="ex-grid"></div><div class="cinta-info">🚶 CINTA: 30-40 min a 4.5-5 km/h</div><button class="btn-reset-dia" onclick="resetDia('${dia}')">🗑️ Desmarcar todos</button>`;
+      }
+      panelsContainer.appendChild(panel);
+    });
+    renderizarRutinas();
+  }
   function resetDia(dia) { const container = document.getElementById(`lista-${dia}`); if (container) { container.querySelectorAll('.check-box').forEach((cb, idx) => { const id = `${dia}-${idx}`; if (checks[id]) { delete checks[id]; } }); localStorage.setItem('nico_checks', JSON.stringify(checks)); renderizarRutinas(); mostrarToast(`✅ Día ${dia} reiniciado`); } }
-
-  // ========== LOGROS SIMPLIFICADOS ==========
   function actualizarLogros() { const container = document.getElementById('logrosContainer'); if (!container) return; container.innerHTML = `<div class="logro-badge">🏆 Logros disponibles al entrenar</div>`; }
   function actualizarUICompleta() { renderizarUltimaMedicion(); renderizarGraficoUnico(); actualizarTopBar(); renderizarRutinas(); renderCalendarios(); actualizarLogros(); cargarHistorialMediciones(); }
   function goPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(`page-${id}`).classList.add('active'); window.scrollTo(0, 0); if (id === 'inicio') actualizarUICompleta(); if (id === 'composicion') cargarHistorialMediciones(); if (id === 'rutinas') cargarTabs(); }
