@@ -192,10 +192,15 @@
     .form-field { background:var(--s1); border-radius:12px; padding:8px; }
     .form-field label { font-size:9px; color:var(--muted); display:block; margin-bottom:4px; }
     .form-field input { background:transparent; border:none; color:var(--text); font-size:14px; width:100%; outline:none; }
-    .historial-item { background:var(--s1); border-radius:14px; padding:10px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; }
+    .historial-item { background:var(--s1); border-radius:14px; padding:10px; margin-bottom:8px; }
     .historial-date { font-weight:700; color:var(--acc); font-size:12px; }
     .historial-data { font-size:11px; color:var(--muted2); }
-    .historial-buttons button { background:transparent; border:1px solid var(--border); border-radius:20px; padding:4px 10px; margin-left:6px; color:var(--text); font-size:10px; cursor:pointer; }
+    .historial-resumen { font-size:10px; color:var(--muted); margin-top:4px; padding-top:4px; border-top:1px solid var(--border); }
+    .historial-resumen span.bueno { color:#10b981; }
+    .historial-resumen span.malo { color:#ef4444; }
+    .historial-resumen span.neutral { color:#9ca3af; }
+    .historial-buttons { display:flex; gap:4px; margin-top:6px; }
+    .historial-buttons button { background:transparent; border:1px solid var(--border); border-radius:20px; padding:4px 10px; color:var(--text); font-size:10px; cursor:pointer; }
     .logros-grid { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
     .logro-badge { background:rgba(255,255,255,.05); border-radius:30px; padding:4px 12px; font-size:11px; }
     .logro-badge.obtenido { border-color:gold; color:gold; }
@@ -244,7 +249,7 @@
 <div class="page active" id="page-inicio"><div class="container"><div id="resumenContainer"></div><div id="ultimaMedicionContainer"></div><div id="cambiosContainer"></div></div></div>
 <div class="page" id="page-rutinas"><div class="container"><div class="day-tabs" id="dayTabs"></div><div id="dayPanelsContainer"></div></div></div>
 <div class="page" id="page-calendarios"><div class="container"><div class="calendar-card"><div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">🏋️ ENTRENOS</div><div class="cal-nav"><button class="btn-3d" onclick="changeMonth(-1,'gym')">←</button><span id="cal-month-gym" class="cal-month"></span><button class="btn-3d" onclick="changeMonth(1,'gym')">→</button></div><div id="cal-gym" class="cal-grid"></div></div><div class="calendar-card"><div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">🚭 SIN FUMAR</div><div class="cal-nav"><button class="btn-3d" onclick="changeMonth(-1,'smoke')">←</button><span id="cal-month-smoke" class="cal-month"></span><button class="btn-3d" onclick="changeMonth(1,'smoke')">→</button></div><div id="cal-smoke" class="cal-grid"></div><div style="font-size:10px;margin-top:8px;">🔴 fumado &nbsp;🔵 no fumado &nbsp;🎂 cumpleaños</div></div></div></div>
-<div class="page" id="page-composicion"><div class="container"><div style="background:var(--s2);border-radius:18px;padding:16px;margin-bottom:20px;"><div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">➕ NUEVA MEDICIÓN</div><div class="form-grid"><div class="form-field"><label>📅 Fecha</label><input type="date" id="medFecha" value=""></div><div class="form-field"><label>⚖️ Peso (kg)</label><input type="number" id="medPeso" step="0.1" placeholder="ej. 84.3"></div><div class="form-field"><label>📏 Cintura (cm)</label><input type="number" id="medCintura" step="0.1" placeholder="ej. 98"></div><div class="form-field"><label>🧬 % Grasa</label><input type="number" id="medGrasaPorc" step="0.1" placeholder="ej. 27.5"></div><div class="form-field"><label>💪 Masa muscular (kg)</label><input type="number" id="medMasaMuscular" step="0.1" placeholder="ej. 58.2"></div><div class="form-field"><label>❤️ Grasa visceral (nivel)</label><input type="number" id="medGrasaVisceral" step="1" placeholder="ej. 11"></div><div class="form-field"><label>🏋️ Peso libre grasa (kg)</label><input type="number" id="medPesoLibreGrasa" step="0.1" placeholder="ej. 61.2"></div><div class="form-field"><label>🫁 Pecho (cm)</label><input type="number" id="medPecho" step="0.1" placeholder="ej. 105"></div><div class="form-field"><label>🍑 Cadera (cm)</label><input type="number" id="medCadera" step="0.1" placeholder="ej. 106"></div><div class="form-field"><label>💪 Bíceps (cm)</label><input type="number" id="medBiceps" step="0.1" placeholder="ej. 34"></div></div><button class="btn-p" onclick="guardarMedicion()" style="width:100%;background:var(--acc);border:none;color:#000;padding:12px;border-radius:40px;font-weight:700;">💾 Guardar medición</button></div><div style="background:var(--s2);border-radius:18px;padding:16px;"><div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">📜 HISTORIAL</div><div id="historialMediciones"></div></div></div></div>
+<div class="page" id="page-composicion"><div class="container"><div style="background:var(--s2);border-radius:18px;padding:16px;margin-bottom:20px;"><div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">➕ NUEVA MEDICIÓN</div><div class="form-grid"><div class="form-field"><label>📅 Fecha</label><input type="date" id="medFecha" value=""></div><div class="form-field"><label>⚖️ Peso (kg)</label><input type="number" id="medPeso" step="0.1" placeholder="ej. 84.3"></div><div class="form-field"><label>📏 Cintura (cm)</label><input type="number" id="medCintura" step="0.1" placeholder="ej. 98"></div><div class="form-field"><label>🫁 Pecho (cm)</label><input type="number" id="medPecho" step="0.1" placeholder="ej. 105"></div><div class="form-field"><label>🍑 Cadera (cm)</label><input type="number" id="medCadera" step="0.1" placeholder="ej. 106"></div><div class="form-field"><label>💪 Bíceps (cm)</label><input type="number" id="medBiceps" step="0.1" placeholder="ej. 34"></div><div class="form-field"><label>🧈 % Grasa corporal</label><input type="number" id="medGrasaPorc" step="0.1" placeholder="ej. 27.5"></div><div class="form-field"><label>💪 Masa muscular (kg)</label><input type="number" id="medMasaMuscular" step="0.1" placeholder="ej. 58.2"></div></div><button class="btn-p" onclick="guardarMedicion()" style="width:100%;background:var(--acc);border:none;color:#000;padding:12px;border-radius:40px;font-weight:700;">💾 Guardar medición</button></div><div style="background:var(--s2);border-radius:18px;padding:16px;"><div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">📜 HISTORIAL</div><div id="historialMediciones"></div></div></div></div>
 <div class="page" id="page-logros"><div class="container"><div style="background:var(--s2);border-radius:18px;padding:12px;"><div id="logrosContainer" class="logros-grid"></div></div></div></div>
 <div class="page" id="page-progreso-fotos"><div class="container"><div style="background:var(--s2);border-radius:18px;padding:12px;margin-bottom:12px;"><div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">📸 SUBIR FOTOS</div><div style="display:flex;gap:8px;margin-bottom:12px;"><input type="date" id="fechaFotos" class="btn-g" style="flex:1;background:transparent;border:1px solid var(--border);border-radius:40px;padding:6px 8px;color:white;font-size:11px;"><button id="cargarFotosFecha" class="btn-p" style="background:var(--acc);border:none;border-radius:40px;padding:6px 12px;font-size:11px;">Cargar</button></div><div class="foto-grid-upload"><div class="equip-card"><div class="label">😀 FRENTE</div><input type="file" id="fotoFrente" accept="image/*" onchange="previewFrente(this)"><img id="previewFrente" class="foto-preview" style="display:none;"></div><div class="equip-card"><div class="label">🙃 ESPALDA</div><input type="file" id="fotoEspalda" accept="image/*" onchange="previewEspalda(this)"><img id="previewEspalda" class="foto-preview" style="display:none;"></div><div class="equip-card"><div class="label">⬅️ IZQUIERDA</div><input type="file" id="fotoIzquierda" accept="image/*" onchange="previewIzquierda(this)"><img id="previewIzquierda" class="foto-preview" style="display:none;"></div><div class="equip-card"><div class="label">➡️ DERECHA</div><input type="file" id="fotoDerecha" accept="image/*" onchange="previewDerecha(this)"><img id="previewDerecha" class="foto-preview" style="display:none;"></div></div><button onclick="guardarFotos()" class="btn-p" style="width:100%;margin-top:8px;background:var(--acc);border:none;border-radius:40px;padding:10px;font-weight:700;">💾 Guardar día</button></div><div style="background:var(--s2);border-radius:18px;padding:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:12px;"><div class="sec-tag" style="font-size:9px;color:var(--acc);">📅 DÍAS GUARDADOS</div><button onclick="cargarListaDias()" class="btn-3d" style="background:rgba(255,255,255,.05);border-radius:20px;padding:4px 12px;">🔄</button></div><div id="listaDiasDB" style="max-height:100px;overflow-y:auto;font-size:12px;"></div><div class="sec-tag" style="margin-top:16px;font-size:9px;color:var(--acc);">🔄 COMPARAR DOS DÍAS</div><div style="display:flex;gap:8px;margin:12px 0;"><select id="compararDia1" class="btn-g" style="flex:1;background:transparent;border:1px solid var(--border);border-radius:40px;padding:6px 8px;font-size:11px;"></select><select id="compararDia2" class="btn-g" style="flex:1;background:transparent;border:1px solid var(--border);border-radius:40px;padding:6px 8px;font-size:11px;"></select></div><div style="display:flex;gap:8px;"><button onclick="compararFotos()" class="btn-p" style="flex:1;background:var(--acc);border:none;border-radius:40px;padding:8px;font-size:11px;">Comparar</button><button onclick="recargarComparacion()" class="btn-g" style="background:transparent;border:1px solid var(--border);border-radius:40px;padding:8px;">🔄</button></div><div id="comparadorResultado" style="margin-top:12px;"></div></div></div></div>
 
@@ -276,7 +281,7 @@
       if (Array.isArray(oldPesos) && oldPesos.length) {
         mediciones = oldPesos.map(p => ({
           fecha: p.fecha, peso: p.valor, cintura: null, grasaPorcentaje: null,
-          masaMuscular: null, grasaVisceral: null, pesoLibreGrasa: null, masaGrasa: null, indiceRecomp: null
+          masaMuscular: null, pecho: null, cadera: null, biceps: null
         }));
         localStorage.setItem('bodyComposition', JSON.stringify(mediciones));
       }
@@ -296,19 +301,77 @@
   function calcularDiasSinFumar() { let c=0,f=new Date(FECHA_INICIO_NO_FUMAR),h=new Date(); while(f<=h){ if(!diasNoFumar.includes(f.toISOString().slice(0,10)))c++; f.setDate(f.getDate()+1); } return c; }
   function actualizarTopBar() { document.getElementById('topEdad').innerText=calcularEdad(); document.getElementById('topPeso').innerHTML=mediciones.length>0?mediciones[mediciones.length-1].peso:'--'; document.getElementById('topObjetivo').innerText=OBJETIVO_PESO; document.getElementById('topDiasSinFumar').innerText=calcularDiasSinFumar(); }
   function calcularEdad() { const h=new Date(),n=new Date(userData.cumple); let e=h.getFullYear()-n.getFullYear(); if(h.getMonth()<n.getMonth()||(h.getMonth()===n.getMonth()&&h.getDate()<n.getDate()))e--; return e; }
+
   function guardarMedicion() {
     const f=document.getElementById('medFecha').value; if(!f){mostrarToast("Selecciona una fecha");return;}
-    const p=parseFloat(document.getElementById('medPeso').value),ci=parseFloat(document.getElementById('medCintura').value),g=parseFloat(document.getElementById('medGrasaPorc').value),mu=parseFloat(document.getElementById('medMasaMuscular').value),gv=parseInt(document.getElementById('medGrasaVisceral').value),pl=parseFloat(document.getElementById('medPesoLibreGrasa').value),pe=parseFloat(document.getElementById('medPecho').value),ca=parseFloat(document.getElementById('medCadera').value),bi=parseFloat(document.getElementById('medBiceps').value);
-    if(isNaN(p)||isNaN(ci)||isNaN(g)||isNaN(mu)||isNaN(gv)||isNaN(pl)){mostrarToast("Completa los campos obligatorios (*)");return;}
-    const mg=+(p*(g/100)).toFixed(1),ir=+(mu-mg).toFixed(1),nm={fecha:f,peso:p,cintura:ci,grasaPorcentaje:g,masaMuscular:mu,grasaVisceral:gv,pesoLibreGrasa:pl,masaGrasa:mg,indiceRecomp:ir,pecho:pe||null,cadera:ca||null,biceps:bi||null};
+    const p=parseFloat(document.getElementById('medPeso').value),ci=parseFloat(document.getElementById('medCintura').value),g=parseFloat(document.getElementById('medGrasaPorc').value),mu=parseFloat(document.getElementById('medMasaMuscular').value),pe=parseFloat(document.getElementById('medPecho').value),ca=parseFloat(document.getElementById('medCadera').value),bi=parseFloat(document.getElementById('medBiceps').value);
+    if(isNaN(p)||isNaN(ci)||isNaN(g)||isNaN(mu)){mostrarToast("Completa peso, cintura, % grasa y masa muscular");return;}
+    const nm={fecha:f,peso:p,cintura:ci,grasaPorcentaje:g,masaMuscular:mu,pecho:pe||null,cadera:ca||null,biceps:bi||null};
     const idx=mediciones.findIndex(m=>m.fecha===f); if(idx!==-1)mediciones[idx]=nm; else mediciones.push(nm);
     mediciones.sort((a,b)=>new Date(a.fecha)-new Date(b.fecha)); localStorage.setItem('bodyComposition',JSON.stringify(mediciones));
     mostrarToast("Medición guardada"); cargarHistorialMediciones(); actualizarUICompleta(); limpiarFormularioMedicion();
   }
-  function limpiarFormularioMedicion() { document.getElementById('medFecha').value=new Date().toISOString().slice(0,10); ['medPeso','medCintura','medGrasaPorc','medMasaMuscular','medGrasaVisceral','medPesoLibreGrasa','medPecho','medCadera','medBiceps'].forEach(id=>document.getElementById(id).value=''); }
-  function cargarHistorialMediciones() { const c=document.getElementById('historialMediciones'); if(!c)return; if(mediciones.length===0){c.innerHTML='<div style="padding:12px;text-align:center;color:var(--muted2)">Sin registros.</div>';return;} c.innerHTML=[...mediciones].reverse().map(m=>`<div class="historial-item"><div><span class="historial-date">${new Date(m.fecha).toLocaleDateString('es-ES')}</span><div class="historial-data">⚖️ ${m.peso}kg | 📏 ${m.cintura}cm | 🫁 ${m.pecho||'--'}cm | 🍑 ${m.cadera||'--'}cm | 💪 ${m.biceps||'--'}cm | 🧈 ${m.grasaPorcentaje}%</div></div><div class="historial-buttons"><button onclick="editarMedicion('${m.fecha}')">✏️</button><button onclick="eliminarMedicion('${m.fecha}')">🗑️</button></div></div>`).join(''); }
-  function editarMedicion(f) { const m=mediciones.find(x=>x.fecha===f); if(!m)return; document.getElementById('medFecha').value=m.fecha; document.getElementById('medPeso').value=m.peso; document.getElementById('medCintura').value=m.cintura; document.getElementById('medGrasaPorc').value=m.grasaPorcentaje; document.getElementById('medMasaMuscular').value=m.masaMuscular; document.getElementById('medGrasaVisceral').value=m.grasaVisceral; document.getElementById('medPesoLibreGrasa').value=m.pesoLibreGrasa; document.getElementById('medPecho').value=m.pecho||''; document.getElementById('medCadera').value=m.cadera||''; document.getElementById('medBiceps').value=m.biceps||''; window.scrollTo({top:0,behavior:'smooth'}); }
-  function eliminarMedicion(f) { if(confirm("¿Eliminar esta medición?")){mediciones=mediciones.filter(m=>m.fecha!==f);localStorage.setItem('bodyComposition',JSON.stringify(mediciones));cargarHistorialMediciones();actualizarUICompleta();} }
+  function limpiarFormularioMedicion() { document.getElementById('medFecha').value=new Date().toISOString().slice(0,10); ['medPeso','medCintura','medGrasaPorc','medMasaMuscular','medPecho','medCadera','medBiceps'].forEach(id=>document.getElementById(id).value=''); }
+
+  function formatearCambio(valor, unidad, invertir) {
+    if (Math.abs(valor) < 0.05) return `<span class="neutral">➡ 0 ${unidad}</span>`;
+    let clase = 'neutral', flecha = '➡';
+    if (valor > 0) { clase = invertir ? 'malo' : 'bueno'; flecha = invertir ? '⬆' : '⬆'; }
+    if (valor < 0) { clase = invertir ? 'bueno' : 'malo'; flecha = invertir ? '⬇' : '⬇'; }
+    return `<span class="${clase}">${flecha} ${valor>0?'+':''}${valor.toFixed(1)} ${unidad}</span>`;
+  }
+
+  function cargarHistorialMediciones() {
+    const cont = document.getElementById('historialMediciones');
+    if (!cont) return;
+    if (mediciones.length === 0) { cont.innerHTML = '<div style="padding:12px;text-align:center;color:var(--muted2)">Sin registros.</div>'; return; }
+    const sorted = [...mediciones].reverse();
+    cont.innerHTML = sorted.map((m, i) => {
+      const fecha = new Date(m.fecha).toLocaleDateString('es-ES');
+      const idxOriginal = mediciones.findIndex(x => x.fecha === m.fecha);
+      let resumenHTML = '';
+      if (idxOriginal > 0) {
+        const ant = mediciones[idxOriginal - 1];
+        const dp = m.peso - ant.peso;
+        const dc = m.cintura - ant.cintura;
+        const dg = m.grasaPorcentaje - ant.grasaPorcentaje;
+        const dm = m.masaMuscular - ant.masaMuscular;
+        resumenHTML = `<div class="historial-resumen">
+          ${formatearCambio(dp, 'kg', true)} &nbsp;|&nbsp;
+          ${formatearCambio(dc, 'cm', true)} &nbsp;|&nbsp;
+          ${formatearCambio(dg, '%', true)} &nbsp;|&nbsp;
+          ${formatearCambio(dm, 'kg', false)}
+        </div>`;
+      }
+      return `<div class="historial-item">
+        <div>
+          <span class="historial-date">${fecha}</span>
+          <div class="historial-data">⚖️ ${m.peso}kg | 📏 ${m.cintura}cm | 🫁 ${m.pecho||'--'}cm | 🍑 ${m.cadera||'--'}cm | 💪 ${m.biceps||'--'}cm | 🧈 ${m.grasaPorcentaje}% | 💪 ${m.masaMuscular}kg</div>
+          ${resumenHTML}
+        </div>
+        <div class="historial-buttons">
+          <button onclick="editarMedicion('${m.fecha}')">✏️</button>
+          <button onclick="eliminarMedicion('${m.fecha}')">🗑️</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function editarMedicion(f) {
+    const m = mediciones.find(x => x.fecha === f); if (!m) return;
+    document.getElementById('medFecha').value = m.fecha;
+    document.getElementById('medPeso').value = m.peso;
+    document.getElementById('medCintura').value = m.cintura;
+    document.getElementById('medGrasaPorc').value = m.grasaPorcentaje;
+    document.getElementById('medMasaMuscular').value = m.masaMuscular;
+    document.getElementById('medPecho').value = m.pecho || '';
+    document.getElementById('medCadera').value = m.cadera || '';
+    document.getElementById('medBiceps').value = m.biceps || '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function eliminarMedicion(f) { if (confirm("¿Eliminar esta medición?")) { mediciones = mediciones.filter(m => m.fecha !== f); localStorage.setItem('bodyComposition', JSON.stringify(mediciones)); cargarHistorialMediciones(); actualizarUICompleta(); } }
+
   function renderizarResumen() { const c=document.getElementById('resumenContainer'); if(!c)return; if(mediciones.length<6){c.innerHTML='';return;} const p=mediciones[0],u=mediciones[mediciones.length-1],dp=(p.peso-u.peso).toFixed(1),dc=(p.cintura-u.cintura).toFixed(0),dg=(p.grasaPorcentaje-u.grasaPorcentaje).toFixed(1),dm=(u.masaMuscular-p.masaMuscular).toFixed(1); c.innerHTML=`<div class="resumen-card"><div class="resumen-title">🔥 Resumen</div><div class="resumen-grid"><div class="resumen-item"><div class="r-icon">⚖️</div><div class="r-valor ${dp>0?'bueno':''}">${dp>0?'-':'+'}${Math.abs(dp)} kg</div><div class="r-etiqueta">Peso perdido</div></div><div class="resumen-item"><div class="r-icon">📏</div><div class="r-valor ${dc>0?'bueno':''}">${dc>0?'-':'+'}${Math.abs(dc)} cm</div><div class="r-etiqueta">Cintura</div></div><div class="resumen-item"><div class="r-icon">🧈</div><div class="r-valor ${dg>0?'bueno':''}">${dg>0?'-':'+'}${Math.abs(dg)}%</div><div class="r-etiqueta">Grasa corporal</div></div><div class="resumen-item"><div class="r-icon">💪</div><div class="r-valor ${dm>0?'bueno':''}">${dm>=0?'+':''}${dm} kg</div><div class="r-etiqueta">Músculo</div></div></div></div>`; }
   function renderizarUltimaMedicion() { const c=document.getElementById('ultimaMedicionContainer'); if(!c)return; if(mediciones.length===0){c.innerHTML=`<div class="compact-card"><div class="card-title">📊 Sin mediciones</div><div style="color:var(--muted2);padding:8px;">Registra tu primera medición en "Composición".</div></div>`;return;} const u=mediciones[mediciones.length-1],imc=(u.peso/((userData.altura/100)**2)).toFixed(1),rca=(u.cintura/userData.altura).toFixed(2),diff=(u.peso-OBJETIVO_PESO).toFixed(1),da=Math.abs(diff),pe=u.peso>OBJETIVO_PESO; c.innerHTML=`<div class="compact-card"><div class="card-title">📅 Última medición</div><div class="metrics-row"><div class="metric-item"><span class="metric-name">⚖️ Peso</span><span class="metric-val">${u.peso}<span class="metric-unit">kg</span></span></div><div class="metric-item"><span class="metric-name">📏 Cintura</span><span class="metric-val">${u.cintura}<span class="metric-unit">cm</span></span></div><div class="metric-item"><span class="metric-name">🫁 Pecho</span><span class="metric-val">${u.pecho||'--'}<span class="metric-unit">cm</span></span></div><div class="metric-item"><span class="metric-name">🍑 Cadera</span><span class="metric-val">${u.cadera||'--'}<span class="metric-unit">cm</span></span></div><div class="metric-item"><span class="metric-name">💪 Bíceps</span><span class="metric-val">${u.biceps||'--'}<span class="metric-unit">cm</span></span></div><div class="metric-item"><span class="metric-name">🧈 Grasa</span><span class="metric-val">${u.grasaPorcentaje}<span class="metric-unit">%</span></span></div><div class="metric-item" style="grid-column:span 2;"><span class="metric-name">💪 Músculo</span><span class="metric-val">${u.masaMuscular}<span class="metric-unit">kg</span></span></div></div><div class="divider"></div><div class="summary-row"><div class="summary-item"><div class="summary-icon">📊</div><div class="summary-val">${imc}</div><div class="summary-label">IMC</div></div><div class="summary-item"><div class="summary-icon">📏</div><div class="summary-val">${rca}</div><div class="summary-label">Ratio C/A</div></div><div class="summary-item"><div class="summary-icon">🎯</div><div class="summary-val">${OBJETIVO_PESO}</div><div class="summary-label">Objetivo kg</div></div></div><div class="objetivo-bar"><div class="objetivo-header"><span class="obj-icon">🎯</span><span class="obj-label">Objetivo</span></div><div class="objetivo-filas"><div class="objetivo-fila"><span class="of-label">Peso actual:</span><span class="of-valor">${u.peso} kg</span></div><div class="objetivo-fila"><span class="of-label">Objetivo:</span><span class="of-valor obj">${OBJETIVO_PESO} kg</span></div></div><div class="objetivo-restante"><span class="or-icono">${pe?'📉':'📈'}</span><span>${pe?'Restan':'Por encima'}:</span><span class="or-valor">${da} kg</span></div></div></div>`; }
   function renderizarCambios() { const c=document.getElementById('cambiosContainer'); if(!c)return; if(mediciones.length<2){c.innerHTML=`<div class="changes-card"><div class="changes-title">📈 Cambios vs anterior</div><div style="color:var(--muted2);text-align:center;padding:12px;">Necesitas al menos 2 mediciones para ver cambios</div></div>`;return;} const a=mediciones[mediciones.length-1],ant=mediciones[mediciones.length-2],cambios=[{nombre:'Peso',valor:(a.peso-ant.peso).toFixed(1),unidad:'kg',invertir:true},{nombre:'Cintura',valor:(a.cintura-ant.cintura).toFixed(1),unidad:'cm',invertir:true},{nombre:'Grasa',valor:(a.grasaPorcentaje-ant.grasaPorcentaje).toFixed(1),unidad:'%',invertir:true},{nombre:'Músculo',valor:(a.masaMuscular-ant.masaMuscular).toFixed(1),unidad:'kg',invertir:false}],dd=Math.round((new Date(a.fecha)-new Date(ant.fecha))/86400000); c.innerHTML=`<div class="changes-card"><div class="changes-title">📈 Cambios vs anterior</div><div class="changes-grid">${cambios.map(c=>{let t='neutral',i='➡';if(c.valor>0){t=c.invertir?'malo':'bueno';i=c.invertir?'⬆':'⬆';}if(c.valor<0){t=c.invertir?'bueno':'malo';i=c.invertir?'⬇':'⬇';}if(Math.abs(c.valor)<0.05){t='neutral';i='➡';}return`<div class="change-card ${t}"><div class="change-icon">${i}</div><div class="change-label">${c.nombre}</div><div class="change-valor ${t}">${c.valor>0?'+':''}${c.valor} ${c.unidad}</div></div>`;}).join('')}</div><div class="change-date">📅 Hace ${dd} días · ${new Date(ant.fecha).toLocaleDateString('es-ES')} → ${new Date(a.fecha).toLocaleDateString('es-ES')}</div></div>`; }
@@ -367,19 +430,7 @@
       "Sentadilla Goblet con mancuerna": "Posición: Ponte de pie con los pies separados a la anchura de tus hombros. Sujeta una sola mancuerna de forma vertical con ambas manos pegada a tu pecho.\nMovimiento: Baja la cadera como si fueras a sentarte en una silla, manteniendo la espalda recta y sacando el pecho. Baja hasta que tus muslos estén casi paralelos al suelo.\nEnfoque: Empuja con fuerza el suelo con los talones para volver a subir, manteniendo el abdomen firme.\nRespiración: Inhala al bajar la cadera, exhala al subir y ponerte recto.",
       "Zancadas estáticas con mancuernas (Lunges)": "Posición: Da un paso largo hacia adelante. Sujeta una mancuerna en cada mano a los lados de tu cuerpo y mantén el torso completamente recto.\nMovimiento: Baja el cuerpo doblando ambas rodillas hasta que la pierna trasera esté muy cerca de tocar el suelo. Ambas rodillas deben formar un ángulo de 90 grados.\nControl: Empuja con la pierna delantera para regresar a la posición inicial. Haz las repeticiones de una pierna y luego cambia a la otra.\nRespiración: Inhala al bajar el cuerpo, exhala al subir.",
       "Elevación de gemelos de pie con mancuernas": "Posición: Ponte de pie con los pies juntos o ligeramente separados. Sujeta las mancuernas a los lados del cuerpo con los brazos estirados.\nMovimiento: Elévate empujando con la punta de los pies lo más arriba posible, despegando los talones del suelo.\nEnfoque: Aguanta un segundo arriba apretando los gemelos y baja de forma lenta hasta que tus talones vuelvan a tocar el suelo.\nRespiración: Exhala al subir a puntillas, inhala al bajar de manera controlada.",
-      "Curl de antebrazo con mancuernas (Palmas arriba)": "Posición: Siéntate en el banco, apoya los antebrazos sobre tus muslos y deja que las muñecas sobresalgan por delante de tus rodillas con las palmas hacia arriba. Sujeta las mancuernas.\nMovimiento: Deja que las mancuernas bajen sutilmente abriendo un poco los dedos, y luego cierra la mano flexionando las muñecas hacia arriba para elevar el peso.\nEnfoque: El brazo se queda completamente inmóvil; el movimiento lo hacen únicamente las muñecas para aislar el antebrazo.\nRespiración: Exhala al subir las muñecas, inhala al bajarlas.",
-      "Sentadilla búlgara": "1️⃣ Pie trasero apoyado en banco, el delantero adelante.\n2️⃣ Manos: Mancuernas a los lados.\n3️⃣ Movimiento: Baja la rodilla trasera hacia el suelo, mantén torso recto.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-      "Peso muerto rumano": "1️⃣ Pies ancho de caderas, rodillas ligeramente flexionadas.\n2️⃣ Espalda: Recta todo el tiempo.\n3️⃣ Movimiento: Flexiona cadera hacia atrás, baja mancuernas rozando espinillas.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-      "Sentadilla Goblet": "1️⃣ Sujeta UNA mancuerna al pecho como una copa.\n2️⃣ Pies: Ancho de hombros, puntas hacia afuera.\n3️⃣ Movimiento: Baja como si te sentaras, talones pegados.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-      "Hip Thrust": "1️⃣ Hombros en banco, mancuerna sobre cadera.\n2️⃣ Pies apoyados, rodillas a 90°.\n3️⃣ Movimiento: Sube cadera apretando glúteo.\n4️⃣ Respiración: Exhala al subir, inhala al bajar.",
-      "Elevación de gemelos": "1️⃣ De pie, puntas en escalón.\n2️⃣ Movimiento: Sube talones lo más alto posible, aguanta 2 seg.\n3️⃣ Respiración: Exhala al subir, inhala al bajar.",
-      "Zancadas con mancuerna": "1️⃣ Paso largo hacia adelante, torso recto.\n2️⃣ Movimiento: Baja rodilla trasera hasta casi tocar suelo.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-      "Peso muerto a una pierna": "1️⃣ De pie, mancuerna en mano contraria.\n2️⃣ Movimiento: Flexiona cadera manteniendo espalda recta.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-      "Extensión en banco declinado": "1️⃣ Banco declinado, mancuerna tras cabeza.\n2️⃣ Movimiento: Extiende codos, baja controlado.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-      "Press francés en banco inclinado": "1️⃣ Banco inclinado, mancuerna tras cabeza.\n2️⃣ Movimiento: Extiende codos, solo antebrazos se mueven.\n3️⃣ Respiración: Inhala al bajar, exhala al subir.",
-      "Flexiones": "1️⃣ Manos: Apoyo más ancho que hombros, cuerpo recto.\n2️⃣ Cuerpo: Línea recta de cabeza a talones.\n3️⃣ Movimiento: Baja hasta que el pecho casi toque el suelo.\n4️⃣ Respiración: Inhala al bajar, exhala al subir.",
-      "Plancha": "1️⃣ Apoyo sobre antebrazos y puntas de pies.\n2️⃣ Cuerpo: Línea recta, caderas sin hundirse.\n3️⃣ Contracción: Abdomen y glúteos firmes.\n4️⃣ Respiración: Normal, no aguantes la respiración.",
-      "Abdominal bicicleta": "1️⃣ Tumbado boca arriba, manos tras cabeza.\n2️⃣ Movimiento: Alterna codo con rodilla contraria.\n3️⃣ Respiración: Exhala al girar, inhala al volver."
+      "Curl de antebrazo con mancuernas (Palmas arriba)": "Posición: Siéntate en el banco, apoya los antebrazos sobre tus muslos y deja que las muñecas sobresalgan por delante de tus rodillas con las palmas hacia arriba. Sujeta las mancuernas.\nMovimiento: Deja que las mancuernas bajen sutilmente abriendo un poco los dedos, y luego cierra la mano flexionando las muñecas hacia arriba para elevar el peso.\nEnfoque: El brazo se queda completamente inmóvil; el movimiento lo hacen únicamente las muñecas para aislar el antebrazo.\nRespiración: Exhala al subir las muñecas, inhala al bajarlas."
     };
     return i[n] || "1️⃣ Posición inicial correcta.\n2️⃣ Movimiento controlado.\n3️⃣ Respiración adecuada.";
   }
@@ -418,19 +469,7 @@
     "Sentadilla Goblet con mancuerna":"https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif",
     "Zancadas estáticas con mancuernas (Lunges)":"https://gymvisual.com/img/p/2/3/7/3/9/23739.gif",
     "Elevación de gemelos de pie con mancuernas":"https://i.pinimg.com/originals/2f/7c/ca/2f7cca8d37c65384c1d0bd84cc0a91d1.gif",
-    "Curl de antebrazo con mancuernas (Palmas arriba)":"https://gymvisual.com/img/p/1/5/3/1/0/15310.gif",
-    "Sentadilla búlgara":"https://api.smartworkout.app/asset/image/11e976c5-d0b9-49e0-91e3-453082bd3649",
-    "Peso muerto rumano":"https://fitcron.com/wp-content/uploads/2021/04/14591301-Dumbbell-Romanian-Deadlift_Hips_720.gif",
-    "Sentadilla Goblet":"https://enfaf.com/wp-content/uploads/2026/04/sentadilla-globet.gif",
-    "Hip Thrust":"https://gymvisual.com/img/p/2/0/9/5/6/20956.gif",
-    "Elevación de gemelos":"https://fitcron.com/wp-content/uploads/2021/04/04171301-Dumbbell-Standing-Calf-Raise_Calf_720.gif",
-    "Zancadas con mancuerna":"https://gymvisual.com/img/p/2/3/7/3/9/23739.gif",
-    "Peso muerto a una pierna":"https://gymvisual.com/img/p/7/5/6/1/7561.gif",
-    "Extensión en banco declinado":"https://gymvisual.com/img/p/1/5/2/7/1/15271.gif",
-    "Press francés en banco inclinado":"https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
-    "Flexiones":"https://fitnessprogramer.com/wp-content/uploads/2021/06/Push-Up-Plus.gif",
-    "Plancha":"https://api.smartworkout.app/asset/image/606defc2-dc68-41d8-bea0-41a8d68aaa71",
-    "Abdominal bicicleta":"https://meutreinador.com/wp-content/uploads/2024/04/abdominal-bicicleta.gif"
+    "Curl de antebrazo con mancuernas (Palmas arriba)":"https://gymvisual.com/img/p/1/5/3/1/0/15310.gif"
   };
 
   function getEjerciciosPorDia(d) { return ejerciciosUnicos[d] || []; }
