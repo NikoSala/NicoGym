@@ -26,8 +26,7 @@
     }
     .logo { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 2px; background: linear-gradient(135deg, #fff, var(--acc)); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .top-info { display: flex; gap: 12px; font-size: 11px; font-weight: 500; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 30px; }
-    .top-info span { color: var(--muted2); }
-    .top-info strong { color: var(--acc); }
+    .top-info span { color: var(--muted2); } .top-info strong { color: var(--acc); }
     .menu-btn { background: rgba(255,255,255,0.1); border: none; color: white; font-size: 20px; width: 36px; height: 36px; border-radius: 10px; cursor: pointer; }
     .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #0f0f0f; border-right: 1px solid var(--border); z-index: 1000; transition: left 0.3s ease; padding: 60px 16px 20px; }
     .side-menu.open { left: 0; }
@@ -167,7 +166,35 @@
     .steps li::before { content:attr(data-n); font-family:'Bebas Neue',cursive; font-size:14px; color:var(--acc); min-width:20px; }
     .tip { background:rgba(255,179,0,.07); border-radius:10px; padding:8px; font-size:11px; display:flex; gap:6px; margin-top:6px; }
     .ex-img { width:100%; max-width:200px; border-radius:12px; margin:8px auto; display:block; cursor:pointer; }
+
+    /* CAMPOS DE PESO Y REPS */
+    .ex-datos { display:flex; gap:8px; margin-top:8px; }
+    .ex-dato { flex:1; }
+    .ex-dato label { font-size:9px; color:var(--muted); display:block; margin-bottom:2px; text-transform:uppercase; }
+    .ex-dato input { width:100%; background:var(--s1); border:1px solid var(--border); border-radius:8px; padding:6px 8px; color:var(--text); font-size:12px; outline:none; }
+    .ex-dato input:focus { border-color:var(--acc); }
+    .ex-ultimo { font-size:9px; color:var(--muted2); margin-top:4px; }
+    .ex-ultimo strong { color:var(--acc); }
+    .btn-historial-ej { background:transparent; border:1px solid var(--border); border-radius:20px; padding:3px 10px; font-size:9px; color:var(--muted2); cursor:pointer; margin-top:4px; }
+
+    .btn-finalizar { display:none; width:100%; background:#10b981; border:none; color:#000; font-weight:700; padding:12px; border-radius:40px; font-size:14px; cursor:pointer; margin-top:12px; }
+    .btn-finalizar.visible { display:block; }
+
     .btn-reset-dia { background:transparent; border:1px solid rgba(255,77,109,.3); color:rgba(255,77,109,.7); border-radius:40px; padding:8px; font-size:11px; width:100%; margin-top:12px; cursor:pointer; }
+
+    /* HISTORIAL */
+    .historial-entreno-card { background:var(--s2); border-radius:16px; padding:14px; margin-bottom:10px; border:1px solid var(--border); }
+    .historial-entreno-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+    .historial-entreno-fecha { font-family:'Bebas Neue',cursive; font-size:16px; letter-spacing:1px; }
+    .historial-entreno-tipo { font-size:10px; color:var(--acc); text-transform:uppercase; }
+    .historial-entreno-sub { font-size:10px; color:var(--muted2); }
+    .historial-entreno-detalle { display:none; margin-top:8px; border-top:1px solid var(--border); padding-top:8px; }
+    .historial-entreno-detalle.open { display:block; }
+    .historial-ej-item { display:flex; justify-content:space-between; align-items:center; padding:4px 0; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.03); }
+    .historial-ej-item:last-child { border-bottom:none; }
+    .historial-ej-nombre { color:var(--text); }
+    .historial-ej-datos { color:var(--muted2); font-weight:600; }
+
     .calendar-card { background:var(--s2); border-radius:18px; padding:12px; margin-bottom:16px; }
     .cal-nav { display:flex; justify-content:space-between; margin-bottom:10px; }
     .cal-month { font-family:'Bebas Neue',cursive; font-size:18px; }
@@ -190,7 +217,7 @@
     .historial-buttons { display:flex; gap:4px; margin-top:6px; }
     .historial-buttons button { background:transparent; border:1px solid var(--border); border-radius:20px; padding:4px 10px; color:var(--text); font-size:10px; cursor:pointer; }
     .modal-disk { position:fixed; inset:0; background:rgba(0,0,0,.9); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; z-index:2000; }
-    .disk-panel { background:var(--s2); border-radius:24px; padding:16px; width:85%; max-width:320px; text-align:center; }
+    .disk-panel { background:var(--s2); border-radius:24px; padding:16px; width:90%; max-width:360px; max-height:80vh; overflow-y:auto; text-align:center; }
     .disk-panel h3 { font-family:'Bebas Neue',cursive; font-size:20px; }
     .disk-panel button { background:var(--acc); border:none; border-radius:30px; padding:6px 14px; margin:4px; font-weight:bold; cursor:pointer; }
     .toast-msg { position:fixed; bottom:80px; left:16px; right:16px; background:var(--acc); color:#000; padding:10px; border-radius:40px; text-align:center; font-weight:700; z-index:3000; animation:fadeOut 3s forwards; }
@@ -216,8 +243,9 @@
 <div class="side-menu" id="sideMenu">
   <div class="menu-item" onclick="goPage('inicio')">🏠 Inicio</div>
   <div class="menu-item" onclick="goPage('rutinas')">💪 Rutinas</div>
-  <div class="menu-item" onclick="goPage('calendarios')">📅 Calendarios</div>
   <div class="menu-item" onclick="goPage('composicion')">⚖️ Composición</div>
+  <div class="menu-item" onclick="goPage('calendarios')">📅 Calendarios</div>
+  <div class="menu-item" onclick="goPage('historial')">📖 Historial</div>
   <div class="menu-item" onclick="goPage('estadisticas')">📊 Estadísticas</div>
   <div class="menu-item" onclick="goPage('graficos')">📈 Gráficos</div>
   <div class="menu-item" onclick="goPage('progreso-fotos')">📸 Fotos</div>
@@ -225,6 +253,7 @@
 </div>
 <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
 
+<!-- INICIO -->
 <div class="page active" id="page-inicio"><div class="container">
   <div class="saludo" id="saludoTexto">👋 Buenos días, <span>Nico</span></div>
   <div id="dashboardResumen"></div>
@@ -233,20 +262,29 @@
   <div id="bloqueDoble"></div>
 </div></div>
 
+<!-- RUTINAS -->
 <div class="page" id="page-rutinas"><div class="container"><div id="progresoRutinaContainer"></div><div class="day-tabs" id="dayTabs"></div><div id="dayPanelsContainer"></div></div></div>
 
+<!-- CALENDARIOS -->
 <div class="page" id="page-calendarios"><div class="container"><div class="calendar-card"><div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">🏋️ ENTRENOS</div><div class="cal-nav"><button class="btn-3d" onclick="changeMonth(-1,'gym')">←</button><span id="cal-month-gym" class="cal-month"></span><button class="btn-3d" onclick="changeMonth(1,'gym')">→</button></div><div id="cal-gym" class="cal-grid"></div></div><div class="calendar-card"><div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">🚭 SIN FUMAR</div><div class="cal-nav"><button class="btn-3d" onclick="changeMonth(-1,'smoke')">←</button><span id="cal-month-smoke" class="cal-month"></span><button class="btn-3d" onclick="changeMonth(1,'smoke')">→</button></div><div id="cal-smoke" class="cal-grid"></div><div style="font-size:10px;margin-top:8px;">🔴 fumado &nbsp;🔵 no fumado &nbsp;🎂 cumpleaños</div></div></div></div>
 
+<!-- COMPOSICIÓN -->
 <div class="page" id="page-composicion"><div class="container"><div style="background:var(--s2);border-radius:18px;padding:16px;margin-bottom:20px;"><div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">➕ NUEVA MEDICIÓN</div><div class="form-grid"><div class="form-field"><label>📅 Fecha</label><input type="date" id="medFecha" value=""></div><div class="form-field"><label>⚖️ Peso (kg)</label><input type="number" id="medPeso" step="0.1" placeholder="ej. 84.3"></div><div class="form-field"><label>📏 Cintura (cm)</label><input type="number" id="medCintura" step="0.1" placeholder="ej. 98"></div><div class="form-field"><label>🏋️ Pecho (cm)</label><input type="number" id="medPecho" step="0.1" placeholder="ej. 105"></div><div class="form-field"><label>🍑 Cadera (cm)</label><input type="number" id="medCadera" step="0.1" placeholder="ej. 106"></div><div class="form-field"><label>💪 Bíceps (cm)</label><input type="number" id="medBiceps" step="0.1" placeholder="ej. 34"></div><div class="form-field"><label>🧈 % Grasa corporal</label><input type="number" id="medGrasaPorc" step="0.1" placeholder="ej. 27.5"></div><div class="form-field"><label>💪 Masa muscular (kg)</label><input type="number" id="medMasaMuscular" step="0.1" placeholder="ej. 58.2"></div></div><button class="btn-p" onclick="guardarMedicion()" style="width:100%;background:var(--acc);border:none;color:#000;padding:12px;border-radius:40px;font-weight:700;">💾 Guardar medición</button></div><div style="background:var(--s2);border-radius:18px;padding:16px;"><div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">📜 HISTORIAL</div><div id="historialMediciones"></div></div></div></div>
 
+<!-- HISTORIAL ENTRENOS -->
+<div class="page" id="page-historial"><div class="container"><div id="historialEntrenosContainer"></div></div></div>
+
+<!-- ESTADÍSTICAS -->
 <div class="page" id="page-estadisticas"><div class="container"><div id="estadisticasContainer"></div></div></div>
 
+<!-- GRÁFICOS -->
 <div class="page" id="page-graficos"><div class="container">
   <div class="grafico-container"><div class="grafico-title">⚖️ Evolución Peso (kg)</div><canvas id="graficoPeso"></canvas></div>
   <div class="grafico-container"><div class="grafico-title">📏 Evolución Cintura (cm)</div><canvas id="graficoCintura"></canvas></div>
   <div class="grafico-container"><div class="grafico-title">🧈 Evolución Grasa (%)</div><canvas id="graficoGrasa"></canvas></div>
 </div></div>
 
+<!-- FOTOS -->
 <div class="page" id="page-progreso-fotos"><div class="container">
   <div style="background:var(--s2);border-radius:18px;padding:12px;margin-bottom:12px;">
     <div class="sec-tag" style="font-size:9px;color:var(--acc);margin-bottom:8px;">📸 SUBIR FOTOS</div>
@@ -267,19 +305,19 @@
   <div id="dualContent" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:95%;max-height:90%;"></div>
 </div>
 <div id="lightbox" class="lightbox" onclick="closeLightbox()"><img id="lightboxImg" src=""></div>
-<div id="descanso-box" class="modal-disk" style="display:none;"><div class="disk-panel"><div style="font-size:20px;">💪 DESCANSA</div><div id="descansoTimer" style="font-size:44px;">30</div><div style="display:flex;gap:8px;justify-content:center;margin:10px 0;"><button onclick="setDescanso(30)">30s</button><button onclick="setDescanso(45)">45s</button><button onclick="setDescanso(60)">60s</button><button onclick="setDescanso(90)">90s</button></div><button onclick="cancelarDescanso()" class="btn-p" style="background:var(--acc);border:none;border-radius:40px;padding:8px;">Saltar</button></div></div>
 
 <div class="bottom-nav">
   <button class="nav-item" onclick="goPage('inicio')"><span class="nav-icon">🏠</span>INICIO</button>
   <button class="nav-item" onclick="goPage('rutinas')"><span class="nav-icon">💪</span>RUTINA</button>
-  <button class="nav-item" onclick="goPage('calendarios')"><span class="nav-icon">📅</span>AGENDA</button>
   <button class="nav-item" onclick="goPage('composicion')"><span class="nav-icon">⚖️</span>PESO</button>
-  <button class="nav-item" onclick="goPage('estadisticas')"><span class="nav-icon">📊</span>STATS</button>
-  <button class="nav-item" onclick="goPage('graficos')"><span class="nav-icon">📈</span>GRÁFICOS</button>
+  <button class="nav-item" onclick="goPage('calendarios')"><span class="nav-icon">📅</span>AGENDA</button>
+  <button class="nav-item" onclick="goPage('historial')"><span class="nav-icon">📖</span>HISTORIAL</button>
 </div>
 
 <script>
+  // ========== DATOS ==========
   let mediciones = JSON.parse(localStorage.getItem('bodyComposition')) || [];
+  let historialEntrenos = JSON.parse(localStorage.getItem('historialEntrenos')) || [];
   const OBJETIVO_PESO = 75;
   if (localStorage.getItem('pesos') && mediciones.length === 0) {
     try { const oldPesos = JSON.parse(localStorage.getItem('pesos')); if (Array.isArray(oldPesos) && oldPesos.length) { mediciones = oldPesos.map(p => ({ fecha: p.fecha, peso: p.valor, cintura: null, grasaPorcentaje: null, masaMuscular: null, pecho: null, cadera: null, biceps: null })); localStorage.setItem('bodyComposition', JSON.stringify(mediciones)); } } catch (e) {}
@@ -295,6 +333,7 @@
   const OBJETIVOS_PESO = [85, 82, 80, 78, 75];
   const OBJETIVO_ENTRENOS_MES = 20;
   const nombresDias = { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo' };
+  const tiposRutina = { lunes: 'ESPALDA/BÍCEPS', martes: 'PECHO/HOMBRO', miercoles: 'TRÍCEPS/CARDIO', jueves: 'ESPALDA/BÍCEPS', viernes: 'PECHO/HOMBRO', sabado: 'PIERNA/ANTEBRAZO', domingo: 'DESCANSO' };
 
   function setColorPorDia() { document.documentElement.style.setProperty('--acc', coloresPorDia[new Date().getDay()] || "#FF4D00"); }
   function getHoyStr() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
@@ -322,53 +361,56 @@
     return { ritmoSemanal, semanasRestan, fechaEstimada: fechaEstimada.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }), tipo: 'normal' };
   }
 
+  // ========== OBTENER ÚLTIMO ENTRENO POR EJERCICIO ==========
+  function getUltimoEntrenoEjercicio(nombreEjercicio) {
+    if (historialEntrenos.length === 0) return null;
+    const ordenados = [...historialEntrenos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    for (const entreno of ordenados) {
+      const ej = entreno.ejercicios.find(e => e.nombre === nombreEjercicio);
+      if (ej) return { fecha: entreno.fecha, peso: ej.peso, reps: ej.reps };
+    }
+    return null;
+  }
+
+  function getHistorialEjercicio(nombreEjercicio) {
+    const resultado = [];
+    const ordenados = [...historialEntrenos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    for (const entreno of ordenados) {
+      const ej = entreno.ejercicios.find(e => e.nombre === nombreEjercicio);
+      if (ej) resultado.push({ fecha: entreno.fecha, peso: ej.peso, reps: ej.reps });
+    }
+    return resultado;
+  }
+
+  // ========== DASHBOARD ==========
   function renderizarDashboard() {
     const h = new Date().getHours();
     let saludo = '👋 Buenos días'; if (h >= 14 && h < 21) saludo = '👋 Buenas tardes'; if (h >= 21 || h < 6) saludo = '👋 Buenas noches';
     document.getElementById('saludoTexto').innerHTML = `${saludo}, <span>Nico</span>`;
 
-    // RESUMEN simplificado
     const dr = document.getElementById('dashboardResumen');
     if (mediciones.length === 0) { dr.innerHTML = `<div class="resumen-card"><div class="resumen-title">🔥 RESUMEN</div><div style="color:var(--muted2)">Registra tu primera medición en "Peso"</div></div>`; }
-    else { const u = mediciones[mediciones.length - 1], diff = (u.peso - OBJETIVO_PESO).toFixed(1), da = Math.abs(diff), pe = u.peso > OBJETIVO_PESO; dr.innerHTML = `<div class="resumen-card"><div class="resumen-title">🔥 RESUMEN</div><div class="resumen-grid"><div class="resumen-item"><div class="r-icon">⚖️</div><div class="r-valor">${u.peso} kg</div></div><div class="resumen-item"><div class="r-icon">🎯</div><div class="r-valor">${OBJETIVO_PESO} kg</div></div><div class="resumen-item"><div class="r-icon">${pe?'📉':'📈'}</div><div class="r-valor">${da} kg</div></div></div></div>`; }
+    else { const u = mediciones[mediciones.length - 1], da = Math.abs((u.peso - OBJETIVO_PESO).toFixed(1)), pe = u.peso > OBJETIVO_PESO; dr.innerHTML = `<div class="resumen-card"><div class="resumen-title">🔥 RESUMEN</div><div class="resumen-grid"><div class="resumen-item"><div class="r-icon">⚖️</div><div class="r-valor">${u.peso} kg</div></div><div class="resumen-item"><div class="r-icon">🎯</div><div class="r-valor">${OBJETIVO_PESO} kg</div></div><div class="resumen-item"><div class="r-icon">${pe?'📉':'📈'}</div><div class="r-valor">${da} kg</div></div></div></div>`; }
 
     const drh = document.getElementById('dashboardRutinaHoy');
     const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' };
     const diaHoy = diasMap[new Date().getDay()];
-    const tiposRutina = { lunes: 'ESPALDA/BÍCEPS', martes: 'PECHO/HOMBRO', miercoles: 'TRÍCEPS/CARDIO', jueves: 'ESPALDA/BÍCEPS', viernes: 'PECHO/HOMBRO', sabado: 'PIERNA/ANTEBRAZO', domingo: 'DESCANSO' };
     const ejerciciosHoy = ejerciciosUnicos[diaHoy] || [];
     if (diaHoy === 'domingo') { drh.innerHTML = `<div class="rutina-hoy-card"><div class="rutina-hoy-info"><div class="rutina-hoy-dia">${nombresDias[diaHoy]}</div><div class="rutina-hoy-titulo">DESCANSO</div><div class="rutina-hoy-sub">Recuperación activa</div></div><span style="font-size:40px;">😌</span></div>`; }
     else { drh.innerHTML = `<div class="rutina-hoy-card"><div class="rutina-hoy-info"><div class="rutina-hoy-dia">${nombresDias[diaHoy]}</div><div class="rutina-hoy-titulo">${tiposRutina[diaHoy]}</div><div class="rutina-hoy-sub">${ejerciciosHoy.length} ejercicios</div></div><button class="btn-empezar" onclick="goPage('rutinas')">▶ EMPEZAR</button></div>`; }
 
-    // DESDE EL INICIO - ahora muestra diferencias con flechas
     const dci = document.getElementById('dashboardCambiosInicio');
     if (mediciones.length >= 2) {
       const p = mediciones[0], u = mediciones[mediciones.length - 1];
-      const diffs = [
-        { icon: '⚖️', nombre: 'Peso', val: (u.peso - p.peso), unidad: 'kg', invertir: true },
-        { icon: '📏', nombre: 'Cintura', val: (u.cintura - p.cintura), unidad: 'cm', invertir: true },
-        { icon: '🧈', nombre: 'Grasa', val: (u.grasaPorcentaje - p.grasaPorcentaje), unidad: '%', invertir: true },
-        { icon: '💪', nombre: 'Músculo', val: (u.masaMuscular - p.masaMuscular), unidad: 'kg', invertir: false }
-      ];
-      dci.innerHTML = `<div class="cambios-inicio"><div class="ci-title">📈 Desde el inicio</div><div class="ci-grid">${diffs.map(d => {
-        let clase = 'neutral', flecha = '➡', signo = '';
-        if (d.val > 0.05) { clase = d.invertir ? 'malo' : 'bueno'; flecha = d.invertir ? '⬆' : '⬆'; signo = '+'; }
-        if (d.val < -0.05) { clase = d.invertir ? 'bueno' : 'malo'; flecha = d.invertir ? '⬇' : '⬇'; }
-        return `<div class="ci-item"><span class="ci-icon">${d.icon}</span><span>${d.nombre}</span><span class="ci-val ${clase}">${flecha} ${signo}${d.val.toFixed(1)} ${d.unidad}</span></div>`;
-      }).join('')}</div></div>`;
+      const diffs = [{ icon: '⚖️', nombre: 'Peso', val: (u.peso - p.peso), unidad: 'kg', invertir: true }, { icon: '📏', nombre: 'Cintura', val: (u.cintura - p.cintura), unidad: 'cm', invertir: true }, { icon: '🧈', nombre: 'Grasa', val: (u.grasaPorcentaje - p.grasaPorcentaje), unidad: '%', invertir: true }, { icon: '💪', nombre: 'Músculo', val: (u.masaMuscular - p.masaMuscular), unidad: 'kg', invertir: false }];
+      dci.innerHTML = `<div class="cambios-inicio"><div class="ci-title">📈 Desde el inicio</div><div class="ci-grid">${diffs.map(d => { let clase = 'neutral', flecha = '➡', signo = ''; if (d.val > 0.05) { clase = d.invertir ? 'malo' : 'bueno'; flecha = d.invertir ? '⬆' : '⬆'; signo = '+'; } if (d.val < -0.05) { clase = d.invertir ? 'bueno' : 'malo'; flecha = d.invertir ? '⬇' : '⬇'; } return `<div class="ci-item"><span class="ci-icon">${d.icon}</span><span>${d.nombre}</span><span class="ci-val ${clase}">${flecha} ${signo}${d.val.toFixed(1)} ${d.unidad}</span></div>`; }).join('')}</div></div>`;
     } else { dci.innerHTML = ''; }
 
-    // BLOQUE INFO + OBJETIVOS
     const bloque = document.getElementById('bloqueDoble');
     const hoyStr = getHoyStr();
     const ultimoEntreno = diasEntrenados.length > 0 ? [...diasEntrenados].sort().reverse()[0] : null;
     let diasUltimoEntreno = '--', diaUltimoEntrenoStr = '';
-    if (ultimoEntreno) {
-      diasUltimoEntreno = Math.round((new Date(hoyStr) - new Date(ultimoEntreno)) / 86400000);
-      const dUlt = new Date(ultimoEntreno);
-      const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-      diaUltimoEntrenoStr = diasSemana[dUlt.getDay()];
-    }
+    if (ultimoEntreno) { diasUltimoEntreno = Math.round((new Date(hoyStr) - new Date(ultimoEntreno)) / 86400000); const dUlt = new Date(ultimoEntreno); const diasSemana = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado']; diaUltimoEntrenoStr = diasSemana[dUlt.getDay()]; }
     const ultimaMed = mediciones.length > 0 ? new Date(mediciones[mediciones.length - 1].fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) : '--';
     const racha = getRachaEntrenos();
     const proxRevision = mediciones.length > 0 ? Math.max(0, 14 - Math.round((new Date(hoyStr) - new Date(mediciones[mediciones.length - 1].fecha)) / 86400000)) : '--';
@@ -380,69 +422,120 @@
     const pctPeso = mediciones.length > 0 ? Math.min(100, Math.round((pesoPerdido / (mediciones[0].peso - objPeso)) * 100)) : 0;
     const kgRestan = pesoActual > objPeso ? (pesoActual - objPeso).toFixed(1) : 0;
     const prediccion = getPrediccion();
-
-    // Solo mostrar el objetivo de peso si no se ha llegado al objetivo final
     const mostrarObjPeso = pesoActual > OBJETIVO_PESO || objPeso > OBJETIVO_PESO;
 
-    bloque.innerHTML = `
-      <div class="info-objetivos-card">
-        <div class="io-title">📋 Info & Objetivos</div>
-        <div class="io-grid">
-          <div class="io-col">
-            <div class="io-col-label">Info rápida</div>
-            <div class="io-info-item"><div class="io-info-icon">📅</div><div class="io-info-text"><div class="io-info-val">${diasUltimoEntreno === 0 ? 'Hoy' : 'Hace ' + diasUltimoEntreno + ' d'}</div><div class="io-info-label">Último entrenamiento</div>${diaUltimoEntrenoStr ? `<div class="io-info-sub">✔ ${diaUltimoEntrenoStr}</div>` : ''}</div></div>
-            <div class="io-info-item"><div class="io-info-icon">📏</div><div class="io-info-text"><div class="io-info-val">${ultimaMed}</div><div class="io-info-label">Última medición</div></div></div>
-            <div class="io-info-item"><div class="io-info-icon">🔥</div><div class="io-info-text"><div class="io-info-val">${racha} días</div><div class="io-info-label">Racha</div></div></div>
-            <div class="io-info-item"><div class="io-info-icon">🗓️</div><div class="io-info-text"><div class="io-info-val">${proxRevision} d</div><div class="io-info-label">Próx revisión</div></div></div>
-          </div>
-          <div class="io-col">
-            <div class="io-col-label">Objetivos</div>
-            ${mostrarObjPeso ? `
-            <div class="io-obj-item">
-              <div class="io-obj-icon">⚖️</div>
-              <div class="io-obj-info"><div class="io-obj-nombre">Peso < ${objPeso} kg</div><div class="io-obj-progress"><div class="io-obj-fill ${pctPeso >= 100 ? 'verde' : 'naranja'}" style="width:${Math.max(2, pctPeso)}%"></div></div><div class="io-obj-meta">${pesoActual > objPeso ? kgRestan + ' kg restan' : '¡Conseguido!'}</div></div>
-              <div class="io-obj-check ${pctPeso >= 100 ? 'cumplido' : 'pendiente'}">${pctPeso >= 100 ? '✅' : '⬜'}</div>
-            </div>` : ''}
-            <div class="io-obj-item">
-              <div class="io-obj-icon">💪</div>
-              <div class="io-obj-info"><div class="io-obj-nombre">${OBJETIVO_ENTRENOS_MES} entrenos/mes</div><div class="io-obj-progress"><div class="io-obj-fill ${pctEntrenos >= 100 ? 'verde' : 'naranja'}" style="width:${Math.max(2, pctEntrenos)}%"></div></div><div class="io-obj-meta">${entrenosMes}/${OBJETIVO_ENTRENOS_MES} · ${pctEntrenos}%</div></div>
-              <div class="io-obj-check ${pctEntrenos >= 100 ? 'cumplido' : 'pendiente'}">${pctEntrenos >= 100 ? '✅' : '⬜'}</div>
-            </div>
-          </div>
-        </div>
-        ${prediccion ? `
-        <div class="io-divider"></div>
-        <div class="io-prediccion">
-          ${prediccion.tipo === 'exito' ? `🎉 <strong>${prediccion.fechaEstimada}</strong>` : prediccion.tipo === 'alerta' ? `📈 Ritmo: <strong>+${prediccion.ritmoSemanal} kg/sem</strong><br>${prediccion.fechaEstimada}` : `📉 Al ritmo actual (<strong>-${prediccion.ritmoSemanal} kg/sem</strong>)<br>🎯 Llegarás a <strong>${OBJETIVO_PESO} kg</strong> el <strong>${prediccion.fechaEstimada}</strong><br>⏳ ~${prediccion.semanasRestan} semanas`}
-        </div>` : ''}
-      </div>
-    `;
+    bloque.innerHTML = `<div class="info-objetivos-card"><div class="io-title">📋 Info & Objetivos</div><div class="io-grid"><div class="io-col"><div class="io-col-label">Info rápida</div><div class="io-info-item"><div class="io-info-icon">📅</div><div class="io-info-text"><div class="io-info-val">${diasUltimoEntreno === 0 ? 'Hoy' : 'Hace ' + diasUltimoEntreno + ' d'}</div><div class="io-info-label">Último entrenamiento</div>${diaUltimoEntrenoStr ? `<div class="io-info-sub">✔ ${diaUltimoEntrenoStr}</div>` : ''}</div></div><div class="io-info-item"><div class="io-info-icon">📏</div><div class="io-info-text"><div class="io-info-val">${ultimaMed}</div><div class="io-info-label">Última medición</div></div></div><div class="io-info-item"><div class="io-info-icon">🔥</div><div class="io-info-text"><div class="io-info-val">${racha} días</div><div class="io-info-label">Racha</div></div></div><div class="io-info-item"><div class="io-info-icon">🗓️</div><div class="io-info-text"><div class="io-info-val">${proxRevision} d</div><div class="io-info-label">Próx revisión</div></div></div></div><div class="io-col"><div class="io-col-label">Objetivos</div>${mostrarObjPeso ? `<div class="io-obj-item"><div class="io-obj-icon">⚖️</div><div class="io-obj-info"><div class="io-obj-nombre">Peso < ${objPeso} kg</div><div class="io-obj-progress"><div class="io-obj-fill ${pctPeso >= 100 ? 'verde' : 'naranja'}" style="width:${Math.max(2, pctPeso)}%"></div></div><div class="io-obj-meta">${pesoActual > objPeso ? kgRestan + ' kg restan' : '¡Conseguido!'}</div></div><div class="io-obj-check ${pctPeso >= 100 ? 'cumplido' : 'pendiente'}">${pctPeso >= 100 ? '✅' : '⬜'}</div></div>` : ''}<div class="io-obj-item"><div class="io-obj-icon">💪</div><div class="io-obj-info"><div class="io-obj-nombre">${OBJETIVO_ENTRENOS_MES} entrenos/mes</div><div class="io-obj-progress"><div class="io-obj-fill ${pctEntrenos >= 100 ? 'verde' : 'naranja'}" style="width:${Math.max(2, pctEntrenos)}%"></div></div><div class="io-obj-meta">${entrenosMes}/${OBJETIVO_ENTRENOS_MES} · ${pctEntrenos}%</div></div><div class="io-obj-check ${pctEntrenos >= 100 ? 'cumplido' : 'pendiente'}">${pctEntrenos >= 100 ? '✅' : '⬜'}</div></div></div></div>${prediccion ? `<div class="io-divider"></div><div class="io-prediccion">${prediccion.tipo === 'exito' ? `🎉 <strong>${prediccion.fechaEstimada}</strong>` : prediccion.tipo === 'alerta' ? `📈 Ritmo: <strong>+${prediccion.ritmoSemanal} kg/sem</strong><br>${prediccion.fechaEstimada}` : `📉 Al ritmo actual (<strong>-${prediccion.ritmoSemanal} kg/sem</strong>)<br>🎯 Llegarás a <strong>${OBJETIVO_PESO} kg</strong> el <strong>${prediccion.fechaEstimada}</strong><br>⏳ ~${prediccion.semanasRestan} semanas`}</div>` : ''}</div>`;
   }
 
-  function renderizarEstadisticas() {
-    const container = document.getElementById('estadisticasContainer'); if (!container) return;
-    const hoy = new Date(); const mesActual = hoy.getMonth(), añoActual = hoy.getFullYear();
-    const diasEntrenadosMes = diasEntrenados.filter(f => { const d = new Date(f); return d.getMonth() === mesActual && d.getFullYear() === añoActual; }).length;
-    const pctMes = Math.round((diasEntrenadosMes / Math.min(new Date(añoActual, mesActual + 1, 0).getDate(), 30)) * 100);
-    const racha = getRachaEntrenos(); const mejorRacha = getMejorRacha();
-    let calcHTML = '';
-    if (mediciones.length > 0) {
-      const u = mediciones[mediciones.length - 1];
-      const imc = (u.peso / ((userData.altura / 100) ** 2)).toFixed(1); const rca = (u.cintura / userData.altura).toFixed(2);
-      const pctObj = Math.min(100, Math.round(((mediciones[0].peso - u.peso) / (mediciones[0].peso - OBJETIVO_PESO)) * 100));
-      const pesoPerdido = (mediciones[0].peso - u.peso).toFixed(1); const diasRegistrados = Math.round((new Date(u.fecha) - new Date(mediciones[0].fecha)) / 86400000);
-      calcHTML = `<div class="calculadora-card"><div class="calculadora-title">🧮 Calculadora</div><div class="calc-grid"><div class="calc-item"><div class="ca-valor">${imc}</div><div class="ca-label">IMC</div></div><div class="calc-item"><div class="ca-valor">${rca}</div><div class="ca-label">Ratio C/A</div></div><div class="calc-item"><div class="ca-valor">${pctObj}%</div><div class="ca-label">% Objetivo</div></div><div class="calc-item"><div class="ca-valor">${pesoPerdido > 0 ? '-' : '+'}${Math.abs(pesoPerdido)} kg</div><div class="ca-label">Peso perdido</div></div><div class="calc-item" style="grid-column:span 2"><div class="ca-valor">${diasRegistrados} días</div><div class="ca-label">Días registrados</div></div></div></div>`;
-    }
-    container.innerHTML = `<div class="stats-card"><div class="stats-title">📊 ESTADÍSTICAS</div><div class="stats-grid"><div class="stats-item"><div class="st-icon">📅</div><div class="st-valor">${diasEntrenadosMes}</div><div class="st-etiqueta">Entrenos este mes</div></div><div class="stats-item"><div class="st-icon">🎯</div><div class="st-valor">${pctMes}%</div><div class="st-etiqueta">Cumplimiento</div></div><div class="stats-item"><div class="st-icon">💪</div><div class="st-valor">${diasEntrenados.length}</div><div class="st-etiqueta">Total entrenos</div></div><div class="stats-item"><div class="st-icon">📏</div><div class="st-valor">${mediciones.length}</div><div class="st-etiqueta">Mediciones</div></div><div class="stats-highlight"><div class="sh-icon">🔥</div><div><div class="sh-valor">${racha} días</div><div class="sh-etiqueta">Racha actual</div></div></div><div class="stats-highlight"><div class="sh-icon">🏆</div><div><div class="sh-valor">${mejorRacha} días</div><div class="sh-etiqueta">Mejor racha</div></div></div></div></div>${calcHTML}`;
-  }
-
+  // ========== ESTADÍSTICAS ==========
+  function renderizarEstadisticas() { const container = document.getElementById('estadisticasContainer'); if (!container) return; const hoy = new Date(); const mesActual = hoy.getMonth(), añoActual = hoy.getFullYear(); const diasEntrenadosMes = diasEntrenados.filter(f => { const d = new Date(f); return d.getMonth() === mesActual && d.getFullYear() === añoActual; }).length; const pctMes = Math.round((diasEntrenadosMes / Math.min(new Date(añoActual, mesActual + 1, 0).getDate(), 30)) * 100); const racha = getRachaEntrenos(); const mejorRacha = getMejorRacha(); let calcHTML = ''; if (mediciones.length > 0) { const u = mediciones[mediciones.length - 1]; const imc = (u.peso / ((userData.altura / 100) ** 2)).toFixed(1); const rca = (u.cintura / userData.altura).toFixed(2); const pctObj = Math.min(100, Math.round(((mediciones[0].peso - u.peso) / (mediciones[0].peso - OBJETIVO_PESO)) * 100)); const pesoPerdido = (mediciones[0].peso - u.peso).toFixed(1); const diasRegistrados = Math.round((new Date(u.fecha) - new Date(mediciones[0].fecha)) / 86400000); calcHTML = `<div class="calculadora-card"><div class="calculadora-title">🧮 Calculadora</div><div class="calc-grid"><div class="calc-item"><div class="ca-valor">${imc}</div><div class="ca-label">IMC</div></div><div class="calc-item"><div class="ca-valor">${rca}</div><div class="ca-label">Ratio C/A</div></div><div class="calc-item"><div class="ca-valor">${pctObj}%</div><div class="ca-label">% Objetivo</div></div><div class="calc-item"><div class="ca-valor">${pesoPerdido > 0 ? '-' : '+'}${Math.abs(pesoPerdido)} kg</div><div class="ca-label">Peso perdido</div></div><div class="calc-item" style="grid-column:span 2"><div class="ca-valor">${diasRegistrados} días</div><div class="ca-label">Días registrados</div></div></div></div>`; } container.innerHTML = `<div class="stats-card"><div class="stats-title">📊 ESTADÍSTICAS</div><div class="stats-grid"><div class="stats-item"><div class="st-icon">📅</div><div class="st-valor">${diasEntrenadosMes}</div><div class="st-etiqueta">Entrenos este mes</div></div><div class="stats-item"><div class="st-icon">🎯</div><div class="st-valor">${pctMes}%</div><div class="st-etiqueta">Cumplimiento</div></div><div class="stats-item"><div class="st-icon">💪</div><div class="st-valor">${diasEntrenados.length}</div><div class="st-etiqueta">Total entrenos</div></div><div class="stats-item"><div class="st-icon">📏</div><div class="st-valor">${mediciones.length}</div><div class="st-etiqueta">Mediciones</div></div><div class="stats-highlight"><div class="sh-icon">🔥</div><div><div class="sh-valor">${racha} días</div><div class="sh-etiqueta">Racha actual</div></div></div><div class="stats-highlight"><div class="sh-icon">🏆</div><div><div class="sh-valor">${mejorRacha} días</div><div class="sh-etiqueta">Mejor racha</div></div></div></div></div>${calcHTML}`; }
   function getMejorRacha() { if (diasEntrenados.length === 0) return 0; const diasOrdenados = [...new Set(diasEntrenados)].sort(); let mejor = 1, actual = 1; for (let i = 1; i < diasOrdenados.length; i++) { const diff = Math.round((new Date(diasOrdenados[i]) - new Date(diasOrdenados[i - 1])) / 86400000); if (diff === 1) { actual++; mejor = Math.max(mejor, actual); } else { actual = 1; } } return mejor; }
 
-  function actualizarProgresoRutina() { const container = document.getElementById('progresoRutinaContainer'); if (!container) return; const ejercicios = getEjerciciosPorDia(diaActivo); if (ejercicios.length === 0 || diaActivo === 'domingo') { container.innerHTML = ''; return; } const total = ejercicios.length; let completados = 0; ejercicios.forEach((_, idx) => { if (checks[`${diaActivo}-${idx}`]) completados++; }); const pct = Math.round((completados / total) * 100); if (completados === total) { container.innerHTML = `<div class="progreso-rutina-bar"><div class="progreso-rutina-completado">✅ ¡${nombresDias[diaActivo]} COMPLETADO!</div></div>`; } else { container.innerHTML = `<div class="progreso-rutina-bar"><div class="progreso-rutina-header"><span class="progreso-rutina-titulo">Rutina del ${nombresDias[diaActivo]}</span><span class="progreso-rutina-porcentaje">${pct}%</span></div><div class="progreso-rutina-track"><div class="progreso-rutina-fill" style="width:${pct}%"></div></div><div class="progreso-rutina-info">${completados}/${total} ejercicios</div></div>`; } }
+  // ========== HISTORIAL ENTRENOS ==========
+  function renderizarHistorialEntrenos() {
+    const container = document.getElementById('historialEntrenosContainer');
+    if (!container) return;
+    if (historialEntrenos.length === 0) { container.innerHTML = '<div style="text-align:center;color:var(--muted2);padding:20px;">No hay entrenamientos guardados aún.<br>Completa una rutina y pulsa "Finalizar entrenamiento"</div>'; return; }
+    const ordenados = [...historialEntrenos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    container.innerHTML = ordenados.map((entreno, i) => `
+      <div class="historial-entreno-card">
+        <div class="historial-entreno-header">
+          <div><span class="historial-entreno-fecha">📅 ${new Date(entreno.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</span></div>
+          <div class="historial-entreno-tipo">${entreno.tipo}</div>
+        </div>
+        <div class="historial-entreno-sub">${entreno.ejercicios.length} ejercicios</div>
+        <button class="btn-3d" style="margin-top:6px;width:100%;" onclick="toggleHistorialDetalle(${i})">Ver entrenamiento</button>
+        <div class="historial-entreno-detalle" id="historial-detalle-${i}">
+          ${entreno.ejercicios.map(ej => `<div class="historial-ej-item"><span class="historial-ej-nombre">${ej.nombre}</span><span class="historial-ej-datos">${ej.peso} kg · ${ej.reps}</span></div>`).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
 
+  function toggleHistorialDetalle(i) {
+    const detalle = document.getElementById('historial-detalle-' + i);
+    if (detalle) detalle.classList.toggle('open');
+  }
+  function esCardioEj(nombre) { return nombre === 'Cardio en cinta'; }
+  // ========== GUARDAR ENTRENO ==========
+  function guardarEntreno() {
+    const ejercicios = getEjerciciosPorDia(diaActivo);
+    const datos = [];
+    for (let idx = 0; idx < ejercicios.length; idx++) {
+      const nombre = ejercicios[idx];
+      const pesoInput = document.getElementById(`peso-${diaActivo}-${idx}`);
+      const repsInput = document.getElementById(`reps-${diaActivo}-${idx}`);
+      const peso = pesoInput ? parseFloat(pesoInput.value) || 0 : 0;
+      const reps = esCardioEj(nombre) ? 'Cardio' : (repsInput ? repsInput.value || '-' : '-');
+      datos.push({ nombre, peso, reps });
+    }
+    const nuevoEntreno = {
+      fecha: getHoyStr(),
+      dia: diaActivo,
+      tipo: tiposRutina[diaActivo] || diaActivo.toUpperCase(),
+      ejercicios: datos
+    };
+    historialEntrenos.push(nuevoEntreno);
+    localStorage.setItem('historialEntrenos', JSON.stringify(historialEntrenos));
+    detectarRecords(datos);
+    mostrarToast("✅ Entrenamiento guardado");
+    document.getElementById('modalFinalizar')?.remove();
+    renderizarRutinas();
+    actualizarProgresoRutina();
+    renderizarHistorialEntrenos();
+  }
+
+  function detectarRecords(datosActuales) {
+    for (const ej of datosActuales) {
+      if (ej.peso <= 0) continue;
+      const historial = getHistorialEjercicio(ej.nombre);
+      if (historial.length <= 1) continue;
+      const mejorPeso = Math.max(...historial.slice(1).map(h => h.peso));
+      const repsActuales = ej.reps.split(',').map(Number).reduce((a, b) => a + b, 0);
+      const mejorReps = Math.max(...historial.slice(1).map(h => h.reps.split(',').map(Number).reduce((a, b) => a + b, 0)));
+      if (ej.peso > mejorPeso || (ej.peso === mejorPeso && repsActuales > mejorReps)) {
+        setTimeout(() => mostrarToast(`🏆 ¡Nuevo récord en ${ej.nombre}!`), 500);
+      }
+    }
+  }
+
+  function mostrarModalFinalizar() {
+    const ejercicios = getEjerciciosPorDia(diaActivo);
+    document.getElementById('modalFinalizar')?.remove();
+    let html = `<div id="modalFinalizar" class="modal-disk"><div class="disk-panel"><h3>🏋️ Revisar entrenamiento</h3><div style="text-align:left;font-size:11px;margin:8px 0;">`;
+    ejercicios.forEach((nombre, idx) => {
+      const peso = document.getElementById(`peso-${diaActivo}-${idx}`)?.value || '-';
+      const reps = esCardioEj(nombre) ? '' : (document.getElementById(`reps-${diaActivo}-${idx}`)?.value || '-');
+      const detalle = esCardioEj(nombre) ? `${peso} min` : `${peso} kg · ${reps}`;
+      html += `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>${nombre}</span><span style="color:var(--acc);">${detalle}</span></div>`;
+    });
+    html += `</div><button onclick="guardarEntreno()">💾 Guardar entrenamiento</button><button onclick="document.getElementById('modalFinalizar').remove()" style="background:#444;">Cancelar</button></div></div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+  }
+
+  // ========== PROGRESO RUTINA ==========
+  function actualizarProgresoRutina() {
+    const container = document.getElementById('progresoRutinaContainer'); if (!container) return;
+    const ejercicios = getEjerciciosPorDia(diaActivo); if (ejercicios.length === 0 || diaActivo === 'domingo') { container.innerHTML = ''; return; }
+    const total = ejercicios.length; let completados = 0;
+    ejercicios.forEach((_, idx) => { if (checks[`${diaActivo}-${idx}`]) completados++; });
+    const pct = Math.round((completados / total) * 100);
+    const btnFinalizar = document.getElementById('btnFinalizarRutina');
+    if (completados === total) {
+      container.innerHTML = `<div class="progreso-rutina-bar"><div class="progreso-rutina-completado">✅ ¡${nombresDias[diaActivo]} COMPLETADO!</div></div>`;
+      if (btnFinalizar) btnFinalizar.classList.add('visible');
+    } else {
+      container.innerHTML = `<div class="progreso-rutina-bar"><div class="progreso-rutina-header"><span class="progreso-rutina-titulo">Rutina del ${nombresDias[diaActivo]}</span><span class="progreso-rutina-porcentaje">${pct}%</span></div><div class="progreso-rutina-track"><div class="progreso-rutina-fill" style="width:${pct}%"></div></div><div class="progreso-rutina-info">${completados}/${total} ejercicios</div></div>`;
+      if (btnFinalizar) btnFinalizar.classList.remove('visible');
+    }
+    renderizarRutinas();
+  }
+
+  // ========== GRÁFICOS ==========
   let graficoPesoInst = null, graficoCinturaInst = null, graficoGrasaInst = null;
   function renderizarGraficos() { if (mediciones.length < 2) return; const fechas = mediciones.map(m => new Date(m.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })); const opts = { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 8 }, maxRotation: 45, autoSkip: true }, grid: { display: false } }, y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { font: { size: 9 } } } } }; const ctx1 = document.getElementById('graficoPeso'); if (ctx1) { if (graficoPesoInst) graficoPesoInst.destroy(); graficoPesoInst = new Chart(ctx1, { type: 'line', data: { labels: fechas, datasets: [{ data: mediciones.map(m => m.peso), borderColor: '#f97316', backgroundColor: 'transparent', tension: 0.3, pointRadius: 3, borderWidth: 2 }] }, options: opts }); } const ctx2 = document.getElementById('graficoCintura'); if (ctx2) { if (graficoCinturaInst) graficoCinturaInst.destroy(); graficoCinturaInst = new Chart(ctx2, { type: 'line', data: { labels: fechas, datasets: [{ data: mediciones.map(m => m.cintura), borderColor: '#8b5cf6', backgroundColor: 'transparent', tension: 0.3, pointRadius: 3, borderWidth: 2 }] }, options: opts }); } const ctx3 = document.getElementById('graficoGrasa'); if (ctx3) { if (graficoGrasaInst) graficoGrasaInst.destroy(); graficoGrasaInst = new Chart(ctx3, { type: 'line', data: { labels: fechas, datasets: [{ data: mediciones.map(m => m.grasaPorcentaje), borderColor: '#ef4444', backgroundColor: 'transparent', tension: 0.3, pointRadius: 3, borderWidth: 2 }] }, options: opts }); } }
 
+  // ========== COMPOSICIÓN ==========
   function guardarMedicion() { const f = document.getElementById('medFecha').value; if (!f) { mostrarToast("Selecciona una fecha"); return; } const p = parseFloat(document.getElementById('medPeso').value), ci = parseFloat(document.getElementById('medCintura').value), g = parseFloat(document.getElementById('medGrasaPorc').value), mu = parseFloat(document.getElementById('medMasaMuscular').value), pe = parseFloat(document.getElementById('medPecho').value), ca = parseFloat(document.getElementById('medCadera').value), bi = parseFloat(document.getElementById('medBiceps').value); if (isNaN(p) || isNaN(ci) || isNaN(g) || isNaN(mu)) { mostrarToast("Completa peso, cintura, % grasa y masa muscular"); return; } const nm = { fecha: f, peso: p, cintura: ci, grasaPorcentaje: g, masaMuscular: mu, pecho: pe || null, cadera: ca || null, biceps: bi || null }; const idx = mediciones.findIndex(m => m.fecha === f); if (idx !== -1) mediciones[idx] = nm; else mediciones.push(nm); mediciones.sort((a, b) => new Date(a.fecha) - new Date(b.fecha)); localStorage.setItem('bodyComposition', JSON.stringify(mediciones)); mostrarToast("Medición guardada"); cargarHistorialMediciones(); actualizarUICompleta(); limpiarFormularioMedicion(); }
   function limpiarFormularioMedicion() { document.getElementById('medFecha').value = getHoyStr(); ['medPeso', 'medCintura', 'medGrasaPorc', 'medMasaMuscular', 'medPecho', 'medCadera', 'medBiceps'].forEach(id => document.getElementById(id).value = ''); }
   function formatearCambio(valor, unidad, invertir) { if (Math.abs(valor) < 0.05) return `<span class="neutral">➡ 0 ${unidad}</span>`; let clase = 'neutral', flecha = '➡'; if (valor > 0) { clase = invertir ? 'malo' : 'bueno'; flecha = invertir ? '⬆' : '⬆'; } if (valor < 0) { clase = invertir ? 'bueno' : 'malo'; flecha = invertir ? '⬇' : '⬇'; } return `<span class="${clase}">${flecha} ${valor > 0 ? '+' : ''}${valor.toFixed(1)} ${unidad}</span>`; }
@@ -454,10 +547,67 @@
   const ejerciciosUnicos = { lunes: ["Remo con barra", "Remo a una mano con mancuerna", "Curl de bíceps alterno", "Curl martillo", "Cardio en cinta"], martes: ["Press de hombros sentado", "Aperturas inclinadas con mancuernas", "Pullover con mancuerna", "Elevaciones laterales sentado", "Cardio en cinta"], miercoles: ["Extensión de tríceps tumbado (Press Francés)", "Extensión de tríceps tras nuca (Sentado)", "Extensión de tríceps a una mano", "Patada de tríceps", "Cardio en cinta"], jueves: ["Remo al mentón con mancuernas", "Remo en banco inclinado con mancuernas", "Curl araña (Pausa de 2\")", "Curl concentrado", "Cardio en cinta"], viernes: ["Press inclinado con mancuernas (Agarre Invertido)", "Aperturas en banco plano", "Press plano con mancuernas", "Pájaro / Fly invertido (Hombro Posterior)", "Cardio en cinta"], sabado: ["Sentadilla Goblet con mancuerna", "Zancadas estáticas con mancuernas (Lunges)", "Elevación de gemelos de pie con mancuernas", "Curl de antebrazo con mancuernas (Palmas arriba)", "Cardio en cinta"] };
   const imagenesMap = { "Remo con barra": "https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif", "Remo a una mano con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif", "Curl de bíceps alterno": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif", "Curl martillo": "https://api.smartworkout.app/asset/image/8588e41c-5c2d-4ee0-90ca-ad69b7d0438a", "Cardio en cinta": "https://api.smartworkout.app/asset/image/87d7f44d-15a8-4e40-8ea0-4a9cafa23eda", "Press de hombros sentado": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif", "Aperturas inclinadas con mancuernas": "https://media.tenor.com/oJXOnsC72qMAAAAM/crussifixo-no-banco-com-halteres.gif", "Pullover con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Pullover.gif", "Elevaciones laterales sentado": "https://gymvisual.com/img/p/5/1/3/7/5137.gif", "Extensión de tríceps tumbado (Press Francés)": "https://gymvisual.com/img/p/2/0/8/4/3/20843.gif", "Extensión de tríceps tras nuca (Sentado)": "https://i.pinimg.com/originals/2c/62/ba/2c62ba80d37c94d06ad6d60f1e5445df.gif", "Extensión de tríceps a una mano": "https://gymvisual.com/img/p/5/1/0/3/5103.gif", "Patada de tríceps": "https://i.pinimg.com/originals/96/a1/b6/96a1b68a9a9f4c853b695a3740e91326.gif", "Remo al mentón con mancuernas": "https://api.smartworkout.app/asset/image/80833bf7-99b5-4272-b3b2-629ccc137ce1", "Remo en banco inclinado con mancuernas": "https://gymvisual.com/img/p/1/4/9/7/3/14973.gif", "Curl araña (Pausa de 2\")": "https://api.smartworkout.app/asset/image/7a6c7c0b-0480-4c45-ba66-18959ec9001f", "Curl concentrado": "https://media.tenor.com/jaX3EUxaQGkAAAAM/rosca-concentrada-no-banco.gif", "Press inclinado con mancuernas (Agarre Invertido)": "https://fitnessprogramer.com/wp-content/uploads/2022/07/Dumbbell-Reverse-Grip-30-Degrees-Incline-Bench-Press.gif", "Aperturas en banco plano": "https://media.tenor.com/oJXOnsC72qMAAAAM/crussifixo-no-banco-com-halteres.gif", "Press plano con mancuernas": "https://gymvisual.com/img/p/1/8/6/4/5/18645.gif", "Pájaro / Fly invertido (Hombro Posterior)": "https://i.pinimg.com/originals/f8/37/b5/f837b5d4ef387c529f2ca61a97fbabdd.gif", "Sentadilla Goblet con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif", "Zancadas estáticas con mancuernas (Lunges)": "https://gymvisual.com/img/p/2/3/7/3/9/23739.gif", "Elevación de gemelos de pie con mancuernas": "https://i.pinimg.com/originals/2f/7c/ca/2f7cca8d37c65384c1d0bd84cc0a91d1.gif", "Curl de antebrazo con mancuernas (Palmas arriba)": "https://gymvisual.com/img/p/1/5/3/1/0/15310.gif" };
   function getEjerciciosPorDia(d) { return ejerciciosUnicos[d] || []; }
-  function marcarEjercicio(id) { if (checks[id]) delete checks[id]; else checks[id] = true; localStorage.setItem('nico_checks', JSON.stringify(checks)); renderizarRutinas(); actualizarProgresoRutina(); const dia = id.split('-')[0], container = document.getElementById(`lista-${dia}`); if (container && Array.from(container.querySelectorAll('.check-box')).every(cb => cb.checked) && container.querySelectorAll('.check-box').length > 0) { const hoy = getHoyStr(); if (!diasEntrenados.includes(hoy)) { diasEntrenados.push(hoy); localStorage.setItem('diasEntrenados', JSON.stringify(diasEntrenados)); mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`); canvasConfetti({ particleCount: 150, spread: 80 }); actualizarProgresoRutina(); } renderCalendarios(); } }
-  function resetDia(dia) { const c = document.getElementById(`lista-${dia}`); if (c) { c.querySelectorAll('.check-box').forEach((cb, i) => { const id = `${dia}-${i}`; if (checks[id]) delete checks[id]; }); localStorage.setItem('nico_checks', JSON.stringify(checks)); } const hoy = getHoyStr(); if (diasEntrenados.includes(hoy)) { diasEntrenados = diasEntrenados.filter(d => d !== hoy); localStorage.setItem('diasEntrenados', JSON.stringify(diasEntrenados)); } mostrarToast(`✅ Día ${dia} reiniciado`); renderizarRutinas(); renderCalendarios(); actualizarProgresoRutina(); }
-  function renderizarRutinas() { ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'].forEach(dia => { const c = document.getElementById(`lista-${dia}`); if (!c) return; c.innerHTML = ''; getEjerciciosPorDia(dia).forEach((nombre, idx) => { const id = `${dia}-${idx}`, img = imagenesMap[nombre] || '', inst = getInstruccionDetallada(nombre).replace(/\n/g, '<br>'), checked = !!checks[id]; const card = document.createElement('div'); card.className = `ex-card ${checked ? 'checked' : ''}`; card.innerHTML = `<div class="ex-head"><div class="ex-name">${nombre}</div><input type="checkbox" class="check-box" ${checked ? 'checked' : ''} onchange="marcarEjercicio('${id}')"></div><div class="ex-body"><button class="ex-tog" onclick="toggleDetalles(this,'${img}',\`${inst}\`)">Ver técnica ↓</button><div class="ex-det"></div></div>`; c.appendChild(card); }); const rb = document.querySelector(`.btn-reset-dia[data-dia="${dia}"]`); if (rb) rb.onclick = () => resetDia(dia); }); document.querySelectorAll('.ex-img').forEach(img => { img.addEventListener('click', e => { e.stopPropagation(); openLightbox(img.src); }); }); }
+
+  function marcarEjercicio(id) {
+    if (checks[id]) delete checks[id]; else checks[id] = true;
+    localStorage.setItem('nico_checks', JSON.stringify(checks));
+    actualizarProgresoRutina();
+    const dia = id.split('-')[0], container = document.getElementById(`lista-${dia}`);
+    if (container && Array.from(container.querySelectorAll('.check-box')).every(cb => cb.checked) && container.querySelectorAll('.check-box').length > 0) {
+      const hoy = getHoyStr();
+      if (!diasEntrenados.includes(hoy)) { diasEntrenados.push(hoy); localStorage.setItem('diasEntrenados', JSON.stringify(diasEntrenados)); mostrarToast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`); canvasConfetti({ particleCount: 150, spread: 80 }); }
+      renderCalendarios();
+    }
+  }
+
+  function resetDia(dia) {
+    const c = document.getElementById(`lista-${dia}`); if (c) { c.querySelectorAll('.check-box').forEach((cb, i) => { const id = `${dia}-${i}`; if (checks[id]) delete checks[id]; }); localStorage.setItem('nico_checks', JSON.stringify(checks)); }
+    const hoy = getHoyStr(); if (diasEntrenados.includes(hoy)) { diasEntrenados = diasEntrenados.filter(d => d !== hoy); localStorage.setItem('diasEntrenados', JSON.stringify(diasEntrenados)); }
+    mostrarToast(`✅ Día ${dia} reiniciado`); renderizarRutinas(); renderCalendarios(); actualizarProgresoRutina();
+  }
+
+  function renderizarRutinas() {
+    ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'].forEach(dia => {
+      const c = document.getElementById(`lista-${dia}`); if (!c) return;
+      c.innerHTML = ''; getEjerciciosPorDia(dia).forEach((nombre, idx) => {
+        const id = `${dia}-${idx}`, img = imagenesMap[nombre] || '', inst = getInstruccionDetallada(nombre).replace(/\n/g, '<br>'), checked = !!checks[id];
+                const ultimo = getUltimoEntrenoEjercicio(nombre);
+        const esCardio = nombre === 'Cardio en cinta';
+        const card = document.createElement('div'); card.className = `ex-card ${checked ? 'checked' : ''}`;
+        const datosHTML = esCardio
+          ? `<div class="ex-datos"><div class="ex-dato" style="flex:1"><label>⏱ Tiempo (min)</label><input type="number" id="peso-${dia}-${idx}" step="1" placeholder="ej. 20" value="${ultimo ? ultimo.peso : ''}"></div></div>${ultimo ? `<div class="ex-ultimo">Último: <strong>${ultimo.peso} min</strong> (${new Date(ultimo.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })})</div>` : ''}`
+          : `<div class="ex-datos"><div class="ex-dato"><label>Peso (kg)</label><input type="number" id="peso-${dia}-${idx}" step="0.5" placeholder="ej. 6" value="${ultimo ? ultimo.peso : ''}"></div><div class="ex-dato"><label>Reps (12,12,11)</label><input type="text" id="reps-${dia}-${idx}" placeholder="12,12,11" value="${ultimo ? ultimo.reps : ''}"></div></div>${ultimo ? `<div class="ex-ultimo">Último: <strong>${ultimo.peso} kg</strong> · ${ultimo.reps} (${new Date(ultimo.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })})</div>` : ''}`;
+        card.innerHTML = `<div class="ex-head"><div class="ex-name">${nombre}</div><input type="checkbox" class="check-box" ${checked ? 'checked' : ''} onchange="marcarEjercicio('${id}')"></div><div class="ex-body"><button class="ex-tog" onclick="toggleDetalles(this,'${img}',\`${inst}\`)">Ver técnica ↓</button><div class="ex-det"></div>${datosHTML}<button class="btn-historial-ej" onclick="mostrarHistorialEjercicio('${nombre.replace(/'/g, "\\'")}')">📈 Ver historial</button></div>`;c.appendChild(card);
+      });
+      const rb = document.querySelector(`.btn-reset-dia[data-dia="${dia}"]`); if (rb) rb.onclick = () => resetDia(dia);
+    });
+    document.querySelectorAll('.ex-img').forEach(img => { img.addEventListener('click', e => { e.stopPropagation(); openLightbox(img.src); }); });
+    // Añadir botón finalizar si no existe
+    if (!document.getElementById('btnFinalizarRutina')) {
+      const panelsContainer = document.getElementById('dayPanelsContainer');
+      if (panelsContainer) {
+        const btn = document.createElement('button');
+        btn.id = 'btnFinalizarRutina';
+        btn.className = 'btn-finalizar';
+        btn.textContent = '✅ Finalizar entrenamiento';
+        btn.onclick = mostrarModalFinalizar;
+        panelsContainer.appendChild(btn);
+      }
+    }
+  }
+
   function toggleDetalles(btn, imgUrl, inst) { const d = btn.nextElementSibling; if (d.classList.contains('open')) { d.classList.remove('open'); btn.textContent = "Ver técnica ↓"; } else { d.innerHTML = `${imgUrl ? `<img src="${imgUrl}" class="ex-img" onerror="this.style.display='none'">` : ''}<ul class="steps">${inst.split('<br>').map((l, i) => `<li data-n="${i + 1}">${l.trim()}</li>`).join('')}</ul><div class="tip"><span>💡</span>Respira correctamente.</div>`; d.classList.add('open'); btn.textContent = "Ocultar ↑"; const ni = d.querySelector('.ex-img'); if (ni) ni.addEventListener('click', e => { e.stopPropagation(); openLightbox(ni.src); }); } }
+
+  function mostrarHistorialEjercicio(nombre) {
+    const historial = getHistorialEjercicio(nombre);
+    document.getElementById('modalHistorialEj')?.remove();
+    let html = `<div id="modalHistorialEj" class="modal-disk"><div class="disk-panel"><h3>📈 ${nombre}</h3><div style="text-align:left;font-size:11px;max-height:50vh;overflow-y:auto;">`;
+    if (historial.length === 0) { html += '<div style="text-align:center;padding:12px;">Sin historial</div>'; }
+    else { historial.forEach(h => { html += `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);"><span>${new Date(h.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</span><span style="color:var(--acc);">${h.peso} kg · ${h.reps}</span></div>`; }); }
+    html += `</div><button onclick="document.getElementById('modalHistorialEj').remove()">CERRAR</button></div></div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+  }
+
   function openLightbox(s) { document.getElementById('lightboxImg').src = s; document.getElementById('lightbox').classList.add('active'); }
   function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
 
@@ -488,12 +638,23 @@
   function mostrarToast(m) { const t = document.createElement('div'); t.className = 'toast-msg'; t.innerText = m; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
 
   function actualizarUICompleta() { renderizarDashboard(); actualizarTopBar(); renderizarRutinas(); renderCalendarios(); actualizarLogros(); cargarHistorialMediciones(); renderizarGraficos(); actualizarProgresoRutina(); }
-  function goPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(`page-${id}`).classList.add('active'); document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active')); document.querySelectorAll('.nav-item').forEach(b => { if (b.innerText.toLowerCase().includes(id.substring(0, 4))) b.classList.add('active'); }); window.scrollTo(0, 0); if (id === 'inicio') actualizarUICompleta(); if (id === 'composicion') { cargarHistorialMediciones(); actualizarUICompleta(); } if (id === 'estadisticas') renderizarEstadisticas(); if (id === 'graficos') renderizarGraficos(); if (id === 'progreso-fotos') cargarSelectores(); if (id === 'rutinas') { cargarTabs(); setTimeout(() => { const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' }; const idxMap = { lunes: 0, martes: 1, miercoles: 2, jueves: 3, viernes: 4, sabado: 5, domingo: 6 }; diaActivo = diasMap[new Date().getDay()]; const tabs = document.querySelectorAll('.dtab'); if (tabs[idxMap[diaActivo]]) tabs[idxMap[diaActivo]].click(); actualizarProgresoRutina(); }, 100); } }
+  function goPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(`page-${id}`).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(b => { if (b.innerText.toLowerCase().includes(id.substring(0, 4))) b.classList.add('active'); });
+    window.scrollTo(0, 0);
+    if (id === 'inicio') actualizarUICompleta();
+    if (id === 'composicion') { cargarHistorialMediciones(); actualizarUICompleta(); }
+    if (id === 'estadisticas') renderizarEstadisticas();
+    if (id === 'graficos') renderizarGraficos();
+    if (id === 'historial') renderizarHistorialEntrenos();
+    if (id === 'progreso-fotos') cargarSelectores();
+    if (id === 'rutinas') { cargarTabs(); setTimeout(() => { const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' }; const idxMap = { lunes: 0, martes: 1, miercoles: 2, jueves: 3, viernes: 4, sabado: 5, domingo: 6 }; diaActivo = diasMap[new Date().getDay()]; const tabs = document.querySelectorAll('.dtab'); if (tabs[idxMap[diaActivo]]) tabs[idxMap[diaActivo]].click(); actualizarProgresoRutina(); }, 100); }
+  }
   function cargarTabs() { const tc = document.getElementById('dayTabs'), pc = document.getElementById('dayPanelsContainer'); if (!tc) return; const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'], nombres = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'], iconos = ['💪', '🏋️', '🦾', '💪', '🏋️', '🦾', '😴']; tc.innerHTML = ''; pc.innerHTML = ''; dias.forEach((dia, idx) => { const btn = document.createElement('button'); btn.className = 'dtab' + (idx === 0 ? ' active' : ''); btn.innerText = `${iconos[idx]} ${nombres[idx]}`; btn.onclick = () => { diaActivo = dia; switchDay(dia, btn); actualizarProgresoRutina(); }; tc.appendChild(btn); const panel = document.createElement('div'); panel.className = 'day-panel' + (idx === 0 ? ' active' : ''); panel.id = `dp-${dia}`; if (dia === 'domingo') { panel.innerHTML = `<div class="sunday-chill"><div class="sunday-emoji">😌🌿✨</div><div class="sunday-title">SUNDAY CHILL</div><div class="sunday-sub">Día de descanso activo</div><div class="relax-card"><div class="relax-icon">🧘‍♂️</div><div class="relax-text">Tu cuerpo se recupera, tu mente se renueva.<br>Hoy es para respirar, estirar y conectar.</div><div class="relax-quote">"El descanso es parte del entrenamiento. Escucha a tu cuerpo."</div></div><div class="activity-grid"><div class="activity-item"><div class="activity-emoji">🚶‍♂️</div><div class="activity-name">Caminata suave</div><div class="activity-desc">20-30 min al aire libre</div></div><div class="activity-item"><div class="activity-emoji">🧘‍♀️</div><div class="activity-name">Estiramientos</div><div class="activity-desc">Movilidad y flexibilidad</div></div><div class="activity-item"><div class="activity-emoji">💧</div><div class="activity-name">Hidratación</div><div class="activity-desc">Bebe 2-3 litros</div></div><div class="activity-item"><div class="activity-emoji">😴</div><div class="activity-name">Siesta reparadora</div><div class="activity-desc">20 min de power nap</div></div></div><div class="mindfulness-tip"><span class="tip-icon">🌅</span><span class="tip-text">Tómate 5 minutos para respirar profundo y agradecer el progreso de esta semana.</span></div><div style="margin-top:16px;font-size:11px;color:#FFAD6A;">✨ Recarga energía para la próxima semana ✨</div></div>`; } else { panel.innerHTML = `<div class="ex-grid" id="lista-${dia}"></div><button class="btn-reset-dia" data-dia="${dia}">🗑️ Desmarcar todos</button>`; } pc.appendChild(panel); }); renderizarRutinas(); }
   function switchDay(day, btn) { document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active')); document.querySelectorAll('.dtab').forEach(b => b.classList.remove('active')); document.getElementById(`dp-${day}`).classList.add('active'); btn.classList.add('active'); }
   function toggleMenu() { const m = document.getElementById('sideMenu'), o = document.getElementById('menuOverlay'); if (m.classList.contains('open')) { m.classList.remove('open'); o.classList.remove('show'); } else { m.classList.add('open'); o.classList.add('show'); } }
-  function setDescanso(s) { if (document.getElementById('descanso-box').style.display === 'flex') cancelarDescanso(); const b = document.getElementById('descanso-box'); b.style.display = 'flex'; let seg = s; document.getElementById('descansoTimer').innerText = seg; timerInterval = setInterval(() => { seg--; document.getElementById('descansoTimer').innerText = seg; if (seg <= 0) { clearInterval(timerInterval); b.style.display = 'none'; } }, 1000); }
-  function cancelarDescanso() { clearInterval(timerInterval); document.getElementById('descanso-box').style.display = 'none'; }
   function resetAllData() { if (confirm("¿Borrar TODOS los datos?")) { localStorage.clear(); location.reload(); } }
   document.getElementById('cargarFotosFecha').onclick = () => { if (document.getElementById('fechaFotos').value) mostrarToast("Selecciona fotos y guarda"); };
   window.onload = () => { setColorPorDia(); resetearChecksLunes(); if (!localStorage.getItem('primeraFechaUso')) localStorage.setItem('primeraFechaUso', new Date().toISOString()); document.getElementById('fechaFotos').value = getHoyStr(); document.getElementById('medFecha').value = getHoyStr(); const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' }; diaActivo = diasMap[new Date().getDay()]; actualizarUICompleta(); cargarTabs(); cargarSelectores(); };
