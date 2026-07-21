@@ -306,30 +306,31 @@
   function getEntrenosMes() { const hoy = new Date(); return diasEntrenados.filter(f => { const d = new Date(f); return d.getMonth() === hoy.getMonth() && d.getFullYear() === hoy.getFullYear(); }).length; }
 
   // ✅ PREDICCIÓN CORREGIDA
-  function getPrediccion() {
+    function getPrediccion() {
     if (mediciones.length < 2) return null;
     const u = mediciones[mediciones.length - 1];
-    if (u.peso <= OBJETIVO_PESO) return null;
+    if (u.peso <= OBJETIVO_PESO) {
+      return { ritmoSemanal: '0.0', semanasRestan: 0, fechaEstimada: '🎉 ¡Objetivo conseguido!', tipo: 'exito' };
+    }
     const primera = mediciones[0];
     const diasTotales = Math.max(1, Math.round((new Date(u.fecha) - new Date(primera.fecha)) / 86400000));
     const perdidaTotal = primera.peso - u.peso;
     const ritmoDiario = perdidaTotal / diasTotales;
-    if (ritmoDiario <= 0.001) return null;
     const ritmoSemanal = (ritmoDiario * 7).toFixed(1);
+    if (ritmoDiario <= 0.0001) {
+      return { ritmoSemanal: Math.abs(ritmoSemanal), semanasRestan: '?', fechaEstimada: '⬆️ Estás subiendo. ¡A retomar!', tipo: 'alerta' };
+    }
     const kgRestan = u.peso - OBJETIVO_PESO;
     const semanasRestan = Math.ceil(kgRestan / (ritmoDiario * 7));
     const fechaEstimada = new Date();
     fechaEstimada.setDate(fechaEstimada.getDate() + semanasRestan * 7);
-    return {
-      ritmoSemanal,
-      semanasRestan,
-      fechaEstimada: fechaEstimada.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
-    };
+    return { ritmoSemanal, semanasRestan, fechaEstimada: fechaEstimada.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }), tipo: 'normal' };
   }
 
   function renderizarDashboard() {
     const h = new Date().getHours();
     let saludo = '👋 Buenos días'; if (h >= 14 && h < 21) saludo = '👋 Buenas tardes'; if (h >= 21 || h < 6) saludo = '👋 Buenas noches';
+    
     document.getElementById('saludoTexto').innerHTML = `${saludo}, <span>Nico</span>`;
 
     const dr = document.getElementById('dashboardResumen');
@@ -390,12 +391,19 @@
             </div>
           </div>
         </div>
-        ${prediccion ? `
+                ${prediccion ? `
         <div class="io-divider"></div>
         <div class="io-prediccion">
-          📈 Al ritmo actual (<strong>${prediccion.ritmoSemanal} kg/sem</strong>)<br>
-          🎯 Llegarás a <strong>${OBJETIVO_PESO} kg</strong> el <strong>${prediccion.fechaEstimada}</strong><br>
-          ⏳ ~${prediccion.semanasRestan} semanas
+          ${prediccion.tipo === 'exito' ? `
+            🎉 <strong>${prediccion.fechaEstimada}</strong>
+          ` : prediccion.tipo === 'alerta' ? `
+            📈 Ritmo: <strong>+${prediccion.ritmoSemanal} kg/sem</strong><br>
+            ${prediccion.fechaEstimada}
+          ` : `
+            📉 Al ritmo actual (<strong>-${prediccion.ritmoSemanal} kg/sem</strong>)<br>
+            🎯 Llegarás a <strong>${OBJETIVO_PESO} kg</strong> el <strong>${prediccion.fechaEstimada}</strong><br>
+            ⏳ ~${prediccion.semanasRestan} semanas
+          `}
         </div>` : ''}
       </div>
     `;
