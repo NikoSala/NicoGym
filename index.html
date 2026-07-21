@@ -47,11 +47,6 @@
       background: rgba(255,255,255,0.1); border: none; color: white;
       font-size: 20px; width: 36px; height: 36px; border-radius: 10px; cursor: pointer;
     }
-    .btn-hoy {
-      background: var(--acc); border: none; color: #000; font-weight: 700;
-      padding: 8px 20px; border-radius: 40px; font-size: 12px;
-      margin: 60px 12px 0 12px; width: calc(100% - 24px); cursor: pointer;
-    }
     .side-menu {
       position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
       background: #0f0f0f; border-right: 1px solid var(--border); z-index: 1000;
@@ -233,7 +228,8 @@
   <div class="top-info"><span id="topEdad">--</span><strong>a</strong> <span id="topPeso">--</span><strong>kg</strong> <span>🎯<strong id="topObjetivo">75</strong></span> <span>🚭<strong id="topDiasSinFumar">0</strong></span></div>
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
 </div>
-<button class="btn-hoy" id="goHoyBtn">📅 Ir a rutina de hoy</button>
+
+<!-- BOTÓN ELIMINADO: antes había un <button class="btn-hoy"> aquí -->
 
 <div class="side-menu" id="sideMenu">
   <div class="menu-item" onclick="goPage('inicio')">🏠 Inicio</div>
@@ -298,7 +294,25 @@
   const coloresPorDia = { 0: "#e8ff47", 1: "#4caf50", 2: "#ff9800", 3: "#2196f3", 4: "#9c27b0", 5: "#ff5722", 6: "#00bcd4" };
 
   function setColorPorDia() { document.documentElement.style.setProperty('--acc', coloresPorDia[new Date().getDay()] || "#FF4D00"); }
-  function calcularDiasSinFumar() { let c=0,f=new Date(FECHA_INICIO_NO_FUMAR),h=new Date(); while(f<=h){ if(!diasNoFumar.includes(f.toISOString().slice(0,10)))c++; f.setDate(f.getDate()+1); } return c; }
+
+  function getHoyStr() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
+  function formatFechaLocal(f) {
+    return `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, '0')}-${String(f.getDate()).padStart(2, '0')}`;
+  }
+
+  function calcularDiasSinFumar() {
+    let c = 0, f = new Date(FECHA_INICIO_NO_FUMAR), h = new Date();
+    while (f <= h) {
+      if (!diasNoFumar.includes(formatFechaLocal(f))) c++;
+      f.setDate(f.getDate() + 1);
+    }
+    return c;
+  }
+
   function actualizarTopBar() { document.getElementById('topEdad').innerText=calcularEdad(); document.getElementById('topPeso').innerHTML=mediciones.length>0?mediciones[mediciones.length-1].peso:'--'; document.getElementById('topObjetivo').innerText=OBJETIVO_PESO; document.getElementById('topDiasSinFumar').innerText=calcularDiasSinFumar(); }
   function calcularEdad() { const h=new Date(),n=new Date(userData.cumple); let e=h.getFullYear()-n.getFullYear(); if(h.getMonth()<n.getMonth()||(h.getMonth()===n.getMonth()&&h.getDate()<n.getDate()))e--; return e; }
 
@@ -311,7 +325,7 @@
     mediciones.sort((a,b)=>new Date(a.fecha)-new Date(b.fecha)); localStorage.setItem('bodyComposition',JSON.stringify(mediciones));
     mostrarToast("Medición guardada"); cargarHistorialMediciones(); actualizarUICompleta(); limpiarFormularioMedicion();
   }
-  function limpiarFormularioMedicion() { document.getElementById('medFecha').value=new Date().toISOString().slice(0,10); ['medPeso','medCintura','medGrasaPorc','medMasaMuscular','medPecho','medCadera','medBiceps'].forEach(id=>document.getElementById(id).value=''); }
+  function limpiarFormularioMedicion() { document.getElementById('medFecha').value=getHoyStr(); ['medPeso','medCintura','medGrasaPorc','medMasaMuscular','medPecho','medCadera','medBiceps'].forEach(id=>document.getElementById(id).value=''); }
 
   function formatearCambio(valor, unidad, invertir) {
     if (Math.abs(valor) < 0.05) return `<span class="neutral">➡ 0 ${unidad}</span>`;
@@ -378,12 +392,11 @@
 
   let mesGym=new Date().getMonth(),añoGym=new Date().getFullYear(),mesSmoke=new Date().getMonth(),añoSmoke=new Date().getFullYear();
   function renderCalendarios() {
-    const cg=document.getElementById('cal-gym'); if(cg){cg.innerHTML='';document.getElementById('cal-month-gym').innerText=`${new Date(añoGym,mesGym,1).toLocaleString('es-ES',{month:'long'}).toUpperCase()} ${añoGym}`;['L','M','X','J','V','S','D'].forEach(d=>{let div=document.createElement('div');div.innerText=d;div.style.fontWeight='bold';div.style.textAlign='center';div.style.color='#999';cg.appendChild(div);});let o=new Date(añoGym,mesGym,1).getDay();o=o===0?6:o-1;for(let i=0;i<o;i++)cg.appendChild(document.createElement('div'));const dm=new Date(añoGym,mesGym+1,0).getDate(),hs=getHoyStr();for(let d=1;d<=dm;d++){const f=new Date(añoGym,mesGym,d),fs=f.toISOString().slice(0,10);const cell=document.createElement('div');cell.className='cal-cell';cell.innerText=d;cell.style.borderColor=coloresPorDia[f.getDay()]||"#FF4D00";if(diasEntrenados.includes(fs))cell.classList.add('completado');if(fs===hs)cell.classList.add('today');if(f.getDate()===1&&f.getMonth()===7)cell.classList.add('cumple');cell.onclick=(function(ff){return function(){mostrarPopupEjercicios(ff);};})(f);cg.appendChild(cell);}}
-    const cs=document.getElementById('cal-smoke'); if(cs){cs.innerHTML='';document.getElementById('cal-month-smoke').innerText=`${new Date(añoSmoke,mesSmoke,1).toLocaleString('es-ES',{month:'long'}).toUpperCase()} ${añoSmoke}`;['L','M','X','J','V','S','D'].forEach(d=>{let div=document.createElement('div');div.innerText=d;div.style.fontWeight='bold';div.style.textAlign='center';div.style.color='#999';cs.appendChild(div);});let o=new Date(añoSmoke,mesSmoke,1).getDay();o=o===0?6:o-1;for(let i=0;i<o;i++)cs.appendChild(document.createElement('div'));const dm=new Date(añoSmoke,mesSmoke+1,0).getDate(),hs=getHoyStr();for(let d=1;d<=dm;d++){const f=new Date(añoSmoke,mesSmoke,d),fs=f.toISOString().slice(0,10);const cell=document.createElement('div');cell.className='cal-cell';cell.innerText=d;if(f<FECHA_INICIO_NO_FUMAR){cell.style.background='#2a2a2a';cell.style.color='#555';cell.style.pointerEvents='none';}else if(f>new Date()){cell.style.background='#2a2a2a';cell.style.color='#666';cell.style.pointerEvents='none';}else{cell.style.background=diasNoFumar.includes(fs)?'#ff3b30':'#0d47a1';cell.style.color='#fff';cell.onclick=(function(ffs){return function(){toggleDiaFumado(ffs);};})(fs);}if(fs===hs)cell.classList.add('today');if(f.getDate()===1&&f.getMonth()===7)cell.classList.add('cumple');cs.appendChild(cell);}}
+    const cg=document.getElementById('cal-gym'); if(cg){cg.innerHTML='';document.getElementById('cal-month-gym').innerText=`${new Date(añoGym,mesGym,1).toLocaleString('es-ES',{month:'long'}).toUpperCase()} ${añoGym}`;['L','M','X','J','V','S','D'].forEach(d=>{let div=document.createElement('div');div.innerText=d;div.style.fontWeight='bold';div.style.textAlign='center';div.style.color='#999';cg.appendChild(div);});let o=new Date(añoGym,mesGym,1).getDay();o=o===0?6:o-1;for(let i=0;i<o;i++)cg.appendChild(document.createElement('div'));const dm=new Date(añoGym,mesGym+1,0).getDate(),hs=getHoyStr();for(let d=1;d<=dm;d++){const f=new Date(añoGym,mesGym,d),fs=formatFechaLocal(f);const cell=document.createElement('div');cell.className='cal-cell';cell.innerText=d;cell.style.borderColor=coloresPorDia[f.getDay()]||"#FF4D00";if(diasEntrenados.includes(fs))cell.classList.add('completado');if(fs===hs)cell.classList.add('today');if(f.getDate()===1&&f.getMonth()===7)cell.classList.add('cumple');cell.onclick=(function(ff){return function(){mostrarPopupEjercicios(ff);};})(f);cg.appendChild(cell);}}
+    const cs=document.getElementById('cal-smoke'); if(cs){cs.innerHTML='';document.getElementById('cal-month-smoke').innerText=`${new Date(añoSmoke,mesSmoke,1).toLocaleString('es-ES',{month:'long'}).toUpperCase()} ${añoSmoke}`;['L','M','X','J','V','S','D'].forEach(d=>{let div=document.createElement('div');div.innerText=d;div.style.fontWeight='bold';div.style.textAlign='center';div.style.color='#999';cs.appendChild(div);});let o=new Date(añoSmoke,mesSmoke,1).getDay();o=o===0?6:o-1;for(let i=0;i<o;i++)cs.appendChild(document.createElement('div'));const dm=new Date(añoSmoke,mesSmoke+1,0).getDate(),hs=getHoyStr();for(let d=1;d<=dm;d++){const f=new Date(añoSmoke,mesSmoke,d),fs=formatFechaLocal(f);const cell=document.createElement('div');cell.className='cal-cell';cell.innerText=d;if(f<FECHA_INICIO_NO_FUMAR){cell.style.background='#2a2a2a';cell.style.color='#555';cell.style.pointerEvents='none';}else if(f>new Date()){cell.style.background='#2a2a2a';cell.style.color='#666';cell.style.pointerEvents='none';}else{cell.style.background=diasNoFumar.includes(fs)?'#ff3b30':'#0d47a1';cell.style.color='#fff';cell.onclick=(function(ffs){return function(){toggleDiaFumado(ffs);};})(fs);}if(fs===hs)cell.classList.add('today');if(f.getDate()===1&&f.getMonth()===7)cell.classList.add('cumple');cs.appendChild(cell);}}
   }
   function toggleDiaFumado(f){if(diasNoFumar.includes(f))diasNoFumar=diasNoFumar.filter(d=>d!==f);else diasNoFumar.push(f);localStorage.setItem('diasNoFumar',JSON.stringify(diasNoFumar));renderCalendarios();actualizarUICompleta();}
   function changeMonth(d,t){if(t==='gym'){let n=new Date(añoGym,mesGym+d,1);mesGym=n.getMonth();añoGym=n.getFullYear();}else{let n=new Date(añoSmoke,mesSmoke+d,1);mesSmoke=n.getMonth();añoSmoke=n.getFullYear();}renderCalendarios();}
-  function getHoyStr(){return new Date().toISOString().slice(0,10);}
   function mostrarToast(m){const t=document.createElement('div');t.className='toast-msg';t.innerText=m;document.body.appendChild(t);setTimeout(()=>t.remove(),3000);}
 
   function previewFrente(i){if(i.files[0]){const r=new FileReader();r.onload=e=>{document.getElementById('previewFrente').src=e.target.result;document.getElementById('previewFrente').style.display='block';};r.readAsDataURL(i.files[0]);}}
@@ -505,23 +518,47 @@
   function openLightbox(s){document.getElementById('lightboxImg').src=s;document.getElementById('lightbox').classList.add('active');}
   function closeLightbox(){document.getElementById('lightbox').classList.remove('active');}
   function mostrarPopupEjercicios(f){const ds=f.getDay();if(ds===0){mostrarToast("📅 Domingo - descanso");return;}const dm={1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado'},ej=getEjerciciosPorDia(dm[ds]);if(!ej.length){mostrarToast("No hay ejercicios");return;}document.getElementById('modalPopup')?.remove();const o=document.createElement('div');o.className='modal-disk';o.id='modalPopup';o.innerHTML=`<div class="disk-panel"><h3>📅 ${f.toLocaleDateString('es-ES')}</h3><ul style="text-align:left;">${ej.map(e=>`<li>${e}</li>`).join('')}</ul><button onclick="document.getElementById('modalPopup').remove()">CERRAR</button></div>`;document.body.appendChild(o);}
-  function getRachaEntrenos(){let r=0,h=new Date();for(let i=0;i<100;i++){let f=new Date(h);f.setDate(h.getDate()-i);if(diasEntrenados.includes(f.toISOString().slice(0,10)))r++;else break;}return r;}
+  function getRachaEntrenos(){let r=0,h=new Date();for(let i=0;i<100;i++){let f=new Date(h);f.setDate(h.getDate()-i);if(diasEntrenados.includes(formatFechaLocal(f)))r++;else break;}return r;}
   function getNivelActual(){let t=diasEntrenados.length;if(t>=100)return 5;if(t>=50)return 4;if(t>=25)return 3;if(t>=10)return 2;return 1;}
   function getEntrenosHistoricos(){return diasEntrenados.length;}
   const listaLogros=[{id:"ns_7",nombre:"🌱 1 semana sin fumar",cond:()=>calcularDiasSinFumar()>=7},{id:"ns_30",nombre:"🚭 1 mes sin fumar",cond:()=>calcularDiasSinFumar()>=30},{id:"ns_90",nombre:"🎉 3 meses sin fumar",cond:()=>calcularDiasSinFumar()>=90},{id:"ns_180",nombre:"💪 6 meses sin fumar",cond:()=>calcularDiasSinFumar()>=180},{id:"ns_365",nombre:"🏆 1 año sin fumar",cond:()=>calcularDiasSinFumar()>=365},{id:"primer_peso",nombre:"⚖️ Primer peso",cond:()=>mediciones.length>=1},{id:"primer_check",nombre:"🏁 Primer ejercicio",cond:()=>getEntrenosHistoricos()>=1},{id:"check_25",nombre:"🟢 25 ejercicios",cond:()=>getEntrenosHistoricos()>=25},{id:"check_50",nombre:"💪 50 ejercicios",cond:()=>getEntrenosHistoricos()>=50},{id:"check_100",nombre:"🦾 100 ejercicios",cond:()=>getEntrenosHistoricos()>=100},{id:"racha_3",nombre:"📅 3 días seguidos",cond:()=>getRachaEntrenos()>=3},{id:"racha_7",nombre:"✨ 1 semana seguida",cond:()=>getRachaEntrenos()>=7},{id:"racha_14",nombre:"⚡ 2 semanas seguidas",cond:()=>getRachaEntrenos()>=14},{id:"nivel_2",nombre:"⭐ Nivel 2",cond:()=>getNivelActual()>=2},{id:"nivel_3",nombre:"⭐⭐ Nivel 3",cond:()=>getNivelActual()>=3},{id:"nivel_4",nombre:"⭐⭐⭐ Nivel 4",cond:()=>getNivelActual()>=4},{id:"nivel_5",nombre:"🏅 Nivel 5 Élite",cond:()=>getNivelActual()>=5}];
   function actualizarLogros(){const c=document.getElementById('logrosContainer');if(!c)return;let n=false;listaLogros.forEach(l=>{if(!logros.includes(l.id)&&l.cond()){logros.push(l.id);n=true;mostrarToast(`🏆 ${l.nombre}`);canvasConfetti({particleCount:100,spread:70});}});if(n)localStorage.setItem('nico_logros',JSON.stringify(logros));c.innerHTML=listaLogros.map(l=>`<div class="logro-badge ${logros.includes(l.id)?'obtenido':''}">${l.nombre}</div>`).join('');}
   function resetearChecksLunes(){const h=new Date();if(h.getDay()===1){const ur=localStorage.getItem('ultimoResetLunes'),hs=getHoyStr();if(ur!==hs){checks={};localStorage.setItem('nico_checks',JSON.stringify(checks));localStorage.setItem('ultimoResetLunes',hs);mostrarToast("🔄 Nuevo lunes: checks reiniciados");}}}
   function actualizarUICompleta(){renderizarResumen();renderizarUltimaMedicion();renderizarCambios();actualizarTopBar();renderizarRutinas();renderCalendarios();actualizarLogros();cargarHistorialMediciones();}
-  function goPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(`page-${id}`).classList.add('active');document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(b=>{if(b.innerText.toLowerCase().includes(id.substring(0,4)))b.classList.add('active');});window.scrollTo(0,0);if(id==='inicio')actualizarUICompleta();if(id==='composicion')cargarHistorialMediciones();if(id==='logros')actualizarLogros();if(id==='rutinas')cargarTabs();}
+
+  // ✅ MODIFICADO: goPage ahora abre la rutina del día correcto al pulsar RUTINA
+  function goPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(`page-${id}`).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(b => { if (b.innerText.toLowerCase().includes(id.substring(0, 4))) b.classList.add('active'); });
+    window.scrollTo(0, 0);
+    if (id === 'inicio') actualizarUICompleta();
+    if (id === 'composicion') cargarHistorialMediciones();
+    if (id === 'logros') actualizarLogros();
+    if (id === 'rutinas') {
+      cargarTabs();
+      // Ir directamente al día que toca hoy
+      setTimeout(() => {
+        const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' };
+        const idxMap = { lunes: 0, martes: 1, miercoles: 2, jueves: 3, viernes: 4, sabado: 5, domingo: 6 };
+        const diaHoy = diasMap[new Date().getDay()];
+        const idx = idxMap[diaHoy];
+        const tabs = document.querySelectorAll('.dtab');
+        if (tabs[idx]) tabs[idx].click();
+      }, 100);
+    }
+  }
+
   function cargarTabs(){const tc=document.getElementById('dayTabs'),pc=document.getElementById('dayPanelsContainer');if(!tc)return;const dias=['lunes','martes','miercoles','jueves','viernes','sabado','domingo'],nombres=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'],iconos=['💪','🏋️','🦾','💪','🏋️','🦾','😴'];tc.innerHTML='';pc.innerHTML='';dias.forEach((dia,idx)=>{const btn=document.createElement('button');btn.className='dtab'+(idx===0?' active':'');btn.innerText=`${iconos[idx]} ${nombres[idx]}`;btn.onclick=()=>switchDay(dia,btn);tc.appendChild(btn);const panel=document.createElement('div');panel.className='day-panel'+(idx===0?' active':'');panel.id=`dp-${dia}`;if(dia==='domingo'){panel.innerHTML=`<div class="sunday-chill"><div class="sunday-emoji">😌🌿✨</div><div class="sunday-title">SUNDAY CHILL</div><div class="sunday-sub">Día de descanso activo</div><div class="relax-card"><div class="relax-icon">🧘‍♂️</div><div class="relax-text">Tu cuerpo se recupera, tu mente se renueva.<br>Hoy es para respirar, estirar y conectar.</div><div class="relax-quote">"El descanso es parte del entrenamiento. Escucha a tu cuerpo."</div></div><div class="activity-grid"><div class="activity-item"><div class="activity-emoji">🚶‍♂️</div><div class="activity-name">Caminata suave</div><div class="activity-desc">20-30 min al aire libre</div></div><div class="activity-item"><div class="activity-emoji">🧘‍♀️</div><div class="activity-name">Estiramientos</div><div class="activity-desc">Movilidad y flexibilidad</div></div><div class="activity-item"><div class="activity-emoji">💧</div><div class="activity-name">Hidratación</div><div class="activity-desc">Bebe 2-3 litros</div></div><div class="activity-item"><div class="activity-emoji">😴</div><div class="activity-name">Siesta reparadora</div><div class="activity-desc">20 min de power nap</div></div></div><div class="mindfulness-tip"><span class="tip-icon">🌅</span><span class="tip-text">Tómate 5 minutos para respirar profundo y agradecer el progreso de esta semana.</span></div><div style="margin-top:16px;font-size:11px;color:#FFAD6A;">✨ Recarga energía para la próxima semana ✨</div></div>`;}else{panel.innerHTML=`<div class="ex-grid" id="lista-${dia}"></div><button class="btn-reset-dia" data-dia="${dia}">🗑️ Desmarcar todos</button>`;}pc.appendChild(panel);});renderizarRutinas();}
   function switchDay(day,btn){document.querySelectorAll('.day-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.dtab').forEach(b=>b.classList.remove('active'));document.getElementById(`dp-${day}`).classList.add('active');btn.classList.add('active');}
   function toggleMenu(){const m=document.getElementById('sideMenu'),o=document.getElementById('menuOverlay');if(m.classList.contains('open')){m.classList.remove('open');o.classList.remove('show');}else{m.classList.add('open');o.classList.add('show');}}
-  function irHoy(){goPage('rutinas');setTimeout(()=>{const dm={1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado',0:'domingo'},idx={lunes:0,martes:1,miercoles:2,jueves:3,viernes:4,sabado:5,domingo:6}[dm[new Date().getDay()]],tabs=document.querySelectorAll('.dtab');if(tabs[idx])tabs[idx].click();},150);}
+  function irHoy(){goPage('rutinas');}
   function setDescanso(s){if(document.getElementById('descanso-box').style.display==='flex')cancelarDescanso();const b=document.getElementById('descanso-box');b.style.display='flex';let seg=s;document.getElementById('descansoTimer').innerText=seg;timerInterval=setInterval(()=>{seg--;document.getElementById('descansoTimer').innerText=seg;if(seg<=0){clearInterval(timerInterval);b.style.display='none';}},1000);}
   function cancelarDescanso(){clearInterval(timerInterval);document.getElementById('descanso-box').style.display='none';}
   function resetAllData(){if(confirm("¿Borrar TODOS los datos?")){localStorage.clear();location.reload();}}
   document.getElementById('cargarFotosFecha').onclick=()=>{if(document.getElementById('fechaFotos').value)mostrarToast("Selecciona fotos y guarda");};
-  window.onload=()=>{setColorPorDia();resetearChecksLunes();if(!localStorage.getItem('primeraFechaUso'))localStorage.setItem('primeraFechaUso',new Date().toISOString());document.getElementById('fechaFotos').value=getHoyStr();document.getElementById('medFecha').value=getHoyStr();actualizarUICompleta();cargarListaDias();cargarSelectores();cargarTabs();document.getElementById('goHoyBtn').onclick=irHoy;};
+  window.onload=()=>{setColorPorDia();resetearChecksLunes();if(!localStorage.getItem('primeraFechaUso'))localStorage.setItem('primeraFechaUso',new Date().toISOString());document.getElementById('fechaFotos').value=getHoyStr();document.getElementById('medFecha').value=getHoyStr();actualizarUICompleta();cargarListaDias();cargarSelectores();cargarTabs();};
 </script>
 </body>
 </html>
