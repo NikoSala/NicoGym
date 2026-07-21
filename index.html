@@ -74,13 +74,8 @@
     .ci-item .ci-val { font-weight: 700; margin-left: auto; }
     .ci-item .ci-val.bueno { color: #10b981; } .ci-item .ci-val.malo { color: #ef4444; } .ci-item .ci-val.neutral { color: #9ca3af; }
 
-    /* BLOQUE ÚNICO: INFO + OBJETIVOS + PREDICCIÓN */
-    .info-objetivos-card {
-      background: var(--s2); border-radius: 20px; padding: 16px; margin: 12px; border: 1px solid var(--border);
-    }
-    .info-objetivos-card .io-title {
-      font-size: 12px; font-weight: 600; color: var(--acc); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
-    }
+    .info-objetivos-card { background: var(--s2); border-radius: 20px; padding: 16px; margin: 12px; border: 1px solid var(--border); }
+    .info-objetivos-card .io-title { font-size: 12px; font-weight: 600; color: var(--acc); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
     .io-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .io-col { display: flex; flex-direction: column; gap: 8px; }
     .io-col-label { font-size: 9px; color: var(--muted2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
@@ -103,7 +98,7 @@
     .io-obj-check.cumplido { color: #10b981; }
     .io-obj-check.pendiente { color: var(--muted); }
     .io-divider { border-top: 1px solid var(--border); margin: 10px 0 8px; }
-    .io-prediccion { font-size: 11px; color: var(--muted2); text-align: center; }
+    .io-prediccion { font-size: 11px; color: var(--muted2); text-align: center; line-height: 1.6; }
     .io-prediccion strong { color: var(--acc); font-family: 'Bebas Neue', cursive; font-size: 15px; letter-spacing: 1px; }
 
     .stats-card { background: var(--s2); border-radius: 20px; padding: 16px; margin: 12px; border: 1px solid var(--border); }
@@ -284,6 +279,7 @@
 </div>
 
 <script>
+  // ========== DATOS ==========
   let mediciones = JSON.parse(localStorage.getItem('bodyComposition')) || [];
   const OBJETIVO_PESO = 75;
   if (localStorage.getItem('pesos') && mediciones.length === 0) {
@@ -309,18 +305,19 @@
   function getObjetivoPesoActual() { if (mediciones.length === 0) return OBJETIVOS_PESO[0]; const pesoActual = mediciones[mediciones.length - 1].peso; for (let i = 0; i < OBJETIVOS_PESO.length; i++) { if (pesoActual > OBJETIVOS_PESO[i]) return OBJETIVOS_PESO[i]; } return OBJETIVO_PESO; }
   function getEntrenosMes() { const hoy = new Date(); return diasEntrenados.filter(f => { const d = new Date(f); return d.getMonth() === hoy.getMonth() && d.getFullYear() === hoy.getFullYear(); }).length; }
 
+  // ✅ PREDICCIÓN CORREGIDA
   function getPrediccion() {
-    if (mediciones.length < 3) return null;
+    if (mediciones.length < 2) return null;
     const u = mediciones[mediciones.length - 1];
     if (u.peso <= OBJETIVO_PESO) return null;
-    const ultimas = mediciones.slice(-4);
-    let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, n = ultimas.length;
-    ultimas.forEach((m, i) => { const dias = (new Date(m.fecha) - new Date(ultimas[0].fecha)) / 86400000; sumX += dias; sumY += m.peso; sumXY += dias * m.peso; sumX2 += dias * dias; });
-    const pendiente = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-    if (pendiente >= 0) return null;
-    const ritmoSemanal = Math.abs(pendiente * 7).toFixed(1);
+    const primera = mediciones[0];
+    const diasTotales = Math.max(1, Math.round((new Date(u.fecha) - new Date(primera.fecha)) / 86400000));
+    const perdidaTotal = primera.peso - u.peso;
+    const ritmoDiario = perdidaTotal / diasTotales;
+    if (ritmoDiario <= 0.001) return null;
+    const ritmoSemanal = (ritmoDiario * 7).toFixed(1);
     const kgRestan = u.peso - OBJETIVO_PESO;
-    const semanasRestan = Math.ceil(kgRestan / Math.abs(pendiente) / 7);
+    const semanasRestan = Math.ceil(kgRestan / (ritmoDiario * 7));
     const fechaEstimada = new Date();
     fechaEstimada.setDate(fechaEstimada.getDate() + semanasRestan * 7);
     return {
@@ -413,7 +410,6 @@
     const pctMes = Math.round((diasEntrenadosMes / Math.min(new Date(añoActual, mesActual + 1, 0).getDate(), 30)) * 100);
     const racha = getRachaEntrenos();
     const mejorRacha = getMejorRacha();
-
     let calcHTML = '';
     if (mediciones.length > 0) {
       const u = mediciones[mediciones.length - 1];
@@ -430,7 +426,6 @@
         <div class="calc-item" style="grid-column:span 2"><div class="ca-valor">${diasRegistrados} días</div><div class="ca-label">Días registrados</div></div>
       </div></div>`;
     }
-
     container.innerHTML = `<div class="stats-card"><div class="stats-title">📊 ESTADÍSTICAS</div><div class="stats-grid"><div class="stats-item"><div class="st-icon">📅</div><div class="st-valor">${diasEntrenadosMes}</div><div class="st-etiqueta">Entrenos este mes</div></div><div class="stats-item"><div class="st-icon">🎯</div><div class="st-valor">${pctMes}%</div><div class="st-etiqueta">Cumplimiento</div></div><div class="stats-item"><div class="st-icon">💪</div><div class="st-valor">${diasEntrenados.length}</div><div class="st-etiqueta">Total entrenos</div></div><div class="stats-item"><div class="st-icon">📏</div><div class="st-valor">${mediciones.length}</div><div class="st-etiqueta">Mediciones</div></div><div class="stats-highlight"><div class="sh-icon">🔥</div><div><div class="sh-valor">${racha} días</div><div class="sh-etiqueta">Racha actual</div></div></div><div class="stats-highlight"><div class="sh-icon">🏆</div><div><div class="sh-valor">${mejorRacha} días</div><div class="sh-etiqueta">Mejor racha</div></div></div></div></div>${calcHTML}`;
   }
 
