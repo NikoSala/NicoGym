@@ -56,8 +56,7 @@
     .resumen-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
     .resumen-item { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px; text-align: center; }
     .resumen-item .r-icon { font-size: 18px; margin-bottom: 2px; }
-    .resumen-item .r-valor { font-size: 18px; font-weight: 700; font-family: 'Bebas Neue', cursive; letter-spacing: 1px; }
-    .resumen-item .r-etiqueta { font-size: 9px; color: var(--muted2); margin-top: 2px; }
+    .resumen-item .r-valor { font-size: 20px; font-weight: 700; font-family: 'Bebas Neue', cursive; letter-spacing: 1px; }
 
     .rutina-hoy-card { background: var(--s2); border-radius: 20px; padding: 16px; margin: 12px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
     .rutina-hoy-info { flex: 1; }
@@ -85,6 +84,7 @@
     .io-info-text { flex: 1; display: flex; flex-direction: column; }
     .io-info-val { font-size: 12px; font-weight: 700; line-height: 1.2; }
     .io-info-label { font-size: 8px; color: var(--muted2); }
+    .io-info-sub { font-size: 9px; color: var(--acc); margin-top: 1px; }
     .io-obj-item { display: flex; align-items: center; gap: 6px; }
     .io-obj-icon { font-size: 16px; flex-shrink: 0; }
     .io-obj-info { flex: 1; }
@@ -279,7 +279,6 @@
 </div>
 
 <script>
-  // ========== DATOS ==========
   let mediciones = JSON.parse(localStorage.getItem('bodyComposition')) || [];
   const OBJETIVO_PESO = 75;
   if (localStorage.getItem('pesos') && mediciones.length === 0) {
@@ -295,6 +294,7 @@
   let diaActivo = 'lunes';
   const OBJETIVOS_PESO = [85, 82, 80, 78, 75];
   const OBJETIVO_ENTRENOS_MES = 20;
+  const nombresDias = { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo' };
 
   function setColorPorDia() { document.documentElement.style.setProperty('--acc', coloresPorDia[new Date().getDay()] || "#FF4D00"); }
   function getHoyStr() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
@@ -305,21 +305,16 @@
   function getObjetivoPesoActual() { if (mediciones.length === 0) return OBJETIVOS_PESO[0]; const pesoActual = mediciones[mediciones.length - 1].peso; for (let i = 0; i < OBJETIVOS_PESO.length; i++) { if (pesoActual > OBJETIVOS_PESO[i]) return OBJETIVOS_PESO[i]; } return OBJETIVO_PESO; }
   function getEntrenosMes() { const hoy = new Date(); return diasEntrenados.filter(f => { const d = new Date(f); return d.getMonth() === hoy.getMonth() && d.getFullYear() === hoy.getFullYear(); }).length; }
 
-  // ✅ PREDICCIÓN CORREGIDA
-    function getPrediccion() {
+  function getPrediccion() {
     if (mediciones.length < 2) return null;
     const u = mediciones[mediciones.length - 1];
-    if (u.peso <= OBJETIVO_PESO) {
-      return { ritmoSemanal: '0.0', semanasRestan: 0, fechaEstimada: '🎉 ¡Objetivo conseguido!', tipo: 'exito' };
-    }
+    if (u.peso <= OBJETIVO_PESO) { return { ritmoSemanal: '0.0', semanasRestan: 0, fechaEstimada: '🎉 ¡Objetivo conseguido!', tipo: 'exito' }; }
     const primera = mediciones[0];
     const diasTotales = Math.max(1, Math.round((new Date(u.fecha) - new Date(primera.fecha)) / 86400000));
     const perdidaTotal = primera.peso - u.peso;
     const ritmoDiario = perdidaTotal / diasTotales;
     const ritmoSemanal = (ritmoDiario * 7).toFixed(1);
-    if (ritmoDiario <= 0.0001) {
-      return { ritmoSemanal: Math.abs(ritmoSemanal), semanasRestan: '?', fechaEstimada: '⬆️ Estás subiendo. ¡A retomar!', tipo: 'alerta' };
-    }
+    if (ritmoDiario <= 0.0001) { return { ritmoSemanal: Math.abs(ritmoSemanal), semanasRestan: '?', fechaEstimada: '⬆️ Estás subiendo. ¡A retomar!', tipo: 'alerta' }; }
     const kgRestan = u.peso - OBJETIVO_PESO;
     const semanasRestan = Math.ceil(kgRestan / (ritmoDiario * 7));
     const fechaEstimada = new Date();
@@ -330,30 +325,50 @@
   function renderizarDashboard() {
     const h = new Date().getHours();
     let saludo = '👋 Buenos días'; if (h >= 14 && h < 21) saludo = '👋 Buenas tardes'; if (h >= 21 || h < 6) saludo = '👋 Buenas noches';
-    
     document.getElementById('saludoTexto').innerHTML = `${saludo}, <span>Nico</span>`;
 
+    // RESUMEN simplificado
     const dr = document.getElementById('dashboardResumen');
     if (mediciones.length === 0) { dr.innerHTML = `<div class="resumen-card"><div class="resumen-title">🔥 RESUMEN</div><div style="color:var(--muted2)">Registra tu primera medición en "Peso"</div></div>`; }
-    else { const u = mediciones[mediciones.length - 1], diff = (u.peso - OBJETIVO_PESO).toFixed(1), da = Math.abs(diff), pe = u.peso > OBJETIVO_PESO; dr.innerHTML = `<div class="resumen-card"><div class="resumen-title">🔥 RESUMEN</div><div class="resumen-grid"><div class="resumen-item"><div class="r-icon">⚖️</div><div class="r-valor">${u.peso}</div><div class="r-etiqueta">Peso kg</div></div><div class="resumen-item"><div class="r-icon">🎯</div><div class="r-valor">${OBJETIVO_PESO}</div><div class="r-etiqueta">Objetivo kg</div></div><div class="resumen-item"><div class="r-icon">${pe?'📉':'📈'}</div><div class="r-valor">${da}</div><div class="r-etiqueta">${pe?'Restan':'Por encima'}</div></div></div></div>`; }
+    else { const u = mediciones[mediciones.length - 1], diff = (u.peso - OBJETIVO_PESO).toFixed(1), da = Math.abs(diff), pe = u.peso > OBJETIVO_PESO; dr.innerHTML = `<div class="resumen-card"><div class="resumen-title">🔥 RESUMEN</div><div class="resumen-grid"><div class="resumen-item"><div class="r-icon">⚖️</div><div class="r-valor">${u.peso} kg</div></div><div class="resumen-item"><div class="r-icon">🎯</div><div class="r-valor">${OBJETIVO_PESO} kg</div></div><div class="resumen-item"><div class="r-icon">${pe?'📉':'📈'}</div><div class="r-valor">${da} kg</div></div></div></div>`; }
 
     const drh = document.getElementById('dashboardRutinaHoy');
     const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' };
     const diaHoy = diasMap[new Date().getDay()];
-    const nombresDias = { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo' };
     const tiposRutina = { lunes: 'ESPALDA/BÍCEPS', martes: 'PECHO/HOMBRO', miercoles: 'TRÍCEPS/CARDIO', jueves: 'ESPALDA/BÍCEPS', viernes: 'PECHO/HOMBRO', sabado: 'PIERNA/ANTEBRAZO', domingo: 'DESCANSO' };
     const ejerciciosHoy = ejerciciosUnicos[diaHoy] || [];
     if (diaHoy === 'domingo') { drh.innerHTML = `<div class="rutina-hoy-card"><div class="rutina-hoy-info"><div class="rutina-hoy-dia">${nombresDias[diaHoy]}</div><div class="rutina-hoy-titulo">DESCANSO</div><div class="rutina-hoy-sub">Recuperación activa</div></div><span style="font-size:40px;">😌</span></div>`; }
     else { drh.innerHTML = `<div class="rutina-hoy-card"><div class="rutina-hoy-info"><div class="rutina-hoy-dia">${nombresDias[diaHoy]}</div><div class="rutina-hoy-titulo">${tiposRutina[diaHoy]}</div><div class="rutina-hoy-sub">${ejerciciosHoy.length} ejercicios</div></div><button class="btn-empezar" onclick="goPage('rutinas')">▶ EMPEZAR</button></div>`; }
 
+    // DESDE EL INICIO - ahora muestra diferencias con flechas
     const dci = document.getElementById('dashboardCambiosInicio');
-    if (mediciones.length >= 2) { const p = mediciones[0], u = mediciones[mediciones.length - 1]; const items = [{ icon: '⚖️', nombre: 'Peso', val: (u.peso - p.peso).toFixed(1), unidad: 'kg', invertir: true }, { icon: '📏', nombre: 'Cintura', val: (u.cintura - p.cintura).toFixed(1), unidad: 'cm', invertir: true }, { icon: '🧈', nombre: 'Grasa', val: (u.grasaPorcentaje - p.grasaPorcentaje).toFixed(1), unidad: '%', invertir: true }, { icon: '💪', nombre: 'Músculo', val: (u.masaMuscular - p.masaMuscular).toFixed(1), unidad: 'kg', invertir: false }]; dci.innerHTML = `<div class="cambios-inicio"><div class="ci-title">📈 Desde el inicio</div><div class="ci-grid">${items.map(it => { let clase = 'neutral', signo = ''; if (it.val > 0) { clase = it.invertir ? 'malo' : 'bueno'; signo = '+'; } if (it.val < 0) { clase = it.invertir ? 'bueno' : 'malo'; } if (Math.abs(it.val) < 0.05) clase = 'neutral'; return `<div class="ci-item"><span class="ci-icon">${it.icon}</span><span>${it.nombre}</span><span class="ci-val ${clase}">${signo}${it.val} ${it.unidad}</span></div>`; }).join('')}</div></div>`; }
-    else { dci.innerHTML = ''; }
+    if (mediciones.length >= 2) {
+      const p = mediciones[0], u = mediciones[mediciones.length - 1];
+      const diffs = [
+        { icon: '⚖️', nombre: 'Peso', val: (u.peso - p.peso), unidad: 'kg', invertir: true },
+        { icon: '📏', nombre: 'Cintura', val: (u.cintura - p.cintura), unidad: 'cm', invertir: true },
+        { icon: '🧈', nombre: 'Grasa', val: (u.grasaPorcentaje - p.grasaPorcentaje), unidad: '%', invertir: true },
+        { icon: '💪', nombre: 'Músculo', val: (u.masaMuscular - p.masaMuscular), unidad: 'kg', invertir: false }
+      ];
+      dci.innerHTML = `<div class="cambios-inicio"><div class="ci-title">📈 Desde el inicio</div><div class="ci-grid">${diffs.map(d => {
+        let clase = 'neutral', flecha = '➡', signo = '';
+        if (d.val > 0.05) { clase = d.invertir ? 'malo' : 'bueno'; flecha = d.invertir ? '⬆' : '⬆'; signo = '+'; }
+        if (d.val < -0.05) { clase = d.invertir ? 'bueno' : 'malo'; flecha = d.invertir ? '⬇' : '⬇'; }
+        return `<div class="ci-item"><span class="ci-icon">${d.icon}</span><span>${d.nombre}</span><span class="ci-val ${clase}">${flecha} ${signo}${d.val.toFixed(1)} ${d.unidad}</span></div>`;
+      }).join('')}</div></div>`;
+    } else { dci.innerHTML = ''; }
 
+    // BLOQUE INFO + OBJETIVOS
     const bloque = document.getElementById('bloqueDoble');
     const hoyStr = getHoyStr();
     const ultimoEntreno = diasEntrenados.length > 0 ? [...diasEntrenados].sort().reverse()[0] : null;
-    let diasUltimoEntreno = '--'; if (ultimoEntreno) diasUltimoEntreno = Math.round((new Date(hoyStr) - new Date(ultimoEntreno)) / 86400000);
+    let diasUltimoEntreno = '--', diaUltimoEntrenoStr = '';
+    if (ultimoEntreno) {
+      diasUltimoEntreno = Math.round((new Date(hoyStr) - new Date(ultimoEntreno)) / 86400000);
+      const dUlt = new Date(ultimoEntreno);
+      const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+      diaUltimoEntrenoStr = diasSemana[dUlt.getDay()];
+    }
     const ultimaMed = mediciones.length > 0 ? new Date(mediciones[mediciones.length - 1].fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) : '--';
     const racha = getRachaEntrenos();
     const proxRevision = mediciones.length > 0 ? Math.max(0, 14 - Math.round((new Date(hoyStr) - new Date(mediciones[mediciones.length - 1].fecha)) / 86400000)) : '--';
@@ -366,24 +381,28 @@
     const kgRestan = pesoActual > objPeso ? (pesoActual - objPeso).toFixed(1) : 0;
     const prediccion = getPrediccion();
 
+    // Solo mostrar el objetivo de peso si no se ha llegado al objetivo final
+    const mostrarObjPeso = pesoActual > OBJETIVO_PESO || objPeso > OBJETIVO_PESO;
+
     bloque.innerHTML = `
       <div class="info-objetivos-card">
         <div class="io-title">📋 Info & Objetivos</div>
         <div class="io-grid">
           <div class="io-col">
             <div class="io-col-label">Info rápida</div>
-            <div class="io-info-item"><div class="io-info-icon">📅</div><div class="io-info-text"><div class="io-info-val">${diasUltimoEntreno === 0 ? 'Hoy' : 'Hace ' + diasUltimoEntreno + ' d'}</div><div class="io-info-label">Último entreno</div></div></div>
+            <div class="io-info-item"><div class="io-info-icon">📅</div><div class="io-info-text"><div class="io-info-val">${diasUltimoEntreno === 0 ? 'Hoy' : 'Hace ' + diasUltimoEntreno + ' d'}</div><div class="io-info-label">Último entrenamiento</div>${diaUltimoEntrenoStr ? `<div class="io-info-sub">✔ ${diaUltimoEntrenoStr}</div>` : ''}</div></div>
             <div class="io-info-item"><div class="io-info-icon">📏</div><div class="io-info-text"><div class="io-info-val">${ultimaMed}</div><div class="io-info-label">Última medición</div></div></div>
             <div class="io-info-item"><div class="io-info-icon">🔥</div><div class="io-info-text"><div class="io-info-val">${racha} días</div><div class="io-info-label">Racha</div></div></div>
             <div class="io-info-item"><div class="io-info-icon">🗓️</div><div class="io-info-text"><div class="io-info-val">${proxRevision} d</div><div class="io-info-label">Próx revisión</div></div></div>
           </div>
           <div class="io-col">
             <div class="io-col-label">Objetivos</div>
+            ${mostrarObjPeso ? `
             <div class="io-obj-item">
               <div class="io-obj-icon">⚖️</div>
               <div class="io-obj-info"><div class="io-obj-nombre">Peso < ${objPeso} kg</div><div class="io-obj-progress"><div class="io-obj-fill ${pctPeso >= 100 ? 'verde' : 'naranja'}" style="width:${Math.max(2, pctPeso)}%"></div></div><div class="io-obj-meta">${pesoActual > objPeso ? kgRestan + ' kg restan' : '¡Conseguido!'}</div></div>
               <div class="io-obj-check ${pctPeso >= 100 ? 'cumplido' : 'pendiente'}">${pctPeso >= 100 ? '✅' : '⬜'}</div>
-            </div>
+            </div>` : ''}
             <div class="io-obj-item">
               <div class="io-obj-icon">💪</div>
               <div class="io-obj-info"><div class="io-obj-nombre">${OBJETIVO_ENTRENOS_MES} entrenos/mes</div><div class="io-obj-progress"><div class="io-obj-fill ${pctEntrenos >= 100 ? 'verde' : 'naranja'}" style="width:${Math.max(2, pctEntrenos)}%"></div></div><div class="io-obj-meta">${entrenosMes}/${OBJETIVO_ENTRENOS_MES} · ${pctEntrenos}%</div></div>
@@ -391,63 +410,35 @@
             </div>
           </div>
         </div>
-                ${prediccion ? `
+        ${prediccion ? `
         <div class="io-divider"></div>
         <div class="io-prediccion">
-          ${prediccion.tipo === 'exito' ? `
-            🎉 <strong>${prediccion.fechaEstimada}</strong>
-          ` : prediccion.tipo === 'alerta' ? `
-            📈 Ritmo: <strong>+${prediccion.ritmoSemanal} kg/sem</strong><br>
-            ${prediccion.fechaEstimada}
-          ` : `
-            📉 Al ritmo actual (<strong>-${prediccion.ritmoSemanal} kg/sem</strong>)<br>
-            🎯 Llegarás a <strong>${OBJETIVO_PESO} kg</strong> el <strong>${prediccion.fechaEstimada}</strong><br>
-            ⏳ ~${prediccion.semanasRestan} semanas
-          `}
+          ${prediccion.tipo === 'exito' ? `🎉 <strong>${prediccion.fechaEstimada}</strong>` : prediccion.tipo === 'alerta' ? `📈 Ritmo: <strong>+${prediccion.ritmoSemanal} kg/sem</strong><br>${prediccion.fechaEstimada}` : `📉 Al ritmo actual (<strong>-${prediccion.ritmoSemanal} kg/sem</strong>)<br>🎯 Llegarás a <strong>${OBJETIVO_PESO} kg</strong> el <strong>${prediccion.fechaEstimada}</strong><br>⏳ ~${prediccion.semanasRestan} semanas`}
         </div>` : ''}
       </div>
     `;
   }
 
   function renderizarEstadisticas() {
-    const container = document.getElementById('estadisticasContainer');
-    if (!container) return;
-    const hoy = new Date();
-    const mesActual = hoy.getMonth(), añoActual = hoy.getFullYear();
+    const container = document.getElementById('estadisticasContainer'); if (!container) return;
+    const hoy = new Date(); const mesActual = hoy.getMonth(), añoActual = hoy.getFullYear();
     const diasEntrenadosMes = diasEntrenados.filter(f => { const d = new Date(f); return d.getMonth() === mesActual && d.getFullYear() === añoActual; }).length;
     const pctMes = Math.round((diasEntrenadosMes / Math.min(new Date(añoActual, mesActual + 1, 0).getDate(), 30)) * 100);
-    const racha = getRachaEntrenos();
-    const mejorRacha = getMejorRacha();
+    const racha = getRachaEntrenos(); const mejorRacha = getMejorRacha();
     let calcHTML = '';
     if (mediciones.length > 0) {
       const u = mediciones[mediciones.length - 1];
-      const imc = (u.peso / ((userData.altura / 100) ** 2)).toFixed(1);
-      const rca = (u.cintura / userData.altura).toFixed(2);
+      const imc = (u.peso / ((userData.altura / 100) ** 2)).toFixed(1); const rca = (u.cintura / userData.altura).toFixed(2);
       const pctObj = Math.min(100, Math.round(((mediciones[0].peso - u.peso) / (mediciones[0].peso - OBJETIVO_PESO)) * 100));
-      const pesoPerdido = (mediciones[0].peso - u.peso).toFixed(1);
-      const diasRegistrados = Math.round((new Date(u.fecha) - new Date(mediciones[0].fecha)) / 86400000);
-      calcHTML = `<div class="calculadora-card"><div class="calculadora-title">🧮 Calculadora</div><div class="calc-grid">
-        <div class="calc-item"><div class="ca-valor">${imc}</div><div class="ca-label">IMC</div></div>
-        <div class="calc-item"><div class="ca-valor">${rca}</div><div class="ca-label">Ratio C/A</div></div>
-        <div class="calc-item"><div class="ca-valor">${pctObj}%</div><div class="ca-label">% Objetivo</div></div>
-        <div class="calc-item"><div class="ca-valor">${pesoPerdido > 0 ? '-' : '+'}${Math.abs(pesoPerdido)} kg</div><div class="ca-label">Peso perdido</div></div>
-        <div class="calc-item" style="grid-column:span 2"><div class="ca-valor">${diasRegistrados} días</div><div class="ca-label">Días registrados</div></div>
-      </div></div>`;
+      const pesoPerdido = (mediciones[0].peso - u.peso).toFixed(1); const diasRegistrados = Math.round((new Date(u.fecha) - new Date(mediciones[0].fecha)) / 86400000);
+      calcHTML = `<div class="calculadora-card"><div class="calculadora-title">🧮 Calculadora</div><div class="calc-grid"><div class="calc-item"><div class="ca-valor">${imc}</div><div class="ca-label">IMC</div></div><div class="calc-item"><div class="ca-valor">${rca}</div><div class="ca-label">Ratio C/A</div></div><div class="calc-item"><div class="ca-valor">${pctObj}%</div><div class="ca-label">% Objetivo</div></div><div class="calc-item"><div class="ca-valor">${pesoPerdido > 0 ? '-' : '+'}${Math.abs(pesoPerdido)} kg</div><div class="ca-label">Peso perdido</div></div><div class="calc-item" style="grid-column:span 2"><div class="ca-valor">${diasRegistrados} días</div><div class="ca-label">Días registrados</div></div></div></div>`;
     }
     container.innerHTML = `<div class="stats-card"><div class="stats-title">📊 ESTADÍSTICAS</div><div class="stats-grid"><div class="stats-item"><div class="st-icon">📅</div><div class="st-valor">${diasEntrenadosMes}</div><div class="st-etiqueta">Entrenos este mes</div></div><div class="stats-item"><div class="st-icon">🎯</div><div class="st-valor">${pctMes}%</div><div class="st-etiqueta">Cumplimiento</div></div><div class="stats-item"><div class="st-icon">💪</div><div class="st-valor">${diasEntrenados.length}</div><div class="st-etiqueta">Total entrenos</div></div><div class="stats-item"><div class="st-icon">📏</div><div class="st-valor">${mediciones.length}</div><div class="st-etiqueta">Mediciones</div></div><div class="stats-highlight"><div class="sh-icon">🔥</div><div><div class="sh-valor">${racha} días</div><div class="sh-etiqueta">Racha actual</div></div></div><div class="stats-highlight"><div class="sh-icon">🏆</div><div><div class="sh-valor">${mejorRacha} días</div><div class="sh-etiqueta">Mejor racha</div></div></div></div></div>${calcHTML}`;
   }
 
   function getMejorRacha() { if (diasEntrenados.length === 0) return 0; const diasOrdenados = [...new Set(diasEntrenados)].sort(); let mejor = 1, actual = 1; for (let i = 1; i < diasOrdenados.length; i++) { const diff = Math.round((new Date(diasOrdenados[i]) - new Date(diasOrdenados[i - 1])) / 86400000); if (diff === 1) { actual++; mejor = Math.max(mejor, actual); } else { actual = 1; } } return mejor; }
 
-  function actualizarProgresoRutina() {
-    const container = document.getElementById('progresoRutinaContainer'); if (!container) return;
-    const ejercicios = getEjerciciosPorDia(diaActivo); if (ejercicios.length === 0 || diaActivo === 'domingo') { container.innerHTML = ''; return; }
-    const total = ejercicios.length; let completados = 0; ejercicios.forEach((_, idx) => { if (checks[`${diaActivo}-${idx}`]) completados++; });
-    const pct = Math.round((completados / total) * 100);
-    const nombresDias = { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado' };
-    if (completados === total) { container.innerHTML = `<div class="progreso-rutina-bar"><div class="progreso-rutina-completado">✅ ¡${nombresDias[diaActivo]} COMPLETADO!</div></div>`; }
-    else { container.innerHTML = `<div class="progreso-rutina-bar"><div class="progreso-rutina-header"><span class="progreso-rutina-titulo">Rutina del ${nombresDias[diaActivo]}</span><span class="progreso-rutina-porcentaje">${pct}%</span></div><div class="progreso-rutina-track"><div class="progreso-rutina-fill" style="width:${pct}%"></div></div><div class="progreso-rutina-info">${completados}/${total} ejercicios</div></div>`; }
-  }
+  function actualizarProgresoRutina() { const container = document.getElementById('progresoRutinaContainer'); if (!container) return; const ejercicios = getEjerciciosPorDia(diaActivo); if (ejercicios.length === 0 || diaActivo === 'domingo') { container.innerHTML = ''; return; } const total = ejercicios.length; let completados = 0; ejercicios.forEach((_, idx) => { if (checks[`${diaActivo}-${idx}`]) completados++; }); const pct = Math.round((completados / total) * 100); if (completados === total) { container.innerHTML = `<div class="progreso-rutina-bar"><div class="progreso-rutina-completado">✅ ¡${nombresDias[diaActivo]} COMPLETADO!</div></div>`; } else { container.innerHTML = `<div class="progreso-rutina-bar"><div class="progreso-rutina-header"><span class="progreso-rutina-titulo">Rutina del ${nombresDias[diaActivo]}</span><span class="progreso-rutina-porcentaje">${pct}%</span></div><div class="progreso-rutina-track"><div class="progreso-rutina-fill" style="width:${pct}%"></div></div><div class="progreso-rutina-info">${completados}/${total} ejercicios</div></div>`; } }
 
   let graficoPesoInst = null, graficoCinturaInst = null, graficoGrasaInst = null;
   function renderizarGraficos() { if (mediciones.length < 2) return; const fechas = mediciones.map(m => new Date(m.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })); const opts = { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 8 }, maxRotation: 45, autoSkip: true }, grid: { display: false } }, y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { font: { size: 9 } } } } }; const ctx1 = document.getElementById('graficoPeso'); if (ctx1) { if (graficoPesoInst) graficoPesoInst.destroy(); graficoPesoInst = new Chart(ctx1, { type: 'line', data: { labels: fechas, datasets: [{ data: mediciones.map(m => m.peso), borderColor: '#f97316', backgroundColor: 'transparent', tension: 0.3, pointRadius: 3, borderWidth: 2 }] }, options: opts }); } const ctx2 = document.getElementById('graficoCintura'); if (ctx2) { if (graficoCinturaInst) graficoCinturaInst.destroy(); graficoCinturaInst = new Chart(ctx2, { type: 'line', data: { labels: fechas, datasets: [{ data: mediciones.map(m => m.cintura), borderColor: '#8b5cf6', backgroundColor: 'transparent', tension: 0.3, pointRadius: 3, borderWidth: 2 }] }, options: opts }); } const ctx3 = document.getElementById('graficoGrasa'); if (ctx3) { if (graficoGrasaInst) graficoGrasaInst.destroy(); graficoGrasaInst = new Chart(ctx3, { type: 'line', data: { labels: fechas, datasets: [{ data: mediciones.map(m => m.grasaPorcentaje), borderColor: '#ef4444', backgroundColor: 'transparent', tension: 0.3, pointRadius: 3, borderWidth: 2 }] }, options: opts }); } }
