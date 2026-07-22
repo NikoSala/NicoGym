@@ -153,62 +153,37 @@
     .pendiente-item:last-child { border-bottom: none; }
     .pendiente-item i.fa-chevron-right { color: var(--muted); margin-left: auto; }
 
-    /* ESTILOS ALIMENTACIÓN */
-    .alimentacion-objetivo { display: flex; justify-content: space-around; padding: var(--spacing-md); background: rgba(0,0,0,0.15); border-radius: var(--radius); }
-    .alimentacion-objetivo-item { text-align: center; }
-    .alimentacion-objetivo-item .valor { font-size: 20px; font-weight: 700; color: var(--primary); }
-    .alimentacion-objetivo-item .label { font-size: 10px; color: var(--muted2); text-transform: uppercase; }
-    .alimentacion-imagen { width: 100%; border-radius: var(--radius); overflow: hidden; cursor: pointer; border: 1px solid var(--border); }
-    .alimentacion-imagen img { width: 100%; display: block; }
-    .alimentacion-imagen-btn { text-align: center; margin-top: var(--spacing-xs); }
-    .alimentacion-suplemento { display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) 0; border-bottom: 1px solid var(--border); }
-    .alimentacion-suplemento:last-child { border-bottom: none; }
-    .alimentacion-suplemento .suple-check { width: 20px; height: 20px; accent-color: var(--success); cursor: pointer; }
-    .alimentacion-suplemento .suple-info { flex: 1; }
-    .alimentacion-suplemento .suple-nombre { font-weight: 600; font-size: 14px; }
-    .alimentacion-suplemento .suple-detalle { font-size: 11px; color: var(--muted2); }
-    .alimentacion-suplemento .suple-hora { font-size: 12px; color: var(--primary); font-weight: 600; }
-    .alimentacion-suplemento .suple-inactivo { color: var(--muted2); font-size: 11px; opacity: 0.6; }
-    .alimentacion-agua { padding: var(--spacing-sm) 0; }
-    .alimentacion-agua .agua-header { display: flex; justify-content: space-between; align-items: center; }
-    .alimentacion-agua .agua-valor { font-size: 20px; font-weight: 700; }
-    .alimentacion-agua .agua-objetivo { font-size: 13px; color: var(--muted2); }
-    .alimentacion-agua .agua-barra { height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; margin: var(--spacing-sm) 0; }
-    .alimentacion-agua .agua-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.5s ease; }
-    .alimentacion-agua .agua-botones { display: flex; gap: var(--spacing-sm); }
-    .alimentacion-agua .agua-botones .btn { flex: 1; }
-    .alimentacion-comida { padding: var(--spacing-sm) 0; }
-    .alimentacion-comida .comida-header { display: flex; align-items: center; gap: var(--spacing-md); }
-    .alimentacion-comida .comida-icono { font-size: 32px; }
-    .alimentacion-comida .comida-info { flex: 1; }
-    .alimentacion-comida .comida-nombre { font-size: 16px; font-weight: 600; }
-    .alimentacion-comida .comida-tiempo { font-size: 13px; color: var(--primary); }
-    .alimentacion-comida .comida-faltan { font-size: 12px; color: var(--muted2); }
-    .alimentacion-resumen { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--spacing-sm); }
-    .alimentacion-resumen-item { text-align: center; background: rgba(0,0,0,0.15); border-radius: var(--radius); padding: var(--spacing-sm); }
-    .alimentacion-resumen-item .r-icon { font-size: 20px; }
-    .alimentacion-resumen-item .r-label { font-size: 9px; color: var(--muted2); }
-    .alimentacion-resumen-item .r-estado { font-size: 12px; font-weight: 600; }
-    .alimentacion-resumen-item .r-estado.ok { color: var(--success); }
-    .alimentacion-resumen-item .r-estado.pending { color: var(--warning); }
-    .alimentacion-cumplimiento { text-align: center; padding: var(--spacing-sm); }
-    .alimentacion-cumplimiento .cumplimiento-valor { font-size: 28px; font-weight: 700; color: var(--primary); }
-    .alimentacion-cumplimiento .cumplimiento-label { font-size: 11px; color: var(--muted2); }
-    .alimentacion-semanal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-    .alimentacion-semanal .dia { text-align: center; padding: 4px 0; border-radius: 6px; background: rgba(0,0,0,0.15); }
-    .alimentacion-semanal .dia .letra { font-size: 10px; color: var(--muted2); font-weight: 600; }
-    .alimentacion-semanal .dia .estado { font-size: 12px; }
-    .alimentacion-semanal .dia.completo { background: rgba(34,197,94,0.15); }
-    .alimentacion-semanal .dia.completo .estado { color: var(--success); }
-    .alimentacion-semanal .dia.incompleto { background: rgba(239,68,68,0.1); }
-    .alimentacion-semanal .dia.incompleto .estado { color: var(--danger); }
-    .alimentacion-semanal .dia.hoy { border: 1px solid var(--primary); }
-
-    /* Banner de notificaciones */
-    .banner-notificacion { background: var(--card); border-left: 3px solid var(--primary); padding: var(--spacing-sm) var(--spacing-md); margin-bottom: var(--spacing-md); border-radius: var(--radius); display: flex; align-items: center; gap: var(--spacing-sm); font-size: 13px; }
-    .banner-notificacion .banner-icono { font-size: 20px; }
-    .banner-notificacion .banner-texto { flex: 1; }
-    .banner-notificacion .banner-cerrar { cursor: pointer; color: var(--muted); }
+    /* ESTILOS NUTRICIÓN */
+    .plan-img { width: 100%; border-radius: var(--radius); border: 1px solid var(--border); cursor: pointer; display: block; }
+    .nutricion-suplemento { display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) 0; border-bottom: 1px solid var(--border); }
+    .nutricion-suplemento:last-child { border-bottom: none; }
+    .nutricion-suplemento .suple-check { width: 20px; height: 20px; accent-color: var(--success); cursor: pointer; }
+    .nutricion-suplemento .suple-info { flex: 1; }
+    .nutricion-suplemento .suple-nombre { font-weight: 600; font-size: 14px; }
+    .nutricion-suplemento .suple-detalle { font-size: 11px; color: var(--muted2); }
+    .nutricion-suplemento .suple-hora { font-size: 12px; color: var(--primary); font-weight: 600; }
+    .nutricion-suplemento .suple-inactivo { color: var(--muted2); font-size: 11px; opacity: 0.6; }
+    .nutricion-agua .agua-header { display: flex; justify-content: space-between; align-items: center; }
+    .nutricion-agua .agua-valor { font-size: 20px; font-weight: 700; }
+    .nutricion-agua .agua-objetivo { font-size: 13px; color: var(--muted2); }
+    .nutricion-agua .agua-barra { height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; margin: var(--spacing-sm) 0; }
+    .nutricion-agua .agua-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.5s ease; }
+    .nutricion-agua .agua-botones { display: flex; gap: var(--spacing-sm); }
+    .nutricion-agua .agua-botones .btn { flex: 1; }
+    .nutricion-comida { padding: var(--spacing-sm) 0; }
+    .nutricion-comida .comida-header { display: flex; align-items: center; gap: var(--spacing-md); }
+    .nutricion-comida .comida-icono { font-size: 32px; }
+    .nutricion-comida .comida-info { flex: 1; }
+    .nutricion-comida .comida-nombre { font-size: 16px; font-weight: 600; }
+    .nutricion-comida .comida-tiempo { font-size: 13px; color: var(--primary); }
+    .nutricion-comida .comida-faltan { font-size: 12px; color: var(--muted2); }
+    .nutricion-resumen { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-sm); }
+    .nutricion-resumen-item { text-align: center; background: rgba(0,0,0,0.15); border-radius: var(--radius); padding: var(--spacing-sm); }
+    .nutricion-resumen-item .r-icon { font-size: 20px; }
+    .nutricion-resumen-item .r-label { font-size: 9px; color: var(--muted2); }
+    .nutricion-resumen-item .r-estado { font-size: 14px; font-weight: 600; }
+    .nutricion-resumen-item .r-estado.ok { color: var(--success); }
+    .nutricion-resumen-item .r-estado.pending { color: var(--warning); }
 
     .record-card { background: var(--card); border-radius: var(--radius); padding: var(--spacing-md); margin: 8px 0; border: 1px solid var(--border); border-left: 3px solid var(--primary); }
     .record-card .record-name { font-size: 16px; font-weight: 600; }
@@ -262,7 +237,6 @@
     .finalizar-titulo { font-size: 28px; font-weight: 700; text-align: center; color: var(--success); margin-bottom: var(--spacing-lg); }
     .finalizar-subtitulo { text-align: center; color: var(--muted2); font-size: 13px; margin-bottom: var(--spacing-lg); }
 
-    /* Scrollbar personalizado */
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
@@ -284,7 +258,7 @@
   <div class="menu-item" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i> Stats</div>
   <div class="menu-item" onclick="APP.navegar('graficos')"><i class="fa-solid fa-chart-line"></i> Gráficos</div>
   <div class="menu-item" onclick="APP.navegar('progreso-fotos')"><i class="fa-solid fa-camera"></i> Fotos</div>
-  <div class="menu-item active" onclick="APP.navegar('alimentacion')"><i class="fa-solid fa-utensils"></i> 🍽 Alimentación</div>
+  <div class="menu-item active" onclick="APP.navegar('nutricion')"><i class="fa-solid fa-utensils"></i> 🍽 Nutrición</div>
   <div class="menu-item" onclick="APP.navegar('records')"><i class="fa-solid fa-trophy"></i> 🏆 Récords</div>
   <div class="menu-item" onclick="APP.navegar('mi-evolucion')"><i class="fa-solid fa-chart-simple"></i> 📊 Mi evolución</div>
   <div class="menu-item" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</div>
@@ -321,165 +295,101 @@
   <div class="card"><div class="card-title"><i class="fa-solid fa-code-compare"></i> COMPARAR DOS DÍAS</div><div style="display:flex;gap:8px;margin:10px 0"><select id="compararDia1" style="flex:1;background:transparent;border:1px solid var(--border);border-radius:20px;padding:6px 8px;color:white;font-size:11px;font-family:'Inter',sans-serif"></select><select id="compararDia2" style="flex:1;background:transparent;border:1px solid var(--border);border-radius:20px;padding:6px 8px;color:white;font-size:11px;font-family:'Inter',sans-serif"></select></div><button class="btn btn-primary btn-block" onclick="Fotos.comparar()"><i class="fa-solid fa-eye"></i> Comparar</button><div id="comparadorResultado" style="margin-top:10px"></div></div>
 </div></div>
 
-<!-- NUEVA PÁGINA: ALIMENTACIÓN -->
-<div class="page" id="page-alimentacion"><div class="container">
-  <!-- Banner de notificaciones -->
-  <div id="alimentacionBanner" class="banner-notificacion hidden">
-    <span class="banner-icono">💊</span>
-    <span class="banner-texto" id="bannerTexto">Hoy recuerda tomar la creatina.</span>
-    <span class="banner-cerrar" onclick="document.getElementById('alimentacionBanner').classList.add('hidden')">✕</span>
-  </div>
-
+<!-- NUEVA PÁGINA: NUTRICIÓN -->
+<div class="page" id="page-nutricion"><div class="container">
   <div class="card">
-    <div class="card-title"><i class="fa-solid fa-utensils"></i> 🍽 ALIMENTACIÓN</div>
-    <div style="font-size:13px;color:var(--muted2);margin-bottom:var(--spacing-md)">Tu plan nutricional</div>
+    <div class="card-title"><i class="fa-solid fa-utensils"></i> 🍽 NUTRICIÓN</div>
     
-    <!-- FASE 2: Objetivo -->
-    <div class="alimentacion-objetivo">
-      <div class="alimentacion-objetivo-item">
-        <div class="label">Objetivo</div>
-        <div class="valor">Perder grasa</div>
-      </div>
-      <div class="alimentacion-objetivo-item">
-        <div class="label">Mantener</div>
-        <div class="valor">Músculo</div>
-      </div>
-      <div class="alimentacion-objetivo-item">
-        <div class="label">Peso</div>
-        <div class="valor" id="alimentacionPesoObjetivo">75 kg</div>
+    <!-- Plan semanal -->
+    <div style="margin-bottom: var(--spacing-md)">
+      <div style="font-size:13px;color:var(--muted2);margin-bottom:var(--spacing-sm)">📋 Plan semanal</div>
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300' viewBox='0 0 600 300'%3E%3Crect width='600' height='300' fill='%231e293b'/%3E%3Ctext x='300' y='130' font-family='Inter' font-size='18' fill='%2394a3b8' text-anchor='middle'%3E🍽 PLAN SEMANAL%3C/text%3E%3Ctext x='300' y='160' font-family='Inter' font-size='12' fill='%2364748b' text-anchor='middle'%3ELunes · Martes · Miércoles · Jueves · Viernes%3C/text%3E%3Ctext x='300' y='190' font-family='Inter' font-size='10' fill='%234a5568' text-anchor='middle'%3E(menu.png)%3C/text%3E%3C/svg%3E" alt="Plan semanal" class="plan-img" id="planImg" onclick="Nutricion.abrirImagen()">
+      <div style="text-align:center;margin-top:var(--spacing-xs)">
+        <button class="btn btn-ghost btn-sm" onclick="Nutricion.abrirImagen()"><i class="fa-solid fa-expand"></i> 🔍 Ver pantalla completa</button>
       </div>
     </div>
-  </div>
 
-  <!-- FASE 3: Imagen del menú -->
-  <div class="card">
-    <div class="card-title"><i class="fa-solid fa-image"></i> Plan de comidas</div>
-    <div class="alimentacion-imagen" onclick="Alimentacion.abrirImagen()">
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300' viewBox='0 0 600 300'%3E%3Crect width='600' height='300' fill='%231e293b'/%3E%3Ctext x='300' y='130' font-family='Inter' font-size='18' fill='%2394a3b8' text-anchor='middle'%3E🍽 MENU DEL DÍA%3C/text%3E%3Ctext x='300' y='160' font-family='Inter' font-size='12' fill='%2364748b' text-anchor='middle'%3EDesayuno · Comida · Cena%3C/text%3E%3Ctext x='300' y='190' font-family='Inter' font-size='10' fill='%234a5568' text-anchor='middle'%3E(Sube tu imagen personalizada)%3C/text%3E%3C/svg%3E" alt="Plan de comidas" id="menuImagen">
-    </div>
-    <div class="alimentacion-imagen-btn">
-      <button class="btn btn-ghost btn-sm" onclick="Alimentacion.abrirImagen()"><i class="fa-solid fa-expand"></i> 🔍 Ver pantalla completa</button>
-      <button class="btn btn-ghost btn-sm" onclick="Alimentacion.subirImagen()" style="margin-left:var(--spacing-sm)"><i class="fa-solid fa-upload"></i> Cambiar imagen</button>
-      <input type="file" id="inputMenuImagen" accept="image/*" class="hidden" onchange="Alimentacion.cargarImagen(this)">
-    </div>
-  </div>
-
-  <!-- FASE 4: Suplementos -->
-  <div class="card">
-    <div class="card-title"><i class="fa-solid fa-capsules"></i> 💊 SUPLEMENTOS</div>
-    <div id="suplementosContainer">
-      <div class="alimentacion-suplemento" data-suplemento="creatina">
-        <input type="checkbox" class="suple-check" onchange="Alimentacion.toggleSuplemento('creatina', this)">
-        <div class="suple-info">
-          <div class="suple-nombre">Creatina</div>
-          <div class="suple-detalle">5 gramos</div>
+    <!-- Suplementos -->
+    <div style="margin-bottom: var(--spacing-md)">
+      <div class="card-title" style="margin-bottom:var(--spacing-sm)"><i class="fa-solid fa-capsules"></i> 💊 SUPLEMENTOS</div>
+      <div id="suplementosContainer">
+        <div class="nutricion-suplemento" data-suplemento="creatina">
+          <input type="checkbox" class="suple-check" onchange="Nutricion.toggleSuplemento('creatina', this)">
+          <div class="suple-info">
+            <div class="suple-nombre">Creatina</div>
+            <div class="suple-detalle">5 gramos</div>
+          </div>
+          <div class="suple-hora">18:20</div>
         </div>
-        <div class="suple-hora">18:20</div>
-      </div>
-      <div class="alimentacion-suplemento" data-suplemento="proteina">
-        <input type="checkbox" class="suple-check" onchange="Alimentacion.toggleSuplemento('proteina', this)">
-        <div class="suple-info">
-          <div class="suple-nombre">Proteína Whey</div>
-          <div class="suple-detalle">Batido</div>
+        <div class="nutricion-suplemento" data-suplemento="proteina" id="supleProteina" style="display:none">
+          <input type="checkbox" class="suple-check" onchange="Nutricion.toggleSuplemento('proteina', this)">
+          <div class="suple-info">
+            <div class="suple-nombre">Proteína Whey</div>
+            <div class="suple-detalle">Batido</div>
+          </div>
+          <div class="suple-hora">10:30</div>
         </div>
-        <div class="suple-hora">10:30</div>
-      </div>
-      <div class="alimentacion-suplemento" data-suplemento="preentreno" id="suplePreentreno">
-        <input type="checkbox" class="suple-check" onchange="Alimentacion.toggleSuplemento('preentreno', this)">
-        <div class="suple-info">
-          <div class="suple-nombre">Preentreno</div>
-          <div class="suple-detalle">Solo entreno</div>
-        </div>
-        <div class="suple-hora">17:00</div>
-        <div class="suple-inactivo">Disponible en Agosto</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FASE 5: Agua -->
-  <div class="card">
-    <div class="card-title"><i class="fa-solid fa-glass-water"></i> 💧 Agua</div>
-    <div class="alimentacion-agua">
-      <div class="agua-header">
-        <span class="agua-valor" id="aguaActual">1.5</span>
-        <span class="agua-objetivo">/ 2.5 litros</span>
-      </div>
-      <div class="agua-barra">
-        <div class="agua-fill" id="aguaFill" style="width:60%"></div>
-      </div>
-      <div class="agua-botones">
-        <button class="btn btn-ghost btn-sm" onclick="Alimentacion.agregarAgua(250)">+250 ml</button>
-        <button class="btn btn-ghost btn-sm" onclick="Alimentacion.agregarAgua(500)">+500 ml</button>
-        <button class="btn btn-ghost btn-sm" onclick="Alimentacion.resetearAgua()"><i class="fa-solid fa-rotate"></i></button>
-      </div>
-      <div id="aguaMensaje" style="text-align:center;margin-top:var(--spacing-sm);color:var(--success);font-weight:600;display:none">
-        ✔ Objetivo conseguido
-      </div>
-    </div>
-  </div>
-
-  <!-- FASE 6: Próxima comida -->
-  <div class="card">
-    <div class="card-title"><i class="fa-solid fa-clock"></i> 🕓 Próxima comida</div>
-    <div class="alimentacion-comida" id="proximaComida">
-      <div class="comida-header">
-        <span class="comida-icono" id="comidaIcono">☕</span>
-        <div class="comida-info">
-          <div class="comida-nombre" id="comidaNombre">Café</div>
-          <div class="comida-tiempo" id="comidaTiempo">16:45</div>
-          <div class="comida-faltan" id="comidaFaltan">Faltan 25 minutos</div>
+        <div class="nutricion-suplemento" id="supleProteinaInactivo">
+          <div class="suple-info">
+            <div class="suple-nombre" style="color:var(--muted2)">Proteína Whey</div>
+            <div class="suple-detalle">Disponible en Agosto</div>
+          </div>
+          <div class="suple-inactivo">📅 Agosto</div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- FASE 7: Resumen diario -->
-  <div class="card">
-    <div class="card-title"><i class="fa-solid fa-clipboard-check"></i> RESUMEN DEL DÍA</div>
-    <div class="alimentacion-resumen" id="resumenDiario">
-      <div class="alimentacion-resumen-item">
-        <div class="r-icon">💪</div>
-        <div class="r-label">Entreno</div>
-        <div class="r-estado" id="resumenEntreno">✔</div>
-      </div>
-      <div class="alimentacion-resumen-item">
-        <div class="r-icon">💊</div>
-        <div class="r-label">Creatina</div>
-        <div class="r-estado" id="resumenCreatina">✔</div>
-      </div>
-      <div class="alimentacion-resumen-item">
-        <div class="r-icon">🥛</div>
-        <div class="r-label">Proteína</div>
-        <div class="r-estado" id="resumenProteina">✖</div>
-      </div>
-      <div class="alimentacion-resumen-item">
-        <div class="r-icon">💧</div>
-        <div class="r-label">Agua</div>
-        <div class="r-estado" id="resumenAgua">✔</div>
-      </div>
-      <div class="alimentacion-resumen-item">
-        <div class="r-icon">🍽</div>
-        <div class="r-label">Comidas</div>
-        <div class="r-estado" id="resumenComidas">✔</div>
+    <!-- Agua -->
+    <div style="margin-bottom: var(--spacing-md)">
+      <div class="card-title" style="margin-bottom:var(--spacing-sm)"><i class="fa-solid fa-glass-water"></i> 💧 AGUA</div>
+      <div class="nutricion-agua">
+        <div class="agua-header">
+          <span class="agua-valor" id="aguaActual">1.5</span>
+          <span class="agua-objetivo">/ 2.5 litros</span>
+        </div>
+        <div class="agua-barra">
+          <div class="agua-fill" id="aguaFill" style="width:60%"></div>
+        </div>
+        <div class="agua-botones">
+          <button class="btn btn-ghost btn-sm" onclick="Nutricion.agregarAgua(250)">+250 ml</button>
+          <button class="btn btn-ghost btn-sm" onclick="Nutricion.agregarAgua(500)">+500 ml</button>
+        </div>
+        <div id="aguaMensaje" style="text-align:center;margin-top:var(--spacing-sm);color:var(--success);font-weight:600;display:none">
+          ✔ Objetivo conseguido
+        </div>
       </div>
     </div>
-    <div class="alimentacion-cumplimiento">
-      <div class="cumplimiento-valor" id="cumplimientoPorcentaje">80%</div>
-      <div class="cumplimiento-label">Cumplimiento diario</div>
-    </div>
-  </div>
 
-  <!-- FASE 10: Historial semanal -->
-  <div class="card">
-    <div class="card-title"><i class="fa-solid fa-calendar-week"></i> ÚLTIMOS 7 DÍAS</div>
-    <div class="alimentacion-semanal" id="historialSemanal">
-      <div class="dia completo"><div class="letra">L</div><div class="estado">✔✔✔✔</div></div>
-      <div class="dia incompleto"><div class="letra">M</div><div class="estado">✔✔✔✖</div></div>
-      <div class="dia completo"><div class="letra">X</div><div class="estado">✔✔✔✔</div></div>
-      <div class="dia incompleto"><div class="letra">J</div><div class="estado">✔✔✖✔</div></div>
-      <div class="dia completo"><div class="letra">V</div><div class="estado">✔✔✔✔</div></div>
-      <div class="dia hoy"><div class="letra">S</div><div class="estado">✔✔✔✔</div></div>
-      <div class="dia"><div class="letra">D</div><div class="estado">---</div></div>
+    <!-- Ahora toca / Próxima comida -->
+    <div style="margin-bottom: var(--spacing-md)">
+      <div class="card-title" style="margin-bottom:var(--spacing-sm)"><i class="fa-solid fa-clock"></i> 🍽 AHORA TOCA</div>
+      <div class="nutricion-comida" id="comidaContainer">
+        <div class="comida-header">
+          <span class="comida-icono" id="comidaIcono">☕</span>
+          <div class="comida-info">
+            <div class="comida-nombre" id="comidaNombre">Café</div>
+            <div class="comida-tiempo" id="comidaTiempo">08:00</div>
+            <div class="comida-faltan" id="comidaFaltan">Faltan 45 minutos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumen Hoy -->
+    <div>
+      <div class="card-title" style="margin-bottom:var(--spacing-sm)">✔ HOY</div>
+      <div class="nutricion-resumen" id="resumenHoy">
+        <div class="nutricion-resumen-item">
+          <div class="r-icon">💊</div>
+          <div class="r-label">Creatina</div>
+          <div class="r-estado" id="resumenCreatina">✔</div>
+        </div>
+        <div class="nutricion-resumen-item">
+          <div class="r-icon">💧</div>
+          <div class="r-label">Agua</div>
+          <div class="r-estado" id="resumenAgua">✔</div>
+        </div>
+      </div>
     </div>
   </div>
 </div></div>
@@ -540,7 +450,7 @@
   <button class="nav-item" onclick="APP.navegar('rutinas')" aria-label="Ir a Rutinas"><i class="fa-solid fa-dumbbell"></i>RUTINA</button>
   <button class="nav-item" onclick="APP.navegar('hoy')" aria-label="Ir a Hoy"><i class="fa-solid fa-calendar-check"></i>HOY</button>
   <button class="nav-item" onclick="APP.navegar('composicion')" aria-label="Ir a Peso"><i class="fa-solid fa-scale-balanced"></i>PESO</button>
-  <button class="nav-item active" onclick="APP.navegar('alimentacion')" aria-label="Ir a Alimentación"><i class="fa-solid fa-utensils"></i>COMIDA</button>
+  <button class="nav-item active" onclick="APP.navegar('nutricion')" aria-label="Ir a Nutrición"><i class="fa-solid fa-utensils"></i>COMIDA</button>
 </div>
 
 <script>
@@ -556,12 +466,12 @@
     FECHA_INICIO_NO_FUMAR: new Date(2026,1,22), 
     STORAGE_KEY: 'nicoGym', 
     FECHA_REFERENCIA_MEDICIONES: '2026-07-20', 
-    FECHA_ACTIVACION_SUPLEMENTOS: '2026-08-03',
+    FECHA_ACTIVACION_PROTEINA: new Date(2026,7,1), // 1 de agosto de 2026
     COMIDAS: [
       { hora: '08:00', nombre: 'Café', icono: '☕' },
       { hora: '10:30', nombre: 'Batido proteína', icono: '🥛' },
       { hora: '14:00', nombre: 'Comida', icono: '🍗' },
-      { hora: '17:00', nombre: 'Pre-entreno', icono: '💪' },
+      { hora: '17:00', nombre: 'Merienda', icono: '🥪' },
       { hora: '19:00', nombre: 'Cena', icono: '🍽' }
     ]
   };
@@ -569,8 +479,6 @@
   const DIAS_SEMANA = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   const NOMBRES_DIAS = { lunes:'Lunes',martes:'Martes',miercoles:'Miércoles',jueves:'Jueves',viernes:'Viernes',sabado:'Sábado' };
   const TIPOS_RUTINA = { lunes:'ESPALDA/BÍCEPS',martes:'PECHO/HOMBRO',miercoles:'TRÍCEPS/CARDIO',jueves:'ESPALDA/BÍCEPS',viernes:'PECHO/HOMBRO',sabado:'PIERNA/ANTEBRAZO' };
-  const ICONOS = { peso:'fa-weight-scale',musculo:'fa-dumbbell',cintura:'fa-ruler',grasa:'fa-droplet',fuego:'fa-fire',calendario:'fa-calendar',regla:'fa-ruler',guardar:'fa-floppy-disk',basura:'fa-trash',lapiz:'fa-pen',check:'fa-circle-check',play:'fa-play',mas:'fa-plus',grafico:'fa-chart-line',historial:'fa-clock-rotate-left',camara:'fa-camera',ojo:'fa-eye',descargar:'fa-download',subir:'fa-upload',engranaje:'fa-gear',info:'fa-circle-info',libro:'fa-book',libroAbierto:'fa-book-open',casa:'fa-house',bullseye:'fa-bullseye',flechaIzq:'fa-chevron-left',flechaDer:'fa-chevron-right',flechaArriba:'fa-arrow-up',flechaAbajo:'fa-arrow-down',menos:'fa-minus',cerrar:'fa-xmark',hoy:'fa-calendar-check',campana:'fa-bell',capsulas:'fa-capsules',vaso:'fa-glass-water',corazon:'fa-heart',objetivo:'fa-bullseye',sparkles:'fa-sparkles',trofeo:'fa-trophy',evolucion:'fa-chart-simple' };
-  const TEXTOS = { guardado:'✅ Medición guardada',eliminado:'🗑️ Elemento eliminado',error:'❌ Ha ocurrido un error',completado:'🎉 ¡Día completado!',entrenoGuardado:'✅ Entrenamiento guardado',fotosGuardadas:'✅ Fotos guardadas',ajustesGuardados:'✅ Ajustes guardados',datosExportados:'✅ Datos exportados',datosImportados:'✅ Datos importados',sinRegistros:'Sin registros.',sinFotos:'No hay fotos para comparar',sinEntrenos:'No hay entrenamientos guardados aún.',sinMediciones:'Registra tu primera medición en "Peso"',reiniciado:'✅ Día reiniciado',nuevoRecord:'🏆 ¡Nuevo récord en',cancelar:'Cancelar',cerrar:'CERRAR',guardar:'Guardar',confirmar:'Confirmar' };
   const coloresPorDia = { 0:"#e8ff47",1:"#4caf50",2:"#ff9800",3:"#2196f3",4:"#9c27b0",5:"#ff5722",6:"#00bcd4" };
   let diaActivo = 'lunes';
   let userData = { altura: CONFIG.ALTURA, nombre: 'Nico' };
@@ -587,7 +495,7 @@
     logros: [], 
     ajustes: {}, 
     recordatorios: { freqMediciones: 2, freqFotos: 4, ultimaMedicion: CONFIG.FECHA_REFERENCIA_MEDICIONES, ultimasFotos: null }, 
-    habitos: { creatina: { activo: true, dias: [] }, proteina: { activo: false, dias: [] }, preentreno: { activo: false, dias: [] } },
+    habitos: { creatina: { activo: true, dias: [] }, proteina: { activo: false, dias: [] } },
     records: [],
     evolution: {
       startDate: '06/06/2026',
@@ -598,11 +506,9 @@
       totalWorkouts: 0,
       daysWithoutSmoking: 0
     },
-    // ALIMENTACIÓN
-    alimentacion: {
+    nutricion: {
       agua: 1.5,
-      suplementos: { creatina: false, proteina: false, preentreno: false },
-      imagen: null,
+      suplementos: { creatina: false, proteina: false },
       ultimoDia: null
     }
   };
@@ -617,7 +523,7 @@
         const d=JSON.parse(raw); 
         Object.assign(STATE,d); 
         if(!STATE.recordatorios){ STATE.recordatorios={freqMediciones:2,freqFotos:4,ultimaMedicion:CONFIG.FECHA_REFERENCIA_MEDICIONES,ultimasFotos:null}; } 
-        if(!STATE.habitos){ STATE.habitos={creatina:{activo:true,dias:[]},proteina:{activo:false,dias:[]},preentreno:{activo:false,dias:[]}}; }
+        if(!STATE.habitos){ STATE.habitos={creatina:{activo:true,dias:[]},proteina:{activo:false,dias:[]}}; }
         if(!STATE.records) STATE.records = [];
         if(!STATE.evolution) {
           STATE.evolution = {
@@ -630,15 +536,15 @@
             daysWithoutSmoking: 0
           };
         }
-        if(!STATE.alimentacion) {
-          STATE.alimentacion = { agua: 1.5, suplementos: { creatina: false, proteina: false, preentreno: false }, imagen: null, ultimoDia: null };
+        if(!STATE.nutricion) {
+          STATE.nutricion = { agua: 1.5, suplementos: { creatina: false, proteina: false }, ultimoDia: null };
         }
         // Resetear agua si es nuevo día
         const hoy = UI.getHoyStr();
-        if (STATE.alimentacion.ultimoDia !== hoy) {
-          STATE.alimentacion.agua = 0;
-          STATE.alimentacion.ultimoDia = hoy;
-          STATE.alimentacion.suplementos = { creatina: false, proteina: false, preentreno: false };
+        if (STATE.nutricion.ultimoDia !== hoy) {
+          STATE.nutricion.agua = 0;
+          STATE.nutricion.ultimoDia = hoy;
+          STATE.nutricion.suplementos = { creatina: false, proteina: false };
         }
       } else if(localStorage.getItem('bodyComposition')){ 
         try{ STATE.mediciones=JSON.parse(localStorage.getItem('bodyComposition'))||[]; }catch(e){} 
@@ -657,8 +563,8 @@
     },
     _save() { localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(STATE)); },
     resetAll() { localStorage.removeItem(CONFIG.STORAGE_KEY); localStorage.clear(); location.reload(); },
-    exportar() { const blob=new Blob([JSON.stringify(STATE,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='nicogym_backup.json'; a.click(); UI.toast(TEXTOS.datosExportados,'success'); },
-    importar(input) { const file=input.files[0]; if(!file)return; const reader=new FileReader(); reader.onload=(e)=>{ try{ const datos=JSON.parse(e.target.result); Object.assign(STATE,datos); this._save(); UI.toast(TEXTOS.datosImportados,'success'); APP.renderizarTodo(); }catch(err){ UI.toast(TEXTOS.error,'error'); } }; reader.readAsText(file); }
+    exportar() { const blob=new Blob([JSON.stringify(STATE,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='nicogym_backup.json'; a.click(); UI.toast('✅ Datos exportados','success'); },
+    importar(input) { const file=input.files[0]; if(!file)return; const reader=new FileReader(); reader.onload=(e)=>{ try{ const datos=JSON.parse(e.target.result); Object.assign(STATE,datos); this._save(); UI.toast('✅ Datos importados','success'); APP.renderizarTodo(); }catch(err){ UI.toast('❌ Error al importar','error'); } }; reader.readAsText(file); }
   };
 
   // ============================================
@@ -675,7 +581,7 @@
     confirmar(mensaje, callback) { 
       const id='confirmModal'; 
       document.getElementById(id)?.remove(); 
-      const h=`<div id="${id}" class="modal-overlay"><div class="modal-panel"><h3>${mensaje}</h3><button class="btn btn-danger" onclick="document.getElementById('${id}').remove();(${callback.toString()})()">${TEXTOS.confirmar}</button><button class="btn btn-ghost" onclick="document.getElementById('${id}').remove()">${TEXTOS.cancelar}</button></div></div>`; 
+      const h=`<div id="${id}" class="modal-overlay"><div class="modal-panel"><h3>${mensaje}</h3><button class="btn btn-danger" onclick="document.getElementById('${id}').remove();(${callback.toString()})()">Confirmar</button><button class="btn btn-ghost" onclick="document.getElementById('${id}').remove()">Cancelar</button></div></div>`; 
       document.body.insertAdjacentHTML('beforeend',h); 
     },
     toggleMenu() { 
@@ -695,10 +601,10 @@
       document.getElementById('topDiasSinFumar').innerText=c; 
     },
     formatearCambio(valor,unidad,invertir) { 
-      if(Math.abs(valor)<0.05)return `<span class="neutral"><i class="fa-solid ${ICONOS.menos}"></i> 0 ${unidad}</span>`; 
+      if(Math.abs(valor)<0.05)return `<span class="neutral"><i class="fa-solid fa-minus"></i> 0 ${unidad}</span>`; 
       const mejora=invertir?valor<0:valor>0; 
       const clase=mejora?'bueno':'malo'; 
-      const flecha=valor>0?ICONOS.flechaArriba:ICONOS.flechaAbajo; 
+      const flecha=valor>0?'fa-arrow-up':'fa-arrow-down'; 
       return `<span class="${clase}"><i class="fa-solid ${flecha}"></i> ${valor>0?'+':''}${valor.toFixed(1)} ${unidad}</span>`; 
     }
   };
@@ -778,64 +684,54 @@
   };
 
   // ============================================
-  // ALIMENTACIÓN
+  // NUTRICIÓN
   // ============================================
-  const Alimentacion = {
+  const Nutricion = {
     render() {
-      this.renderObjetivo();
       this.renderSuplementos();
       this.renderAgua();
-      this.renderProximaComida();
-      this.renderResumenDiario();
-      this.renderHistorialSemanal();
-      this.renderBanner();
-    },
-    renderObjetivo() {
-      document.getElementById('alimentacionPesoObjetivo').innerText = CONFIG.PESO_OBJETIVO + ' kg';
+      this.renderComida();
+      this.renderResumenHoy();
     },
     renderSuplementos() {
-      const hoy = UI.getHoyStr();
-      const fechaActivacion = new Date(CONFIG.FECHA_ACTIVACION_SUPLEMENTOS);
-      const hoyDate = new Date();
-      const preActivo = hoyDate >= fechaActivacion;
-      
-      const suplementos = [
-        { id: 'creatina', nombre: 'Creatina', detalle: '5 gramos', hora: '18:20', activo: true },
-        { id: 'proteina', nombre: 'Proteína Whey', detalle: 'Batido', hora: '10:30', activo: true },
-        { id: 'preentreno', nombre: 'Preentreno', detalle: 'Solo entreno', hora: '17:00', activo: preActivo }
-      ];
+      const hoy = new Date();
+      const proteinaActiva = hoy >= CONFIG.FECHA_ACTIVACION_PROTEINA;
       
       const container = document.getElementById('suplementosContainer');
       if (!container) return;
       
-      container.innerHTML = suplementos.map(s => {
-        const checked = STATE.alimentacion.suplementos[s.id] || false;
-        const inactivo = !s.activo ? '<span class="suple-inactivo">Disponible en Agosto</span>' : '';
-        const disabled = !s.activo ? 'disabled' : '';
-        return `
-          <div class="alimentacion-suplemento" data-suplemento="${s.id}">
-            <input type="checkbox" class="suple-check" ${checked ? 'checked' : ''} ${disabled} onchange="Alimentacion.toggleSuplemento('${s.id}', this)">
-            <div class="suple-info">
-              <div class="suple-nombre">${s.nombre}</div>
-              <div class="suple-detalle">${s.detalle}</div>
-            </div>
-            <div class="suple-hora">${s.hora}</div>
-            ${inactivo}
-          </div>
-        `;
-      }).join('');
+      const creatinaChecked = STATE.nutricion.suplementos.creatina || false;
+      const proteinaChecked = STATE.nutricion.suplementos.proteina || false;
+      
+      // Actualizar checkbox de creatina
+      const creatinaCheck = container.querySelector('[data-suplemento="creatina"] .suple-check');
+      if (creatinaCheck) creatinaCheck.checked = creatinaChecked;
+      
+      // Mostrar/ocultar proteína según fecha
+      const supleProteina = document.getElementById('supleProteina');
+      const supleProteinaInactivo = document.getElementById('supleProteinaInactivo');
+      
+      if (proteinaActiva) {
+        supleProteina.style.display = 'flex';
+        supleProteinaInactivo.style.display = 'none';
+        const proteinaCheck = supleProteina.querySelector('.suple-check');
+        if (proteinaCheck) proteinaCheck.checked = proteinaChecked;
+      } else {
+        supleProteina.style.display = 'none';
+        supleProteinaInactivo.style.display = 'flex';
+      }
     },
     toggleSuplemento(id, checkbox) {
-      STATE.alimentacion.suplementos[id] = checkbox.checked;
+      STATE.nutricion.suplementos[id] = checkbox.checked;
       STORAGE._save();
-      this.renderResumenDiario();
+      this.renderResumenHoy();
       if (checkbox.checked) {
-        const nombres = { creatina: 'Creatina', proteina: 'Proteína', preentreno: 'Preentreno' };
+        const nombres = { creatina: 'Creatina', proteina: 'Proteína' };
         UI.toast(`✅ ${nombres[id] || 'Suplemento'} tomado`, 'success');
       }
     },
     renderAgua() {
-      const actual = STATE.alimentacion.agua || 0;
+      const actual = STATE.nutricion.agua || 0;
       const objetivo = 2.5;
       const pct = Math.min(100, Math.round((actual / objetivo) * 100));
       
@@ -851,36 +747,26 @@
     },
     agregarAgua(cantidad) {
       const objetivo = 2.5;
-      STATE.alimentacion.agua = Math.min(objetivo, (STATE.alimentacion.agua || 0) + cantidad / 1000);
+      STATE.nutricion.agua = Math.min(objetivo, (STATE.nutricion.agua || 0) + cantidad / 1000);
       STORAGE._save();
       this.renderAgua();
-      this.renderResumenDiario();
-      if (STATE.alimentacion.agua >= objetivo) {
+      this.renderResumenHoy();
+      if (STATE.nutricion.agua >= objetivo) {
         UI.toast('💧 ¡Objetivo de agua conseguido!', 'success');
       }
     },
-    resetearAgua() {
-      STATE.alimentacion.agua = 0;
-      STORAGE._save();
-      this.renderAgua();
-      this.renderResumenDiario();
-    },
-    renderProximaComida() {
+    renderComida() {
       const ahora = new Date();
       const horas = ahora.getHours();
       const minutos = ahora.getMinutes();
       const tiempoActual = horas * 60 + minutos;
       
-      const comidas = [
-        { hora: '08:00', nombre: 'Café', icono: '☕' },
-        { hora: '10:30', nombre: 'Batido proteína', icono: '🥛' },
-        { hora: '14:00', nombre: 'Comida', icono: '🍗' },
-        { hora: '17:00', nombre: 'Pre-entreno', icono: '💪' },
-        { hora: '19:00', nombre: 'Cena', icono: '🍽' }
-      ];
+      const comidas = CONFIG.COMIDAS;
       
+      // Buscar la próxima comida
       let proxComida = null;
       let minDiff = Infinity;
+      let esAhora = false;
       
       for (const comida of comidas) {
         const [h, m] = comida.hora.split(':').map(Number);
@@ -893,8 +779,14 @@
         }
       }
       
-      const elemento = document.getElementById('proximaComida');
+      const container = document.getElementById('comidaContainer');
+      const icono = document.getElementById('comidaIcono');
+      const nombre = document.getElementById('comidaNombre');
+      const tiempo = document.getElementById('comidaTiempo');
+      const faltan = document.getElementById('comidaFaltan');
+      
       if (proxComida && minDiff > 5) {
+        // Próxima comida
         const minutosRestantes = Math.round(minDiff);
         const horasRest = Math.floor(minutosRestantes / 60);
         const minsRest = minutosRestantes % 60;
@@ -902,162 +794,50 @@
         if (horasRest > 0) {
           textoFaltan = `Faltan ${horasRest}h ${minsRest}m`;
         }
-        elemento.innerHTML = `
-          <div class="comida-header">
-            <span class="comida-icono">${proxComida.icono}</span>
-            <div class="comida-info">
-              <div class="comida-nombre">${proxComida.nombre}</div>
-              <div class="comida-tiempo">${proxComida.hora}</div>
-              <div class="comida-faltan">${textoFaltan}</div>
-            </div>
-          </div>
-        `;
+        icono.textContent = proxComida.icono;
+        nombre.textContent = proxComida.nombre;
+        tiempo.textContent = proxComida.hora;
+        faltan.textContent = textoFaltan;
+        container.style.borderLeft = '3px solid var(--primary)';
+        container.style.paddingLeft = 'var(--spacing-sm)';
       } else if (proxComida && minDiff <= 5) {
-        elemento.innerHTML = `
-          <div class="comida-header" style="background:rgba(34,197,94,0.1);border-radius:var(--radius);padding:var(--spacing-md)">
-            <span class="comida-icono">✅</span>
-            <div class="comida-info">
-              <div class="comida-nombre" style="color:var(--success)">Momento de comer</div>
-              <div class="comida-tiempo">${proxComida.nombre}</div>
-              <div class="comida-faltan">¡Disfruta tu comida!</div>
-            </div>
-          </div>
-        `;
+        // Ahora toca
+        icono.textContent = '✅';
+        nombre.textContent = `¡${proxComida.nombre}!`;
+        tiempo.textContent = proxComida.hora;
+        faltan.textContent = '🍽 Disfruta tu comida';
+        container.style.borderLeft = '3px solid var(--success)';
+        container.style.paddingLeft = 'var(--spacing-sm)';
       } else {
-        elemento.innerHTML = `
-          <div class="comida-header">
-            <span class="comida-icono">🍽</span>
-            <div class="comida-info">
-              <div class="comida-nombre">Comidas completadas</div>
-              <div class="comida-tiempo">¡Buen trabajo!</div>
-              <div class="comida-faltan">Vuelve mañana para más</div>
-            </div>
-          </div>
-        `;
+        // Todas las comidas pasadas
+        const ultimaComida = comidas[comidas.length - 1];
+        icono.textContent = '🌙';
+        nombre.textContent = 'Comidas completadas';
+        tiempo.textContent = ultimaComida.hora;
+        faltan.textContent = 'Vuelve mañana para más';
+        container.style.borderLeft = '3px solid var(--muted)';
+        container.style.paddingLeft = 'var(--spacing-sm)';
       }
     },
-    renderResumenDiario() {
-      const hoy = UI.getHoyStr();
-      const entrenoHecho = STATE.diasEntrenados.includes(hoy);
-      const creatinaHecha = STATE.alimentacion.suplementos.creatina || false;
-      const proteinaHecha = STATE.alimentacion.suplementos.proteina || false;
-      const aguaHecha = (STATE.alimentacion.agua || 0) >= 2.5;
+    renderResumenHoy() {
+      const creatinaHecha = STATE.nutricion.suplementos.creatina || false;
+      const aguaHecha = (STATE.nutricion.agua || 0) >= 2.5;
       
-      const items = [
-        { id: 'resumenEntreno', hecho: entrenoHecho },
-        { id: 'resumenCreatina', hecho: creatinaHecha },
-        { id: 'resumenProteina', hecho: proteinaHecha },
-        { id: 'resumenAgua', hecho: aguaHecha },
-        { id: 'resumenComidas', hecho: true } // Asumimos que las comidas están hechas
-      ];
+      const resCreatina = document.getElementById('resumenCreatina');
+      const resAgua = document.getElementById('resumenAgua');
       
-      let cumplidas = 0;
-      items.forEach(item => {
-        const el = document.getElementById(item.id);
-        if (el) {
-          el.innerText = item.hecho ? '✔' : '✖';
-          el.className = 'r-estado ' + (item.hecho ? 'ok' : 'pending');
-          if (item.hecho) cumplidas++;
-        }
-      });
-      
-      const pct = Math.round((cumplidas / items.length) * 100);
-      document.getElementById('cumplimientoPorcentaje').innerText = pct + '%';
-    },
-    renderHistorialSemanal() {
-      const contenedor = document.getElementById('historialSemanal');
-      if (!contenedor) return;
-      
-      const hoy = new Date();
-      const inicioSemana = new Date(hoy);
-      inicioSemana.setDate(hoy.getDate() - hoy.getDay() + 1);
-      inicioSemana.setHours(0,0,0,0);
-      
-      const dias = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
-      let html = '';
-      
-      for (let i = 0; i < 7; i++) {
-        const fecha = new Date(inicioSemana);
-        fecha.setDate(inicioSemana.getDate() + i);
-        const fechaStr = UI.formatFechaLocal(fecha);
-        const esHoy = fechaStr === UI.getHoyStr();
-        
-        // Simular datos de cumplimiento (4 checks por día)
-        const entrenos = STATE.diasEntrenados.filter(d => d === fechaStr).length;
-        const checks = entrenos > 0 ? 4 : Math.floor(Math.random() * 4);
-        const estadoStr = '✔'.repeat(checks) + '✖'.repeat(4 - checks);
-        const completo = checks >= 3;
-        const incompleto = checks > 0 && checks < 3;
-        
-        let clase = 'dia';
-        if (completo) clase += ' completo';
-        if (incompleto) clase += ' incompleto';
-        if (esHoy) clase += ' hoy';
-        
-        html += `
-          <div class="${clase}">
-            <div class="letra">${dias[i]}</div>
-            <div class="estado">${estadoStr}</div>
-          </div>
-        `;
+      if (resCreatina) {
+        resCreatina.innerText = creatinaHecha ? '✔' : '✖';
+        resCreatina.className = 'r-estado ' + (creatinaHecha ? 'ok' : 'pending');
       }
-      
-      contenedor.innerHTML = html;
-    },
-    renderBanner() {
-      const banner = document.getElementById('alimentacionBanner');
-      const texto = document.getElementById('bannerTexto');
-      const hoy = new Date();
-      const dia = hoy.getDay();
-      const hora = hoy.getHours();
-      
-      let mensaje = null;
-      let icono = '💊';
-      
-      // Verificar suplementos pendientes
-      const creatinaHecha = STATE.alimentacion.suplementos.creatina || false;
-      const proteinaHecha = STATE.alimentacion.suplementos.proteina || false;
-      
-      if (!creatinaHecha && hora >= 18) {
-        mensaje = '💊 Recuerda tomar la creatina (18:20)';
-        icono = '💊';
-      } else if (!proteinaHecha && hora >= 10 && hora < 11) {
-        mensaje = '🥤 A las 10:30 toca el batido de proteína';
-        icono = '🥤';
-      } else if (dia === 6) {
-        mensaje = '🍽 Hoy tienes comida libre';
-        icono = '🍽';
-      } else if (dia === 0) {
-        mensaje = '😌 Domingo - Día de descanso';
-        icono = '😌';
-      }
-      
-      if (mensaje) {
-        texto.innerText = mensaje;
-        document.querySelector('.banner-icono').innerText = icono;
-        banner.classList.remove('hidden');
-      } else {
-        banner.classList.add('hidden');
+      if (resAgua) {
+        resAgua.innerText = aguaHecha ? '✔' : '✖';
+        resAgua.className = 'r-estado ' + (aguaHecha ? 'ok' : 'pending');
       }
     },
     abrirImagen() {
-      const img = document.getElementById('menuImagen');
+      const img = document.getElementById('planImg');
       if (img) UI.abrirLightbox(img.src);
-    },
-    subirImagen() {
-      document.getElementById('inputMenuImagen').click();
-    },
-    cargarImagen(input) {
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          document.getElementById('menuImagen').src = e.target.result;
-          STATE.alimentacion.imagen = e.target.result;
-          STORAGE._save();
-          UI.toast('✅ Imagen actualizada', 'success');
-        };
-        reader.readAsDataURL(input.files[0]);
-      }
     }
   };
 
@@ -1188,10 +968,10 @@
     _renderResumen() { 
       const dr=document.getElementById('dashboardResumen'); 
       if(STATE.mediciones.length===0){ 
-        dr.innerHTML=`<div class="card card-accent"><div class="card-title"><i class="fa-solid ${ICONOS.fuego}"></i> RESUMEN</div><div style="color:var(--muted2)">${TEXTOS.sinMediciones}</div></div>`; 
+        dr.innerHTML=`<div class="card card-accent"><div class="card-title"><i class="fa-solid fa-fire"></i> RESUMEN</div><div style="color:var(--muted2)">Registra tu primera medición en "Peso"</div></div>`; 
       } else { 
         const u=STATE.mediciones[STATE.mediciones.length-1],da=Math.abs((u.peso-CONFIG.PESO_OBJETIVO).toFixed(1)),pe=u.peso>CONFIG.PESO_OBJETIVO; 
-        dr.innerHTML=`<div class="card card-accent"><div class="card-title"><i class="fa-solid ${ICONOS.fuego}"></i> RESUMEN</div><div class="resumen-grid"><div class="resumen-item"><div class="r-icon"><i class="fa-solid ${ICONOS.peso}"></i></div><div class="r-valor">${u.peso} kg</div></div><div class="resumen-item"><div class="r-icon"><i class="fa-solid ${ICONOS.bullseye}"></i></div><div class="r-valor">${CONFIG.PESO_OBJETIVO} kg</div></div><div class="resumen-item"><div class="r-icon"><i class="fa-solid ${pe?ICONOS.flechaAbajo:ICONOS.flechaArriba}"></i></div><div class="r-valor">${da} kg</div></div></div></div>`; 
+        dr.innerHTML=`<div class="card card-accent"><div class="card-title"><i class="fa-solid fa-fire"></i> RESUMEN</div><div class="resumen-grid"><div class="resumen-item"><div class="r-icon"><i class="fa-solid fa-weight-scale"></i></div><div class="r-valor">${u.peso} kg</div></div><div class="resumen-item"><div class="r-icon"><i class="fa-solid fa-bullseye"></i></div><div class="r-valor">${CONFIG.PESO_OBJETIVO} kg</div></div><div class="resumen-item"><div class="r-icon"><i class="fa-solid ${pe?'fa-arrow-down':'fa-arrow-up'}"></i></div><div class="r-valor">${da} kg</div></div></div></div>`; 
       } 
     },
     _renderRutinaHoy() { 
@@ -1202,15 +982,15 @@
       if(diaHoy==='domingo'){ 
         drh.innerHTML=`<div class="card"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--muted);font-size:32px">😌</div><div class="th-contenido"><div class="th-titulo">Domingo de descanso</div><div class="th-sub">Recuperación activa · Caminar, estirar, hidratarse</div></div></div></div>`; 
       } else { 
-        drh.innerHTML=`<div class="card"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--primary)"><i class="fa-solid ${ICONOS.musculo}"></i></div><div class="th-contenido"><div class="th-titulo">💪 Hoy toca</div><div class="th-sub">${TIPOS_RUTINA[diaHoy]} · ${ejHoy.length} ejercicios</div></div><div class="th-accion"><button class="btn btn-primary btn-sm" onclick="APP.navegar('rutinas')"><i class="fa-solid ${ICONOS.play}"></i> Empezar</button></div></div></div>`; 
+        drh.innerHTML=`<div class="card"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--primary)"><i class="fa-solid fa-dumbbell"></i></div><div class="th-contenido"><div class="th-titulo">💪 Hoy toca</div><div class="th-sub">${TIPOS_RUTINA[diaHoy]} · ${ejHoy.length} ejercicios</div></div><div class="th-accion"><button class="btn btn-primary btn-sm" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-play"></i> Empezar</button></div></div></div>`; 
       } 
     },
     _renderCambiosInicio() { 
       const dci=document.getElementById('dashboardCambiosInicio'); 
       if(STATE.mediciones.length>=2){ 
         const p=STATE.mediciones[0],u=STATE.mediciones[STATE.mediciones.length-1]; 
-        const diffs=[{ icon:ICONOS.peso,nombre:'Peso',val:(u.peso-p.peso),unidad:'kg',invertir:true },{ icon:ICONOS.cintura,nombre:'Cintura',val:(u.cintura-p.cintura),unidad:'cm',invertir:true },{ icon:ICONOS.grasa,nombre:'Grasa',val:(u.grasaPorcentaje-p.grasaPorcentaje),unidad:'%',invertir:true },{ icon:ICONOS.musculo,nombre:'Músculo',val:(u.masaMuscular-p.masaMuscular),unidad:'kg',invertir:false }]; 
-        dci.innerHTML=`<div class="card"><div class="card-title"><i class="fa-solid ${ICONOS.grafico}"></i> Desde el inicio</div><div class="ci-grid">${diffs.map(d=>{ let cl='neutral',fl=ICONOS.menos,sig=''; if(d.val>0.05){ cl=d.invertir?'malo':'bueno'; fl=ICONOS.flechaArriba; sig='+'; } if(d.val<-0.05){ cl=d.invertir?'bueno':'malo'; fl=ICONOS.flechaAbajo; } return `<div class="ci-item"><span class="ci-icon"><i class="fa-solid ${fl}"></i></span><span>${d.nombre}</span><span class="ci-val ${cl}">${sig}${d.val.toFixed(1)} ${d.unidad}</span></div>`; }).join('')}</div></div>`; 
+        const diffs=[{ icon:'fa-weight-scale',nombre:'Peso',val:(u.peso-p.peso),unidad:'kg',invertir:true },{ icon:'fa-ruler',nombre:'Cintura',val:(u.cintura-p.cintura),unidad:'cm',invertir:true },{ icon:'fa-droplet',nombre:'Grasa',val:(u.grasaPorcentaje-p.grasaPorcentaje),unidad:'%',invertir:true },{ icon:'fa-dumbbell',nombre:'Músculo',val:(u.masaMuscular-p.masaMuscular),unidad:'kg',invertir:false }]; 
+        dci.innerHTML=`<div class="card"><div class="card-title"><i class="fa-solid fa-chart-line"></i> Desde el inicio</div><div class="ci-grid">${diffs.map(d=>{ let cl='neutral',fl='fa-minus',sig=''; if(d.val>0.05){ cl=d.invertir?'malo':'bueno'; fl='fa-arrow-up'; sig='+'; } if(d.val<-0.05){ cl=d.invertir?'bueno':'malo'; fl='fa-arrow-down'; } return `<div class="ci-item"><span class="ci-icon"><i class="fa-solid ${fl}"></i></span><span>${d.nombre}</span><span class="ci-val ${cl}">${sig}${d.val.toFixed(1)} ${d.unidad}</span></div>`; }).join('')}</div></div>`; 
       } else { 
         dci.innerHTML=''; 
       } 
@@ -1233,7 +1013,7 @@
       const prediccion=Calculos.getPrediccion(); 
       const mostrarObjPeso=pa>CONFIG.PESO_OBJETIVO||objPeso>CONFIG.PESO_OBJETIVO; 
       const bloque=document.getElementById('bloqueDoble'); 
-      bloque.innerHTML=`<div class="card"><div class="card-title"><i class="fa-solid fa-clipboard-list"></i> Info & Objetivos</div><div class="io-grid"><div class="io-col"><div class="io-col-label">Info rápida</div><div class="io-info-item"><div class="io-info-icon"><i class="fa-solid ${ICONOS.calendario}"></i></div><div class="io-info-text"><div class="io-info-val">${due===0?'Hoy':'Hace '+due+' d'}</div><div class="io-info-label">Último entrenamiento</div>${dueStr?`<div class="io-info-sub"><i class="fa-solid ${ICONOS.check}"></i> ${dueStr}</div>`:''}</div></div><div class="io-info-item"><div class="io-info-icon"><i class="fa-solid ${ICONOS.regla}"></i></div><div class="io-info-text"><div class="io-info-val">${um}</div><div class="io-info-label">Última medición</div></div></div><div class="io-info-item"><div class="io-info-icon"><i class="fa-solid ${ICONOS.fuego}"></i></div><div class="io-info-text"><div class="io-info-val">${racha} días</div><div class="io-info-label">Racha</div></div></div><div class="io-info-item"><div class="io-info-icon"><i class="fa-solid fa-calendar-check"></i></div><div class="io-info-text"><div class="io-info-val">${pr} d</div><div class="io-info-label">Próx revisión</div></div></div></div><div class="io-col"><div class="io-col-label">Objetivos</div>${mostrarObjPeso?`<div class="io-obj-item"><div class="io-obj-icon"><i class="fa-solid ${ICONOS.peso}"></i></div><div class="io-obj-info"><div class="io-obj-nombre">Peso < ${objPeso} kg</div><div class="io-obj-progress"><div class="io-obj-fill ${pctP>=100?'verde':'naranja'}" style="width:${Math.max(2,pctP)}%"></div></div><div class="io-obj-meta">${pa>objPeso?kgr+' kg restan':'¡Conseguido!'}</div></div></div>`:''}<div class="io-obj-item"><div class="io-obj-icon"><i class="fa-solid ${ICONOS.musculo}"></i></div><div class="io-obj-info"><div class="io-obj-nombre">${CONFIG.OBJETIVO_ENTRENOS_MES} entrenos/mes</div><div class="io-obj-progress"><div class="io-obj-fill ${pctE>=100?'verde':'naranja'}" style="width:${Math.max(2,pctE)}%"></div></div><div class="io-obj-meta">${em}/${CONFIG.OBJETIVO_ENTRENOS_MES} · ${pctE}%</div></div></div></div></div>${prediccion?`<div class="io-divider"></div><div class="io-prediccion">${prediccion.tipo==='exito'?`🎉 <strong>${prediccion.fechaEstimada}</strong>`:prediccion.tipo==='alerta'?`<i class="fa-solid ${ICONOS.flechaArriba}"></i> Ritmo: <strong>+${prediccion.ritmoSemanal} kg/sem</strong><br>${prediccion.fechaEstimada}`:`<i class="fa-solid ${ICONOS.flechaAbajo}"></i> Al ritmo actual (<strong>-${prediccion.ritmoSemanal} kg/sem</strong>)<br><i class="fa-solid ${ICONOS.bullseye}"></i> Llegarás a <strong>${CONFIG.PESO_OBJETIVO} kg</strong> el <strong>${prediccion.fechaEstimada}</strong><br>⏳ ~${prediccion.semanasRestan} semanas`}</div>`:''}</div>`; 
+      bloque.innerHTML=`<div class="card"><div class="card-title"><i class="fa-solid fa-clipboard-list"></i> Info & Objetivos</div><div class="io-grid"><div class="io-col"><div class="io-col-label">Info rápida</div><div class="io-info-item"><div class="io-info-icon"><i class="fa-solid fa-calendar"></i></div><div class="io-info-text"><div class="io-info-val">${due===0?'Hoy':'Hace '+due+' d'}</div><div class="io-info-label">Último entrenamiento</div>${dueStr?`<div class="io-info-sub"><i class="fa-solid fa-circle-check"></i> ${dueStr}</div>`:''}</div></div><div class="io-info-item"><div class="io-info-icon"><i class="fa-solid fa-ruler"></i></div><div class="io-info-text"><div class="io-info-val">${um}</div><div class="io-info-label">Última medición</div></div></div><div class="io-info-item"><div class="io-info-icon"><i class="fa-solid fa-fire"></i></div><div class="io-info-text"><div class="io-info-val">${racha} días</div><div class="io-info-label">Racha</div></div></div><div class="io-info-item"><div class="io-info-icon"><i class="fa-solid fa-calendar-check"></i></div><div class="io-info-text"><div class="io-info-val">${pr} d</div><div class="io-info-label">Próx revisión</div></div></div></div><div class="io-col"><div class="io-col-label">Objetivos</div>${mostrarObjPeso?`<div class="io-obj-item"><div class="io-obj-icon"><i class="fa-solid fa-weight-scale"></i></div><div class="io-obj-info"><div class="io-obj-nombre">Peso < ${objPeso} kg</div><div class="io-obj-progress"><div class="io-obj-fill ${pctP>=100?'verde':'naranja'}" style="width:${Math.max(2,pctP)}%"></div></div><div class="io-obj-meta">${pa>objPeso?kgr+' kg restan':'¡Conseguido!'}</div></div></div>`:''}<div class="io-obj-item"><div class="io-obj-icon"><i class="fa-solid fa-dumbbell"></i></div><div class="io-obj-info"><div class="io-obj-nombre">${CONFIG.OBJETIVO_ENTRENOS_MES} entrenos/mes</div><div class="io-obj-progress"><div class="io-obj-fill ${pctE>=100?'verde':'naranja'}" style="width:${Math.max(2,pctE)}%"></div></div><div class="io-obj-meta">${em}/${CONFIG.OBJETIVO_ENTRENOS_MES} · ${pctE}%</div></div></div></div></div>${prediccion?`<div class="io-divider"></div><div class="io-prediccion">${prediccion.tipo==='exito'?`🎉 <strong>${prediccion.fechaEstimada}</strong>`:prediccion.tipo==='alerta'?`<i class="fa-solid fa-arrow-up"></i> Ritmo: <strong>+${prediccion.ritmoSemanal} kg/sem</strong><br>${prediccion.fechaEstimada}`:`<i class="fa-solid fa-arrow-down"></i> Al ritmo actual (<strong>-${prediccion.ritmoSemanal} kg/sem</strong>)<br><i class="fa-solid fa-bullseye"></i> Llegarás a <strong>${CONFIG.PESO_OBJETIVO} kg</strong> el <strong>${prediccion.fechaEstimada}</strong><br>⏳ ~${prediccion.semanasRestan} semanas`}</div>`:''}</div>`; 
     }
   };
 
@@ -1261,20 +1041,17 @@
       const mananaFotos = diasHastaFotos === 1 && esSabado();
       const creatinaHecha = STATE.habitos.creatina.dias.includes(hoyStr);
       const proteinaHecha = STATE.habitos.proteina.dias.includes(hoyStr);
-      const preHecho = STATE.habitos.preentreno.dias.includes(hoyStr);
       const esDiaEntreno = diaHoy !== 'domingo';
-      const fechaActivacionSup = new Date(CONFIG.FECHA_ACTIVACION_SUPLEMENTOS);
-      const supActivados = hoy >= fechaActivacionSup;
+      const proteinaActiva = hoy >= CONFIG.FECHA_ACTIVACION_PROTEINA;
       const entrenosSemana = Calculos.getEntrenosSemana();
       const maxEntrenos = 6;
       let pendientes = [];
-      if (esDiaMedicion) pendientes.push({ texto: 'Subir mediciones', accion: "APP.navegar('composicion')", icono: ICONOS.regla });
-      if (esDiaFotos) pendientes.push({ texto: 'Subir fotos', accion: "APP.navegar('progreso-fotos')", icono: ICONOS.camara });
-      if (!creatinaHecha) pendientes.push({ texto: 'Marcar creatina como tomada', accion: "PantallaHoy.toggleHabito('creatina')", icono: ICONOS.capsulas });
-      if (supActivados && !proteinaHecha && esDiaEntreno) pendientes.push({ texto: 'Batido de proteínas', accion: "PantallaHoy.toggleHabito('proteina')", icono: ICONOS.vaso });
-      if (supActivados && !preHecho && esDiaEntreno) pendientes.push({ texto: 'Beber agua', accion: "PantallaHoy.toggleHabito('preentreno')", icono: ICONOS.grasa });
+      if (esDiaMedicion) pendientes.push({ texto: 'Subir mediciones', accion: "APP.navegar('composicion')", icono: 'fa-ruler' });
+      if (esDiaFotos) pendientes.push({ texto: 'Subir fotos', accion: "APP.navegar('progreso-fotos')", icono: 'fa-camera' });
+      if (!creatinaHecha) pendientes.push({ texto: 'Marcar creatina como tomada', accion: "PantallaHoy.toggleHabito('creatina')", icono: 'fa-capsules' });
+      if (proteinaActiva && !proteinaHecha && esDiaEntreno) pendientes.push({ texto: 'Batido de proteínas', accion: "PantallaHoy.toggleHabito('proteina')", icono: 'fa-glass-water' });
       const todoAlDia = pendientes.length === 0 && !esDiaMedicion && !esDiaFotos;
-      const habitosPendientes = (!creatinaHecha) || (supActivados && !proteinaHecha && esDiaEntreno) || (supActivados && !preHecho && esDiaEntreno);
+      const habitosPendientes = (!creatinaHecha) || (proteinaActiva && !proteinaHecha && esDiaEntreno);
       let html = '';
       
       if (pendientes.length > 0) {
@@ -1290,55 +1067,51 @@
       if (diaHoy === 'domingo') {
         html += `<div class="card"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--muted);font-size:32px">😌</div><div class="th-contenido"><div class="th-titulo">Domingo de descanso</div><div class="th-sub">Recuperación activa · Caminar, estirar, hidratarse</div></div></div></div>`;
       } else {
-        html += `<div class="card"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--primary)"><i class="fa-solid ${ICONOS.musculo}"></i></div><div class="th-contenido"><div class="th-titulo">💪 Hoy toca</div><div class="th-sub">${TIPOS_RUTINA[diaHoy]} · ${ejHoy.length} ejercicios</div></div><div class="th-accion"><button class="btn btn-primary btn-sm" onclick="APP.navegar('rutinas')"><i class="fa-solid ${ICONOS.play}"></i> Empezar</button></div></div></div>`;
+        html += `<div class="card"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--primary)"><i class="fa-solid fa-dumbbell"></i></div><div class="th-contenido"><div class="th-titulo">💪 Hoy toca</div><div class="th-sub">${TIPOS_RUTINA[diaHoy]} · ${ejHoy.length} ejercicios</div></div><div class="th-accion"><button class="btn btn-primary btn-sm" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-play"></i> Empezar</button></div></div></div>`;
       }
       
       if (habitosPendientes) {
-        html += `<div class="card"><div class="card-title"><i class="fa-solid ${ICONOS.corazon}"></i> Hábitos</div>`;
+        html += `<div class="card"><div class="card-title"><i class="fa-solid fa-heart"></i> Hábitos</div>`;
         if (!creatinaHecha) {
           html += `<div class="habito-check" onclick="PantallaHoy.toggleHabito('creatina')"><input type="checkbox" id="habitoCreatina" onclick="event.stopPropagation()" onchange="PantallaHoy.toggleHabito('creatina')"><label for="habitoCreatina">💊 Marcar creatina como tomada</label></div>`;
         }
-        if (supActivados && !proteinaHecha && esDiaEntreno) {
+        if (proteinaActiva && !proteinaHecha && esDiaEntreno) {
           html += `<div class="habito-check" onclick="PantallaHoy.toggleHabito('proteina')"><input type="checkbox" id="habitoProteina" onclick="event.stopPropagation()" onchange="PantallaHoy.toggleHabito('proteina')"><label for="habitoProteina">🥛 Batido de proteínas</label></div>`;
-        }
-        if (supActivados && !preHecho && esDiaEntreno) {
-          html += `<div class="habito-check" onclick="PantallaHoy.toggleHabito('preentreno')"><input type="checkbox" id="habitoPreentreno" onclick="event.stopPropagation()" onchange="PantallaHoy.toggleHabito('preentreno')"><label for="habitoPreentreno">💧 Beber agua</label></div>`;
         }
         html += `</div>`;
       }
       
       const fechaMedStr = proxMedicion.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' });
       if (esDiaMedicion) {
-        html += `<div class="card card-estado-rojo"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--danger)"><i class="fa-solid ${ICONOS.flechaArriba}"></i></div><div class="th-contenido"><div class="th-titulo">📏 Mediciones</div><div class="th-sub">⬆ Recuerda subir tus mediciones</div></div><div class="th-accion"><button class="btn btn-primary btn-sm" onclick="APP.navegar('composicion')">Registrar</button></div></div></div>`;
+        html += `<div class="card card-estado-rojo"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--danger)"><i class="fa-solid fa-arrow-up"></i></div><div class="th-contenido"><div class="th-titulo">📏 Mediciones</div><div class="th-sub">⬆ Recuerda subir tus mediciones</div></div><div class="th-accion"><button class="btn btn-primary btn-sm" onclick="APP.navegar('composicion')">Registrar</button></div></div></div>`;
       } else if (mananaMedicion) {
-        html += `<div class="card card-estado-naranja"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--warning)"><i class="fa-solid ${ICONOS.campana}"></i></div><div class="th-contenido"><div class="th-titulo">📏 Mediciones</div><div class="th-sub">🔔 Mañana toca subir las mediciones</div></div></div></div>`;
+        html += `<div class="card card-estado-naranja"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--warning)"><i class="fa-solid fa-bell"></i></div><div class="th-contenido"><div class="th-titulo">📏 Mediciones</div><div class="th-sub">🔔 Mañana toca subir las mediciones</div></div></div></div>`;
       } else {
-        html += `<div class="card card-estado-verde"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--success)"><i class="fa-solid ${ICONOS.check}"></i></div><div class="th-contenido"><div class="th-titulo">📏 Mediciones</div><div class="th-sub">Próxima revisión: Domingo ${fechaMedStr} · Faltan ${diasHastaMedicion} días</div></div></div></div>`;
+        html += `<div class="card card-estado-verde"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--success)"><i class="fa-solid fa-circle-check"></i></div><div class="th-contenido"><div class="th-titulo">📏 Mediciones</div><div class="th-sub">Próxima revisión: Domingo ${fechaMedStr} · Faltan ${diasHastaMedicion} días</div></div></div></div>`;
       }
       
       const fechaFotosStr = proxFotos.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' });
       if (esDiaFotos) {
-        html += `<div class="card card-estado-rojo"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--danger)"><i class="fa-solid ${ICONOS.flechaArriba}"></i></div><div class="th-contenido"><div class="th-titulo">📸 Fotos</div><div class="th-sub">⬆ Recuerda subir tus fotos de progreso</div></div><div class="th-accion"><button class="btn btn-primary btn-sm" onclick="APP.navegar('progreso-fotos')">Subir fotos</button></div></div></div>`;
+        html += `<div class="card card-estado-rojo"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--danger)"><i class="fa-solid fa-arrow-up"></i></div><div class="th-contenido"><div class="th-titulo">📸 Fotos</div><div class="th-sub">⬆ Recuerda subir tus fotos de progreso</div></div><div class="th-accion"><button class="btn btn-primary btn-sm" onclick="APP.navegar('progreso-fotos')">Subir fotos</button></div></div></div>`;
       } else if (mananaFotos) {
-        html += `<div class="card card-estado-naranja"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--warning)"><i class="fa-solid ${ICONOS.campana}"></i></div><div class="th-contenido"><div class="th-titulo">📸 Fotos</div><div class="th-sub">🔔 Mañana toca subir las fotos</div></div></div></div>`;
+        html += `<div class="card card-estado-naranja"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--warning)"><i class="fa-solid fa-bell"></i></div><div class="th-contenido"><div class="th-titulo">📸 Fotos</div><div class="th-sub">🔔 Mañana toca subir las fotos</div></div></div></div>`;
       } else {
-        html += `<div class="card card-estado-verde"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--success)"><i class="fa-solid ${ICONOS.check}"></i></div><div class="th-contenido"><div class="th-titulo">📸 Fotos</div><div class="th-sub">Próxima revisión: Domingo ${fechaFotosStr} · Faltan ${diasHastaFotos} días</div></div></div></div>`;
+        html += `<div class="card card-estado-verde"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--success)"><i class="fa-solid fa-circle-check"></i></div><div class="th-contenido"><div class="th-titulo">📸 Fotos</div><div class="th-sub">Próxima revisión: Domingo ${fechaFotosStr} · Faltan ${diasHastaFotos} días</div></div></div></div>`;
       }
       
       const pctSemana = Math.round((entrenosSemana / maxEntrenos) * 100);
-      html += `<div class="card"><div class="card-title"><i class="fa-solid ${ICONOS.objetivo}"></i> Objetivo semanal</div>
+      html += `<div class="card"><div class="card-title"><i class="fa-solid fa-bullseye"></i> Objetivo semanal</div>
         <div style="display:flex;align-items:center;gap:12px;padding:6px 0"><span style="font-size:13px;width:100px">💪 Entrenos</span><div style="flex:1;height:6px;background:rgba(0,0,0,0.3);border-radius:3px;overflow:hidden"><div style="height:100%;background:var(--primary);border-radius:3px;width:${pctSemana}%"></div></div><span style="font-size:12px;font-weight:600;width:30px;text-align:right">${entrenosSemana}/${maxEntrenos}</span></div>
         <div style="display:flex;align-items:center;gap:12px;padding:6px 0"><span style="font-size:13px;width:100px">📏 Medición</span><span style="font-size:16px">${esDiaMedicion ? '🔴 Pendiente' : '✅ Hecha'}</span></div>
         <div style="display:flex;align-items:center;gap:12px;padding:6px 0"><span style="font-size:13px;width:100px">📸 Foto</span><span style="font-size:16px">${esDiaFotos ? '🔴 Pendiente' : '✅ Hecha'}</span></div>
       </div>`;
       
       if (todoAlDia && !habitosPendientes) {
-        html += `<div class="card"><div class="card-title"><i class="fa-solid ${ICONOS.sparkles}"></i> Hoy has completado</div>
+        html += `<div class="card"><div class="card-title"><i class="fa-solid fa-sparkles"></i> Hoy has completado</div>
           <div style="color:var(--muted2);font-size:12px;line-height:1.8">
             ${diaHoy !== 'domingo' ? '✔ Entrenamiento completado<br>' : '✔ Día de descanso<br>'}
             ${creatinaHecha ? '✔ Creatina tomada<br>' : ''}
             ${proteinaHecha ? '✔ Batido de proteínas<br>' : ''}
-            ${preHecho ? '✔ Agua<br>' : ''}
           </div>
         </div>`;
       }
@@ -1349,7 +1122,7 @@
       const hoyStr = UI.getHoyStr();
       const dias = STATE.habitos[tipo].dias;
       const idx = dias.indexOf(hoyStr);
-      if (idx >= 0) { dias.splice(idx, 1); } else { dias.push(hoyStr); const nombres = { creatina: '💊 Creatina tomada', proteina: '🥛 Proteína tomada', preentreno: '💧 Agua' }; UI.toast(`✔ ${nombres[tipo] || 'Hábito registrado'}`, 'success'); }
+      if (idx >= 0) { dias.splice(idx, 1); } else { dias.push(hoyStr); const nombres = { creatina: '💊 Creatina tomada', proteina: '🥛 Proteína tomada' }; UI.toast(`✔ ${nombres[tipo] || 'Hábito registrado'}`, 'success'); }
       STORAGE._save();
       this.render();
     }
@@ -1406,7 +1179,7 @@
       const pct=Math.round((comp/t)*100); 
       const bf=document.getElementById('btnFinalizarRutina'); 
       if(comp===t){ 
-        c.innerHTML=`<div class="card progreso-rutina-bar"><div class="progreso-rutina-completado"><i class="fa-solid ${ICONOS.check}"></i> ¡${NOMBRES_DIAS[diaActivo]} COMPLETADO!</div></div>`; 
+        c.innerHTML=`<div class="card progreso-rutina-bar"><div class="progreso-rutina-completado"><i class="fa-solid fa-circle-check"></i> ¡${NOMBRES_DIAS[diaActivo]} COMPLETADO!</div></div>`; 
         if(bf)bf.classList.add('visible'); 
       } else { 
         c.innerHTML=`<div class="card progreso-rutina-bar"><div class="progreso-rutina-header"><span class="progreso-rutina-titulo">${NOMBRES_DIAS[diaActivo]}</span><span class="progreso-rutina-porcentaje">${pct}%</span></div><div class="progreso-rutina-track"><div class="progreso-rutina-fill" style="width:${pct}%"></div></div><div class="progreso-rutina-info">${comp}/${t} ejercicios</div></div>`; 
@@ -1454,7 +1227,7 @@
               ${datosHTML}
               <div class="ultimo-entreno"><span class="ultimo-entreno-label">Último entrenamiento</span><span class="ultimo-entreno-valor">${ultimo ? (esCardio ? ultimo.peso+' min' : ultimo.peso+' kg × '+ultimo.reps) : '--'}</span></div>
               <div class="mejor-marca"><span class="mejor-marca-label">🏆 Mejor marca</span><span class="mejor-marca-valor">${recordStr}</span></div>
-              <button class="btn-historial-ej" onclick="Rutinas.verHistorial('${nombre.replace(/'/g,"\\'")}')"><i class="fa-solid ${ICONOS.historial}"></i> Ver historial</button>
+              <button class="btn-historial-ej" onclick="Rutinas.verHistorial('${nombre.replace(/'/g,"\\'")}')"><i class="fa-solid fa-clock-rotate-left"></i> Ver historial</button>
               <button class="btn-historial-ej" onclick="Rutinas.verEvolucion('${nombre.replace(/'/g,"\\'")}')" style="margin-left:4px"><i class="fa-solid fa-chart-line"></i> 📈 Evolución</button>
             </div>
           </div>`; 
@@ -1467,7 +1240,7 @@
       const btn=document.createElement('button'); 
       btn.id='btnFinalizarRutina'; 
       btn.className='btn btn-success btn-finalizar'; 
-      btn.innerHTML=`<i class="fa-solid ${ICONOS.check}"></i> Finalizar entrenamiento`; 
+      btn.innerHTML=`<i class="fa-solid fa-circle-check"></i> Finalizar entrenamiento`; 
       btn.title='Guarda tu entrenamiento y detecta nuevos récords'; 
       btn.onclick=()=>Rutinas.mostrarModalFinalizar(); 
       pc.appendChild(btn); 
@@ -1503,14 +1276,14 @@
         if(ej)hist.push({fecha:e.fecha,peso:ej.peso,reps:ej.reps}); 
       } 
       document.getElementById('modalHistorialEj')?.remove(); 
-      let h=`<div id="modalHistorialEj" class="modal-overlay"><div class="modal-panel"><h3><i class="fa-solid ${ICONOS.historial}"></i> ${nombre}</h3><div style="text-align:left;font-size:11px;max-height:50vh;overflow-y:auto">`; 
+      let h=`<div id="modalHistorialEj" class="modal-overlay"><div class="modal-panel"><h3><i class="fa-solid fa-clock-rotate-left"></i> ${nombre}</h3><div style="text-align:left;font-size:11px;max-height:50vh;overflow-y:auto">`; 
       if(hist.length===0){ h+='<div style="text-align:center;padding:12px">Sin historial</div>'; } 
       else { 
         hist.forEach(x=>{ 
           h+=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>${new Date(x.fecha).toLocaleDateString('es-ES',{day:'numeric',month:'short'})}</span><span style="color:var(--primary)">${this.esCardio(nombre)?x.peso+' min':x.peso+' kg · '+x.reps}</span></div>`; 
         }); 
       } 
-      h+=`</div><button class="btn btn-ghost" onclick="document.getElementById('modalHistorialEj').remove()">${TEXTOS.cerrar}</button></div></div>`; 
+      h+=`</div><button class="btn btn-ghost" onclick="document.getElementById('modalHistorialEj').remove()">CERRAR</button></div></div>`; 
       document.body.insertAdjacentHTML('beforeend',h); 
     },
     verEvolucion(nombre){ 
@@ -1532,7 +1305,7 @@
           </div>`; 
         }); 
       } 
-      h+=`</div><button class="btn btn-ghost" onclick="document.getElementById('modalEvolucionEj').remove()">${TEXTOS.cerrar}</button></div></div>`; 
+      h+=`</div><button class="btn btn-ghost" onclick="document.getElementById('modalEvolucionEj').remove()">CERRAR</button></div></div>`; 
       document.body.insertAdjacentHTML('beforeend',h); 
     },
     mostrarModalFinalizar(){ 
@@ -1560,8 +1333,8 @@
             </label>
           </div>
         </div>
-        <button class="btn btn-success" onclick="Rutinas.guardarEntreno()"><i class="fa-solid ${ICONOS.guardar}"></i> ${TEXTOS.guardar} entrenamiento</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('modalFinalizar').remove()">${TEXTOS.cancelar}</button>
+        <button class="btn btn-success" onclick="Rutinas.guardarEntreno()"><i class="fa-solid fa-floppy-disk"></i> Guardar entrenamiento</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('modalFinalizar').remove()">Cancelar</button>
       </div></div>`; 
       document.body.insertAdjacentHTML('beforeend',h); 
     },
@@ -1665,7 +1438,7 @@
       STATE.mediciones.sort((a,b)=>new Date(a.fecha)-new Date(b.fecha)); 
       STATE.recordatorios.ultimaMedicion=f; 
       STORAGE._save(); 
-      UI.toast(TEXTOS.guardado,'success'); 
+      UI.toast('✅ Medición guardada','success'); 
       this.renderHistorial(); 
       APP.renderizarTodo(); 
       EvolutionManager.updateFromMediciones();
@@ -1675,18 +1448,18 @@
     renderHistorial(){ 
       const c=document.getElementById('historialMediciones'); 
       if(!c)return; 
-      if(STATE.mediciones.length===0){ c.innerHTML=`<div style="text-align:center;color:var(--muted2);padding:12px">${TEXTOS.sinRegistros}</div>`; return; } 
+      if(STATE.mediciones.length===0){ c.innerHTML=`<div style="text-align:center;color:var(--muted2);padding:12px">Sin registros.</div>`; return; } 
       const rev=[...STATE.mediciones].reverse(); 
       c.innerHTML=rev.map((m)=>{ 
         const fecha=new Date(m.fecha).toLocaleDateString('es-ES'); 
         const io=STATE.mediciones.findIndex(x=>x.fecha===m.fecha); 
         let rh=''; 
         if(io>0){ const ant=STATE.mediciones[io-1]; rh=`<div class="historial-med-resumen">${UI.formatearCambio(m.peso-ant.peso,'kg',true)} &nbsp;|&nbsp; ${UI.formatearCambio(m.cintura-ant.cintura,'cm',true)} &nbsp;|&nbsp; ${UI.formatearCambio(m.grasaPorcentaje-ant.grasaPorcentaje,'%',true)} &nbsp;|&nbsp; ${UI.formatearCambio(m.masaMuscular-ant.masaMuscular,'kg',false)}</div>`; } 
-        return `<div class="historial-med-item"><div><span class="historial-med-date">${fecha}</span><div class="historial-med-data">${m.peso}kg | ${m.cintura}cm | ${m.pecho||'--'}cm | ${m.cadera||'--'}cm | ${m.biceps||'--'}cm | ${m.grasaPorcentaje}% | ${m.masaMuscular}kg</div>${rh}</div><div class="historial-med-buttons"><button class="btn btn-ghost btn-sm" onclick="Composicion.editar('${m.fecha}')"><i class="fa-solid ${ICONOS.lapiz}"></i></button><button class="btn btn-ghost btn-sm" onclick="Composicion.eliminar('${m.fecha}')"><i class="fa-solid ${ICONOS.basura}"></i></button></div></div>`; 
+        return `<div class="historial-med-item"><div><span class="historial-med-date">${fecha}</span><div class="historial-med-data">${m.peso}kg | ${m.cintura}cm | ${m.pecho||'--'}cm | ${m.cadera||'--'}cm | ${m.biceps||'--'}cm | ${m.grasaPorcentaje}% | ${m.masaMuscular}kg</div>${rh}</div><div class="historial-med-buttons"><button class="btn btn-ghost btn-sm" onclick="Composicion.editar('${m.fecha}')"><i class="fa-solid fa-pen"></i></button><button class="btn btn-ghost btn-sm" onclick="Composicion.eliminar('${m.fecha}')"><i class="fa-solid fa-trash"></i></button></div></div>`; 
       }).join(''); 
     },
     editar(f){ const m=STATE.mediciones.find(x=>x.fecha===f); if(!m)return; document.getElementById('medFecha').value=m.fecha; document.getElementById('medPeso').value=m.peso; document.getElementById('medCintura').value=m.cintura; document.getElementById('medGrasaPorc').value=m.grasaPorcentaje; document.getElementById('medMasaMuscular').value=m.masaMuscular; document.getElementById('medPecho').value=m.pecho||''; document.getElementById('medCadera').value=m.cadera||''; document.getElementById('medBiceps').value=m.biceps||''; window.scrollTo({top:0,behavior:'smooth'}); },
-    eliminar(f){ UI.confirmar('¿Eliminar esta medición?',()=>{ STATE.mediciones=STATE.mediciones.filter(m=>m.fecha!==f); STORAGE._save(); this.renderHistorial(); APP.renderizarTodo(); EvolutionManager.updateFromMediciones(); UI.toast(TEXTOS.eliminado,'success'); }); }
+    eliminar(f){ UI.confirmar('¿Eliminar esta medición?',()=>{ STATE.mediciones=STATE.mediciones.filter(m=>m.fecha!==f); STORAGE._save(); this.renderHistorial(); APP.renderizarTodo(); EvolutionManager.updateFromMediciones(); UI.toast('🗑️ Elemento eliminado','success'); }); }
   };
 
   // ============================================
@@ -1697,11 +1470,11 @@
       const c=document.getElementById('historialEntrenosContainer'); 
       if(!c)return; 
       if(STATE.historialEntrenos.length===0){ 
-        c.innerHTML=`<div class="card"><div style="text-align:center;color:var(--muted2);padding:20px"><i class="fa-solid ${ICONOS.libroAbierto}" style="font-size:32px;margin-bottom:8px;display:block"></i>${TEXTOS.sinEntrenos}</div></div>`; 
+        c.innerHTML=`<div class="card"><div style="text-align:center;color:var(--muted2);padding:20px"><i class="fa-solid fa-book-open" style="font-size:32px;margin-bottom:8px;display:block"></i>No hay entrenamientos guardados aún.</div></div>`; 
         return; 
       } 
       const ord=[...STATE.historialEntrenos].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)); 
-      c.innerHTML=ord.map((e,i)=>`<div class="card historial-entreno-card"><div class="historial-entreno-header"><div><span class="historial-entreno-fecha"><i class="fa-solid ${ICONOS.calendario}"></i> ${new Date(e.fecha).toLocaleDateString('es-ES',{day:'numeric',month:'short'})}</span></div><div class="historial-entreno-tipo">${e.tipo}</div></div><div class="historial-entreno-sub">${e.ejercicios.length} ejercicios</div><button class="btn btn-ghost btn-sm btn-block" style="margin-top:6px" onclick="Historial.toggleDetalle(${i})"><i class="fa-solid ${ICONOS.ojo}"></i> Ver entrenamiento</button><div class="historial-entreno-detalle" id="historial-detalle-${i}">${e.ejercicios.map(ej=>{
+      c.innerHTML=ord.map((e,i)=>`<div class="card historial-entreno-card"><div class="historial-entreno-header"><div><span class="historial-entreno-fecha"><i class="fa-solid fa-calendar"></i> ${new Date(e.fecha).toLocaleDateString('es-ES',{day:'numeric',month:'short'})}</span></div><div class="historial-entreno-tipo">${e.tipo}</div></div><div class="historial-entreno-sub">${e.ejercicios.length} ejercicios</div><button class="btn btn-ghost btn-sm btn-block" style="margin-top:6px" onclick="Historial.toggleDetalle(${i})"><i class="fa-solid fa-eye"></i> Ver entrenamiento</button><div class="historial-entreno-detalle" id="historial-detalle-${i}">${e.ejercicios.map(ej=>{
         const record = RecordsManager.getRecord(ej.nombre);
         const recordStr = record ? `🏆 ${record.weight} kg × ${record.reps}` : '';
         return `<div class="historial-ej-item"><span>${ej.nombre}</span><span class="historial-ej-datos">${Rutinas.esCardio(ej.nombre)?ej.peso+' min':ej.peso+' kg · '+ej.reps} ${recordStr}</span></div>`;
@@ -1732,7 +1505,7 @@
         const dr=Math.round((new Date(u.fecha)-new Date(STATE.mediciones[0].fecha))/86400000); 
         calc=`<div class="card"><div class="card-title"><i class="fa-solid fa-calculator"></i> Calculadora</div><div class="calc-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-sm)"><div class="stats-item"><div class="ca-valor">${imc}</div><div class="ca-label">IMC</div></div><div class="stats-item"><div class="ca-valor">${rca}</div><div class="ca-label">Ratio C/A</div></div><div class="stats-item"><div class="ca-valor">${pctObj}%</div><div class="ca-label">% Objetivo</div></div><div class="stats-item"><div class="ca-valor">${pp>0?'-':'+'}${Math.abs(pp)} kg</div><div class="ca-label">Peso perdido</div></div><div class="stats-item" style="grid-column:span 2"><div class="ca-valor">${dr} días</div><div class="ca-label">Días registrados</div></div></div></div>`; 
       } 
-      c.innerHTML=`<div class="card"><div class="card-title"><i class="fa-solid fa-chart-bar"></i> ESTADÍSTICAS</div><div class="stats-grid"><div class="stats-item"><div class="st-icon"><i class="fa-solid ${ICONOS.calendario}"></i></div><div class="st-valor">${dem}</div><div class="st-etiqueta">Entrenos este mes</div></div><div class="stats-item"><div class="st-icon"><i class="fa-solid ${ICONOS.bullseye}"></i></div><div class="st-valor">${pctM}%</div><div class="st-etiqueta">Cumplimiento</div></div><div class="stats-item"><div class="st-icon"><i class="fa-solid ${ICONOS.musculo}"></i></div><div class="st-valor">${STATE.diasEntrenados.length}</div><div class="st-etiqueta">Total entrenos</div></div><div class="stats-item"><div class="st-icon"><i class="fa-solid ${ICONOS.regla}"></i></div><div class="st-valor">${STATE.mediciones.length}</div><div class="st-etiqueta">Mediciones</div></div><div class="stats-highlight"><div class="sh-icon"><i class="fa-solid ${ICONOS.fuego}"></i></div><div><div class="sh-valor">${racha} días</div><div class="sh-etiqueta">Racha actual</div></div></div><div class="stats-highlight"><div class="sh-icon"><i class="fa-solid fa-trophy"></i></div><div><div class="sh-valor">${mr} días</div><div class="sh-etiqueta">Mejor racha</div></div></div></div></div>${calc}`; 
+      c.innerHTML=`<div class="card"><div class="card-title"><i class="fa-solid fa-chart-bar"></i> ESTADÍSTICAS</div><div class="stats-grid"><div class="stats-item"><div class="st-icon"><i class="fa-solid fa-calendar"></i></div><div class="st-valor">${dem}</div><div class="st-etiqueta">Entrenos este mes</div></div><div class="stats-item"><div class="st-icon"><i class="fa-solid fa-bullseye"></i></div><div class="st-valor">${pctM}%</div><div class="st-etiqueta">Cumplimiento</div></div><div class="stats-item"><div class="st-icon"><i class="fa-solid fa-dumbbell"></i></div><div class="st-valor">${STATE.diasEntrenados.length}</div><div class="st-etiqueta">Total entrenos</div></div><div class="stats-item"><div class="st-icon"><i class="fa-solid fa-ruler"></i></div><div class="st-valor">${STATE.mediciones.length}</div><div class="st-etiqueta">Mediciones</div></div><div class="stats-highlight"><div class="sh-icon"><i class="fa-solid fa-fire"></i></div><div><div class="sh-valor">${racha} días</div><div class="sh-etiqueta">Racha actual</div></div></div><div class="stats-highlight"><div class="sh-icon"><i class="fa-solid fa-trophy"></i></div><div><div class="sh-valor">${mr} días</div><div class="sh-etiqueta">Mejor racha</div></div></div></div></div>${calc}`; 
     }
   };
 
@@ -1782,7 +1555,7 @@
       await this.db.transaction(this.STORE_NAME,'readwrite').objectStore(this.STORE_NAME).put({fecha:f,timestamp:Date.now(),frente:fr,espalda:es,izquierda:iz,derecha:de}); 
       STATE.recordatorios.ultimasFotos=f; 
       STORAGE._save(); 
-      UI.toast(TEXTOS.fotosGuardadas,'success'); 
+      UI.toast('✅ Fotos guardadas','success'); 
       this.cargarSelectores(); 
       ['fotoFrente','fotoEspalda','fotoIzquierda','fotoDerecha'].forEach(id=>{ const el=document.getElementById(id); if(el)el.value=''; }); 
       ['previewFrente','previewEspalda','previewIzquierda','previewDerecha'].forEach(id=>{ const el=document.getElementById(id); if(el)el.classList.add('hidden'); }); 
@@ -1805,7 +1578,7 @@
       const d2=await new Promise(r=>store.get(f2).onsuccess=e=>r(e.target.result)); 
       const gen=(t,c)=>{ if(!d1?.[c]&&!d2?.[c])return''; return`<div style="background:var(--card);border-radius:var(--radius);padding:10px;margin-bottom:10px"><h4 style="color:var(--primary);margin-bottom:6px;text-align:center">${t}</h4><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><img src="${d1?.[c]||''}" style="width:100%;border-radius:var(--radius);object-fit:cover;background:#000;cursor:pointer" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'"><img src="${d2?.[c]||''}" style="width:100%;border-radius:var(--radius);object-fit:cover;background:#000;cursor:pointer" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'"></div></div>`; }; 
       let html=gen('FRENTE','frente')+gen('ESPALDA','espalda')+gen('IZQUIERDA','izquierda')+gen('DERECHA','derecha'); 
-      if(!html)html=`<div style="text-align:center;padding:20px">${TEXTOS.sinFotos}</div>`; 
+      if(!html)html=`<div style="text-align:center;padding:20px">No hay fotos para comparar</div>`; 
       document.getElementById('comparadorResultado').innerHTML=html; 
     }, 
     previsualizar(input,tipo){ 
@@ -1833,7 +1606,7 @@
       userData.altura=altura; 
       STATE.ajustes={nombre,objetivo,altura}; 
       STORAGE._save(); 
-      UI.toast(TEXTOS.ajustesGuardados,'success'); 
+      UI.toast('✅ Ajustes guardados','success'); 
       APP.renderizarTodo(); 
     },
     cargar(){ 
@@ -1964,8 +1737,8 @@
       this.configurarElementosIniciales(); 
       // Actualizar cada minuto la próxima comida
       setInterval(() => {
-        if (document.getElementById('page-alimentacion').classList.contains('active')) {
-          Alimentacion.renderProximaComida();
+        if (document.getElementById('page-nutricion').classList.contains('active')) {
+          Nutricion.renderComida();
         }
       }, 60000);
     },
@@ -2006,7 +1779,7 @@
       RecordsManager.render();
       EvolutionManager.render();
       PantallaHoy.render();
-      Alimentacion.render();
+      Nutricion.render();
     },
     initEventListeners() { 
       document.getElementById('importFile').addEventListener('change',function(){ STORAGE.importar(this); }); 
@@ -2018,10 +1791,6 @@
       const diasMap={1:'lunes',2:'martes',3:'miercoles',4:'jueves',5:'viernes',6:'sabado',0:'domingo'}; 
       diaActivo=diasMap[new Date().getDay()]||'lunes'; 
       if(diaActivo==='domingo')diaActivo='lunes'; 
-      // Cargar imagen guardada
-      if (STATE.alimentacion.imagen) {
-        document.getElementById('menuImagen').src = STATE.alimentacion.imagen;
-      }
     },
     navegar(id) { 
       document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); 
@@ -2031,11 +1800,10 @@
       document.querySelectorAll('.nav-item').forEach(b=>{ 
         if(b.innerText.toLowerCase().includes(id.substring(0,4)))b.classList.add('active'); 
       }); 
-      // Marcar item activo en menú lateral
       document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
       document.querySelectorAll('.menu-item').forEach(m => {
         if (m.textContent.trim().toLowerCase().includes(id) || 
-            (id === 'alimentacion' && m.textContent.trim().includes('Alimentación'))) {
+            (id === 'nutricion' && m.textContent.trim().includes('Nutrición'))) {
           m.classList.add('active');
         }
       });
@@ -2052,7 +1820,7 @@
       if(id==='progreso-fotos')Fotos.cargarSelectores(); 
       if(id==='records')RecordsManager.render();
       if(id==='mi-evolucion')EvolutionManager.render();
-      if(id==='alimentacion')Alimentacion.render();
+      if(id==='nutricion')Nutricion.render();
       if(id==='ajustes'){ Ajustes.cargar(); Ajustes.cargarRecordatorios(); } 
       if(id==='rutinas'){ 
         Rutinas.cargarTabs(); 
