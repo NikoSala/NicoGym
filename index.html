@@ -463,9 +463,30 @@
       this.renderizarTodo();
       this.configurarElementosIniciales();
     },
-    cargarDatos() {
+        cargarDatos() {
       STORAGE.init();
+      this._migrarDatosAntiguos();
       Ajustes.cargar();
+    },
+    _migrarDatosAntiguos() {
+      let migrado = false;
+      if (STATE.historialEntrenos.length === 0) {
+        const oldHist = localStorage.getItem('historialEntrenos');
+        if (oldHist) { try { STATE.historialEntrenos = JSON.parse(oldHist); migrado = true; } catch(e) {} }
+      }
+      if (Object.keys(STATE.checks).length === 0) {
+        const oldChecks = localStorage.getItem('nico_checks');
+        if (oldChecks) { try { STATE.checks = JSON.parse(oldChecks); migrado = true; } catch(e) {} }
+      }
+      if (STATE.diasEntrenados.length === 0) {
+        const oldDias = localStorage.getItem('diasEntrenados');
+        if (oldDias) { try { STATE.diasEntrenados = JSON.parse(oldDias); migrado = true; } catch(e) {} }
+      }
+      if (STATE.diasNoFumar.length === 0) {
+        const oldNoFumar = localStorage.getItem('diasNoFumar');
+        if (oldNoFumar) { try { STATE.diasNoFumar = JSON.parse(oldNoFumar); migrado = true; } catch(e) {} }
+      }
+      if (migrado) { STORAGE._save(); }
     },
     renderizarTodo() {
       UI.actualizarTopBar();
