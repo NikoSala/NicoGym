@@ -89,8 +89,6 @@
     .habito-check { display: flex; align-items: center; gap: var(--spacing-sm); padding: 6px 0; cursor: pointer; }
     .habito-check input { width: 18px; height: 18px; accent-color: var(--success); cursor: pointer; }
     .habito-check label { font-size: 13px; cursor: pointer; }
-    .progreso-semanal-bar { height: 6px; background: rgba(0,0,0,0.3); border-radius: 3px; overflow: hidden; margin-top: var(--spacing-xs); }
-    .progreso-semanal-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.4s ease; }
     .day-tabs { display: flex; gap: var(--spacing-xs); overflow-x: auto; padding-bottom: 6px; margin-bottom: 14px; scrollbar-width: none; }
     .day-tabs::-webkit-scrollbar { display: none; }
     .dtab { flex-shrink: 0; padding: 6px var(--spacing-md); border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted2); font-size: 11px; font-weight: 600; cursor: pointer; transition: var(--transition); }
@@ -113,14 +111,6 @@
     .btn-historial-ej { background: transparent; border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 9px; color: var(--muted2); cursor: pointer; margin-top: var(--spacing-xs); }
     .btn-finalizar { display: none; width: 100%; margin-top: 10px; padding: var(--spacing-md); font-size: 14px; }
     .btn-finalizar.visible { display: block; }
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
-    .cal-cell { background: rgba(255,255,255,0.03); border-radius: 6px; text-align: center; padding: 5px 0; font-size: 11px; cursor: pointer; border: 2px solid transparent; }
-    .cal-cell.completado { background: rgba(34,197,94,0.15); color: var(--success); }
-    .cal-cell.today { border-color: var(--primary); color: var(--primary); font-weight: 700; }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-sm); margin-bottom: 14px; }
-    .form-field { background: rgba(0,0,0,0.15); border-radius: var(--radius); padding: var(--spacing-sm); }
-    .form-field label { font-size: 9px; color: var(--muted); display: block; margin-bottom: 3px; font-weight: 600; text-transform: uppercase; }
-    .form-field input { background: transparent; border: none; color: var(--text); font-size: 14px; width: 100%; outline: none; font-family: 'Inter', sans-serif; }
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-sm); }
     .stats-item { background: rgba(0,0,0,0.15); border-radius: var(--radius); padding: 14px; text-align: center; }
     .stats-highlight { grid-column: span 2; background: linear-gradient(135deg, rgba(249,115,22,0.1), rgba(249,115,22,0.03)); border-radius: var(--radius); padding: 14px; display: flex; align-items: center; gap: var(--spacing-md); }
@@ -152,8 +142,6 @@
     .pendiente-item { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
     .pendiente-item:last-child { border-bottom: none; }
     .pendiente-item i.fa-chevron-right { color: var(--muted); margin-left: auto; }
-
-    /* ESTILOS NUTRICIÓN */
     .plan-img { width: 100%; border-radius: var(--radius); border: 1px solid var(--border); cursor: pointer; display: block; }
     .nutricion-suplemento { display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) 0; border-bottom: 1px solid var(--border); }
     .nutricion-suplemento:last-child { border-bottom: none; }
@@ -184,7 +172,6 @@
     .nutricion-resumen-item .r-estado { font-size: 14px; font-weight: 600; }
     .nutricion-resumen-item .r-estado.ok { color: var(--success); }
     .nutricion-resumen-item .r-estado.pending { color: var(--warning); }
-
     .record-card { background: var(--card); border-radius: var(--radius); padding: var(--spacing-md); margin: 8px 0; border: 1px solid var(--border); border-left: 3px solid var(--primary); }
     .record-card .record-name { font-size: 16px; font-weight: 600; }
     .record-card .record-mark { font-size: 20px; font-weight: 700; color: var(--primary); margin: 4px 0; }
@@ -195,7 +182,6 @@
     .evolucion-card .evolucion-change { font-size: 13px; font-weight: 600; }
     .evolucion-card .evolucion-change.positive { color: var(--success); }
     .evolucion-card .evolucion-change.negative { color: var(--danger); }
-
     .progreso-rutina-bar { background: var(--card); border-radius: var(--radius); padding: var(--spacing-md); border: 1px solid var(--border); margin-bottom: var(--spacing-md); }
     .progreso-rutina-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs); }
     .progreso-rutina-titulo { font-size: 13px; font-weight: 600; color: var(--text); }
@@ -205,7 +191,6 @@
     .progreso-rutina-info { font-size: 11px; color: var(--muted2); margin-top: var(--spacing-xs); text-align: right; }
     .progreso-rutina-completado { text-align: center; padding: var(--spacing-sm); color: var(--success); font-weight: 600; font-size: 14px; }
     .progreso-rutina-completado i { margin-right: var(--spacing-xs); }
-
     .historial-ej-item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
     .historial-ej-item:last-child { border-bottom: none; }
     .historial-ej-datos { color: var(--primary); font-weight: 600; }
@@ -215,20 +200,17 @@
     .historial-entreno-tipo { font-size: 11px; color: var(--primary); font-weight: 600; background: rgba(249,115,22,0.1); padding: 2px 10px; border-radius: 12px; }
     .historial-entreno-header { display: flex; justify-content: space-between; align-items: center; }
     .historial-entreno-sub { font-size: 11px; color: var(--muted2); margin-top: 2px; }
-
     .evolucion-ejercicio { margin-top: var(--spacing-sm); border-top: 1px solid var(--border); padding-top: var(--spacing-sm); }
     .evolucion-ejercicio-item { display: flex; justify-content: space-between; padding: 3px 0; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); }
     .evolucion-ejercicio-item:last-child { border-bottom: none; }
     .evolucion-ejercicio-fecha { color: var(--muted2); }
     .evolucion-ejercicio-datos { color: var(--text); font-weight: 500; }
-
     .mejor-marca { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); border-radius: var(--radius); padding: var(--spacing-sm); margin-top: var(--spacing-sm); display: flex; justify-content: space-between; align-items: center; }
     .mejor-marca-label { font-size: 10px; color: var(--muted2); text-transform: uppercase; }
     .mejor-marca-valor { font-size: 14px; font-weight: 700; color: var(--success); }
     .ultimo-entreno { background: rgba(255,255,255,0.03); border-radius: var(--radius); padding: var(--spacing-sm); margin-top: var(--spacing-sm); display: flex; justify-content: space-between; align-items: center; }
     .ultimo-entreno-label { font-size: 10px; color: var(--muted2); text-transform: uppercase; }
     .ultimo-entreno-valor { font-size: 14px; font-weight: 600; }
-
     .finalizar-checklist { display: flex; flex-direction: column; gap: var(--spacing-sm); }
     .finalizar-item { display: flex; align-items: center; gap: var(--spacing-md); background: rgba(0,0,0,0.15); border-radius: var(--radius); padding: var(--spacing-md); cursor: pointer; transition: var(--transition); }
     .finalizar-item:hover { background: rgba(0,0,0,0.25); }
@@ -236,7 +218,6 @@
     .finalizar-item label { font-size: 14px; cursor: pointer; flex: 1; }
     .finalizar-titulo { font-size: 28px; font-weight: 700; text-align: center; color: var(--success); margin-bottom: var(--spacing-lg); }
     .finalizar-subtitulo { text-align: center; color: var(--muted2); font-size: 13px; margin-bottom: var(--spacing-lg); }
-
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
@@ -295,18 +276,24 @@
   <div class="card"><div class="card-title"><i class="fa-solid fa-code-compare"></i> COMPARAR DOS DÍAS</div><div style="display:flex;gap:8px;margin:10px 0"><select id="compararDia1" style="flex:1;background:transparent;border:1px solid var(--border);border-radius:20px;padding:6px 8px;color:white;font-size:11px;font-family:'Inter',sans-serif"></select><select id="compararDia2" style="flex:1;background:transparent;border:1px solid var(--border);border-radius:20px;padding:6px 8px;color:white;font-size:11px;font-family:'Inter',sans-serif"></select></div><button class="btn btn-primary btn-block" onclick="Fotos.comparar()"><i class="fa-solid fa-eye"></i> Comparar</button><div id="comparadorResultado" style="margin-top:10px"></div></div>
 </div></div>
 
-<!-- NUEVA PÁGINA: NUTRICIÓN -->
+<!-- PÁGINA NUTRICIÓN -->
 <div class="page" id="page-nutricion"><div class="container">
   <div class="card">
     <div class="card-title"><i class="fa-solid fa-utensils"></i> 🍽 NUTRICIÓN</div>
     
     <!-- Plan semanal -->
     <div style="margin-bottom: var(--spacing-md)">
-      <div style="font-size:13px;color:var(--muted2);margin-bottom:var(--spacing-sm)">📋 Plan semanal</div>
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300' viewBox='0 0 600 300'%3E%3Crect width='600' height='300' fill='%231e293b'/%3E%3Ctext x='300' y='130' font-family='Inter' font-size='18' fill='%2394a3b8' text-anchor='middle'%3E🍽 PLAN SEMANAL%3C/text%3E%3Ctext x='300' y='160' font-family='Inter' font-size='12' fill='%2364748b' text-anchor='middle'%3ELunes · Martes · Miércoles · Jueves · Viernes%3C/text%3E%3Ctext x='300' y='190' font-family='Inter' font-size='10' fill='%234a5568' text-anchor='middle'%3E(menu.png)%3C/text%3E%3C/svg%3E" alt="Plan semanal" class="plan-img" id="planImg" onclick="Nutricion.abrirImagen()">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--spacing-sm)">
+        <div style="font-size:13px;color:var(--muted2)">📋 Plan semanal</div>
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('inputMenuImagen').click()">
+          <i class="fa-solid fa-camera"></i> Cambiar imagen
+        </button>
+      </div>
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300' viewBox='0 0 600 300'%3E%3Crect width='600' height='300' fill='%231e293b'/%3E%3Ctext x='300' y='130' font-family='Inter' font-size='18' fill='%2394a3b8' text-anchor='middle'%3E🍽 PLAN SEMANAL%3C/text%3E%3Ctext x='300' y='160' font-family='Inter' font-size='12' fill='%2364748b' text-anchor='middle'%3ELunes · Martes · Miércoles · Jueves · Viernes%3C/text%3E%3Ctext x='300' y='190' font-family='Inter' font-size='10' fill='%234a5568' text-anchor='middle'%3E(Sube tu imagen)%3C/text%3E%3C/svg%3E" alt="Plan semanal" class="plan-img" id="planImg" onclick="Nutricion.abrirImagen()">
       <div style="text-align:center;margin-top:var(--spacing-xs)">
         <button class="btn btn-ghost btn-sm" onclick="Nutricion.abrirImagen()"><i class="fa-solid fa-expand"></i> 🔍 Ver pantalla completa</button>
       </div>
+      <input type="file" id="inputMenuImagen" accept="image/*" class="hidden" onchange="Nutricion.cargarImagen(this)">
     </div>
 
     <!-- Suplementos -->
@@ -360,7 +347,7 @@
       </div>
     </div>
 
-    <!-- Ahora toca / Próxima comida -->
+    <!-- Ahora toca -->
     <div style="margin-bottom: var(--spacing-md)">
       <div class="card-title" style="margin-bottom:var(--spacing-sm)"><i class="fa-solid fa-clock"></i> 🍽 AHORA TOCA</div>
       <div class="nutricion-comida" id="comidaContainer">
@@ -466,13 +453,13 @@
     FECHA_INICIO_NO_FUMAR: new Date(2026,1,22), 
     STORAGE_KEY: 'nicoGym', 
     FECHA_REFERENCIA_MEDICIONES: '2026-07-20', 
-    FECHA_ACTIVACION_PROTEINA: new Date(2026,7,1), // 1 de agosto de 2026
+    FECHA_ACTIVACION_PROTEINA: new Date(2026,7,1),
     COMIDAS: [
       { hora: '08:00', nombre: 'Café', icono: '☕' },
       { hora: '10:30', nombre: 'Batido proteína', icono: '🥛' },
       { hora: '14:00', nombre: 'Comida', icono: '🍗' },
       { hora: '17:00', nombre: 'Merienda', icono: '🥪' },
-      { hora: '19:00', nombre: 'Cena', icono: '🍽' }
+      { hora: '20:00', nombre: 'Cena', icono: '🍽' }
     ]
   };
   const CAMPOS_MEDICION = ['medPeso','medCintura','medGrasaPorc','medMasaMuscular','medPecho','medCadera','medBiceps'];
@@ -509,7 +496,8 @@
     nutricion: {
       agua: 1.5,
       suplementos: { creatina: false, proteina: false },
-      ultimoDia: null
+      ultimoDia: null,
+      imagen: null
     }
   };
 
@@ -537,9 +525,8 @@
           };
         }
         if(!STATE.nutricion) {
-          STATE.nutricion = { agua: 1.5, suplementos: { creatina: false, proteina: false }, ultimoDia: null };
+          STATE.nutricion = { agua: 1.5, suplementos: { creatina: false, proteina: false }, ultimoDia: null, imagen: null };
         }
-        // Resetear agua si es nuevo día
         const hoy = UI.getHoyStr();
         if (STATE.nutricion.ultimoDia !== hoy) {
           STATE.nutricion.agua = 0;
@@ -550,7 +537,6 @@
         try{ STATE.mediciones=JSON.parse(localStorage.getItem('bodyComposition'))||[]; }catch(e){} 
         this._save(); 
       }
-      // Calcular días sin fumar
       let c = 0;
       const f = new Date(CONFIG.FECHA_INICIO_NO_FUMAR);
       const h = new Date();
@@ -692,6 +678,7 @@
       this.renderAgua();
       this.renderComida();
       this.renderResumenHoy();
+      this.cargarImagenGuardada();
     },
     renderSuplementos() {
       const hoy = new Date();
@@ -703,11 +690,9 @@
       const creatinaChecked = STATE.nutricion.suplementos.creatina || false;
       const proteinaChecked = STATE.nutricion.suplementos.proteina || false;
       
-      // Actualizar checkbox de creatina
       const creatinaCheck = container.querySelector('[data-suplemento="creatina"] .suple-check');
       if (creatinaCheck) creatinaCheck.checked = creatinaChecked;
       
-      // Mostrar/ocultar proteína según fecha
       const supleProteina = document.getElementById('supleProteina');
       const supleProteinaInactivo = document.getElementById('supleProteinaInactivo');
       
@@ -763,10 +748,8 @@
       
       const comidas = CONFIG.COMIDAS;
       
-      // Buscar la próxima comida
       let proxComida = null;
       let minDiff = Infinity;
-      let esAhora = false;
       
       for (const comida of comidas) {
         const [h, m] = comida.hora.split(':').map(Number);
@@ -786,7 +769,6 @@
       const faltan = document.getElementById('comidaFaltan');
       
       if (proxComida && minDiff > 5) {
-        // Próxima comida
         const minutosRestantes = Math.round(minDiff);
         const horasRest = Math.floor(minutosRestantes / 60);
         const minsRest = minutosRestantes % 60;
@@ -801,7 +783,6 @@
         container.style.borderLeft = '3px solid var(--primary)';
         container.style.paddingLeft = 'var(--spacing-sm)';
       } else if (proxComida && minDiff <= 5) {
-        // Ahora toca
         icono.textContent = '✅';
         nombre.textContent = `¡${proxComida.nombre}!`;
         tiempo.textContent = proxComida.hora;
@@ -809,7 +790,6 @@
         container.style.borderLeft = '3px solid var(--success)';
         container.style.paddingLeft = 'var(--spacing-sm)';
       } else {
-        // Todas las comidas pasadas
         const ultimaComida = comidas[comidas.length - 1];
         icono.textContent = '🌙';
         nombre.textContent = 'Comidas completadas';
@@ -833,6 +813,27 @@
       if (resAgua) {
         resAgua.innerText = aguaHecha ? '✔' : '✖';
         resAgua.className = 'r-estado ' + (aguaHecha ? 'ok' : 'pending');
+      }
+    },
+    cargarImagenGuardada() {
+      const img = document.getElementById('planImg');
+      if (img && STATE.nutricion.imagen) {
+        img.src = STATE.nutricion.imagen;
+      }
+    },
+    cargarImagen(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = document.getElementById('planImg');
+          if (img) {
+            img.src = e.target.result;
+            STATE.nutricion.imagen = e.target.result;
+            STORAGE._save();
+            UI.toast('✅ Imagen actualizada', 'success');
+          }
+        };
+        reader.readAsDataURL(input.files[0]);
       }
     },
     abrirImagen() {
@@ -1067,7 +1068,12 @@
       if (diaHoy === 'domingo') {
         html += `<div class="card"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--muted);font-size:32px">😌</div><div class="th-contenido"><div class="th-titulo">Domingo de descanso</div><div class="th-sub">Recuperación activa · Caminar, estirar, hidratarse</div></div></div></div>`;
       } else {
-        html += `<div class="card"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--primary)"><i class="fa-solid fa-dumbbell"></i></div><div class="th-contenido"><div class="th-titulo">💪 Hoy toca</div><div class="th-sub">${TIPOS_RUTINA[diaHoy]} · ${ejHoy.length} ejercicios</div></div><div class="th-accion"><button class="btn btn-primary btn-sm" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-play"></i> Empezar</button></div></div></div>`;
+        // Verificar si el entrenamiento de hoy está completado
+        const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoyStr());
+        const estadoEntreno = entrenadoHoy ? '✅ Completado' : '💪 Pendiente';
+        const colorEstado = entrenadoHoy ? 'var(--success)' : 'var(--primary)';
+        
+        html += `<div class="card"><div class="tarjeta-hoy"><div class="th-icono" style="color:${colorEstado}"><i class="fa-solid fa-dumbbell"></i></div><div class="th-contenido"><div class="th-titulo">💪 Hoy toca</div><div class="th-sub">${TIPOS_RUTINA[diaHoy]} · ${ejHoy.length} ejercicios</div><div style="font-size:12px;color:${colorEstado};margin-top:4px;font-weight:600">${estadoEntreno}</div></div><div class="th-accion">${!entrenadoHoy ? `<button class="btn btn-primary btn-sm" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-play"></i> Empezar</button>` : `<span style="color:var(--success);font-size:20px">✅</span>`}</div></div></div>`;
       }
       
       if (habitosPendientes) {
@@ -1099,11 +1105,10 @@
         html += `<div class="card card-estado-verde"><div class="tarjeta-hoy"><div class="th-icono" style="color:var(--success)"><i class="fa-solid fa-circle-check"></i></div><div class="th-contenido"><div class="th-titulo">📸 Fotos</div><div class="th-sub">Próxima revisión: Domingo ${fechaFotosStr} · Faltan ${diasHastaFotos} días</div></div></div></div>`;
       }
       
+      // OBJETIVO SEMANAL - SOLO ENTRENOS (eliminado Medición y Fotos)
       const pctSemana = Math.round((entrenosSemana / maxEntrenos) * 100);
       html += `<div class="card"><div class="card-title"><i class="fa-solid fa-bullseye"></i> Objetivo semanal</div>
         <div style="display:flex;align-items:center;gap:12px;padding:6px 0"><span style="font-size:13px;width:100px">💪 Entrenos</span><div style="flex:1;height:6px;background:rgba(0,0,0,0.3);border-radius:3px;overflow:hidden"><div style="height:100%;background:var(--primary);border-radius:3px;width:${pctSemana}%"></div></div><span style="font-size:12px;font-weight:600;width:30px;text-align:right">${entrenosSemana}/${maxEntrenos}</span></div>
-        <div style="display:flex;align-items:center;gap:12px;padding:6px 0"><span style="font-size:13px;width:100px">📏 Medición</span><span style="font-size:16px">${esDiaMedicion ? '🔴 Pendiente' : '✅ Hecha'}</span></div>
-        <div style="display:flex;align-items:center;gap:12px;padding:6px 0"><span style="font-size:13px;width:100px">📸 Foto</span><span style="font-size:16px">${esDiaFotos ? '🔴 Pendiente' : '✅ Hecha'}</span></div>
       </div>`;
       
       if (todoAlDia && !habitosPendientes) {
@@ -1165,6 +1170,9 @@
           STORAGE._save(); 
           UI.toast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`,'success'); 
           confetti({particleCount:150,spread:80}); 
+          // Actualizar todas las vistas
+          PantallaHoy.render();
+          Dashboard.render();
         } 
       } 
     },
@@ -1735,7 +1743,6 @@
       this.initEventListeners(); 
       this.renderizarTodo(); 
       this.configurarElementosIniciales(); 
-      // Actualizar cada minuto la próxima comida
       setInterval(() => {
         if (document.getElementById('page-nutricion').classList.contains('active')) {
           Nutricion.renderComida();
