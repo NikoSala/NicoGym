@@ -3,30 +3,22 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>NicoGym v5.1.1</title>
+    <title>NicoGym v5.1</title>
     
-    <!-- ==========================================
-    CSS EXTERNO
-    ========================================== -->
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css" />
     
-    <!-- ==========================================
-    FUENTES E ICONOS
-    ========================================== -->
+    <!-- FUENTES E ICONOS -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     
-    <!-- ==========================================
-    CONFETTI (para celebraciones)
-    ========================================== -->
+    <!-- CONFETTI -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js">
     </script>
 </head>
 <body>
 
-    <!-- ==========================================
-    TOP BAR
-    ========================================== -->
+    <!-- TOP BAR -->
     <header class="top-bar">
         <div class="logo"><i class="fa-solid fa-dumbbell"></i>NicoGym</div>
         <div class="top-right">
@@ -53,9 +45,7 @@
         </div>
     </header>
 
-    <!-- ==========================================
-    SIDE MENU
-    ========================================== -->
+    <!-- SIDE MENU -->
     <div class="side-overlay" id="sideOverlay" onclick="UI.toggleMenu()"></div>
     <nav class="side-menu" id="sideMenu">
         <button class="menu-item active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i> Inicio</button>
@@ -72,23 +62,17 @@
         <div class="menu-footer">NicoGym v5.1</div>
     </nav>
 
-    <!-- ==========================================
-    PAGES
-    ========================================== -->
-
-    <!-- INICIO - DASHBOARD -->
+    <!-- PAGES -->
     <div class="page active" id="page-inicio">
         <div id="dashboardContainer"></div>
     </div>
 
-    <!-- RUTINAS -->
     <div class="page" id="page-rutinas">
         <div id="progresoRutinaContainer"></div>
         <div class="day-tabs" id="dayTabs"></div>
         <div id="dayPanelsContainer"></div>
     </div>
 
-    <!-- COMPOSICIÓN (PESO) -->
     <div class="page" id="page-composicion">
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-plus"></i> Nueva medición</div>
@@ -110,12 +94,10 @@
         </div>
     </div>
 
-    <!-- ESTADÍSTICAS -->
     <div class="page" id="page-estadisticas">
         <div id="estadisticasContainer"></div>
     </div>
 
-    <!-- FOTOS -->
     <div class="page" id="page-progreso-fotos">
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-camera"></i> Subir fotos</div>
@@ -142,11 +124,9 @@
         </div>
     </div>
 
-    <!-- NUTRICIÓN -->
     <div class="page" id="page-nutricion">
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-utensils"></i> Nutrición</div>
-
             <div style="margin-bottom:16px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
                     <span style="font-size:13px;color:var(--text-secondary);">📋 Plan semanal</span>
@@ -155,7 +135,6 @@
                 <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='%231e293b'/%3E%3Ctext x='200' y='90' font-family='Inter' font-size='16' fill='%2394a3b8' text-anchor='middle'%3E🍽 PLAN SEMANAL%3C/text%3E%3Ctext x='200' y='120' font-family='Inter' font-size='11' fill='%2364748b' text-anchor='middle'%3E(Sube tu imagen)%3C/text%3E%3C/svg%3E" class="plan-img" id="planImg" onclick="Nutricion.abrirImagen()">
                 <input type="file" id="inputMenuImagen" accept="image/*" class="hidden" onchange="Nutricion.cargarImagen(this)">
             </div>
-
             <div style="margin-bottom:16px;">
                 <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">💊 Suplementos</div>
                 <div id="suplementosContainer">
@@ -175,7 +154,6 @@
                     </div>
                 </div>
             </div>
-
             <div style="margin-bottom:16px;">
                 <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">💧 Agua</div>
                 <div class="nutricion-agua">
@@ -191,7 +169,6 @@
                     <div class="agua-mensaje" id="aguaMensaje">✔ Objetivo conseguido</div>
                 </div>
             </div>
-
             <div>
                 <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">🍽 Ahora toca</div>
                 <div class="nutricion-comida" id="comidaContainer">
@@ -208,17 +185,13 @@
         </div>
     </div>
 
-    <!-- BIBLIOTECA -->
     <div class="page" id="page-biblioteca">
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-book"></i> Biblioteca</div>
-
             <div style="position:relative;margin-bottom:14px;">
                 <input type="text" id="buscarEjercicio" placeholder="🔍 Buscar ejercicio..." oninput="Biblioteca.renderizar()" style="width:100%;background:rgba(0,0,0,0.15);border:1px solid var(--border);border-radius:20px;padding:10px 16px;color:var(--text);font-size:14px;font-family:var(--font);outline:none;">
             </div>
-
             <div class="maniqui-container" id="maniquiContainer"></div>
-
             <div style="display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 14px;">
                 <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarPorCategoria('todos')">📋 Todos</button>
                 <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarPorCategoria('espalda')">Espalda</button>
@@ -230,12 +203,10 @@
                 <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarPorCategoria('abdomen')">Abdomen</button>
                 <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarFavoritos()">⭐ Favoritos</button>
             </div>
-
             <div id="listaEjercicios" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
         </div>
     </div>
 
-    <!-- RÉCORDS -->
     <div class="page" id="page-records">
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-trophy"></i> Récords</div>
@@ -248,7 +219,6 @@
         </div>
     </div>
 
-    <!-- AJUSTES -->
     <div class="page" id="page-ajustes">
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-user"></i> Perfil</div>
@@ -274,10 +244,7 @@
         </div>
     </div>
 
-    <!-- ==========================================
-    MODALES
-    ========================================== -->
-
+    <!-- MODALES -->
     <div class="modal-overlay hidden" id="modalEjercicio">
         <div class="modal-panel">
             <button class="modal-close" onclick="Biblioteca.cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -299,9 +266,7 @@
         <img id="lightboxImg" src="" alt="Imagen ampliada">
     </div>
 
-    <!-- ==========================================
-    BOTTOM NAV
-    ========================================== -->
+    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <button class="nav-btn active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i>Inicio</button>
         <button class="nav-btn" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i>Rutina</button>
@@ -310,9 +275,7 @@
         <button class="nav-btn" onclick="UI.toggleMenu()"><i class="fa-solid fa-bars"></i>Más</button>
     </nav>
 
-    <!-- ==========================================
-    SCRIPTS
-    ========================================== -->
+    <!-- SCRIPTS -->
     <script src="app.js"></script>
     <script src="modulos.js"></script>
 </body>
