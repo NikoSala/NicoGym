@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>NicoGym v5.1</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js">
+    </script>
+</head>
+<body>
+
+    <!-- ==========================================
+    TOP BAR
+    ========================================== -->
+    <header class="top-bar">
+        <div class="logo"><i class="fa-solid fa-dumbbell"></i>NicoGym</div>
+        <div class="top-right">
+            <div class="top-stats">
+                <span id="topPesoDisplay">-- kg</span>
+                <span>·</span>
+                <span>🎯 <strong id="topObjetivo">75</strong></span>
+                <span>·</span>
+                <span>🚭 <strong id="topDiasSinFumar">0</strong></span>
+            </div>
+            <div class="bell-wrap" id="bellWrap" onclick="UI.toggleNotif()">
+                <i class="fa-regular fa-bell"></i>
+                <span class="badge hidden" id="bellBadge">0</span>
+                <div class="notif-dropdown" id="notifDropdown">
+                    <div class="notif-header">🔔 Pendientes</div>
+                    <div id="notifList">
+                        <div class="notif-empty">Sin notificaciones</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="UI.toggleMenu()" style="padding:4px 10px;font-size:16px;">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- ==========================================
+    SIDE MENU
+    ========================================== -->
+    <div class="side-overlay" id="sideOverlay" onclick="UI.toggleMenu()"></div>
+    <nav class="side-menu" id="sideMenu">
+        <button class="menu-item active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i> Inicio</button>
+        <button class="menu-item" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i> Rutina</button>
+        <button class="menu-item" onclick="APP.navegar('composicion')"><i class="fa-solid fa-scale-balanced"></i> Progreso</button>
+        <button class="menu-item" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i> Estadísticas</button>
+        <button class="menu-item" onclick="APP.navegar('progreso-fotos')"><i class="fa-solid fa-camera"></i> Fotos</button>
+        <button class="menu-item" onclick="APP.navegar('nutricion')"><i class="fa-solid fa-utensils"></i> Nutrición</button>
+        <button class="menu-item" onclick="APP.navegar('biblioteca')"><i class="fa-solid fa-book"></i> Biblioteca</button>
+        <button class="menu-item" onclick="APP.navegar('records')"><i class="fa-solid fa-trophy"></i> Récords</button>
+        <div class="menu-divider"></div>
+        <button class="menu-item" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</button>
+        <button class="menu-item" onclick="APP.confirmarReset()" style="color:var(--danger);"><i class="fa-solid fa-trash"></i> Reset todo</button>
+        <div class="menu-footer">NicoGym v5.1</div>
+    </nav>
+
+    <!-- ==========================================
+    PAGES
+    ========================================== -->
+
+    <!-- INICIO - DASHBOARD -->
+    <div class="page active" id="page-inicio">
+        <div id="dashboardContainer"></div>
+    </div>
+
+    <!-- RUTINAS -->
+    <div class="page" id="page-rutinas">
+        <div id="progresoRutinaContainer"></div>
+        <div class="day-tabs" id="dayTabs"></div>
+        <div id="dayPanelsContainer"></div>
+    </div>
+
+    <!-- COMPOSICIÓN (PESO) -->
+    <div class="page" id="page-composicion">
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-plus"></i> Nueva medición</div>
+            <div class="form-grid">
+                <div class="form-field"><label>Fecha</label><input type="date" id="medFecha"></div>
+                <div class="form-field"><label>Peso (kg)</label><input type="number" id="medPeso" step="0.1" placeholder="84.3"></div>
+                <div class="form-field"><label>Cintura (cm)</label><input type="number" id="medCintura" step="0.1" placeholder="98"></div>
+                <div class="form-field"><label>Pecho (cm)</label><input type="number" id="medPecho" step="0.1" placeholder="105"></div>
+                <div class="form-field"><label>Cadera (cm)</label><input type="number" id="medCadera" step="0.1" placeholder="106"></div>
+                <div class="form-field"><label>Bíceps (cm)</label><input type="number" id="medBiceps" step="0.1" placeholder="34"></div>
+                <div class="form-field"><label>% Grasa</label><input type="number" id="medGrasaPorc" step="0.1" placeholder="27.5"></div>
+                <div class="form-field"><label>Masa muscular (kg)</label><input type="number" id="medMasaMuscular" step="0.1" placeholder="58.2"></div>
+            </div>
+            <button class="btn btn-primary btn-block" onclick="Composicion.guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+        </div>
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Historial</div>
+            <div id="historialMediciones"></div>
+        </div>
+    </div>
+
+    <!-- ESTADÍSTICAS -->
+    <div class="page" id="page-estadisticas">
+        <div id="estadisticasContainer"></div>
+    </div>
+
+    <!-- FOTOS -->
+    <div class="page" id="page-progreso-fotos">
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-camera"></i> Subir fotos</div>
+            <div style="display:flex;gap:8px;margin-bottom:10px">
+                <input type="date" id="fechaFotos" style="flex:1;background:rgba(0,0,0,0.15);border:1px solid var(--border);border-radius:20px;padding:6px 12px;color:var(--text);font-size:12px;font-family:var(--font);outline:none">
+                <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fechaFotos').value && UI.toast('Selecciona fotos y guarda','info')"><i class="fa-solid fa-upload"></i> Cargar</button>
+            </div>
+            <div class="foto-grid-upload">
+                <div class="equip-card"><div class="label">Frente</div><input type="file" accept="image/*" onchange="Fotos.previsualizar(this,'Frente')"><img id="previewFrente" class="foto-preview hidden"></div>
+                <div class="equip-card"><div class="label">Espalda</div><input type="file" accept="image/*" onchange="Fotos.previsualizar(this,'Espalda')"><img id="previewEspalda" class="foto-preview hidden"></div>
+                <div class="equip-card"><div class="label">Izquierda</div><input type="file" accept="image/*" onchange="Fotos.previsualizar(this,'Izquierda')"><img id="previewIzquierda" class="foto-preview hidden"></div>
+                <div class="equip-card"><div class="label">Derecha</div><input type="file" accept="image/*" onchange="Fotos.previsualizar(this,'Derecha')"><img id="previewDerecha" class="foto-preview hidden"></div>
+            </div>
+            <button class="btn btn-primary btn-block" onclick="Fotos.guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar día</button>
+        </div>
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-code-compare"></i> Comparar</div>
+            <div style="display:flex;gap:8px;margin-bottom:10px">
+                <select id="compararDia1" style="flex:1;background:rgba(0,0,0,0.15);border:1px solid var(--border);border-radius:20px;padding:6px 12px;color:var(--text);font-size:12px;font-family:var(--font);outline:none"></select>
+                <select id="compararDia2" style="flex:1;background:rgba(0,0,0,0.15);border:1px solid var(--border);border-radius:20px;padding:6px 12px;color:var(--text);font-size:12px;font-family:var(--font);outline:none"></select>
+            </div>
+            <button class="btn btn-primary btn-block" onclick="Fotos.comparar()"><i class="fa-solid fa-eye"></i> Comparar</button>
+            <div id="comparadorResultado" style="margin-top:10px"></div>
+        </div>
+    </div>
+
+    <!-- NUTRICIÓN -->
+    <div class="page" id="page-nutricion">
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-utensils"></i> Nutrición</div>
+
+            <div style="margin-bottom:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                    <span style="font-size:13px;color:var(--text-secondary);">📋 Plan semanal</span>
+                    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('inputMenuImagen').click()"><i class="fa-solid fa-camera"></i> Cambiar</button>
+                </div>
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='%231e293b'/%3E%3Ctext x='200' y='90' font-family='Inter' font-size='16' fill='%2394a3b8' text-anchor='middle'%3E🍽 PLAN SEMANAL%3C/text%3E%3Ctext x='200' y='120' font-family='Inter' font-size='11' fill='%2364748b' text-anchor='middle'%3E(Sube tu imagen)%3C/text%3E%3C/svg%3E" class="plan-img" id="planImg" onclick="Nutricion.abrirImagen()">
+                <input type="file" id="inputMenuImagen" accept="image/*" class="hidden" onchange="Nutricion.cargarImagen(this)">
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">💊 Suplementos</div>
+                <div id="suplementosContainer">
+                    <div class="nutricion-suplemento" data-suplemento="creatina">
+                        <input type="checkbox" class="suple-check" onchange="Nutricion.toggleSuplemento('creatina', this)">
+                        <div class="suple-info"><div class="suple-nombre">Creatina</div><div class="suple-detalle">5 gramos</div></div>
+                        <div class="suple-hora">18:20</div>
+                    </div>
+                    <div class="nutricion-suplemento" data-suplemento="proteina" id="supleProteina" style="display:none">
+                        <input type="checkbox" class="suple-check" onchange="Nutricion.toggleSuplemento('proteina', this)">
+                        <div class="suple-info"><div class="suple-nombre">Proteína Whey</div><div class="suple-detalle">Batido</div></div>
+                        <div class="suple-hora">10:30</div>
+                    </div>
+                    <div class="nutricion-suplemento" id="supleProteinaInactivo">
+                        <div class="suple-info"><div class="suple-nombre" style="color:var(--text-secondary);">Proteína Whey</div><div class="suple-detalle">Disponible en Agosto</div></div>
+                        <div class="suple-inactivo">📅 Agosto</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">💧 Agua</div>
+                <div class="nutricion-agua">
+                    <div class="agua-header">
+                        <span class="agua-valor" id="aguaActual">0.0</span>
+                        <span class="agua-objetivo">/ 2.5 litros</span>
+                    </div>
+                    <div class="agua-barra"><div class="agua-fill" id="aguaFill" style="width:0%"></div></div>
+                    <div class="agua-botones">
+                        <button class="btn btn-ghost btn-sm" onclick="Nutricion.agregarAgua(250)">+250 ml</button>
+                        <button class="btn btn-ghost btn-sm" onclick="Nutricion.agregarAgua(500)">+500 ml</button>
+                    </div>
+                    <div class="agua-mensaje" id="aguaMensaje">✔ Objetivo conseguido</div>
+                </div>
+            </div>
+
+            <div>
+                <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">🍽 Ahora toca</div>
+                <div class="nutricion-comida" id="comidaContainer">
+                    <div class="comida-header">
+                        <span class="comida-icono" id="comidaIcono">☕</span>
+                        <div class="comida-info">
+                            <div class="comida-nombre" id="comidaNombre">Café</div>
+                            <div class="comida-tiempo" id="comidaTiempo">08:00</div>
+                            <div class="comida-faltan" id="comidaFaltan">Faltan 45 min</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BIBLIOTECA -->
+    <div class="page" id="page-biblioteca">
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-book"></i> Biblioteca</div>
+
+            <div style="position:relative;margin-bottom:14px;">
+                <input type="text" id="buscarEjercicio" placeholder="🔍 Buscar ejercicio..." oninput="Biblioteca.renderizar()" style="width:100%;background:rgba(0,0,0,0.15);border:1px solid var(--border);border-radius:20px;padding:10px 16px;color:var(--text);font-size:14px;font-family:var(--font);outline:none;">
+            </div>
+
+            <div class="maniqui-container" id="maniquiContainer"></div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 14px;">
+                <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarPorCategoria('todos')">📋 Todos</button>
+                <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarPorCategoria('espalda')">Espalda</button>
+                <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarPorCategoria('pecho')">Pecho</button>
+                <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarPorCategoria('pierna')">Pierna</button>
+                <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarPorCategoria('biceps')">Bíceps</button>
+                <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarPorCategoria('triceps')">Tríceps</button>
+                <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarPorCategoria('hombro')">Hombro</button>
+                <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarPorCategoria('abdomen')">Abdomen</button>
+                <button class="btn btn-ghost btn-sm" onclick="Biblioteca.filtrarFavoritos()">⭐ Favoritos</button>
+            </div>
+
+            <div id="listaEjercicios" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
+        </div>
+    </div>
+
+    <!-- RÉCORDS -->
+    <div class="page" id="page-records">
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-trophy"></i> Récords</div>
+            <div id="recordsContainer">
+                <div style="text-align:center;color:var(--text-secondary);padding:24px;">
+                    <i class="fa-solid fa-trophy" style="font-size:40px;display:block;margin-bottom:12px;color:var(--text-muted);"></i>
+                    <p>Aún no has batido ningún récord</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AJUSTES -->
+    <div class="page" id="page-ajustes">
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-user"></i> Perfil</div>
+            <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="ajustes-input" id="ajusteNombre" value="Nico"></div>
+            <div class="ajustes-item"><span class="aj-label">Altura (cm)</span><input class="ajustes-input" type="number" id="ajusteAltura" value="165"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-bullseye"></i> Objetivos</div>
+            <div class="ajustes-item"><span class="aj-label">Peso objetivo (kg)</span><input class="ajustes-input" type="number" id="ajusteObjetivo" value="75"></div>
+            <div class="ajustes-item"><span class="aj-label">📏 Mediciones (semanas)</span><input class="ajustes-input" type="number" id="ajusteFreqMediciones" value="2" min="1" max="8"></div>
+            <div class="ajustes-item"><span class="aj-label">📸 Fotos (semanas)</span><input class="ajustes-input" type="number" id="ajusteFreqFotos" value="4" min="1" max="12"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-database"></i> Datos</div>
+            <button class="btn btn-ghost btn-block" onclick="STORAGE.exportar()"><i class="fa-solid fa-download"></i> Exportar</button>
+            <button class="btn btn-ghost btn-block" onclick="document.getElementById('importFile').click()" style="margin-top:6px;"><i class="fa-solid fa-upload"></i> Importar</button>
+            <input type="file" id="importFile" accept=".json" class="hidden" onchange="STORAGE.importar(this)">
+            <button class="btn btn-danger btn-block" onclick="APP.confirmarReset()" style="margin-top:6px;"><i class="fa-solid fa-trash"></i> Borrar todos los datos</button>
+        </div>
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-circle-info"></i> Información</div>
+            <div class="ajustes-item"><span class="aj-label">Versión</span><span style="color:var(--text-secondary);" id="versionDisplay">5.1</span></div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+    MODALES
+    ========================================== -->
+
+    <div class="modal-overlay hidden" id="modalEjercicio">
+        <div class="modal-panel">
+            <button class="modal-close" onclick="Biblioteca.cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h3 id="modalEjercicioNombre">Ejercicio</h3>
+            <img class="modal-img" id="modalEjercicioImagen" src="" alt="Ejercicio" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22200%22%3E%3Crect width=%22400%22 height=%22200%22 fill=%22%231e293b%22/%3E%3Ctext x=%22200%22 y=%22100%22 font-family=%22Inter%22 font-size=%2232%22 fill=%22%2322c55e%22 text-anchor=%22middle%22%3E💪%3C/text%3E%3Ctext x=%22200%22 y=%22130%22 font-family=%22Inter%22 font-size=%2212%22 fill=%22%2394a3b8%22 text-anchor=%22middle%22%3EEjercicio%3C/text%3E%3C/svg%3E'">
+            <div class="modal-field"><div class="mf-label">Músculo</div><div class="mf-value" id="modalEjercicioMusculo">--</div></div>
+            <div class="modal-field"><div class="mf-label">Material</div><div class="mf-value" id="modalEjercicioMaterial">--</div></div>
+            <div class="modal-field"><div class="mf-label">Nivel</div><div class="mf-value" id="modalEjercicioNivel">--</div></div>
+            <div class="modal-field"><div class="mf-label">Cómo hacerlo</div><div class="mf-value" id="modalEjercicioInstrucciones" style="white-space:pre-wrap;font-size:13px;line-height:1.6;">--</div></div>
+            <div class="modal-field"><div class="mf-label">Errores comunes</div><div class="mf-value" id="modalEjercicioErrores" style="white-space:pre-wrap;font-size:13px;line-height:1.6;">--</div></div>
+            <div class="modal-historial"><div class="mf-label">Historial</div><div id="modalEjercicioHistorial" style="font-size:13px;">Sin historial</div></div>
+            <div class="modal-record"><div class="mf-label">🏆 Récord</div><div class="mr-valor" id="modalEjercicioRecord">--</div></div>
+            <button class="btn btn-ghost btn-block" onclick="Biblioteca.cerrarModal()" style="margin-top:12px;">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" onclick="UI.cerrarLightbox()">
+        <img id="lightboxImg" src="" alt="Imagen ampliada">
+    </div>
+
+    <!-- ==========================================
+    BOTTOM NAV
+    ========================================== -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i>Inicio</button>
+        <button class="nav-btn" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i>Rutina</button>
+        <button class="nav-btn" onclick="APP.navegar('composicion')"><i class="fa-solid fa-scale-balanced"></i>Progreso</button>
+        <button class="nav-btn" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i>Stats</button>
+        <button class="nav-btn" onclick="UI.toggleMenu()"><i class="fa-solid fa-bars"></i>Más</button>
+    </nav>
+
+    <!-- ==========================================
+    SCRIPTS
+    ========================================== -->
+    <script src="app.js"></script>
+    <script src="modulos.js"></script>
+</body>
+</html>
