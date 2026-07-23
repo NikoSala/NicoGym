@@ -3,33 +3,37 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>NicoGym v4.2</title>
+    <title>NicoGym v5.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js">
     </script>
     <style>
-        /* ============================================
-                   ROOT & RESET
-                ============================================ */
+        /* ==========================================
+           ROOT - Diseño unificado
+           ========================================== */
         :root {
             --bg: #0b1120;
             --card: #162033;
             --border: rgba(255, 255, 255, 0.06);
             --primary: #22c55e;
-            --primary-dim: rgba(34, 197, 94, 0.12);
+            --primary-dim: rgba(34, 197, 94, 0.10);
             --primary-glow: rgba(34, 197, 94, 0.25);
             --success: #22c55e;
             --danger: #ef4444;
+            --info: #3b82f6;
             --warning: #f59e0b;
             --text: #f1f5f9;
             --text-secondary: #94a3b8;
             --text-muted: #475569;
             --radius: 14px;
             --radius-sm: 10px;
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --transition: all 0.2s ease;
             --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --space: 16px;
+            --space-sm: 8px;
+            --space-lg: 24px;
         }
 
         * {
@@ -51,9 +55,9 @@
             overflow-x: hidden;
         }
 
-        /* ============================================
-                   SCROLLBAR
-                ============================================ */
+        /* ==========================================
+           SCROLLBAR
+           ========================================== */
         ::-webkit-scrollbar {
             width: 3px;
             height: 3px;
@@ -66,9 +70,9 @@
             border-radius: 10px;
         }
 
-        /* ============================================
-                   UTILITY
-                ============================================ */
+        /* ==========================================
+           UTILITY
+           ========================================== */
         .hidden {
             display: none !important;
         }
@@ -77,10 +81,28 @@
             align-items: center;
             justify-content: center;
         }
+        .gap-sm {
+            gap: var(--space-sm);
+        }
+        .gap-md {
+            gap: var(--space);
+        }
+        .mt-sm {
+            margin-top: var(--space-sm);
+        }
+        .mt-md {
+            margin-top: var(--space);
+        }
+        .mb-sm {
+            margin-bottom: var(--space-sm);
+        }
+        .mb-md {
+            margin-bottom: var(--space);
+        }
 
-        /* ============================================
-                   TOP BAR
-                ============================================ */
+        /* ==========================================
+           TOP BAR
+           ========================================== */
         .top-bar {
             position: fixed;
             top: 0;
@@ -88,7 +110,7 @@
             right: 0;
             z-index: 1000;
             height: 56px;
-            padding: 0 16px;
+            padding: 0 var(--space);
             background: rgba(11, 17, 32, 0.92);
             backdrop-filter: blur(18px) saturate(1.4);
             border-bottom: 1px solid var(--border);
@@ -137,9 +159,9 @@
             color: var(--primary);
         }
 
-        /* ============================================
-                   NOTIFICATIONS BELL
-                ============================================ */
+        /* ==========================================
+           NOTIFICATIONS BELL
+           ========================================== */
         .bell-wrap {
             position: relative;
             cursor: pointer;
@@ -193,7 +215,7 @@
             display: block;
         }
         .notif-dropdown .notif-header {
-            padding: 0 16px 10px 16px;
+            padding: 0 var(--space) 10px var(--space);
             font-weight: 600;
             font-size: 13px;
             color: var(--text-secondary);
@@ -203,7 +225,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 8px 16px;
+            padding: 8px var(--space);
             font-size: 13px;
             border-bottom: 1px solid var(--border);
             transition: var(--transition);
@@ -222,15 +244,15 @@
             flex: 1;
         }
         .notif-empty {
-            padding: 20px 16px;
+            padding: 20px var(--space);
             text-align: center;
             color: var(--text-secondary);
             font-size: 13px;
         }
 
-        /* ============================================
-                   SIDE MENU
-                ============================================ */
+        /* ==========================================
+           SIDE MENU
+           ========================================== */
         .side-overlay {
             position: fixed;
             inset: 0;
@@ -255,7 +277,7 @@
             border-right: 1px solid var(--border);
             z-index: 1001;
             transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 70px 16px 24px;
+            padding: 70px var(--space) 24px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -308,9 +330,9 @@
             border-top: 1px solid var(--border);
         }
 
-        /* ============================================
-                   BOTTOM NAV
-                ============================================ */
+        /* ==========================================
+           BOTTOM NAV
+           ========================================== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -358,12 +380,12 @@
             transform: scale(0.92);
         }
 
-        /* ============================================
-                   PAGES
-                ============================================ */
+        /* ==========================================
+           PAGES
+           ========================================== */
         .page {
             display: none;
-            padding: 72px 16px 76px;
+            padding: 72px var(--space) 76px;
             max-width: 520px;
             margin: 0 auto;
             min-height: 100vh;
@@ -384,17 +406,17 @@
             }
         }
 
-        /* ============================================
-                   CARDS
-                ============================================ */
+        /* ==========================================
+           CARDS - Diseño unificado
+           ========================================== */
         .card {
             background: var(--card);
             border-radius: var(--radius);
             padding: 18px 20px;
-            margin-bottom: 14px;
+            margin-bottom: var(--space);
             border: 1px solid var(--border);
             transition: var(--transition);
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: var(--shadow);
         }
         .card-accent {
             border-left: 3px solid var(--primary);
@@ -413,9 +435,9 @@
             color: var(--primary);
         }
 
-        /* ============================================
-                   BUTTONS
-                ============================================ */
+        /* ==========================================
+           BUTTONS - Diseño unificado
+           ========================================== */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -433,6 +455,8 @@
             background: var(--card);
             color: var(--text);
             border: 1px solid var(--border);
+            height: 40px;
+            min-height: 40px;
         }
         .btn:active {
             transform: scale(0.96);
@@ -447,8 +471,10 @@
             transform: translateY(-1px);
         }
         .btn-sm {
-            padding: 5px 14px;
+            padding: 4px 14px;
             font-size: 12px;
+            height: 32px;
+            min-height: 32px;
         }
         .btn-ghost {
             background: transparent;
@@ -472,9 +498,9 @@
             background: rgba(239, 68, 68, 0.08);
         }
 
-        /* ============================================
-                   DASHBOARD
-                ============================================ */
+        /* ==========================================
+           DASHBOARD - FASE 1
+           ========================================== */
         .saludo {
             font-size: 24px;
             font-weight: 700;
@@ -487,55 +513,39 @@
         .saludo-dia {
             font-size: 13px;
             color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-        .saludo-dia strong {
-            color: var(--text);
+            margin-bottom: var(--space);
         }
 
-        .stat-grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .stat-box {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: var(--radius-sm);
-            padding: 14px 12px;
-            text-align: center;
-        }
-        .stat-box .num {
-            font-size: 24px;
-            font-weight: 700;
-        }
-        .stat-box .label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
-        .stat-box .num.green {
-            color: var(--success);
-        }
-        .stat-box .num.orange {
-            color: var(--warning);
-        }
-        .stat-box .num.primary {
-            color: var(--primary);
-        }
-
-        .pending-item {
+        .objetivo-row {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 6px 0;
-            border-bottom: 1px solid var(--border);
+            justify-content: space-between;
+        }
+        .objetivo-row .peso-actual {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .objetivo-row .peso-meta {
             font-size: 13px;
+            color: var(--text-secondary);
         }
-        .pending-item:last-child {
-            border-bottom: none;
+        .objetivo-row .restan {
+            text-align: right;
         }
-        .pending-item .pi-icon {
-            font-size: 18px;
+        .objetivo-row .restan .label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .objetivo-row .restan .valor {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .objetivo-row .restan .valor.ok {
+            color: var(--success);
+        }
+        .objetivo-row .restan .valor.warning {
+            color: var(--warning);
         }
 
         .hoy-row {
@@ -559,9 +569,54 @@
             color: var(--text-secondary);
         }
 
-        /* ============================================
-                   RUTINAS (entrenamiento)
-                ============================================ */
+        .pending-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+        .pending-item:last-child {
+            border-bottom: none;
+        }
+        .pending-item .pi-icon {
+            font-size: 18px;
+        }
+        .pending-item .pi-check {
+            color: var(--success);
+        }
+
+        .rachas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .racha-box {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 14px 12px;
+            text-align: center;
+        }
+        .racha-box .num {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .racha-box .num.green {
+            color: var(--success);
+        }
+        .racha-box .num.primary {
+            color: var(--primary);
+        }
+        .racha-box .label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* ==========================================
+           RUTINAS
+           ========================================== */
         .day-tabs {
             display: flex;
             gap: 6px;
@@ -802,9 +857,9 @@
             font-weight: 600;
         }
 
-        /* ============================================
-                   PESO (historial tarjetas)
-                ============================================ */
+        /* ==========================================
+           PESO - Historial tarjetas
+           ========================================== */
         .historial-medicion-card {
             background: var(--card);
             border-radius: var(--radius-sm);
@@ -856,9 +911,9 @@
             border-bottom: none;
         }
 
-        /* ============================================
-                   ESTADÍSTICAS
-                ============================================ */
+        /* ==========================================
+           ESTADÍSTICAS
+           ========================================== */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -874,15 +929,27 @@
             font-size: 22px;
             font-weight: 700;
         }
+        .stats-item .num.green {
+            color: var(--success);
+        }
+        .stats-item .num.orange {
+            color: var(--warning);
+        }
+        .stats-item .num.primary {
+            color: var(--primary);
+        }
+        .stats-item .num.info {
+            color: var(--info);
+        }
         .stats-item .label {
             font-size: 11px;
             color: var(--text-secondary);
             margin-top: 2px;
         }
 
-        /* ============================================
-                   NUTRICIÓN
-                ============================================ */
+        /* ==========================================
+           NUTRICIÓN
+           ========================================== */
         .plan-img {
             width: 100%;
             border-radius: var(--radius-sm);
@@ -994,9 +1061,9 @@
             color: var(--text-secondary);
         }
 
-        /* ============================================
-                   BIBLIOTECA
-                ============================================ */
+        /* ==========================================
+           BIBLIOTECA
+           ========================================== */
         .maniqui-container {
             text-align: center;
             margin: 8px 0 16px;
@@ -1098,9 +1165,9 @@
             text-transform: capitalize;
         }
 
-        /* ============================================
-                   RÉCORDS
-                ============================================ */
+        /* ==========================================
+           RÉCORDS
+           ========================================== */
         .record-card {
             background: var(--card);
             border-radius: var(--radius-sm);
@@ -1137,9 +1204,9 @@
             color: var(--text-secondary);
         }
 
-        /* ============================================
-                   MODAL
-                ============================================ */
+        /* ==========================================
+           MODAL
+           ========================================== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -1219,9 +1286,9 @@
             color: var(--primary);
         }
 
-        /* ============================================
-                   AJUSTES
-                ============================================ */
+        /* ==========================================
+           AJUSTES
+           ========================================== */
         .ajustes-item {
             display: flex;
             justify-content: space-between;
@@ -1251,9 +1318,9 @@
             border-color: var(--primary);
         }
 
-        /* ============================================
-                   LIGHTBOX
-                ============================================ */
+        /* ==========================================
+           LIGHTBOX
+           ========================================== */
         .lightbox {
             position: fixed;
             inset: 0;
@@ -1278,14 +1345,14 @@
             border-radius: var(--radius-sm);
         }
 
-        /* ============================================
-                   TOAST
-                ============================================ */
+        /* ==========================================
+           TOAST
+           ========================================== */
         .toast-msg {
             position: fixed;
             bottom: 80px;
-            left: 16px;
-            right: 16px;
+            left: var(--space);
+            right: var(--space);
             padding: 12px 18px;
             border-radius: var(--radius-sm);
             text-align: center;
@@ -1327,9 +1394,9 @@
             }
         }
 
-        /* ============================================
-                   FORM (composición)
-                ============================================ */
+        /* ==========================================
+           FORM (composición)
+           ========================================== */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1362,9 +1429,9 @@
             color: var(--text-muted);
         }
 
-        /* ============================================
-                   FOTOS
-                ============================================ */
+        /* ==========================================
+           FOTOS
+           ========================================== */
         .foto-grid-upload {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1398,9 +1465,9 @@
             object-fit: cover;
         }
 
-        /* ============================================
-                   RESPONSIVE
-                ============================================ */
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
         @media (max-width: 420px) {
             .top-stats {
                 display: none;
@@ -1415,14 +1482,10 @@
             .card {
                 padding: 14px 16px;
             }
-            .stat-grid-2 {
-                gap: 6px;
-            }
             .stats-grid {
                 gap: 6px;
             }
             .form-grid {
-                grid-template-columns: 1fr 1fr;
                 gap: 6px;
             }
             .foto-grid-upload {
@@ -1431,6 +1494,9 @@
             .notif-dropdown {
                 width: 280px;
                 right: -16px;
+            }
+            .rachas-grid {
+                gap: 6px;
             }
         }
 
@@ -1491,14 +1557,14 @@
         <div class="menu-divider"></div>
         <button class="menu-item" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</button>
         <button class="menu-item" onclick="APP.confirmarReset()" style="color:var(--danger);"><i class="fa-solid fa-trash"></i> Reset todo</button>
-        <div class="menu-footer">NicoGym v4.2</div>
+        <div class="menu-footer">NicoGym v5.1</div>
     </nav>
 
     <!-- ==========================================
     PAGES
     ========================================== -->
 
-    <!-- INICIO -->
+    <!-- INICIO - DASHBOARD -->
     <div class="page active" id="page-inicio">
         <div id="dashboardContainer"></div>
     </div>
@@ -1696,7 +1762,7 @@
         </div>
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-circle-info"></i> Información</div>
-            <div class="ajustes-item"><span class="aj-label">Versión</span><span style="color:var(--text-secondary);" id="versionDisplay">4.2</span></div>
+            <div class="ajustes-item"><span class="aj-label">Versión</span><span style="color:var(--text-secondary);" id="versionDisplay">5.1</span></div>
         </div>
     </div>
 
@@ -1745,7 +1811,7 @@
         // CONFIG
         // ==========================================
         const CONFIG = {
-            VERSION: '4.2',
+            VERSION: '5.1',
             ALTURA: 165,
             PESO_OBJETIVO: 75,
             STORAGE_KEY: 'nicoGym',
@@ -1786,7 +1852,7 @@
         let userData = { nombre: 'Nico', altura: CONFIG.ALTURA };
 
         // ==========================================
-        // EJERCICIOS (Biblioteca) - ACTUALIZADO CON FONDOS TRÍCEPS
+        // EJERCICIOS (Biblioteca)
         // ==========================================
         const EJERCICIOS = [{
             id: 'curl_biceps_alterno',
@@ -2100,7 +2166,6 @@
                     badge.classList.add('hidden');
                 }
             },
-            // Helper para formatear cambios en el historial de peso
             formatearCambio(valor, unidad, invertir) {
                 if (Math.abs(valor) < 0.05) return `<span class="neutral">0 ${unidad}</span>`;
                 const mejora = invertir ? valor < 0 : valor > 0;
@@ -2205,7 +2270,7 @@
         };
 
         // ==========================================
-        // DASHBOARD
+        // DASHBOARD - FASE 1
         // ==========================================
         const Dashboard = {
             render() {
@@ -2218,7 +2283,6 @@
                 if (horas >= 14 && horas < 21) saludo = 'Buenas tardes';
                 if (horas >= 21 || horas < 6) saludo = 'Buenas noches';
 
-                // Día de la semana
                 const diaSemana = DIAS_SEMANA[hoy.getDay()];
                 const fechaStr = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' });
 
@@ -2244,21 +2308,21 @@
               <div class="saludo-dia">${diaSemana} · ${fechaStr}</div>
 
               <div class="card card-accent">
-                <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">🎯 Objetivo</div>
-                <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div class="card-title">🎯 Objetivo</div>
+                <div class="objetivo-row">
                   <div>
-                    <div style="font-size:24px;font-weight:700;color:var(--primary);">${peso} kg</div>
-                    <div style="font-size:13px;color:var(--text-secondary);">↓ ${obj} kg</div>
+                    <div class="peso-actual">${peso} kg</div>
+                    <div class="peso-meta">↓ ${obj} kg</div>
                   </div>
-                  <div style="text-align:right;">
-                    <div style="font-size:13px;color:var(--text-secondary);">Restan</div>
-                    <div style="font-size:20px;font-weight:700;color:${isRestan ? 'var(--warning)' : 'var(--success)'};">${isRestan ? restan : '🎉'} kg</div>
+                  <div class="restan">
+                    <div class="label">Restan</div>
+                    <div class="valor ${isRestan ? 'warning' : 'ok'}">${isRestan ? restan : '🎉'} kg</div>
                   </div>
                 </div>
               </div>
 
               <div class="card">
-                <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">💪 Hoy</div>
+                <div class="card-title">💪 Hoy</div>
             `;
 
                 if (diaHoy === 'domingo') {
@@ -2300,13 +2364,14 @@
                 if (notifs.length > 0) {
                     html += `
                 <div class="card" style="border-left:3px solid var(--warning);">
-                  <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">🔔 Pendientes (${notifs.length})</div>
+                  <div class="card-title">🔔 Pendientes (${notifs.length})</div>
               `;
                     notifs.forEach(n => {
                         html += `
                   <div class="pending-item">
                     <span class="pi-icon">${n.icono}</span>
                     <span>${n.texto}</span>
+                    <span class="pi-check">✔</span>
                   </div>
                 `;
                     });
@@ -2315,13 +2380,13 @@
 
                 html += `
               <div class="card">
-                <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">🔥 Racha</div>
-                <div class="stat-grid-2">
-                  <div class="stat-box">
+                <div class="card-title">🔥 Rachas</div>
+                <div class="rachas-grid">
+                  <div class="racha-box">
                     <div class="num primary">${totalEntrenos}</div>
                     <div class="label">Entrenos</div>
                   </div>
-                  <div class="stat-box">
+                  <div class="racha-box">
                     <div class="num green">${sinFumar}</div>
                     <div class="label">Sin fumar</div>
                   </div>
@@ -2334,7 +2399,7 @@
         };
 
         // ==========================================
-        // RUTINAS - ACTUALIZADO CON FONDOS TRÍCEPS
+        // RUTINAS
         // ==========================================
         const Rutinas = {
             ejerciciosUnicos: {
@@ -2456,7 +2521,6 @@
                         const recordStr = record ? `${record.weight} kg × ${record.reps}` : '--';
                         const esCardio = this.esCardio(nombre);
 
-                        // Imagen con fallback
                         const imgHtml = img ?
                             `<img src="${img}" class="ex-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'ex-img-fallback\\'>💪</div>'" onclick="UI.abrirLightbox(this.src)" alt="${nombre}">` :
                             `<div class="ex-img-fallback">💪</div>`;
@@ -2488,7 +2552,7 @@
                       </div>
                       ${datosHTML}
                       <div class="ultimo-entreno"><span>Último entrenamiento</span><span>${ultimo ? (esCardio ? ultimo.peso+' min' : ultimo.peso+' kg × '+ultimo.reps) : '--'}</span></div>
-                      <div class="mejor-marca"><span>🏆 Mejor marca</span><span class="mm-valor">${recordStr}</span></div>
+                      <div class="mejor-marca"><span>🏆 Récord</span><span class="mm-valor">${recordStr}</span></div>
                       <button class="btn-historial-ej" onclick="Rutinas.verHistorial('${nombre.replace(/'/g,"\\'")}')"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
                       <button class="btn-historial-ej" onclick="Rutinas.verEvolucion('${nombre.replace(/'/g,"\\'")}')" style="margin-left:4px;"><i class="fa-solid fa-chart-line"></i> Evolución</button>
                     </div>
@@ -2525,7 +2589,6 @@
                     d.classList.remove('open');
                     btn.innerHTML = '<i class="fa-solid fa-circle-info"></i> Ver técnica';
                 } else {
-                    // Construir el detalle con imagen y texto
                     const imgHtml = imgUrl ?
                         `<img src="${imgUrl}" class="ex-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'ex-img-fallback\\'>💪</div>'" onclick="UI.abrirLightbox(this.src)" alt="Técnica">` :
                         `<div class="ex-img-fallback">💪</div>`;
@@ -3222,7 +3285,6 @@
                 }
 
                 container.innerHTML = filtrados.map(e => {
-                    // Imagen con fallback
                     const imgHtml = e.imagen ?
                         `<img src="${e.imagen}" class="ejercicio-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'ejercicio-img-fallback\\'>💪</div>'" alt="${e.nombre}">` :
                         `<div class="ejercicio-img-fallback">💪</div>`;
