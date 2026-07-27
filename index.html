@@ -31,6 +31,7 @@
             --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
             --transition: 0.25s ease;
             --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            /* ESCALA DE ESPACIADO: 8, 16, 24, 32, 48 */
             --space-xs: 8px;
             --space-sm: 16px;
             --space-md: 24px;
@@ -539,15 +540,15 @@
             FECHA_REFERENCIA_MEDICIONES: '2026-07-20',
             DIAS_SEMANA: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
             NOMBRES_DIAS: { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo' },
-            TIPOS_RUTINA: {
-                lunes: 'Espalda / Bíceps',
-                martes: 'Pecho / Hombro',
-                miercoles: 'Tríceps / Pierna',
-                jueves: 'Espalda / Bíceps',
-                viernes: 'Pecho / Hombro / Antebrazo',
-                sabado: 'Descanso',
-                domingo: 'Descanso'
-            },
+           TIPOS_RUTINA: {
+    lunes: 'Espalda / Bíceps',
+    martes: 'Pecho / Hombro',
+    miercoles: 'Tríceps / Pierna',
+    jueves: 'Espalda / Bíceps',
+    viernes: 'Pecho / Hombro / Antebrazo',
+    sabado: 'Descanso',
+    domingo: 'Descanso'
+},
             EJERCICIOS: {
                 lunes: [
                     { nombre: 'Remo con barra', grupo: 'Espalda' },
@@ -573,7 +574,7 @@
                 jueves: [
                     { nombre: 'Remo al mentón con mancuernas', grupo: 'Espalda' },
                     { nombre: 'Remo en banco inclinado con mancuernas', grupo: 'Espalda' },
-                    { nombre: 'Curl araña (Pausa de 2")', grupo: 'Bíceps' },
+                    { nombre: 'Curl araña', grupo: 'Bíceps' },
                     { nombre: 'Curl concentrado', grupo: 'Bíceps' },
                     { nombre: 'Cardio en cinta', grupo: 'Cardio' }
                 ],
@@ -592,24 +593,27 @@
                 "Remo a una mano con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
                 "Curl de bíceps alterno": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
                 "Curl martillo": "https://api.smartworkout.app/asset/image/8588e41c-5c2d-4ee0-90ca-ad69b7d0438a",
-                "Cardio en cinta": "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDF1dmV6cXN3Yjl3Y2tuYzd5eGtldzJ1d2pma3Q1bmh2eXl5Y2h0NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7aD7b7b7b7b7b7b7b/giphy.gif",
+                "Cardio en cinta": "https://api.smartworkout.app/asset/image/87d7f44d-15a8-4e40-8ea0-4a9cafa23eda",
                 "Press de hombros sentado": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif",
                 "Aperturas inclinadas con mancuernas": "https://media.tenor.com/oJXOnsC72qMAAAAM/crussifixo-no-banco-com-halteres.gif",
                 "Pullover con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Pullover.gif",
                 "Elevaciones laterales sentado": "https://gymvisual.com/img/p/5/1/3/7/5137.gif",
-                "Extensión de tríceps tumbado (Press Francés)": "https://gymvisual.com/img/p/2/0/8/4/3/20843.gif",
+                "Extensión de tríceps tumbado": "https://gymvisual.com/img/p/2/0/8/4/3/20843.gif",
+                "Extensión de tríceps tras nuca": "https://i.pinimg.com/originals/2c/62/ba/2c62ba80d37c94d06ad6d60f1e5445df.gif",
+                "Fondos para tríceps": "https://i.pinimg.com/originals/2c/62/ba/2c62ba80d37c94d06ad6d60f1e5445df.gif",
                 "Patada de tríceps": "https://i.pinimg.com/originals/96/a1/b6/96a1b68a9a9f4c853b695a3740e91326.gif",
-                "Sentadilla Goblet con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif",
-                "Zancadas estáticas con mancuernas": "https://gymvisual.com/img/p/2/3/7/3/9/23739.gif",
-                "Elevación de gemelos de pie": "https://i.pinimg.com/originals/2f/7c/ca/2f7cca8d37c65384c1d0bd84cc0a91d1.gif",
                 "Remo al mentón con mancuernas": "https://api.smartworkout.app/asset/image/80833bf7-99b5-4272-b3b2-629ccc137ce1",
                 "Remo en banco inclinado con mancuernas": "https://gymvisual.com/img/p/1/4/9/7/3/14973.gif",
-                "Curl araña (Pausa de 2")": "https://api.smartworkout.app/asset/image/7a6c7c0b-0480-4c45-ba66-18959ec9001f",
+                "Curl araña": "https://api.smartworkout.app/asset/image/7a6c7c0b-0480-4c45-ba66-18959ec9001f",
                 "Curl concentrado": "https://media.tenor.com/jaX3EUxaQGkAAAAM/rosca-concentrada-no-banco.gif",
                 "Press inclinado con mancuernas": "https://fitnessprogramer.com/wp-content/uploads/2022/07/Dumbbell-Reverse-Grip-30-Degrees-Incline-Bench-Press.gif",
                 "Aperturas en banco plano": "https://gymvisual.com/img/p/1/0/2/8/0/10280.gif",
                 "Press plano con mancuernas": "https://gymvisual.com/img/p/1/8/6/4/5/18645.gif",
-                "Curl de antebrazo con mancuernas (Palmas arriba)": "https://gymvisual.com/img/p/1/5/3/1/0/15310.gif"
+                "Pájaro invertido": "https://i.pinimg.com/originals/f8/37/b5/f837b5d4ef387c529f2ca61a97fbabdd.gif",
+                "Sentadilla Goblet con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif",
+                "Zancadas estáticas con mancuernas": "https://gymvisual.com/img/p/2/3/7/3/9/23739.gif",
+                "Elevación de gemelos de pie": "https://i.pinimg.com/originals/2f/7c/ca/2f7cca8d37c65384c1d0bd84cc0a91d1.gif",
+                "Curl de antebrazo con mancuernas": "https://gymvisual.com/img/p/1/5/3/1/0/15310.gif"
             }
         };
 
@@ -775,19 +779,22 @@
                 "Aperturas inclinadas con mancuernas": "Banco inclinado. Abre brazos en arco.",
                 "Pullover con mancuerna": "Mancuerna sobre pecho. Lleva hacia atrás sobre la cabeza.",
                 "Elevaciones laterales sentado": "Eleva mancuernas hasta paralelo al suelo.",
-                "Extensión de tríceps tumbado (Press Francés)": "Tumbado, baja mancuernas hacia las orejas.",
+                "Extensión de tríceps tumbado": "Tumbado, baja mancuernas hacia las orejas.",
+                "Extensión de tríceps tras nuca": "Mancuerna sobre la cabeza. Baja por detrás.",
+                "Fondos para tríceps": "Baja flexionando codos. Sube estirando.",
                 "Patada de tríceps": "Rodilla y mano en banco. Estira brazo hacia atrás.",
-                "Sentadilla Goblet con mancuerna": "Mancuerna al pecho. Baja como al sentarte.",
-                "Zancadas estáticas con mancuernas": "Paso largo. Rodilla trasera casi toca suelo.",
-                "Elevación de gemelos de pie": "Eleva con la punta de los pies.",
                 "Remo al mentón con mancuernas": "Sube verticalmente hacia el mentón.",
                 "Remo en banco inclinado con mancuernas": "Tumbado boca abajo. Tira hacia arriba.",
-                "Curl araña (Pausa de 2\")": "Tumbado en banco inclinado. Pausa de 2\" arriba.",
+                "Curl araña": "Tumbado en banco inclinado. Pausa de 2\" arriba.",
                 "Curl concentrado": "Codo apoyado en muslo. Curva hacia el pecho.",
                 "Press inclinado con mancuernas": "Banco inclinado 30-45°. Agarre invertido.",
                 "Aperturas en banco plano": "Tumbado. Abre brazos en arco.",
                 "Press plano con mancuernas": "Empuja hacia el techo en línea recta.",
-                "Curl de antebrazo con mancuernas (Palmas arriba)": "Antebrazos sobre muslos. Flexiona muñecas."
+                "Pájaro invertido": "Torso inclinado. Abre brazos hacia los lados.",
+                "Sentadilla Goblet con mancuerna": "Mancuerna al pecho. Baja como al sentarte.",
+                "Zancadas estáticas con mancuernas": "Paso largo. Rodilla trasera casi toca suelo.",
+                "Elevación de gemelos de pie": "Eleva con la punta de los pies.",
+                "Curl de antebrazo con mancuernas": "Antebrazos sobre muslos. Flexiona muñecas."
             };
             return map[nombre] || "Posición correcta. Movimiento controlado. Respira adecuadamente.";
         }
@@ -869,7 +876,7 @@
                         const dia = UI.getDiaNombre();
                         diaActivo = dia === 'domingo' ? 'lunes' : dia;
                         const tabs = document.querySelectorAll('.dtab');
-                        const idx = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'].indexOf(diaActivo);
+                        const idx = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'].indexOf(diaActivo);
                         if (tabs[idx]) tabs[idx].click();
                     }, 100);
                 }
@@ -937,7 +944,7 @@
 
                     <div class="card">
                         <div class="card-title">💪 Rutina de hoy</div>
-                        ${dia === 'domingo' || dia === 'sabado' ? `
+                        ${dia === 'domingo' ? `
                             <div style="text-align:center;padding:8px 0;color:var(--text-secondary);">
                                 <span style="font-size:32px;display:block;margin-bottom:4px;">😌</span>
                                 Día de descanso
@@ -1020,11 +1027,7 @@
                 pc.appendChild(btn);
 
                 const diaActual = UI.getDiaNombre();
-                if (diaActual === 'domingo' || diaActual === 'sabado') {
-                    diaActivo = 'lunes';
-                } else {
-                    diaActivo = diaActual;
-                }
+                diaActivo = diaActual === 'domingo' ? 'lunes' : diaActual;
                 const idxActivo = dias.indexOf(diaActivo);
                 if (idxActivo >= 0) {
                     const tabs = tc.querySelectorAll('.dtab');
@@ -1037,12 +1040,6 @@
 
             _renderDia(dia) {
                 const ejercicios = CONFIG.EJERCICIOS[dia] || [];
-                if (ejercicios.length === 0) {
-                    return `<div class="card" style="text-align:center;padding:20px;color:var(--text-secondary);">
-                        <span style="font-size:48px;display:block;margin-bottom:8px;">😌</span>
-                        Día de descanso
-                    </div>`;
-                }
                 let html = `<div class="ex-grid" id="lista-${dia}">`;
                 ejercicios.forEach((ej, idx) => {
                     const id = `${dia}-${idx}`;
@@ -1208,10 +1205,6 @@
 
             _mostrarFinalizar() {
                 const ejercicios = CONFIG.EJERCICIOS[diaActivo] || [];
-                if (ejercicios.length === 0) {
-                    UI.toast('Hoy es día de descanso', 'info');
-                    return;
-                }
                 let html = `<h3><i class="fa-solid fa-clipboard-check"></i> Revisar entrenamiento</h3>`;
                 ejercicios.forEach((ej, idx) => {
                     const id = `${diaActivo}-${idx}`;
@@ -1531,8 +1524,8 @@
                         <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Hoy</div>
                         <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;">
                             <div class="pending-item">
-                                <span class="pi-icon">${(dia === 'domingo' || dia === 'sabado') ? '😌' : (!entrenadoHoy ? '⏳' : '✅')}</span>
-                                <span>${(dia === 'domingo' || dia === 'sabado') ? 'Día de descanso' : (entrenadoHoy ? 'Entreno completado' : 'Entreno pendiente')}</span>
+                                <span class="pi-icon">${dia !== 'domingo' && !entrenadoHoy ? '⏳' : '✅'}</span>
+                                <span>${dia !== 'domingo' ? (entrenadoHoy ? 'Entreno completado' : 'Entreno pendiente') : 'Día de descanso'}</span>
                             </div>
                         </div>
 
@@ -1720,7 +1713,7 @@
                 const pf = getProximoDomingo(STATE.recordatorios.ultimasFotos || CONFIG.FECHA_REFERENCIA_MEDICIONES, freqFotos);
                 if (getDiasHasta(pf) <= 1) notifs.push({ icono: '📸', texto: 'Mañana toca fotos' });
 
-                if (dia !== 'domingo' && dia !== 'sabado' && !entrenadoHoy) {
+                if (dia !== 'domingo' && !entrenadoHoy) {
                     notifs.push({ icono: '💪', texto: `Entrena ${CONFIG.TIPOS_RUTINA[dia]}` });
                 }
                 return notifs;
