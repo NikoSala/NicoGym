@@ -665,6 +665,30 @@
                 STATE.evolution.daysWithoutSmoking = c;
             },
             _save() { localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(STATE)); },
+                // Resetea los checks al inicio de cada semana (lunes)
+            resetearSemana() {
+                const hoy = new Date();
+                const diaSemana = hoy.getDay(); // 0 = domingo, 1 = lunes
+                const semanaActual = this._getSemanaKey(hoy);
+                const ultimaSemana = localStorage.getItem('ultimaSemana');
+
+                if (diaSemana === 1 && ultimaSemana !== semanaActual) {
+                    // Es lunes y no se ha resetado esta semana
+                    STATE.checks = {};
+                    localStorage.setItem('ultimaSemana', semanaActual);
+                    this._save();
+                    return true; // Indica que se ha resetado
+                }
+                return false;
+            },
+            _getSemanaKey(fecha) {
+                const d = new Date(fecha);
+                // Obtener el inicio de la semana (lunes)
+                d.setDate(d.getDate() - (d.getDay() === 0 ? 6 : d.getDay() - 1));
+                const year = d.getFullYear();
+                const week = Math.ceil((((d - new Date(year, 0, 1)) / 86400000) + 1) / 7);
+                return `${year}-W${String(week).padStart(2, '0')}`;
+            },
             resetAll() { localStorage.removeItem(CONFIG.STORAGE_KEY); location.reload(); },
             exportar() {
                 const blob = new Blob([JSON.stringify(STATE, null, 2)], { type: 'application/json' });
@@ -805,6 +829,10 @@
         const APP = {
             init() {
                 Storage.init();
+                const reset = Storage.resetearSemana();
+                if (reset) {
+                    UI.toast('🔄 Nueva semana. ¡A marcar los ejercicios!', 'success');
+                }
                 this._cargarAjustes();
                 this._actualizarEvolution();
                 this.renderizarTodo();
