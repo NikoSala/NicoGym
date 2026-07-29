@@ -554,8 +554,6 @@
                 "Pullover con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Pullover.gif",
                 "Elevaciones laterales sentado": "https://gymvisual.com/img/p/5/1/3/7/5137.gif",
                 "Extensión de tríceps tumbado": "https://gymvisual.com/img/p/2/0/8/4/3/20843.gif",
-                "Extensión de tríceps tras nuca": "https://i.pinimg.com/originals/2c/62/ba/2c62ba80d37c94d06ad6d60f1e5445df.gif",
-                "Fondos para tríceps": "https://i.pinimg.com/originals/2c/62/ba/2c62ba80d37c94d06ad6d60f1e5445df.gif",
                 "Patada de tríceps": "https://i.pinimg.com/originals/96/a1/b6/96a1b68a9a9f4c853b695a3740e91326.gif",
                 "Remo al mentón con mancuernas": "https://api.smartworkout.app/asset/image/80833bf7-99b5-4272-b3b2-629ccc137ce1",
                 "Remo en banco inclinado con mancuernas": "https://gymvisual.com/img/p/1/4/9/7/3/14973.gif",
@@ -564,7 +562,6 @@
                 "Press inclinado con mancuernas": "https://fitnessprogramer.com/wp-content/uploads/2022/07/Dumbbell-Reverse-Grip-30-Degrees-Incline-Bench-Press.gif",
                 "Aperturas en banco plano": "https://gymvisual.com/img/p/1/0/2/8/0/10280.gif",
                 "Press plano con mancuernas": "https://gymvisual.com/img/p/1/8/6/4/5/18645.gif",
-                "Pájaro invertido": "https://i.pinimg.com/originals/f8/37/b5/f837b5d4ef387c529f2ca61a97fbabdd.gif",
                 "Sentadilla Goblet con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif",
                 "Zancadas estáticas con mancuernas": "https://gymvisual.com/img/p/2/3/7/3/9/23739.gif",
                 "Elevación de gemelos de pie": "https://i.pinimg.com/originals/2f/7c/ca/2f7cca8d37c65384c1d0bd84cc0a91d1.gif",
@@ -758,8 +755,6 @@
                 "Pullover con mancuerna": "Mancuerna sobre pecho. Lleva hacia atrás sobre la cabeza.",
                 "Elevaciones laterales sentado": "Eleva mancuernas hasta paralelo al suelo.",
                 "Extensión de tríceps tumbado": "Tumbado, baja mancuernas hacia las orejas.",
-                "Extensión de tríceps tras nuca": "Mancuerna sobre la cabeza. Baja por detrás.",
-                "Fondos para tríceps": "Baja flexionando codos. Sube estirando.",
                 "Patada de tríceps": "Rodilla y mano en banco. Estira brazo hacia atrás.",
                 "Remo al mentón con mancuernas": "Sube verticalmente hacia el mentón.",
                 "Remo en banco inclinado con mancuernas": "Tumbado boca abajo. Tira hacia arriba.",
@@ -768,7 +763,6 @@
                 "Press inclinado con mancuernas": "Banco inclinado 30-45°. Agarre invertido.",
                 "Aperturas en banco plano": "Tumbado. Abre brazos en arco.",
                 "Press plano con mancuernas": "Empuja hacia el techo en línea recta.",
-                "Pájaro invertido": "Torso inclinado. Abre brazos hacia los lados.",
                 "Sentadilla Goblet con mancuerna": "Mancuerna al pecho. Baja como al sentarte.",
                 "Zancadas estáticas con mancuernas": "Paso largo. Rodilla trasera casi toca suelo.",
                 "Elevación de gemelos de pie": "Eleva con la punta de los pies.",
@@ -1003,13 +997,6 @@
                     pc.appendChild(panel);
                 });
 
-                const btn = document.createElement('button');
-                btn.id = 'btnFinalizarRutina';
-                btn.className = 'btn btn-success btn-finalizar';
-                btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Finalizar entrenamiento';
-                btn.onclick = () => this._mostrarFinalizar();
-                pc.appendChild(btn);
-
                 const diaActual = UI.getDiaNombre();
                 diaActivo = diaActual === 'domingo' ? 'lunes' : diaActual;
                 const idxActivo = dias.indexOf(diaActivo);
@@ -1089,11 +1076,11 @@
                 ejercicios.forEach((_, idx) => { if (STATE.checks[`${diaActivo}-${idx}`]) comp++; });
                 const pct = Math.round((comp / ejercicios.length) * 100);
                 const bf = document.getElementById('btnFinalizarRutina');
+                if (bf) bf.style.display = 'none';
 
                 if (comp === ejercicios.length) {
                     c.innerHTML =
                         `<div class="progreso-rutina-bar"><div class="progreso-rutina-completado"><i class="fa-solid fa-circle-check"></i> ¡${CONFIG.NOMBRES_DIAS[diaActivo]} completado!</div></div>`;
-                    if (bf) bf.classList.add('visible');
                 } else {
                     c.innerHTML = `
                             <div class="progreso-rutina-bar">
@@ -1105,7 +1092,6 @@
                                 <div class="progreso-rutina-info">${comp}/${ejercicios.length} ejercicios</div>
                             </div>
                         `;
-                    if (bf) bf.classList.remove('visible');
                 }
             },
 
@@ -1191,66 +1177,13 @@
             },
 
             _mostrarFinalizar() {
-                const ejercicios = CONFIG.EJERCICIOS[diaActivo] || [];
-                let html = `<h3><i class="fa-solid fa-clipboard-check"></i> Revisar entrenamiento</h3>`;
-                ejercicios.forEach((ej, idx) => {
-                    const id = `${diaActivo}-${idx}`;
-                    const peso = document.getElementById(`peso-${id}`)?.value || '-';
-                    const reps = ej.nombre === 'Cardio en cinta' ? '' : (document.getElementById(`reps-${id}`)
-                        ?.value || '-');
-                    const det = ej.nombre === 'Cardio en cinta' ? `${peso} min` : `${peso} kg · ${reps}`;
-                    html += `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-                            <span>${ej.nombre}</span>
-                            <span style="color:var(--primary);">${det}</span>
-                        </div>`;
-                });
-                html += `
-                        <button class="btn btn-success btn-block" onclick="Rutinas._guardarEntreno()" style="margin-top:14px;padding:14px;font-size:15px;">
-                            <i class="fa-solid fa-floppy-disk"></i> Guardar
-                        </button>
-                        <button class="btn btn-ghost btn-block" onclick="Modal.cerrar()" style="margin-top:6px;">Cancelar</button>
-                    `;
-                Modal.abrir(html);
+                // Esta función ya no se usa porque quitamos el botón Finalizar
+                // La dejamos vacía para no romper nada
             },
 
             _guardarEntreno() {
-                const ejercicios = CONFIG.EJERCICIOS[diaActivo] || [];
-                const datos = [];
-                let hasRecord = false;
-
-                ejercicios.forEach((ej, idx) => {
-                    const id = `${diaActivo}-${idx}`;
-                    const peso = parseFloat(document.getElementById(`peso-${id}`)?.value) || 0;
-                    const reps = ej.nombre === 'Cardio en cinta' ? 'Cardio' : (document.getElementById(`reps-${id}`)
-                        ?.value || '-');
-                    datos.push({ nombre: ej.nombre, peso, reps });
-
-                    if (peso > 0 && ej.nombre !== 'Cardio en cinta') {
-                        const date = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit',
-                            year: 'numeric' });
-                        const repsNum = reps.split(',').map(Number).reduce((a, b) => a + b, 0);
-                        if (Records.actualizar(ej.nombre, peso, repsNum, date)) hasRecord = true;
-                    }
-                });
-
-                STATE.historialEntrenos.push({
-                    fecha: UI.getHoy(),
-                    dia: diaActivo,
-                    tipo: CONFIG.TIPOS_RUTINA[diaActivo] || diaActivo.toUpperCase(),
-                    ejercicios: datos
-                });
-
-                if (STATE.mediciones.length > 0) {
-                    STATE.evolution.currentWeight = STATE.mediciones[STATE.mediciones.length - 1].peso;
-                    STATE.evolution.currentWaist = STATE.mediciones[STATE.mediciones.length - 1].cintura;
-                    STATE.evolution.totalWorkouts = STATE.diasEntrenados.length || 0;
-                }
-                Storage._save();
-                Modal.cerrar();
-
-                if (hasRecord) UI.toast('🏆 Nuevo récord!', 'success');
-                UI.toast('✅ Entrenamiento guardado', 'success');
-                APP.renderizarTodo();
+                // Esta función ya no se usa porque quitamos el botón Finalizar
+                // La dejamos vacía para no romper nada
             }
         };
 
@@ -1811,10 +1744,11 @@
         // CALCULADORA DE DISCOS
         // ==========================================
         const Calculadora = {
+            // Discos ordenados de mayor a menor
             discosDisponibles: [
-                { peso: 1.25, cantidad: 4 },
+                { peso: 2, cantidad: 4 },
                 { peso: 1.5, cantidad: 4 },
-                { peso: 2, cantidad: 4 }
+                { peso: 1.25, cantidad: 4 }
             ],
             estado: {
                 tipo: 'mancuerna',
@@ -1825,7 +1759,7 @@
                 idx: ''
             },
             pesosBarra: {
-                mancuerna: .5,
+                mancuerna: 0.5,
                 barra: 1
             },
 
