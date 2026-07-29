@@ -31,7 +31,6 @@
             --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
             --transition: 0.25s ease;
             --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            /* ESCALA DE ESPACIADO: 8, 16, 24, 32, 48 */
             --space-xs: 8px;
             --space-sm: 16px;
             --space-md: 24px;
@@ -39,9 +38,6 @@
             --space-xl: 48px;
         }
 
-        /* ==========================================
-           RESET
-           ========================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
@@ -70,9 +66,6 @@
         .text-warning { color: var(--warning); }
         .w-full { width: 100%; }
 
-        /* ==========================================
-           TOP BAR
-           ========================================== */
         .top-bar {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 56px;
             padding: 0 var(--space-sm); background: rgba(11, 17, 32, 0.92);
@@ -103,9 +96,6 @@
         .notif-item .ni-text { flex: 1; }
         .notif-empty { padding: 20px var(--space-sm); text-align: center; color: var(--text-secondary); font-size: 13px; }
 
-        /* ==========================================
-           SIDE MENU
-           ========================================== */
         .side-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 900; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .side-overlay.open { opacity: 1; pointer-events: auto; }
         .side-menu {
@@ -122,9 +112,6 @@
         .side-menu .menu-divider { height: 1px; background: var(--border); margin: 8px 14px; }
         .side-menu .menu-footer { margin-top: auto; padding-top: 12px; font-size: 11px; color: var(--text-muted); text-align: center; border-top: 1px solid var(--border); }
 
-        /* ==========================================
-           BOTTOM NAV
-           ========================================== */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; height: 62px;
             background: rgba(11, 17, 32, 0.94); backdrop-filter: blur(14px) saturate(1.4);
@@ -136,16 +123,10 @@
         .bottom-nav .nav-btn.active i { transform: translateY(-1px); }
         .bottom-nav .nav-btn:active { transform: scale(0.96); }
 
-        /* ==========================================
-           PAGES
-           ========================================== */
         .page { display: none; padding: 72px var(--space-sm) 76px; max-width: 520px; margin: 0 auto; min-height: 100vh; animation: fadeUp 0.3s ease; }
         .page.active { display: block; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ==========================================
-           CARDS (UNIFICADA)
-           ========================================== */
         .card {
             background: var(--bg-card);
             border-radius: var(--radius);
@@ -160,9 +141,6 @@
         .card-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-secondary); margin-bottom: 14px; }
         .card-title i { margin-right: 6px; color: var(--primary); }
 
-        /* ==========================================
-           BUTTONS (UNIFICADA)
-           ========================================== */
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 6px;
             padding: 8px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px;
@@ -182,9 +160,6 @@
         .btn-ghost:hover { border-color: var(--text-secondary); color: var(--text); }
         .btn-block { width: 100%; justify-content: center; }
 
-        /* ==========================================
-           INPUTS (UNIFICADOS)
-           ========================================== */
         .input {
             width: 100%; padding: 8px 12px; border-radius: var(--radius-sm);
             border: 1px solid var(--border); background: rgba(0,0,0,0.2);
@@ -194,9 +169,6 @@
         .input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-dim); }
         .input-sm { padding: 6px 10px; font-size: 12px; }
 
-        /* ==========================================
-           DASHBOARD
-           ========================================== */
         .saludo { font-size: 26px; font-weight: 700; margin-bottom: 2px; letter-spacing: -0.5px; }
         .saludo span { color: var(--primary); }
         .saludo-dia { font-size: 13px; color: var(--text-secondary); margin-bottom: var(--space-md); }
@@ -213,9 +185,6 @@
         .pending-item:last-child { border-bottom: none; }
         .pending-item .pi-icon { font-size: 18px; }
 
-        /* ==========================================
-           RUTINAS
-           ========================================== */
         .day-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 14px; scrollbar-width: none; }
         .day-tabs::-webkit-scrollbar { display: none; }
         .day-tabs .dtab { flex-shrink: 0; padding: 6px 18px; border-radius: var(--radius-full); border: 1px solid var(--border); background: transparent; color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); }
@@ -241,7 +210,7 @@
         .ex-img:hover { transform: scale(1.01); }
         .ex-img-fallback { width: 100%; height: 160px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); margin: 0 auto 10px; background: var(--primary-dim); color: var(--primary); font-size: 48px; border: 1px solid var(--border); }
 
-        .ex-datos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .ex-datos { display: none; }
         .ex-dato label { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 2px; }
         .ex-dato input { width: 100%; padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: var(--text); font-size: 16px; font-weight: 600; font-family: var(--font); outline: none; text-align: center; transition: var(--transition); }
         .ex-dato input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-dim); }
@@ -264,9 +233,6 @@
         .progreso-rutina-info { font-size: 12px; color: var(--text-secondary); margin-top: 4px; text-align: right; }
         .progreso-rutina-completado { text-align: center; color: var(--success); font-weight: 600; }
 
-        /* ==========================================
-           PESO
-           ========================================== */
         .peso-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-xs); }
         .peso-stat { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; }
         .peso-stat .num { font-size: 28px; font-weight: 700; }
@@ -289,9 +255,6 @@
         .historial-medicion-detalle .detalle-item { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.03); }
         .historial-medicion-detalle .detalle-item:last-child { border-bottom: none; }
 
-        /* ==========================================
-           ESTADÍSTICAS
-           ========================================== */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-xs); }
         .stats-item { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; }
         .stats-item .num { font-size: 24px; font-weight: 700; }
@@ -301,9 +264,6 @@
         .stats-item .num.info { color: var(--secondary); }
         .stats-item .label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* ==========================================
-           RÉCORDS
-           ========================================== */
         .record-card { background: var(--bg-card); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 8px; border: 1px solid var(--border); border-left: 3px solid var(--primary); }
         .record-card .record-name { font-weight: 600; font-size: 15px; }
         .record-card .record-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; margin: 6px 0; }
@@ -312,9 +272,6 @@
         .record-card .record-stats .rs-item .rs-value { font-weight: 700; font-size: 16px; color: var(--primary); }
         .record-card .record-date { font-size: 11px; color: var(--text-secondary); }
 
-        /* ==========================================
-           MODAL (UNIFICADA)
-           ========================================== */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
             display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
@@ -341,25 +298,16 @@
         .modal-panel .modal-record { background: var(--primary-dim); border-radius: var(--radius-sm); padding: 12px; border: 1px solid rgba(59,130,246,0.15); text-align: center; margin: 10px 0; }
         .modal-panel .modal-record .mr-valor { font-size: 20px; font-weight: 700; color: var(--primary); }
 
-        /* ==========================================
-           AJUSTES
-           ========================================== */
         .ajustes-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
         .ajustes-item:last-child { border-bottom: none; }
         .ajustes-item .aj-label { font-size: 13px; }
 
-        /* ==========================================
-           FOTOS
-           ========================================== */
         .foto-grid-upload { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); margin-bottom: 10px; }
         .equip-card { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 10px; text-align: center; }
         .equip-card .label { font-size: 10px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
         .equip-card input[type="file"] { display: block; margin: 6px auto 0; font-size: 11px; color: var(--text-secondary); max-width: 100%; }
         .foto-preview { margin-top: 6px; max-width: 100%; max-height: 50px; border-radius: 6px; object-fit: cover; }
 
-        /* ==========================================
-           TOAST
-           ========================================== */
         .toast-msg {
             position: fixed; bottom: 80px; left: var(--space-sm); right: var(--space-sm);
             padding: 12px 18px; border-radius: var(--radius-sm); text-align: center; font-weight: 600;
@@ -372,18 +320,12 @@
         @keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes toastOut { to { opacity: 0; transform: translateY(10px); visibility: hidden; } }
 
-        /* ==========================================
-           LIGHTBOX
-           ========================================== */
         .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 3000; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .lightbox.active { opacity: 1; pointer-events: auto; }
         .lightbox img { max-width: 92%; max-height: 92%; object-fit: contain; border-radius: var(--radius-sm); }
 
         .form-field label { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 2px; }
 
-        /* ==========================================
-           RESPONSIVE
-           ========================================== */
         @media (max-width: 420px) {
             .top-stats { display: none; }
             .side-menu { width: 260px; left: -260px; }
@@ -405,9 +347,7 @@
 </head>
 <body>
 
-    <!-- ==========================================
-    TOP BAR
-    ========================================== -->
+    <!-- TOP BAR -->
     <header class="top-bar">
         <div class="logo"><i class="fa-solid fa-dumbbell"></i>NicoGym</div>
         <div class="top-right">
@@ -432,9 +372,7 @@
         </div>
     </header>
 
-    <!-- ==========================================
-    SIDE MENU
-    ========================================== -->
+    <!-- SIDE MENU -->
     <div class="side-overlay" id="sideOverlay" onclick="UI.toggleMenu()"></div>
     <nav class="side-menu" id="sideMenu">
         <button class="menu-item active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i> Inicio</button>
@@ -450,55 +388,42 @@
         <div class="menu-footer">NicoGym 1.0</div>
     </nav>
 
-    <!-- ==========================================
-    PAGES
-    ========================================== -->
-
-    <!-- INICIO -->
+    <!-- PAGES -->
     <div class="page active" id="page-inicio">
         <div id="dashboardContainer"></div>
     </div>
 
-    <!-- RUTINAS -->
     <div class="page" id="page-rutinas">
         <div id="progresoRutinaContainer"></div>
         <div class="day-tabs" id="dayTabs"></div>
         <div id="dayPanelsContainer"></div>
     </div>
 
-    <!-- PESO -->
     <div class="page" id="page-peso">
         <div id="pesoContainer"></div>
     </div>
 
-    <!-- AGENDA -->
     <div class="page" id="page-agenda">
         <div id="agendaContainer"></div>
     </div>
 
-    <!-- RÉCORDS -->
     <div class="page" id="page-records">
         <div id="recordsContainer"></div>
     </div>
 
-    <!-- ESTADÍSTICAS -->
     <div class="page" id="page-estadisticas">
         <div id="estadisticasContainer"></div>
     </div>
 
-    <!-- FOTOS -->
     <div class="page" id="page-fotos">
         <div id="fotosContainer"></div>
     </div>
 
-    <!-- AJUSTES -->
     <div class="page" id="page-ajustes">
         <div id="ajustesContainer"></div>
     </div>
 
-    <!-- ==========================================
-    BOTTOM NAV
-    ========================================== -->
+    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <button class="nav-btn active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i>Inicio</button>
         <button class="nav-btn" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i>Rutina</button>
@@ -507,9 +432,7 @@
         <button class="nav-btn" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i>Stats</button>
     </nav>
 
-    <!-- ==========================================
-    MODAL (UNIFICADA)
-    ========================================== -->
+    <!-- MODAL -->
     <div class="modal-overlay hidden" id="modalGlobal">
         <div class="modal-panel" id="modalGlobalPanel">
             <button class="modal-close" onclick="Modal.cerrar()"><i class="fa-solid fa-xmark"></i></button>
@@ -517,16 +440,48 @@
         </div>
     </div>
 
-    <!-- ==========================================
-    LIGHTBOX
-    ========================================== -->
+    <!-- LIGHTBOX -->
     <div class="lightbox" id="lightbox" onclick="UI.cerrarLightbox()">
         <img id="lightboxImg" src="" alt="Imagen ampliada">
     </div>
 
-    <!-- ==========================================
-    SCRIPTS
-    ========================================== -->
+    <!-- MODAL CALCULADORA DE DISCOS -->
+    <div class="modal-overlay hidden" id="modalCalculadora">
+        <div class="modal-panel" style="max-width:420px;">
+            <button class="modal-close" onclick="Calculadora.cerrar()"><i class="fa-solid fa-xmark"></i></button>
+            <h3 id="calcEjercicioNombre">Ejercicio</h3>
+
+            <div style="margin:12px 0;">
+                <label style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px;">Tipo de barra</label>
+                <div style="display:flex;gap:8px;">
+                    <button class="btn btn-sm" id="calcTipoMancuerna" onclick="Calculadora.setTipo('mancuerna')" style="flex:1;">🏋️ Mancuerna</button>
+                    <button class="btn btn-sm" id="calcTipoBarra" onclick="Calculadora.setTipo('barra')" style="flex:1;">🏋️ Barra larga</button>
+                </div>
+                <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">* El peso de la barra no se suma al total, solo los discos</div>
+            </div>
+
+            <div style="margin:12px 0;">
+                <label style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px;">Discos (kg)</label>
+                <div id="calcDiscosContainer" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+                <div style="display:flex;gap:12px;margin-top:8px;font-size:13px;">
+                    <span>Peso discos: <strong id="calcPesoDiscos">0</strong> kg</span>
+                    <span style="color:var(--text-muted);">Barra: <strong id="calcPesoBarra">0</strong> kg</span>
+                    <span style="color:var(--primary);">Total: <strong id="calcPesoTotal">0</strong> kg</span>
+                </div>
+            </div>
+
+            <div style="margin:12px 0;">
+                <label style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px;">Repeticiones</label>
+                <input type="text" id="calcReps" placeholder="12,12,11" class="input" style="text-align:center;font-size:16px;font-weight:600;">
+            </div>
+
+            <div style="display:flex;gap:8px;margin-top:12px;">
+                <button class="btn btn-success btn-block" onclick="Calculadora.guardar()" style="flex:1;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                <button class="btn btn-ghost" onclick="Calculadora.cerrar()" style="flex:0.5;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ==========================================
         // CONFIGURACIÓN
@@ -540,15 +495,15 @@
             FECHA_REFERENCIA_MEDICIONES: '2026-07-20',
             DIAS_SEMANA: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
             NOMBRES_DIAS: { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo' },
-           TIPOS_RUTINA: {
-    lunes: 'Espalda / Bíceps',
-    martes: 'Pecho / Hombro',
-    miercoles: 'Tríceps / Pierna',
-    jueves: 'Espalda / Bíceps',
-    viernes: 'Pecho / Hombro / Antebrazo',
-    sabado: 'Descanso',
-    domingo: 'Descanso'
-},
+            TIPOS_RUTINA: {
+                lunes: 'Espalda / Bíceps',
+                martes: 'Pecho / Hombro',
+                miercoles: 'Tríceps / Pierna',
+                jueves: 'Espalda / Bíceps',
+                viernes: 'Pecho / Hombro / Antebrazo',
+                sabado: 'Descanso',
+                domingo: 'Descanso'
+            },
             EJERCICIOS: {
                 lunes: [
                     { nombre: 'Remo con barra', grupo: 'Espalda' },
@@ -565,7 +520,7 @@
                     { nombre: 'Cardio en cinta', grupo: 'Cardio' }
                 ],
                 miercoles: [
-                    { nombre: 'Extensión de tríceps tumbado (Press Francés)', grupo: 'Tríceps' },
+                    { nombre: 'Extensión de tríceps tumbado', grupo: 'Tríceps' },
                     { nombre: 'Patada de tríceps', grupo: 'Tríceps' },
                     { nombre: 'Sentadilla Goblet con mancuerna', grupo: 'Pierna' },
                     { nombre: 'Zancadas estáticas con mancuernas', grupo: 'Pierna' },
@@ -582,7 +537,7 @@
                     { nombre: 'Press inclinado con mancuernas', grupo: 'Pecho' },
                     { nombre: 'Aperturas en banco plano', grupo: 'Pecho' },
                     { nombre: 'Press plano con mancuernas', grupo: 'Pecho' },
-                    { nombre: 'Curl de antebrazo con mancuernas (Palmas arriba)', grupo: 'Antebrazo' },
+                    { nombre: 'Curl de antebrazo con mancuernas', grupo: 'Antebrazo' },
                     { nombre: 'Cardio en cinta', grupo: 'Cardio' }
                 ],
                 sabado: [],
@@ -665,31 +620,28 @@
                 STATE.evolution.daysWithoutSmoking = c;
             },
             _save() { localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(STATE)); },
-                // Resetea los checks al inicio de cada semana (lunes)
             resetearSemana() {
                 const hoy = new Date();
-                const diaSemana = hoy.getDay(); // 0 = domingo, 1 = lunes
+                const diaSemana = hoy.getDay();
                 const semanaActual = this._getSemanaKey(hoy);
                 const ultimaSemana = localStorage.getItem('ultimaSemana');
-
                 if (diaSemana === 1 && ultimaSemana !== semanaActual) {
-                    // Es lunes y no se ha resetado esta semana
                     STATE.checks = {};
                     localStorage.setItem('ultimaSemana', semanaActual);
                     this._save();
-                    return true; // Indica que se ha resetado
+                    return true;
                 }
                 return false;
             },
             _getSemanaKey(fecha) {
                 const d = new Date(fecha);
-                // Obtener el inicio de la semana (lunes)
                 d.setDate(d.getDate() - (d.getDay() === 0 ? 6 : d.getDay() - 1));
                 const year = d.getFullYear();
                 const week = Math.ceil((((d - new Date(year, 0, 1)) / 86400000) + 1) / 7);
                 return `${year}-W${String(week).padStart(2, '0')}`;
             },
-            resetAll() { localStorage.removeItem(CONFIG.STORAGE_KEY); location.reload(); },
+            resetAll() { localStorage.removeItem(CONFIG.STORAGE_KEY);
+                location.reload(); },
             exportar() {
                 const blob = new Blob([JSON.stringify(STATE, null, 2)], { type: 'application/json' });
                 const a = document.createElement('a');
@@ -742,7 +694,8 @@
                 document.getElementById('notifDropdown').classList.toggle('open');
             },
             cerrarLightbox() { document.getElementById('lightbox').classList.remove('active'); },
-            abrirLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('active'); },
+            abrirLightbox(src) { document.getElementById('lightboxImg').src = src;
+                document.getElementById('lightbox').classList.add('active'); },
             getHoy() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; },
             formatFecha(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; },
             formatearFecha(fecha) { return new Date(fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }); },
@@ -783,8 +736,9 @@
         }
 
         function getDiasHasta(fecha) {
-            const hoy = new Date(); hoy.setHours(0,0,0,0);
-            fecha.setHours(0,0,0,0);
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            fecha.setHours(0, 0, 0, 0);
             return Math.round((fecha - hoy) / 86400000);
         }
 
@@ -845,7 +799,8 @@
                 return this;
             },
             _eventos() {
-                document.getElementById('importFile').addEventListener('change', function() { Storage.importar(this.files[0]); });
+                document.getElementById('importFile').addEventListener('change', function() { Storage.importar(this
+                        .files[0]); });
                 const dia = UI.getDiaNombre();
                 diaActivo = dia === 'domingo' ? 'lunes' : dia;
             },
@@ -909,7 +864,8 @@
                     }, 100);
                 }
             },
-            confirmarReset() { UI.confirmar('¿Borrar TODOS los datos? No se puede deshacer.', () => Storage.resetAll()); }
+            confirmarReset() { UI.confirmar('¿Borrar TODOS los datos? No se puede deshacer.', () => Storage
+                    .resetAll()); }
         };
 
         // ==========================================
@@ -953,65 +909,65 @@
                 const notifs = Notificaciones.generar();
 
                 c.innerHTML = `
-                    <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
-                    <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString('es-ES', {day:'numeric', month:'long'})}</div>
+                        <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
+                        <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString('es-ES', {day:'numeric', month:'long'})}</div>
 
-                    <div class="card card-accent">
-                        <div class="card-title">📊 Resumen</div>
-                        <div class="dash-grid">
-                            <div class="dash-stat">
-                                <div class="num primary">${peso}</div>
-                                <div class="label">Peso (kg)</div>
-                            </div>
-                            <div class="dash-stat">
-                                <div class="num green">${pctObjetivo}%</div>
-                                <div class="label">Objetivo</div>
+                        <div class="card card-accent">
+                            <div class="card-title">📊 Resumen</div>
+                            <div class="dash-grid">
+                                <div class="dash-stat">
+                                    <div class="num primary">${peso}</div>
+                                    <div class="label">Peso (kg)</div>
+                                </div>
+                                <div class="dash-stat">
+                                    <div class="num green">${pctObjetivo}%</div>
+                                    <div class="label">Objetivo</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="card">
-                        <div class="card-title">💪 Rutina de hoy</div>
-                        ${dia === 'domingo' ? `
-                            <div style="text-align:center;padding:8px 0;color:var(--text-secondary);">
-                                <span style="font-size:32px;display:block;margin-bottom:4px;">😌</span>
-                                Día de descanso
-                            </div>
-                        ` : entrenadoHoy ? `
-                            <div style="text-align:center;padding:8px 0;color:var(--success);">
-                                <span style="font-size:32px;display:block;margin-bottom:4px;">✅</span>
-                                Completado
-                                <div style="font-size:12px;color:var(--text-secondary);">${rutinaNombre}</div>
-                            </div>
-                        ` : `
-                            <div style="display:flex;align-items:center;justify-content:space-between;">
-                                <div>
-                                    <div style="font-size:16px;font-weight:600;">${rutinaNombre}</div>
-                                    <div style="font-size:12px;color:var(--text-secondary);">${CONFIG.EJERCICIOS[dia]?.length || 0} ejercicios</div>
+                        <div class="card">
+                            <div class="card-title">💪 Rutina de hoy</div>
+                            ${dia === 'domingo' ? `
+                                <div style="text-align:center;padding:8px 0;color:var(--text-secondary);">
+                                    <span style="font-size:32px;display:block;margin-bottom:4px;">😌</span>
+                                    Día de descanso
                                 </div>
-                                <button class="btn btn-primary btn-sm" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-play"></i> Entrenar</button>
-                            </div>
-                        `}
-                    </div>
-
-                    <div class="card">
-                        <div class="card-title">📋 Último entrenamiento</div>
-                        <div style="font-size:16px;font-weight:600;">${ultimoEntreno}</div>
-                    </div>
-
-                    ${notifs.length > 0 ? `
-                        <div class="card" style="border-left:3px solid var(--warning);">
-                            <div class="card-title">🔔 Pendientes (${notifs.length})</div>
-                            ${notifs.map(n => `
-                                <div class="pending-item">
-                                    <span class="pi-icon">${n.icono}</span>
-                                    <span>${n.texto}</span>
+                            ` : entrenadoHoy ? `
+                                <div style="text-align:center;padding:8px 0;color:var(--success);">
+                                    <span style="font-size:32px;display:block;margin-bottom:4px;">✅</span>
+                                    Completado
+                                    <div style="font-size:12px;color:var(--text-secondary);">${rutinaNombre}</div>
                                 </div>
-                            `).join('')}
-                            <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--text-secondary);cursor:pointer;" onclick="APP.navegar('agenda')">Ver todas →</div>
+                            ` : `
+                                <div style="display:flex;align-items:center;justify-content:space-between;">
+                                    <div>
+                                        <div style="font-size:16px;font-weight:600;">${rutinaNombre}</div>
+                                        <div style="font-size:12px;color:var(--text-secondary);">${CONFIG.EJERCICIOS[dia]?.length || 0} ejercicios</div>
+                                    </div>
+                                    <button class="btn btn-primary btn-sm" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-play"></i> Entrenar</button>
+                                </div>
+                            `}
                         </div>
-                    ` : ''}
-                `;
+
+                        <div class="card">
+                            <div class="card-title">📋 Último entrenamiento</div>
+                            <div style="font-size:16px;font-weight:600;">${ultimoEntreno}</div>
+                        </div>
+
+                        ${notifs.length > 0 ? `
+                            <div class="card" style="border-left:3px solid var(--warning);">
+                                <div class="card-title">🔔 Pendientes (${notifs.length})</div>
+                                ${notifs.map(n => `
+                                    <div class="pending-item">
+                                        <span class="pi-icon">${n.icono}</span>
+                                        <span>${n.texto}</span>
+                                    </div>
+                                `).join('')}
+                                <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--text-secondary);cursor:pointer;" onclick="APP.navegar('agenda')">Ver todas →</div>
+                            </div>
+                        ` : ''}
+                    `;
             }
         };
 
@@ -1082,36 +1038,32 @@
                         `<img src="${img}" class="ex-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'ex-img-fallback\\'>💪</div>'" onclick="UI.abrirLightbox(this.src)" alt="${ej.nombre}">` :
                         `<div class="ex-img-fallback">💪</div>`;
 
+                    // QUITAMOS LOS INPUTS DE PESO Y REPS
                     const datosHtml = esCardio ? `
-                        <div class="ex-datos"><div class="ex-dato"><label>Tiempo (min)</label><input type="number" id="peso-${id}" step="1" placeholder="20" value="${ultimo?.peso || ''}" class="input"></div></div>
-                        ${ultimo ? `<div class="ex-ultimo">Último: <strong>${ultimo.peso} min</strong> (${UI.formatearFecha(ultimo.fecha)})</div>` : ''}
-                    ` : `
-                        <div class="ex-datos">
-                            <div class="ex-dato"><label>Peso (kg)</label><input type="number" id="peso-${id}" step="0.5" placeholder="0" value="${ultimo?.peso || ''}" class="input"></div>
-                            <div class="ex-dato"><label>Reps</label><input type="text" id="reps-${id}" placeholder="12,12,11" value="${ultimo?.reps || ''}" class="input"></div>
-                        </div>
-                        ${ultimo ? `<div class="ex-ultimo">Último: <strong>${ultimo.peso} kg</strong> · ${ultimo.reps} (${UI.formatearFecha(ultimo.fecha)})</div>` : ''}
-                    `;
+                            ${ultimo ? `<div class="ex-ultimo">Último: <strong>${ultimo.peso} min</strong> (${UI.formatearFecha(ultimo.fecha)})</div>` : ''}
+                        ` : `
+                            ${ultimo ? `<div class="ex-ultimo">Último: <strong>${ultimo.peso} kg</strong> · ${ultimo.reps} (${UI.formatearFecha(ultimo.fecha)})</div>` : ''}
+                        `;
 
                     html += `
-                        <div class="ex-card ${checked?'checked':''}">
-                            <div class="ex-head">
-                                <span><span class="ex-name">${ej.nombre}</span><span class="ex-grupo">${ej.grupo}</span></span>
-                                <input type="checkbox" class="check-box" ${checked?'checked':''} onchange="Rutinas._marcar('${id}')">
-                            </div>
-                            <div class="ex-body">
-                                <button class="ex-tog" onclick="Rutinas._toggleDetalle(this,'${img}','${inst}')"><i class="fa-solid fa-circle-info"></i> Ver técnica</button>
-                                <div class="ex-det">
-                                    ${imgHtml}
-                                    <div style="white-space:pre-wrap;font-size:13px;line-height:1.7;">${inst}</div>
+                            <div class="ex-card ${checked?'checked':''}">
+                                <div class="ex-head">
+                                    <span><span class="ex-name">${ej.nombre}</span><span class="ex-grupo">${ej.grupo}</span></span>
+                                    <input type="checkbox" class="check-box" ${checked?'checked':''} onchange="Rutinas._marcar('${id}')">
                                 </div>
-                                ${datosHtml}
-                                <div class="ultimo-entreno"><span>Último</span><span>${ultimo ? (esCardio ? ultimo.peso+' min' : ultimo.peso+' kg × '+ultimo.reps) : '--'}</span></div>
-                                <div class="mejor-marca"><span>🏆 Récord</span><span class="mm-valor">${record ? record.weight+' kg × '+record.reps : '--'}</span></div>
-                                <button class="btn-historial-ej" onclick="Rutinas._verHistorial('${ej.nombre}')"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
+                                <div class="ex-body">
+                                    <button class="ex-tog" onclick="Rutinas._toggleDetalle(this,'${img}','${inst}')"><i class="fa-solid fa-circle-info"></i> Ver técnica</button>
+                                    <div class="ex-det">
+                                        ${imgHtml}
+                                        <div style="white-space:pre-wrap;font-size:13px;line-height:1.7;">${inst}</div>
+                                    </div>
+                                    ${datosHtml}
+                                    <div class="ultimo-entreno"><span>Último</span><span>${ultimo ? (esCardio ? ultimo.peso+' min' : ultimo.peso+' kg × '+ultimo.reps) : '--'}</span></div>
+                                    <div class="mejor-marca"><span>🏆 Récord</span><span class="mm-valor">${record ? record.weight+' kg × '+record.reps : '--'}</span></div>
+                                    <button class="btn-historial-ej" onclick="Rutinas._verHistorial('${ej.nombre}')"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
                 });
                 html += `</div>`;
                 return html;
@@ -1139,41 +1091,47 @@
                 const bf = document.getElementById('btnFinalizarRutina');
 
                 if (comp === ejercicios.length) {
-                    c.innerHTML = `<div class="progreso-rutina-bar"><div class="progreso-rutina-completado"><i class="fa-solid fa-circle-check"></i> ¡${CONFIG.NOMBRES_DIAS[diaActivo]} completado!</div></div>`;
+                    c.innerHTML =
+                        `<div class="progreso-rutina-bar"><div class="progreso-rutina-completado"><i class="fa-solid fa-circle-check"></i> ¡${CONFIG.NOMBRES_DIAS[diaActivo]} completado!</div></div>`;
                     if (bf) bf.classList.add('visible');
                 } else {
                     c.innerHTML = `
-                        <div class="progreso-rutina-bar">
-                            <div class="progreso-rutina-header">
-                                <span>${CONFIG.NOMBRES_DIAS[diaActivo]}</span>
-                                <span>${pct}%</span>
+                            <div class="progreso-rutina-bar">
+                                <div class="progreso-rutina-header">
+                                    <span>${CONFIG.NOMBRES_DIAS[diaActivo]}</span>
+                                    <span>${pct}%</span>
+                                </div>
+                                <div class="progreso-rutina-track"><div class="progreso-rutina-fill" style="width:${pct}%;"></div></div>
+                                <div class="progreso-rutina-info">${comp}/${ejercicios.length} ejercicios</div>
                             </div>
-                            <div class="progreso-rutina-track"><div class="progreso-rutina-fill" style="width:${pct}%;"></div></div>
-                            <div class="progreso-rutina-info">${comp}/${ejercicios.length} ejercicios</div>
-                        </div>
-                    `;
+                        `;
                     if (bf) bf.classList.remove('visible');
                 }
             },
 
             _marcar(id) {
-                if (STATE.checks[id]) delete STATE.checks[id];
-                else STATE.checks[id] = true;
-                Storage._save();
-                this._actualizarProgreso();
-
                 const dia = id.split('-')[0];
-                const c = document.getElementById(`lista-${dia}`);
-                if (c && Array.from(c.querySelectorAll('.check-box')).every(cb => cb.checked) && c.querySelectorAll('.check-box').length > 0) {
-                    const hoy = UI.getHoy();
-                    if (!STATE.diasEntrenados.includes(hoy)) {
-                        STATE.diasEntrenados.push(hoy);
-                        Storage._save();
-                        UI.toast(`🎉 ¡${dia.toUpperCase()} completado!`, 'success');
-                        confetti({ particleCount: 120, spread: 70 });
-                        APP.renderizarTodo();
+                const idx = parseInt(id.split('-')[1]);
+                const ejercicios = CONFIG.EJERCICIOS[dia] || [];
+                const ejercicio = ejercicios[idx];
+
+                if (!ejercicio) return;
+
+                if (STATE.checks[id]) {
+                    delete STATE.checks[id];
+                    Storage._save();
+                    this._actualizarProgreso();
+                    const c = document.getElementById(`lista-${dia}`);
+                    if (c) {
+                        const cards = c.querySelectorAll('.ex-card');
+                        if (cards[idx]) cards[idx].classList.remove('checked');
+                        const checkbox = cards[idx]?.querySelector('.check-box');
+                        if (checkbox) checkbox.checked = false;
                     }
+                    return;
                 }
+
+                Calculadora.abrir(ejercicio.nombre, dia, idx);
             },
 
             _toggleDetalle(btn, imgUrl, inst) {
@@ -1186,16 +1144,16 @@
                         `<img src="${imgUrl}" class="ex-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'ex-img-fallback\\'>💪</div>'" onclick="UI.abrirLightbox(this.src)" alt="Técnica">` :
                         `<div class="ex-img-fallback">💪</div>`;
                     d.innerHTML = `
-                        ${imgHtml}
-                        <div style="white-space:pre-wrap;font-size:13px;line-height:1.7;">${inst}</div>
-                    `;
+                            ${imgHtml}
+                            <div style="white-space:pre-wrap;font-size:13px;line-height:1.7;">${inst}</div>
+                        `;
                     d.classList.add('open');
                     btn.innerHTML = '<i class="fa-solid fa-circle-chevron-up"></i> Ocultar';
                 }
             },
 
             _getUltimoEntreno(nombre) {
-                const ord = [...STATE.historialEntrenos].sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+                const ord = [...STATE.historialEntrenos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
                 for (const e of ord) {
                     const ej = e.ejercicios.find(x => x.nombre === nombre);
                     if (ej) return { fecha: e.fecha, peso: ej.peso, reps: ej.reps };
@@ -1205,7 +1163,7 @@
 
             _verHistorial(nombre) {
                 const hist = [];
-                const ord = [...STATE.historialEntrenos].sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+                const ord = [...STATE.historialEntrenos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
                 for (const e of ord) {
                     const ej = e.ejercicios.find(x => x.nombre === nombre);
                     if (ej) hist.push({ fecha: e.fecha, peso: ej.peso, reps: ej.reps });
@@ -1217,14 +1175,15 @@
                 } else {
                     const record = Records.getRecord(nombre);
                     if (record) {
-                        html += `<div class="modal-record"><div class="mr-valor">🏆 ${record.weight} kg × ${record.reps}</div><div style="font-size:11px;color:var(--text-secondary);">${record.date}</div></div>`;
+                        html +=
+                            `<div class="modal-record"><div class="mr-valor">🏆 ${record.weight} kg × ${record.reps}</div><div style="font-size:11px;color:var(--text-secondary);">${record.date}</div></div>`;
                     }
                     hist.forEach(x => {
                         const esCardio = nombre === 'Cardio en cinta';
                         html += `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">
-                            <span>${UI.formatearFecha(x.fecha)}</span>
-                            <span style="color:var(--primary);">${esCardio ? x.peso+' min' : x.peso+' kg · '+x.reps}</span>
-                        </div>`;
+                                <span>${UI.formatearFecha(x.fecha)}</span>
+                                <span style="color:var(--primary);">${esCardio ? x.peso+' min' : x.peso+' kg · '+x.reps}</span>
+                            </div>`;
                     });
                 }
                 html += `<button class="btn btn-ghost btn-block" onclick="Modal.cerrar()" style="margin-top:12px;">Cerrar</button>`;
@@ -1237,19 +1196,20 @@
                 ejercicios.forEach((ej, idx) => {
                     const id = `${diaActivo}-${idx}`;
                     const peso = document.getElementById(`peso-${id}`)?.value || '-';
-                    const reps = ej.nombre === 'Cardio en cinta' ? '' : (document.getElementById(`reps-${id}`)?.value || '-');
+                    const reps = ej.nombre === 'Cardio en cinta' ? '' : (document.getElementById(`reps-${id}`)
+                        ?.value || '-');
                     const det = ej.nombre === 'Cardio en cinta' ? `${peso} min` : `${peso} kg · ${reps}`;
                     html += `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-                        <span>${ej.nombre}</span>
-                        <span style="color:var(--primary);">${det}</span>
-                    </div>`;
+                            <span>${ej.nombre}</span>
+                            <span style="color:var(--primary);">${det}</span>
+                        </div>`;
                 });
                 html += `
-                    <button class="btn btn-success btn-block" onclick="Rutinas._guardarEntreno()" style="margin-top:14px;padding:14px;font-size:15px;">
-                        <i class="fa-solid fa-floppy-disk"></i> Guardar
-                    </button>
-                    <button class="btn btn-ghost btn-block" onclick="Modal.cerrar()" style="margin-top:6px;">Cancelar</button>
-                `;
+                        <button class="btn btn-success btn-block" onclick="Rutinas._guardarEntreno()" style="margin-top:14px;padding:14px;font-size:15px;">
+                            <i class="fa-solid fa-floppy-disk"></i> Guardar
+                        </button>
+                        <button class="btn btn-ghost btn-block" onclick="Modal.cerrar()" style="margin-top:6px;">Cancelar</button>
+                    `;
                 Modal.abrir(html);
             },
 
@@ -1261,12 +1221,14 @@
                 ejercicios.forEach((ej, idx) => {
                     const id = `${diaActivo}-${idx}`;
                     const peso = parseFloat(document.getElementById(`peso-${id}`)?.value) || 0;
-                    const reps = ej.nombre === 'Cardio en cinta' ? 'Cardio' : (document.getElementById(`reps-${id}`)?.value || '-');
+                    const reps = ej.nombre === 'Cardio en cinta' ? 'Cardio' : (document.getElementById(`reps-${id}`)
+                        ?.value || '-');
                     datos.push({ nombre: ej.nombre, peso, reps });
 
                     if (peso > 0 && ej.nombre !== 'Cardio en cinta') {
-                        const date = new Date().toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'numeric' });
-                        const repsNum = reps.split(',').map(Number).reduce((a,b) => a+b, 0);
+                        const date = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit',
+                            year: 'numeric' });
+                        const repsNum = reps.split(',').map(Number).reduce((a, b) => a + b, 0);
                         if (Records.actualizar(ej.nombre, peso, repsNum, date)) hasRecord = true;
                     }
                 });
@@ -1311,24 +1273,25 @@
                 const c = document.getElementById('recordsContainer');
                 if (!c) return;
                 if (STATE.records.length === 0) {
-                    c.innerHTML = `<div class="card"><div style="text-align:center;color:var(--text-secondary);padding:20px;">
-                        <i class="fa-solid fa-trophy" style="font-size:40px;display:block;margin-bottom:12px;color:var(--text-muted);"></i>
-                        <p>Aún no has batido ningún récord</p>
-                    </div></div>`;
+                    c.innerHTML =
+                        `<div class="card"><div style="text-align:center;color:var(--text-secondary);padding:20px;">
+                            <i class="fa-solid fa-trophy" style="font-size:40px;display:block;margin-bottom:12px;color:var(--text-muted);"></i>
+                            <p>Aún no has batido ningún récord</p>
+                        </div></div>`;
                     return;
                 }
-                const sorted = [...STATE.records].sort((a,b) => b.weight - a.weight);
+                const sorted = [...STATE.records].sort((a, b) => b.weight - a.weight);
                 c.innerHTML = sorted.map(r => `
-                    <div class="record-card">
-                        <div class="record-name">${r.exerciseName}</div>
-                        <div class="record-stats">
-                            <div class="rs-item"><div class="rs-label">Peso</div><div class="rs-value">${r.weight} kg</div></div>
-                            <div class="rs-item"><div class="rs-label">Reps</div><div class="rs-value">${r.reps}</div></div>
-                            <div class="rs-item"><div class="rs-label">Volumen</div><div class="rs-value">${r.weight * r.reps} kg</div></div>
+                        <div class="record-card">
+                            <div class="record-name">${r.exerciseName}</div>
+                            <div class="record-stats">
+                                <div class="rs-item"><div class="rs-label">Peso</div><div class="rs-value">${r.weight} kg</div></div>
+                                <div class="rs-item"><div class="rs-label">Reps</div><div class="rs-value">${r.reps}</div></div>
+                                <div class="rs-item"><div class="rs-label">Volumen</div><div class="rs-value">${r.weight * r.reps} kg</div></div>
+                            </div>
+                            <div class="record-date">${r.date}</div>
                         </div>
-                        <div class="record-date">${r.date}</div>
-                    </div>
-                `).join('');
+                    `).join('');
             }
         };
 
@@ -1344,38 +1307,38 @@
                 const primero = STATE.mediciones.length > 0 ? STATE.mediciones[0] : null;
 
                 let html = `
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-plus"></i> Nueva medición</div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-                            <div class="form-field"><label>Fecha</label><input type="date" id="medFecha" class="input"></div>
-                            <div class="form-field"><label>Peso (kg)</label><input type="number" id="medPeso" step="0.1" placeholder="84.3" class="input"></div>
-                            <div class="form-field"><label>% Grasa</label><input type="number" id="medGrasa" step="0.1" placeholder="27.5" class="input"></div>
-                            <div class="form-field"><label>Músculo (kg)</label><input type="number" id="medMusculo" step="0.1" placeholder="58.2" class="input"></div>
-                            <div class="form-field"><label>Cintura (cm)</label><input type="number" id="medCintura" step="0.1" placeholder="98" class="input"></div>
-                        </div>
-                        <button class="btn btn-primary btn-block" onclick="Peso._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-chart-simple"></i> Resumen</div>
-                        <div class="peso-grid">
-                            <div class="peso-stat"><div class="num primary">${ultimo ? ultimo.peso : '--'}</div><div class="label">Peso</div></div>
-                            <div class="peso-stat"><div class="num green">${ultimo ? ultimo.grasaPorcentaje : '--'}%</div><div class="label">Grasa</div></div>
-                            <div class="peso-stat"><div class="num orange">${ultimo ? ultimo.masaMuscular : '--'}</div><div class="label">Músculo</div></div>
-                        </div>
-                        ${primero && ultimo ? `
-                            <div style="display:flex;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);margin-top:8px;font-size:13px;">
-                                <span>📉 Desde inicio: <strong>${(primero.peso - ultimo.peso).toFixed(1)} kg</strong></span>
-                                <span>📏 Cintura: <strong>${ultimo.cintura} cm</strong></span>
+                        <div class="card">
+                            <div class="card-title"><i class="fa-solid fa-plus"></i> Nueva medición</div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+                                <div class="form-field"><label>Fecha</label><input type="date" id="medFecha" class="input"></div>
+                                <div class="form-field"><label>Peso (kg)</label><input type="number" id="medPeso" step="0.1" placeholder="84.3" class="input"></div>
+                                <div class="form-field"><label>% Grasa</label><input type="number" id="medGrasa" step="0.1" placeholder="27.5" class="input"></div>
+                                <div class="form-field"><label>Músculo (kg)</label><input type="number" id="medMusculo" step="0.1" placeholder="58.2" class="input"></div>
+                                <div class="form-field"><label>Cintura (cm)</label><input type="number" id="medCintura" step="0.1" placeholder="98" class="input"></div>
                             </div>
-                        ` : ''}
-                    </div>
+                            <button class="btn btn-primary btn-block" onclick="Peso._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                        </div>
 
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Historial</div>
-                        <div id="historialMediciones"></div>
-                    </div>
-                `;
+                        <div class="card">
+                            <div class="card-title"><i class="fa-solid fa-chart-simple"></i> Resumen</div>
+                            <div class="peso-grid">
+                                <div class="peso-stat"><div class="num primary">${ultimo ? ultimo.peso : '--'}</div><div class="label">Peso</div></div>
+                                <div class="peso-stat"><div class="num green">${ultimo ? ultimo.grasaPorcentaje : '--'}%</div><div class="label">Grasa</div></div>
+                                <div class="peso-stat"><div class="num orange">${ultimo ? ultimo.masaMuscular : '--'}</div><div class="label">Músculo</div></div>
+                            </div>
+                            ${primero && ultimo ? `
+                                <div style="display:flex;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);margin-top:8px;font-size:13px;">
+                                    <span>📉 Desde inicio: <strong>${(primero.peso - ultimo.peso).toFixed(1)} kg</strong></span>
+                                    <span>📏 Cintura: <strong>${ultimo.cintura} cm</strong></span>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="card">
+                            <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Historial</div>
+                            <div id="historialMediciones"></div>
+                        </div>
+                    `;
                 c.innerHTML = html;
                 document.getElementById('medFecha').value = UI.getHoy();
                 this._renderHistorial();
@@ -1396,7 +1359,7 @@
                 const nm = { fecha: f, peso: p, grasaPorcentaje: g, masaMuscular: m, cintura: ci };
                 if (idx !== -1) STATE.mediciones[idx] = nm;
                 else STATE.mediciones.push(nm);
-                STATE.mediciones.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+                STATE.mediciones.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
                 STATE.recordatorios.ultimaMedicion = f;
                 Storage._save();
                 UI.toast('✅ Mediciones guardadas', 'success');
@@ -1417,31 +1380,31 @@
                 }
                 const rev = [...STATE.mediciones].reverse();
                 c.innerHTML = rev.map((m, i) => {
-                    const diff = i < rev.length - 1 ? (m.peso - rev[i+1].peso).toFixed(1) : null;
+                    const diff = i < rev.length - 1 ? (m.peso - rev[i + 1].peso).toFixed(1) : null;
                     return `
-                        <div class="historial-medicion-card" onclick="Peso._toggleDetalle(${i})">
-                            <div style="display:flex;justify-content:space-between;align-items:center;">
-                                <span class="med-fecha">${UI.formatearFecha(m.fecha)}</span>
-                                <span style="font-weight:600;">${m.peso} kg</span>
-                            </div>
-                            <div class="med-resumen">
-                                <span class="med-item">📏 <span class="valor">${m.cintura}</span> cm</span>
-                                <span class="med-item">💪 <span class="valor">${m.masaMuscular}</span> kg</span>
-                                <span class="med-item">🔥 <span class="valor">${m.grasaPorcentaje}</span>%</span>
-                                ${diff !== null && Math.abs(parseFloat(diff)) > 0 ? `<span class="med-item ${parseFloat(diff) < 0 ? 'positive' : 'negative'}">${parseFloat(diff) > 0 ? '+' : ''}${diff} kg</span>` : ''}
-                            </div>
-                            <div class="historial-medicion-detalle" id="pesoDetalle-${i}">
-                                <div class="detalle-item"><span>Peso</span><span>${m.peso} kg</span></div>
-                                <div class="detalle-item"><span>Cintura</span><span>${m.cintura} cm</span></div>
-                                <div class="detalle-item"><span>% Grasa</span><span>${m.grasaPorcentaje}%</span></div>
-                                <div class="detalle-item"><span>Masa muscular</span><span>${m.masaMuscular} kg</span></div>
-                                <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;">
-                                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();Peso._editar('${m.fecha}')"><i class="fa-solid fa-pen"></i> Editar</button>
-                                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();Peso._eliminar('${m.fecha}')"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                            <div class="historial-medicion-card" onclick="Peso._toggleDetalle(${i})">
+                                <div style="display:flex;justify-content:space-between;align-items:center;">
+                                    <span class="med-fecha">${UI.formatearFecha(m.fecha)}</span>
+                                    <span style="font-weight:600;">${m.peso} kg</span>
+                                </div>
+                                <div class="med-resumen">
+                                    <span class="med-item">📏 <span class="valor">${m.cintura}</span> cm</span>
+                                    <span class="med-item">💪 <span class="valor">${m.masaMuscular}</span> kg</span>
+                                    <span class="med-item">🔥 <span class="valor">${m.grasaPorcentaje}</span>%</span>
+                                    ${diff !== null && Math.abs(parseFloat(diff)) > 0 ? `<span class="med-item ${parseFloat(diff) < 0 ? 'positive' : 'negative'}">${parseFloat(diff) > 0 ? '+' : ''}${diff} kg</span>` : ''}
+                                </div>
+                                <div class="historial-medicion-detalle" id="pesoDetalle-${i}">
+                                    <div class="detalle-item"><span>Peso</span><span>${m.peso} kg</span></div>
+                                    <div class="detalle-item"><span>Cintura</span><span>${m.cintura} cm</span></div>
+                                    <div class="detalle-item"><span>% Grasa</span><span>${m.grasaPorcentaje}%</span></div>
+                                    <div class="detalle-item"><span>Masa muscular</span><span>${m.masaMuscular} kg</span></div>
+                                    <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;">
+                                        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();Peso._editar('${m.fecha}')"><i class="fa-solid fa-pen"></i> Editar</button>
+                                        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();Peso._eliminar('${m.fecha}')"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
+                        `;
                 }).join('');
             },
 
@@ -1488,39 +1451,39 @@
                 const imc = ev.currentWeight / ((altura / 100) ** 2);
 
                 c.innerHTML = `
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-chart-simple"></i> Estadísticas</div>
-                        <div class="stats-grid">
-                            <div class="stats-item">
-                                <div class="num ${parseFloat(wc) < 0 ? 'green' : 'orange'}">${parseFloat(wc) < 0 ? '' : '+'}${Math.abs(parseFloat(wc))}</div>
-                                <div class="label">Peso</div>
+                        <div class="card">
+                            <div class="card-title"><i class="fa-solid fa-chart-simple"></i> Estadísticas</div>
+                            <div class="stats-grid">
+                                <div class="stats-item">
+                                    <div class="num ${parseFloat(wc) < 0 ? 'green' : 'orange'}">${parseFloat(wc) < 0 ? '' : '+'}${Math.abs(parseFloat(wc))}</div>
+                                    <div class="label">Peso</div>
+                                </div>
+                                <div class="stats-item">
+                                    <div class="num ${parseFloat(wc2) < 0 ? 'green' : 'orange'}">${parseFloat(wc2) < 0 ? '' : '+'}${Math.abs(parseFloat(wc2))}</div>
+                                    <div class="label">Cintura</div>
+                                </div>
+                                <div class="stats-item">
+                                    <div class="num primary">${imc.toFixed(1)}</div>
+                                    <div class="label">IMC</div>
+                                </div>
+                                <div class="stats-item">
+                                    <div class="num primary">${total}</div>
+                                    <div class="label">Entrenos</div>
+                                </div>
+                                <div class="stats-item">
+                                    <div class="num green">${ev.daysWithoutSmoking || 0}</div>
+                                    <div class="label">Sin fumar</div>
+                                </div>
+                                <div class="stats-item">
+                                    <div class="num info">${STATE.records.length}</div>
+                                    <div class="label">Récords</div>
+                                </div>
                             </div>
-                            <div class="stats-item">
-                                <div class="num ${parseFloat(wc2) < 0 ? 'green' : 'orange'}">${parseFloat(wc2) < 0 ? '' : '+'}${Math.abs(parseFloat(wc2))}</div>
-                                <div class="label">Cintura</div>
-                            </div>
-                            <div class="stats-item">
-                                <div class="num primary">${imc.toFixed(1)}</div>
-                                <div class="label">IMC</div>
-                            </div>
-                            <div class="stats-item">
-                                <div class="num primary">${total}</div>
-                                <div class="label">Entrenos</div>
-                            </div>
-                            <div class="stats-item">
-                                <div class="num green">${ev.daysWithoutSmoking || 0}</div>
-                                <div class="label">Sin fumar</div>
-                            </div>
-                            <div class="stats-item">
-                                <div class="num info">${STATE.records.length}</div>
-                                <div class="label">Récords</div>
+                            <div style="margin-top:12px;padding:8px 12px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);text-align:center;font-size:13px;">
+                                🎯 Objetivo: <strong>${CONFIG.PESO_OBJETIVO} kg</strong> · ${STATE.mediciones.length > 0 ? Math.min(100, Math.round(((STATE.mediciones[0].peso - STATE.mediciones[STATE.mediciones.length-1].peso) / (STATE.mediciones[0].peso - CONFIG.PESO_OBJETIVO)) * 100)) : 0}% completado
                             </div>
                         </div>
-                        <div style="margin-top:12px;padding:8px 12px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);text-align:center;font-size:13px;">
-                            🎯 Objetivo: <strong>${CONFIG.PESO_OBJETIVO} kg</strong> · ${STATE.mediciones.length > 0 ? Math.min(100, Math.round(((STATE.mediciones[0].peso - STATE.mediciones[STATE.mediciones.length-1].peso) / (STATE.mediciones[0].peso - CONFIG.PESO_OBJETIVO)) * 100)) : 0}% completado
-                        </div>
-                    </div>
-                `;
+                    `;
             }
         };
 
@@ -1537,39 +1500,41 @@
                 const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
 
                 const freqMed = STATE.recordatorios.freqMediciones || 2;
-                const pm = getProximoDomingo(STATE.recordatorios.ultimaMedicion || CONFIG.FECHA_REFERENCIA_MEDICIONES, freqMed);
+                const pm = getProximoDomingo(STATE.recordatorios.ultimaMedicion || CONFIG.FECHA_REFERENCIA_MEDICIONES,
+                    freqMed);
                 const diasMed = getDiasHasta(pm);
 
                 const freqFotos = STATE.recordatorios.freqFotos || 4;
-                const pf = getProximoDomingo(STATE.recordatorios.ultimasFotos || CONFIG.FECHA_REFERENCIA_MEDICIONES, freqFotos);
+                const pf = getProximoDomingo(STATE.recordatorios.ultimasFotos || CONFIG.FECHA_REFERENCIA_MEDICIONES,
+                    freqFotos);
                 const diasFotos = getDiasHasta(pf);
 
                 c.innerHTML = `
-                    <div class="card">
-                        <div class="card-title">📅 Agenda</div>
-                        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString('es-ES', {day:'numeric', month:'long'})}</div>
+                        <div class="card">
+                            <div class="card-title">📅 Agenda</div>
+                            <div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString('es-ES', {day:'numeric', month:'long'})}</div>
 
-                        <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Hoy</div>
-                        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;">
-                            <div class="pending-item">
-                                <span class="pi-icon">${dia !== 'domingo' && !entrenadoHoy ? '⏳' : '✅'}</span>
-                                <span>${dia !== 'domingo' ? (entrenadoHoy ? 'Entreno completado' : 'Entreno pendiente') : 'Día de descanso'}</span>
+                            <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Hoy</div>
+                            <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;">
+                                <div class="pending-item">
+                                    <span class="pi-icon">${dia !== 'domingo' && !entrenadoHoy ? '⏳' : '✅'}</span>
+                                    <span>${dia !== 'domingo' ? (entrenadoHoy ? 'Entreno completado' : 'Entreno pendiente') : 'Día de descanso'}</span>
+                                </div>
+                            </div>
+
+                            <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Próximos</div>
+                            <div style="display:flex;flex-direction:column;gap:6px;">
+                                <div class="pending-item" style="${diasMed <= 1 ? '' : 'opacity:0.5;'}">
+                                    <span class="pi-icon">📏</span>
+                                    <span>Medición ${diasMed <= 1 ? 'mañana' : `en ${diasMed} días`}</span>
+                                </div>
+                                <div class="pending-item" style="${diasFotos <= 1 ? '' : 'opacity:0.5;'}">
+                                    <span class="pi-icon">📸</span>
+                                    <span>Fotos ${diasFotos <= 1 ? 'mañana' : `en ${diasFotos} días`}</span>
+                                </div>
                             </div>
                         </div>
-
-                        <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Próximos</div>
-                        <div style="display:flex;flex-direction:column;gap:6px;">
-                            <div class="pending-item" style="${diasMed <= 1 ? '' : 'opacity:0.5;'}">
-                                <span class="pi-icon">📏</span>
-                                <span>Medición ${diasMed <= 1 ? 'mañana' : `en ${diasMed} días`}</span>
-                            </div>
-                            <div class="pending-item" style="${diasFotos <= 1 ? '' : 'opacity:0.5;'}">
-                                <span class="pi-icon">📸</span>
-                                <span>Fotos ${diasFotos <= 1 ? 'mañana' : `en ${diasFotos} días`}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                    `;
             }
         };
 
@@ -1588,14 +1553,17 @@
                         if (!e.target.result.objectStoreNames.contains(this.STORE_NAME))
                             e.target.result.createObjectStore(this.STORE_NAME, { keyPath: 'fecha' });
                     };
-                    req.onsuccess = e => { this.db = e.target.result; r(); };
+                    req.onsuccess = e => { this.db = e.target.result;
+                        r(); };
                     req.onerror = () => r();
                 });
             },
 
             _leerArchivo(file) {
                 if (!file) return Promise.resolve(null);
-                return new Promise(r => { const reader = new FileReader(); reader.onload = e => r(e.target.result); reader.readAsDataURL(file); });
+                return new Promise(r => { const reader = new FileReader();
+                    reader.onload = e => r(e.target.result);
+                    reader.readAsDataURL(file); });
             },
 
             async render() {
@@ -1605,44 +1573,47 @@
                 const fechas = await this._obtenerFechas();
 
                 c.innerHTML = `
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-camera"></i> Subir fotos</div>
-                        <div style="display:flex;gap:8px;margin-bottom:10px">
-                            <input type="date" id="fechaFotos" class="input">
+                        <div class="card">
+                            <div class="card-title"><i class="fa-solid fa-camera"></i> Subir fotos</div>
+                            <div style="display:flex;gap:8px;margin-bottom:10px">
+                                <input type="date" id="fechaFotos" class="input">
+                            </div>
+                            <div class="foto-grid-upload">
+                                <div class="equip-card"><div class="label">Frente</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Frente')"><img id="previewFrente" class="foto-preview hidden"></div>
+                                <div class="equip-card"><div class="label">Espalda</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Espalda')"><img id="previewEspalda" class="foto-preview hidden"></div>
+                                <div class="equip-card"><div class="label">Izquierda</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Izquierda')"><img id="previewIzquierda" class="foto-preview hidden"></div>
+                                <div class="equip-card"><div class="label">Derecha</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Derecha')"><img id="previewDerecha" class="foto-preview hidden"></div>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="Fotos._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                         </div>
-                        <div class="foto-grid-upload">
-                            <div class="equip-card"><div class="label">Frente</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Frente')"><img id="previewFrente" class="foto-preview hidden"></div>
-                            <div class="equip-card"><div class="label">Espalda</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Espalda')"><img id="previewEspalda" class="foto-preview hidden"></div>
-                            <div class="equip-card"><div class="label">Izquierda</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Izquierda')"><img id="previewIzquierda" class="foto-preview hidden"></div>
-                            <div class="equip-card"><div class="label">Derecha</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Derecha')"><img id="previewDerecha" class="foto-preview hidden"></div>
-                        </div>
-                        <button class="btn btn-primary btn-block" onclick="Fotos._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-                    </div>
 
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-code-compare"></i> Comparar</div>
-                        <div style="display:flex;gap:8px;margin-bottom:10px">
-                            <select id="compararDia1" class="input" style="flex:1;">
-                                <option value="">Día 1</option>
-                                ${fechas.map(f => `<option value="${f}">${UI.formatearFecha(f)}</option>`).join('')}
-                            </select>
-                            <select id="compararDia2" class="input" style="flex:1;">
-                                <option value="">Día 2</option>
-                                ${fechas.map(f => `<option value="${f}">${UI.formatearFecha(f)}</option>`).join('')}
-                            </select>
+                        <div class="card">
+                            <div class="card-title"><i class="fa-solid fa-code-compare"></i> Comparar</div>
+                            <div style="display:flex;gap:8px;margin-bottom:10px">
+                                <select id="compararDia1" class="input" style="flex:1;">
+                                    <option value="">Día 1</option>
+                                    ${fechas.map(f => `<option value="${f}">${UI.formatearFecha(f)}</option>`).join('')}
+                                </select>
+                                <select id="compararDia2" class="input" style="flex:1;">
+                                    <option value="">Día 2</option>
+                                    ${fechas.map(f => `<option value="${f}">${UI.formatearFecha(f)}</option>`).join('')}
+                                </select>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="Fotos._comparar()"><i class="fa-solid fa-eye"></i> Comparar</button>
+                            <div id="comparadorResultado" style="margin-top:10px"></div>
                         </div>
-                        <button class="btn btn-primary btn-block" onclick="Fotos._comparar()"><i class="fa-solid fa-eye"></i> Comparar</button>
-                        <div id="comparadorResultado" style="margin-top:10px"></div>
-                    </div>
-                `;
+                    `;
                 document.getElementById('fechaFotos').value = UI.getHoy();
             },
 
             _obtenerFechas() {
                 return new Promise(r => {
                     if (!this.db) { this._abrirDB().then(() => this._obtenerFechas().then(r)); return; }
-                    const req = this.db.transaction(this.STORE_NAME, 'readonly').objectStore(this.STORE_NAME).getAll();
-                    req.onsuccess = e => r((e.target.result || []).sort((a,b) => b.timestamp - a.timestamp).map(i => i.fecha));
+                    const req = this.db.transaction(this.STORE_NAME, 'readonly').objectStore(this.STORE_NAME)
+                        .getAll();
+                    req.onsuccess = e => r((e.target.result || []).sort((a, b) => b.timestamp - a.timestamp).map(i =>
+                        i
+                        .fecha));
                     req.onerror = () => r([]);
                 });
             },
@@ -1667,7 +1638,12 @@
 
                 await this._abrirDB();
                 await this.db.transaction(this.STORE_NAME, 'readwrite').objectStore(this.STORE_NAME).put({
-                    fecha: f, timestamp: Date.now(), frente: fr, espalda: es, izquierda: iz, derecha: de
+                    fecha: f,
+                    timestamp: Date.now(),
+                    frente: fr,
+                    espalda: es,
+                    izquierda: iz,
+                    derecha: de
                 });
                 STATE.recordatorios.ultimasFotos = f;
                 Storage._save();
@@ -1704,22 +1680,24 @@
                 const gen = (t, c) => {
                     if (!d1?.[c] && !d2?.[c]) return '';
                     return `
-                        <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:10px;margin-bottom:10px;border:1px solid var(--border);">
-                            <h4 style="color:var(--primary);margin-bottom:6px;text-align:center;">${t}</h4>
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                                <img src="${d1?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
-                                <img src="${d2?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
+                            <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:10px;margin-bottom:10px;border:1px solid var(--border);">
+                                <h4 style="color:var(--primary);margin-bottom:6px;text-align:center;">${t}</h4>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                                    <img src="${d1?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
+                                    <img src="${d2?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
+                                </div>
+                                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);margin-top:4px;">
+                                    <span>${UI.formatearFecha(f1)}</span>
+                                    <span>${UI.formatearFecha(f2)}</span>
+                                </div>
                             </div>
-                            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);margin-top:4px;">
-                                <span>${UI.formatearFecha(f1)}</span>
-                                <span>${UI.formatearFecha(f2)}</span>
-                            </div>
-                        </div>
-                    `;
+                        `;
                 };
 
-                let html = gen('FRENTE', 'frente') + gen('ESPALDA', 'espalda') + gen('IZQUIERDA', 'izquierda') + gen('DERECHA', 'derecha');
-                if (!html) html = '<div style="text-align:center;padding:20px;color:var(--text-secondary);">No hay fotos para comparar</div>';
+                let html = gen('FRENTE', 'frente') + gen('ESPALDA', 'espalda') + gen('IZQUIERDA', 'izquierda') + gen(
+                    'DERECHA', 'derecha');
+                if (!html) html =
+                    '<div style="text-align:center;padding:20px;color:var(--text-secondary);">No hay fotos para comparar</div>';
                 document.getElementById('comparadorResultado').innerHTML = html;
             }
         };
@@ -1734,11 +1712,13 @@
                 const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
 
                 const freqMed = STATE.recordatorios.freqMediciones || 2;
-                const pm = getProximoDomingo(STATE.recordatorios.ultimaMedicion || CONFIG.FECHA_REFERENCIA_MEDICIONES, freqMed);
+                const pm = getProximoDomingo(STATE.recordatorios.ultimaMedicion || CONFIG.FECHA_REFERENCIA_MEDICIONES,
+                    freqMed);
                 if (getDiasHasta(pm) <= 1) notifs.push({ icono: '📏', texto: 'Mañana toca medición' });
 
                 const freqFotos = STATE.recordatorios.freqFotos || 4;
-                const pf = getProximoDomingo(STATE.recordatorios.ultimasFotos || CONFIG.FECHA_REFERENCIA_MEDICIONES, freqFotos);
+                const pf = getProximoDomingo(STATE.recordatorios.ultimasFotos || CONFIG.FECHA_REFERENCIA_MEDICIONES,
+                    freqFotos);
                 if (getDiasHasta(pf) <= 1) notifs.push({ icono: '📸', texto: 'Mañana toca fotos' });
 
                 if (dia !== 'domingo' && !entrenadoHoy) {
@@ -1758,8 +1738,8 @@
                     ).join('');
                 }
                 const badge = document.getElementById('bellBadge');
-                if (notifs.length > 0) { badge.classList.remove('hidden'); badge.textContent = notifs.length; }
-                else { badge.classList.add('hidden'); }
+                if (notifs.length > 0) { badge.classList.remove('hidden');
+                    badge.textContent = notifs.length; } else { badge.classList.add('hidden'); }
             }
         };
 
@@ -1772,35 +1752,35 @@
                 if (!c) return;
 
                 c.innerHTML = `
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-user"></i> Perfil</div>
-                        <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="input input-sm" id="ajusteNombre" value="${STATE.nombre}" style="width:120px;"></div>
-                        <div class="ajustes-item"><span class="aj-label">Altura (cm)</span><input class="input input-sm" type="number" id="ajusteAltura" value="${STATE.altura}" style="width:80px;"></div>
-                        <div class="ajustes-item"><span class="aj-label">Peso objetivo (kg)</span><input class="input input-sm" type="number" id="ajusteObjetivo" value="${CONFIG.PESO_OBJETIVO}" style="width:80px;"></div>
-                        <button class="btn btn-primary btn-block" onclick="Ajustes._guardar()" style="margin-top:12px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-                    </div>
+                        <div class="card">
+                            <div class="card-title"><i class="fa-solid fa-user"></i> Perfil</div>
+                            <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="input input-sm" id="ajusteNombre" value="${STATE.nombre}" style="width:120px;"></div>
+                            <div class="ajustes-item"><span class="aj-label">Altura (cm)</span><input class="input input-sm" type="number" id="ajusteAltura" value="${STATE.altura}" style="width:80px;"></div>
+                            <div class="ajustes-item"><span class="aj-label">Peso objetivo (kg)</span><input class="input input-sm" type="number" id="ajusteObjetivo" value="${CONFIG.PESO_OBJETIVO}" style="width:80px;"></div>
+                            <button class="btn btn-primary btn-block" onclick="Ajustes._guardar()" style="margin-top:12px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                        </div>
 
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-bell"></i> Recordatorios</div>
-                        <div class="ajustes-item"><span class="aj-label">📏 Mediciones (semanas)</span><input class="input input-sm" type="number" id="ajusteFreqMediciones" value="${STATE.recordatorios.freqMediciones || 2}" min="1" max="8" style="width:60px;"></div>
-                        <div class="ajustes-item"><span class="aj-label">📸 Fotos (semanas)</span><input class="input input-sm" type="number" id="ajusteFreqFotos" value="${STATE.recordatorios.freqFotos || 4}" min="1" max="12" style="width:60px;"></div>
-                        <button class="btn btn-primary btn-block" onclick="Ajustes._guardarRecordatorios()" style="margin-top:12px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-                    </div>
+                        <div class="card">
+                            <div class="card-title"><i class="fa-solid fa-bell"></i> Recordatorios</div>
+                            <div class="ajustes-item"><span class="aj-label">📏 Mediciones (semanas)</span><input class="input input-sm" type="number" id="ajusteFreqMediciones" value="${STATE.recordatorios.freqMediciones || 2}" min="1" max="8" style="width:60px;"></div>
+                            <div class="ajustes-item"><span class="aj-label">📸 Fotos (semanas)</span><input class="input input-sm" type="number" id="ajusteFreqFotos" value="${STATE.recordatorios.freqFotos || 4}" min="1" max="12" style="width:60px;"></div>
+                            <button class="btn btn-primary btn-block" onclick="Ajustes._guardarRecordatorios()" style="margin-top:12px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                        </div>
 
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-database"></i> Datos</div>
-                        <button class="btn btn-ghost btn-block" onclick="Storage.exportar()"><i class="fa-solid fa-download"></i> Exportar</button>
-                        <button class="btn btn-ghost btn-block" onclick="document.getElementById('importFile').click()" style="margin-top:6px;"><i class="fa-solid fa-upload"></i> Importar</button>
-                        <input type="file" id="importFile" accept=".json" class="hidden">
-                        <button class="btn btn-danger btn-block" onclick="APP.confirmarReset()" style="margin-top:6px;"><i class="fa-solid fa-trash"></i> Borrar todos los datos</button>
-                    </div>
+                        <div class="card">
+                            <div class="card-title"><i class="fa-solid fa-database"></i> Datos</div>
+                            <button class="btn btn-ghost btn-block" onclick="Storage.exportar()"><i class="fa-solid fa-download"></i> Exportar</button>
+                            <button class="btn btn-ghost btn-block" onclick="document.getElementById('importFile').click()" style="margin-top:6px;"><i class="fa-solid fa-upload"></i> Importar</button>
+                            <input type="file" id="importFile" accept=".json" class="hidden">
+                            <button class="btn btn-danger btn-block" onclick="APP.confirmarReset()" style="margin-top:6px;"><i class="fa-solid fa-trash"></i> Borrar todos los datos</button>
+                        </div>
 
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-circle-info"></i> Acerca de</div>
-                        <div class="ajustes-item"><span class="aj-label">Versión</span><span style="color:var(--text-secondary);" id="versionDisplay">${CONFIG.VERSION}</span></div>
-                        <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;">NicoGym · Tu compañero de entrenamiento</div>
-                    </div>
-                `;
+                        <div class="card">
+                            <div class="card-title"><i class="fa-solid fa-circle-info"></i> Acerca de</div>
+                            <div class="ajustes-item"><span class="aj-label">Versión</span><span style="color:var(--text-secondary);" id="versionDisplay">${CONFIG.VERSION}</span></div>
+                            <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;">NicoGym · Tu compañero de entrenamiento</div>
+                        </div>
+                    `;
             },
 
             _guardar() {
@@ -1823,6 +1803,192 @@
                 STATE.recordatorios.freqFotos = ff;
                 Storage._save();
                 UI.toast('✅ Recordatorios guardados', 'success');
+                APP.renderizarTodo();
+            }
+        };
+
+        // ==========================================
+        // CALCULADORA DE DISCOS
+        // ==========================================
+        const Calculadora = {
+            discosDisponibles: [
+                { peso: 1.25, cantidad: 4 },
+                { peso: 1.5, cantidad: 4 },
+                { peso: 2, cantidad: 4 }
+            ],
+            estado: {
+                tipo: 'mancuerna',
+                discosSeleccionados: {},
+                ejercicioNombre: '',
+                ejercicioId: '',
+                dia: '',
+                idx: ''
+            },
+            pesosBarra: {
+                mancuerna: .5,
+                barra: 1
+            },
+
+            abrir(ejercicioNombre, dia, idx) {
+                this.estado.ejercicioNombre = ejercicioNombre;
+                this.estado.dia = dia;
+                this.estado.idx = idx;
+                this.estado.ejercicioId = `${dia}-${idx}`;
+
+                this.estado.discosSeleccionados = {};
+                this.discosDisponibles.forEach(d => {
+                    this.estado.discosSeleccionados[d.peso] = 0;
+                });
+
+                this.setTipo('mancuerna');
+
+                document.getElementById('calcEjercicioNombre').textContent = ejercicioNombre;
+
+                const ultimo = Rutinas._getUltimoEntreno(ejercicioNombre);
+                document.getElementById('calcReps').value = ultimo?.reps || '';
+
+                document.getElementById('modalCalculadora').classList.remove('hidden');
+
+                this._renderDiscos();
+                this._actualizarPesoTotal();
+            },
+
+            cerrar() {
+                document.getElementById('modalCalculadora').classList.add('hidden');
+            },
+
+            setTipo(tipo) {
+                this.estado.tipo = tipo;
+                document.getElementById('calcTipoMancuerna').className = `btn btn-sm ${tipo === 'mancuerna' ? 'btn-primary' : 'btn-ghost'}`;
+                document.getElementById('calcTipoBarra').className = `btn btn-sm ${tipo === 'barra' ? 'btn-primary' : 'btn-ghost'}`;
+                const pesoBarra = this.pesosBarra[tipo] || 0;
+                document.getElementById('calcPesoBarra').textContent = pesoBarra.toFixed(1);
+                this._actualizarPesoTotal();
+            },
+
+            toggleDisco(peso) {
+                const maxDiscos = this.discosDisponibles.find(d => d.peso === peso)?.cantidad || 0;
+                const actual = this.estado.discosSeleccionados[peso] || 0;
+                if (actual < maxDiscos) {
+                    this.estado.discosSeleccionados[peso] = actual + 1;
+                } else {
+                    this.estado.discosSeleccionados[peso] = 0;
+                }
+                this._renderDiscos();
+                this._actualizarPesoTotal();
+            },
+
+            _renderDiscos() {
+                const container = document.getElementById('calcDiscosContainer');
+                container.innerHTML = '';
+                this.discosDisponibles.forEach(d => {
+                    const seleccionados = this.estado.discosSeleccionados[d.peso] || 0;
+                    const total = d.cantidad;
+                    const btn = document.createElement('button');
+                    btn.className = `btn btn-sm ${seleccionados > 0 ? 'btn-primary' : 'btn-ghost'}`;
+                    btn.textContent = `${d.peso} kg (${seleccionados}/${total})`;
+                    btn.onclick = () => this.toggleDisco(d.peso);
+                    container.appendChild(btn);
+                });
+            },
+
+            _actualizarPesoTotal() {
+                let pesoDiscos = 0;
+                for (const [peso, cantidad] of Object.entries(this.estado.discosSeleccionados)) {
+                    pesoDiscos += parseFloat(peso) * cantidad;
+                }
+
+                // El peso total es SOLO los discos (la barra no se suma)
+                const pesoTotal = pesoDiscos;
+
+                document.getElementById('calcPesoDiscos').textContent = pesoDiscos.toFixed(1);
+                document.getElementById('calcPesoTotal').textContent = pesoTotal.toFixed(1);
+            },
+
+            guardar() {
+                const pesoTotal = parseFloat(document.getElementById('calcPesoTotal').textContent);
+                const reps = document.getElementById('calcReps').value.trim() || '-';
+
+                if (pesoTotal === 0) {
+                    UI.toast('Selecciona algún disco', 'error');
+                    return;
+                }
+
+                const dia = this.estado.dia;
+                const idx = this.estado.idx;
+                const nombre = this.estado.ejercicioNombre;
+                const id = `${dia}-${idx}`;
+
+                // Guardar inputs ocultos (para compatibilidad con finalizar)
+                const pesoInput = document.getElementById(`peso-${id}`);
+                const repsInput = document.getElementById(`reps-${id}`);
+                if (pesoInput) pesoInput.value = pesoTotal;
+                if (repsInput) repsInput.value = reps;
+
+                // Marcar check
+                if (!STATE.checks[id]) {
+                    STATE.checks[id] = true;
+                    Storage._save();
+                    Rutinas._actualizarProgreso();
+                    const c = document.getElementById(`lista-${dia}`);
+                    if (c) {
+                        const cards = c.querySelectorAll('.ex-card');
+                        if (cards[idx]) cards[idx].classList.add('checked');
+                        const checkbox = cards[idx]?.querySelector('.check-box');
+                        if (checkbox) checkbox.checked = true;
+                    }
+                }
+
+                // Guardar historial
+                const hoy = UI.getHoy();
+                let entrenamientoExistente = STATE.historialEntrenos.find(e => e.fecha === hoy && e.dia === dia);
+
+                if (entrenamientoExistente) {
+                    const ejExistente = entrenamientoExistente.ejercicios.find(e => e.nombre === nombre);
+                    if (ejExistente) {
+                        ejExistente.peso = pesoTotal;
+                        ejExistente.reps = reps;
+                    } else {
+                        entrenamientoExistente.ejercicios.push({ nombre, peso: pesoTotal, reps });
+                    }
+                } else {
+                    STATE.historialEntrenos.push({
+                        fecha: hoy,
+                        dia: dia,
+                        tipo: CONFIG.TIPOS_RUTINA[dia] || dia.toUpperCase(),
+                        ejercicios: [{ nombre, peso: pesoTotal, reps }]
+                    });
+                }
+
+                Storage._save();
+
+                // Récord
+                const repsNum = reps.split(',').map(Number).reduce((a, b) => a + b, 0);
+                if (pesoTotal > 0 && repsNum > 0) {
+                    const date = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit',
+                        year: 'numeric' });
+                    if (Records.actualizar(nombre, pesoTotal, repsNum, date)) {
+                        UI.toast('🏆 Nuevo récord!', 'success');
+                    }
+                }
+
+                UI.toast(`✅ ${nombre} guardado: ${pesoTotal} kg × ${reps}`, 'success');
+                this.cerrar();
+
+                // Comprobar día completado
+                const ejerciciosDia = CONFIG.EJERCICIOS[dia] || [];
+                const todosCompletados = ejerciciosDia.every((_, i) => STATE.checks[`${dia}-${i}`]);
+                if (todosCompletados && ejerciciosDia.length > 0) {
+                    const hoyStr = UI.getHoy();
+                    if (!STATE.diasEntrenados.includes(hoyStr)) {
+                        STATE.diasEntrenados.push(hoyStr);
+                        Storage._save();
+                        UI.toast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`, 'success');
+                        confetti({ particleCount: 120, spread: 70 });
+                        APP.renderizarTodo();
+                    }
+                }
+
                 APP.renderizarTodo();
             }
         };
