@@ -8,9 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        /* ==========================================
-           VARIABLES
-           ========================================== */
         :root {
             --bg: #0b1120;
             --bg-card: #162033;
@@ -37,14 +34,11 @@
             --space-lg: 32px;
             --space-xl: 48px;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-
         ::-webkit-scrollbar { width: 3px; height: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: var(--radius-full); }
-
         .hidden { display: none !important; }
         .flex { display: flex; }
         .flex-center { display: flex; align-items: center; justify-content: center; }
@@ -185,92 +179,78 @@
         .pending-item:last-child { border-bottom: none; }
         .pending-item .pi-icon { font-size: 18px; }
 
-        .day-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 14px; scrollbar-width: none; }
-        .day-tabs::-webkit-scrollbar { display: none; }
-        .day-tabs .dtab { flex-shrink: 0; padding: 6px 18px; border-radius: var(--radius-full); border: 1px solid var(--border); background: transparent; color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); }
-        .day-tabs .dtab:hover { border-color: var(--text-secondary); }
-        .day-tabs .dtab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        /* RUTINAS - SEMANA */
+        .tab-dias { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 14px; scrollbar-width: none; }
+        .tab-dias::-webkit-scrollbar { display: none; }
+        .tab-dias .tab-dia { flex-shrink: 0; padding: 6px 16px; border-radius: var(--radius-full); border: 1px solid var(--border); background: transparent; color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+        .tab-dias .tab-dia:hover { border-color: var(--text-secondary); }
+        .tab-dias .tab-dia.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .tab-dias .tab-dia.completado { border-color: var(--success); color: var(--success); }
+        .tab-dias .tab-dia.descanso { opacity: 0.5; }
 
-        .ex-grid { display: flex; flex-direction: column; gap: 12px; }
-        .ex-card { background: var(--bg-card); border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden; transition: var(--transition); }
-        .ex-card.checked { opacity: 0.5; }
-        .ex-card.checked .ex-name { text-decoration: line-through; }
-        .ex-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(59,130,246,0.04); }
-        .ex-name { font-weight: 600; font-size: 15px; }
-        .ex-grupo { font-size: 10px; color: var(--text-secondary); margin-left: 8px; background: rgba(255,255,255,0.05); padding: 2px 10px; border-radius: var(--radius-full); }
-        .ex-body { padding: 14px 16px; }
-        .check-box { width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; transition: var(--transition); }
-        .check-box:hover { transform: scale(1.05); }
+        /* EJERCICIO CON IMAGEN GRANDE */
+        .ejercicio-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .ejercicio-card:hover { border-color: rgba(255,255,255,0.10); }
+        .ejercicio-card .ej-top { display: flex; gap: 16px; align-items: flex-start; }
+        .ejercicio-card .ej-img-wrap { flex-shrink: 0; width: 120px; height: 120px; border-radius: var(--radius-sm); overflow: hidden; background: rgba(0,0,0,0.2); border: 1px solid var(--border); cursor: pointer; transition: var(--transition); }
+        .ejercicio-card .ej-img-wrap:hover { transform: scale(1.02); }
+        .ejercicio-card .ej-img { width: 100%; height: 100%; object-fit: cover; }
+        .ejercicio-card .ej-img-fallback { width: 120px; height: 120px; border-radius: var(--radius-sm); background: var(--primary-dim); display: flex; align-items: center; justify-content: center; font-size: 48px; color: var(--primary); border: 1px solid var(--border); flex-shrink: 0; }
+        .ejercicio-card .ej-info { flex: 1; min-width: 0; }
+        .ejercicio-card .ej-nombre { font-size: 16px; font-weight: 600; }
+        .ejercicio-card .ej-datos { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; font-size: 12px; color: var(--text-secondary); }
+        .ejercicio-card .ej-datos span { background: rgba(0,0,0,0.15); padding: 2px 10px; border-radius: var(--radius-full); }
+        .ejercicio-card .ej-ultimo { margin-top: 6px; font-size: 12px; color: var(--text-secondary); }
+        .ejercicio-card .ej-ultimo strong { color: var(--text); }
+        .ejercicio-card .ej-botones { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+        .ejercicio-card .ej-botones .btn { flex: 1; min-width: 80px; }
 
-        .ex-tog { width: 100%; padding: 6px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; color: var(--text-secondary); font-size: 12px; font-weight: 500; cursor: pointer; transition: var(--transition); }
-        .ex-tog:hover { border-color: var(--text-secondary); }
-        .ex-det { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
-        .ex-det.open { display: block; }
-        .ex-img { width: 100%; max-height: 220px; object-fit: cover; border-radius: var(--radius-sm); display: block; margin: 0 auto 10px; cursor: pointer; background: rgba(0,0,0,0.3); transition: var(--transition); }
-        .ex-img:hover { transform: scale(1.01); }
-        .ex-img-fallback { width: 100%; height: 160px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); margin: 0 auto 10px; background: var(--primary-dim); color: var(--primary); font-size: 48px; border: 1px solid var(--border); }
+        .ej-tecnica {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .ej-tecnica.open { display: block; }
+        .ej-tecnica .tec-paso { display: flex; gap: 8px; padding: 2px 0; align-items: flex-start; }
+        .ej-tecnica .tec-numero { font-weight: 700; color: var(--primary); min-width: 20px; }
+        .ej-tecnica .tec-texto { color: var(--text-secondary); }
+        .ej-tecnica .tec-titulo { color: var(--text); font-weight: 600; margin-top: 6px; margin-bottom: 2px; }
+        .ej-tecnica .tec-titulo:first-child { margin-top: 0; }
 
-        .ex-datos { display: none; }
-        .ex-dato label { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 2px; }
-        .ex-dato input { width: 100%; padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: var(--text); font-size: 16px; font-weight: 600; font-family: var(--font); outline: none; text-align: center; transition: var(--transition); }
-        .ex-dato input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-dim); }
+        .btn-completar { width: 100%; padding: 16px; font-size: 16px; font-weight: 700; border-radius: var(--radius-sm); margin-top: var(--space-sm); }
 
-        .ex-ultimo { font-size: 12px; color: var(--text-secondary); margin-top: 8px; text-align: center; }
-        .ultimo-entreno { display: flex; justify-content: space-between; padding: 6px 10px; border-radius: var(--radius-sm); margin-top: 8px; font-size: 12px; background: rgba(255,255,255,0.03); }
-        .mejor-marca { display: flex; justify-content: space-between; padding: 6px 10px; border-radius: var(--radius-sm); margin-top: 4px; font-size: 12px; background: var(--primary-dim); border: 1px solid rgba(59,130,246,0.15); }
-        .mejor-marca .mm-valor { font-weight: 700; color: var(--primary); }
+        .historial-ejercicio { background: var(--bg-card); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+        .historial-ejercicio .he-nombre { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+        .historial-ejercicio .he-sesion { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; }
+        .historial-ejercicio .he-sesion:last-child { border-bottom: none; }
+        .historial-ejercicio .he-sesion .he-peso { font-weight: 600; color: var(--primary); }
+        .historial-ejercicio .he-sesion .he-reps { color: var(--text-secondary); }
+        .historial-ejercicio .he-sesion .he-fecha { font-size: 11px; color: var(--text-secondary); }
+        .historial-ejercicio .he-progreso { color: var(--success); font-size: 12px; font-weight: 600; margin-top: 4px; }
 
-        .btn-historial-ej { background: transparent; border: 1px solid var(--border); border-radius: var(--radius-full); padding: 2px 14px; font-size: 10px; color: var(--text-secondary); cursor: pointer; margin-top: 6px; transition: var(--transition); }
-        .btn-historial-ej:hover { border-color: var(--text-secondary); color: var(--text); }
+        .historial-entreno { background: var(--bg-card); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 6px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .historial-entreno .he-fecha { font-size: 13px; font-weight: 600; }
+        .historial-entreno .he-estado { color: var(--success); font-size: 14px; }
+        .historial-entreno .he-duracion { font-size: 12px; color: var(--text-secondary); }
 
-        .btn-finalizar { display: none; width: 100%; margin-top: var(--space-sm); padding: 16px; font-size: 16px; font-weight: 700; border-radius: var(--radius-sm); }
-        .btn-finalizar.visible { display: block; }
-
-        .progreso-rutina-bar { background: var(--bg-card); border-radius: var(--radius-sm); padding: 16px 18px; margin-bottom: 14px; border: 1px solid var(--border); }
-        .progreso-rutina-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; }
-        .progreso-rutina-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-top: 6px; overflow: hidden; }
-        .progreso-rutina-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.5s ease; }
-        .progreso-rutina-info { font-size: 12px; color: var(--text-secondary); margin-top: 4px; text-align: right; }
-        .progreso-rutina-completado { text-align: center; color: var(--success); font-weight: 600; }
-
-        .peso-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-xs); }
-        .peso-stat { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; }
-        .peso-stat .num { font-size: 28px; font-weight: 700; }
-        .peso-stat .num.green { color: var(--success); }
-        .peso-stat .num.primary { color: var(--primary); }
-        .peso-stat .num.orange { color: var(--warning); }
-        .peso-stat .label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        .historial-medicion-card { background: var(--bg-card); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 8px; border: 1px solid var(--border); cursor: pointer; transition: var(--transition); }
-        .historial-medicion-card:hover { border-color: var(--primary); }
-        .historial-medicion-card .med-fecha { font-weight: 600; font-size: 14px; }
-        .historial-medicion-card .med-resumen { display: flex; gap: 14px; margin-top: 4px; font-size: 13px; flex-wrap: wrap; }
-        .historial-medicion-card .med-resumen .med-item { display: flex; align-items: center; gap: 4px; }
-        .historial-medicion-card .med-resumen .med-item .valor { font-weight: 600; color: var(--primary); }
-        .historial-medicion-card .med-resumen .positive { color: var(--success); }
-        .historial-medicion-card .med-resumen .negative { color: var(--danger); }
-
-        .historial-medicion-detalle { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-        .historial-medicion-detalle.open { display: block; }
-        .historial-medicion-detalle .detalle-item { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.03); }
-        .historial-medicion-detalle .detalle-item:last-child { border-bottom: none; }
-
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-xs); }
-        .stats-item { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; }
-        .stats-item .num { font-size: 24px; font-weight: 700; }
-        .stats-item .num.green { color: var(--success); }
-        .stats-item .num.orange { color: var(--warning); }
-        .stats-item .num.primary { color: var(--primary); }
-        .stats-item .num.info { color: var(--secondary); }
-        .stats-item .label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        .record-card { background: var(--bg-card); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 8px; border: 1px solid var(--border); border-left: 3px solid var(--primary); }
-        .record-card .record-name { font-weight: 600; font-size: 15px; }
-        .record-card .record-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; margin: 6px 0; }
-        .record-card .record-stats .rs-item { text-align: center; }
-        .record-card .record-stats .rs-item .rs-label { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; }
-        .record-card .record-stats .rs-item .rs-value { font-weight: 700; font-size: 16px; color: var(--primary); }
-        .record-card .record-date { font-size: 11px; color: var(--text-secondary); }
+        .stats-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); }
+        .stats-item-2 { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; }
+        .stats-item-2 .num { font-size: 24px; font-weight: 700; }
+        .stats-item-2 .num.green { color: var(--success); }
+        .stats-item-2 .num.primary { color: var(--primary); }
+        .stats-item-2 .num.orange { color: var(--warning); }
+        .stats-item-2 .label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
 
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
@@ -279,7 +259,6 @@
         }
         .modal-overlay.hidden { display: none; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
         .modal-panel {
             background: var(--bg-card); border-radius: var(--radius); padding: 24px;
             max-width: 420px; width: 100%; max-height: 85vh; overflow-y: auto;
@@ -290,23 +269,6 @@
         .modal-panel .modal-close { float: right; background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; padding: 4px; transition: var(--transition); }
         .modal-panel .modal-close:hover { color: var(--text); }
         .modal-panel h3 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
-        .modal-panel .modal-img { width: 100%; border-radius: var(--radius-sm); object-fit: cover; max-height: 200px; margin-bottom: 12px; background: rgba(0,0,0,0.2); }
-        .modal-panel .modal-field { margin-bottom: 10px; }
-        .modal-panel .modal-field .mf-label { font-size: 10px; text-transform: uppercase; color: var(--text-secondary); font-weight: 600; }
-        .modal-panel .modal-field .mf-value { font-weight: 500; }
-        .modal-panel .modal-historial { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 10px; margin: 10px 0; }
-        .modal-panel .modal-record { background: var(--primary-dim); border-radius: var(--radius-sm); padding: 12px; border: 1px solid rgba(59,130,246,0.15); text-align: center; margin: 10px 0; }
-        .modal-panel .modal-record .mr-valor { font-size: 20px; font-weight: 700; color: var(--primary); }
-
-        .ajustes-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
-        .ajustes-item:last-child { border-bottom: none; }
-        .ajustes-item .aj-label { font-size: 13px; }
-
-        .foto-grid-upload { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); margin-bottom: 10px; }
-        .equip-card { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 10px; text-align: center; }
-        .equip-card .label { font-size: 10px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
-        .equip-card input[type="file"] { display: block; margin: 6px auto 0; font-size: 11px; color: var(--text-secondary); max-width: 100%; }
-        .foto-preview { margin-top: 6px; max-width: 100%; max-height: 50px; border-radius: 6px; object-fit: cover; }
 
         .toast-msg {
             position: fixed; bottom: 80px; left: var(--space-sm); right: var(--space-sm);
@@ -324,20 +286,19 @@
         .lightbox.active { opacity: 1; pointer-events: auto; }
         .lightbox img { max-width: 92%; max-height: 92%; object-fit: contain; border-radius: var(--radius-sm); }
 
-        .form-field label { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 2px; }
+        .ajustes-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+        .ajustes-item:last-child { border-bottom: none; }
+        .ajustes-item .aj-label { font-size: 13px; }
 
         @media (max-width: 420px) {
             .top-stats { display: none; }
             .side-menu { width: 260px; left: -260px; }
             .page { padding: 68px 12px 72px; }
             .card { padding: 16px 18px; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .peso-grid { grid-template-columns: 1fr 1fr; }
-            .notif-dropdown { width: 280px; right: -16px; }
-            .dash-grid { gap: 6px; }
-            .dash-stat .num { font-size: 24px; }
+            .stats-grid-2 { grid-template-columns: 1fr 1fr; }
             .modal-panel { padding: 18px; }
-            .ex-img { max-height: 180px; }
+            .ejercicio-card .ej-img-wrap { width: 80px; height: 80px; }
+            .ejercicio-card .ej-img-fallback { width: 80px; height: 80px; font-size: 32px; }
         }
         @media (min-width: 600px) {
             .page { padding: 76px 20px 80px; }
@@ -377,15 +338,12 @@
     <nav class="side-menu" id="sideMenu">
         <button class="menu-item active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i> Inicio</button>
         <button class="menu-item" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i> Rutinas</button>
-        <button class="menu-item" onclick="APP.navegar('peso')"><i class="fa-solid fa-scale-balanced"></i> Peso</button>
-        <button class="menu-item" onclick="APP.navegar('agenda')"><i class="fa-solid fa-calendar-check"></i> Agenda</button>
-        <button class="menu-item" onclick="APP.navegar('records')"><i class="fa-solid fa-trophy"></i> Récords</button>
+        <button class="menu-item" onclick="APP.navegar('historial')"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
         <button class="menu-item" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i> Estadísticas</button>
-        <div class="menu-divider"></div>
-        <button class="menu-item" onclick="APP.navegar('fotos')"><i class="fa-solid fa-camera"></i> Fotos</button>
         <button class="menu-item" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</button>
+        <div class="menu-divider"></div>
         <button class="menu-item" onclick="APP.confirmarReset()" style="color:var(--danger);"><i class="fa-solid fa-trash"></i> Reset</button>
-        <div class="menu-footer">NicoGym 1.0</div>
+        <div class="menu-footer">NicoGym 2.0</div>
     </nav>
 
     <!-- PAGES -->
@@ -394,29 +352,15 @@
     </div>
 
     <div class="page" id="page-rutinas">
-        <div id="progresoRutinaContainer"></div>
-        <div class="day-tabs" id="dayTabs"></div>
-        <div id="dayPanelsContainer"></div>
+        <div id="rutinasContainer"></div>
     </div>
 
-    <div class="page" id="page-peso">
-        <div id="pesoContainer"></div>
-    </div>
-
-    <div class="page" id="page-agenda">
-        <div id="agendaContainer"></div>
-    </div>
-
-    <div class="page" id="page-records">
-        <div id="recordsContainer"></div>
+    <div class="page" id="page-historial">
+        <div id="historialContainer"></div>
     </div>
 
     <div class="page" id="page-estadisticas">
         <div id="estadisticasContainer"></div>
-    </div>
-
-    <div class="page" id="page-fotos">
-        <div id="fotosContainer"></div>
     </div>
 
     <div class="page" id="page-ajustes">
@@ -427,9 +371,9 @@
     <nav class="bottom-nav">
         <button class="nav-btn active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i>Inicio</button>
         <button class="nav-btn" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i>Rutina</button>
-        <button class="nav-btn" onclick="APP.navegar('peso')"><i class="fa-solid fa-scale-balanced"></i>Peso</button>
-        <button class="nav-btn" onclick="APP.navegar('agenda')"><i class="fa-solid fa-calendar-check"></i>Agenda</button>
+        <button class="nav-btn" onclick="APP.navegar('historial')"><i class="fa-solid fa-clock-rotate-left"></i>Historial</button>
         <button class="nav-btn" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i>Stats</button>
+        <button class="nav-btn" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i>Ajustes</button>
     </nav>
 
     <!-- MODAL -->
@@ -440,46 +384,8 @@
         </div>
     </div>
 
-    <!-- LIGHTBOX -->
     <div class="lightbox" id="lightbox" onclick="UI.cerrarLightbox()">
         <img id="lightboxImg" src="" alt="Imagen ampliada">
-    </div>
-
-    <!-- MODAL CALCULADORA DE DISCOS -->
-    <div class="modal-overlay hidden" id="modalCalculadora">
-        <div class="modal-panel" style="max-width:420px;">
-            <button class="modal-close" onclick="Calculadora.cerrar()"><i class="fa-solid fa-xmark"></i></button>
-            <h3 id="calcEjercicioNombre">Ejercicio</h3>
-
-            <div style="margin:12px 0;">
-                <label style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px;">Tipo de barra</label>
-                <div style="display:flex;gap:8px;">
-                    <button class="btn btn-sm" id="calcTipoMancuerna" onclick="Calculadora.setTipo('mancuerna')" style="flex:1;">🏋️ Mancuerna</button>
-                    <button class="btn btn-sm" id="calcTipoBarra" onclick="Calculadora.setTipo('barra')" style="flex:1;">🏋️ Barra larga</button>
-                </div>
-                <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">* El peso de la barra no se suma al total, solo los discos</div>
-            </div>
-
-            <div style="margin:12px 0;">
-                <label style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px;">Discos (kg)</label>
-                <div id="calcDiscosContainer" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-                <div style="display:flex;gap:12px;margin-top:8px;font-size:13px;">
-                    <span>Peso discos: <strong id="calcPesoDiscos">0</strong> kg</span>
-                    <span style="color:var(--text-muted);">Barra: <strong id="calcPesoBarra">0</strong> kg</span>
-                    <span style="color:var(--primary);">Total: <strong id="calcPesoTotal">0</strong> kg</span>
-                </div>
-            </div>
-
-            <div style="margin:12px 0;">
-                <label style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px;">Repeticiones</label>
-                <input type="text" id="calcReps" placeholder="12,12,11" class="input" style="text-align:center;font-size:16px;font-weight:600;">
-            </div>
-
-            <div style="display:flex;gap:8px;margin-top:12px;">
-                <button class="btn btn-success btn-block" onclick="Calculadora.guardar()" style="flex:1;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-                <button class="btn btn-ghost" onclick="Calculadora.cerrar()" style="flex:0.5;">Cancelar</button>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -487,85 +393,90 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '1.0',
+            VERSION: '2.0',
             ALTURA: 165,
             PESO_OBJETIVO: 75,
             STORAGE_KEY: 'nicoGym',
             FECHA_INICIO_NO_FUMAR: '2026-02-22',
-            FECHA_REFERENCIA_MEDICIONES: '2026-07-20',
             DIAS_SEMANA: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            NOMBRES_DIAS: { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo' },
-            TIPOS_RUTINA: {
-                lunes: 'Espalda / Bíceps',
-                martes: 'Pecho / Hombro',
-                miercoles: 'Tríceps / Pierna',
-                jueves: 'Espalda / Bíceps',
-                viernes: 'Pecho / Hombro / Antebrazo',
-                sabado: 'Descanso',
-                domingo: 'Descanso'
+            SEMANA: {
+                lunes: { nombre: 'Lunes', icono: '🔵', rutina: 'Tren Superior A', tipo: 'entreno' },
+                martes: { nombre: 'Martes', icono: '🟢', rutina: 'Tren Inferior A', tipo: 'entreno' },
+                miercoles: { nombre: 'Miércoles', icono: '🚶', rutina: 'Descanso activo', tipo: 'descanso' },
+                jueves: { nombre: 'Jueves', icono: '🔵', rutina: 'Tren Superior B', tipo: 'entreno' },
+                viernes: { nombre: 'Viernes', icono: '🟢', rutina: 'Tren Inferior B', tipo: 'entreno' },
+                sabado: { nombre: 'Sábado', icono: '🚶', rutina: 'Paseo opcional', tipo: 'descanso' },
+                domingo: { nombre: 'Domingo', icono: '😴', rutina: 'Descanso', tipo: 'descanso' }
             },
-            EJERCICIOS: {
+            EJERCICIOS_POR_DIA: {
                 lunes: [
-                    { nombre: 'Remo con barra', grupo: 'Espalda' },
-                    { nombre: 'Remo a una mano con mancuerna', grupo: 'Espalda' },
-                    { nombre: 'Curl de bíceps alterno', grupo: 'Bíceps' },
-                    { nombre: 'Curl martillo', grupo: 'Bíceps' },
-                    { nombre: 'Cardio en cinta', grupo: 'Cardio' }
+                    { nombre: 'Press banca con mancuernas', series: 4, reps: '6-10', descanso: '120s',
+                        img: 'https://gymvisual.com/img/p/1/8/6/4/5/18645.gif',
+                        tecnica: '1️⃣ Tumbado en banco plano, mancuernas a los lados del pecho.\n2️⃣ Empuja las mancuernas hacia arriba en línea recta.\n3️⃣ No bloquees los codos al final del movimiento.\n4️⃣ Baja controladamente hasta que los codos estén a 90°.\n5️⃣ Respira: exhala al subir, inhala al bajar.' },
+                    { nombre: 'Remo con mancuerna', series: 4, reps: '6-10', descanso: '90s',
+                        img: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif',
+                        tecnica: '1️⃣ Apoya rodilla y mano en banco, columna recta.\n2️⃣ Tracciona el codo hacia atrás, rozando la cadera.\n3️⃣ Aprieta la espalda en el punto más alto.\n4️⃣ Baja controladamente hasta estirar el brazo.\n5️⃣ Respira: exhala al traccionar, inhala al bajar.' },
+                    { nombre: 'Press inclinado mancuernas', series: 3, reps: '8-12', descanso: '90s',
+                        img: 'https://fitnessprogramer.com/wp-content/uploads/2022/07/Dumbbell-Reverse-Grip-30-Degrees-Incline-Bench-Press.gif',
+                        tecnica: '1️⃣ Banco inclinado 30-45°, agarre invertido.\n2️⃣ Empuja hacia arriba sin bloquear codos.\n3️⃣ Mantén los hombros estables.\n4️⃣ Baja controladamente hasta el pecho.\n5️⃣ Respira: exhala al subir, inhala al bajar.' },
+                    { nombre: 'Elevaciones laterales', series: 3, reps: '10-15', descanso: '60s',
+                        img: 'https://gymvisual.com/img/p/5/1/3/7/5137.gif',
+                        tecnica: '1️⃣ Sentado, mancuernas a los lados.\n2️⃣ Eleva hasta paralelo al suelo.\n3️⃣ Baja controladamente.\n4️⃣ No uses impulso ni balancees el cuerpo.\n5️⃣ Respira: exhala al subir, inhala al bajar.' },
+                    { nombre: 'Curl de bíceps alterno', series: 3, reps: '10-15', descanso: '60s',
+                        img: 'https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif',
+                        tecnica: '1️⃣ Codos pegados al torso, agarre supino.\n2️⃣ Curva un brazo llevando la mancuerna al hombro.\n3️⃣ Baja controladamente.\n4️⃣ Alterna con el otro brazo.\n5️⃣ Respira: exhala al subir, inhala al bajar.' }
                 ],
                 martes: [
-                    { nombre: 'Press de hombros sentado', grupo: 'Hombro' },
-                    { nombre: 'Aperturas inclinadas con mancuernas', grupo: 'Pecho' },
-                    { nombre: 'Pullover con mancuerna', grupo: 'Pecho' },
-                    { nombre: 'Elevaciones laterales sentado', grupo: 'Hombro' },
-                    { nombre: 'Cardio en cinta', grupo: 'Cardio' }
-                ],
-                miercoles: [
-                    { nombre: 'Extensión de tríceps tumbado', grupo: 'Tríceps' },
-                    { nombre: 'Patada de tríceps', grupo: 'Tríceps' },
-                    { nombre: 'Sentadilla Goblet con mancuerna', grupo: 'Pierna' },
-                    { nombre: 'Zancadas estáticas con mancuernas', grupo: 'Pierna' },
-                    { nombre: 'Elevación de gemelos de pie', grupo: 'Pierna' }
+                    { nombre: 'Sentadilla Goblet', series: 4, reps: '6-10', descanso: '120s',
+                        img: 'https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif',
+                        tecnica: '1️⃣ Mancuerna pegada al pecho, pies a la altura de los hombros.\n2️⃣ Baja cadera como al sentarte.\n3️⃣ Empuja con los talones.\n4️⃣ No dejes caer las rodillas hacia dentro.\n5️⃣ Respira: inhala al bajar, exhala al subir.' },
+                    { nombre: 'Zancadas estáticas', series: 4, reps: '6-10', descanso: '90s',
+                        img: 'https://gymvisual.com/img/p/2/3/7/3/9/23739.gif',
+                        tecnica: '1️⃣ Paso largo adelante, mancuernas a los lados.\n2️⃣ Baja hasta que rodilla trasera casi toque el suelo.\n3️⃣ Sube con el talón delantero.\n4️⃣ Mantén el torso erguido.\n5️⃣ Respira: inhala al bajar, exhala al subir.' },
+                    { nombre: 'Elevación de gemelos', series: 3, reps: '8-12', descanso: '60s',
+                        img: 'https://i.pinimg.com/originals/2f/7c/ca/2f7cca8d37c65384c1d0bd84cc0a91d1.gif',
+                        tecnica: '1️⃣ De pie, mancuernas a los lados.\n2️⃣ Elévate con la punta de los pies.\n3️⃣ Mantén el equilibrio.\n4️⃣ Baja controladamente.\n5️⃣ Respira: exhala al subir, inhala al bajar.' },
+                    { nombre: 'Curl femoral (búlgaro)', series: 3, reps: '10-15', descanso: '60s',
+                        img: '',
+                        tecnica: '1️⃣ Apoya un pie en una superficie elevada.\n2️⃣ Baja la cadera controladamente.\n3️⃣ Mantén el equilibrio.\n4️⃣ Sube hasta estirar la pierna.\n5️⃣ Respira: inhala al bajar, exhala al subir.' },
+                    { nombre: 'Plancha', series: 3, reps: '30-45s', descanso: '45s',
+                        img: '',
+                        tecnica: '1️⃣ Apoya antebrazos y puntas de pies.\n2️⃣ Cuerpo recto, abdomen contraído.\n3️⃣ No dejes caer la cadera.\n4️⃣ Mantén la posición el tiempo indicado.\n5️⃣ Respira: mantén la respiración constante.' }
                 ],
                 jueves: [
-                    { nombre: 'Remo al mentón con mancuernas', grupo: 'Espalda' },
-                    { nombre: 'Remo en banco inclinado con mancuernas', grupo: 'Espalda' },
-                    { nombre: 'Curl araña (Pausa de 2")', grupo: 'Bíceps' },
-                    { nombre: 'Curl concentrado', grupo: 'Bíceps' },
-                    { nombre: 'Cardio en cinta', grupo: 'Cardio' }
+                    { nombre: 'Press militar mancuernas', series: 4, reps: '6-10', descanso: '120s',
+                        img: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif',
+                        tecnica: '1️⃣ Sentado, mancuernas a altura de orejas.\n2️⃣ Empuja hacia arriba sin bloquear codos.\n3️⃣ Baja controladamente hasta las orejas.\n4️⃣ Mantén la espalda recta.\n5️⃣ Respira: exhala al subir, inhala al bajar.' },
+                    { nombre: 'Remo al mentón', series: 4, reps: '6-10', descanso: '90s',
+                        img: 'https://api.smartworkout.app/asset/image/80833bf7-99b5-4272-b3b2-629ccc137ce1',
+                        tecnica: '1️⃣ De pie, mancuernas sobre muslos.\n2️⃣ Sube verticalmente hacia el mentón.\n3️⃣ Codos hacia arriba.\n4️⃣ Baja controladamente.\n5️⃣ Respira: exhala al subir, inhala al bajar.' },
+                    { nombre: 'Aperturas inclinadas', series: 3, reps: '8-12', descanso: '90s',
+                        img: 'https://media.tenor.com/oJXOnsC72qMAAAAM/crussifixo-no-banco-com-halteres.gif',
+                        tecnica: '1️⃣ Tumbado en banco inclinado, mancuernas juntas arriba.\n2️⃣ Abre brazos en arco.\n3️⃣ Vuelve a juntar las mancuernas.\n4️⃣ Controla el movimiento.\n5️⃣ Respira: inhala al abrir, exhala al cerrar.' },
+                    { nombre: 'Curl martillo', series: 3, reps: '10-15', descanso: '60s',
+                        img: 'https://api.smartworkout.app/asset/image/8588e41c-5c2d-4ee0-90ca-ad69b7d0438a',
+                        tecnica: '1️⃣ Agarre neutro, muñeca recta.\n2️⃣ Curva hacia el hombro.\n3️⃣ Baja controladamente.\n4️⃣ Mantén codos fijos.\n5️⃣ Respira: exhala al subir, inhala al bajar.' },
+                    { nombre: 'Patada de tríceps', series: 3, reps: '10-15', descanso: '60s',
+                        img: 'https://i.pinimg.com/originals/96/a1/b6/96a1b68a9a9f4c853b695a3740e91326.gif',
+                        tecnica: '1️⃣ Rodilla y mano apoyadas en banco.\n2️⃣ Estira brazo hacia atrás hasta paralelo al suelo.\n3️⃣ Mantén el codo fijo.\n4️⃣ Baja controladamente.\n5️⃣ Respira: exhala al estirar, inhala al volver.' }
                 ],
                 viernes: [
-                    { nombre: 'Press inclinado con mancuernas', grupo: 'Pecho' },
-                    { nombre: 'Aperturas en banco plano', grupo: 'Pecho' },
-                    { nombre: 'Press plano con mancuernas', grupo: 'Pecho' },
-                    { nombre: 'Curl de antebrazo con mancuernas', grupo: 'Antebrazo' },
-                    { nombre: 'Cardio en cinta', grupo: 'Cardio' }
-                ],
-                sabado: [],
-                domingo: []
-            },
-            IMAGENES: {
-                "Remo con barra": "https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif",
-                "Remo a una mano con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
-                "Curl de bíceps alterno": "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
-                "Curl martillo": "https://api.smartworkout.app/asset/image/8588e41c-5c2d-4ee0-90ca-ad69b7d0438a",
-                "Cardio en cinta": "https://api.smartworkout.app/asset/image/87d7f44d-15a8-4e40-8ea0-4a9cafa23eda",
-                "Press de hombros sentado": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif",
-                "Aperturas inclinadas con mancuernas": "https://media.tenor.com/oJXOnsC72qMAAAAM/crussifixo-no-banco-com-halteres.gif",
-                "Pullover con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Pullover.gif",
-                "Elevaciones laterales sentado": "https://gymvisual.com/img/p/5/1/3/7/5137.gif",
-                "Extensión de tríceps tumbado": "https://gymvisual.com/img/p/2/0/8/4/3/20843.gif",
-                "Patada de tríceps": "https://i.pinimg.com/originals/96/a1/b6/96a1b68a9a9f4c853b695a3740e91326.gif",
-                "Remo al mentón con mancuernas": "https://api.smartworkout.app/asset/image/80833bf7-99b5-4272-b3b2-629ccc137ce1",
-                "Remo en banco inclinado con mancuernas": "https://gymvisual.com/img/p/1/4/9/7/3/14973.gif",
-                "Curl araña (Pausa de 2\")": "https://api.smartworkout.app/asset/image/7a6c7c0b-0480-4c45-ba66-18959ec9001f",
-                "Curl concentrado": "https://media.tenor.com/jaX3EUxaQGkAAAAM/rosca-concentrada-no-banco.gif",
-                "Press inclinado con mancuernas": "https://fitnessprogramer.com/wp-content/uploads/2022/07/Dumbbell-Reverse-Grip-30-Degrees-Incline-Bench-Press.gif",
-                "Aperturas en banco plano": "https://gymvisual.com/img/p/1/0/2/8/0/10280.gif",
-                "Press plano con mancuernas": "https://gymvisual.com/img/p/1/8/6/4/5/18645.gif",
-                "Sentadilla Goblet con mancuerna": "https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif",
-                "Zancadas estáticas con mancuernas": "https://gymvisual.com/img/p/2/3/7/3/9/23739.gif",
-                "Elevación de gemelos de pie": "https://i.pinimg.com/originals/2f/7c/ca/2f7cca8d37c65384c1d0bd84cc0a91d1.gif",
-                "Curl de antebrazo con mancuernas": "https://gymvisual.com/img/p/1/5/3/1/0/15310.gif"
+                    { nombre: 'Peso muerto rumano', series: 4, reps: '6-10', descanso: '120s',
+                        img: '',
+                        tecnica: '1️⃣ De pie, barra o mancuernas frente a ti.\n2️⃣ Baja con espalda recta hasta sentir el isquio.\n3️⃣ Sube con cadera.\n4️⃣ No redondees la espalda.\n5️⃣ Respira: inhala al bajar, exhala al subir.' },
+                    { nombre: 'Sentadilla búlgara', series: 4, reps: '6-10', descanso: '90s',
+                        img: '',
+                        tecnica: '1️⃣ Un pie atrás apoyado en banco.\n2️⃣ Baja hasta que rodilla delantera forme 90°.\n3️⃣ Sube con el talón.\n4️⃣ Mantén el equilibrio.\n5️⃣ Respira: inhala al bajar, exhala al subir.' },
+                    { nombre: 'Curl femoral tumbado', series: 3, reps: '8-12', descanso: '60s',
+                        img: '',
+                        tecnica: '1️⃣ Tumbado boca abajo.\n2️⃣ Flexiona rodillas llevando talones a glúteos.\n3️⃣ Sube y baja controladamente.\n4️⃣ Mantén la cadera apoyada.\n5️⃣ Respira: exhala al subir, inhala al bajar.' },
+                    { nombre: 'Elevación gemelos', series: 3, reps: '10-15', descanso: '60s',
+                        img: 'https://i.pinimg.com/originals/2f/7c/ca/2f7cca8d37c65384c1d0bd84cc0a91d1.gif',
+                        tecnica: '1️⃣ De pie, mancuernas a los lados.\n2️⃣ Elévate con la punta de los pies.\n3️⃣ Baja controladamente.\n4️⃣ Mantén el equilibrio.\n5️⃣ Respira: exhala al subir, inhala al bajar.' },
+                    { nombre: 'Abdominales', series: 3, reps: '15-20', descanso: '45s',
+                        img: '',
+                        tecnica: '1️⃣ Tumbado boca arriba, rodillas flexionadas.\n2️⃣ Eleva el torso hacia las rodillas.\n3️⃣ Baja controladamente.\n4️⃣ No tires del cuello.\n5️⃣ Respira: exhala al subir, inhala al bajar.' }
+                ]
             }
         };
 
@@ -575,18 +486,14 @@
         const STATE = {
             nombre: 'Nico',
             altura: CONFIG.ALTURA,
+            pesoObjetivo: CONFIG.PESO_OBJETIVO,
             mediciones: [],
             historialEntrenos: [],
-            diasNoFumar: [],
             diasEntrenados: [],
-            checks: {},
-            recordatorios: { freqMediciones: 2, freqFotos: 4, ultimaMedicion: CONFIG.FECHA_REFERENCIA_MEDICIONES, ultimasFotos: null },
-            records: [],
-            evolution: { initialWeight: 0, currentWeight: 0, initialWaist: 0, currentWaist: 0, totalWorkouts: 0, daysWithoutSmoking: 0 },
+            registroEjercicios: {},
+            evolution: { currentWeight: 0, totalWorkouts: 0, totalTime: 0 },
             ajustes: {}
         };
-
-        let diaActivo = 'lunes';
 
         // ==========================================
         // STORAGE
@@ -597,48 +504,19 @@
                 if (raw) {
                     const d = JSON.parse(raw);
                     Object.assign(STATE, d);
-                    if (!STATE.recordatorios) STATE.recordatorios = { freqMediciones: 2, freqFotos: 4, ultimaMedicion: CONFIG.FECHA_REFERENCIA_MEDICIONES, ultimasFotos: null };
-                    if (!STATE.records) STATE.records = [];
-                    if (!STATE.evolution) STATE.evolution = { initialWeight: 0, currentWeight: 0, initialWaist: 0, currentWaist: 0, totalWorkouts: 0, daysWithoutSmoking: 0 };
+                    if (!STATE.registroEjercicios) STATE.registroEjercicios = {};
+                    if (!STATE.evolution) STATE.evolution = { currentWeight: 0, totalWorkouts: 0, totalTime: 0 };
                     if (!STATE.ajustes) STATE.ajustes = {};
                 }
-                this._calcularDiasSinFumar();
+                if (STATE.mediciones.length > 0) {
+                    STATE.evolution.currentWeight = STATE.mediciones[STATE.mediciones.length - 1].peso;
+                }
+                STATE.evolution.totalWorkouts = STATE.diasEntrenados.length || 0;
                 this._save();
                 return this;
             },
-            _calcularDiasSinFumar() {
-                let c = 0;
-                const f = new Date(CONFIG.FECHA_INICIO_NO_FUMAR);
-                const h = new Date();
-                while (f <= h) {
-                    if (!STATE.diasNoFumar.includes(UI.formatFecha(f))) c++;
-                    f.setDate(f.getDate() + 1);
-                }
-                STATE.evolution.daysWithoutSmoking = c;
-            },
             _save() { localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(STATE)); },
-            resetearSemana() {
-                const hoy = new Date();
-                const diaSemana = hoy.getDay();
-                const semanaActual = this._getSemanaKey(hoy);
-                const ultimaSemana = localStorage.getItem('ultimaSemana');
-                if (diaSemana === 1 && ultimaSemana !== semanaActual) {
-                    STATE.checks = {};
-                    localStorage.setItem('ultimaSemana', semanaActual);
-                    this._save();
-                    return true;
-                }
-                return false;
-            },
-            _getSemanaKey(fecha) {
-                const d = new Date(fecha);
-                d.setDate(d.getDate() - (d.getDay() === 0 ? 6 : d.getDay() - 1));
-                const year = d.getFullYear();
-                const week = Math.ceil((((d - new Date(year, 0, 1)) / 86400000) + 1) / 7);
-                return `${year}-W${String(week).padStart(2, '0')}`;
-            },
-            resetAll() { localStorage.removeItem(CONFIG.STORAGE_KEY);
-                location.reload(); },
+            resetAll() { localStorage.removeItem(CONFIG.STORAGE_KEY); location.reload(); },
             exportar() {
                 const blob = new Blob([JSON.stringify(STATE, null, 2)], { type: 'application/json' });
                 const a = document.createElement('a');
@@ -687,15 +565,11 @@
                 document.getElementById('sideMenu').classList.toggle('open');
                 document.getElementById('sideOverlay').classList.toggle('open');
             },
-            toggleNotif() {
-                document.getElementById('notifDropdown').classList.toggle('open');
-            },
+            toggleNotif() { document.getElementById('notifDropdown').classList.toggle('open'); },
             cerrarLightbox() { document.getElementById('lightbox').classList.remove('active'); },
-            abrirLightbox(src) { document.getElementById('lightboxImg').src = src;
-                document.getElementById('lightbox').classList.add('active'); },
+            abrirLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('active'); },
             getHoy() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; },
-            formatFecha(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; },
-            formatearFecha(fecha) { return new Date(fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }); },
+            formatFecha(fecha) { return new Date(fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }); },
             getDiaNombre() {
                 const mapa = { 0: 'domingo', 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado' };
                 return mapa[new Date().getDay()] || 'lunes';
@@ -704,13 +578,10 @@
             actualizarTopBar() {
                 const p = STATE.mediciones.length > 0 ? STATE.mediciones[STATE.mediciones.length - 1].peso : '--';
                 document.getElementById('topPesoDisplay').textContent = p + ' kg';
-                document.getElementById('topObjetivo').textContent = CONFIG.PESO_OBJETIVO;
+                document.getElementById('topObjetivo').textContent = STATE.pesoObjetivo || CONFIG.PESO_OBJETIVO;
             }
         };
 
-        // ==========================================
-        // MODAL
-        // ==========================================
         const Modal = {
             abrir(html) {
                 document.getElementById('modalGlobalContent').innerHTML = html;
@@ -721,54 +592,11 @@
             }
         };
 
-        // ==========================================
-        // FUNCIONES AUX
-        // ==========================================
-        function getProximoDomingo(desde, cadaSemanas) {
-            const d = new Date(desde);
-            const hoy = new Date();
-            while (d <= hoy) d.setDate(d.getDate() + 7 * cadaSemanas);
-            while (d.getDay() !== 0) d.setDate(d.getDate() + 1);
-            return d;
-        }
-
         function getDiasHasta(fecha) {
             const hoy = new Date();
             hoy.setHours(0, 0, 0, 0);
             fecha.setHours(0, 0, 0, 0);
             return Math.round((fecha - hoy) / 86400000);
-        }
-
-        function getImagenEjercicio(nombre) {
-            return CONFIG.IMAGENES[nombre] || '';
-        }
-
-        function getInstruccion(nombre) {
-            const map = {
-                "Remo con barra": "Torso inclinado 45°, espalda recta. Tira la barra hacia el abdomen.",
-                "Remo a una mano con mancuerna": "Apoya rodilla y mano en banco. Sube el codo hacia atrás.",
-                "Curl de bíceps alterno": "Codos pegados al torso. Curva alternando brazos.",
-                "Curl martillo": "Agarre neutro. Muñeca recta todo el movimiento.",
-                "Cardio en cinta": "Mantén ritmo constante. Controla pulsaciones.",
-                "Press de hombros sentado": "Mancuernas a altura de orejas. Empuja hacia arriba.",
-                "Aperturas inclinadas con mancuernas": "Banco inclinado. Abre brazos en arco.",
-                "Pullover con mancuerna": "Mancuerna sobre pecho. Lleva hacia atrás sobre la cabeza.",
-                "Elevaciones laterales sentado": "Eleva mancuernas hasta paralelo al suelo.",
-                "Extensión de tríceps tumbado": "Tumbado, baja mancuernas hacia las orejas.",
-                "Patada de tríceps": "Rodilla y mano en banco. Estira brazo hacia atrás.",
-                "Remo al mentón con mancuernas": "Sube verticalmente hacia el mentón.",
-                "Remo en banco inclinado con mancuernas": "Tumbado boca abajo. Tira hacia arriba.",
-                "Curl araña (Pausa de 2)": "Tumbado en banco inclinado. Pausa de 2\" arriba.",
-                "Curl concentrado": "Codo apoyado en muslo. Curva hacia el pecho.",
-                "Press inclinado con mancuernas": "Banco inclinado 30-45°. Agarre invertido.",
-                "Aperturas en banco plano": "Tumbado. Abre brazos en arco.",
-                "Press plano con mancuernas": "Empuja hacia el techo en línea recta.",
-                "Sentadilla Goblet con mancuerna": "Mancuerna al pecho. Baja como al sentarte.",
-                "Zancadas estáticas con mancuernas": "Paso largo. Rodilla trasera casi toca suelo.",
-                "Elevación de gemelos de pie": "Eleva con la punta de los pies.",
-                "Curl de antebrazo con mancuernas": "Antebrazos sobre muslos. Flexiona muñecas."
-            };
-            return map[nombre] || "Posición correcta. Movimiento controlado. Respira adecuadamente.";
         }
 
         // ==========================================
@@ -777,12 +605,7 @@
         const APP = {
             init() {
                 Storage.init();
-                const reset = Storage.resetearSemana();
-                if (reset) {
-                    UI.toast('🔄 Nueva semana. ¡A marcar los ejercicios!', 'success');
-                }
                 this._cargarAjustes();
-                this._actualizarEvolution();
                 this.renderizarTodo();
                 this._eventos();
                 document.addEventListener('click', (e) => {
@@ -793,36 +616,20 @@
                 return this;
             },
             _eventos() {
-                document.getElementById('importFile').addEventListener('change', function() { Storage.importar(this
-                        .files[0]); });
-                const dia = UI.getDiaNombre();
-                diaActivo = dia === 'domingo' ? 'lunes' : dia;
+                document.getElementById('importFile').addEventListener('change', function() { Storage.importar(this.files[0]); });
             },
             _cargarAjustes() {
                 const a = STATE.ajustes || {};
                 if (a.nombre) STATE.nombre = a.nombre;
-                if (a.altura) STATE.altura = a.altura;
-                if (a.objetivo) CONFIG.PESO_OBJETIVO = a.objetivo;
-            },
-            _actualizarEvolution() {
-                if (STATE.mediciones.length > 0) {
-                    STATE.evolution.initialWeight = STATE.mediciones[0].peso;
-                    STATE.evolution.currentWeight = STATE.mediciones[STATE.mediciones.length - 1].peso;
-                    STATE.evolution.initialWaist = STATE.mediciones[0].cintura;
-                    STATE.evolution.currentWaist = STATE.mediciones[STATE.mediciones.length - 1].cintura;
-                    STATE.evolution.totalWorkouts = STATE.diasEntrenados.length || 0;
-                }
-                Storage._save();
+                if (a.altura) STATE.altura = a.altura || CONFIG.ALTURA;
+                if (a.pesoObjetivo) STATE.pesoObjetivo = a.pesoObjetivo;
             },
             renderizarTodo() {
                 UI.actualizarTopBar();
                 Dashboard.render();
                 Rutinas.render();
-                Peso.render();
-                Agenda.render();
+                Historial.render();
                 Estadisticas.render();
-                Records.render();
-                Fotos.render();
                 Ajustes.render();
                 Notificaciones.render();
             },
@@ -832,34 +639,32 @@
                 if (page) page.classList.add('active');
 
                 document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                const map = { 'inicio': 0, 'rutinas': 1, 'peso': 2, 'agenda': 3, 'estadisticas': 4 };
-                const btns = document.querySelectorAll('.nav-btn');
-                if (map[id] !== undefined && btns[map[id]]) btns[map[id]].classList.add('active');
+                document.querySelectorAll('.nav-btn').forEach(b => {
+                    if (b.textContent.trim().toLowerCase().includes(id) ||
+                        (id === 'estadisticas' && b.textContent.includes('Stats')) ||
+                        (id === 'historial' && b.textContent.includes('Historial'))) {
+                        b.classList.add('active');
+                    }
+                });
 
                 document.querySelectorAll('.side-menu .menu-item').forEach(m => m.classList.remove('active'));
                 document.querySelectorAll('.side-menu .menu-item').forEach(m => {
                     const txt = m.textContent.trim().toLowerCase();
                     if (txt.includes(id) || (id === 'estadisticas' && txt.includes('estadísticas')) ||
-                        (id === 'peso' && txt.includes('peso')) || (id === 'fotos' && txt.includes('fotos'))) {
+                        (id === 'historial' && txt.includes('historial'))) {
                         m.classList.add('active');
                     }
                 });
 
                 if (document.getElementById('sideMenu').classList.contains('open')) UI.toggleMenu();
                 window.scrollTo(0, 0);
-
-                if (id === 'rutinas') {
-                    setTimeout(() => {
-                        const dia = UI.getDiaNombre();
-                        diaActivo = dia === 'domingo' ? 'lunes' : dia;
-                        const tabs = document.querySelectorAll('.dtab');
-                        const idx = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'].indexOf(diaActivo);
-                        if (tabs[idx]) tabs[idx].click();
-                    }, 100);
-                }
+                if (id === 'rutinas') Rutinas.render();
+                if (id === 'historial') Historial.render();
+                if (id === 'estadisticas') Estadisticas.render();
+                if (id === 'ajustes') Ajustes.render();
+                if (id === 'inicio') Dashboard.render();
             },
-            confirmarReset() { UI.confirmar('¿Borrar TODOS los datos? No se puede deshacer.', () => Storage
-                    .resetAll()); }
+            confirmarReset() { UI.confirmar('¿Borrar TODOS los datos? No se puede deshacer.', () => Storage.resetAll()); }
         };
 
         // ==========================================
@@ -877,91 +682,110 @@
                 if (horas >= 21 || horas < 6) saludo = 'Buenas noches';
 
                 const dia = UI.getDiaNombre();
-                const rutinaNombre = CONFIG.TIPOS_RUTINA[dia] || 'Descanso';
+                const infoDia = CONFIG.SEMANA[dia] || { nombre: '', icono: '📅', rutina: '', tipo: 'descanso' };
                 const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
 
                 const peso = STATE.mediciones.length > 0 ? STATE.mediciones[STATE.mediciones.length - 1].peso : '--';
-                const obj = CONFIG.PESO_OBJETIVO;
-                let pctObjetivo = 0;
-                if (STATE.mediciones.length > 0) {
-                    const primero = STATE.mediciones[0].peso;
-                    const ultimo = STATE.mediciones[STATE.mediciones.length - 1].peso;
-                    const total = primero - obj;
-                    if (total > 0) pctObjetivo = Math.min(100, Math.round(((primero - ultimo) / total) * 100));
+                const obj = STATE.pesoObjetivo || CONFIG.PESO_OBJETIVO;
+
+                const hoySemana = new Date();
+                const inicioSemana = new Date(hoySemana);
+                inicioSemana.setDate(hoySemana.getDate() - hoySemana.getDay() + 1);
+                inicioSemana.setHours(0, 0, 0, 0);
+                const diasSemana = [];
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date(inicioSemana);
+                    d.setDate(inicioSemana.getDate() + i);
+                    diasSemana.push(UI.formatFecha(d));
+                }
+                const entrenosSemana = STATE.diasEntrenados.filter(f => diasSemana.includes(f)).length;
+
+                let racha = 0;
+                let h = new Date();
+                for (let i = 0; i < 100; i++) {
+                    let f = new Date(h);
+                    f.setDate(h.getDate() - i);
+                    if (STATE.diasEntrenados.includes(UI.formatFecha(f))) racha++;
+                    else break;
                 }
 
-                let ultimoEntreno = 'Nunca';
-                if (STATE.diasEntrenados.length > 0) {
-                    const ultimo = [...STATE.diasEntrenados].sort().reverse()[0];
-                    const diff = Math.round((new Date() - new Date(ultimo)) / 86400000);
-                    if (diff === 0) ultimoEntreno = 'Hoy';
-                    else if (diff === 1) ultimoEntreno = 'Ayer';
-                    else if (diff < 7) ultimoEntreno = `Hace ${diff} días`;
-                    else ultimoEntreno = UI.formatearFecha(ultimo);
+                const diasMap = { 0: 'domingo', 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado' };
+                let proxDia = null;
+                let proxNombre = '';
+                let proxIcono = '';
+                let diasParaProx = 0;
+                for (let i = 1; i <= 7; i++) {
+                    const d = new Date();
+                    d.setDate(d.getDate() + i);
+                    const diaKey = diasMap[d.getDay()];
+                    const info = CONFIG.SEMANA[diaKey];
+                    if (info && info.tipo === 'entreno') {
+                        const fechaStr = UI.formatFecha(d);
+                        if (!STATE.diasEntrenados.includes(fechaStr)) {
+                            proxDia = diaKey;
+                            proxNombre = info.nombre;
+                            proxIcono = info.icono;
+                            diasParaProx = i;
+                            break;
+                        }
+                    }
                 }
-
-                const notifs = Notificaciones.generar();
 
                 c.innerHTML = `
-                        <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
-                        <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString('es-ES', {day:'numeric', month:'long'})}</div>
+                    <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
+                    <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString('es-ES', {day:'numeric', month:'long'})}</div>
 
-                        <div class="card card-accent">
-                            <div class="card-title">📊 Resumen</div>
-                            <div class="dash-grid">
-                                <div class="dash-stat">
-                                    <div class="num primary">${peso}</div>
-                                    <div class="label">Peso (kg)</div>
-                                </div>
-                                <div class="dash-stat">
-                                    <div class="num green">${pctObjetivo}%</div>
-                                    <div class="label">Objetivo</div>
-                                </div>
+                    <div class="card card-accent">
+                        <div class="card-title">📊 Resumen</div>
+                        <div class="dash-grid">
+                            <div class="dash-stat">
+                                <div class="num primary">${peso}</div>
+                                <div class="label">Peso (kg)</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="num green">${obj}</div>
+                                <div class="label">Objetivo</div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="card">
-                            <div class="card-title">💪 Rutina de hoy</div>
-                            ${dia === 'domingo' ? `
-                                <div style="text-align:center;padding:8px 0;color:var(--text-secondary);">
-                                    <span style="font-size:32px;display:block;margin-bottom:4px;">😌</span>
-                                    Día de descanso
+                    <div class="card">
+                        <div class="card-title">💪 Próximo entrenamiento</div>
+                        ${proxDia && diasParaProx <= 3 ? `
+                            <div style="display:flex;align-items:center;gap:var(--space-sm);">
+                                <span style="font-size:28px;">${proxIcono}</span>
+                                <div>
+                                    <div style="font-size:16px;font-weight:600;">${proxNombre}</div>
+                                    <div style="font-size:12px;color:var(--text-secondary);">${CONFIG.SEMANA[proxDia].rutina} · ${diasParaProx === 1 ? 'Mañana' : `En ${diasParaProx} días`}</div>
                                 </div>
-                            ` : entrenadoHoy ? `
-                                <div style="text-align:center;padding:8px 0;color:var(--success);">
-                                    <span style="font-size:32px;display:block;margin-bottom:4px;">✅</span>
-                                    Completado
-                                    <div style="font-size:12px;color:var(--text-secondary);">${rutinaNombre}</div>
-                                </div>
-                            ` : `
-                                <div style="display:flex;align-items:center;justify-content:space-between;">
-                                    <div>
-                                        <div style="font-size:16px;font-weight:600;">${rutinaNombre}</div>
-                                        <div style="font-size:12px;color:var(--text-secondary);">${CONFIG.EJERCICIOS[dia]?.length || 0} ejercicios</div>
-                                    </div>
-                                    <button class="btn btn-primary btn-sm" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-play"></i> Entrenar</button>
-                                </div>
-                            `}
-                        </div>
-
-                        <div class="card">
-                            <div class="card-title">📋 Último entrenamiento</div>
-                            <div style="font-size:16px;font-weight:600;">${ultimoEntreno}</div>
-                        </div>
-
-                        ${notifs.length > 0 ? `
-                            <div class="card" style="border-left:3px solid var(--warning);">
-                                <div class="card-title">🔔 Pendientes (${notifs.length})</div>
-                                ${notifs.map(n => `
-                                    <div class="pending-item">
-                                        <span class="pi-icon">${n.icono}</span>
-                                        <span>${n.texto}</span>
-                                    </div>
-                                `).join('')}
-                                <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--text-secondary);cursor:pointer;" onclick="APP.navegar('agenda')">Ver todas →</div>
+                                <button class="btn btn-primary btn-sm" onclick="APP.navegar('rutinas')" style="margin-left:auto;">Ver</button>
                             </div>
-                        ` : ''}
-                    `;
+                        ` : `
+                            <div style="text-align:center;padding:8px 0;color:var(--text-secondary);">
+                                ${dia === 'domingo' ? '😌 Domingo de descanso' : '✅ Todos los entrenos completados'}
+                            </div>
+                        `}
+                    </div>
+
+                    <div class="card">
+                        <div class="dash-grid">
+                            <div class="dash-stat">
+                                <div class="num green">${entrenosSemana}</div>
+                                <div class="label">Esta semana</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="num primary">${racha}</div>
+                                <div class="label">Racha 🔥</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${dia !== 'domingo' && CONFIG.SEMANA[dia]?.tipo === 'entreno' && !entrenadoHoy ? `
+                        <button class="btn btn-primary btn-block" onclick="APP.navegar('rutinas')" style="padding:14px;font-size:15px;">
+                            <i class="fa-solid fa-play"></i> Empezar entrenamiento
+                        </button>
+                    ` : ''}
+                `;
             }
         };
 
@@ -969,402 +793,280 @@
         // RUTINAS
         // ==========================================
         const Rutinas = {
+            diaSeleccionado: null,
+
             render() {
-                const tc = document.getElementById('dayTabs');
-                const pc = document.getElementById('dayPanelsContainer');
-                if (!tc) return;
+                const c = document.getElementById('rutinasContainer');
+                if (!c) return;
 
-                const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
-                const nombres = ['L', 'M', 'X', 'J', 'V'];
+                const hoy = new Date();
+                const diaActual = UI.getDiaNombre();
 
-                tc.innerHTML = '';
-                pc.innerHTML = '';
+                if (!this.diaSeleccionado) {
+                    this.diaSeleccionado = diaActual;
+                }
+
+                let html = `<div class="card"><div class="card-title">📅 Semana</div><div class="tab-dias">`;
+
+                const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+                const nombresCortos = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 
                 dias.forEach((dia, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'dtab';
-                    btn.textContent = nombres[idx];
-                    btn.dataset.dia = dia;
-                    btn.onclick = () => { this._cambiarDia(dia); };
-                    tc.appendChild(btn);
-                });
+                    const info = CONFIG.SEMANA[dia];
+                    const esHoy = dia === diaActual;
+                    const esSeleccionado = dia === this.diaSeleccionado;
+                    const esEntreno = info.tipo === 'entreno';
+                    const completado = esEntreno && STATE.diasEntrenados.some(f => {
+                        const d = new Date(f);
+                        return d.getDay() === idx && d.toDateString() === new Date().toDateString();
+                    });
 
-                dias.forEach(dia => {
-                    const panel = document.createElement('div');
-                    panel.className = 'day-panel hidden';
-                    panel.id = `dp-${dia}`;
-                    panel.innerHTML = this._renderDia(dia);
-                    pc.appendChild(panel);
-                });
+                    let clase = 'tab-dia';
+                    if (esSeleccionado) clase += ' active';
+                    if (completado) clase += ' completado';
+                    if (!esEntreno) clase += ' descanso';
 
-                const diaActual = UI.getDiaNombre();
-                diaActivo = diaActual === 'domingo' ? 'lunes' : diaActual;
-                const idxActivo = dias.indexOf(diaActivo);
-                if (idxActivo >= 0) {
-                    const tabs = tc.querySelectorAll('.dtab');
-                    const panel = document.getElementById(`dp-${diaActivo}`);
-                    if (panel) panel.classList.remove('hidden');
-                    if (tabs[idxActivo]) tabs[idxActivo].classList.add('active');
-                }
-                this._actualizarProgreso();
-            },
-
-            _renderDia(dia) {
-                const ejercicios = CONFIG.EJERCICIOS[dia] || [];
-                let html = `<div class="ex-grid" id="lista-${dia}">`;
-                ejercicios.forEach((ej, idx) => {
-                    const id = `${dia}-${idx}`;
-                    const img = getImagenEjercicio(ej.nombre);
-                    const inst = getInstruccion(ej.nombre);
-                    const checked = !!STATE.checks[id];
-                    const ultimo = this._getUltimoEntreno(ej.nombre);
-                    const record = Records.getRecord(ej.nombre);
-                    const esCardio = ej.nombre === 'Cardio en cinta';
-
-                    const imgHtml = img ?
-                        `<img src="${img}" class="ex-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'ex-img-fallback\\'>💪</div>'" onclick="UI.abrirLightbox(this.src)" alt="${ej.nombre}">` :
-                        `<div class="ex-img-fallback">💪</div>`;
-
-                    // QUITAMOS LOS INPUTS DE PESO Y REPS
-                    const datosHtml = esCardio ? `
-                            ${ultimo ? `<div class="ex-ultimo">Último: <strong>${ultimo.peso} min</strong> (${UI.formatearFecha(ultimo.fecha)})</div>` : ''}
-                        ` : `
-                            ${ultimo ? `<div class="ex-ultimo">Último: <strong>${ultimo.peso} kg</strong> · ${ultimo.reps} (${UI.formatearFecha(ultimo.fecha)})</div>` : ''}
-                        `;
+                    const label = esEntreno ? nombresCortos[idx] : '·';
 
                     html += `
-                            <div class="ex-card ${checked?'checked':''}">
-                                <div class="ex-head">
-                                    <span><span class="ex-name">${ej.nombre}</span><span class="ex-grupo">${ej.grupo}</span></span>
-                                    <input type="checkbox" class="check-box" ${checked?'checked':''} onchange="Rutinas._marcar('${id}')">
-                                </div>
-                                <div class="ex-body">
-                                    <button class="ex-tog" onclick="Rutinas._toggleDetalle(this,'${img}','${inst}')"><i class="fa-solid fa-circle-info"></i> Ver técnica</button>
-                                    <div class="ex-det">
-                                        ${imgHtml}
-                                        <div style="white-space:pre-wrap;font-size:13px;line-height:1.7;">${inst}</div>
-                                    </div>
-                                    ${datosHtml}
-                                    <div class="ultimo-entreno"><span>Último</span><span>${ultimo ? (esCardio ? ultimo.peso+' min' : ultimo.peso+' kg × '+ultimo.reps) : '--'}</span></div>
-                                    <div class="mejor-marca"><span>🏆 Récord</span><span class="mm-valor">${record ? record.weight+' kg × '+record.reps : '--'}</span></div>
-                                    <button class="btn-historial-ej" onclick="Rutinas._verHistorial('${ej.nombre}')"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
-                                </div>
-                            </div>
-                        `;
+                        <button class="${clase}" onclick="Rutinas.seleccionarDia('${dia}')">
+                            ${info.icono} ${label}
+                        </button>
+                    `;
                 });
-                html += `</div>`;
-                return html;
-            },
 
-            _cambiarDia(dia) {
-                document.querySelectorAll('.day-panel').forEach(p => p.classList.add('hidden'));
-                document.querySelectorAll('.dtab').forEach(b => b.classList.remove('active'));
-                const panel = document.getElementById(`dp-${dia}`);
-                if (panel) panel.classList.remove('hidden');
-                document.querySelector(`.dtab[data-dia="${dia}"]`)?.classList.add('active');
-                diaActivo = dia;
-                this._actualizarProgreso();
-            },
+                html += `</div></div>`;
 
-            _actualizarProgreso() {
-                const c = document.getElementById('progresoRutinaContainer');
-                if (!c) return;
-                const ejercicios = CONFIG.EJERCICIOS[diaActivo] || [];
-                if (ejercicios.length === 0) { c.innerHTML = ''; return; }
+                const diaInfo = CONFIG.SEMANA[this.diaSeleccionado];
+                if (diaInfo && diaInfo.tipo === 'entreno') {
+                    const ejercicios = CONFIG.EJERCICIOS_POR_DIA[this.diaSeleccionado] || [];
+                    const completadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
 
-                let comp = 0;
-                ejercicios.forEach((_, idx) => { if (STATE.checks[`${diaActivo}-${idx}`]) comp++; });
-                const pct = Math.round((comp / ejercicios.length) * 100);
-                const bf = document.getElementById('btnFinalizarRutina');
-                if (bf) bf.style.display = 'none';
-
-                if (comp === ejercicios.length) {
-                    c.innerHTML =
-                        `<div class="progreso-rutina-bar"><div class="progreso-rutina-completado"><i class="fa-solid fa-circle-check"></i> ¡${CONFIG.NOMBRES_DIAS[diaActivo]} completado!</div></div>`;
-                } else {
-                    c.innerHTML = `
-                            <div class="progreso-rutina-bar">
-                                <div class="progreso-rutina-header">
-                                    <span>${CONFIG.NOMBRES_DIAS[diaActivo]}</span>
-                                    <span>${pct}%</span>
+                    html += `
+                        <div class="card">
+                            <div class="entreno-header" style="display:flex;align-items:center;gap:var(--space-sm);margin-bottom:var(--space-md);">
+                                <span style="font-size:32px;">${diaInfo.icono}</span>
+                                <div style="flex:1;">
+                                    <div style="font-size:20px;font-weight:700;">${diaInfo.nombre}</div>
+                                    <div style="font-size:12px;color:var(--text-secondary);">⏱ ${diaInfo.rutina} · ${ejercicios.length} ejercicios</div>
                                 </div>
-                                <div class="progreso-rutina-track"><div class="progreso-rutina-fill" style="width:${pct}%;"></div></div>
-                                <div class="progreso-rutina-info">${comp}/${ejercicios.length} ejercicios</div>
                             </div>
-                        `;
-                }
-            },
-
-            _marcar(id) {
-                const dia = id.split('-')[0];
-                const idx = parseInt(id.split('-')[1]);
-                const ejercicios = CONFIG.EJERCICIOS[dia] || [];
-                const ejercicio = ejercicios[idx];
-
-                if (!ejercicio) return;
-
-                if (STATE.checks[id]) {
-                    delete STATE.checks[id];
-                    Storage._save();
-                    this._actualizarProgreso();
-                    const c = document.getElementById(`lista-${dia}`);
-                    if (c) {
-                        const cards = c.querySelectorAll('.ex-card');
-                        if (cards[idx]) cards[idx].classList.remove('checked');
-                        const checkbox = cards[idx]?.querySelector('.check-box');
-                        if (checkbox) checkbox.checked = false;
-                    }
-                    return;
-                }
-
-                Calculadora.abrir(ejercicio.nombre, dia, idx);
-            },
-
-            _toggleDetalle(btn, imgUrl, inst) {
-                const d = btn.nextElementSibling;
-                if (d.classList.contains('open')) {
-                    d.classList.remove('open');
-                    btn.innerHTML = '<i class="fa-solid fa-circle-info"></i> Ver técnica';
-                } else {
-                    const imgHtml = imgUrl ?
-                        `<img src="${imgUrl}" class="ex-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'ex-img-fallback\\'>💪</div>'" onclick="UI.abrirLightbox(this.src)" alt="Técnica">` :
-                        `<div class="ex-img-fallback">💪</div>`;
-                    d.innerHTML = `
-                            ${imgHtml}
-                            <div style="white-space:pre-wrap;font-size:13px;line-height:1.7;">${inst}</div>
-                        `;
-                    d.classList.add('open');
-                    btn.innerHTML = '<i class="fa-solid fa-circle-chevron-up"></i> Ocultar';
-                }
-            },
-
-            _getUltimoEntreno(nombre) {
-                const ord = [...STATE.historialEntrenos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-                for (const e of ord) {
-                    const ej = e.ejercicios.find(x => x.nombre === nombre);
-                    if (ej) return { fecha: e.fecha, peso: ej.peso, reps: ej.reps };
-                }
-                return null;
-            },
-
-            _verHistorial(nombre) {
-                const hist = [];
-                const ord = [...STATE.historialEntrenos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-                for (const e of ord) {
-                    const ej = e.ejercicios.find(x => x.nombre === nombre);
-                    if (ej) hist.push({ fecha: e.fecha, peso: ej.peso, reps: ej.reps });
-                }
-
-                let html = `<h3><i class="fa-solid fa-clock-rotate-left"></i> ${nombre}</h3>`;
-                if (hist.length === 0) {
-                    html += '<div style="text-align:center;padding:12px;color:var(--text-secondary);">Sin historial</div>';
-                } else {
-                    const record = Records.getRecord(nombre);
-                    if (record) {
-                        html +=
-                            `<div class="modal-record"><div class="mr-valor">🏆 ${record.weight} kg × ${record.reps}</div><div style="font-size:11px;color:var(--text-secondary);">${record.date}</div></div>`;
-                    }
-                    hist.forEach(x => {
-                        const esCardio = nombre === 'Cardio en cinta';
-                        html += `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">
-                                <span>${UI.formatearFecha(x.fecha)}</span>
-                                <span style="color:var(--primary);">${esCardio ? x.peso+' min' : x.peso+' kg · '+x.reps}</span>
-                            </div>`;
-                    });
-                }
-                html += `<button class="btn btn-ghost btn-block" onclick="Modal.cerrar()" style="margin-top:12px;">Cerrar</button>`;
-                Modal.abrir(html);
-            },
-
-            _mostrarFinalizar() {
-                // Esta función ya no se usa porque quitamos el botón Finalizar
-                // La dejamos vacía para no romper nada
-            },
-
-            _guardarEntreno() {
-                // Esta función ya no se usa porque quitamos el botón Finalizar
-                // La dejamos vacía para no romper nada
-            }
-        };
-
-        // ==========================================
-        // RECORDS
-        // ==========================================
-        const Records = {
-            getRecord(name) { return STATE.records.find(r => r.exerciseName === name); },
-            actualizar(name, weight, reps, date) {
-                const current = this.getRecord(name);
-                if (!current || weight > current.weight || (weight === current.weight && reps > current.reps)) {
-                    STATE.records = STATE.records.filter(r => r.exerciseName !== name);
-                    STATE.records.push({ exerciseName: name, weight, reps, date });
-                    Storage._save();
-                    return true;
-                }
-                return false;
-            },
-            render() {
-                const c = document.getElementById('recordsContainer');
-                if (!c) return;
-                if (STATE.records.length === 0) {
-                    c.innerHTML =
-                        `<div class="card"><div style="text-align:center;color:var(--text-secondary);padding:20px;">
-                            <i class="fa-solid fa-trophy" style="font-size:40px;display:block;margin-bottom:12px;color:var(--text-muted);"></i>
-                            <p>Aún no has batido ningún récord</p>
-                        </div></div>`;
-                    return;
-                }
-                const sorted = [...STATE.records].sort((a, b) => b.weight - a.weight);
-                c.innerHTML = sorted.map(r => `
-                        <div class="record-card">
-                            <div class="record-name">${r.exerciseName}</div>
-                            <div class="record-stats">
-                                <div class="rs-item"><div class="rs-label">Peso</div><div class="rs-value">${r.weight} kg</div></div>
-                                <div class="rs-item"><div class="rs-label">Reps</div><div class="rs-value">${r.reps}</div></div>
-                                <div class="rs-item"><div class="rs-label">Volumen</div><div class="rs-value">${r.weight * r.reps} kg</div></div>
-                            </div>
-                            <div class="record-date">${r.date}</div>
-                        </div>
-                    `).join('');
-            }
-        };
-
-        // ==========================================
-        // PESO
-        // ==========================================
-        const Peso = {
-            render() {
-                const c = document.getElementById('pesoContainer');
-                if (!c) return;
-
-                const ultimo = STATE.mediciones.length > 0 ? STATE.mediciones[STATE.mediciones.length - 1] : null;
-                const primero = STATE.mediciones.length > 0 ? STATE.mediciones[0] : null;
-
-                let html = `
-                        <div class="card">
-                            <div class="card-title"><i class="fa-solid fa-plus"></i> Nueva medición</div>
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-                                <div class="form-field"><label>Fecha</label><input type="date" id="medFecha" class="input"></div>
-                                <div class="form-field"><label>Peso (kg)</label><input type="number" id="medPeso" step="0.1" placeholder="84.3" class="input"></div>
-                                <div class="form-field"><label>% Grasa</label><input type="number" id="medGrasa" step="0.1" placeholder="27.5" class="input"></div>
-                                <div class="form-field"><label>Músculo (kg)</label><input type="number" id="medMusculo" step="0.1" placeholder="58.2" class="input"></div>
-                                <div class="form-field"><label>Cintura (cm)</label><input type="number" id="medCintura" step="0.1" placeholder="98" class="input"></div>
-                            </div>
-                            <button class="btn btn-primary btn-block" onclick="Peso._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-title"><i class="fa-solid fa-chart-simple"></i> Resumen</div>
-                            <div class="peso-grid">
-                                <div class="peso-stat"><div class="num primary">${ultimo ? ultimo.peso : '--'}</div><div class="label">Peso</div></div>
-                                <div class="peso-stat"><div class="num green">${ultimo ? ultimo.grasaPorcentaje : '--'}%</div><div class="label">Grasa</div></div>
-                                <div class="peso-stat"><div class="num orange">${ultimo ? ultimo.masaMuscular : '--'}</div><div class="label">Músculo</div></div>
-                            </div>
-                            ${primero && ultimo ? `
-                                <div style="display:flex;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);margin-top:8px;font-size:13px;">
-                                    <span>📉 Desde inicio: <strong>${(primero.peso - ultimo.peso).toFixed(1)} kg</strong></span>
-                                    <span>📏 Cintura: <strong>${ultimo.cintura} cm</strong></span>
+                            ${completadoHoy && this.diaSeleccionado === diaActual ? `
+                                <div style="text-align:center;padding:16px;color:var(--success);">
+                                    <span style="font-size:32px;display:block;margin-bottom:8px;">✅</span>
+                                    <strong>Entrenamiento completado</strong>
+                                    <div style="font-size:12px;color:var(--text-secondary);">¡Buen trabajo! 💪</div>
                                 </div>
-                            ` : ''}
-                        </div>
+                            ` : `
+                                ${ejercicios.map((ej, idx) => {
+                                    const registros = STATE.registroEjercicios[ej.nombre] || [];
+                                    const ultimo = registros.length > 0 ? registros[registros.length - 1] : null;
+                                    const tecPasos = ej.tecnica ? ej.tecnica.split('\n').filter(p => p.trim()) : [];
 
-                        <div class="card">
-                            <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Historial</div>
-                            <div id="historialMediciones"></div>
+                                    return `
+                                        <div class="ejercicio-card">
+                                            <div class="ej-top">
+                                                <div class="ej-img-wrap" onclick="UI.abrirLightbox('${ej.img || ''}')">
+                                                    ${ej.img ? `
+                                                        <img src="${ej.img}" class="ej-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'ej-img-fallback\\'>💪</div>'" alt="${ej.nombre}">
+                                                    ` : `
+                                                        <div class="ej-img-fallback">💪</div>
+                                                    `}
+                                                </div>
+                                                <div class="ej-info">
+                                                    <div class="ej-nombre">${idx+1}. ${ej.nombre}</div>
+                                                    <div class="ej-datos">
+                                                        <span>${ej.series} × ${ej.reps}</span>
+                                                        <span>⏱ ${ej.descanso}</span>
+                                                    </div>
+                                                    ${ultimo ? `
+                                                        <div class="ej-ultimo">
+                                                            Último: <strong>${ultimo.peso} kg</strong> · ${ultimo.reps} (${UI.formatFecha(ultimo.fecha)})
+                                                        </div>
+                                                    ` : ''}
+                                                    <div class="ej-botones">
+                                                        <button class="btn btn-ghost btn-sm" onclick="Rutinas.toggleTecnica(this)"><i class="fa-solid fa-circle-info"></i> Técnica</button>
+                                                        <button class="btn btn-primary btn-sm" onclick="Rutinas.registrarEjercicio('${ej.nombre}', '${this.diaSeleccionado}')">
+                                                            <i class="fa-solid fa-pen"></i> Registrar
+                                                        </button>
+                                                    </div>
+                                                    <div class="ej-tecnica">
+                                                        ${tecPasos.length > 0 ? tecPasos.map(p => `
+                                                            <div class="tec-paso">
+                                                                <span class="tec-numero">${p.match(/^\d+[.、) ]?/)?.[0] || '•'}</span>
+                                                                <span class="tec-texto">${p.replace(/^\d+[.、) ]?\s*/, '')}</span>
+                                                            </div>
+                                                        `).join('') : `
+                                                            <div class="tec-paso"><span class="tec-texto">Posición correcta. Movimiento controlado. Respira adecuadamente.</span></div>
+                                                        `}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                                ${this.diaSeleccionado === diaActual && !completadoHoy ? `
+                                    <button class="btn btn-success btn-completar" onclick="Rutinas.completarEntreno()">
+                                        <i class="fa-solid fa-check-circle"></i> ✔ Entrenamiento completado
+                                    </button>
+                                ` : ''}
+                            `}
                         </div>
                     `;
+                } else {
+                    html += `
+                        <div class="card" style="text-align:center;padding:24px;color:var(--text-secondary);">
+                            <span style="font-size:48px;display:block;margin-bottom:12px;">${diaInfo?.icono || '😌'}</span>
+                            <div style="font-size:18px;font-weight:600;color:var(--text);">${diaInfo?.nombre || 'Descanso'}</div>
+                            <div style="font-size:13px;margin-top:4px;">${diaInfo?.rutina || 'Toca descansar'}</div>
+                        </div>
+                    `;
+                }
+
                 c.innerHTML = html;
-                document.getElementById('medFecha').value = UI.getHoy();
-                this._renderHistorial();
             },
 
-            _guardar() {
-                const f = document.getElementById('medFecha').value;
-                if (!f) { UI.toast('Selecciona fecha', 'error'); return; }
-                const p = parseFloat(document.getElementById('medPeso').value);
-                const g = parseFloat(document.getElementById('medGrasa').value);
-                const m = parseFloat(document.getElementById('medMusculo').value);
-                const ci = parseFloat(document.getElementById('medCintura').value);
-                if (isNaN(p) || isNaN(g) || isNaN(m) || isNaN(ci)) {
-                    UI.toast('Completa todos los campos', 'error');
-                    return;
-                }
-                const idx = STATE.mediciones.findIndex(x => x.fecha === f);
-                const nm = { fecha: f, peso: p, grasaPorcentaje: g, masaMuscular: m, cintura: ci };
-                if (idx !== -1) STATE.mediciones[idx] = nm;
-                else STATE.mediciones.push(nm);
-                STATE.mediciones.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
-                STATE.recordatorios.ultimaMedicion = f;
-                Storage._save();
-                UI.toast('✅ Mediciones guardadas', 'success');
+            seleccionarDia(dia) {
+                this.diaSeleccionado = dia;
                 this.render();
-                APP.renderizarTodo();
-                document.getElementById('medPeso').value = '';
-                document.getElementById('medGrasa').value = '';
-                document.getElementById('medMusculo').value = '';
-                document.getElementById('medCintura').value = '';
             },
 
-            _renderHistorial() {
-                const c = document.getElementById('historialMediciones');
-                if (!c) return;
-                if (STATE.mediciones.length === 0) {
-                    c.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:12px;">Sin registros</div>';
-                    return;
+            toggleTecnica(btn) {
+                const tecnica = btn.closest('.ej-info').querySelector('.ej-tecnica');
+                if (tecnica) {
+                    tecnica.classList.toggle('open');
+                    btn.innerHTML = tecnica.classList.contains('open') ?
+                        '<i class="fa-solid fa-circle-chevron-up"></i> Ocultar' :
+                        '<i class="fa-solid fa-circle-info"></i> Técnica';
                 }
-                const rev = [...STATE.mediciones].reverse();
-                c.innerHTML = rev.map((m, i) => {
-                    const diff = i < rev.length - 1 ? (m.peso - rev[i + 1].peso).toFixed(1) : null;
-                    return `
-                            <div class="historial-medicion-card" onclick="Peso._toggleDetalle(${i})">
-                                <div style="display:flex;justify-content:space-between;align-items:center;">
-                                    <span class="med-fecha">${UI.formatearFecha(m.fecha)}</span>
-                                    <span style="font-weight:600;">${m.peso} kg</span>
-                                </div>
-                                <div class="med-resumen">
-                                    <span class="med-item">📏 <span class="valor">${m.cintura}</span> cm</span>
-                                    <span class="med-item">💪 <span class="valor">${m.masaMuscular}</span> kg</span>
-                                    <span class="med-item">🔥 <span class="valor">${m.grasaPorcentaje}</span>%</span>
-                                    ${diff !== null && Math.abs(parseFloat(diff)) > 0 ? `<span class="med-item ${parseFloat(diff) < 0 ? 'positive' : 'negative'}">${parseFloat(diff) > 0 ? '+' : ''}${diff} kg</span>` : ''}
-                                </div>
-                                <div class="historial-medicion-detalle" id="pesoDetalle-${i}">
-                                    <div class="detalle-item"><span>Peso</span><span>${m.peso} kg</span></div>
-                                    <div class="detalle-item"><span>Cintura</span><span>${m.cintura} cm</span></div>
-                                    <div class="detalle-item"><span>% Grasa</span><span>${m.grasaPorcentaje}%</span></div>
-                                    <div class="detalle-item"><span>Masa muscular</span><span>${m.masaMuscular} kg</span></div>
-                                    <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;">
-                                        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();Peso._editar('${m.fecha}')"><i class="fa-solid fa-pen"></i> Editar</button>
-                                        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();Peso._eliminar('${m.fecha}')"><i class="fa-solid fa-trash"></i> Eliminar</button>
+            },
+
+            registrarEjercicio(nombre, dia) {
+                const registros = STATE.registroEjercicios[nombre] || [];
+                const ultimo = registros.length > 0 ? registros[registros.length - 1] : null;
+
+                Modal.abrir(`
+                    <h3>${nombre}</h3>
+                    <div style="margin:12px 0;">
+                        <label style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px;">Peso (kg)</label>
+                        <input type="number" id="modalPeso" step="0.5" class="input" value="${ultimo?.peso || ''}" placeholder="0">
+                    </div>
+                    <div style="margin:12px 0;">
+                        <label style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px;">Repeticiones</label>
+                        <input type="text" id="modalReps" class="input" placeholder="10,10,9,8" value="${ultimo?.reps || ''}">
+                    </div>
+                    <div style="display:flex;gap:8px;margin-top:12px;">
+                        <button class="btn btn-success btn-block" onclick="Rutinas.guardarRegistro('${nombre}')" style="flex:1;">
+                            <i class="fa-solid fa-floppy-disk"></i> Guardar
+                        </button>
+                        <button class="btn btn-ghost" onclick="Modal.cerrar()" style="flex:0.5;">Cancelar</button>
+                    </div>
+                `);
+            },
+
+            guardarRegistro(nombre) {
+                const peso = parseFloat(document.getElementById('modalPeso').value);
+                const reps = document.getElementById('modalReps').value.trim() || '-';
+                if (!peso || peso === 0) { UI.toast('Introduce un peso', 'error'); return; }
+
+                if (!STATE.registroEjercicios[nombre]) STATE.registroEjercicios[nombre] = [];
+                STATE.registroEjercicios[nombre].push({
+                    fecha: UI.getHoy(),
+                    peso: peso,
+                    reps: reps,
+                    completado: true
+                });
+
+                Storage._save();
+                Modal.cerrar();
+                UI.toast(`✅ ${nombre} registrado: ${peso} kg × ${reps}`, 'success');
+                this.render();
+                Historial.render();
+                Estadisticas.render();
+            },
+
+            completarEntreno() {
+                const hoy = UI.getHoy();
+                if (!STATE.diasEntrenados.includes(hoy)) {
+                    STATE.diasEntrenados.push(hoy);
+                    STATE.evolution.totalWorkouts = STATE.diasEntrenados.length;
+                    Storage._save();
+                    UI.toast('🎉 ¡Entrenamiento completado!', 'success');
+                    confetti({ particleCount: 120, spread: 70 });
+                    this.render();
+                    Dashboard.render();
+                    Historial.render();
+                    Estadisticas.render();
+                }
+            }
+        };
+
+        // ==========================================
+        // HISTORIAL
+        // ==========================================
+        const Historial = {
+            render() {
+                const c = document.getElementById('historialContainer');
+                if (!c) return;
+
+                let html = `<div class="card"><div class="card-title">📊 Historial por ejercicio</div>`;
+
+                const ejercicios = Object.keys(STATE.registroEjercicios);
+                if (ejercicios.length === 0) {
+                    html += `<div style="text-align:center;padding:20px;color:var(--text-secondary);">Aún no hay registros</div>`;
+                } else {
+                    ejercicios.forEach(nombre => {
+                        const registros = STATE.registroEjercicios[nombre] || [];
+                        if (registros.length === 0) return;
+                        const ultimos = registros.slice(-5);
+                        let progreso = '';
+                        if (registros.length >= 2) {
+                            const primero = registros[0];
+                            const ultimo = registros[registros.length - 1];
+                            if (ultimo.peso > primero.peso) {
+                                progreso = `📈 +${(ultimo.peso - primero.peso).toFixed(1)} kg`;
+                            } else if (ultimo.peso < primero.peso) {
+                                progreso = `📉 ${(ultimo.peso - primero.peso).toFixed(1)} kg`;
+                            }
+                        }
+
+                        html += `
+                            <div class="historial-ejercicio">
+                                <div class="he-nombre">${nombre}</div>
+                                ${ultimos.map(r => `
+                                    <div class="he-sesion">
+                                        <span class="he-fecha">${UI.formatFecha(r.fecha)}</span>
+                                        <span><span class="he-peso">${r.peso}</span> kg · <span class="he-reps">${r.reps}</span></span>
                                     </div>
-                                </div>
+                                `).join('')}
+                                ${progreso ? `<div class="he-progreso">${progreso}</div>` : ''}
                             </div>
                         `;
-                }).join('');
-            },
+                    });
+                }
+                html += `</div>`;
 
-            _toggleDetalle(i) {
-                const d = document.getElementById(`pesoDetalle-${i}`);
-                if (d) d.classList.toggle('open');
-            },
+                html += `<div class="card"><div class="card-title">📅 Historial de entrenamientos</div>`;
+                const entrenos = [...STATE.diasEntrenados].sort().reverse();
+                if (entrenos.length === 0) {
+                    html += `<div style="text-align:center;padding:12px;color:var(--text-secondary);">Sin entrenos</div>`;
+                } else {
+                    entrenos.slice(0, 10).forEach(f => {
+                        const fecha = new Date(f);
+                        const diaKey = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'][fecha.getDay()];
+                        const info = CONFIG.SEMANA[diaKey];
+                        html += `
+                            <div class="historial-entreno">
+                                <span class="he-fecha">${UI.formatFecha(f)}</span>
+                                <span class="he-duracion">${info?.rutina || 'Entreno'}</span>
+                                <span class="he-estado">✅</span>
+                            </div>
+                        `;
+                    });
+                }
+                html += `</div>`;
 
-            _editar(f) {
-                const m = STATE.mediciones.find(x => x.fecha === f);
-                if (!m) return;
-                document.getElementById('medFecha').value = m.fecha;
-                document.getElementById('medPeso').value = m.peso;
-                document.getElementById('medGrasa').value = m.grasaPorcentaje;
-                document.getElementById('medMusculo').value = m.masaMuscular;
-                document.getElementById('medCintura').value = m.cintura;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            },
-
-            _eliminar(f) {
-                UI.confirmar('¿Eliminar esta medición?', () => {
-                    STATE.mediciones = STATE.mediciones.filter(m => m.fecha !== f);
-                    Storage._save();
-                    this.render();
-                    APP.renderizarTodo();
-                    UI.toast('🗑️ Eliminado', 'success');
-                });
+                c.innerHTML = html;
             }
         };
 
@@ -1376,262 +1078,58 @@
                 const c = document.getElementById('estadisticasContainer');
                 if (!c) return;
 
-                const ev = STATE.evolution;
                 const total = STATE.diasEntrenados.length || 0;
-                const wc = (ev.currentWeight - ev.initialWeight).toFixed(1);
-                const wc2 = (ev.currentWaist - ev.initialWaist).toFixed(1);
-                const altura = STATE.altura || CONFIG.ALTURA;
-                const imc = ev.currentWeight / ((altura / 100) ** 2);
-
-                c.innerHTML = `
-                        <div class="card">
-                            <div class="card-title"><i class="fa-solid fa-chart-simple"></i> Estadísticas</div>
-                            <div class="stats-grid">
-                                <div class="stats-item">
-                                    <div class="num ${parseFloat(wc) < 0 ? 'green' : 'orange'}">${parseFloat(wc) < 0 ? '' : '+'}${Math.abs(parseFloat(wc))}</div>
-                                    <div class="label">Peso</div>
-                                </div>
-                                <div class="stats-item">
-                                    <div class="num ${parseFloat(wc2) < 0 ? 'green' : 'orange'}">${parseFloat(wc2) < 0 ? '' : '+'}${Math.abs(parseFloat(wc2))}</div>
-                                    <div class="label">Cintura</div>
-                                </div>
-                                <div class="stats-item">
-                                    <div class="num primary">${imc.toFixed(1)}</div>
-                                    <div class="label">IMC</div>
-                                </div>
-                                <div class="stats-item">
-                                    <div class="num primary">${total}</div>
-                                    <div class="label">Entrenos</div>
-                                </div>
-                                <div class="stats-item">
-                                    <div class="num green">${ev.daysWithoutSmoking || 0}</div>
-                                    <div class="label">Sin fumar</div>
-                                </div>
-                                <div class="stats-item">
-                                    <div class="num info">${STATE.records.length}</div>
-                                    <div class="label">Récords</div>
-                                </div>
-                            </div>
-                            <div style="margin-top:12px;padding:8px 12px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);text-align:center;font-size:13px;">
-                                🎯 Objetivo: <strong>${CONFIG.PESO_OBJETIVO} kg</strong> · ${STATE.mediciones.length > 0 ? Math.min(100, Math.round(((STATE.mediciones[0].peso - STATE.mediciones[STATE.mediciones.length-1].peso) / (STATE.mediciones[0].peso - CONFIG.PESO_OBJETIVO)) * 100)) : 0}% completado
-                            </div>
-                        </div>
-                    `;
-            }
-        };
-
-        // ==========================================
-        // AGENDA
-        // ==========================================
-        const Agenda = {
-            render() {
-                const c = document.getElementById('agendaContainer');
-                if (!c) return;
-
                 const hoy = new Date();
-                const dia = UI.getDiaNombre();
-                const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
+                const mes = hoy.getMonth();
+                const anio = hoy.getFullYear();
+                const entrenosMes = STATE.diasEntrenados.filter(f => {
+                    const d = new Date(f);
+                    return d.getMonth() === mes && d.getFullYear() === anio;
+                }).length;
 
-                const freqMed = STATE.recordatorios.freqMediciones || 2;
-                const pm = getProximoDomingo(STATE.recordatorios.ultimaMedicion || CONFIG.FECHA_REFERENCIA_MEDICIONES,
-                    freqMed);
-                const diasMed = getDiasHasta(pm);
+                const entrenosAnio = STATE.diasEntrenados.filter(f => {
+                    const d = new Date(f);
+                    return d.getFullYear() === anio;
+                }).length;
 
-                const freqFotos = STATE.recordatorios.freqFotos || 4;
-                const pf = getProximoDomingo(STATE.recordatorios.ultimasFotos || CONFIG.FECHA_REFERENCIA_MEDICIONES,
-                    freqFotos);
-                const diasFotos = getDiasHasta(pf);
+                const peso = STATE.mediciones.length > 0 ? STATE.mediciones[STATE.mediciones.length - 1].peso : '--';
+                const pesoInicio = STATE.mediciones.length > 0 ? STATE.mediciones[0].peso : '--';
 
-                c.innerHTML = `
-                        <div class="card">
-                            <div class="card-title">📅 Agenda</div>
-                            <div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString('es-ES', {day:'numeric', month:'long'})}</div>
-
-                            <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Hoy</div>
-                            <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;">
-                                <div class="pending-item">
-                                    <span class="pi-icon">${dia !== 'domingo' && !entrenadoHoy ? '⏳' : '✅'}</span>
-                                    <span>${dia !== 'domingo' ? (entrenadoHoy ? 'Entreno completado' : 'Entreno pendiente') : 'Día de descanso'}</span>
-                                </div>
-                            </div>
-
-                            <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Próximos</div>
-                            <div style="display:flex;flex-direction:column;gap:6px;">
-                                <div class="pending-item" style="${diasMed <= 1 ? '' : 'opacity:0.5;'}">
-                                    <span class="pi-icon">📏</span>
-                                    <span>Medición ${diasMed <= 1 ? 'mañana' : `en ${diasMed} días`}</span>
-                                </div>
-                                <div class="pending-item" style="${diasFotos <= 1 ? '' : 'opacity:0.5;'}">
-                                    <span class="pi-icon">📸</span>
-                                    <span>Fotos ${diasFotos <= 1 ? 'mañana' : `en ${diasFotos} días`}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-            }
-        };
-
-        // ==========================================
-        // FOTOS
-        // ==========================================
-        const Fotos = {
-            db: null,
-            DB_NAME: 'FotosProgresoDB',
-            STORE_NAME: 'diasFotos',
-
-            _abrirDB() {
-                return new Promise(r => {
-                    const req = indexedDB.open(this.DB_NAME, 1);
-                    req.onupgradeneeded = e => {
-                        if (!e.target.result.objectStoreNames.contains(this.STORE_NAME))
-                            e.target.result.createObjectStore(this.STORE_NAME, { keyPath: 'fecha' });
-                    };
-                    req.onsuccess = e => { this.db = e.target.result;
-                        r(); };
-                    req.onerror = () => r();
-                });
-            },
-
-            _leerArchivo(file) {
-                if (!file) return Promise.resolve(null);
-                return new Promise(r => { const reader = new FileReader();
-                    reader.onload = e => r(e.target.result);
-                    reader.readAsDataURL(file); });
-            },
-
-            async render() {
-                const c = document.getElementById('fotosContainer');
-                if (!c) return;
-
-                const fechas = await this._obtenerFechas();
+                let tiempoEstimado = total * 45;
+                const horas = Math.floor(tiempoEstimado / 60);
+                const minutos = tiempoEstimado % 60;
 
                 c.innerHTML = `
-                        <div class="card">
-                            <div class="card-title"><i class="fa-solid fa-camera"></i> Subir fotos</div>
-                            <div style="display:flex;gap:8px;margin-bottom:10px">
-                                <input type="date" id="fechaFotos" class="input">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-chart-simple"></i> Estadísticas</div>
+                        <div class="stats-grid-2">
+                            <div class="stats-item-2">
+                                <div class="num primary">${entrenosMes}</div>
+                                <div class="label">Este mes</div>
                             </div>
-                            <div class="foto-grid-upload">
-                                <div class="equip-card"><div class="label">Frente</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Frente')"><img id="previewFrente" class="foto-preview hidden"></div>
-                                <div class="equip-card"><div class="label">Espalda</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Espalda')"><img id="previewEspalda" class="foto-preview hidden"></div>
-                                <div class="equip-card"><div class="label">Izquierda</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Izquierda')"><img id="previewIzquierda" class="foto-preview hidden"></div>
-                                <div class="equip-card"><div class="label">Derecha</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Derecha')"><img id="previewDerecha" class="foto-preview hidden"></div>
+                            <div class="stats-item-2">
+                                <div class="num green">${entrenosAnio}</div>
+                                <div class="label">Este año</div>
                             </div>
-                            <button class="btn btn-primary btn-block" onclick="Fotos._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                            <div class="stats-item-2">
+                                <div class="num orange">${horas}h ${minutos}m</div>
+                                <div class="label">Tiempo estimado</div>
+                            </div>
+                            <div class="stats-item-2">
+                                <div class="num primary">${peso}</div>
+                                <div class="label">Peso actual</div>
+                            </div>
                         </div>
-
-                        <div class="card">
-                            <div class="card-title"><i class="fa-solid fa-code-compare"></i> Comparar</div>
-                            <div style="display:flex;gap:8px;margin-bottom:10px">
-                                <select id="compararDia1" class="input" style="flex:1;">
-                                    <option value="">Día 1</option>
-                                    ${fechas.map(f => `<option value="${f}">${UI.formatearFecha(f)}</option>`).join('')}
-                                </select>
-                                <select id="compararDia2" class="input" style="flex:1;">
-                                    <option value="">Día 2</option>
-                                    ${fechas.map(f => `<option value="${f}">${UI.formatearFecha(f)}</option>`).join('')}
-                                </select>
+                        ${pesoInicio !== '--' && peso !== '--' ? `
+                            <div style="margin-top:10px;padding:8px 12px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);text-align:center;font-size:13px;">
+                                📉 Cambio de peso: <strong>${(pesoInicio - peso).toFixed(1)} kg</strong>
                             </div>
-                            <button class="btn btn-primary btn-block" onclick="Fotos._comparar()"><i class="fa-solid fa-eye"></i> Comparar</button>
-                            <div id="comparadorResultado" style="margin-top:10px"></div>
+                        ` : ''}
+                        <div style="margin-top:8px;padding:8px 12px;background:rgba(0,0,0,0.08);border-radius:var(--radius-sm);text-align:center;font-size:12px;color:var(--text-secondary);">
+                            💪 ${total} entrenos completados
                         </div>
-                    `;
-                document.getElementById('fechaFotos').value = UI.getHoy();
-            },
-
-            _obtenerFechas() {
-                return new Promise(r => {
-                    if (!this.db) { this._abrirDB().then(() => this._obtenerFechas().then(r)); return; }
-                    const req = this.db.transaction(this.STORE_NAME, 'readonly').objectStore(this.STORE_NAME)
-                        .getAll();
-                    req.onsuccess = e => r((e.target.result || []).sort((a, b) => b.timestamp - a.timestamp).map(i =>
-                        i
-                        .fecha));
-                    req.onerror = () => r([]);
-                });
-            },
-
-            async _guardar() {
-                const f = document.getElementById('fechaFotos').value;
-                if (!f) { UI.toast('Selecciona fecha', 'error'); return; }
-
-                const inputs = document.querySelectorAll('.equip-card input[type="file"]');
-                const files = {};
-                for (const input of inputs) {
-                    const label = input.parentElement.querySelector('.label').textContent;
-                    files[label] = input.files[0];
-                }
-
-                const fr = await this._leerArchivo(files['Frente']);
-                const es = await this._leerArchivo(files['Espalda']);
-                const iz = await this._leerArchivo(files['Izquierda']);
-                const de = await this._leerArchivo(files['Derecha']);
-
-                if (!fr && !es && !iz && !de) { UI.toast('Selecciona al menos una foto', 'error'); return; }
-
-                await this._abrirDB();
-                await this.db.transaction(this.STORE_NAME, 'readwrite').objectStore(this.STORE_NAME).put({
-                    fecha: f,
-                    timestamp: Date.now(),
-                    frente: fr,
-                    espalda: es,
-                    izquierda: iz,
-                    derecha: de
-                });
-                STATE.recordatorios.ultimasFotos = f;
-                Storage._save();
-                UI.toast('✅ Fotos guardadas', 'success');
-                this.render();
-                APP.renderizarTodo();
-
-                document.querySelectorAll('.equip-card input[type="file"]').forEach(input => input.value = '');
-                document.querySelectorAll('.foto-preview').forEach(el => el.classList.add('hidden'));
-            },
-
-            _preview(input, tipo) {
-                if (input.files[0]) {
-                    const r = new FileReader();
-                    r.onload = e => {
-                        const img = document.getElementById('preview' + tipo);
-                        img.src = e.target.result;
-                        img.classList.remove('hidden');
-                    };
-                    r.readAsDataURL(input.files[0]);
-                }
-            },
-
-            async _comparar() {
-                const f1 = document.getElementById('compararDia1').value;
-                const f2 = document.getElementById('compararDia2').value;
-                if (!f1 || !f2) { UI.toast('Selecciona dos días', 'error'); return; }
-
-                await this._abrirDB();
-                const store = this.db.transaction(this.STORE_NAME, 'readonly').objectStore(this.STORE_NAME);
-                const d1 = await new Promise(r => store.get(f1).onsuccess = e => r(e.target.result));
-                const d2 = await new Promise(r => store.get(f2).onsuccess = e => r(e.target.result));
-
-                const gen = (t, c) => {
-                    if (!d1?.[c] && !d2?.[c]) return '';
-                    return `
-                            <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:10px;margin-bottom:10px;border:1px solid var(--border);">
-                                <h4 style="color:var(--primary);margin-bottom:6px;text-align:center;">${t}</h4>
-                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                                    <img src="${d1?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
-                                    <img src="${d2?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
-                                </div>
-                                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);margin-top:4px;">
-                                    <span>${UI.formatearFecha(f1)}</span>
-                                    <span>${UI.formatearFecha(f2)}</span>
-                                </div>
-                            </div>
-                        `;
-                };
-
-                let html = gen('FRENTE', 'frente') + gen('ESPALDA', 'espalda') + gen('IZQUIERDA', 'izquierda') + gen(
-                    'DERECHA', 'derecha');
-                if (!html) html =
-                    '<div style="text-align:center;padding:20px;color:var(--text-secondary);">No hay fotos para comparar</div>';
-                document.getElementById('comparadorResultado').innerHTML = html;
+                    </div>
+                `;
             }
         };
 
@@ -1642,24 +1140,19 @@
             generar() {
                 const notifs = [];
                 const dia = UI.getDiaNombre();
-                const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
-
-                const freqMed = STATE.recordatorios.freqMediciones || 2;
-                const pm = getProximoDomingo(STATE.recordatorios.ultimaMedicion || CONFIG.FECHA_REFERENCIA_MEDICIONES,
-                    freqMed);
-                if (getDiasHasta(pm) <= 1) notifs.push({ icono: '📏', texto: 'Mañana toca medición' });
-
-                const freqFotos = STATE.recordatorios.freqFotos || 4;
-                const pf = getProximoDomingo(STATE.recordatorios.ultimasFotos || CONFIG.FECHA_REFERENCIA_MEDICIONES,
-                    freqFotos);
-                if (getDiasHasta(pf) <= 1) notifs.push({ icono: '📸', texto: 'Mañana toca fotos' });
-
-                if (dia !== 'domingo' && !entrenadoHoy) {
-                    notifs.push({ icono: '💪', texto: `Entrena ${CONFIG.TIPOS_RUTINA[dia]}` });
+                const info = CONFIG.SEMANA[dia];
+                if (info && info.tipo === 'entreno' && !STATE.diasEntrenados.includes(UI.getHoy())) {
+                    notifs.push({ icono: '💪', texto: `Entrena ${info.nombre}: ${info.rutina}` });
+                }
+                if (STATE.mediciones.length > 0) {
+                    const ultima = STATE.mediciones[STATE.mediciones.length - 1];
+                    const dias = Math.round((new Date() - new Date(ultima.fecha)) / 86400000);
+                    if (dias > 14) {
+                        notifs.push({ icono: '📏', texto: 'Hace más de 2 semanas de tu última medición' });
+                    }
                 }
                 return notifs;
             },
-
             render() {
                 const lista = document.getElementById('notifList');
                 const notifs = this.generar();
@@ -1685,244 +1178,40 @@
                 if (!c) return;
 
                 c.innerHTML = `
-                        <div class="card">
-                            <div class="card-title"><i class="fa-solid fa-user"></i> Perfil</div>
-                            <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="input input-sm" id="ajusteNombre" value="${STATE.nombre}" style="width:120px;"></div>
-                            <div class="ajustes-item"><span class="aj-label">Altura (cm)</span><input class="input input-sm" type="number" id="ajusteAltura" value="${STATE.altura}" style="width:80px;"></div>
-                            <div class="ajustes-item"><span class="aj-label">Peso objetivo (kg)</span><input class="input input-sm" type="number" id="ajusteObjetivo" value="${CONFIG.PESO_OBJETIVO}" style="width:80px;"></div>
-                            <button class="btn btn-primary btn-block" onclick="Ajustes._guardar()" style="margin-top:12px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-                        </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-user"></i> Perfil</div>
+                        <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="input input-sm" id="ajusteNombre" value="${STATE.nombre}" style="width:120px;"></div>
+                        <div class="ajustes-item"><span class="aj-label">Altura (cm)</span><input class="input input-sm" type="number" id="ajusteAltura" value="${STATE.altura}" style="width:80px;"></div>
+                        <div class="ajustes-item"><span class="aj-label">Peso objetivo (kg)</span><input class="input input-sm" type="number" id="ajusteObjetivo" value="${STATE.pesoObjetivo || CONFIG.PESO_OBJETIVO}" style="width:80px;"></div>
+                        <button class="btn btn-primary btn-block" onclick="Ajustes.guardar()" style="margin-top:12px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                    </div>
 
-                        <div class="card">
-                            <div class="card-title"><i class="fa-solid fa-bell"></i> Recordatorios</div>
-                            <div class="ajustes-item"><span class="aj-label">📏 Mediciones (semanas)</span><input class="input input-sm" type="number" id="ajusteFreqMediciones" value="${STATE.recordatorios.freqMediciones || 2}" min="1" max="8" style="width:60px;"></div>
-                            <div class="ajustes-item"><span class="aj-label">📸 Fotos (semanas)</span><input class="input input-sm" type="number" id="ajusteFreqFotos" value="${STATE.recordatorios.freqFotos || 4}" min="1" max="12" style="width:60px;"></div>
-                            <button class="btn btn-primary btn-block" onclick="Ajustes._guardarRecordatorios()" style="margin-top:12px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-                        </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-database"></i> Datos</div>
+                        <button class="btn btn-ghost btn-block" onclick="Storage.exportar()"><i class="fa-solid fa-download"></i> Exportar</button>
+                        <button class="btn btn-ghost btn-block" onclick="document.getElementById('importFile').click()" style="margin-top:6px;"><i class="fa-solid fa-upload"></i> Importar</button>
+                        <input type="file" id="importFile" accept=".json" class="hidden">
+                        <button class="btn btn-danger btn-block" onclick="APP.confirmarReset()" style="margin-top:6px;"><i class="fa-solid fa-trash"></i> Borrar todos los datos</button>
+                    </div>
 
-                        <div class="card">
-                            <div class="card-title"><i class="fa-solid fa-database"></i> Datos</div>
-                            <button class="btn btn-ghost btn-block" onclick="Storage.exportar()"><i class="fa-solid fa-download"></i> Exportar</button>
-                            <button class="btn btn-ghost btn-block" onclick="document.getElementById('importFile').click()" style="margin-top:6px;"><i class="fa-solid fa-upload"></i> Importar</button>
-                            <input type="file" id="importFile" accept=".json" class="hidden">
-                            <button class="btn btn-danger btn-block" onclick="APP.confirmarReset()" style="margin-top:6px;"><i class="fa-solid fa-trash"></i> Borrar todos los datos</button>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-title"><i class="fa-solid fa-circle-info"></i> Acerca de</div>
-                            <div class="ajustes-item"><span class="aj-label">Versión</span><span style="color:var(--text-secondary);" id="versionDisplay">${CONFIG.VERSION}</span></div>
-                            <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;">NicoGym · Tu compañero de entrenamiento</div>
-                        </div>
-                    `;
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-circle-info"></i> Acerca de</div>
+                        <div class="ajustes-item"><span class="aj-label">Versión</span><span style="color:var(--text-secondary);" id="versionDisplay">${CONFIG.VERSION}</span></div>
+                        <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;">NicoGym · Tu compañero de entrenamiento</div>
+                    </div>
+                `;
             },
 
-            _guardar() {
+            guardar() {
                 const nombre = document.getElementById('ajusteNombre').value || 'Nico';
                 const altura = parseInt(document.getElementById('ajusteAltura').value) || CONFIG.ALTURA;
                 const objetivo = parseInt(document.getElementById('ajusteObjetivo').value) || CONFIG.PESO_OBJETIVO;
                 STATE.nombre = nombre;
                 STATE.altura = altura;
-                CONFIG.PESO_OBJETIVO = objetivo;
-                STATE.ajustes = { nombre, altura, objetivo };
+                STATE.pesoObjetivo = objetivo;
+                STATE.ajustes = { nombre, altura, pesoObjetivo: objetivo };
                 Storage._save();
                 UI.toast('✅ Ajustes guardados', 'success');
-                APP.renderizarTodo();
-            },
-
-            _guardarRecordatorios() {
-                const fm = parseInt(document.getElementById('ajusteFreqMediciones').value) || 2;
-                const ff = parseInt(document.getElementById('ajusteFreqFotos').value) || 4;
-                STATE.recordatorios.freqMediciones = fm;
-                STATE.recordatorios.freqFotos = ff;
-                Storage._save();
-                UI.toast('✅ Recordatorios guardados', 'success');
-                APP.renderizarTodo();
-            }
-        };
-
-        // ==========================================
-        // CALCULADORA DE DISCOS
-        // ==========================================
-        const Calculadora = {
-            // Discos ordenados de mayor a menor
-            discosDisponibles: [
-                { peso: 2, cantidad: 4 },
-                { peso: 1.5, cantidad: 4 },
-                { peso: 1.25, cantidad: 4 }
-            ],
-            estado: {
-                tipo: 'mancuerna',
-                discosSeleccionados: {},
-                ejercicioNombre: '',
-                ejercicioId: '',
-                dia: '',
-                idx: ''
-            },
-            pesosBarra: {
-                mancuerna: 0.5,
-                barra: 1
-            },
-
-            abrir(ejercicioNombre, dia, idx) {
-                this.estado.ejercicioNombre = ejercicioNombre;
-                this.estado.dia = dia;
-                this.estado.idx = idx;
-                this.estado.ejercicioId = `${dia}-${idx}`;
-
-                this.estado.discosSeleccionados = {};
-                this.discosDisponibles.forEach(d => {
-                    this.estado.discosSeleccionados[d.peso] = 0;
-                });
-
-                this.setTipo('mancuerna');
-
-                document.getElementById('calcEjercicioNombre').textContent = ejercicioNombre;
-
-                const ultimo = Rutinas._getUltimoEntreno(ejercicioNombre);
-                document.getElementById('calcReps').value = ultimo?.reps || '';
-
-                document.getElementById('modalCalculadora').classList.remove('hidden');
-
-                this._renderDiscos();
-                this._actualizarPesoTotal();
-            },
-
-            cerrar() {
-                document.getElementById('modalCalculadora').classList.add('hidden');
-            },
-
-            setTipo(tipo) {
-                this.estado.tipo = tipo;
-                document.getElementById('calcTipoMancuerna').className = `btn btn-sm ${tipo === 'mancuerna' ? 'btn-primary' : 'btn-ghost'}`;
-                document.getElementById('calcTipoBarra').className = `btn btn-sm ${tipo === 'barra' ? 'btn-primary' : 'btn-ghost'}`;
-                const pesoBarra = this.pesosBarra[tipo] || 0;
-                document.getElementById('calcPesoBarra').textContent = pesoBarra.toFixed(1);
-                this._actualizarPesoTotal();
-            },
-
-            toggleDisco(peso) {
-                const maxDiscos = this.discosDisponibles.find(d => d.peso === peso)?.cantidad || 0;
-                const actual = this.estado.discosSeleccionados[peso] || 0;
-                if (actual < maxDiscos) {
-                    this.estado.discosSeleccionados[peso] = actual + 1;
-                } else {
-                    this.estado.discosSeleccionados[peso] = 0;
-                }
-                this._renderDiscos();
-                this._actualizarPesoTotal();
-            },
-
-            _renderDiscos() {
-                const container = document.getElementById('calcDiscosContainer');
-                container.innerHTML = '';
-                this.discosDisponibles.forEach(d => {
-                    const seleccionados = this.estado.discosSeleccionados[d.peso] || 0;
-                    const total = d.cantidad;
-                    const btn = document.createElement('button');
-                    btn.className = `btn btn-sm ${seleccionados > 0 ? 'btn-primary' : 'btn-ghost'}`;
-                    btn.textContent = `${d.peso} kg (${seleccionados}/${total})`;
-                    btn.onclick = () => this.toggleDisco(d.peso);
-                    container.appendChild(btn);
-                });
-            },
-
-            _actualizarPesoTotal() {
-                let pesoDiscos = 0;
-                for (const [peso, cantidad] of Object.entries(this.estado.discosSeleccionados)) {
-                    pesoDiscos += parseFloat(peso) * cantidad;
-                }
-
-                // El peso total es SOLO los discos (la barra no se suma)
-                const pesoTotal = pesoDiscos;
-
-                document.getElementById('calcPesoDiscos').textContent = pesoDiscos.toFixed(1);
-                document.getElementById('calcPesoTotal').textContent = pesoTotal.toFixed(1);
-            },
-
-            guardar() {
-                const pesoTotal = parseFloat(document.getElementById('calcPesoTotal').textContent);
-                const reps = document.getElementById('calcReps').value.trim() || '-';
-
-                if (pesoTotal === 0) {
-                    UI.toast('Selecciona algún disco', 'error');
-                    return;
-                }
-
-                const dia = this.estado.dia;
-                const idx = this.estado.idx;
-                const nombre = this.estado.ejercicioNombre;
-                const id = `${dia}-${idx}`;
-
-                // Guardar inputs ocultos (para compatibilidad con finalizar)
-                const pesoInput = document.getElementById(`peso-${id}`);
-                const repsInput = document.getElementById(`reps-${id}`);
-                if (pesoInput) pesoInput.value = pesoTotal;
-                if (repsInput) repsInput.value = reps;
-
-                // Marcar check
-                if (!STATE.checks[id]) {
-                    STATE.checks[id] = true;
-                    Storage._save();
-                    Rutinas._actualizarProgreso();
-                    const c = document.getElementById(`lista-${dia}`);
-                    if (c) {
-                        const cards = c.querySelectorAll('.ex-card');
-                        if (cards[idx]) cards[idx].classList.add('checked');
-                        const checkbox = cards[idx]?.querySelector('.check-box');
-                        if (checkbox) checkbox.checked = true;
-                    }
-                }
-
-                // Guardar historial
-                const hoy = UI.getHoy();
-                let entrenamientoExistente = STATE.historialEntrenos.find(e => e.fecha === hoy && e.dia === dia);
-
-                if (entrenamientoExistente) {
-                    const ejExistente = entrenamientoExistente.ejercicios.find(e => e.nombre === nombre);
-                    if (ejExistente) {
-                        ejExistente.peso = pesoTotal;
-                        ejExistente.reps = reps;
-                    } else {
-                        entrenamientoExistente.ejercicios.push({ nombre, peso: pesoTotal, reps });
-                    }
-                } else {
-                    STATE.historialEntrenos.push({
-                        fecha: hoy,
-                        dia: dia,
-                        tipo: CONFIG.TIPOS_RUTINA[dia] || dia.toUpperCase(),
-                        ejercicios: [{ nombre, peso: pesoTotal, reps }]
-                    });
-                }
-
-                Storage._save();
-
-                // Récord
-                const repsNum = reps.split(',').map(Number).reduce((a, b) => a + b, 0);
-                if (pesoTotal > 0 && repsNum > 0) {
-                    const date = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit',
-                        year: 'numeric' });
-                    if (Records.actualizar(nombre, pesoTotal, repsNum, date)) {
-                        UI.toast('🏆 Nuevo récord!', 'success');
-                    }
-                }
-
-                UI.toast(`✅ ${nombre} guardado: ${pesoTotal} kg × ${reps}`, 'success');
-                this.cerrar();
-
-                // Comprobar día completado
-                const ejerciciosDia = CONFIG.EJERCICIOS[dia] || [];
-                const todosCompletados = ejerciciosDia.every((_, i) => STATE.checks[`${dia}-${i}`]);
-                if (todosCompletados && ejerciciosDia.length > 0) {
-                    const hoyStr = UI.getHoy();
-                    if (!STATE.diasEntrenados.includes(hoyStr)) {
-                        STATE.diasEntrenados.push(hoyStr);
-                        Storage._save();
-                        UI.toast(`🎉 ¡${dia.toUpperCase()} COMPLETADO!`, 'success');
-                        confetti({ particleCount: 120, spread: 70 });
-                        APP.renderizarTodo();
-                    }
-                }
-
                 APP.renderizarTodo();
             }
         };
