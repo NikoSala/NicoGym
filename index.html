@@ -58,6 +58,29 @@
         .text-warning { color: var(--warning); }
         .w-full { width: 100%; }
 
+        /* ===== SKELETON LOADING ===== */
+        .skeleton { background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); animation: pulse 1.5s ease-in-out infinite; }
+        .skeleton-text { height: 14px; width: 100%; border-radius: 4px; margin-bottom: 6px; }
+        .skeleton-text.w70 { width: 70%; }
+        .skeleton-text.w50 { width: 50%; }
+        .skeleton-text.w40 { width: 40%; }
+        .skeleton-card { height: 80px; border-radius: var(--radius); }
+        .skeleton-stat { height: 60px; border-radius: var(--radius-sm); }
+        .skeleton-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
+
+        /* ===== LOADING SCREEN ===== */
+        .loading-screen {
+            position: fixed; inset: 0; z-index: 9999;
+            background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        .loading-screen.fade-out { opacity: 0; pointer-events: none; }
+        .loading-screen .loader { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-screen .loader-text { margin-top: 12px; font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+
         .top-bar {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 50px;
             padding: 0 var(--space-sm); background: rgba(11, 17, 32, 0.92);
@@ -198,29 +221,13 @@
             text-align: center;
         }
         .day-tabs .dtab:hover { border-color: var(--text-secondary); color: var(--text); }
-        .day-tabs .dtab.active {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
-        .day-tabs .dtab.completado {
-            border-color: var(--success);
-            color: var(--success);
-        }
-        .day-tabs .dtab.descanso {
-            opacity: 0.4;
-            cursor: default;
-        }
+        .day-tabs .dtab.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
+        .day-tabs .dtab.completado { border-color: var(--success); color: var(--success); }
+        .day-tabs .dtab.descanso { opacity: 0.4; cursor: default; }
         .day-tabs .dtab.descanso:hover { border-color: var(--border); color: var(--text-secondary); }
 
-        .dia-panel {
-            display: none;
-        }
-        .dia-panel.active {
-            display: block;
-            animation: fadeUp 0.3s ease;
-        }
+        .dia-panel { display: none; }
+        .dia-panel.active { display: block; animation: fadeUp 0.3s ease; }
 
         .ex-grid { display: flex; flex-direction: column; gap: 8px; }
         .ex-card { background: var(--bg-card); border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden; transition: var(--transition); }
@@ -383,53 +390,15 @@
             border-bottom: 1px solid var(--border);
             flex-shrink: 0;
         }
-        .modo-entreno-overlay .me-header .me-titulo {
-            font-size: 14px;
-            font-weight: 700;
-        }
-        .modo-entreno-overlay .me-header .me-progreso-texto {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        .modo-entreno-overlay .me-progreso-bar {
-            margin: 8px 0 12px;
-            flex-shrink: 0;
-        }
-        .modo-entreno-overlay .me-progreso-track {
-            height: 4px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        .modo-entreno-overlay .me-progreso-fill {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 3px;
-            transition: width 0.5s ease;
-        }
-        .modo-entreno-overlay .me-progreso-info {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-top: 3px;
-            text-align: right;
-        }
-        .modo-entreno-overlay .me-completado-msg {
-            padding: 6px 12px;
-            background: rgba(34,197,94,0.12);
-            border-radius: var(--radius-sm);
-            color: var(--success);
-            font-weight: 600;
-            font-size: 13px;
-            text-align: center;
-            margin-bottom: 10px;
-            border: 1px solid rgba(34,197,94,0.2);
-            animation: fadeUp 0.3s ease;
-        }
-        .modo-entreno-overlay .me-body {
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 12px;
-        }
+        .modo-entreno-overlay .me-header .me-titulo { font-size: 14px; font-weight: 700; }
+        .modo-entreno-overlay .me-header .me-progreso-texto { font-size: 12px; color: var(--text-secondary); }
+        .modo-entreno-overlay .me-progreso-bar { margin: 8px 0 12px; flex-shrink: 0; }
+        .modo-entreno-overlay .me-progreso-track { height: 4px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+        .modo-entreno-overlay .me-progreso-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.5s ease; }
+        .modo-entreno-overlay .me-progreso-info { font-size: 11px; color: var(--text-secondary); margin-top: 3px; text-align: right; }
+        .modo-entreno-overlay .me-completado-msg { padding: 6px 12px; background: rgba(34,197,94,0.12); border-radius: var(--radius-sm); color: var(--success); font-weight: 600; font-size: 13px; text-align: center; margin-bottom: 10px; border: 1px solid rgba(34,197,94,0.2); animation: fadeUp 0.3s ease; }
+        .modo-entreno-overlay .me-body { flex: 1; overflow-y: auto; padding-bottom: 12px; }
+
         .modo-entreno-overlay .me-ejercicio-card {
             background: var(--bg-card);
             border-radius: var(--radius);
@@ -437,369 +406,77 @@
             border: 1px solid var(--border);
             animation: fadeUp 0.3s ease;
         }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-numero {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-bottom: 2px;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-nombre {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-grupo {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-img-wrap {
-            width: 100%;
-            max-height: 140px;
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-            margin: 4px 0 8px;
-            background: rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-img {
-            width: 100%;
-            height: auto;
-            max-height: 140px;
-            object-fit: contain;
-            cursor: pointer;
-            background: rgba(0,0,0,0.2);
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-img-fallback {
-            width: 100%;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: var(--radius-sm);
-            margin: 4px 0 8px;
-            background: var(--primary-dim);
-            color: var(--primary);
-            font-size: 32px;
-            border: 1px solid var(--border);
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-descripcion {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin: 4px 0;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-dificultad {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin: 4px 0;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-dificultad .dif-label {
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 10px;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-material {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin: 4px 0;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-material .mat-tag {
-            background: rgba(255,255,255,0.06);
-            color: var(--text-secondary);
-            padding: 1px 10px;
-            border-radius: var(--radius-full);
-            font-size: 10px;
-            font-weight: 500;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos {
-            margin: 4px 0;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 2px 0;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-name {
-            font-size: 11px;
-            color: var(--text-secondary);
-            min-width: 50px;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-bar {
-            flex: 1;
-            height: 6px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-fill {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 4px;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos {
-            background: rgba(34,197,94,0.06);
-            border-left: 3px solid var(--success);
-            padding: 6px 10px;
-            border-radius: var(--radius-sm);
-            margin: 4px 0;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos .me-ej-consejo-titulo {
-            font-size: 9px;
-            color: var(--success);
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos .me-ej-consejo-texto {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-errores {
-            background: rgba(239,68,68,0.06);
-            border-left: 3px solid var(--danger);
-            padding: 6px 10px;
-            border-radius: var(--radius-sm);
-            margin: 4px 0;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-errores .me-ej-error-titulo {
-            font-size: 9px;
-            color: var(--danger);
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-errores .me-ej-error-texto {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-datos {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin: 4px 0;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-datos span {
-            background: rgba(0,0,0,0.15);
-            padding: 1px 8px;
-            border-radius: var(--radius-full);
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-ultimo {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin: 3px 0;
-            padding: 4px 8px;
-            background: rgba(0,0,0,0.1);
-            border-radius: var(--radius-sm);
-        }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-numero { font-size: 11px; color: var(--text-secondary); margin-bottom: 2px; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-nombre { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-grupo { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-img-wrap { width: 100%; max-height: 140px; border-radius: var(--radius-sm); overflow: hidden; margin: 4px 0 8px; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-img { width: 100%; height: auto; max-height: 140px; object-fit: contain; cursor: pointer; background: rgba(0,0,0,0.2); }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-img-fallback { width: 100%; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); margin: 4px 0 8px; background: var(--primary-dim); color: var(--primary); font-size: 32px; border: 1px solid var(--border); }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-descripcion { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin: 4px 0; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-dificultad { display: flex; align-items: center; gap: 6px; margin: 4px 0; font-size: 12px; color: var(--text-secondary); }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-dificultad .dif-label { font-weight: 600; text-transform: uppercase; font-size: 10px; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-material { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-material .mat-tag { background: rgba(255,255,255,0.06); color: var(--text-secondary); padding: 1px 10px; border-radius: var(--radius-full); font-size: 10px; font-weight: 500; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos { margin: 4px 0; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row { display: flex; align-items: center; gap: 8px; margin: 2px 0; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-name { font-size: 11px; color: var(--text-secondary); min-width: 50px; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-fill { height: 100%; background: var(--primary); border-radius: 4px; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos { background: rgba(34,197,94,0.06); border-left: 3px solid var(--success); padding: 6px 10px; border-radius: var(--radius-sm); margin: 4px 0; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos .me-ej-consejo-titulo { font-size: 9px; color: var(--success); text-transform: uppercase; font-weight: 600; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos .me-ej-consejo-texto { font-size: 12px; color: var(--text-secondary); }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-errores { background: rgba(239,68,68,0.06); border-left: 3px solid var(--danger); padding: 6px 10px; border-radius: var(--radius-sm); margin: 4px 0; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-errores .me-ej-error-titulo { font-size: 9px; color: var(--danger); text-transform: uppercase; font-weight: 600; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-errores .me-ej-error-texto { font-size: 12px; color: var(--text-secondary); }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-datos { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0; font-size: 12px; color: var(--text-secondary); }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-datos span { background: rgba(0,0,0,0.15); padding: 1px 8px; border-radius: var(--radius-full); }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-ultimo { font-size: 12px; color: var(--text-secondary); margin: 3px 0; padding: 4px 8px; background: rgba(0,0,0,0.1); border-radius: var(--radius-sm); }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-ultimo strong { color: var(--text); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-record {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin: 3px 0;
-            padding: 4px 8px;
-            background: var(--primary-dim);
-            border: 1px solid rgba(59,130,246,0.15);
-            border-radius: var(--radius-sm);
-        }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-record { font-size: 12px; color: var(--text-secondary); margin: 3px 0; padding: 4px 8px; background: var(--primary-dim); border: 1px solid rgba(59,130,246,0.15); border-radius: var(--radius-sm); }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-record strong { color: var(--primary); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-xs);
-            margin: 8px 0;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group label {
-            font-size: 9px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 1px;
-        }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); margin: 8px 0; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group label { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 1px; }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group input,
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea {
-            width: 100%;
-            padding: 6px 8px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background: rgba(0,0,0,0.2);
-            color: var(--text);
-            font-size: 14px;
-            font-weight: 600;
-            font-family: var(--font);
-            outline: none;
-            text-align: center;
-            transition: var(--transition);
-        }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea { width: 100%; padding: 6px 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: var(--text); font-size: 14px; font-weight: 600; font-family: var(--font); outline: none; text-align: center; transition: var(--transition); }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group input:focus,
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-dim);
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea {
-            grid-column: span 2;
-            text-align: left;
-            font-weight: 400;
-            resize: vertical;
-            min-height: 36px;
-        }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-botones {
-            display: flex;
-            gap: var(--space-sm);
-            margin-top: 8px;
-        }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-dim); }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea { grid-column: span 2; text-align: left; font-weight: 400; resize: vertical; min-height: 36px; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-botones { display: flex; gap: var(--space-sm); margin-top: 8px; }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-botones .btn { flex: 1; }
 
-        .modo-entreno-overlay .me-descanso {
-            text-align: center;
-            padding: 24px 16px;
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            animation: fadeUp 0.3s ease;
-        }
-        .modo-entreno-overlay .me-descanso .me-timer {
-            font-size: 48px;
-            font-weight: 700;
-            color: var(--primary);
-            font-variant-numeric: tabular-nums;
-        }
-        .modo-entreno-overlay .me-descanso .me-timer-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
-        .modo-entreno-overlay .me-descanso .me-siguiente {
-            margin-top: 12px;
-        }
+        .modo-entreno-overlay .me-descanso { text-align: center; padding: 24px 16px; background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); animation: fadeUp 0.3s ease; }
+        .modo-entreno-overlay .me-descanso .me-timer { font-size: 48px; font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums; }
+        .modo-entreno-overlay .me-descanso .me-timer-label { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+        .modo-entreno-overlay .me-descanso .me-siguiente { margin-top: 12px; }
 
-        .modo-entreno-overlay .me-completado-final {
-            text-align: center;
-            padding: 20px 16px;
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            animation: fadeUp 0.3s ease;
-        }
+        .modo-entreno-overlay .me-completado-final { text-align: center; padding: 20px 16px; background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); animation: fadeUp 0.3s ease; }
         .modo-entreno-overlay .me-completado-final .me-feliz { font-size: 48px; margin-bottom: 4px; }
         .modo-entreno-overlay .me-completado-final .me-titulo { font-size: 20px; font-weight: 700; color: var(--success); }
         .modo-entreno-overlay .me-completado-final .me-sub { font-size: 13px; color: var(--text-secondary); margin: 4px 0; }
-        .modo-entreno-overlay .me-completado-final .me-resumen-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 4px;
-            margin: 8px 0;
-        }
-        .modo-entreno-overlay .me-completado-final .me-resumen-grid .me-res-item {
-            background: rgba(0,0,0,0.15);
-            border-radius: var(--radius-sm);
-            padding: 8px 6px;
-        }
-        .modo-entreno-overlay .me-completado-final .me-resumen-grid .me-res-item .me-res-valor {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        .modo-entreno-overlay .me-completado-final .me-resumen-grid .me-res-item .me-res-label {
-            font-size: 8px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-        }
-        .modo-entreno-overlay .me-completado-final .me-records {
-            background: var(--primary-dim);
-            border-radius: var(--radius-sm);
-            padding: 8px;
-            margin: 8px 0;
-            border: 1px solid rgba(59,130,246,0.15);
-        }
-        .modo-entreno-overlay .me-completado-final .me-records .me-rec-titulo {
-            font-size: 10px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        .modo-entreno-overlay .me-completado-final .me-records .me-rec-item {
-            font-size: 13px;
-            font-weight: 600;
-            margin-top: 3px;
-            color: var(--primary);
-        }
+        .modo-entreno-overlay .me-completado-final .me-resumen-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; margin: 8px 0; }
+        .modo-entreno-overlay .me-completado-final .me-resumen-grid .me-res-item { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 8px 6px; }
+        .modo-entreno-overlay .me-completado-final .me-resumen-grid .me-res-item .me-res-valor { font-size: 16px; font-weight: 700; color: var(--primary); }
+        .modo-entreno-overlay .me-completado-final .me-resumen-grid .me-res-item .me-res-label { font-size: 8px; color: var(--text-secondary); text-transform: uppercase; }
+        .modo-entreno-overlay .me-completado-final .me-records { background: var(--primary-dim); border-radius: var(--radius-sm); padding: 8px; margin: 8px 0; border: 1px solid rgba(59,130,246,0.15); }
+        .modo-entreno-overlay .me-completado-final .me-records .me-rec-titulo { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; }
+        .modo-entreno-overlay .me-completado-final .me-records .me-rec-item { font-size: 13px; font-weight: 600; margin-top: 3px; color: var(--primary); }
 
-        .btn-entrenar-dia {
-            width: 100%;
-            padding: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            border-radius: var(--radius-sm);
-            margin-top: 6px;
-        }
-
-        .proximo-entreno-card {
-            background: linear-gradient(135deg, var(--primary), #2563eb);
-            border-radius: var(--radius);
-            padding: 16px 20px;
-            margin-bottom: var(--space-sm);
-            color: #fff;
-            cursor: pointer;
-            transition: var(--transition);
-        }
+        .btn-entrenar-dia { width: 100%; padding: 12px; font-size: 14px; font-weight: 700; border-radius: var(--radius-sm); margin-top: 6px; }
+        .proximo-entreno-card { background: linear-gradient(135deg, var(--primary), #2563eb); border-radius: var(--radius); padding: 16px 20px; margin-bottom: var(--space-sm); color: #fff; cursor: pointer; transition: var(--transition); }
         .proximo-entreno-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,130,246,0.35); }
         .proximo-entreno-card .pe-titulo { font-size: 10px; font-weight: 500; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; }
         .proximo-entreno-card .pe-nombre { font-size: 20px; font-weight: 700; margin: 2px 0; }
         .proximo-entreno-card .pe-datos { display: flex; gap: var(--space-sm); margin-top: 3px; font-size: 12px; opacity: 0.9; flex-wrap: wrap; }
         .proximo-entreno-card .pe-datos span { display: flex; align-items: center; gap: 3px; }
-        .proximo-entreno-card .pe-btn {
-            margin-top: 10px; background: rgba(255,255,255,0.2); border: none; color: #fff;
-            padding: 8px 20px; border-radius: var(--radius-full); font-weight: 600; font-size: 13px;
-            cursor: pointer; transition: var(--transition); width: 100%;
-        }
+        .proximo-entreno-card .pe-btn { margin-top: 10px; background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 8px 20px; border-radius: var(--radius-full); font-weight: 600; font-size: 13px; cursor: pointer; transition: var(--transition); width: 100%; }
         .proximo-entreno-card .pe-btn:hover { background: rgba(255,255,255,0.3); }
 
-        .dia-entrenar-btn {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: 700;
-            border-radius: var(--radius-sm);
-            margin-top: 6px;
-            text-align: center;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .dia-entrenar-btn:hover {
-            box-shadow: 0 0 20px var(--primary-glow);
-            transform: translateY(-1px);
-        }
-        .dia-entrenar-btn.completado {
-            background: var(--success);
-            color: #000;
-            cursor: default;
-        }
-        .dia-entrenar-btn.completado:hover {
-            box-shadow: none;
-            transform: none;
-        }
-        .dia-entrenar-btn.descanso {
-            background: var(--bg-card);
-            color: var(--text-secondary);
-            cursor: default;
-            border: 1px solid var(--border);
-        }
-        .dia-entrenar-btn.descanso:hover {
-            box-shadow: none;
-            transform: none;
-        }
+        .dia-entrenar-btn { display: block; width: 100%; padding: 14px; font-size: 15px; font-weight: 700; border-radius: var(--radius-sm); margin-top: 6px; text-align: center; background: var(--primary); color: #fff; border: none; cursor: pointer; transition: var(--transition); }
+        .dia-entrenar-btn:hover { box-shadow: 0 0 20px var(--primary-glow); transform: translateY(-1px); }
+        .dia-entrenar-btn.completado { background: var(--success); color: #000; cursor: default; }
+        .dia-entrenar-btn.completado:hover { box-shadow: none; transform: none; }
+        .dia-entrenar-btn.descanso { background: var(--bg-card); color: var(--text-secondary); cursor: default; border: 1px solid var(--border); }
+        .dia-entrenar-btn.descanso:hover { box-shadow: none; transform: none; }
 
         @media (max-width: 420px) {
             .top-stats { display: none; }
@@ -833,6 +510,13 @@
     </style>
 </head>
 <body>
+
+    <!-- LOADING SCREEN -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+        <div class="loader-text">Cargando NicoGym...</div>
+    </div>
+
     <!-- TOP BAR -->
     <header class="top-bar">
         <div class="logo"><i class="fa-solid fa-dumbbell"></i>NicoGym</div>
@@ -871,7 +555,7 @@
         <button class="menu-item" onclick="APP.navegar('fotos')"><i class="fa-solid fa-camera"></i> Fotos</button>
         <button class="menu-item" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</button>
         <button class="menu-item" onclick="APP.confirmarReset()" style="color:var(--danger);"><i class="fa-solid fa-trash"></i> Reset</button>
-        <div class="menu-footer">NicoGym 2.2</div>
+        <div class="menu-footer">NicoGym 2.3</div>
     </nav>
 
     <!-- PAGES -->
@@ -952,7 +636,7 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '2.2',
+            VERSION: '2.3',
             ALTURA: 165,
             PESO_OBJETIVO: 75,
             STORAGE_KEY: 'nicoGym',
@@ -975,575 +659,581 @@
         };
 
         // ==========================================
-        // BASE DE DATOS DE EJERCICIOS
+        // EXERCISE DATABASE - Carga perezosa (lazy loading)
         // ==========================================
-        const exerciseDatabase = [
-            // LUNES - 8 ejercicios
-            {
-                id: 'press-plano',
-                nombre: 'Press plano con mancuernas',
-                grupo: 'Pecho',
-                categoria: 'Press',
-                urlGif: 'https://gymvisual.com/img/p/1/8/6/4/5/18645.gif',
-                descripcion: 'Tumbado sobre un banco plano, baja las mancuernas de forma controlada hasta el pecho y empuja hacia arriba manteniendo siempre el control del movimiento.',
-                consejos: '• Baja lentamente (2-3 segundos).\n• Mantén las muñecas rectas.\n• Exhala al empujar.',
-                errores: '• No bajes demasiado rápido.\n• No bloquees los codos.\n• No pierdas el control.',
-                musculosPrincipales: ['Pectoral mayor', 'Tríceps', 'Deltoides anterior'],
-                musculosSecundarios: ['Serrato anterior'],
-                series: 4,
-                reps: '8-12',
-                descanso: 90,
-                dia: 'lunes',
-                dificultad: 'media',
-                material: ['Banco', 'Mancuernas'],
-                intensidadMuscular: { 'Pecho': 90, 'Tríceps': 75, 'Hombro': 65 }
-            },
-            {
-                id: 'press-inclinado',
-                nombre: 'Press inclinado con mancuernas',
-                grupo: 'Pecho',
-                categoria: 'Press',
-                urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2022/07/Dumbbell-Reverse-Grip-30-Degrees-Incline-Bench-Press.gif',
-                descripcion: 'Con el banco inclinado entre 30° y 45°, baja las mancuernas lentamente hasta el pecho y vuelve a empujarlas hacia arriba trabajando la parte superior del pectoral.',
-                consejos: '• El banco debe estar entre 30° y 45°.\n• Mantén las muñecas rectas.\n• Exhala al empujar.',
-                errores: '• No uses un ángulo demasiado vertical.\n• No bajes más allá del pecho.',
-                musculosPrincipales: ['Pectoral superior', 'Deltoides anterior', 'Tríceps'],
-                musculosSecundarios: ['Serrato anterior', 'Trapecio'],
-                series: 4,
-                reps: '8-12',
-                descanso: 90,
-                dia: 'lunes',
-                dificultad: 'media',
-                material: ['Banco inclinado', 'Mancuernas'],
-                intensidadMuscular: { 'Pecho': 85, 'Hombro': 70, 'Tríceps': 70 }
-            },
-            {
-                id: 'aperturas',
-                nombre: 'Aperturas con mancuernas',
-                grupo: 'Pecho',
-                categoria: 'Apertura',
-                urlGif: 'https://gymvisual.com/img/p/1/0/2/8/0/10280.gif',
-                descripcion: 'Tumbado en banco plano, abre los brazos manteniendo una ligera flexión de los codos hasta notar el estiramiento del pecho, y vuelve lentamente.',
-                consejos: '• Mantén los codos ligeramente flexionados.\n• Siente el estiramiento.\n• Controla el movimiento.',
-                errores: '• No bloquees los codos.\n• No uses demasiado peso.',
-                musculosPrincipales: ['Pectoral mayor', 'Deltoides anterior'],
-                musculosSecundarios: ['Bíceps', 'Serrato anterior'],
-                series: 4,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'lunes',
-                dificultad: 'facil',
-                material: ['Banco', 'Mancuernas'],
-                intensidadMuscular: { 'Pecho': 80, 'Hombro': 50 }
-            },
-            {
-                id: 'press-militar',
-                nombre: 'Press militar sentado',
-                grupo: 'Hombro',
-                categoria: 'Press',
-                urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif',
-                descripcion: 'Sentado en el banco con la espalda apoyada, empuja las mancuernas por encima de la cabeza y baja lentamente hasta la altura de los hombros.',
-                consejos: '• Mantén la espalda apoyada.\n• No arquees la zona lumbar.\n• Controla la bajada.',
-                errores: '• No bloquees los codos.\n• No inclines el cuerpo.',
-                musculosPrincipales: ['Deltoides', 'Tríceps', 'Trapecio'],
-                musculosSecundarios: ['Serrato anterior'],
-                series: 4,
-                reps: '8-12',
-                descanso: 90,
-                dia: 'lunes',
-                dificultad: 'media',
-                material: ['Banco', 'Mancuernas'],
-                intensidadMuscular: { 'Hombro': 90, 'Tríceps': 70, 'Trapecio': 60 }
-            },
-            {
-                id: 'elevaciones-laterales',
-                nombre: 'Elevaciones laterales',
-                grupo: 'Hombro',
-                categoria: 'Aislamiento',
-                urlGif: 'https://gymvisual.com/img/p/5/1/3/7/5137.gif',
-                descripcion: 'De pie o sentado, eleva las mancuernas lateralmente hasta la altura de los hombros manteniendo una ligera flexión en los codos.',
-                consejos: '• Mantén los codos ligeramente flexionados.\n• No uses demasiado peso.\n• Controla el movimiento.',
-                errores: '• No balancees el cuerpo.\n• No uses impulso.',
-                musculosPrincipales: ['Deltoides medio', 'Supraespinoso'],
-                musculosSecundarios: ['Trapecio'],
-                series: 4,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'lunes',
-                dificultad: 'facil',
-                material: ['Mancuernas'],
-                intensidadMuscular: { 'Hombro': 85 }
-            },
-            {
-                id: 'elevaciones-frontales',
-                nombre: 'Elevaciones frontales',
-                grupo: 'Hombro',
-                categoria: 'Aislamiento',
-                urlGif: 'https://gymvisual.com/img/p/2/4/9/4/0/24940.gif',
-                descripcion: 'De pie, eleva las mancuernas hacia delante hasta la altura de los hombros sin balancear el cuerpo.',
-                consejos: '• Mantén los brazos extendidos.\n• Controla la subida y la bajada.',
-                errores: '• No balancees el cuerpo.\n• No uses demasiado peso.',
-                musculosPrincipales: ['Deltoides anterior'],
-                musculosSecundarios: ['Pectoral'],
-                series: 3,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'lunes',
-                dificultad: 'facil',
-                material: ['Mancuernas'],
-                intensidadMuscular: { 'Hombro': 75 }
-            },
-            {
-                id: 'extension-triceps-cabeza',
-                nombre: 'Extensión de tríceps por encima de la cabeza',
-                grupo: 'Tríceps',
-                categoria: 'Aislamiento',
-                urlGif: 'https://media.tenor.com/V3J-mg9gH0kAAAAM/seated-dumbbell-triceps-extension.gif',
-                descripcion: 'Sentado, sujeta una mancuerna con ambas manos por encima de la cabeza y extiende completamente los brazos manteniendo los codos cerca de la cabeza.',
-                consejos: '• Mantén los codos cerca de la cabeza.\n• Controla el movimiento.',
-                errores: '• No separes los codos.\n• No bajes demasiado rápido.',
-                musculosPrincipales: ['Tríceps (cabeza larga)'],
-                musculosSecundarios: ['Tríceps (cabeza lateral)', 'Tríceps (cabeza medial)'],
-                series: 3,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'lunes',
-                dificultad: 'facil',
-                material: ['Mancuerna'],
-                intensidadMuscular: { 'Tríceps': 90 }
-            },
-            {
-                id: 'press-cerrado',
-                nombre: 'Press cerrado con mancuernas',
-                grupo: 'Tríceps',
-                categoria: 'Press',
-                urlGif: 'https://gymvisual.com/img/p/7/5/3/5/7535.gif',
-                descripcion: 'Tumbado en banco plano, mantén las mancuernas juntas durante todo el recorrido, con las palmas enfrentadas.',
-                consejos: '• Mantén las mancuernas juntas.\n• Controla el movimiento.',
-                errores: '• No separes las mancuernas.\n• No bloquees los codos.',
-                musculosPrincipales: ['Tríceps'],
-                musculosSecundarios: ['Pectoral'],
-                series: 3,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'lunes',
-                dificultad: 'media',
-                material: ['Banco', 'Mancuernas'],
-                intensidadMuscular: { 'Tríceps': 85, 'Pecho': 50 }
-            },
-            // MARTES - 4 ejercicios
-            {
-                id: 'remo-barra',
-                nombre: 'Remo con barra',
-                grupo: 'Espalda',
-                categoria: 'Remo',
-                urlGif: 'https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif',
-                descripcion: 'Con el torso inclinado unos 45° y la espalda recta, tira la barra hacia el abdomen manteniendo la espalda recta y controla el movimiento.',
-                consejos: '• Mantén la espalda recta.\n• No uses impulso.\n• Siente la contracción de la espalda.',
-                errores: '• No redondees la espalda.\n• No uses demasiado peso.',
-                musculosPrincipales: ['Dorsal ancho', 'Romboides', 'Trapecio medio'],
-                musculosSecundarios: ['Bíceps'],
-                series: 4,
-                reps: '8-12',
-                descanso: 90,
-                dia: 'martes',
-                dificultad: 'media',
-                material: ['Barra', 'Discos'],
-                intensidadMuscular: { 'Espalda': 90, 'Bíceps': 60 }
-            },
-            {
-                id: 'remo-una-mano',
-                nombre: 'Remo a una mano con mancuerna',
-                grupo: 'Espalda',
-                categoria: 'Remo',
-                urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif',
-                descripcion: 'Apoya rodilla y mano en banco, con la espalda recta. Sube el codo hacia atrás manteniendo la espalda recta.',
-                consejos: '• Mantén la espalda recta.\n• No uses impulso.\n• Siente la contracción de la espalda.',
-                errores: '• No redondees la espalda.\n• No uses demasiado peso.',
-                musculosPrincipales: ['Dorsal ancho', 'Romboides', 'Trapecio medio'],
-                musculosSecundarios: ['Bíceps'],
-                series: 4,
-                reps: '8-12',
-                descanso: 90,
-                dia: 'martes',
-                dificultad: 'media',
-                material: ['Banco', 'Mancuerna'],
-                intensidadMuscular: { 'Espalda': 85, 'Bíceps': 55 }
-            },
-            {
-                id: 'curl-alterno',
-                nombre: 'Curl de bíceps alterno',
-                grupo: 'Bíceps',
-                categoria: 'Curl',
-                urlGif: 'https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif',
-                descripcion: 'De pie, mantén los codos pegados al torso y curva alternando brazos llevando la mancuerna al hombro.',
-                consejos: '• Mantén los codos pegados al torso.\n• No uses impulso.\n• Controla el movimiento.',
-                errores: '• No uses demasiado peso.\n• No balancees el cuerpo.',
-                musculosPrincipales: ['Bíceps braquial'],
-                musculosSecundarios: ['Braquial'],
-                series: 3,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'martes',
-                dificultad: 'facil',
-                material: ['Mancuernas'],
-                intensidadMuscular: { 'Bíceps': 90 }
-            },
-            {
-                id: 'curl-martillo',
-                nombre: 'Curl martillo',
-                grupo: 'Bíceps',
-                categoria: 'Curl',
-                urlGif: 'https://api.smartworkout.app/asset/image/8588e41c-5c2d-4ee0-90ca-ad69b7d0438a',
-                descripcion: 'Agarre neutro (palmas enfrentadas), mantén la muñeca recta todo el movimiento y curva la mancuerna hacia el hombro.',
-                consejos: '• Mantén los codos pegados al torso.\n• Controla el movimiento.',
-                errores: '• No uses demasiado peso.\n• No balancees el cuerpo.',
-                musculosPrincipales: ['Braquial', 'Braquiorradial'],
-                musculosSecundarios: ['Bíceps braquial'],
-                series: 3,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'martes',
-                dificultad: 'facil',
-                material: ['Mancuernas'],
-                intensidadMuscular: { 'Bíceps': 80, 'Antebrazo': 70 }
-            },
-            // JUEVES - 9 ejercicios
-            {
-                id: 'sentadilla-goblet',
-                nombre: 'Sentadilla Goblet con mancuerna',
-                grupo: 'Pierna',
-                categoria: 'Sentadilla',
-                urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif',
-                descripcion: 'Sujeta una mancuerna al pecho, baja como al sentarte manteniendo la espalda recta y el pecho erguido. Baja hasta que los muslos estén paralelos al suelo.',
-                consejos: '• Mantén la espalda recta.\n• Baja hasta que los muslos estén paralelos.\n• Empuja con los talones.',
-                errores: '• No dejes caer las rodillas hacia dentro.\n• No pierdas el equilibrio.',
-                musculosPrincipales: ['Cuádriceps', 'Glúteos', 'Isquiotibiales'],
-                musculosSecundarios: ['Erectores espinales'],
-                series: 4,
-                reps: '8-12',
-                descanso: 90,
-                dia: 'jueves',
-                dificultad: 'media',
-                material: ['Mancuerna'],
-                intensidadMuscular: { 'Pierna': 90, 'Glúteos': 75 }
-            },
-            {
-                id: 'peso-muerto-rumano',
-                nombre: 'Peso muerto rumano',
-                grupo: 'Pierna',
-                categoria: 'Peso muerto',
-                urlGif: 'https://gymvisual.com/img/p/7/6/4/2/7642.gif',
-                descripcion: 'De pie con barra o mancuernas frente a ti, baja con espalda recta hasta sentir el estiramiento de los isquios. Sube impulsando con la cadera.',
-                consejos: '• Mantén la espalda recta.\n• Siente el estiramiento de los isquios.\n• Controla el movimiento.',
-                errores: '• No redondees la espalda.\n• No uses demasiado peso.',
-                musculosPrincipales: ['Isquiotibiales', 'Glúteos', 'Erectores espinales'],
-                musculosSecundarios: ['Cuádriceps'],
-                series: 4,
-                reps: '8-12',
-                descanso: 90,
-                dia: 'jueves',
-                dificultad: 'dificil',
-                material: ['Barra', 'Discos'],
-                intensidadMuscular: { 'Pierna': 85, 'Glúteos': 80, 'Espalda': 70 }
-            },
-            {
-                id: 'zancadas',
-                nombre: 'Zancadas estáticas con mancuernas',
-                grupo: 'Pierna',
-                categoria: 'Zancada',
-                urlGif: 'https://gymvisual.com/img/p/2/3/7/3/9/23739.gif',
-                descripcion: 'Da un paso largo hacia adelante, baja hasta que la rodilla trasera casi toque el suelo, y sube con el talón delantero.',
-                consejos: '• Mantén el torso erguido.\n• Baja controladamente.\n• Empuja con el talón delantero.',
-                errores: '• No pierdas el equilibrio.\n• No bajes demasiado rápido.',
-                musculosPrincipales: ['Cuádriceps', 'Glúteos', 'Isquiotibiales'],
-                musculosSecundarios: ['Gemelos'],
-                series: 4,
-                reps: '8-12',
-                descanso: 60,
-                dia: 'jueves',
-                dificultad: 'media',
-                material: ['Mancuernas'],
-                intensidadMuscular: { 'Pierna': 80, 'Glúteos': 75 }
-            },
-            {
-                id: 'sentadilla-bulgara',
-                nombre: 'Sentadilla búlgara',
-                grupo: 'Pierna',
-                categoria: 'Sentadilla',
-                urlGif: 'https://gymvisual.com/img/p/3/2/8/2/9/32829.gif',
-                descripcion: 'Apoya un pie atrás en un banco, baja hasta que la rodilla delantera forme 90°, y sube con el talón.',
-                consejos: '• Mantén el equilibrio.\n• Baja controladamente.\n• Empuja con el talón delantero.',
-                errores: '• No pierdas el equilibrio.\n• No bajes demasiado rápido.',
-                musculosPrincipales: ['Cuádriceps', 'Glúteos', 'Isquiotibiales'],
-                musculosSecundarios: ['Gemelos'],
-                series: 3,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'jueves',
-                dificultad: 'dificil',
-                material: ['Banco', 'Mancuernas'],
-                intensidadMuscular: { 'Pierna': 85, 'Glúteos': 80 }
-            },
-            {
-                id: 'hip-thrust',
-                nombre: 'Hip Thrust',
-                grupo: 'Glúteos',
-                categoria: 'Aislamiento',
-                urlGif: 'https://gymvisual.com/img/p/2/0/9/5/6/20956.gif',
-                descripcion: 'Tumbado, apoya la espalda en un banco y sube la cadera con una mancuerna sobre la pelvis.',
-                consejos: '• Aprieta los glúteos en la parte superior.\n• Controla el movimiento.',
-                errores: '• No arquees la espalda.\n• No bajes demasiado rápido.',
-                musculosPrincipales: ['Glúteos'],
-                musculosSecundarios: ['Isquiotibiales'],
-                series: 4,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'jueves',
-                dificultad: 'media',
-                material: ['Banco', 'Mancuerna'],
-                intensidadMuscular: { 'Glúteos': 95 }
-            },
-            {
-                id: 'gemelos',
-                nombre: 'Elevación de gemelos de pie',
-                grupo: 'Gemelos',
-                categoria: 'Aislamiento',
-                urlGif: 'https://i.pinimg.com/originals/2f/7c/ca/2f7cca8d37c65384c1d0bd84cc0a91d1.gif',
-                descripcion: 'De pie con mancuernas a los lados, elévate con la punta de los pies y baja controladamente.',
-                consejos: '• Mantén el equilibrio.\n• Controla el movimiento.\n• Siente la contracción de los gemelos.',
-                errores: '• No pierdas el equilibrio.\n• No uses demasiado peso.',
-                musculosPrincipales: ['Gastrocnemio', 'Sóleo'],
-                musculosSecundarios: ['Tibial posterior'],
-                series: 4,
-                reps: '12-20',
-                descanso: 45,
-                dia: 'jueves',
-                dificultad: 'facil',
-                material: ['Mancuernas'],
-                intensidadMuscular: { 'Gemelos': 90 }
-            },
-            {
-                id: 'crunch',
-                nombre: 'Crunch abdominal',
-                grupo: 'Abdomen',
-                categoria: 'Aislamiento',
-                urlGif: 'https://i.pinimg.com/originals/34/5c/d9/345cd9414e1e743debd278eaddf33473.gif',
-                descripcion: 'Tumbado boca arriba con rodillas flexionadas, eleva el torso hacia las rodillas contrayendo el abdomen y baja controladamente.',
-                consejos: '• Contrae el abdomen.\n• No tires del cuello.\n• Controla el movimiento.',
-                errores: '• No tires del cuello.\n• No uses impulso.',
-                musculosPrincipales: ['Recto abdominal'],
-                musculosSecundarios: ['Oblicuos'],
-                series: 3,
-                reps: '15-20',
-                descanso: 45,
-                dia: 'jueves',
-                dificultad: 'facil',
-                material: ['Colchoneta'],
-                intensidadMuscular: { 'Abdomen': 85 }
-            },
-            {
-                id: 'elevacion-piernas',
-                nombre: 'Elevación de piernas',
-                grupo: 'Abdomen',
-                categoria: 'Aislamiento',
-                urlGif: 'https://gymvisual.com/img/p/5/8/5/9/5859.gif',
-                descripcion: 'Tumbado boca arriba, eleva las piernas rectas hasta formar 90° y baja lentamente manteniendo el abdomen contraído.',
-                consejos: '• Mantén la zona lumbar pegada al suelo.\n• Contra el abdomen.\n• Controla el movimiento.',
-                errores: '• No arquees la zona lumbar.\n• No uses impulso.',
-                musculosPrincipales: ['Recto abdominal inferior'],
-                musculosSecundarios: ['Iliopsoas'],
-                series: 3,
-                reps: '12-15',
-                descanso: 45,
-                dia: 'jueves',
-                dificultad: 'media',
-                material: ['Colchoneta'],
-                intensidadMuscular: { 'Abdomen': 80 }
-            },
-            {
-                id: 'bicicleta-abdominal',
-                nombre: 'Bicicleta abdominal',
-                grupo: 'Abdomen',
-                categoria: 'Aislamiento',
-                urlGif: 'https://gymvisual.com/img/p/2/7/6/6/2/27662.gif',
-                descripcion: 'Tumbado, alterna codo con rodilla contraria como si pedalearas.',
-                consejos: '• Mantén el abdomen contraído.\n• Controla el movimiento.\n• No tires del cuello.',
-                errores: '• No tires del cuello.\n• No uses impulso.',
-                musculosPrincipales: ['Recto abdominal', 'Oblicuos externos', 'Oblicuos internos'],
-                musculosSecundarios: ['Transverso abdominal'],
-                series: 3,
-                reps: '15-20',
-                descanso: 45,
-                dia: 'jueves',
-                dificultad: 'media',
-                material: ['Colchoneta'],
-                intensidadMuscular: { 'Abdomen': 85, 'Oblicuos': 80 }
-            },
-            // VIERNES - 8 ejercicios
-            {
-                id: 'press-plano-viernes',
-                nombre: 'Press plano con mancuernas',
-                grupo: 'Pecho',
-                categoria: 'Press',
-                urlGif: 'https://gymvisual.com/img/p/1/8/6/4/5/18645.gif',
-                descripcion: 'Tumbado sobre un banco plano, baja las mancuernas de forma controlada hasta el pecho y empuja hacia arriba.',
-                consejos: '• Mantén los pies firmes.\n• Controla la bajada.\n• Exhala al empujar.',
-                errores: '• No bloquees los codos.\n• No bajes demasiado rápido.',
-                musculosPrincipales: ['Pectoral mayor', 'Tríceps', 'Deltoides anterior'],
-                musculosSecundarios: ['Serrato anterior'],
-                series: 4,
-                reps: '8-12',
-                descanso: 90,
-                dia: 'viernes',
-                dificultad: 'media',
-                material: ['Banco', 'Mancuernas'],
-                intensidadMuscular: { 'Pecho': 90, 'Tríceps': 75, 'Hombro': 65 }
-            },
-            {
-                id: 'remo-una-mano-viernes',
-                nombre: 'Remo a una mano con mancuerna',
-                grupo: 'Espalda',
-                categoria: 'Remo',
-                urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif',
-                descripcion: 'Apoya rodilla y mano en banco, sube el codo hacia atrás manteniendo la espalda recta.',
-                consejos: '• Mantén la espalda recta.\n• Controla el movimiento.\n• Siente la contracción de la espalda.',
-                errores: '• No redondees la espalda.\n• No uses demasiado peso.',
-                musculosPrincipales: ['Dorsal ancho', 'Romboides', 'Trapecio medio'],
-                musculosSecundarios: ['Bíceps'],
-                series: 4,
-                reps: '8-12',
-                descanso: 90,
-                dia: 'viernes',
-                dificultad: 'media',
-                material: ['Banco', 'Mancuerna'],
-                intensidadMuscular: { 'Espalda': 85, 'Bíceps': 55 }
-            },
-            {
-                id: 'press-militar-viernes',
-                nombre: 'Press militar sentado',
-                grupo: 'Hombro',
-                categoria: 'Press',
-                urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif',
-                descripcion: 'Sentado, empuja las mancuernas por encima de la cabeza y baja lentamente hasta la altura de los hombros.',
-                consejos: '• Mantén la espalda apoyada.\n• Controla la bajada.\n• Exhala al empujar.',
-                errores: '• No bloquees los codos.\n• No inclines el cuerpo.',
-                musculosPrincipales: ['Deltoides', 'Tríceps', 'Trapecio'],
-                musculosSecundarios: ['Serrato anterior'],
-                series: 4,
-                reps: '8-12',
-                descanso: 90,
-                dia: 'viernes',
-                dificultad: 'media',
-                material: ['Banco', 'Mancuernas'],
-                intensidadMuscular: { 'Hombro': 90, 'Tríceps': 70, 'Trapecio': 60 }
-            },
-            {
-                id: 'remo-banco-inclinado-viernes',
-                nombre: 'Remo en banco inclinado con mancuernas',
-                grupo: 'Espalda',
-                categoria: 'Remo',
-                urlGif: 'https://gymvisual.com/img/p/1/4/9/7/3/14973.gif',
-                descripcion: 'Tumbado boca abajo en banco inclinado, tira las mancuernas hacia arriba manteniendo la espalda recta.',
-                consejos: '• Mantén la espalda recta.\n• Controla el movimiento.\n• Siente la contracción de la espalda.',
-                errores: '• No uses demasiado peso.\n• No pierdas el control.',
-                musculosPrincipales: ['Dorsal ancho', 'Romboides', 'Trapecio medio'],
-                musculosSecundarios: ['Deltoides posterior'],
-                series: 4,
-                reps: '8-12',
-                descanso: 90,
-                dia: 'viernes',
-                dificultad: 'media',
-                material: ['Banco inclinado', 'Mancuernas'],
-                intensidadMuscular: { 'Espalda': 80, 'Bíceps': 50 }
-            },
-            {
-                id: 'aperturas-viernes',
-                nombre: 'Aperturas con mancuernas',
-                grupo: 'Pecho',
-                categoria: 'Apertura',
-                urlGif: 'https://gymvisual.com/img/p/1/0/2/8/0/10280.gif',
-                descripcion: 'Abre los brazos manteniendo una ligera flexión de los codos hasta notar el estiramiento del pecho y vuelve lentamente.',
-                consejos: '• Mantén los codos ligeramente flexionados.\n• Siente el estiramiento.\n• Controla el movimiento.',
-                errores: '• No bloquees los codos.\n• No uses demasiado peso.',
-                musculosPrincipales: ['Pectoral mayor', 'Deltoides anterior'],
-                musculosSecundarios: ['Bíceps'],
-                series: 4,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'viernes',
-                dificultad: 'facil',
-                material: ['Banco', 'Mancuernas'],
-                intensidadMuscular: { 'Pecho': 80, 'Hombro': 50 }
-            },
-            {
-                id: 'elevaciones-laterales-viernes',
-                nombre: 'Elevaciones laterales',
-                grupo: 'Hombro',
-                categoria: 'Aislamiento',
-                urlGif: 'https://gymvisual.com/img/p/5/1/3/7/5137.gif',
-                descripcion: 'Eleva las mancuernas lateralmente hasta la altura de los hombros manteniendo una ligera flexión en los codos.',
-                consejos: '• Mantén los codos ligeramente flexionados.\n• Controla el movimiento.',
-                errores: '• No balancees el cuerpo.\n• No uses demasiado peso.',
-                musculosPrincipales: ['Deltoides medio', 'Supraespinoso'],
-                musculosSecundarios: ['Trapecio'],
-                series: 4,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'viernes',
-                dificultad: 'facil',
-                material: ['Mancuernas'],
-                intensidadMuscular: { 'Hombro': 85 }
-            },
-            {
-                id: 'curl-martillo-viernes',
-                nombre: 'Curl martillo',
-                grupo: 'Bíceps',
-                categoria: 'Curl',
-                urlGif: 'https://api.smartworkout.app/asset/image/8588e41c-5c2d-4ee0-90ca-ad69b7d0438a',
-                descripcion: 'Agarre neutro, muñeca recta todo el movimiento. Curva la mancuerna hacia el hombro.',
-                consejos: '• Mantén los codos pegados al torso.\n• Controla el movimiento.',
-                errores: '• No uses demasiado peso.\n• No balancees el cuerpo.',
-                musculosPrincipales: ['Braquial', 'Braquiorradial'],
-                musculosSecundarios: ['Bíceps braquial'],
-                series: 3,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'viernes',
-                dificultad: 'facil',
-                material: ['Mancuernas'],
-                intensidadMuscular: { 'Bíceps': 80, 'Antebrazo': 70 }
-            },
-            {
-                id: 'extension-triceps-cabeza-viernes',
-                nombre: 'Extensión de tríceps por encima de la cabeza',
-                grupo: 'Tríceps',
-                categoria: 'Aislamiento',
-                urlGif: 'https://media.tenor.com/V3J-mg9gH0kAAAAM/seated-dumbbell-triceps-extension.gif',
-                descripcion: 'Sentado, sujeta una mancuerna con ambas manos por encima de la cabeza y extiende completamente los brazos.',
-                consejos: '• Mantén los codos cerca de la cabeza.\n• Controla el movimiento.',
-                errores: '• No separes los codos.\n• No bajes demasiado rápido.',
-                musculosPrincipales: ['Tríceps (cabeza larga)'],
-                musculosSecundarios: ['Tríceps (cabeza lateral)', 'Tríceps (cabeza medial)'],
-                series: 3,
-                reps: '10-15',
-                descanso: 60,
-                dia: 'viernes',
-                dificultad: 'facil',
-                material: ['Mancuerna'],
-                intensidadMuscular: { 'Tríceps': 90 }
-            }
-        ];
+        let exerciseDatabase = null;
+
+        function getExerciseDatabase() {
+            if (exerciseDatabase) return exerciseDatabase;
+            exerciseDatabase = [
+                // LUNES
+                {
+                    id: 'press-plano',
+                    nombre: 'Press plano con mancuernas',
+                    grupo: 'Pecho',
+                    categoria: 'Press',
+                    urlGif: 'https://gymvisual.com/img/p/1/8/6/4/5/18645.gif',
+                    descripcion: 'Tumbado sobre un banco plano, baja las mancuernas de forma controlada hasta el pecho y empuja hacia arriba manteniendo siempre el control del movimiento.',
+                    consejos: '• Baja lentamente (2-3 segundos).\n• Mantén las muñecas rectas.\n• Exhala al empujar.',
+                    errores: '• No bajes demasiado rápido.\n• No bloquees los codos.\n• No pierdas el control.',
+                    musculosPrincipales: ['Pectoral mayor', 'Tríceps', 'Deltoides anterior'],
+                    musculosSecundarios: ['Serrato anterior'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: 'lunes',
+                    dificultad: 'media',
+                    material: ['Banco', 'Mancuernas'],
+                    intensidadMuscular: { 'Pecho': 90, 'Tríceps': 75, 'Hombro': 65 }
+                },
+                {
+                    id: 'press-inclinado',
+                    nombre: 'Press inclinado con mancuernas',
+                    grupo: 'Pecho',
+                    categoria: 'Press',
+                    urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2022/07/Dumbbell-Reverse-Grip-30-Degrees-Incline-Bench-Press.gif',
+                    descripcion: 'Con el banco inclinado entre 30° y 45°, baja las mancuernas lentamente hasta el pecho y vuelve a empujarlas hacia arriba trabajando la parte superior del pectoral.',
+                    consejos: '• El banco debe estar entre 30° y 45°.\n• Mantén las muñecas rectas.\n• Exhala al empujar.',
+                    errores: '• No uses un ángulo demasiado vertical.\n• No bajes más allá del pecho.',
+                    musculosPrincipales: ['Pectoral superior', 'Deltoides anterior', 'Tríceps'],
+                    musculosSecundarios: ['Serrato anterior', 'Trapecio'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: 'lunes',
+                    dificultad: 'media',
+                    material: ['Banco inclinado', 'Mancuernas'],
+                    intensidadMuscular: { 'Pecho': 85, 'Hombro': 70, 'Tríceps': 70 }
+                },
+                {
+                    id: 'aperturas',
+                    nombre: 'Aperturas con mancuernas',
+                    grupo: 'Pecho',
+                    categoria: 'Apertura',
+                    urlGif: 'https://gymvisual.com/img/p/1/0/2/8/0/10280.gif',
+                    descripcion: 'Tumbado en banco plano, abre los brazos manteniendo una ligera flexión de los codos hasta notar el estiramiento del pecho, y vuelve lentamente.',
+                    consejos: '• Mantén los codos ligeramente flexionados.\n• Siente el estiramiento.\n• Controla el movimiento.',
+                    errores: '• No bloquees los codos.\n• No uses demasiado peso.',
+                    musculosPrincipales: ['Pectoral mayor', 'Deltoides anterior'],
+                    musculosSecundarios: ['Bíceps', 'Serrato anterior'],
+                    series: 4,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'lunes',
+                    dificultad: 'facil',
+                    material: ['Banco', 'Mancuernas'],
+                    intensidadMuscular: { 'Pecho': 80, 'Hombro': 50 }
+                },
+                {
+                    id: 'press-militar',
+                    nombre: 'Press militar sentado',
+                    grupo: 'Hombro',
+                    categoria: 'Press',
+                    urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif',
+                    descripcion: 'Sentado en el banco con la espalda apoyada, empuja las mancuernas por encima de la cabeza y baja lentamente hasta la altura de los hombros.',
+                    consejos: '• Mantén la espalda apoyada.\n• No arquees la zona lumbar.\n• Controla la bajada.',
+                    errores: '• No bloquees los codos.\n• No inclines el cuerpo.',
+                    musculosPrincipales: ['Deltoides', 'Tríceps', 'Trapecio'],
+                    musculosSecundarios: ['Serrato anterior'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: 'lunes',
+                    dificultad: 'media',
+                    material: ['Banco', 'Mancuernas'],
+                    intensidadMuscular: { 'Hombro': 90, 'Tríceps': 70, 'Trapecio': 60 }
+                },
+                {
+                    id: 'elevaciones-laterales',
+                    nombre: 'Elevaciones laterales',
+                    grupo: 'Hombro',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://gymvisual.com/img/p/5/1/3/7/5137.gif',
+                    descripcion: 'De pie o sentado, eleva las mancuernas lateralmente hasta la altura de los hombros manteniendo una ligera flexión en los codos.',
+                    consejos: '• Mantén los codos ligeramente flexionados.\n• No uses demasiado peso.\n• Controla el movimiento.',
+                    errores: '• No balancees el cuerpo.\n• No uses impulso.',
+                    musculosPrincipales: ['Deltoides medio', 'Supraespinoso'],
+                    musculosSecundarios: ['Trapecio'],
+                    series: 4,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'lunes',
+                    dificultad: 'facil',
+                    material: ['Mancuernas'],
+                    intensidadMuscular: { 'Hombro': 85 }
+                },
+                {
+                    id: 'elevaciones-frontales',
+                    nombre: 'Elevaciones frontales',
+                    grupo: 'Hombro',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://gymvisual.com/img/p/2/4/9/4/0/24940.gif',
+                    descripcion: 'De pie, eleva las mancuernas hacia delante hasta la altura de los hombros sin balancear el cuerpo.',
+                    consejos: '• Mantén los brazos extendidos.\n• Controla la subida y la bajada.',
+                    errores: '• No balancees el cuerpo.\n• No uses demasiado peso.',
+                    musculosPrincipales: ['Deltoides anterior'],
+                    musculosSecundarios: ['Pectoral'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'lunes',
+                    dificultad: 'facil',
+                    material: ['Mancuernas'],
+                    intensidadMuscular: { 'Hombro': 75 }
+                },
+                {
+                    id: 'extension-triceps-cabeza',
+                    nombre: 'Extensión de tríceps por encima de la cabeza',
+                    grupo: 'Tríceps',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://media.tenor.com/V3J-mg9gH0kAAAAM/seated-dumbbell-triceps-extension.gif',
+                    descripcion: 'Sentado, sujeta una mancuerna con ambas manos por encima de la cabeza y extiende completamente los brazos manteniendo los codos cerca de la cabeza.',
+                    consejos: '• Mantén los codos cerca de la cabeza.\n• Controla el movimiento.',
+                    errores: '• No separes los codos.\n• No bajes demasiado rápido.',
+                    musculosPrincipales: ['Tríceps (cabeza larga)'],
+                    musculosSecundarios: ['Tríceps (cabeza lateral)', 'Tríceps (cabeza medial)'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'lunes',
+                    dificultad: 'facil',
+                    material: ['Mancuerna'],
+                    intensidadMuscular: { 'Tríceps': 90 }
+                },
+                {
+                    id: 'press-cerrado',
+                    nombre: 'Press cerrado con mancuernas',
+                    grupo: 'Tríceps',
+                    categoria: 'Press',
+                    urlGif: 'https://gymvisual.com/img/p/7/5/3/5/7535.gif',
+                    descripcion: 'Tumbado en banco plano, mantén las mancuernas juntas durante todo el recorrido, con las palmas enfrentadas.',
+                    consejos: '• Mantén las mancuernas juntas.\n• Controla el movimiento.',
+                    errores: '• No separes las mancuernas.\n• No bloquees los codos.',
+                    musculosPrincipales: ['Tríceps'],
+                    musculosSecundarios: ['Pectoral'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'lunes',
+                    dificultad: 'media',
+                    material: ['Banco', 'Mancuernas'],
+                    intensidadMuscular: { 'Tríceps': 85, 'Pecho': 50 }
+                },
+                // MARTES
+                {
+                    id: 'remo-barra',
+                    nombre: 'Remo con barra',
+                    grupo: 'Espalda',
+                    categoria: 'Remo',
+                    urlGif: 'https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif',
+                    descripcion: 'Con el torso inclinado unos 45° y la espalda recta, tira la barra hacia el abdomen manteniendo la espalda recta y controla el movimiento.',
+                    consejos: '• Mantén la espalda recta.\n• No uses impulso.\n• Siente la contracción de la espalda.',
+                    errores: '• No redondees la espalda.\n• No uses demasiado peso.',
+                    musculosPrincipales: ['Dorsal ancho', 'Romboides', 'Trapecio medio'],
+                    musculosSecundarios: ['Bíceps'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: 'martes',
+                    dificultad: 'media',
+                    material: ['Barra', 'Discos'],
+                    intensidadMuscular: { 'Espalda': 90, 'Bíceps': 60 }
+                },
+                {
+                    id: 'remo-una-mano',
+                    nombre: 'Remo a una mano con mancuerna',
+                    grupo: 'Espalda',
+                    categoria: 'Remo',
+                    urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif',
+                    descripcion: 'Apoya rodilla y mano en banco, con la espalda recta. Sube el codo hacia atrás manteniendo la espalda recta.',
+                    consejos: '• Mantén la espalda recta.\n• No uses impulso.\n• Siente la contracción de la espalda.',
+                    errores: '• No redondees la espalda.\n• No uses demasiado peso.',
+                    musculosPrincipales: ['Dorsal ancho', 'Romboides', 'Trapecio medio'],
+                    musculosSecundarios: ['Bíceps'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: 'martes',
+                    dificultad: 'media',
+                    material: ['Banco', 'Mancuerna'],
+                    intensidadMuscular: { 'Espalda': 85, 'Bíceps': 55 }
+                },
+                {
+                    id: 'curl-alterno',
+                    nombre: 'Curl de bíceps alterno',
+                    grupo: 'Bíceps',
+                    categoria: 'Curl',
+                    urlGif: 'https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif',
+                    descripcion: 'De pie, mantén los codos pegados al torso y curva alternando brazos llevando la mancuerna al hombro.',
+                    consejos: '• Mantén los codos pegados al torso.\n• No uses impulso.\n• Controla el movimiento.',
+                    errores: '• No uses demasiado peso.\n• No balancees el cuerpo.',
+                    musculosPrincipales: ['Bíceps braquial'],
+                    musculosSecundarios: ['Braquial'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'martes',
+                    dificultad: 'facil',
+                    material: ['Mancuernas'],
+                    intensidadMuscular: { 'Bíceps': 90 }
+                },
+                {
+                    id: 'curl-martillo',
+                    nombre: 'Curl martillo',
+                    grupo: 'Bíceps',
+                    categoria: 'Curl',
+                    urlGif: 'https://api.smartworkout.app/asset/image/8588e41c-5c2d-4ee0-90ca-ad69b7d0438a',
+                    descripcion: 'Agarre neutro (palmas enfrentadas), mantén la muñeca recta todo el movimiento y curva la mancuerna hacia el hombro.',
+                    consejos: '• Mantén los codos pegados al torso.\n• Controla el movimiento.',
+                    errores: '• No uses demasiado peso.\n• No balancees el cuerpo.',
+                    musculosPrincipales: ['Braquial', 'Braquiorradial'],
+                    musculosSecundarios: ['Bíceps braquial'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'martes',
+                    dificultad: 'facil',
+                    material: ['Mancuernas'],
+                    intensidadMuscular: { 'Bíceps': 80, 'Antebrazo': 70 }
+                },
+                // JUEVES
+                {
+                    id: 'sentadilla-goblet',
+                    nombre: 'Sentadilla Goblet con mancuerna',
+                    grupo: 'Pierna',
+                    categoria: 'Sentadilla',
+                    urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif',
+                    descripcion: 'Sujeta una mancuerna al pecho, baja como al sentarte manteniendo la espalda recta y el pecho erguido. Baja hasta que los muslos estén paralelos al suelo.',
+                    consejos: '• Mantén la espalda recta.\n• Baja hasta que los muslos estén paralelos.\n• Empuja con los talones.',
+                    errores: '• No dejes caer las rodillas hacia dentro.\n• No pierdas el equilibrio.',
+                    musculosPrincipales: ['Cuádriceps', 'Glúteos', 'Isquiotibiales'],
+                    musculosSecundarios: ['Erectores espinales'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: 'jueves',
+                    dificultad: 'media',
+                    material: ['Mancuerna'],
+                    intensidadMuscular: { 'Pierna': 90, 'Glúteos': 75 }
+                },
+                {
+                    id: 'peso-muerto-rumano',
+                    nombre: 'Peso muerto rumano',
+                    grupo: 'Pierna',
+                    categoria: 'Peso muerto',
+                    urlGif: 'https://gymvisual.com/img/p/7/6/4/2/7642.gif',
+                    descripcion: 'De pie con barra o mancuernas frente a ti, baja con espalda recta hasta sentir el estiramiento de los isquios. Sube impulsando con la cadera.',
+                    consejos: '• Mantén la espalda recta.\n• Siente el estiramiento de los isquios.\n• Controla el movimiento.',
+                    errores: '• No redondees la espalda.\n• No uses demasiado peso.',
+                    musculosPrincipales: ['Isquiotibiales', 'Glúteos', 'Erectores espinales'],
+                    musculosSecundarios: ['Cuádriceps'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: 'jueves',
+                    dificultad: 'dificil',
+                    material: ['Barra', 'Discos'],
+                    intensidadMuscular: { 'Pierna': 85, 'Glúteos': 80, 'Espalda': 70 }
+                },
+                {
+                    id: 'zancadas',
+                    nombre: 'Zancadas estáticas con mancuernas',
+                    grupo: 'Pierna',
+                    categoria: 'Zancada',
+                    urlGif: 'https://gymvisual.com/img/p/2/3/7/3/9/23739.gif',
+                    descripcion: 'Da un paso largo hacia adelante, baja hasta que la rodilla trasera casi toque el suelo, y sube con el talón delantero.',
+                    consejos: '• Mantén el torso erguido.\n• Baja controladamente.\n• Empuja con el talón delantero.',
+                    errores: '• No pierdas el equilibrio.\n• No bajes demasiado rápido.',
+                    musculosPrincipales: ['Cuádriceps', 'Glúteos', 'Isquiotibiales'],
+                    musculosSecundarios: ['Gemelos'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 60,
+                    dia: 'jueves',
+                    dificultad: 'media',
+                    material: ['Mancuernas'],
+                    intensidadMuscular: { 'Pierna': 80, 'Glúteos': 75 }
+                },
+                {
+                    id: 'sentadilla-bulgara',
+                    nombre: 'Sentadilla búlgara',
+                    grupo: 'Pierna',
+                    categoria: 'Sentadilla',
+                    urlGif: 'https://gymvisual.com/img/p/3/2/8/2/9/32829.gif',
+                    descripcion: 'Apoya un pie atrás en un banco, baja hasta que la rodilla delantera forme 90°, y sube con el talón.',
+                    consejos: '• Mantén el equilibrio.\n• Baja controladamente.\n• Empuja con el talón delantero.',
+                    errores: '• No pierdas el equilibrio.\n• No bajes demasiado rápido.',
+                    musculosPrincipales: ['Cuádriceps', 'Glúteos', 'Isquiotibiales'],
+                    musculosSecundarios: ['Gemelos'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'jueves',
+                    dificultad: 'dificil',
+                    material: ['Banco', 'Mancuernas'],
+                    intensidadMuscular: { 'Pierna': 85, 'Glúteos': 80 }
+                },
+                {
+                    id: 'hip-thrust',
+                    nombre: 'Hip Thrust',
+                    grupo: 'Glúteos',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://gymvisual.com/img/p/2/0/9/5/6/20956.gif',
+                    descripcion: 'Tumbado, apoya la espalda en un banco y sube la cadera con una mancuerna sobre la pelvis.',
+                    consejos: '• Aprieta los glúteos en la parte superior.\n• Controla el movimiento.',
+                    errores: '• No arquees la espalda.\n• No bajes demasiado rápido.',
+                    musculosPrincipales: ['Glúteos'],
+                    musculosSecundarios: ['Isquiotibiales'],
+                    series: 4,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'jueves',
+                    dificultad: 'media',
+                    material: ['Banco', 'Mancuerna'],
+                    intensidadMuscular: { 'Glúteos': 95 }
+                },
+                {
+                    id: 'gemelos',
+                    nombre: 'Elevación de gemelos de pie',
+                    grupo: 'Gemelos',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://i.pinimg.com/originals/2f/7c/ca/2f7cca8d37c65384c1d0bd84cc0a91d1.gif',
+                    descripcion: 'De pie con mancuernas a los lados, elévate con la punta de los pies y baja controladamente.',
+                    consejos: '• Mantén el equilibrio.\n• Controla el movimiento.\n• Siente la contracción de los gemelos.',
+                    errores: '• No pierdas el equilibrio.\n• No uses demasiado peso.',
+                    musculosPrincipales: ['Gastrocnemio', 'Sóleo'],
+                    musculosSecundarios: ['Tibial posterior'],
+                    series: 4,
+                    reps: '12-20',
+                    descanso: 45,
+                    dia: 'jueves',
+                    dificultad: 'facil',
+                    material: ['Mancuernas'],
+                    intensidadMuscular: { 'Gemelos': 90 }
+                },
+                {
+                    id: 'crunch',
+                    nombre: 'Crunch abdominal',
+                    grupo: 'Abdomen',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://i.pinimg.com/originals/34/5c/d9/345cd9414e1e743debd278eaddf33473.gif',
+                    descripcion: 'Tumbado boca arriba con rodillas flexionadas, eleva el torso hacia las rodillas contrayendo el abdomen y baja controladamente.',
+                    consejos: '• Contrae el abdomen.\n• No tires del cuello.\n• Controla el movimiento.',
+                    errores: '• No tires del cuello.\n• No uses impulso.',
+                    musculosPrincipales: ['Recto abdominal'],
+                    musculosSecundarios: ['Oblicuos'],
+                    series: 3,
+                    reps: '15-20',
+                    descanso: 45,
+                    dia: 'jueves',
+                    dificultad: 'facil',
+                    material: ['Colchoneta'],
+                    intensidadMuscular: { 'Abdomen': 85 }
+                },
+                {
+                    id: 'elevacion-piernas',
+                    nombre: 'Elevación de piernas',
+                    grupo: 'Abdomen',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://gymvisual.com/img/p/5/8/5/9/5859.gif',
+                    descripcion: 'Tumbado boca arriba, eleva las piernas rectas hasta formar 90° y baja lentamente manteniendo el abdomen contraído.',
+                    consejos: '• Mantén la zona lumbar pegada al suelo.\n• Contra el abdomen.\n• Controla el movimiento.',
+                    errores: '• No arquees la zona lumbar.\n• No uses impulso.',
+                    musculosPrincipales: ['Recto abdominal inferior'],
+                    musculosSecundarios: ['Iliopsoas'],
+                    series: 3,
+                    reps: '12-15',
+                    descanso: 45,
+                    dia: 'jueves',
+                    dificultad: 'media',
+                    material: ['Colchoneta'],
+                    intensidadMuscular: { 'Abdomen': 80 }
+                },
+                {
+                    id: 'bicicleta-abdominal',
+                    nombre: 'Bicicleta abdominal',
+                    grupo: 'Abdomen',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://gymvisual.com/img/p/2/7/6/6/2/27662.gif',
+                    descripcion: 'Tumbado, alterna codo con rodilla contraria como si pedalearas.',
+                    consejos: '• Mantén el abdomen contraído.\n• Controla el movimiento.\n• No tires del cuello.',
+                    errores: '• No tires del cuello.\n• No uses impulso.',
+                    musculosPrincipales: ['Recto abdominal', 'Oblicuos externos', 'Oblicuos internos'],
+                    musculosSecundarios: ['Transverso abdominal'],
+                    series: 3,
+                    reps: '15-20',
+                    descanso: 45,
+                    dia: 'jueves',
+                    dificultad: 'media',
+                    material: ['Colchoneta'],
+                    intensidadMuscular: { 'Abdomen': 85, 'Oblicuos': 80 }
+                },
+                // VIERNES
+                {
+                    id: 'press-plano-viernes',
+                    nombre: 'Press plano con mancuernas',
+                    grupo: 'Pecho',
+                    categoria: 'Press',
+                    urlGif: 'https://gymvisual.com/img/p/1/8/6/4/5/18645.gif',
+                    descripcion: 'Tumbado sobre un banco plano, baja las mancuernas de forma controlada hasta el pecho y empuja hacia arriba.',
+                    consejos: '• Mantén los pies firmes.\n• Controla la bajada.\n• Exhala al empujar.',
+                    errores: '• No bloquees los codos.\n• No bajes demasiado rápido.',
+                    musculosPrincipales: ['Pectoral mayor', 'Tríceps', 'Deltoides anterior'],
+                    musculosSecundarios: ['Serrato anterior'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: 'viernes',
+                    dificultad: 'media',
+                    material: ['Banco', 'Mancuernas'],
+                    intensidadMuscular: { 'Pecho': 90, 'Tríceps': 75, 'Hombro': 65 }
+                },
+                {
+                    id: 'remo-una-mano-viernes',
+                    nombre: 'Remo a una mano con mancuerna',
+                    grupo: 'Espalda',
+                    categoria: 'Remo',
+                    urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif',
+                    descripcion: 'Apoya rodilla y mano en banco, sube el codo hacia atrás manteniendo la espalda recta.',
+                    consejos: '• Mantén la espalda recta.\n• Controla el movimiento.\n• Siente la contracción de la espalda.',
+                    errores: '• No redondees la espalda.\n• No uses demasiado peso.',
+                    musculosPrincipales: ['Dorsal ancho', 'Romboides', 'Trapecio medio'],
+                    musculosSecundarios: ['Bíceps'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: 'viernes',
+                    dificultad: 'media',
+                    material: ['Banco', 'Mancuerna'],
+                    intensidadMuscular: { 'Espalda': 85, 'Bíceps': 55 }
+                },
+                {
+                    id: 'press-militar-viernes',
+                    nombre: 'Press militar sentado',
+                    grupo: 'Hombro',
+                    categoria: 'Press',
+                    urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif',
+                    descripcion: 'Sentado, empuja las mancuernas por encima de la cabeza y baja lentamente hasta la altura de los hombros.',
+                    consejos: '• Mantén la espalda apoyada.\n• Controla la bajada.\n• Exhala al empujar.',
+                    errores: '• No bloquees los codos.\n• No inclines el cuerpo.',
+                    musculosPrincipales: ['Deltoides', 'Tríceps', 'Trapecio'],
+                    musculosSecundarios: ['Serrato anterior'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: 'viernes',
+                    dificultad: 'media',
+                    material: ['Banco', 'Mancuernas'],
+                    intensidadMuscular: { 'Hombro': 90, 'Tríceps': 70, 'Trapecio': 60 }
+                },
+                {
+                    id: 'remo-banco-inclinado-viernes',
+                    nombre: 'Remo en banco inclinado con mancuernas',
+                    grupo: 'Espalda',
+                    categoria: 'Remo',
+                    urlGif: 'https://gymvisual.com/img/p/1/4/9/7/3/14973.gif',
+                    descripcion: 'Tumbado boca abajo en banco inclinado, tira las mancuernas hacia arriba manteniendo la espalda recta.',
+                    consejos: '• Mantén la espalda recta.\n• Controla el movimiento.\n• Siente la contracción de la espalda.',
+                    errores: '• No uses demasiado peso.\n• No pierdas el control.',
+                    musculosPrincipales: ['Dorsal ancho', 'Romboides', 'Trapecio medio'],
+                    musculosSecundarios: ['Deltoides posterior'],
+                    series: 4,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: 'viernes',
+                    dificultad: 'media',
+                    material: ['Banco inclinado', 'Mancuernas'],
+                    intensidadMuscular: { 'Espalda': 80, 'Bíceps': 50 }
+                },
+                {
+                    id: 'aperturas-viernes',
+                    nombre: 'Aperturas con mancuernas',
+                    grupo: 'Pecho',
+                    categoria: 'Apertura',
+                    urlGif: 'https://gymvisual.com/img/p/1/0/2/8/0/10280.gif',
+                    descripcion: 'Abre los brazos manteniendo una ligera flexión de los codos hasta notar el estiramiento del pecho y vuelve lentamente.',
+                    consejos: '• Mantén los codos ligeramente flexionados.\n• Siente el estiramiento.\n• Controla el movimiento.',
+                    errores: '• No bloquees los codos.\n• No uses demasiado peso.',
+                    musculosPrincipales: ['Pectoral mayor', 'Deltoides anterior'],
+                    musculosSecundarios: ['Bíceps'],
+                    series: 4,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'viernes',
+                    dificultad: 'facil',
+                    material: ['Banco', 'Mancuernas'],
+                    intensidadMuscular: { 'Pecho': 80, 'Hombro': 50 }
+                },
+                {
+                    id: 'elevaciones-laterales-viernes',
+                    nombre: 'Elevaciones laterales',
+                    grupo: 'Hombro',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://gymvisual.com/img/p/5/1/3/7/5137.gif',
+                    descripcion: 'Eleva las mancuernas lateralmente hasta la altura de los hombros manteniendo una ligera flexión en los codos.',
+                    consejos: '• Mantén los codos ligeramente flexionados.\n• Controla el movimiento.',
+                    errores: '• No balancees el cuerpo.\n• No uses demasiado peso.',
+                    musculosPrincipales: ['Deltoides medio', 'Supraespinoso'],
+                    musculosSecundarios: ['Trapecio'],
+                    series: 4,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'viernes',
+                    dificultad: 'facil',
+                    material: ['Mancuernas'],
+                    intensidadMuscular: { 'Hombro': 85 }
+                },
+                {
+                    id: 'curl-martillo-viernes',
+                    nombre: 'Curl martillo',
+                    grupo: 'Bíceps',
+                    categoria: 'Curl',
+                    urlGif: 'https://api.smartworkout.app/asset/image/8588e41c-5c2d-4ee0-90ca-ad69b7d0438a',
+                    descripcion: 'Agarre neutro, muñeca recta todo el movimiento. Curva la mancuerna hacia el hombro.',
+                    consejos: '• Mantén los codos pegados al torso.\n• Controla el movimiento.',
+                    errores: '• No uses demasiado peso.\n• No balancees el cuerpo.',
+                    musculosPrincipales: ['Braquial', 'Braquiorradial'],
+                    musculosSecundarios: ['Bíceps braquial'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'viernes',
+                    dificultad: 'facil',
+                    material: ['Mancuernas'],
+                    intensidadMuscular: { 'Bíceps': 80, 'Antebrazo': 70 }
+                },
+                {
+                    id: 'extension-triceps-cabeza-viernes',
+                    nombre: 'Extensión de tríceps por encima de la cabeza',
+                    grupo: 'Tríceps',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://media.tenor.com/V3J-mg9gH0kAAAAM/seated-dumbbell-triceps-extension.gif',
+                    descripcion: 'Sentado, sujeta una mancuerna con ambas manos por encima de la cabeza y extiende completamente los brazos.',
+                    consejos: '• Mantén los codos cerca de la cabeza.\n• Controla el movimiento.',
+                    errores: '• No separes los codos.\n• No bajes demasiado rápido.',
+                    musculosPrincipales: ['Tríceps (cabeza larga)'],
+                    musculosSecundarios: ['Tríceps (cabeza lateral)', 'Tríceps (cabeza medial)'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'viernes',
+                    dificultad: 'facil',
+                    material: ['Mancuerna'],
+                    intensidadMuscular: { 'Tríceps': 90 }
+                }
+            ];
+            return exerciseDatabase;
+        }
 
         // ==========================================
         // FUNCIONES AUX
         // ==========================================
         function getEjercicioPorNombre(nombre) {
-            return exerciseDatabase.find(e => e.nombre === nombre);
+            return getExerciseDatabase().find(e => e.nombre === nombre);
         }
 
         function getEjerciciosPorDia(dia) {
-            return exerciseDatabase.filter(e => e.dia === dia);
+            return getExerciseDatabase().filter(e => e.dia === dia);
         }
 
         function getDificultadColor(dificultad) {
@@ -1674,7 +1364,8 @@
             evolution: { initialWeight: 0, currentWeight: 0, initialWaist: 0, currentWaist: 0, totalWorkouts: 0,
                 daysWithoutSmoking: 0 },
             ajustes: {},
-            config: { temporizadorDescanso: true }
+            config: { temporizadorDescanso: true },
+            _cargado: false
         };
 
         let diaActivo = 'lunes';
@@ -1793,31 +1484,48 @@
         };
 
         // ==========================================
-        // APP
+        // APP - CON CARGA PERESOZA (LAZY LOADING)
         // ==========================================
         const APP = {
             init() {
+                // Mostrar loading screen
+                const loading = document.getElementById('loadingScreen');
+                loading.style.display = 'flex';
+
+                // Cargar datos básicos primero (rápido)
                 Storage.init();
                 const reset = Storage.resetearSemana();
                 if (reset) UI.toast('🔄 Nueva semana. ¡A marcar los ejercicios!', 'success');
-                this._cargarAjustes();
-                this._actualizarEvolution();
-                this.renderizarTodo();
-                this._eventos();
+
+                // Cargar configuración básica
+                this._cargarAjustesBasicos();
+
+                // Renderizar SOLO el dashboard (lo esencial)
+                this._renderDashboardInicial();
+
+                // Ocultar loading screen
+                setTimeout(() => {
+                    loading.classList.add('fade-out');
+                    setTimeout(() => { loading.style.display = 'none'; }, 500);
+                }, 300);
+
+                // Cargar el resto en segundo plano (lazy loading)
+                setTimeout(() => {
+                    this._cargarDatosCompletos();
+                    this._inicializarEventos();
+                }, 100);
+
+                // Notificaciones
                 document.addEventListener('click', (e) => {
                     const bell = document.getElementById('bellWrap');
                     const drop = document.getElementById('notifDropdown');
                     if (bell && drop && !bell.contains(e.target)) drop.classList.remove('open');
                 });
+
                 return this;
             },
-            _eventos() {
-                document.getElementById('importFile').addEventListener('change', function() { Storage.importar(this
-                        .files[0]); });
-                const dia = UI.getDiaNombre();
-                diaActivo = dia === 'domingo' ? 'lunes' : dia;
-            },
-            _cargarAjustes() {
+
+            _cargarAjustesBasicos() {
                 const a = STATE.ajustes || {};
                 if (a.nombre) STATE.nombre = a.nombre;
                 if (a.altura) STATE.altura = a.altura;
@@ -1825,8 +1533,18 @@
                 if (STATE.config && STATE.config.temporizadorDescanso !== undefined) {
                     CONFIG.TEMPORIZADOR_DESCANSO = STATE.config.temporizadorDescanso;
                 }
+                const dia = UI.getDiaNombre();
+                diaActivo = dia === 'domingo' ? 'lunes' : dia;
             },
-            _actualizarEvolution() {
+
+            _renderDashboardInicial() {
+                UI.actualizarTopBar();
+                Dashboard.render();
+                Notificaciones.render();
+            },
+
+            _cargarDatosCompletos() {
+                // Actualizar evolución
                 if (STATE.mediciones.length > 0) {
                     STATE.evolution.initialWeight = STATE.mediciones[0].peso;
                     STATE.evolution.currentWeight = STATE.mediciones[STATE.mediciones.length - 1].peso;
@@ -1835,24 +1553,31 @@
                     STATE.evolution.totalWorkouts = STATE.diasEntrenados.length || 0;
                 }
                 Storage._save();
+
+                // Renderizar el dashboard completo (con datos actualizados)
+                Dashboard.render();
+
+                // Marcar como cargado
+                STATE._cargado = true;
             },
+
+            _inicializarEventos() {
+                document.getElementById('importFile').addEventListener('change', function() { Storage.importar(this
+                        .files[0]); });
+            },
+
             renderizarTodo() {
                 UI.actualizarTopBar();
                 Dashboard.render();
-                Rutinas.render();
-                Peso.render();
-                Agenda.render();
-                Estadisticas.render();
-                Records.render();
-                Fotos.render();
-                Ajustes.render();
-                Notificaciones.render();
+                // Las demás pantallas se renderizan bajo demanda
             },
+
             navegar(id) {
                 if (modoEntrenoActivo) {
                     UI.toast('⚠️ Termina el entrenamiento primero', 'error');
                     return;
                 }
+
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                 const page = document.getElementById(`page-${id}`);
                 if (page) page.classList.add('active');
@@ -1874,17 +1599,36 @@
                 if (document.getElementById('sideMenu').classList.contains('open')) UI.toggleMenu();
                 window.scrollTo(0, 0);
 
-                if (id === 'rutinas') {
-                    setTimeout(() => {
-                        const dia = UI.getDiaNombre();
-                        diaActivo = dia === 'domingo' ? 'lunes' : dia;
-                        const tabs = document.querySelectorAll('.dtab');
-                        const diasOrden = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
-                        const idx = diasOrden.indexOf(diaActivo);
-                        if (tabs[idx]) tabs[idx].click();
-                    }, 100);
+                // Cargar la pantalla bajo demanda
+                switch (id) {
+                    case 'rutinas':
+                        Rutinas.render();
+                        break;
+                    case 'peso':
+                        Peso.render();
+                        break;
+                    case 'agenda':
+                        Agenda.render();
+                        break;
+                    case 'records':
+                        Records.render();
+                        break;
+                    case 'estadisticas':
+                        Estadisticas.render();
+                        break;
+                    case 'fotos':
+                        Fotos.render();
+                        break;
+                    case 'ajustes':
+                        Ajustes.render();
+                        break;
+                    case 'inicio':
+                    default:
+                        Dashboard.render();
+                        break;
                 }
             },
+
             confirmarReset() { UI.confirmar('¿Borrar TODOS los datos? No se puede deshacer.', () => Storage
                     .resetAll()); },
 
@@ -1953,7 +1697,7 @@
                         <div class="me-ej-grupo">${ej.grupo}</div>
                         ${ej.urlGif ? `
                             <div class="me-ej-img-wrap">
-                                <img src="${ej.urlGif}" class="me-ej-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'me-ej-img-fallback\\'>💪</div>'" onclick="UI.abrirLightbox(this.src)" alt="${ej.nombre}">
+                                <img src="${ej.urlGif}" class="me-ej-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'me-ej-img-fallback\\'>💪</div>'" onclick="UI.abrirLightbox(this.src)" alt="${ej.nombre}" loading="lazy">
                             </div>
                         ` : `
                             <div class="me-ej-img-fallback">💪</div>
@@ -2421,7 +2165,7 @@
         };
 
         // ==========================================
-        // RUTINAS - SOLO BOTONES PARA SELECCIONAR DÍA
+        // RUTINAS
         // ==========================================
         const Rutinas = {
             render() {
@@ -2459,7 +2203,6 @@
                     };
                     tc.appendChild(btn);
 
-                    // Panel para cada día - SOLO EL BOTÓN DE ENTRENAR, sin lista de ejercicios
                     const panel = document.createElement('div');
                     panel.className = 'dia-panel';
                     panel.id = `dp-${dia}`;
@@ -2507,7 +2250,6 @@
                     pc.appendChild(panel);
                 });
 
-                // Seleccionar el día activo
                 const diaActual = UI.getDiaNombre();
                 diaActivo = diaActual === 'domingo' ? 'lunes' : diaActual;
                 const idxActivo = dias.indexOf(diaActivo);
@@ -2539,7 +2281,6 @@
                 const c = document.getElementById('progresoRutinaContainer');
                 if (!c) return;
 
-                // No mostrar barra de progreso si es día de descanso
                 if (diaActivo === 'miercoles') {
                     c.innerHTML = '';
                     return;
@@ -2575,7 +2316,7 @@
         };
 
         // ==========================================
-        // PESO
+        // PESO - Carga bajo demanda
         // ==========================================
         const Peso = {
             render() {
@@ -2727,7 +2468,7 @@
         };
 
         // ==========================================
-        // ESTADÍSTICAS
+        // ESTADÍSTICAS - Carga bajo demanda
         // ==========================================
         const Estadisticas = {
             render() {
@@ -2836,7 +2577,7 @@
         };
 
         // ==========================================
-        // AGENDA
+        // AGENDA - Carga bajo demanda
         // ==========================================
         const Agenda = {
             render() {
@@ -2887,7 +2628,7 @@
         };
 
         // ==========================================
-        // FOTOS
+        // FOTOS - Carga bajo demanda
         // ==========================================
         const Fotos = {
             db: null,
@@ -3092,7 +2833,7 @@
         };
 
         // ==========================================
-        // AJUSTES
+        // AJUSTES - Carga bajo demanda
         // ==========================================
         const Ajustes = {
             render() {
