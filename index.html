@@ -478,6 +478,100 @@
         .dia-entrenar-btn.descanso { background: var(--bg-card); color: var(--text-secondary); cursor: default; border: 1px solid var(--border); }
         .dia-entrenar-btn.descanso:hover { box-shadow: none; transform: none; }
 
+        /* ===== RUTINA SEMANAL (nueva pestaña) ===== */
+        .rutina-semana {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        .rutina-dia {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 14px 16px;
+            transition: var(--transition);
+        }
+        .rutina-dia:hover {
+            border-color: rgba(255,255,255,0.10);
+        }
+        .rutina-dia.hoy {
+            border-left: 4px solid var(--primary);
+            background: linear-gradient(135deg, var(--primary-dim), rgba(59,130,246,0.02));
+        }
+        .rutina-dia .rd-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        .rutina-dia .rd-dia {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .rutina-dia .rd-grupo {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .rutina-dia .rd-icono {
+            font-size: 20px;
+        }
+        .rutina-dia .rd-ejercicios {
+            margin-top: 4px;
+            padding-left: 4px;
+        }
+        .rutina-dia .rd-ejercicio {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        .rutina-dia .rd-ejercicio:last-child {
+            border-bottom: none;
+        }
+        .rutina-dia .rd-ejercicio .rd-numero {
+            color: var(--text-muted);
+            margin-right: 6px;
+            font-weight: 500;
+        }
+        .rutina-dia.descanso .rd-ejercicios {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        /* ===== ACTUALIZACIÓN DE DATOS ===== */
+        .update-banner {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            margin-bottom: var(--space-sm);
+            border: 1px solid var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+        .update-banner .ub-titulo {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .update-banner .ub-descripcion {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        .update-banner .ub-boton {
+            margin-top: 8px;
+        }
+        .update-banner.mediciones {
+            border-color: var(--warning);
+            border-left-color: var(--warning);
+        }
+        .update-banner.peso {
+            border-color: var(--text-muted);
+            border-left-color: var(--text-muted);
+        }
+
         @media (max-width: 420px) {
             .top-stats { display: none; }
             .side-menu { width: 260px; left: -260px; }
@@ -500,6 +594,8 @@
             .proximo-entreno-card .pe-nombre { font-size: 16px; }
             .modo-entreno-overlay .me-completado-final .me-resumen-grid { grid-template-columns: 1fr 1fr; }
             .day-tabs .dtab { padding: 8px 16px; font-size: 12px; min-width: 50px; }
+            .rutina-dia .rd-dia { font-size: 14px; }
+            .rutina-dia .rd-ejercicio { font-size: 12px; }
         }
         @media (min-width: 600px) {
             .page { padding: 64px 20px 70px; }
@@ -546,7 +642,8 @@
     <div class="side-overlay" id="sideOverlay" onclick="UI.toggleMenu()"></div>
     <nav class="side-menu" id="sideMenu">
         <button class="menu-item active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i> Inicio</button>
-        <button class="menu-item" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i> Rutinas</button>
+        <button class="menu-item" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i> Entrenar</button>
+        <button class="menu-item" onclick="APP.navegar('semana')"><i class="fa-solid fa-calendar-week"></i> Rutina</button>
         <button class="menu-item" onclick="APP.navegar('peso')"><i class="fa-solid fa-scale-balanced"></i> Peso</button>
         <button class="menu-item" onclick="APP.navegar('agenda')"><i class="fa-solid fa-calendar-check"></i> Agenda</button>
         <button class="menu-item" onclick="APP.navegar('records')"><i class="fa-solid fa-trophy"></i> Récords</button>
@@ -555,7 +652,7 @@
         <button class="menu-item" onclick="APP.navegar('fotos')"><i class="fa-solid fa-camera"></i> Fotos</button>
         <button class="menu-item" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</button>
         <button class="menu-item" onclick="APP.confirmarReset()" style="color:var(--danger);"><i class="fa-solid fa-trash"></i> Reset</button>
-        <div class="menu-footer">NicoGym 2.3</div>
+        <div class="menu-footer">NicoGym 2.4</div>
     </nav>
 
     <!-- PAGES -->
@@ -567,6 +664,10 @@
         <div id="progresoRutinaContainer"></div>
         <div class="day-tabs" id="dayTabs"></div>
         <div id="dayPanelsContainer"></div>
+    </div>
+
+    <div class="page" id="page-semana">
+        <div id="semanaContainer"></div>
     </div>
 
     <div class="page" id="page-peso">
@@ -596,9 +697,9 @@
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <button class="nav-btn active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i>Inicio</button>
-        <button class="nav-btn" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i>Rutina</button>
+        <button class="nav-btn" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i>Entrenar</button>
+        <button class="nav-btn" onclick="APP.navegar('semana')"><i class="fa-solid fa-calendar-week"></i>Rutina</button>
         <button class="nav-btn" onclick="APP.navegar('peso')"><i class="fa-solid fa-scale-balanced"></i>Peso</button>
-        <button class="nav-btn" onclick="APP.navegar('agenda')"><i class="fa-solid fa-calendar-check"></i>Agenda</button>
         <button class="nav-btn" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i>Stats</button>
     </nav>
 
@@ -636,12 +737,14 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '2.3',
+            VERSION: '2.4',
             ALTURA: 165,
             PESO_OBJETIVO: 75,
             STORAGE_KEY: 'nicoGym',
             FECHA_INICIO_NO_FUMAR: '2026-02-22',
             FECHA_REFERENCIA_MEDICIONES: '2026-07-20',
+            // Fecha del primer domingo completo (16/08/2026)
+            FECHA_INICIO_CALENDARIO: '2026-08-16',
             DIAS_SEMANA: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
             NOMBRES_DIAS: { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes',
                 sabado: 'Sábado', domingo: 'Domingo' },
@@ -654,9 +757,51 @@
                 sabado: 'Caminata 45-60 min',
                 domingo: 'Descanso'
             },
-            TEMPORIZADOR_DESCANSO: true,
+            TEMPORIZADOR_DESCANSO: false,
             TIEMPO_MSG_COMPLETADO: 1500
         };
+
+        // ==========================================
+        // MAPEO DE NOMBRES EN ESPAÑOL PARA RUTINA
+        // ==========================================
+        const NOMBRES_ESPANOL = {
+            'Press plano con mancuernas': 'Press de pecho con mancuernas',
+            'Press inclinado con mancuernas': 'Press inclinado con mancuernas',
+            'Aperturas con mancuernas': 'Aperturas con mancuernas',
+            'Press militar sentado': 'Press de hombros con mancuernas',
+            'Elevaciones laterales': 'Elevaciones laterales con mancuernas',
+            'Elevaciones frontales': 'Elevaciones frontales con mancuernas',
+            'Extensión de tríceps por encima de la cabeza': 'Extensión de tríceps sobre la cabeza',
+            'Press cerrado con mancuernas': 'Press cerrado con mancuernas',
+            'Barbell Row': 'Remo con barra',
+            'One-Arm Dumbbell Row': 'Remo con mancuerna a una mano',
+            'Dumbbell Reverse Fly': 'Aperturas inversas con mancuernas',
+            'Dumbbell Shrug': 'Encogimientos de hombros con mancuernas',
+            'Alternating Dumbbell Curl': 'Curl alterno con mancuernas',
+            'Hammer Curl': 'Curl martillo',
+            'Reverse Dumbbell Curl': 'Curl inverso con mancuernas',
+            'Press plano con mancuernas (viernes)': 'Press de pecho con mancuernas',
+            'Remo a una mano con mancuerna (viernes)': 'Remo con mancuerna a una mano',
+            'Press militar sentado (viernes)': 'Press de hombros con mancuernas',
+            'Remo en banco inclinado con mancuernas (viernes)': 'Remo en banco inclinado con mancuernas',
+            'Aperturas con mancuernas (viernes)': 'Aperturas con mancuernas',
+            'Elevaciones laterales (viernes)': 'Elevaciones laterales con mancuernas',
+            'Curl martillo (viernes)': 'Curl martillo',
+            'Extensión de tríceps por encima de la cabeza (viernes)': 'Extensión de tríceps sobre la cabeza',
+            'Sentadilla Goblet con mancuerna': 'Sentadilla Goblet con mancuerna',
+            'Peso muerto rumano': 'Peso muerto rumano',
+            'Zancadas estáticas con mancuernas': 'Zancadas estáticas con mancuernas',
+            'Sentadilla búlgara': 'Sentadilla búlgara',
+            'Hip Thrust': 'Hip Thrust',
+            'Elevación de gemelos de pie': 'Elevación de gemelos de pie',
+            'Crunch abdominal': 'Crunch abdominal',
+            'Elevación de piernas': 'Elevación de piernas',
+            'Bicicleta abdominal': 'Bicicleta abdominal'
+        };
+
+        function getNombreEspanol(nombreIngles) {
+            return NOMBRES_ESPANOL[nombreIngles] || nombreIngles;
+        }
 
         // ==========================================
         // EXERCISE DATABASE - Carga perezosa (lazy loading)
@@ -819,10 +964,7 @@
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Tríceps': 85, 'Pecho': 50 }
                 },
-
-                // ==========================================
-                // MARTES - ACTUALIZADO
-                // ==========================================
+                // MARTES
                 {
                     id: 'barbell-row',
                     nombre: 'Barbell Row',
@@ -956,7 +1098,6 @@
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Bíceps': 70, 'Antebrazo': 85 }
                 },
-
                 // JUEVES
                 {
                     id: 'sentadilla-goblet',
@@ -1129,11 +1270,10 @@
                     material: ['Colchoneta'],
                     intensidadMuscular: { 'Abdomen': 85, 'Oblicuos': 80 }
                 },
-
                 // VIERNES
                 {
                     id: 'press-plano-viernes',
-                    nombre: 'Press plano con mancuernas',
+                    nombre: 'Press plano con mancuernas (viernes)',
                     grupo: 'Pecho',
                     categoria: 'Press',
                     urlGif: 'https://gymvisual.com/img/p/1/8/6/4/5/18645.gif',
@@ -1152,7 +1292,7 @@
                 },
                 {
                     id: 'remo-una-mano-viernes',
-                    nombre: 'Remo a una mano con mancuerna',
+                    nombre: 'Remo a una mano con mancuerna (viernes)',
                     grupo: 'Espalda',
                     categoria: 'Remo',
                     urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif',
@@ -1171,7 +1311,7 @@
                 },
                 {
                     id: 'press-militar-viernes',
-                    nombre: 'Press militar sentado',
+                    nombre: 'Press militar sentado (viernes)',
                     grupo: 'Hombro',
                     categoria: 'Press',
                     urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif',
@@ -1190,7 +1330,7 @@
                 },
                 {
                     id: 'remo-banco-inclinado-viernes',
-                    nombre: 'Remo en banco inclinado con mancuernas',
+                    nombre: 'Remo en banco inclinado con mancuernas (viernes)',
                     grupo: 'Espalda',
                     categoria: 'Remo',
                     urlGif: 'https://gymvisual.com/img/p/1/4/9/7/3/14973.gif',
@@ -1209,7 +1349,7 @@
                 },
                 {
                     id: 'aperturas-viernes',
-                    nombre: 'Aperturas con mancuernas',
+                    nombre: 'Aperturas con mancuernas (viernes)',
                     grupo: 'Pecho',
                     categoria: 'Apertura',
                     urlGif: 'https://gymvisual.com/img/p/1/0/2/8/0/10280.gif',
@@ -1228,7 +1368,7 @@
                 },
                 {
                     id: 'elevaciones-laterales-viernes',
-                    nombre: 'Elevaciones laterales',
+                    nombre: 'Elevaciones laterales (viernes)',
                     grupo: 'Hombro',
                     categoria: 'Aislamiento',
                     urlGif: 'https://gymvisual.com/img/p/5/1/3/7/5137.gif',
@@ -1247,7 +1387,7 @@
                 },
                 {
                     id: 'curl-martillo-viernes',
-                    nombre: 'Curl martillo',
+                    nombre: 'Curl martillo (viernes)',
                     grupo: 'Bíceps',
                     categoria: 'Curl',
                     urlGif: 'https://api.smartworkout.app/asset/image/8588e41c-5c2d-4ee0-90ca-ad69b7d0438a',
@@ -1266,7 +1406,7 @@
                 },
                 {
                     id: 'extension-triceps-cabeza-viernes',
-                    nombre: 'Extensión de tríceps por encima de la cabeza',
+                    nombre: 'Extensión de tríceps por encima de la cabeza (viernes)',
                     grupo: 'Tríceps',
                     categoria: 'Aislamiento',
                     urlGif: 'https://media.tenor.com/V3J-mg9gH0kAAAAM/seated-dumbbell-triceps-extension.gif',
@@ -1332,6 +1472,60 @@
         }
 
         // ==========================================
+        // FUNCIONES CALENDARIO DEFINITIVO
+        // ==========================================
+        function getTipoActualizacion(fecha) {
+            const d = typeof fecha === 'string' ? new Date(fecha + 'T00:00:00') : new Date(fecha);
+            d.setHours(0, 0, 0, 0);
+
+            if (d.getDay() !== 0) return null;
+
+            const inicio = new Date(CONFIG.FECHA_INICIO_CALENDARIO + 'T00:00:00');
+            inicio.setHours(0, 0, 0, 0);
+
+            const diffTime = d.getTime() - inicio.getTime();
+            if (diffTime < 0) return null;
+
+            const diffWeeks = Math.floor(diffTime / (7 * 24 * 60 * 60 * 1000));
+
+            // Semana 0 (16/08): completa (peso + mediciones + fotos)
+            // Semana 1: solo peso
+            // Semana 2: peso + mediciones
+            // Semana 3: solo peso
+            // Semana 4: peso + mediciones + fotos
+            // Semana 5: solo peso
+            // Semana 6: peso + mediciones
+            // Semana 7: solo peso
+            // Semana 8: peso + mediciones + fotos
+
+            const esFotos = diffWeeks % 4 === 0;
+            const esMediciones = diffWeeks % 2 === 0;
+
+            if (esFotos) return 'completa';
+            if (esMediciones) return 'mediciones';
+            return 'solo-peso';
+        }
+
+        function getProximaActualizacion() {
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+
+            let d = new Date(hoy);
+            while (d.getDay() !== 0) {
+                d.setDate(d.getDate() + 1);
+            }
+
+            const inicio = new Date(CONFIG.FECHA_INICIO_CALENDARIO + 'T00:00:00');
+            inicio.setHours(0, 0, 0, 0);
+
+            if (d.getTime() < inicio.getTime()) {
+                d = new Date(inicio);
+            }
+
+            return d;
+        }
+
+        // ==========================================
         // STORAGE
         // ==========================================
         const Storage = {
@@ -1341,12 +1535,16 @@
                     const d = JSON.parse(raw);
                     Object.assign(STATE, d);
                     if (!STATE.recordatorios) STATE.recordatorios = { freqMediciones: 2, freqFotos: 4,
-                            ultimaMedicion: CONFIG.FECHA_REFERENCIA_MEDICIONES, ultimasFotos: null };
+                            ultimaMedicion: CONFIG.FECHA_REFERENCIA_MEDICIONES, ultimasFotos: null,
+                            ultimoPeso: null };
                     if (!STATE.records) STATE.records = [];
                     if (!STATE.evolution) STATE.evolution = { initialWeight: 0, currentWeight: 0, initialWaist: 0,
                             currentWaist: 0, totalWorkouts: 0, daysWithoutSmoking: 0 };
                     if (!STATE.ajustes) STATE.ajustes = {};
                     if (!STATE.config) STATE.config = { temporizadorDescanso: true };
+                    if (!STATE.ultimoRegistroPeso) STATE.ultimoRegistroPeso = null;
+                    if (!STATE.ultimasMediciones) STATE.ultimasMediciones = null;
+                    if (!STATE.ultimasFotosGuardadas) STATE.ultimasFotosGuardadas = null;
                 }
                 this._calcularDiasSinFumar();
                 this._save();
@@ -1421,13 +1619,16 @@
             diasEntrenados: [],
             checks: {},
             recordatorios: { freqMediciones: 2, freqFotos: 4, ultimaMedicion: CONFIG.FECHA_REFERENCIA_MEDICIONES,
-                ultimasFotos: null },
+                ultimasFotos: null, ultimoPeso: null },
             records: [],
             evolution: { initialWeight: 0, currentWeight: 0, initialWaist: 0, currentWaist: 0, totalWorkouts: 0,
                 daysWithoutSmoking: 0 },
             ajustes: {},
             config: { temporizadorDescanso: true },
-            _cargado: false
+            _cargado: false,
+            ultimoRegistroPeso: null,
+            ultimasMediciones: null,
+            ultimasFotosGuardadas: null
         };
 
         let diaActivo = 'lunes';
@@ -1546,38 +1747,30 @@
         };
 
         // ==========================================
-        // APP - CON CARGA PERESOZA (LAZY LOADING)
+        // APP
         // ==========================================
         const APP = {
             init() {
-                // Mostrar loading screen
                 const loading = document.getElementById('loadingScreen');
                 loading.style.display = 'flex';
 
-                // Cargar datos básicos primero (rápido)
                 Storage.init();
                 const reset = Storage.resetearSemana();
                 if (reset) UI.toast('🔄 Nueva semana. ¡A marcar los ejercicios!', 'success');
 
-                // Cargar configuración básica
                 this._cargarAjustesBasicos();
-
-                // Renderizar SOLO el dashboard (lo esencial)
                 this._renderDashboardInicial();
 
-                // Ocultar loading screen
                 setTimeout(() => {
                     loading.classList.add('fade-out');
                     setTimeout(() => { loading.style.display = 'none'; }, 500);
                 }, 300);
 
-                // Cargar el resto en segundo plano (lazy loading)
                 setTimeout(() => {
                     this._cargarDatosCompletos();
                     this._inicializarEventos();
                 }, 100);
 
-                // Notificaciones
                 document.addEventListener('click', (e) => {
                     const bell = document.getElementById('bellWrap');
                     const drop = document.getElementById('notifDropdown');
@@ -1606,7 +1799,6 @@
             },
 
             _cargarDatosCompletos() {
-                // Actualizar evolución
                 if (STATE.mediciones.length > 0) {
                     STATE.evolution.initialWeight = STATE.mediciones[0].peso;
                     STATE.evolution.currentWeight = STATE.mediciones[STATE.mediciones.length - 1].peso;
@@ -1615,11 +1807,7 @@
                     STATE.evolution.totalWorkouts = STATE.diasEntrenados.length || 0;
                 }
                 Storage._save();
-
-                // Renderizar el dashboard completo (con datos actualizados)
                 Dashboard.render();
-
-                // Marcar como cargado
                 STATE._cargado = true;
             },
 
@@ -1631,7 +1819,6 @@
             renderizarTodo() {
                 UI.actualizarTopBar();
                 Dashboard.render();
-                // Las demás pantallas se renderizan bajo demanda
             },
 
             navegar(id) {
@@ -1645,7 +1832,7 @@
                 if (page) page.classList.add('active');
 
                 document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                const map = { 'inicio': 0, 'rutinas': 1, 'peso': 2, 'agenda': 3, 'estadisticas': 4 };
+                const map = { 'inicio': 0, 'rutinas': 1, 'semana': 2, 'peso': 3, 'estadisticas': 4 };
                 const btns = document.querySelectorAll('.nav-btn');
                 if (map[id] !== undefined && btns[map[id]]) btns[map[id]].classList.add('active');
 
@@ -1653,7 +1840,8 @@
                 document.querySelectorAll('.side-menu .menu-item').forEach(m => {
                     const txt = m.textContent.trim().toLowerCase();
                     if (txt.includes(id) || (id === 'estadisticas' && txt.includes('estadísticas')) ||
-                        (id === 'peso' && txt.includes('peso')) || (id === 'fotos' && txt.includes('fotos'))) {
+                        (id === 'peso' && txt.includes('peso')) || (id === 'fotos' && txt.includes('fotos')) ||
+                        (id === 'semana' && txt.includes('rutina'))) {
                         m.classList.add('active');
                     }
                 });
@@ -1661,10 +1849,12 @@
                 if (document.getElementById('sideMenu').classList.contains('open')) UI.toggleMenu();
                 window.scrollTo(0, 0);
 
-                // Cargar la pantalla bajo demanda
                 switch (id) {
                     case 'rutinas':
                         Rutinas.render();
+                        break;
+                    case 'semana':
+                        Semana.render();
                         break;
                     case 'peso':
                         Peso.render();
@@ -1693,6 +1883,18 @@
 
             confirmarReset() { UI.confirmar('¿Borrar TODOS los datos? No se puede deshacer.', () => Storage
                     .resetAll()); },
+
+            // ==========================================
+            // CALENDARIO DE ACTUALIZACIONES
+            // ==========================================
+            obtenerTipoActualizacion() {
+                const hoy = new Date();
+                return getTipoActualizacion(hoy);
+            },
+
+            obtenerProximaActualizacion() {
+                return getProximaActualizacion();
+            },
 
             // ==========================================
             // MODO ENTRENO GUIADO
@@ -2142,9 +2344,54 @@
 
                 const notifs = Notificaciones.generar();
 
+                // ===== BANNER DE ACTUALIZACIÓN =====
+                const tipoActualizacion = APP.obtenerTipoActualizacion();
+                let updateBanner = '';
+                const hoyStr = UI.getHoy();
+
+                if (tipoActualizacion === 'completa') {
+                    updateBanner = `
+                        <div class="update-banner">
+                            <div class="ub-titulo">📊 Actualización completa — Peso + Mediciones + Fotos</div>
+                            <div class="ub-descripcion">Hoy es domingo de actualización completa. Registra todos tus datos.</div>
+                            <div class="ub-boton">
+                                <button class="btn btn-primary btn-block btn-sm" onclick="APP.navegar('peso')">
+                                    <i class="fa-solid fa-scale-balanced"></i> Ir a mediciones
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else if (tipoActualizacion === 'mediciones') {
+                    updateBanner = `
+                        <div class="update-banner mediciones">
+                            <div class="ub-titulo">📊 Actualización de mediciones — Peso + Mediciones</div>
+                            <div class="ub-descripcion">Hoy actualiza peso y mediciones. Las fotos se conservan.</div>
+                            <div class="ub-boton">
+                                <button class="btn btn-primary btn-block btn-sm" onclick="APP.navegar('peso')" style="background:var(--warning);border-color:var(--warning);color:#000;">
+                                    <i class="fa-solid fa-scale-balanced"></i> Ir a mediciones
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else if (tipoActualizacion === 'solo-peso') {
+                    updateBanner = `
+                        <div class="update-banner peso">
+                            <div class="ub-titulo">📊 Actualización semanal — Solo peso</div>
+                            <div class="ub-descripcion">Hoy solo debes registrar tu peso. Mediciones y fotos se conservan.</div>
+                            <div class="ub-boton">
+                                <button class="btn btn-primary btn-block btn-sm" onclick="APP.navegar('peso')" style="background:var(--text-muted);border-color:var(--text-muted);">
+                                    <i class="fa-solid fa-scale-balanced"></i> Registrar peso
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
                 c.innerHTML = `
                     <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
                     <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString('es-ES', {day:'numeric', month:'long'})}</div>
+
+                    ${updateBanner}
 
                     <div class="card card-accent">
                         <div class="card-title">📊 Resumen</div>
@@ -2227,7 +2474,7 @@
         };
 
         // ==========================================
-        // RUTINAS
+        // RUTINAS (ENTRENAR)
         // ==========================================
         const Rutinas = {
             render() {
@@ -2378,7 +2625,82 @@
         };
 
         // ==========================================
-        // PESO - Carga bajo demanda
+        // SEMANA - NUEVA PESTAÑA RUTINA
+        // ==========================================
+        const Semana = {
+            render() {
+                const c = document.getElementById('semanaContainer');
+                if (!c) return;
+
+                const hoy = new Date();
+                const hoyDia = hoy.getDay();
+
+                const dias = [
+                    { key: 'lunes', nombre: 'LUNES', icono: '🔵', grupo: 'Pecho + Hombros + Tríceps' },
+                    { key: 'martes', nombre: 'MARTES', icono: '🟢', grupo: 'Espalda + Bíceps + Trapecio' },
+                    { key: 'miercoles', nombre: 'MIÉRCOLES', icono: '🚶', grupo: 'Caminata' },
+                    { key: 'jueves', nombre: 'JUEVES', icono: '🟠', grupo: 'Piernas + Abdomen' },
+                    { key: 'viernes', nombre: 'VIERNES', icono: '🔵', grupo: 'Tren superior completo' },
+                    { key: 'sabado', nombre: 'SÁBADO', icono: '🚶', grupo: 'Caminata' },
+                    { key: 'domingo', nombre: 'DOMINGO', icono: '😌', grupo: 'Descanso' }
+                ];
+
+                // Mapeo de días de la semana (0=domingo, 1=lunes, ...)
+                const diaMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' };
+                const diaActualKey = diaMap[hoyDia];
+
+                let html = `<div class="rutina-semana">`;
+
+                dias.forEach((dia) => {
+                    const esHoy = dia.key === diaActualKey;
+                    const esDescanso = (dia.key === 'miercoles' || dia.key === 'sabado' || dia.key === 'domingo');
+                    let ejercicios = [];
+
+                    if (!esDescanso) {
+                        ejercicios = getEjerciciosPorDia(dia.key);
+                    }
+
+                    const claseDia = esHoy ? 'rutina-dia hoy' : 'rutina-dia';
+                    const claseDescanso = esDescanso ? ' descanso' : '';
+
+                    html += `<div class="${claseDia}${claseDescanso}">`;
+                    html += `<div class="rd-header">`;
+                    html += `<div><span class="rd-dia">${dia.icono} ${dia.nombre}</span>`;
+                    html += `<div class="rd-grupo">${dia.grupo}</div></div>`;
+                    if (esHoy) {
+                        html += `<span style="font-size:11px;color:var(--primary);font-weight:600;">HOY</span>`;
+                    }
+                    html += `</div>`;
+
+                    if (esDescanso) {
+                        html += `<div class="rd-ejercicios">`;
+                        if (dia.key === 'miercoles') {
+                            html += `Caminata de 30–45 minutos`;
+                        } else if (dia.key === 'sabado') {
+                            html += `Caminata de 45–60 minutos`;
+                        } else {
+                            html += `Descanso`;
+                        }
+                        html += `</div>`;
+                    } else {
+                        html += `<div class="rd-ejercicios">`;
+                        ejercicios.forEach((ej, index) => {
+                            const nombreEspanol = getNombreEspanol(ej.nombre);
+                            html += `<div class="rd-ejercicio"><span class="rd-numero">${index + 1}.</span> ${nombreEspanol}</div>`;
+                        });
+                        html += `</div>`;
+                    }
+
+                    html += `</div>`;
+                });
+
+                html += `</div>`;
+                c.innerHTML = html;
+            }
+        };
+
+        // ==========================================
+        // PESO - ACTUALIZADO CON CALENDARIO DEFINITIVO
         // ==========================================
         const Peso = {
             render() {
@@ -2388,17 +2710,70 @@
                 const ultimo = STATE.mediciones.length > 0 ? STATE.mediciones[STATE.mediciones.length - 1] : null;
                 const primero = STATE.mediciones.length > 0 ? STATE.mediciones[0] : null;
 
+                const tipo = APP.obtenerTipoActualizacion();
+                const hoy = new Date();
+                const esDomingo = hoy.getDay() === 0;
+                const esFechaValida = tipo !== null;
+
+                let titulo = 'Nueva medición';
+                let descripcion = 'Registra todos tus datos corporales.';
+                let camposOcultos = '';
+                let mensajeAdicional = '';
+
+                if (esDomingo && esFechaValida) {
+                    if (tipo === 'completa') {
+                        titulo = '📊 Actualización completa — Peso + Mediciones + Fotos';
+                        descripcion = 'Registra peso, mediciones y fotos.';
+                    } else if (tipo === 'mediciones') {
+                        titulo = '📊 Actualización de mediciones — Peso + Mediciones';
+                        descripcion = 'Hoy registra peso y mediciones. Las fotos se conservan.';
+                        mensajeAdicional = `
+                            <div style="padding:10px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);margin-bottom:8px;text-align:center;">
+                                <span style="font-size:13px;color:var(--text-secondary);">
+                                    📸 Las fotos se conservan de la última actualización completa.
+                                </span>
+                            </div>
+                        `;
+                    } else if (tipo === 'solo-peso') {
+                        titulo = '📊 Actualización semanal — Solo peso';
+                        descripcion = 'Hoy solo debes registrar tu peso. Mediciones y fotos se conservan.';
+                        mensajeAdicional = `
+                            <div style="padding:10px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);margin-bottom:8px;text-align:center;">
+                                <span style="font-size:13px;color:var(--text-secondary);">
+                                    📏 Mediciones y fotos se conservan de la última actualización completa.
+                                </span>
+                            </div>
+                        `;
+                        if (ultimo) {
+                            mensajeAdicional += `
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;color:var(--text-secondary);background:rgba(0,0,0,0.1);padding:8px;border-radius:var(--radius-sm);margin-bottom:8px;">
+                                    <div>Último peso: <strong style="color:var(--text);">${ultimo.peso} kg</strong></div>
+                                    <div>Última grasa: <strong style="color:var(--text);">${ultimo.grasaPorcentaje}%</strong></div>
+                                    <div>Último músculo: <strong style="color:var(--text);">${ultimo.masaMuscular} kg</strong></div>
+                                    <div>Última cintura: <strong style="color:var(--text);">${ultimo.cintura} cm</strong></div>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+
+                const mostrarCamposCompletos = (tipo === 'completa' || tipo === 'mediciones' || !esDomingo || !esFechaValida);
+
                 let html = `
                     <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-plus"></i> Nueva medición</div>
+                        <div class="card-title"><i class="fa-solid fa-plus"></i> ${titulo}</div>
+                        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">${descripcion}</div>
+                        ${mensajeAdicional}
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-                            <div class="form-field"><label>Fecha</label><input type="date" id="medFecha" class="input"></div>
-                            <div class="form-field"><label>Peso (kg)</label><input type="number" id="medPeso" step="0.1" placeholder="84.3" class="input"></div>
-                            <div class="form-field"><label>% Grasa</label><input type="number" id="medGrasa" step="0.1" placeholder="27.5" class="input"></div>
-                            <div class="form-field"><label>Masa muscular (kg)</label><input type="number" id="medMusculo" step="0.1" placeholder="58.2" class="input"></div>
-                            <div class="form-field"><label>Masa magra (kg)</label><input type="number" id="medMagra" step="0.1" placeholder="62.0" class="input"></div>
-                            <div class="form-field"><label>Grasa visceral</label><input type="number" id="medVisceral" step="0.5" placeholder="8.0" class="input"></div>
-                            <div class="form-field" style="grid-column:span 2;"><label>Cintura (cm)</label><input type="number" id="medCintura" step="0.1" placeholder="98" class="input"></div>
+                            <div class="form-field"><label>Fecha</label><input type="date" id="medFecha" class="input" value="${UI.getHoy()}"></div>
+                            <div class="form-field"><label>Peso (kg) *</label><input type="number" id="medPeso" step="0.1" placeholder="${ultimo ? ultimo.peso : '84.3'}" class="input"></div>
+                            ${mostrarCamposCompletos ? `
+                                <div class="form-field"><label>% Grasa</label><input type="number" id="medGrasa" step="0.1" placeholder="${ultimo ? ultimo.grasaPorcentaje : '27.5'}" class="input"></div>
+                                <div class="form-field"><label>Masa muscular (kg)</label><input type="number" id="medMusculo" step="0.1" placeholder="${ultimo ? ultimo.masaMuscular : '58.2'}" class="input"></div>
+                                <div class="form-field"><label>Masa magra (kg)</label><input type="number" id="medMagra" step="0.1" placeholder="${ultimo ? ultimo.masaMagra : '62.0'}" class="input"></div>
+                                <div class="form-field"><label>Grasa visceral</label><input type="number" id="medVisceral" step="0.5" placeholder="${ultimo ? ultimo.grasaVisceral : '8.0'}" class="input"></div>
+                                <div class="form-field" style="grid-column:span 2;"><label>Cintura (cm)</label><input type="number" id="medCintura" step="0.1" placeholder="${ultimo ? ultimo.cintura : '98'}" class="input"></div>
+                            ` : ''}
                         </div>
                         <button class="btn btn-primary btn-block" onclick="Peso._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                     </div>
@@ -2425,40 +2800,95 @@
                     </div>
                 `;
                 c.innerHTML = html;
-                document.getElementById('medFecha').value = UI.getHoy();
                 this._renderHistorial();
             },
 
             _guardar() {
                 const f = document.getElementById('medFecha').value;
                 if (!f) { UI.toast('Selecciona fecha', 'error'); return; }
-                const p = parseFloat(document.getElementById('medPeso').value);
-                const g = parseFloat(document.getElementById('medGrasa').value);
-                const m = parseFloat(document.getElementById('medMusculo').value);
-                const mg = parseFloat(document.getElementById('medMagra').value);
-                const v = parseFloat(document.getElementById('medVisceral').value);
-                const ci = parseFloat(document.getElementById('medCintura').value);
-                if (isNaN(p) || isNaN(g) || isNaN(m) || isNaN(ci)) {
-                    UI.toast('Completa todos los campos', 'error');
-                    return;
+
+                const peso = parseFloat(document.getElementById('medPeso').value);
+                if (isNaN(peso) || peso === 0) { UI.toast('Introduce un peso válido', 'error'); return; }
+
+                const tipo = APP.obtenerTipoActualizacion();
+                const hoy = new Date();
+                const esDomingo = hoy.getDay() === 0;
+                const esFechaValida = tipo !== null;
+
+                const ultimo = STATE.mediciones.length > 0 ? STATE.mediciones[STATE.mediciones.length - 1] : null;
+
+                let grasaPorcentaje, masaMuscular, masaMagra, grasaVisceral, cintura;
+
+                const mostrarCamposCompletos = (tipo === 'completa' || tipo === 'mediciones' || !esDomingo || !esFechaValida);
+
+                if (mostrarCamposCompletos) {
+                    grasaPorcentaje = parseFloat(document.getElementById('medGrasa').value);
+                    masaMuscular = parseFloat(document.getElementById('medMusculo').value);
+                    masaMagra = parseFloat(document.getElementById('medMagra').value);
+                    grasaVisceral = parseFloat(document.getElementById('medVisceral').value);
+                    cintura = parseFloat(document.getElementById('medCintura').value);
+
+                    if (isNaN(grasaPorcentaje) || isNaN(masaMuscular) || isNaN(cintura)) {
+                        UI.toast('Completa todos los campos', 'error');
+                        return;
+                    }
+                } else {
+                    // Solo peso: conservar valores anteriores
+                    const ultimoRegistro = ultimo || STATE.ultimasMediciones || {
+                        grasaPorcentaje: 0,
+                        masaMuscular: 0,
+                        masaMagra: 0,
+                        grasaVisceral: 0,
+                        cintura: 0
+                    };
+                    grasaPorcentaje = ultimoRegistro.grasaPorcentaje || 0;
+                    masaMuscular = ultimoRegistro.masaMuscular || 0;
+                    masaMagra = ultimoRegistro.masaMagra || 0;
+                    grasaVisceral = ultimoRegistro.grasaVisceral || 0;
+                    cintura = ultimoRegistro.cintura || 0;
                 }
+
                 const idx = STATE.mediciones.findIndex(x => x.fecha === f);
-                const nm = { fecha: f, peso: p, grasaPorcentaje: g, masaMuscular: m, masaMagra: mg || 0,
-                    grasaVisceral: v || 0, cintura: ci };
+                const nm = {
+                    fecha: f,
+                    peso: peso,
+                    grasaPorcentaje: grasaPorcentaje,
+                    masaMuscular: masaMuscular,
+                    masaMagra: masaMagra || 0,
+                    grasaVisceral: grasaVisceral || 0,
+                    cintura: cintura
+                };
+
                 if (idx !== -1) STATE.mediciones[idx] = nm;
                 else STATE.mediciones.push(nm);
+
                 STATE.mediciones.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
                 STATE.recordatorios.ultimaMedicion = f;
+
+                // Guardar las últimas mediciones completas para referencia futura
+                if (mostrarCamposCompletos) {
+                    STATE.ultimasMediciones = {
+                        grasaPorcentaje: grasaPorcentaje,
+                        masaMuscular: masaMuscular,
+                        masaMagra: masaMagra || 0,
+                        grasaVisceral: grasaVisceral || 0,
+                        cintura: cintura
+                    };
+                } else if (!STATE.ultimasMediciones && ultimo) {
+                    STATE.ultimasMediciones = {
+                        grasaPorcentaje: ultimo.grasaPorcentaje || 0,
+                        masaMuscular: ultimo.masaMuscular || 0,
+                        masaMagra: ultimo.masaMagra || 0,
+                        grasaVisceral: ultimo.grasaVisceral || 0,
+                        cintura: ultimo.cintura || 0
+                    };
+                }
+
                 Storage._save();
-                UI.toast('✅ Mediciones guardadas', 'success');
+                UI.toast('✅ Datos guardados', 'success');
                 this.render();
                 APP.renderizarTodo();
                 document.getElementById('medPeso').value = '';
-                document.getElementById('medGrasa').value = '';
-                document.getElementById('medMusculo').value = '';
-                document.getElementById('medMagra').value = '';
-                document.getElementById('medVisceral').value = '';
-                document.getElementById('medCintura').value = '';
             },
 
             _renderHistorial() {
@@ -2530,7 +2960,7 @@
         };
 
         // ==========================================
-        // ESTADÍSTICAS - Carga bajo demanda
+        // ESTADÍSTICAS
         // ==========================================
         const Estadisticas = {
             render() {
@@ -2639,7 +3069,7 @@
         };
 
         // ==========================================
-        // AGENDA - Carga bajo demanda
+        // AGENDA - ACTUALIZADA CON CALENDARIO DEFINITIVO
         // ==========================================
         const Agenda = {
             render() {
@@ -2650,15 +3080,35 @@
                 const dia = UI.getDiaNombre();
                 const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
 
-                const freqMed = STATE.recordatorios.freqMediciones || 2;
-                const pm = getProximoDomingo(STATE.recordatorios.ultimaMedicion || CONFIG.FECHA_REFERENCIA_MEDICIONES,
-                    freqMed);
-                const diasMed = getDiasHasta(pm);
+                const proximaActualizacion = APP.obtenerProximaActualizacion();
+                const diasHastaActualizacion = getDiasHasta(proximaActualizacion);
+                const tipoActualizacion = getTipoActualizacion(proximaActualizacion);
 
-                const freqFotos = STATE.recordatorios.freqFotos || 4;
-                const pf = getProximoDomingo(STATE.recordatorios.ultimasFotos || CONFIG.FECHA_REFERENCIA_MEDICIONES,
-                    freqFotos);
-                const diasFotos = getDiasHasta(pf);
+                let textoActualizacion = '';
+                if (tipoActualizacion === 'completa') {
+                    textoActualizacion = '📊 Actualización completa (peso + mediciones + fotos)';
+                } else if (tipoActualizacion === 'mediciones') {
+                    textoActualizacion = '📊 Actualización de mediciones (peso + mediciones)';
+                } else if (tipoActualizacion === 'solo-peso') {
+                    textoActualizacion = '📊 Actualización semanal (solo peso)';
+                }
+
+                // Próximo domingo para mostrar en agenda
+                let proxDia = null;
+                const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' };
+                for (let i = 1; i <= 7; i++) {
+                    const d = new Date();
+                    d.setDate(d.getDate() + i);
+                    const diaKey = diasMap[d.getDay()];
+                    if (diaKey !== 'miercoles' && diaKey !== 'sabado' && diaKey !== 'domingo' && !STATE.diasEntrenados
+                        .includes(UI.formatFecha(d))) {
+                        const ejercicios = getEjerciciosPorDia(diaKey);
+                        if (ejercicios.length > 0) {
+                            proxDia = CONFIG.NOMBRES_DIAS[diaKey];
+                            break;
+                        }
+                    }
+                }
 
                 c.innerHTML = `
                     <div class="card">
@@ -2675,13 +3125,13 @@
 
                         <div style="font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Próximos</div>
                         <div style="display:flex;flex-direction:column;gap:4px;">
-                            <div class="pending-item" style="${diasMed <= 1 ? '' : 'opacity:0.5;'}">
-                                <span class="pi-icon">📏</span>
-                                <span>Medición ${diasMed <= 1 ? 'mañana' : `en ${diasMed} días`}</span>
+                            <div class="pending-item" style="${diasHastaActualizacion <= 1 ? '' : 'opacity:0.5;'}">
+                                <span class="pi-icon">📊</span>
+                                <span>${textoActualizacion} ${diasHastaActualizacion <= 1 ? 'mañana' : `en ${diasHastaActualizacion} días`}</span>
                             </div>
-                            <div class="pending-item" style="${diasFotos <= 1 ? '' : 'opacity:0.5;'}">
-                                <span class="pi-icon">📸</span>
-                                <span>Fotos ${diasFotos <= 1 ? 'mañana' : `en ${diasFotos} días`}</span>
+                            <div class="pending-item">
+                                <span class="pi-icon">💪</span>
+                                <span>Próximo entreno: ${proxDia || '--'}</span>
                             </div>
                         </div>
                     </div>
@@ -2690,7 +3140,7 @@
         };
 
         // ==========================================
-        // FOTOS - Carga bajo demanda
+        // FOTOS - ACTUALIZADAS CON CALENDARIO DEFINITIVO
         // ==========================================
         const Fotos = {
             db: null,
@@ -2723,11 +3173,33 @@
 
                 const fechas = await this._obtenerFechas();
 
+                const tipo = APP.obtenerTipoActualizacion();
+                const hoy = new Date();
+                const esDomingo = hoy.getDay() === 0;
+                const esFechaValida = tipo !== null;
+                const permitirFotos = (esDomingo && esFechaValida && tipo === 'completa');
+
+                let mensajeFotos = '';
+                if (esDomingo && esFechaValida && tipo === 'mediciones') {
+                    mensajeFotos = `
+                        <div style="padding:10px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);margin-bottom:10px;text-align:center;font-size:13px;color:var(--text-secondary);">
+                            📸 Hoy solo toca peso y mediciones. Las fotos se conservan de la última actualización completa (cada 4 semanas).
+                        </div>
+                    `;
+                } else if (esDomingo && esFechaValida && tipo === 'solo-peso') {
+                    mensajeFotos = `
+                        <div style="padding:10px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);margin-bottom:10px;text-align:center;font-size:13px;color:var(--text-secondary);">
+                            📸 Hoy solo toca peso. Las fotos se conservan de la última actualización completa (cada 4 semanas).
+                        </div>
+                    `;
+                }
+
                 c.innerHTML = `
                     <div class="card">
                         <div class="card-title"><i class="fa-solid fa-camera"></i> Subir fotos</div>
+                        ${mensajeFotos}
                         <div style="display:flex;gap:6px;margin-bottom:8px">
-                            <input type="date" id="fechaFotos" class="input">
+                            <input type="date" id="fechaFotos" class="input" value="${UI.getHoy()}">
                         </div>
                         <div class="foto-grid-upload">
                             <div class="equip-card"><div class="label">Frente</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Frente')"><img id="previewFrente" class="foto-preview hidden"></div>
@@ -2735,7 +3207,13 @@
                             <div class="equip-card"><div class="label">Izquierda</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Izquierda')"><img id="previewIzquierda" class="foto-preview hidden"></div>
                             <div class="equip-card"><div class="label">Derecha</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Derecha')"><img id="previewDerecha" class="foto-preview hidden"></div>
                         </div>
-                        <button class="btn btn-primary btn-block" onclick="Fotos._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                        ${permitirFotos ? `
+                            <button class="btn btn-primary btn-block" onclick="Fotos._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar fotos</button>
+                        ` : `
+                            <button class="btn btn-ghost btn-block" style="opacity:0.5;cursor:default;">
+                                <i class="fa-solid fa-lock"></i> ${tipo === 'completa' ? 'Sube tus fotos' : 'Solo en actualización completa (cada 4 semanas)'}
+                            </button>
+                        `}
                     </div>
 
                     <div class="card">
@@ -2861,15 +3339,17 @@
                 const dia = UI.getDiaNombre();
                 const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
 
-                const freqMed = STATE.recordatorios.freqMediciones || 2;
-                const pm = getProximoDomingo(STATE.recordatorios.ultimaMedicion || CONFIG.FECHA_REFERENCIA_MEDICIONES,
-                    freqMed);
-                if (getDiasHasta(pm) <= 1) notifs.push({ icono: '📏', texto: 'Mañana toca medición' });
+                const proximaActualizacion = APP.obtenerProximaActualizacion();
+                const diasHasta = getDiasHasta(proximaActualizacion);
+                const tipo = getTipoActualizacion(proximaActualizacion);
 
-                const freqFotos = STATE.recordatorios.freqFotos || 4;
-                const pf = getProximoDomingo(STATE.recordatorios.ultimasFotos || CONFIG.FECHA_REFERENCIA_MEDICIONES,
-                    freqFotos);
-                if (getDiasHasta(pf) <= 1) notifs.push({ icono: '📸', texto: 'Mañana toca fotos' });
+                if (diasHasta <= 1 && tipo) {
+                    let texto = '';
+                    if (tipo === 'completa') texto = 'Actualización completa (peso + mediciones + fotos)';
+                    else if (tipo === 'mediciones') texto = 'Actualización de mediciones (peso + mediciones)';
+                    else texto = 'Actualización semanal (solo peso)';
+                    notifs.push({ icono: '📊', texto: `Mañana: ${texto}` });
+                }
 
                 if (dia !== 'domingo' && dia !== 'sabado' && dia !== 'miercoles' && !entrenadoHoy) {
                     notifs.push({ icono: '💪', texto: `Entrena ${CONFIG.TIPOS_RUTINA[dia]}` });
@@ -2895,7 +3375,7 @@
         };
 
         // ==========================================
-        // AJUSTES - Carga bajo demanda
+        // AJUSTES
         // ==========================================
         const Ajustes = {
             render() {
@@ -2928,6 +3408,16 @@
                                 </div>
                                 <span class="switch-label">${CONFIG.TEMPORIZADOR_DESCANSO ? 'Activado' : 'Desactivado'}</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-calendar"></i> Calendario de actualizaciones</div>
+                        <div style="font-size:12px;color:var(--text-secondary);padding:4px 0;">
+                            <div>📅 Primer domingo completo: <strong>16 de agosto de 2026</strong></div>
+                            <div style="margin-top:2px;">🔄 Peso: <strong>cada semana</strong></div>
+                            <div style="color:var(--text-secondary);">📏 Mediciones: <strong>cada 2 semanas</strong></div>
+                            <div style="color:var(--text-secondary);">📸 Fotos: <strong>cada 4 semanas</strong></div>
                         </div>
                     </div>
 
