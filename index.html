@@ -35,6 +35,19 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { width: 100%; max-width: 100%; height: 100%; font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        body { position: relative; isolation: isolate; }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background-image: url('./img/logo-nicogym.png');
+            background-position: center;
+            background-size: clamp(220px, 62vw, 420px) auto;
+            background-repeat: no-repeat;
+            opacity: 0.05;
+        }
         ::-webkit-scrollbar { width: 3px; height: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: var(--radius-full); }
@@ -60,7 +73,7 @@
         img, video, canvas, iframe { max-width: 100%; }
         input, select, textarea, button { max-width: 100%; }
         .page, .top-bar, .bottom-nav { width: 100%; max-width: 100%; }
-        .page { overflow-x: hidden; }
+        .page { position: relative; z-index: 2; overflow-x: hidden; }
 
         /* ===== SKELETON LOADING ===== */
         .skeleton { background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); animation: pulse 1.5s ease-in-out infinite; }
@@ -81,6 +94,7 @@
             transition: opacity 0.5s ease;
         }
         .loading-screen.fade-out { opacity: 0; pointer-events: none; }
+        .loading-screen .loading-logo { width: min(72vw, 360px); max-height: 42vh; object-fit: contain; margin-bottom: 18px; }
         .loading-screen .loader { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading-screen .loader-text { margin-top: 12px; font-size: 13px; color: var(--text-secondary); font-weight: 500; }
@@ -96,7 +110,7 @@
             align-items: center;
             gap: 10px;
         }
-        .top-bar .top-left .logo-img {
+        .top-bar .top-left .header-logo {
             height: 32px;
             width: auto;
             display: block;
@@ -409,6 +423,20 @@
             overflow-y: auto;
         }
         .modo-entreno-overlay.open { display: flex; }
+        .modo-entreno-overlay { isolation: isolate; }
+        .modo-entreno-overlay::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: url('./img/logo-nicogym.png');
+            background-position: center;
+            background-size: clamp(220px, 62vw, 420px) auto;
+            background-repeat: no-repeat;
+            opacity: 0.05;
+        }
+        .modo-entreno-overlay > * { position: relative; z-index: 1; }
         .modo-entreno-overlay .me-header {
             display: flex;
             justify-content: space-between;
@@ -625,7 +653,7 @@
             .day-tabs .dtab { padding: 8px 16px; font-size: 12px; min-width: 50px; }
             .rutina-dia .rd-dia { font-size: 14px; }
             .rutina-dia .rd-ejercicio { font-size: 12px; }
-            .top-bar .top-left .logo-img { height: 26px; }
+            .top-bar .top-left .header-logo { height: 26px; }
             .top-bar .top-left .logo-text { font-size: 15px; }
         }
         @media (min-width: 600px) {
@@ -640,6 +668,7 @@
 
     <!-- LOADING SCREEN -->
     <div class="loading-screen" id="loadingScreen">
+        <img src="./img/logo-nicogym.png" alt="NicoGym" class="loading-logo" />
         <div class="loader"></div>
         <div class="loader-text">Cargando NicoGym...</div>
     </div>
@@ -647,8 +676,9 @@
     <!-- TOP BAR -->
     <header class="top-bar">
         <div class="top-left">
-            <img src="assets/logo.png" alt="NicoGym" class="logo-img" onerror="this.style.display='none'; document.querySelector('.top-left .logo-text')?.classList.remove('hidden');" />
-            <span class="logo-text hidden"><i class="fa-solid fa-dumbbell"></i>NicoGym</span>
+            <div class="logo">
+                <img src="./img/logo-nicogym.png" alt="NicoGym" class="header-logo" />
+            </div>
         </div>
         <div class="top-right">
             <div class="top-stats">
@@ -3459,8 +3489,8 @@
                         ${permitirFotos ? `
                             <button class="btn btn-primary btn-block" onclick="Fotos._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar fotos</button>
                         ` : `
-                            <button class="btn btn-primary btn-block" onclick="Fotos._guardar()">
-                                <i class="fa-solid fa-camera"></i> Subir fotos
+                            <button class="btn btn-ghost btn-block" style="opacity:0.5;cursor:default;">
+                                <i class="fa-solid fa-lock"></i> ${tipo === 'completa' ? 'Sube tus fotos' : 'Solo en actualización completa (cada 4 semanas)'}
                             </button>
                         `}
                     </div>
