@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device<input type="file" id="importFile" accept=".json" class="hidden" onchange="Storage.importar(this.files[0]); this.value='';">-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NicoGym</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -34,7 +34,7 @@
             --space-lg: 24px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        html, body { width: 100%; max-width: 100%; height: 100%; font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         ::-webkit-scrollbar { width: 3px; height: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: var(--radius-full); }
@@ -57,6 +57,10 @@
         .text-danger { color: var(--danger); }
         .text-warning { color: var(--warning); }
         .w-full { width: 100%; }
+        img, video, canvas, iframe { max-width: 100%; }
+        input, select, textarea, button { max-width: 100%; }
+        .page, .top-bar, .bottom-nav { width: 100%; max-width: 100%; }
+        .page { overflow-x: hidden; }
 
         /* ===== SKELETON LOADING ===== */
         .skeleton { background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); animation: pulse 1.5s ease-in-out infinite; }
@@ -596,6 +600,8 @@
         }
 
         @media (max-width: 420px) {
+            .card, .ex-card, .record-card, .rutina-dia, .ajustes-item { max-width: 100%; min-width: 0; }
+            .card-title, .ex-nombre, .rutina-dia .rd-ejercicio, .ajustes-item { overflow-wrap: anywhere; }
             .top-stats { display: none; }
             .side-menu { width: 260px; left: -260px; }
             .page { padding: 56px 10px 60px; }
@@ -1768,7 +1774,33 @@
                 reader.onload = (e) => {
                     try {
                         const datos = JSON.parse(e.target.result);
+                        if (!datos || typeof datos !== 'object' || Array.isArray(datos)) {
+                            throw new Error('Formato de backup no válido');
+                        }
                         Object.assign(STATE, datos);
+
+                        // Compatibilidad con backups anteriores: conservar valores
+                        // predeterminados si alguna sección no existe en el backup.
+                        if (!STATE.recordatorios) STATE.recordatorios = {
+                            freqMediciones: 2, freqFotos: 4,
+                            ultimaMedicion: CONFIG.FECHA_REFERENCIA_MEDICIONES,
+                            ultimasFotos: null, ultimoPeso: null
+                        };
+                        if (!STATE.records) STATE.records = [];
+                        if (!STATE.evolution) STATE.evolution = {
+                            initialWeight: 0, currentWeight: 0, initialWaist: 0,
+                            currentWaist: 0, totalWorkouts: 0, daysWithoutSmoking: 0
+                        };
+                        if (!STATE.ajustes) STATE.ajustes = {};
+                        if (!STATE.config) STATE.config = { temporizadorDescanso: false };
+                        if (STATE.config.temporizadorDescanso === undefined) {
+                            STATE.config.temporizadorDescanso = false;
+                        }
+                        if (!STATE.ultimoRegistroPeso) STATE.ultimoRegistroPeso = null;
+                        if (!STATE.ultimasMediciones) STATE.ultimasMediciones = null;
+                        if (!STATE.ultimasFotosGuardadas) STATE.ultimasFotosGuardadas = null;
+
+                        CONFIG.TEMPORIZADOR_DESCANSO = STATE.config.temporizadorDescanso === true;
                         this._save();
                         UI.toast('✅ Datos importados correctamente', 'success');
                         APP.renderizarTodo();
@@ -3598,6 +3630,7 @@
                         <div class="card-title"><i class="fa-solid fa-database"></i> Datos</div>
                         <button class="btn btn-ghost btn-block" onclick="Storage.exportar()"><i class="fa-solid fa-download"></i> Exportar</button>
                         <button class="btn btn-ghost btn-block" onclick="document.getElementById('importFile').click()" style="margin-top:4px;"><i class="fa-solid fa-upload"></i> Importar</button>
+                        <input type="file" id="importFile" accept=".json" class="hidden" onchange="Storage.importar(this.files[0]); this.value='';">
                         <button class="btn btn-danger btn-block" onclick="APP.confirmarReset()" style="margin-top:4px;"><i class="fa-solid fa-trash"></i> Borrar todos los datos</button>
                     </div>
 
