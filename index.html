@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device<input type="file" id="importFile" accept=".json" class="hidden" onchange="Storage.importar(this.files[0]); this.value='';">-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>NicoGym</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -3600,7 +3600,6 @@
                         <div class="card-title"><i class="fa-solid fa-database"></i> Datos</div>
                         <button class="btn btn-ghost btn-block" onclick="Storage.exportar()"><i class="fa-solid fa-download"></i> Exportar</button>
                         <button class="btn btn-ghost btn-block" onclick="document.getElementById('importFile').click()" style="margin-top:4px;"><i class="fa-solid fa-upload"></i> Importar</button>
-                        <input type="file" id="importFile" accept=".json" class="hidden" onchange="Storage.importar(this.files[0]); this.value='';">
                         <button class="btn btn-danger btn-block" onclick="APP.confirmarReset()" style="margin-top:4px;"><i class="fa-solid fa-trash"></i> Borrar todos los datos</button>
                     </div>
 
