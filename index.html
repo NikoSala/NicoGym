@@ -1945,7 +1945,6 @@
 
                 setTimeout(() => {
                     this._cargarDatosCompletos();
-                    this._inicializarEventos();
                 }, 100);
 
                 document.addEventListener('click', (e) => {
@@ -1990,7 +1989,6 @@
                 Storage._save();
                 Dashboard.render();
                 STATE._cargado = true;
-            },
             },
 
             renderizarTodo() {
