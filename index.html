@@ -1756,13 +1756,27 @@
             },
             resetAll() { localStorage.removeItem(CONFIG.STORAGE_KEY);
                 location.reload(); },
-            exportar() {
-                const blob = new Blob([JSON.stringify(STATE, null, 2)], { type: 'application/json' });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = 'nicogym_backup.json';
-                a.click();
-                UI.toast('✅ Datos exportados', 'success');
+            async exportar() {
+                try {
+                    // Las fotos de progreso viven en IndexedDB, no en STATE. Se
+                    // añaden al JSON solo para el backup y no al localStorage.
+                    const fotosProgreso = await Fotos.exportarBackup();
+                    const backup = {
+                        ...STATE,
+                        fotosProgreso: { version: 1, diasFotos: fotosProgreso }
+                    };
+                    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+                    const a = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    a.href = url;
+                    a.download = 'nicogym_backup.json';
+                    a.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 0);
+                    UI.toast('✅ Datos exportados', 'success');
+                } catch (err) {
+                    console.error('Error al exportar las fotos:', err);
+                    UI.toast('❌ Error al exportar las fotos', 'error');
+                }
             },
             // IMPORTAR - función conectada correctamente
             importar(file) {
@@ -1771,13 +1785,19 @@
                     return;
                 }
                 const reader = new FileReader();
-                reader.onload = (e) => {
+                reader.onload = async (e) => {
                     try {
                         const datos = JSON.parse(e.target.result);
                         if (!datos || typeof datos !== 'object' || Array.isArray(datos)) {
                             throw new Error('Formato de backup no válido');
                         }
-                        Object.assign(STATE, datos);
+                        // Los backups antiguos no tienen fotosProgreso. En ese
+                        // caso se conserva IndexedDB tal como estaba.
+                        const fotosProgreso = Array.isArray(datos.fotosProgreso?.diasFotos)
+                            ? datos.fotosProgreso.diasFotos : null;
+                        const datosEstado = { ...datos };
+                        delete datosEstado.fotosProgreso;
+                        Object.assign(STATE, datosEstado);
 
                         // Compatibilidad con backups anteriores: conservar valores
                         // predeterminados si alguna sección no existe en el backup.
@@ -1801,6 +1821,9 @@
                         if (!STATE.ultimasFotosGuardadas) STATE.ultimasFotosGuardadas = null;
 
                         CONFIG.TEMPORIZADOR_DESCANSO = STATE.config.temporizadorDescanso === true;
+                        if (fotosProgreso !== null) {
+                            await Fotos.restaurarBackup(fotosProgreso);
+                        }
                         this._save();
                         UI.toast('✅ Datos importados correctamente', 'success');
                         APP.renderizarTodo();
@@ -3015,44 +3038,25 @@
                 const peso = parseFloat(document.getElementById('medPeso').value);
                 if (isNaN(peso) || peso === 0) { UI.toast('Introduce un peso válido', 'error'); return; }
 
-                const tipo = APP.obtenerTipoActualizacion();
-                const hoy = new Date();
-                const esDomingo = hoy.getDay() === 0;
-                const esFechaValida = tipo !== null;
-
                 const ultimo = STATE.mediciones.length > 0 ? STATE.mediciones[STATE.mediciones.length - 1] : null;
-
-                let grasaPorcentaje, masaMuscular, masaMagra, grasaVisceral, cintura;
-
-                const mostrarCamposCompletos = (tipo === 'completa' || tipo === 'mediciones' || !esDomingo || !esFechaValida);
-
-                if (mostrarCamposCompletos) {
-                    grasaPorcentaje = parseFloat(document.getElementById('medGrasa').value);
-                    masaMuscular = parseFloat(document.getElementById('medMusculo').value);
-                    masaMagra = parseFloat(document.getElementById('medMagra').value);
-                    grasaVisceral = parseFloat(document.getElementById('medVisceral').value);
-                    cintura = parseFloat(document.getElementById('medCintura').value);
-
-                    if (isNaN(grasaPorcentaje) || isNaN(masaMuscular) || isNaN(cintura)) {
-                        UI.toast('Completa todos los campos', 'error');
-                        return;
-                    }
-                } else {
-                    const ultimoRegistro = ultimo || STATE.ultimasMediciones || {
-                        grasaPorcentaje: 0,
-                        masaMuscular: 0,
-                        masaMagra: 0,
-                        grasaVisceral: 0,
-                        cintura: 0
-                    };
-                    grasaPorcentaje = ultimoRegistro.grasaPorcentaje || 0;
-                    masaMuscular = ultimoRegistro.masaMuscular || 0;
-                    masaMagra = ultimoRegistro.masaMagra || 0;
-                    grasaVisceral = ultimoRegistro.grasaVisceral || 0;
-                    cintura = ultimoRegistro.cintura || 0;
-                }
-
                 const idx = STATE.mediciones.findIndex(x => x.fecha === f);
+                const ultimoRegistro = (idx !== -1 ? STATE.mediciones[idx] : null) || ultimo || STATE.ultimasMediciones || {
+                    grasaPorcentaje: 0,
+                    masaMuscular: 0,
+                    masaMagra: 0,
+                    grasaVisceral: 0,
+                    cintura: 0
+                };
+                const conservarSiVacio = (id, valorAnterior) => {
+                    const input = document.getElementById(id);
+                    const valor = input ? parseFloat(input.value) : NaN;
+                    return Number.isFinite(valor) ? valor : (valorAnterior ?? 0);
+                };
+                const grasaPorcentaje = conservarSiVacio('medGrasa', ultimoRegistro.grasaPorcentaje);
+                const masaMuscular = conservarSiVacio('medMusculo', ultimoRegistro.masaMuscular);
+                const masaMagra = conservarSiVacio('medMagra', ultimoRegistro.masaMagra);
+                const grasaVisceral = conservarSiVacio('medVisceral', ultimoRegistro.grasaVisceral);
+                const cintura = conservarSiVacio('medCintura', ultimoRegistro.cintura);
                 const nm = {
                     fecha: f,
                     peso: peso,
@@ -3069,23 +3073,13 @@
                 STATE.mediciones.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
                 STATE.recordatorios.ultimaMedicion = f;
 
-                if (mostrarCamposCompletos) {
-                    STATE.ultimasMediciones = {
-                        grasaPorcentaje: grasaPorcentaje,
-                        masaMuscular: masaMuscular,
-                        masaMagra: masaMagra || 0,
-                        grasaVisceral: grasaVisceral || 0,
-                        cintura: cintura
-                    };
-                } else if (!STATE.ultimasMediciones && ultimo) {
-                    STATE.ultimasMediciones = {
-                        grasaPorcentaje: ultimo.grasaPorcentaje || 0,
-                        masaMuscular: ultimo.masaMuscular || 0,
-                        masaMagra: ultimo.masaMagra || 0,
-                        grasaVisceral: ultimo.grasaVisceral || 0,
-                        cintura: ultimo.cintura || 0
-                    };
-                }
+                STATE.ultimasMediciones = {
+                    grasaPorcentaje: grasaPorcentaje,
+                    masaMuscular: masaMuscular,
+                    masaMagra: masaMagra || 0,
+                    grasaVisceral: grasaVisceral || 0,
+                    cintura: cintura
+                };
 
                 Storage._save();
                 UI.toast('✅ Datos guardados', 'success');
@@ -3359,6 +3353,56 @@
                     req.onsuccess = e => { this.db = e.target.result;
                         r(); };
                     req.onerror = () => r();
+                });
+            },
+
+            async exportarBackup() {
+                await this._abrirDB();
+                if (!this.db) throw new Error('No se pudo abrir la base de fotos');
+
+                return new Promise((resolve, reject) => {
+                    const req = this.db.transaction(this.STORE_NAME, 'readonly')
+                        .objectStore(this.STORE_NAME).getAll();
+                    req.onsuccess = e => {
+                        const fotos = (e.target.result || [])
+                            .filter(dia => dia && typeof dia.fecha === 'string')
+                            .map(dia => ({
+                                fecha: dia.fecha,
+                                timestamp: dia.timestamp,
+                                frente: dia.frente || null,
+                                espalda: dia.espalda || null,
+                                izquierda: dia.izquierda || null,
+                                derecha: dia.derecha || null
+                            }));
+                        resolve(fotos);
+                    };
+                    req.onerror = () => reject(req.error || new Error('No se pudieron leer las fotos'));
+                });
+            },
+
+            async restaurarBackup(diasFotos) {
+                await this._abrirDB();
+                if (!this.db) throw new Error('No se pudo abrir la base de fotos');
+
+                const fotosValidas = diasFotos
+                    .filter(dia => dia && typeof dia.fecha === 'string')
+                    .map(dia => ({
+                        fecha: dia.fecha,
+                        timestamp: Number.isFinite(dia.timestamp) ? dia.timestamp : Date.now(),
+                        frente: dia.frente || null,
+                        espalda: dia.espalda || null,
+                        izquierda: dia.izquierda || null,
+                        derecha: dia.derecha || null
+                    }));
+
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction(this.STORE_NAME, 'readwrite');
+                    const store = tx.objectStore(this.STORE_NAME);
+                    store.clear();
+                    fotosValidas.forEach(dia => store.put(dia));
+                    tx.oncomplete = () => resolve();
+                    tx.onerror = () => reject(tx.error || new Error('No se pudieron restaurar las fotos'));
+                    tx.onabort = () => reject(tx.error || new Error('Se canceló la restauración de fotos'));
                 });
             },
 
