@@ -652,7 +652,7 @@
         <button class="menu-item" onclick="APP.navegar('fotos')"><i class="fa-solid fa-camera"></i> Fotos</button>
         <button class="menu-item" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</button>
         <button class="menu-item" onclick="APP.confirmarReset()" style="color:var(--danger);"><i class="fa-solid fa-trash"></i> Reset</button>
-        <div class="menu-footer">NicoGym 2.4</div>
+        <div class="menu-footer">NicoGym 2.5</div>
     </nav>
 
     <!-- PAGES -->
@@ -737,13 +737,12 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '2.4',
+            VERSION: '2.5',
             ALTURA: 165,
             PESO_OBJETIVO: 75,
             STORAGE_KEY: 'nicoGym',
             FECHA_INICIO_NO_FUMAR: '2026-02-22',
             FECHA_REFERENCIA_MEDICIONES: '2026-07-20',
-            // Fecha del primer domingo completo (16/08/2026)
             FECHA_INICIO_CALENDARIO: '2026-08-16',
             DIAS_SEMANA: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
             NOMBRES_DIAS: { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes',
@@ -752,7 +751,7 @@
                 lunes: 'Pecho / Hombro / Tríceps',
                 martes: 'Espalda + Bíceps + Trapecio',
                 miercoles: 'Caminata 30-45 min',
-                jueves: 'Piernas / Abdomen',
+                jueves: 'Tren superior — prioridad brazos',
                 viernes: 'Tren superior completo',
                 sabado: 'Caminata 45-60 min',
                 domingo: 'Descanso'
@@ -788,6 +787,15 @@
             'Elevaciones laterales (viernes)': 'Elevaciones laterales con mancuernas',
             'Curl martillo (viernes)': 'Curl martillo',
             'Extensión de tríceps por encima de la cabeza (viernes)': 'Extensión de tríceps sobre la cabeza',
+            // NUEVOS EJERCICIOS JUEVES
+            'Dumbbell Pullover': 'Pullover con mancuerna',
+            'Incline Dumbbell Curl': 'Curl inclinado con mancuernas',
+            'Dumbbell Zottman Curl': 'Curl Zottman con mancuernas',
+            'Dumbbell Preacher Curl': 'Curl predicador con mancuerna',
+            'Dumbbell Spider Curl': 'Curl araña con mancuernas',
+            'Dumbbell Tate Press': 'Press Tate con mancuernas',
+            'Dumbbell Squeeze Press': 'Press de compresión con mancuernas',
+            // Ejercicios de piernas conservados
             'Sentadilla Goblet con mancuerna': 'Sentadilla Goblet con mancuerna',
             'Peso muerto rumano': 'Peso muerto rumano',
             'Zancadas estáticas con mancuernas': 'Zancadas estáticas con mancuernas',
@@ -811,7 +819,9 @@
         function getExerciseDatabase() {
             if (exerciseDatabase) return exerciseDatabase;
             exerciseDatabase = [
-                // LUNES
+                // ==========================================
+                // LUNES (sin cambios)
+                // ==========================================
                 {
                     id: 'press-plano',
                     nombre: 'Press plano con mancuernas',
@@ -964,7 +974,10 @@
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Tríceps': 85, 'Pecho': 50 }
                 },
-                // MARTES
+
+                // ==========================================
+                // MARTES (sin cambios)
+                // ==========================================
                 {
                     id: 'barbell-row',
                     nombre: 'Barbell Row',
@@ -1098,11 +1111,151 @@
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Bíceps': 70, 'Antebrazo': 85 }
                 },
-                // JUEVES
+
+                // ==========================================
+                // JUEVES - NUEVA RUTINA (Tren superior - prioridad brazos)
+                // ==========================================
+                {
+                    id: 'dumbbell-pullover',
+                    nombre: 'Dumbbell Pullover',
+                    grupo: 'Pecho / Espalda',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://gymvisual.com/img/p/2/8/3/2/8/28328.gif',
+                    descripcion: 'Tumbado perpendicular sobre un banco, con la cabeza cerca del borde, sujeta una mancuerna con ambas manos sobre el pecho. Mantén los codos ligeramente flexionados y lleva la mancuerna de forma controlada por detrás de la cabeza hasta notar el estiramiento en el pecho y el dorsal. Después, vuelve a llevarla sobre el pecho sin cambiar la posición de los codos.',
+                    consejos: '• Mantén los codos ligeramente flexionados y estables durante todo el movimiento.\n• Realiza el recorrido de forma lenta y controlada.\n• Lleva la mancuerna solo hasta donde puedas mantener una posición cómoda de los hombros.\n• Utiliza un peso que te permita controlar completamente el movimiento.',
+                    errores: '• No bloquees ni flexiones excesivamente los codos durante el recorrido.\n• No dejes caer la mancuerna rápidamente por detrás de la cabeza.\n• No arquees excesivamente la zona lumbar para compensar el movimiento.',
+                    musculosPrincipales: ['Pectoral mayor', 'Dorsal ancho'],
+                    musculosSecundarios: ['Tríceps', 'Serrato anterior'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'jueves',
+                    dificultad: 'facil',
+                    material: ['Banco', 'Mancuerna'],
+                    intensidadMuscular: { 'Pecho': 70, 'Espalda': 65, 'Tríceps': 40 }
+                },
+                {
+                    id: 'incline-dumbbell-curl',
+                    nombre: 'Incline Dumbbell Curl',
+                    grupo: 'Bíceps',
+                    categoria: 'Curl',
+                    urlGif: 'https://gymvisual.com/img/p/5/0/4/8/5048.gif',
+                    descripcion: 'Sentado en un banco inclinado (45°), sujeta una mancuerna en cada mano con los brazos extendidos hacia abajo. Curva las mancuernas hacia los hombros manteniendo los codos fijos y siente la contracción del bíceps. Baja controladamente hasta extender los brazos.',
+                    consejos: '• Mantén los codos fijos durante todo el movimiento.\n• Controla la bajada para mantener la tensión.\n• Siente la contracción del bíceps al subir.',
+                    errores: '• No muevas los codos.\n• No uses impulso.\n• No bajes demasiado rápido.',
+                    musculosPrincipales: ['Bíceps braquial'],
+                    musculosSecundarios: ['Braquial'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'jueves',
+                    dificultad: 'facil',
+                    material: ['Banco inclinado', 'Mancuernas'],
+                    intensidadMuscular: { 'Bíceps': 90 }
+                },
+                {
+                    id: 'dumbbell-zottman-curl',
+                    nombre: 'Dumbbell Zottman Curl',
+                    grupo: 'Bíceps / Antebrazo',
+                    categoria: 'Curl',
+                    urlGif: 'https://i.pinimg.com/originals/4b/e4/68/4be46841032506b311d43b8d49c6a58a.gif',
+                    descripcion: 'De pie, sujeta una mancuerna en cada mano con las palmas mirando hacia delante. Curva las mancuernas hacia los hombros y, en la posición superior, gira las muñecas para que las palmas miren hacia abajo. Baja lentamente las mancuernas con el agarre prono, sintiendo el trabajo del antebrazo.',
+                    consejos: '• Gira las muñecas en la posición superior.\n• Controla la bajada con el agarre prono.\n• Mantén los codos estables.',
+                    errores: '• No uses demasiado peso.\n• No balancees el cuerpo.\n• No hagas el giro demasiado rápido.',
+                    musculosPrincipales: ['Bíceps braquial', 'Braquiorradial'],
+                    musculosSecundarios: ['Braquial'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'jueves',
+                    dificultad: 'media',
+                    material: ['Mancuernas'],
+                    intensidadMuscular: { 'Bíceps': 85, 'Antebrazo': 75 }
+                },
+                {
+                    id: 'dumbbell-preacher-curl',
+                    nombre: 'Dumbbell Preacher Curl',
+                    grupo: 'Bíceps',
+                    categoria: 'Curl',
+                    urlGif: 'https://gymvisual.com/img/p/1/5/7/7/8/15778.gif',
+                    descripcion: 'Coloca un brazo apoyado sobre el respaldo de un banco inclinado (o sobre el propio banco) de forma que el brazo quede extendido y el hombro estable. Sujeta una mancuerna con la mano y curva el brazo hacia el hombro manteniendo el codo fijo. Baja lentamente hasta extender el brazo. Este ejercicio aísla el bíceps y evita el impulso del cuerpo.',
+                    consejos: '• Mantén el codo firmemente apoyado.\n• Controla el movimiento sin impulso.\n• Siente la contracción máxima del bíceps.',
+                    errores: '• No muevas el codo.\n• No uses demasiado peso.\n• No balancees el cuerpo.',
+                    musculosPrincipales: ['Bíceps braquial'],
+                    musculosSecundarios: ['Braquial'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'jueves',
+                    dificultad: 'facil',
+                    material: ['Banco', 'Mancuerna'],
+                    intensidadMuscular: { 'Bíceps': 90 }
+                },
+                {
+                    id: 'dumbbell-spider-curl',
+                    nombre: 'Dumbbell Spider Curl',
+                    grupo: 'Bíceps',
+                    categoria: 'Curl',
+                    urlGif: 'https://api.smartworkout.app/asset/image/7a6c7c0b-0480-4c45-ba66-18959ec9001f',
+                    descripcion: 'Tumbado boca abajo sobre un banco inclinado, deja los brazos colgando hacia el suelo con las mancuernas. Curva las mancuernas hacia los hombros manteniendo los codos fijos y siente la contracción del bíceps al final del recorrido.',
+                    consejos: '• Mantén los codos fijos.\n• Controla la subida y la bajada.\n• Aprieta el bíceps en la posición superior.',
+                    errores: '• No muevas los codos.\n• No uses demasiado peso.\n• No bajes demasiado rápido.',
+                    musculosPrincipales: ['Bíceps braquial'],
+                    musculosSecundarios: ['Braquial'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'jueves',
+                    dificultad: 'facil',
+                    material: ['Banco inclinado', 'Mancuernas'],
+                    intensidadMuscular: { 'Bíceps': 90 }
+                },
+                {
+                    id: 'dumbbell-tate-press',
+                    nombre: 'Dumbbell Tate Press',
+                    grupo: 'Tríceps',
+                    categoria: 'Press',
+                    urlGif: 'https://gymvisual.com/animated-gifs/1937-dumbbell-tate-press.html',
+                    descripcion: 'Tumbado en un banco plano, sujeta una mancuerna en cada mano con las palmas mirando hacia el techo y los codos apuntando hacia afuera. Baja las mancuernas hacia el pecho manteniendo los codos fijos y extiende los brazos para completar el movimiento, sintiendo el tríceps.',
+                    consejos: '• Mantén los codos apuntando hacia afuera.\n• Controla la bajada.\n• Siente la contracción del tríceps.',
+                    errores: '• No muevas los codos.\n• No uses demasiado peso.\n• No bajes demasiado rápido.',
+                    musculosPrincipales: ['Tríceps (cabeza lateral)'],
+                    musculosSecundarios: ['Tríceps (cabeza medial)'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'jueves',
+                    dificultad: 'media',
+                    material: ['Banco', 'Mancuernas'],
+                    intensidadMuscular: { 'Tríceps': 85 }
+                },
+                {
+                    id: 'dumbbell-squeeze-press',
+                    nombre: 'Dumbbell Squeeze Press',
+                    grupo: 'Pecho / Tríceps',
+                    categoria: 'Press',
+                    urlGif: 'https://gymvisual.com/img/p/1/8/3/5/3/18353.gif',
+                    descripcion: 'Tumbado en un banco plano, sujeta las mancuernas juntas con las palmas enfrentadas. Mantén las mancuernas pegadas durante todo el recorrido mientras empujas hacia arriba y bajas controladamente. Este ejercicio enfatiza el trabajo del tríceps y la zona interna del pectoral.',
+                    consejos: '• Mantén las mancuernas juntas.\n• Controla el movimiento.\n• Siente la contracción del tríceps y el pecho.',
+                    errores: '• No separes las mancuernas.\n• No uses demasiado peso.\n• No bajes demasiado rápido.',
+                    musculosPrincipales: ['Tríceps', 'Pectoral mayor (parte interna)'],
+                    musculosSecundarios: ['Deltoides anterior'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: 'jueves',
+                    dificultad: 'media',
+                    material: ['Banco', 'Mancuernas'],
+                    intensidadMuscular: { 'Tríceps': 80, 'Pecho': 70 }
+                },
+
+                // ==========================================
+                // EJERCICIOS DE PIERNAS Y ABDOMEN (conservados para futuro)
+                // ==========================================
                 {
                     id: 'sentadilla-goblet',
                     nombre: 'Sentadilla Goblet con mancuerna',
-                    grupo: 'Pierna',
+                    grupo: 'Piernas — Gimnasio / Futuro',
                     categoria: 'Sentadilla',
                     urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2023/01/Dumbbell-Goblet-Squat.gif',
                     descripcion: 'Sujeta una mancuerna al pecho, baja como al sentarte manteniendo la espalda recta y el pecho erguido. Baja hasta que los muslos estén paralelos al suelo.',
@@ -1113,7 +1266,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 90,
-                    dia: 'jueves',
+                    dia: null, // Desactivado
                     dificultad: 'media',
                     material: ['Mancuerna'],
                     intensidadMuscular: { 'Pierna': 90, 'Glúteos': 75 }
@@ -1121,7 +1274,7 @@
                 {
                     id: 'peso-muerto-rumano',
                     nombre: 'Peso muerto rumano',
-                    grupo: 'Pierna',
+                    grupo: 'Piernas — Gimnasio / Futuro',
                     categoria: 'Peso muerto',
                     urlGif: 'https://gymvisual.com/img/p/7/6/4/2/7642.gif',
                     descripcion: 'De pie con barra o mancuernas frente a ti, baja con espalda recta hasta sentir el estiramiento de los isquios. Sube impulsando con la cadera.',
@@ -1132,7 +1285,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 90,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'dificil',
                     material: ['Barra', 'Discos'],
                     intensidadMuscular: { 'Pierna': 85, 'Glúteos': 80, 'Espalda': 70 }
@@ -1140,7 +1293,7 @@
                 {
                     id: 'zancadas',
                     nombre: 'Zancadas estáticas con mancuernas',
-                    grupo: 'Pierna',
+                    grupo: 'Piernas — Gimnasio / Futuro',
                     categoria: 'Zancada',
                     urlGif: 'https://gymvisual.com/img/p/2/3/7/3/9/23739.gif',
                     descripcion: 'Da un paso largo hacia adelante, baja hasta que la rodilla trasera casi toque el suelo, y sube con el talón delantero.',
@@ -1151,7 +1304,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Pierna': 80, 'Glúteos': 75 }
@@ -1159,7 +1312,7 @@
                 {
                     id: 'sentadilla-bulgara',
                     nombre: 'Sentadilla búlgara',
-                    grupo: 'Pierna',
+                    grupo: 'Piernas — Gimnasio / Futuro',
                     categoria: 'Sentadilla',
                     urlGif: 'https://gymvisual.com/img/p/3/2/8/2/9/32829.gif',
                     descripcion: 'Apoya un pie atrás en un banco, baja hasta que la rodilla delantera forme 90°, y sube con el talón.',
@@ -1170,7 +1323,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'dificil',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Pierna': 85, 'Glúteos': 80 }
@@ -1178,7 +1331,7 @@
                 {
                     id: 'hip-thrust',
                     nombre: 'Hip Thrust',
-                    grupo: 'Glúteos',
+                    grupo: 'Piernas — Gimnasio / Futuro',
                     categoria: 'Aislamiento',
                     urlGif: 'https://gymvisual.com/img/p/2/0/9/5/6/20956.gif',
                     descripcion: 'Tumbado, apoya la espalda en un banco y sube la cadera con una mancuerna sobre la pelvis.',
@@ -1189,7 +1342,7 @@
                     series: 4,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Banco', 'Mancuerna'],
                     intensidadMuscular: { 'Glúteos': 95 }
@@ -1197,7 +1350,7 @@
                 {
                     id: 'gemelos',
                     nombre: 'Elevación de gemelos de pie',
-                    grupo: 'Gemelos',
+                    grupo: 'Piernas — Gimnasio / Futuro',
                     categoria: 'Aislamiento',
                     urlGif: 'https://i.pinimg.com/originals/2f/7c/ca/2f7cca8d37c65384c1d0bd84cc0a91d1.gif',
                     descripcion: 'De pie con mancuernas a los lados, elévate con la punta de los pies y baja controladamente.',
@@ -1208,7 +1361,7 @@
                     series: 4,
                     reps: '12-20',
                     descanso: 45,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Gemelos': 90 }
@@ -1216,7 +1369,7 @@
                 {
                     id: 'crunch',
                     nombre: 'Crunch abdominal',
-                    grupo: 'Abdomen',
+                    grupo: 'Abdomen — Futuro',
                     categoria: 'Aislamiento',
                     urlGif: 'https://i.pinimg.com/originals/34/5c/d9/345cd9414e1e743debd278eaddf33473.gif',
                     descripcion: 'Tumbado boca arriba con rodillas flexionadas, eleva el torso hacia las rodillas contrayendo el abdomen y baja controladamente.',
@@ -1227,7 +1380,7 @@
                     series: 3,
                     reps: '15-20',
                     descanso: 45,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Colchoneta'],
                     intensidadMuscular: { 'Abdomen': 85 }
@@ -1235,7 +1388,7 @@
                 {
                     id: 'elevacion-piernas',
                     nombre: 'Elevación de piernas',
-                    grupo: 'Abdomen',
+                    grupo: 'Abdomen — Futuro',
                     categoria: 'Aislamiento',
                     urlGif: 'https://gymvisual.com/img/p/5/8/5/9/5859.gif',
                     descripcion: 'Tumbado boca arriba, eleva las piernas rectas hasta formar 90° y baja lentamente manteniendo el abdomen contraído.',
@@ -1246,7 +1399,7 @@
                     series: 3,
                     reps: '12-15',
                     descanso: 45,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Colchoneta'],
                     intensidadMuscular: { 'Abdomen': 80 }
@@ -1254,7 +1407,7 @@
                 {
                     id: 'bicicleta-abdominal',
                     nombre: 'Bicicleta abdominal',
-                    grupo: 'Abdomen',
+                    grupo: 'Abdomen — Futuro',
                     categoria: 'Aislamiento',
                     urlGif: 'https://gymvisual.com/img/p/2/7/6/6/2/27662.gif',
                     descripcion: 'Tumbado, alterna codo con rodilla contraria como si pedalearas.',
@@ -1265,12 +1418,15 @@
                     series: 3,
                     reps: '15-20',
                     descanso: 45,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Colchoneta'],
                     intensidadMuscular: { 'Abdomen': 85, 'Oblicuos': 80 }
                 },
-                // VIERNES
+
+                // ==========================================
+                // VIERNES (sin cambios)
+                // ==========================================
                 {
                     id: 'press-plano-viernes',
                     nombre: 'Press plano con mancuernas (viernes)',
@@ -1487,16 +1643,6 @@
             if (diffTime < 0) return null;
 
             const diffWeeks = Math.floor(diffTime / (7 * 24 * 60 * 60 * 1000));
-
-            // Semana 0 (16/08): completa (peso + mediciones + fotos)
-            // Semana 1: solo peso
-            // Semana 2: peso + mediciones
-            // Semana 3: solo peso
-            // Semana 4: peso + mediciones + fotos
-            // Semana 5: solo peso
-            // Semana 6: peso + mediciones
-            // Semana 7: solo peso
-            // Semana 8: peso + mediciones + fotos
 
             const esFotos = diffWeeks % 4 === 0;
             const esMediciones = diffWeeks % 2 === 0;
@@ -1897,8 +2043,7 @@
             },
 
             // ==========================================
-            // MODO ENTRENO GUIADO
-            // ==========================================
+            // MODO ENTRENO GUIADO            // ==========================================
             iniciarEntreno(dia) {
                 const ejercicios = getEjerciciosPorDia(dia);
                 if (ejercicios.length === 0) {
@@ -2625,7 +2770,7 @@
         };
 
         // ==========================================
-        // SEMANA - NUEVA PESTAÑA RUTINA
+        // SEMANA - PESTAÑA RUTINA (ACTUALIZADA)
         // ==========================================
         const Semana = {
             render() {
@@ -2639,13 +2784,12 @@
                     { key: 'lunes', nombre: 'LUNES', icono: '🔵', grupo: 'Pecho + Hombros + Tríceps' },
                     { key: 'martes', nombre: 'MARTES', icono: '🟢', grupo: 'Espalda + Bíceps + Trapecio' },
                     { key: 'miercoles', nombre: 'MIÉRCOLES', icono: '🚶', grupo: 'Caminata' },
-                    { key: 'jueves', nombre: 'JUEVES', icono: '🟠', grupo: 'Piernas + Abdomen' },
+                    { key: 'jueves', nombre: 'JUEVES', icono: '🟠', grupo: 'Tren superior — prioridad brazos' },
                     { key: 'viernes', nombre: 'VIERNES', icono: '🔵', grupo: 'Tren superior completo' },
                     { key: 'sabado', nombre: 'SÁBADO', icono: '🚶', grupo: 'Caminata' },
                     { key: 'domingo', nombre: 'DOMINGO', icono: '😌', grupo: 'Descanso' }
                 ];
 
-                // Mapeo de días de la semana (0=domingo, 1=lunes, ...)
                 const diaMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' };
                 const diaActualKey = diaMap[hoyDia];
 
@@ -2700,7 +2844,7 @@
         };
 
         // ==========================================
-        // PESO - ACTUALIZADO CON CALENDARIO DEFINITIVO
+        // PESO
         // ==========================================
         const Peso = {
             render() {
@@ -2717,7 +2861,6 @@
 
                 let titulo = 'Nueva medición';
                 let descripcion = 'Registra todos tus datos corporales.';
-                let camposOcultos = '';
                 let mensajeAdicional = '';
 
                 if (esDomingo && esFechaValida) {
@@ -2865,7 +3008,6 @@
                 STATE.mediciones.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
                 STATE.recordatorios.ultimaMedicion = f;
 
-                // Guardar las últimas mediciones completas para referencia futura
                 if (mostrarCamposCompletos) {
                     STATE.ultimasMediciones = {
                         grasaPorcentaje: grasaPorcentaje,
@@ -3069,7 +3211,7 @@
         };
 
         // ==========================================
-        // AGENDA - ACTUALIZADA CON CALENDARIO DEFINITIVO
+        // AGENDA
         // ==========================================
         const Agenda = {
             render() {
@@ -3093,7 +3235,6 @@
                     textoActualizacion = '📊 Actualización semanal (solo peso)';
                 }
 
-                // Próximo domingo para mostrar en agenda
                 let proxDia = null;
                 const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' };
                 for (let i = 1; i <= 7; i++) {
@@ -3140,7 +3281,7 @@
         };
 
         // ==========================================
-        // FOTOS - ACTUALIZADAS CON CALENDARIO DEFINITIVO
+        // FOTOS
         // ==========================================
         const Fotos = {
             db: null,
