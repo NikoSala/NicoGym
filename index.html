@@ -2551,12 +2551,15 @@
                 let proxDuracion = 0;
                 let diasParaProx = 0;
 
-                for (let i = 1; i <= 7; i++) {
-                    const d = new Date();
-                    d.setDate(d.getDate() + i);
+                // Empezar por hoy. Si ya se completó, el recorrido continúa con
+                // el siguiente día real de entrenamiento de la rutina semanal.
+                for (let i = 0; i <= 7; i++) {
+                    const d = new Date(hoy);
+                    d.setDate(hoy.getDate() + i);
                     const diaKey = diasMap[d.getDay()];
-                    if (diaKey !== 'miercoles' && diaKey !== 'sabado' && diaKey !== 'domingo' && !STATE.diasEntrenados
-                        .includes(UI.formatFecha(d))) {
+                    const esDiaEntreno = diaKey !== 'miercoles' && diaKey !== 'sabado' && diaKey !== 'domingo';
+                    const yaCompletado = i === 0 && STATE.diasEntrenados.includes(UI.formatFecha(d));
+                    if (esDiaEntreno && !yaCompletado) {
                         const ejercicios = getEjerciciosPorDia(diaKey);
                         if (ejercicios.length > 0) {
                             proxDia = diaKey;
@@ -2639,7 +2642,7 @@
 
                     ${proxDia && diasParaProx <= 3 ? `
                         <div class="proximo-entreno-card" onclick="APP.navegar('rutinas')">
-                            <div class="pe-titulo">${diasParaProx === 1 ? '🔴 MAÑANA' : '📅 PRÓXIMO ENTRENO'}</div>
+                            <div class="pe-titulo">${diasParaProx === 0 ? '🔵 HOY' : diasParaProx === 1 ? '🔴 MAÑANA' : '📅 PRÓXIMO ENTRENO'}</div>
                             <div class="pe-nombre">${proxIcono} ${proxNombre}</div>
                             <div class="pe-datos">
                                 <span>📋 ${CONFIG.TIPOS_RUTINA[proxDia]}</span>
