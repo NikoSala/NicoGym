@@ -3459,8 +3459,8 @@
                         ${permitirFotos ? `
                             <button class="btn btn-primary btn-block" onclick="Fotos._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar fotos</button>
                         ` : `
-                            <button class="btn btn-ghost btn-block" style="opacity:0.5;cursor:default;">
-                                <i class="fa-solid fa-lock"></i> ${tipo === 'completa' ? 'Sube tus fotos' : 'Solo en actualización completa (cada 4 semanas)'}
+                            <button class="btn btn-primary btn-block" onclick="Fotos._guardar()">
+                                <i class="fa-solid fa-camera"></i> Subir fotos
                             </button>
                         `}
                     </div>
