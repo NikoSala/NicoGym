@@ -3456,7 +3456,7 @@
                 const hoy = new Date();
                 const esDomingo = hoy.getDay() === 0;
                 const esFechaValida = tipo !== null;
-                const permitirFotos = (esDomingo && esFechaValida && tipo === 'completa');
+                const permitirFotos = true;
 
                 let mensajeFotos = '';
                 if (esDomingo && esFechaValida && tipo === 'mediciones') {
