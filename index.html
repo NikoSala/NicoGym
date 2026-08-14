@@ -82,13 +82,36 @@
         .loading-screen .loader-text { margin-top: 12px; font-size: 13px; color: var(--text-secondary); font-weight: 500; }
 
         .top-bar {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 50px;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 56px;
             padding: 0 var(--space-sm); background: rgba(11, 17, 32, 0.92);
             backdrop-filter: blur(18px) saturate(1.4); border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between;
         }
-        .logo { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(135deg, #fff 30%, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .logo i { -webkit-text-fill-color: initial; color: var(--primary); margin-right: 4px; }
+        .top-bar .top-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .top-bar .top-left .logo-img {
+            height: 32px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+        .top-bar .top-left .logo-text {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff 30%, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .top-bar .top-left .logo-text i {
+            -webkit-text-fill-color: initial;
+            color: var(--primary);
+            margin-right: 4px;
+        }
         .top-right { display: flex; align-items: center; gap: 8px; }
         .top-stats { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 500; background: var(--bg-card); padding: 3px 10px; border-radius: var(--radius-full); border: 1px solid var(--border); color: var(--text-secondary); }
         .top-stats strong { color: var(--text); }
@@ -596,6 +619,8 @@
             .day-tabs .dtab { padding: 8px 16px; font-size: 12px; min-width: 50px; }
             .rutina-dia .rd-dia { font-size: 14px; }
             .rutina-dia .rd-ejercicio { font-size: 12px; }
+            .top-bar .top-left .logo-img { height: 26px; }
+            .top-bar .top-left .logo-text { font-size: 15px; }
         }
         @media (min-width: 600px) {
             .page { padding: 64px 20px 70px; }
@@ -615,7 +640,10 @@
 
     <!-- TOP BAR -->
     <header class="top-bar">
-        <div class="logo"><i class="fa-solid fa-dumbbell"></i>NicoGym</div>
+        <div class="top-left">
+            <img src="assets/logo.png" alt="NicoGym" class="logo-img" onerror="this.style.display='none'; document.querySelector('.top-left .logo-text')?.classList.remove('hidden');" />
+            <span class="logo-text hidden"><i class="fa-solid fa-dumbbell"></i>NicoGym</span>
+        </div>
         <div class="top-right">
             <div class="top-stats">
                 <span id="topPesoDisplay">-- kg</span>
@@ -652,7 +680,7 @@
         <button class="menu-item" onclick="APP.navegar('fotos')"><i class="fa-solid fa-camera"></i> Fotos</button>
         <button class="menu-item" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</button>
         <button class="menu-item" onclick="APP.confirmarReset()" style="color:var(--danger);"><i class="fa-solid fa-trash"></i> Reset</button>
-        <div class="menu-footer">NicoGym 2.5</div>
+        <div class="menu-footer">NicoGym 2.6</div>
     </nav>
 
     <!-- PAGES -->
@@ -737,7 +765,7 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '2.5',
+            VERSION: '2.6',
             ALTURA: 165,
             PESO_OBJETIVO: 75,
             STORAGE_KEY: 'nicoGym',
@@ -756,6 +784,7 @@
                 sabado: 'Caminata 45-60 min',
                 domingo: 'Descanso'
             },
+            // TEMPORIZADOR DESACTIVADO POR DEFECTO
             TEMPORIZADOR_DESCANSO: false,
             TIEMPO_MSG_COMPLETADO: 1500
         };
@@ -787,7 +816,6 @@
             'Elevaciones laterales (viernes)': 'Elevaciones laterales con mancuernas',
             'Curl martillo (viernes)': 'Curl martillo',
             'Extensión de tríceps por encima de la cabeza (viernes)': 'Extensión de tríceps sobre la cabeza',
-            // NUEVOS EJERCICIOS JUEVES
             'Dumbbell Pullover': 'Pullover con mancuerna',
             'Incline Dumbbell Curl': 'Curl inclinado con mancuernas',
             'Dumbbell Zottman Curl': 'Curl Zottman con mancuernas',
@@ -795,7 +823,6 @@
             'Dumbbell Spider Curl': 'Curl araña con mancuernas',
             'Dumbbell Tate Press': 'Press Tate con mancuernas',
             'Dumbbell Squeeze Press': 'Press de compresión con mancuernas',
-            // Ejercicios de piernas conservados
             'Sentadilla Goblet con mancuerna': 'Sentadilla Goblet con mancuerna',
             'Peso muerto rumano': 'Peso muerto rumano',
             'Zancadas estáticas con mancuernas': 'Zancadas estáticas con mancuernas',
@@ -819,9 +846,7 @@
         function getExerciseDatabase() {
             if (exerciseDatabase) return exerciseDatabase;
             exerciseDatabase = [
-                // ==========================================
                 // LUNES (sin cambios)
-                // ==========================================
                 {
                     id: 'press-plano',
                     nombre: 'Press plano con mancuernas',
@@ -975,9 +1000,7 @@
                     intensidadMuscular: { 'Tríceps': 85, 'Pecho': 50 }
                 },
 
-                // ==========================================
                 // MARTES (sin cambios)
-                // ==========================================
                 {
                     id: 'barbell-row',
                     nombre: 'Barbell Row',
@@ -1112,18 +1135,16 @@
                     intensidadMuscular: { 'Bíceps': 70, 'Antebrazo': 85 }
                 },
 
-                // ==========================================
                 // JUEVES - NUEVA RUTINA (Tren superior - prioridad brazos)
-                // ==========================================
                 {
                     id: 'dumbbell-pullover',
                     nombre: 'Dumbbell Pullover',
                     grupo: 'Pecho / Espalda',
                     categoria: 'Aislamiento',
                     urlGif: 'https://gymvisual.com/img/p/2/8/3/2/8/28328.gif',
-                    descripcion: 'Tumbado perpendicular sobre un banco, con la cabeza cerca del borde, sujeta una mancuerna con ambas manos sobre el pecho. Mantén los codos ligeramente flexionados y lleva la mancuerna de forma controlada por detrás de la cabeza hasta notar el estiramiento en el pecho y el dorsal. Después, vuelve a llevarla sobre el pecho sin cambiar la posición de los codos.',
-                    consejos: '• Mantén los codos ligeramente flexionados y estables durante todo el movimiento.\n• Realiza el recorrido de forma lenta y controlada.\n• Lleva la mancuerna solo hasta donde puedas mantener una posición cómoda de los hombros.\n• Utiliza un peso que te permita controlar completamente el movimiento.',
-                    errores: '• No bloquees ni flexiones excesivamente los codos durante el recorrido.\n• No dejes caer la mancuerna rápidamente por detrás de la cabeza.\n• No arquees excesivamente la zona lumbar para compensar el movimiento.',
+                    descripcion: 'Tumbado perpendicular en un banco con la cabeza al borde, sujeta una mancuerna con ambas manos sobre el pecho. Mantén los brazos ligeramente flexionados y lleva la mancuerna de forma controlada por detrás de la cabeza hasta sentir el estiramiento en el pecho y la espalda, y vuelve a la posición inicial sin extender completamente los brazos.',
+                    consejos: '• Mantén los brazos ligeramente flexionados durante todo el movimiento.\n• Controla la bajada de la mancuerna.\n• Siente el estiramiento en el pecho y el dorsal.\n• No uses demasiado peso.',
+                    errores: '• No bloquees los codos.\n• No bajes la mancuerna demasiado rápido.\n• No arquees la espalda.',
                     musculosPrincipales: ['Pectoral mayor', 'Dorsal ancho'],
                     musculosSecundarios: ['Tríceps', 'Serrato anterior'],
                     series: 3,
@@ -1249,9 +1270,7 @@
                     intensidadMuscular: { 'Tríceps': 80, 'Pecho': 70 }
                 },
 
-                // ==========================================
                 // EJERCICIOS DE PIERNAS Y ABDOMEN (conservados para futuro)
-                // ==========================================
                 {
                     id: 'sentadilla-goblet',
                     nombre: 'Sentadilla Goblet con mancuerna',
@@ -1266,7 +1285,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 90,
-                    dia: null, // Desactivado
+                    dia: null,
                     dificultad: 'media',
                     material: ['Mancuerna'],
                     intensidadMuscular: { 'Pierna': 90, 'Glúteos': 75 }
@@ -1424,9 +1443,7 @@
                     intensidadMuscular: { 'Abdomen': 85, 'Oblicuos': 80 }
                 },
 
-                // ==========================================
                 // VIERNES (sin cambios)
-                // ==========================================
                 {
                     id: 'press-plano-viernes',
                     nombre: 'Press plano con mancuernas (viernes)',
@@ -1687,10 +1704,14 @@
                     if (!STATE.evolution) STATE.evolution = { initialWeight: 0, currentWeight: 0, initialWaist: 0,
                             currentWaist: 0, totalWorkouts: 0, daysWithoutSmoking: 0 };
                     if (!STATE.ajustes) STATE.ajustes = {};
-                    if (!STATE.config) STATE.config = { temporizadorDescanso: true };
+                    if (!STATE.config) STATE.config = { temporizadorDescanso: false };
                     if (!STATE.ultimoRegistroPeso) STATE.ultimoRegistroPeso = null;
                     if (!STATE.ultimasMediciones) STATE.ultimasMediciones = null;
                     if (!STATE.ultimasFotosGuardadas) STATE.ultimasFotosGuardadas = null;
+                }
+                // Si no hay configuración guardada, establecer temporizador en false
+                if (STATE.config && STATE.config.temporizadorDescanso === undefined) {
+                    STATE.config.temporizadorDescanso = false;
                 }
                 this._calcularDiasSinFumar();
                 this._save();
@@ -1737,17 +1758,27 @@
                 a.click();
                 UI.toast('✅ Datos exportados', 'success');
             },
+            // IMPORTAR - función conectada correctamente
             importar(file) {
-                if (!file) return;
+                if (!file) {
+                    UI.toast('❌ No se seleccionó ningún archivo', 'error');
+                    return;
+                }
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     try {
                         const datos = JSON.parse(e.target.result);
                         Object.assign(STATE, datos);
                         this._save();
-                        UI.toast('✅ Datos importados', 'success');
+                        UI.toast('✅ Datos importados correctamente', 'success');
                         APP.renderizarTodo();
-                    } catch (err) { UI.toast('❌ Error al importar', 'error'); }
+                    } catch (err) {
+                        UI.toast('❌ Error al importar: formato inválido', 'error');
+                        console.error('Error al importar:', err);
+                    }
+                };
+                reader.onerror = () => {
+                    UI.toast('❌ Error al leer el archivo', 'error');
                 };
                 reader.readAsText(file);
             }
@@ -1770,7 +1801,7 @@
             evolution: { initialWeight: 0, currentWeight: 0, initialWaist: 0, currentWaist: 0, totalWorkouts: 0,
                 daysWithoutSmoking: 0 },
             ajustes: {},
-            config: { temporizadorDescanso: true },
+            config: { temporizadorDescanso: false },
             _cargado: false,
             ultimoRegistroPeso: null,
             ultimasMediciones: null,
@@ -1931,8 +1962,12 @@
                 if (a.nombre) STATE.nombre = a.nombre;
                 if (a.altura) STATE.altura = a.altura;
                 if (a.objetivo) CONFIG.PESO_OBJETIVO = a.objetivo;
+                // Cargar preferencia del temporizador: si no existe, false por defecto
                 if (STATE.config && STATE.config.temporizadorDescanso !== undefined) {
                     CONFIG.TEMPORIZADOR_DESCANSO = STATE.config.temporizadorDescanso;
+                } else {
+                    CONFIG.TEMPORIZADOR_DESCANSO = false;
+                    if (STATE.config) STATE.config.temporizadorDescanso = false;
                 }
                 const dia = UI.getDiaNombre();
                 diaActivo = dia === 'domingo' ? 'lunes' : dia;
@@ -1956,10 +1991,6 @@
                 Dashboard.render();
                 STATE._cargado = true;
             },
-
-            _inicializarEventos() {
-                document.getElementById('importFile').addEventListener('change', function() { Storage.importar(this
-                        .files[0]); });
             },
 
             renderizarTodo() {
@@ -2043,7 +2074,8 @@
             },
 
             // ==========================================
-            // MODO ENTRENO GUIADO            // ==========================================
+            // MODO ENTRENO GUIADO
+            // ==========================================
             iniciarEntreno(dia) {
                 const ejercicios = getEjerciciosPorDia(dia);
                 if (ejercicios.length === 0) {
@@ -2770,7 +2802,7 @@
         };
 
         // ==========================================
-        // SEMANA - PESTAÑA RUTINA (ACTUALIZADA)
+        // SEMANA - PESTAÑA RUTINA
         // ==========================================
         const Semana = {
             render() {
@@ -2976,7 +3008,6 @@
                         return;
                     }
                 } else {
-                    // Solo peso: conservar valores anteriores
                     const ultimoRegistro = ultimo || STATE.ultimasMediciones || {
                         grasaPorcentaje: 0,
                         masaMuscular: 0,
@@ -3523,6 +3554,9 @@
                 const c = document.getElementById('ajustesContainer');
                 if (!c) return;
 
+                // Leer estado actual del temporizador
+                const temporizadorActivo = CONFIG.TEMPORIZADOR_DESCANSO;
+
                 c.innerHTML = `
                     <div class="card">
                         <div class="card-title"><i class="fa-solid fa-user"></i> Perfil</div>
@@ -3544,10 +3578,10 @@
                         <div class="ajustes-item">
                             <span class="aj-label">⏱️ Temporizador de descanso</span>
                             <div class="switch-container">
-                                <div class="switch ${CONFIG.TEMPORIZADOR_DESCANSO ? 'active' : ''}" onclick="Ajustes._toggleDescanso()">
+                                <div class="switch ${temporizadorActivo ? 'active' : ''}" onclick="Ajustes._toggleDescanso()">
                                     <div class="switch-thumb"></div>
                                 </div>
-                                <span class="switch-label">${CONFIG.TEMPORIZADOR_DESCANSO ? 'Activado' : 'Desactivado'}</span>
+                                <span class="switch-label">${temporizadorActivo ? 'Activado' : 'Desactivado'}</span>
                             </div>
                         </div>
                     </div>
@@ -3566,7 +3600,7 @@
                         <div class="card-title"><i class="fa-solid fa-database"></i> Datos</div>
                         <button class="btn btn-ghost btn-block" onclick="Storage.exportar()"><i class="fa-solid fa-download"></i> Exportar</button>
                         <button class="btn btn-ghost btn-block" onclick="document.getElementById('importFile').click()" style="margin-top:4px;"><i class="fa-solid fa-upload"></i> Importar</button>
-                        <input type="file" id="importFile" accept=".json" class="hidden">
+                        <input type="file" id="importFile" accept=".json" class="hidden" onchange="Storage.importar(this.files[0]); this.value='';">
                         <button class="btn btn-danger btn-block" onclick="APP.confirmarReset()" style="margin-top:4px;"><i class="fa-solid fa-trash"></i> Borrar todos los datos</button>
                     </div>
 
