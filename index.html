@@ -9,27 +9,26 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            /* NicoGym 3.0 — carbón + bronce + marfil */
-            --bg: #080808;
-            --bg-card: #131313;
-            --bg-card-hover: #1B1B1B;
-            --primary: #C58A45;
-            --primary-dim: rgba(197, 138, 69, 0.12);
-            --primary-glow: rgba(197, 138, 69, 0.30);
-            --secondary: #D8B27A;
-            --secondary-dim: rgba(216, 178, 122, 0.12);
-            --secondary-glow: rgba(216, 178, 122, 0.24);
-            --success: #A7B88A;
-            --warning: #D8B27A;
-            --danger: #B85C55;
-            --text: #F4EFE7;
-            --text-secondary: #B8B0A5;
-            --text-muted: #716A61;
-            --border: #38312A;
+            --bg: #090B0E;
+            --bg-card: #101C31;
+            --bg-card-hover: #172642;
+            --primary: #7D1028;
+            --primary-dim: rgba(125, 16, 40, 0.16);
+            --primary-glow: rgba(165, 29, 58, 0.34);
+            --secondary: #C7CBD1;
+            --secondary-dim: rgba(199, 203, 209, 0.10);
+            --secondary-glow: rgba(229, 231, 235, 0.18);
+            --success: #D6A94A;
+            --warning: #F2B84B;
+            --danger: #F05252;
+            --text: #F4F7FB;
+            --text-secondary: #AAB7C9;
+            --text-muted: #66758C;
+            --border: #263957;
             --radius: 14px;
             --radius-sm: 8px;
             --radius-full: 9999px;
-            --shadow: 0 8px 28px rgba(0, 0, 0, 0.48);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
             --transition: 0.25s ease;
             --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --space-xs: 6px;
@@ -48,11 +47,10 @@
             pointer-events: none;
             background-image: url('./img/logo-nicogym.png');
             background-position: center;
-            background-size: clamp(300px, 78vw, 560px) auto;
+            background-size: clamp(360px, 78vw, 620px) auto;
             background-repeat: no-repeat;
             opacity: 0.13;
-            filter: saturate(0.95) contrast(1.08) drop-shadow(0 0 30px rgba(197,138,69,0.14));
-            mix-blend-mode: screen;
+            filter: drop-shadow(0 0 24px rgba(125,16,40,0.18));
         }
         ::-webkit-scrollbar { width: 3px; height: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -122,7 +120,7 @@
             max-width: 190px;
             display: block;
             transform: scale(1.08);
-            filter: drop-shadow(0 0 10px rgba(197,138,69,0.28));
+            filter: drop-shadow(0 0 10px rgba(125,16,40,0.18));
             object-fit: contain;
         }
         .top-bar .top-left .logo-text {
@@ -201,7 +199,7 @@
             box-shadow: var(--shadow);
         }
         .card:hover { border-color: rgba(255,255,255,0.10); }
-        .card-accent { border-left: 3px solid var(--primary); background: linear-gradient(135deg, var(--primary-dim), rgba(197,138,69,0.02)); }
+        .card-accent { border-left: 3px solid var(--primary); background: linear-gradient(135deg, var(--primary-dim), rgba(125,16,40,0.02)); }
         .card-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-secondary); margin-bottom: 8px; }
         .card-title i { margin-right: 4px; color: var(--primary); }
 
@@ -216,7 +214,7 @@
         .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
         .btn-primary:hover { box-shadow: 0 0 20px var(--primary-glow); transform: translateY(-1px); }
         .btn-success { background: var(--success); color: #000; border-color: var(--success); }
-        .btn-success:hover { box-shadow: 0 0 20px rgba(197,138,69,0.25); transform: translateY(-1px); }
+        .btn-success:hover { box-shadow: 0 0 20px rgba(165,29,58,0.25); transform: translateY(-1px); }
         .btn-danger { background: transparent; border-color: var(--danger); color: var(--danger); }
         .btn-danger:hover { background: rgba(239,68,68,0.08); }
         .btn-sm { padding: 3px 12px; font-size: 10px; height: 26px; min-height: 26px; }
@@ -283,7 +281,7 @@
         .ex-card { background: var(--bg-card); border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden; transition: var(--transition); }
         .ex-card.checked { opacity: 0.5; }
         .ex-card.checked .ex-name { text-decoration: line-through; }
-        .ex-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: rgba(197,138,69,0.04); }
+        .ex-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: rgba(125,16,40,0.04); }
         .ex-name { font-weight: 600; font-size: 13px; }
         .ex-grupo { font-size: 9px; color: var(--text-secondary); margin-left: 6px; background: rgba(255,255,255,0.05); padding: 1px 8px; border-radius: var(--radius-full); }
         .ex-body { padding: 10px 12px; }
@@ -298,7 +296,7 @@
 
         .ex-ultimo { font-size: 11px; color: var(--text-secondary); margin-top: 6px; text-align: center; }
         .ultimo-entreno { display: flex; justify-content: space-between; padding: 4px 8px; border-radius: var(--radius-sm); margin-top: 6px; font-size: 11px; background: rgba(255,255,255,0.03); }
-        .mejor-marca { display: flex; justify-content: space-between; padding: 4px 8px; border-radius: var(--radius-sm); margin-top: 3px; font-size: 11px; background: var(--primary-dim); border: 1px solid rgba(197,138,69,0.16); }
+        .mejor-marca { display: flex; justify-content: space-between; padding: 4px 8px; border-radius: var(--radius-sm); margin-top: 3px; font-size: 11px; background: var(--primary-dim); border: 1px solid rgba(165,29,58,0.15); }
         .mejor-marca .mm-valor { font-weight: 700; color: var(--primary); }
 
         .btn-historial-ej { background: transparent; border: 1px solid var(--border); border-radius: var(--radius-full); padding: 1px 10px; font-size: 9px; color: var(--text-secondary); cursor: pointer; margin-top: 4px; transition: var(--transition); }
@@ -370,7 +368,7 @@
         .modal-panel .modal-field .mf-label { font-size: 9px; text-transform: uppercase; color: var(--text-secondary); font-weight: 600; }
         .modal-panel .modal-field .mf-value { font-weight: 500; }
         .modal-panel .modal-historial { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 8px; margin: 8px 0; max-height: 120px; overflow-y: auto; }
-        .modal-panel .modal-record { background: var(--primary-dim); border-radius: var(--radius-sm); padding: 8px; border: 1px solid rgba(197,138,69,0.16); text-align: center; margin: 8px 0; }
+        .modal-panel .modal-record { background: var(--primary-dim); border-radius: var(--radius-sm); padding: 8px; border: 1px solid rgba(165,29,58,0.15); text-align: center; margin: 8px 0; }
         .modal-panel .modal-record .mr-valor { font-size: 18px; font-weight: 700; color: var(--primary); }
 
         .ajustes-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
@@ -441,11 +439,9 @@
             pointer-events: none;
             background-image: url('./img/logo-nicogym.png');
             background-position: center;
-            background-size: clamp(300px, 78vw, 560px) auto;
+            background-size: clamp(220px, 62vw, 420px) auto;
             background-repeat: no-repeat;
-            opacity: 0.12;
-            filter: saturate(0.95) contrast(1.08) drop-shadow(0 0 28px rgba(197,138,69,0.14));
-            mix-blend-mode: screen;
+            opacity: 0.05;
         }
         .modo-entreno-overlay > * { position: relative; z-index: 1; }
         .modo-entreno-overlay .me-header {
@@ -462,7 +458,7 @@
         .modo-entreno-overlay .me-progreso-track { height: 4px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
         .modo-entreno-overlay .me-progreso-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.5s ease; }
         .modo-entreno-overlay .me-progreso-info { font-size: 11px; color: var(--text-secondary); margin-top: 3px; text-align: right; }
-        .modo-entreno-overlay .me-completado-msg { padding: 6px 12px; background: rgba(197,138,69,0.12); border-radius: var(--radius-sm); color: var(--success); font-weight: 600; font-size: 13px; text-align: center; margin-bottom: 10px; border: 1px solid rgba(32,201,130,0.2); animation: fadeUp 0.3s ease; }
+        .modo-entreno-overlay .me-completado-msg { padding: 6px 12px; background: rgba(125,16,40,0.12); border-radius: var(--radius-sm); color: var(--success); font-weight: 600; font-size: 13px; text-align: center; margin-bottom: 10px; border: 1px solid rgba(165,29,58,0.2); animation: fadeUp 0.3s ease; }
         .modo-entreno-overlay .me-body { flex: 1; overflow-y: auto; padding-bottom: 12px; }
 
         .modo-entreno-overlay .me-ejercicio-card {
@@ -488,7 +484,7 @@
         .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-name { font-size: 11px; color: var(--text-secondary); min-width: 50px; }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-fill { height: 100%; background: var(--primary); border-radius: 4px; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos { background: rgba(197,138,69,0.06); border-left: 3px solid var(--success); padding: 6px 10px; border-radius: var(--radius-sm); margin: 4px 0; }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos { background: rgba(125,16,40,0.06); border-left: 3px solid var(--success); padding: 6px 10px; border-radius: var(--radius-sm); margin: 4px 0; }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos .me-ej-consejo-titulo { font-size: 9px; color: var(--success); text-transform: uppercase; font-weight: 600; }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos .me-ej-consejo-texto { font-size: 12px; color: var(--text-secondary); }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-errores { background: rgba(239,68,68,0.06); border-left: 3px solid var(--danger); padding: 6px 10px; border-radius: var(--radius-sm); margin: 4px 0; }
@@ -498,7 +494,7 @@
         .modo-entreno-overlay .me-ejercicio-card .me-ej-datos span { background: rgba(0,0,0,0.15); padding: 1px 8px; border-radius: var(--radius-full); }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-ultimo { font-size: 12px; color: var(--text-secondary); margin: 3px 0; padding: 4px 8px; background: rgba(0,0,0,0.1); border-radius: var(--radius-sm); }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-ultimo strong { color: var(--text); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-record { font-size: 12px; color: var(--text-secondary); margin: 3px 0; padding: 4px 8px; background: var(--primary-dim); border: 1px solid rgba(197,138,69,0.16); border-radius: var(--radius-sm); }
+        .modo-entreno-overlay .me-ejercicio-card .me-ej-record { font-size: 12px; color: var(--text-secondary); margin: 3px 0; padding: 4px 8px; background: var(--primary-dim); border: 1px solid rgba(165,29,58,0.15); border-radius: var(--radius-sm); }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-record strong { color: var(--primary); }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); margin: 8px 0; }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group label { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 1px; }
@@ -523,13 +519,13 @@
         .modo-entreno-overlay .me-completado-final .me-resumen-grid .me-res-item { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 8px 6px; }
         .modo-entreno-overlay .me-completado-final .me-resumen-grid .me-res-item .me-res-valor { font-size: 16px; font-weight: 700; color: var(--primary); }
         .modo-entreno-overlay .me-completado-final .me-resumen-grid .me-res-item .me-res-label { font-size: 8px; color: var(--text-secondary); text-transform: uppercase; }
-        .modo-entreno-overlay .me-completado-final .me-records { background: var(--primary-dim); border-radius: var(--radius-sm); padding: 8px; margin: 8px 0; border: 1px solid rgba(197,138,69,0.16); }
+        .modo-entreno-overlay .me-completado-final .me-records { background: var(--primary-dim); border-radius: var(--radius-sm); padding: 8px; margin: 8px 0; border: 1px solid rgba(165,29,58,0.15); }
         .modo-entreno-overlay .me-completado-final .me-records .me-rec-titulo { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; }
         .modo-entreno-overlay .me-completado-final .me-records .me-rec-item { font-size: 13px; font-weight: 600; margin-top: 3px; color: var(--primary); }
 
         .btn-entrenar-dia { width: 100%; padding: 12px; font-size: 14px; font-weight: 700; border-radius: var(--radius-sm); margin-top: 6px; }
         .proximo-entreno-card { background: linear-gradient(135deg, var(--primary), #0B6B47); border-radius: var(--radius); padding: 16px 20px; margin-bottom: var(--space-sm); color: #fff; cursor: pointer; transition: var(--transition); }
-        .proximo-entreno-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(197,138,69,0.35); }
+        .proximo-entreno-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(165,29,58,0.35); }
         .proximo-entreno-card .pe-titulo { font-size: 10px; font-weight: 500; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; }
         .proximo-entreno-card .pe-nombre { font-size: 20px; font-weight: 700; margin: 2px 0; }
         .proximo-entreno-card .pe-datos { display: flex; gap: var(--space-sm); margin-top: 3px; font-size: 12px; opacity: 0.9; flex-wrap: wrap; }
@@ -562,7 +558,7 @@
         }
         .rutina-dia.hoy {
             border-left: 4px solid var(--primary);
-            background: linear-gradient(135deg, var(--primary-dim), rgba(197,138,69,0.02));
+            background: linear-gradient(135deg, var(--primary-dim), rgba(125,16,40,0.02));
         }
         .rutina-dia .rd-header {
             display: flex;
@@ -673,47 +669,406 @@
             .modo-entreno-overlay .me-ejercicio-card .me-ej-img-wrap { max-height: 160px; }
             .modo-entreno-overlay .me-ejercicio-card .me-ej-img { max-height: 160px; }
         }
+    
+        /* NicoGym palette: verde identidad + azul secundario */
+        .card:nth-of-type(even), .ex-card:nth-of-type(even) { border-color: rgba(199,203,209,0.20); }
+        .btn-secondary, .secondary-accent { background: var(--secondary-dim); color: #D4D7DB; border-color: rgba(199,203,209,0.35); }
+        .btn-secondary:hover, .secondary-accent:hover { background: rgba(199,203,209,0.14); box-shadow: 0 0 18px var(--secondary-glow); }
+        .section-title, .page h2, .page h3 { text-shadow: 0 0 18px rgba(199,203,209,0.08); }
+        .brand-mark-watermark { opacity: 0.045 !important; filter: saturate(1.1) drop-shadow(0 0 24px rgba(199,203,209,0.12)); }
 
-        /* ===== NICO GYM 3.0 VISUAL FINISH ===== */
-        .card:hover, .ex-card:hover, .record-card:hover, .historial-medicion-card:hover { border-color: rgba(197,138,69,0.42); }
-        .section-title, .page h2, .page h3 { text-shadow: 0 0 18px rgba(197,138,69,0.12); }
-        .brand-mark-watermark { opacity: 0.12 !important; filter: saturate(0.95) contrast(1.08) drop-shadow(0 0 26px rgba(197,138,69,0.18)); }
-        .top-bar { background: rgba(8,8,8,0.90); }
-        .bottom-nav { background: rgba(8,8,8,0.94); }
-        .top-bar .top-left .header-logo { filter: drop-shadow(0 0 12px rgba(197,138,69,0.30)); }
-        .top-bar .top-left .logo-text { background: linear-gradient(135deg, #fff 24%, var(--secondary) 72%, var(--primary)); }
-        .day-tabs .dtab.active { color: #111; }
-        .proximo-entreno-card { background: linear-gradient(135deg, #B77735, #6E431F); }
-        .update-banner { box-shadow: 0 0 22px rgba(197,138,69,0.06); }
 
-        /* Navegación con pantalla de transición */
-        .loading-screen.nav-transition {
-            background: radial-gradient(circle at center, #17120C 0%, #090909 52%, #050505 100%);
+        /* ==========================================================
+           NICO GYM — REDISEÑO VISUAL 3.0
+           Identidad: negro carbón + acero + burdeos
+           La lógica/funcionalidad existente permanece intacta.
+           ========================================================== */
+        :root {
+            --bg: #090B0E;
+            --bg-card: #111419;
+            --bg-card-hover: #191D23;
+            --primary: #7D1028;
+            --primary-dim: rgba(125, 16, 40, 0.16);
+            --primary-glow: rgba(165, 29, 58, 0.34);
+            --secondary: #C7CBD1;
+            --secondary-dim: rgba(199, 203, 209, 0.10);
+            --secondary-glow: rgba(229, 231, 235, 0.18);
+            --success: #D6A94A;
+            --warning: #E0A24A;
+            --danger: #C63B4F;
+            --text: #F1F1F1;
+            --text-secondary: #A5AAB3;
+            --text-muted: #6F7680;
+            --border: #2A2E35;
+            --radius: 16px;
+            --radius-sm: 11px;
+            --shadow: 0 12px 38px rgba(0,0,0,.42);
+            --transition: .22s cubic-bezier(.2,.75,.25,1);
         }
-        .loading-screen.nav-transition .loading-logo {
-            width: min(76vw, 390px);
-            max-height: 58vh;
-            filter: drop-shadow(0 0 28px rgba(197,138,69,0.22));
-            animation: navLogoPulse 2.2s ease-in-out infinite;
+
+        html, body {
+            background:
+                radial-gradient(circle at 50% -10%, rgba(125,16,40,.13), transparent 34%),
+                linear-gradient(180deg, #090B0E 0%, #080A0D 100%);
         }
-        .loading-screen.nav-transition .loader {
-            border-color: rgba(216,178,122,0.20);
-            border-top-color: var(--primary);
-            box-shadow: 0 0 18px rgba(197,138,69,0.16);
+
+        body::before {
+            opacity: .055;
+            background-size: clamp(420px, 66vw, 760px) auto;
+            filter: grayscale(.2) saturate(.8) drop-shadow(0 0 34px rgba(125,16,40,.18));
         }
-        .loading-screen.nav-transition .loader-text {
-            color: var(--secondary);
-            letter-spacing: 0.3px;
+
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #A51D3A, #5D0C20); }
+
+        /* ---------- LOADING ---------- */
+        .loading-screen {
+            background:
+                radial-gradient(circle at center, rgba(125,16,40,.14), transparent 38%),
+                #090B0E;
+            transition: opacity .28s ease;
         }
-        @keyframes navLogoPulse {
-            0%, 100% { transform: scale(0.98); opacity: 0.90; }
-            50% { transform: scale(1.02); opacity: 1; }
+        .loading-screen::before {
+            content: '';
+            position: absolute;
+            width: min(76vw, 430px);
+            height: min(76vw, 430px);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(165,29,58,.16), transparent 68%);
+            filter: blur(10px);
         }
-        @media (prefers-reduced-motion: reduce) {
-            .loading-screen.nav-transition .loading-logo { animation: none; }
-            .page.active, .dia-panel.active { animation: none; }
+        .loading-screen .loading-logo {
+            position: relative;
+            z-index: 1;
+            width: min(78vw, 390px);
+            max-height: 48vh;
+            filter: drop-shadow(0 16px 32px rgba(0,0,0,.55)) drop-shadow(0 0 26px rgba(125,16,40,.18));
+            animation: logoEntrance .65s cubic-bezier(.2,.8,.2,1) both;
         }
-    </style>
+        .loading-screen .loader {
+            position: relative;
+            z-index: 1;
+            width: 34px;
+            height: 34px;
+            border: 2px solid #2A2E35;
+            border-top-color: #A51D3A;
+            border-right-color: #C7CBD1;
+            box-shadow: 0 0 18px rgba(125,16,40,.22);
+        }
+        .loading-screen .loader-text {
+            position: relative;
+            z-index: 1;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            font-size: 10px;
+            color: #8F959E;
+        }
+        @keyframes logoEntrance { from { opacity:0; transform:translateY(12px) scale(.96); } to { opacity:1; transform:none; } }
+
+        /* ---------- HEADER ---------- */
+        .top-bar {
+            height: 68px;
+            padding: 0 16px;
+            background: rgba(9,11,14,.84);
+            backdrop-filter: blur(22px) saturate(1.25);
+            border-bottom: 1px solid rgba(199,203,209,.10);
+            box-shadow: 0 10px 28px rgba(0,0,0,.24);
+        }
+        .top-bar::after {
+            content:'';
+            position:absolute;
+            left:16px; right:16px; bottom:-1px;
+            height:1px;
+            background: linear-gradient(90deg, transparent, rgba(165,29,58,.8), rgba(199,203,209,.18), transparent);
+            opacity:.7;
+        }
+        .top-bar .top-left .header-logo {
+            height: 58px;
+            width: 58px;
+            max-width: 58px;
+            object-fit: contain;
+            transform: none;
+            filter: drop-shadow(0 7px 14px rgba(0,0,0,.55)) drop-shadow(0 0 14px rgba(125,16,40,.18));
+        }
+        .top-right { gap: 10px; }
+        .top-stats {
+            background: rgba(17,20,25,.88);
+            border: 1px solid #2A2E35;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+        }
+        .bell-wrap { color:#A5AAB3; }
+        .bell-wrap:hover { background:#171A20; color:#F1F1F1; box-shadow:0 0 0 1px #2A2E35; }
+        .bell-wrap .badge { background:#A51D3A; box-shadow:0 4px 12px rgba(165,29,58,.4); }
+
+        /* ---------- SIDE MENU ---------- */
+        .side-overlay { background:rgba(0,0,0,.72); backdrop-filter:blur(3px); }
+        .side-menu {
+            width: 292px;
+            left:-292px;
+            background: linear-gradient(180deg,#111419 0%,#0C0E12 100%);
+            border-right:1px solid #2A2E35;
+            box-shadow: 18px 0 45px rgba(0,0,0,.34);
+            padding: 74px 14px 18px;
+            gap:5px;
+        }
+        .side-menu::before {
+            content:'NICO GYM';
+            display:block;
+            padding:0 12px 14px;
+            margin-bottom:6px;
+            color:#E5E7EB;
+            font-size:11px;
+            font-weight:800;
+            letter-spacing:.25em;
+            border-bottom:1px solid #2A2E35;
+        }
+        .side-menu .menu-item {
+            padding:11px 13px;
+            border-radius:12px;
+            color:#9298A2;
+            font-size:13px;
+            border:1px solid transparent;
+        }
+        .side-menu .menu-item i { width:20px; text-align:center; color:#707781; transition:var(--transition); }
+        .side-menu .menu-item:hover { background:#171A20; color:#F1F1F1; border-color:#292D34; transform:translateX(2px); }
+        .side-menu .menu-item:hover i { color:#C7CBD1; }
+        .side-menu .menu-item.active {
+            color:#FFF;
+            background:linear-gradient(90deg,rgba(125,16,40,.26),rgba(125,16,40,.08));
+            border-color:rgba(165,29,58,.42);
+            box-shadow:inset 3px 0 0 #A51D3A, 0 8px 20px rgba(0,0,0,.18);
+        }
+        .side-menu .menu-item.active i { color:#D7A2AE; }
+        .side-menu .menu-divider { height:1px; background:#2A2E35; margin:9px 6px; }
+        .side-menu .menu-footer { margin-top:auto; color:#555B64; text-align:center; font-size:9px; letter-spacing:.16em; text-transform:uppercase; }
+
+        /* ---------- PAGE / SECTION HEADERS ---------- */
+        .page {
+            padding: 84px 14px 84px;
+            max-width: 920px;
+            margin: 0 auto;
+        }
+        .section-title {
+            font-size:11px !important;
+            font-weight:800 !important;
+            letter-spacing:.16em;
+            text-transform:uppercase;
+            color:#8E949D !important;
+            text-shadow:none !important;
+            margin-bottom:10px;
+        }
+        .saludo { font-size:27px; font-weight:800; letter-spacing:-.04em; }
+        .saludo span { color:#C7CBD1; }
+        .saludo-dia { color:#777E88; font-size:11px; letter-spacing:.04em; }
+
+        /* ---------- CARDS ---------- */
+        .card,
+        .ex-card,
+        .historial-medicion-card,
+        .record-card,
+        .progreso-rutina-bar,
+        .proximo-entreno-card,
+        .rutina-dia,
+        .update-banner {
+            background:linear-gradient(145deg,rgba(24,28,34,.96),rgba(14,17,21,.96));
+            border:1px solid #2A2E35;
+            border-radius:18px;
+            box-shadow:0 10px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.025);
+        }
+        .card { padding:16px; }
+        .card:hover,
+        .historial-medicion-card:hover,
+        .ex-card:hover,
+        .record-card:hover {
+            border-color:rgba(165,29,58,.48);
+            box-shadow:0 14px 34px rgba(0,0,0,.3), 0 0 0 1px rgba(125,16,40,.08);
+            transform:translateY(-1px);
+        }
+        .card-title {
+            font-size:12px;
+            font-weight:800;
+            letter-spacing:.08em;
+            text-transform:uppercase;
+            color:#D9DCE0;
+        }
+        .card-title i { color:#A51D3A; margin-right:5px; }
+        .card-accent { border-left:3px solid #8E1831 !important; }
+
+        /* ---------- DASHBOARD STATS ---------- */
+        .dash-grid, .peso-grid, .stats-grid { gap:8px; }
+        .dash-stat, .peso-stat, .stats-item {
+            background:linear-gradient(145deg,#191D23,#101318);
+            border:1px solid #292D34;
+            border-radius:14px;
+            padding:13px 9px;
+            box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+        }
+        .dash-stat .num, .peso-stat .num { font-size:23px; font-weight:800; letter-spacing:-.03em; }
+        .dash-stat .num.primary, .peso-stat .num.primary, .stats-item .num.primary { color:#D2D5D9; }
+        .dash-stat .num.green, .peso-stat .num.green, .stats-item .num.green { color:#D6A94A; }
+        .dash-stat .num.orange, .peso-stat .num.orange, .stats-item .num.orange { color:#C7CBD1; }
+        .dash-stat .label, .peso-stat .label, .stats-item .label { color:#707781; letter-spacing:.08em; }
+        .pending-item { border-bottom-color:#292D34; }
+
+        /* ---------- DAY TABS ---------- */
+        .day-tabs { gap:7px; margin-bottom:14px; }
+        .day-tabs .dtab {
+            padding:9px 13px;
+            min-width:52px;
+            border:1px solid #30343B;
+            border-radius:11px;
+            background:#111419;
+            color:#858B94;
+            font-size:11px;
+            font-weight:800;
+            letter-spacing:.04em;
+            text-transform:uppercase;
+        }
+        .day-tabs .dtab:hover { border-color:#60666F; color:#F1F1F1; background:#171A20; }
+        .day-tabs .dtab.active {
+            background:linear-gradient(135deg,#8F1732,#6D0E24);
+            border-color:#A51D3A;
+            color:#FFF;
+            box-shadow:0 8px 22px rgba(125,16,40,.28), inset 0 1px 0 rgba(255,255,255,.12);
+        }
+        .day-tabs .dtab.completado { border-color:#8E6D2C; color:#D6A94A; background:rgba(214,169,74,.05); }
+        .day-tabs .dtab.descanso { opacity:.32; }
+
+        /* ---------- EXERCISES ---------- */
+        .ex-grid { gap:10px; }
+        .ex-card { overflow:hidden; }
+        .ex-card.checked { opacity:.58; }
+        .ex-head {
+            padding:12px 13px;
+            background:linear-gradient(90deg,rgba(125,16,40,.10),transparent 55%);
+            border-bottom:1px solid rgba(42,46,53,.65);
+        }
+        .ex-name { font-size:13px; font-weight:750; }
+        .ex-grupo { color:#8E949D; background:#20242A; border:1px solid #2D3138; }
+        .ex-body { padding:12px 13px; }
+        .check-box { accent-color:#8E1831; }
+        .ex-tog { border-color:#30343B; background:#101318; color:#8C929B; padding:7px; }
+        .ex-tog:hover { border-color:#7D1028; color:#E5E7EB; }
+        .ex-det { border-top-color:#2A2E35; }
+        .ex-img { background:#090B0E; border:1px solid #25292F; }
+        .ex-img-fallback { background:rgba(125,16,40,.10); color:#B72B49; border-color:rgba(165,29,58,.25); }
+        .ultimo-entreno { background:#101318; border:1px solid #24282E; }
+        .mejor-marca { background:rgba(125,16,40,.10); border-color:rgba(165,29,58,.22); }
+        .mejor-marca .mm-valor { color:#D7A2AE; }
+        .progreso-rutina-track { background:#22262C; height:5px; }
+        .progreso-rutina-fill { background:linear-gradient(90deg,#5F0B20,#A51D3A,#C7CBD1); }
+        .progreso-rutina-completado { color:#D6A94A; }
+
+        /* ---------- BUTTONS ---------- */
+        .btn {
+            border-radius:11px;
+            font-weight:750;
+            letter-spacing:.01em;
+            transition:var(--transition);
+        }
+        .btn-primary {
+            background:linear-gradient(135deg,#8E1831,#6D0E24) !important;
+            border:1px solid #A51D3A !important;
+            color:#FFF !important;
+            box-shadow:0 8px 20px rgba(125,16,40,.24), inset 0 1px 0 rgba(255,255,255,.10);
+        }
+        .btn-primary:hover { transform:translateY(-1px); box-shadow:0 12px 26px rgba(125,16,40,.34), 0 0 0 1px rgba(199,203,209,.08); }
+        .btn-secondary, .secondary-accent {
+            background:#171A20 !important;
+            color:#D1D4D8 !important;
+            border:1px solid #363A41 !important;
+        }
+        .btn-secondary:hover, .secondary-accent:hover { background:#20242A !important; border-color:#60666F !important; box-shadow:none !important; }
+        .btn-success { background:#A17A29 !important; border-color:#C2963A !important; color:#FFF !important; }
+        .btn-danger { background:rgba(198,59,79,.12) !important; border-color:rgba(198,59,79,.5) !important; color:#E98A99 !important; }
+        .btn-ghost { color:#8F959E; }
+        .btn-ghost:hover { background:#171A20; color:#F1F1F1; }
+        .btn-historial-ej { border-color:#30343B; }
+
+        /* ---------- FORMS ---------- */
+        .input, select, textarea {
+            background:#0E1115 !important;
+            color:#F1F1F1 !important;
+            border:1px solid #30343B !important;
+            border-radius:11px !important;
+            box-shadow:inset 0 1px 2px rgba(0,0,0,.22);
+        }
+        .input:focus, select:focus, textarea:focus { border-color:#8E1831 !important; box-shadow:0 0 0 3px rgba(125,16,40,.14) !important; }
+        .form-field label, .aj-label { color:#8F959E; }
+        .switch input:checked + .slider { background:#7D1028 !important; }
+
+        /* ---------- NOTIFICATIONS ---------- */
+        .notif-dropdown {
+            background:#111419;
+            border-color:#2A2E35;
+            box-shadow:0 18px 42px rgba(0,0,0,.48);
+        }
+        .notif-dropdown .notif-header { color:#D4D7DB; border-bottom-color:#2A2E35; }
+        .notif-item { border-bottom-color:#24282E; }
+        .notif-item:hover { background:#191D23; }
+
+        /* ---------- MODALS / LIGHTBOX ---------- */
+        .modal-overlay { background:rgba(0,0,0,.78); backdrop-filter:blur(14px); }
+        .modal-panel {
+            background:linear-gradient(145deg,#181C22,#0E1115);
+            border:1px solid #353A42;
+            box-shadow:0 24px 70px rgba(0,0,0,.62), 0 0 0 1px rgba(125,16,40,.06);
+            border-radius:20px;
+        }
+        .lightbox { background:rgba(0,0,0,.92); backdrop-filter:blur(8px); }
+
+        /* ---------- TRAINING MODE ---------- */
+        .modo-entreno-overlay {
+            background:linear-gradient(180deg,#090B0E,#0D1014);
+        }
+        .me-header {
+            background:rgba(9,11,14,.90) !important;
+            border-bottom:1px solid #2A2E35 !important;
+            backdrop-filter:blur(18px);
+        }
+        .me-progreso-track { background:#25292F !important; }
+        .me-progreso-fill { background:linear-gradient(90deg,#5F0B20,#A51D3A,#C7CBD1) !important; }
+        .me-completado-msg { color:#D6A94A !important; }
+        .me-ejercicio-card, .me-caminata-card, .me-completado-final {
+            background:linear-gradient(145deg,#181C22,#0F1216) !important;
+            border:1px solid #30343B !important;
+            box-shadow:0 20px 55px rgba(0,0,0,.34) !important;
+        }
+
+        /* ---------- BOTTOM NAV ---------- */
+        .bottom-nav {
+            background:rgba(10,12,15,.90) !important;
+            border-top:1px solid #2A2E35 !important;
+            backdrop-filter:blur(22px) saturate(1.2);
+            box-shadow:0 -12px 30px rgba(0,0,0,.26);
+            padding-bottom:max(6px, env(safe-area-inset-bottom));
+        }
+        .bottom-nav .nav-btn {
+            color:#686F78 !important;
+            font-weight:700;
+            transition:var(--transition);
+            border-top:2px solid transparent;
+        }
+        .bottom-nav .nav-btn i { font-size:15px; margin-bottom:2px; }
+        .bottom-nav .nav-btn.active {
+            color:#E1E3E6 !important;
+            border-top-color:#A51D3A;
+            background:linear-gradient(180deg,rgba(125,16,40,.13),transparent);
+        }
+        .bottom-nav .nav-btn.active i { color:#B72B49; filter:drop-shadow(0 0 7px rgba(165,29,58,.3)); }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (min-width:600px) {
+            .page { padding-left:22px; padding-right:22px; }
+            .card { padding:20px; }
+            .top-bar { padding-left:20px; padding-right:20px; }
+        }
+        @media (min-width:900px) {
+            .page { max-width:980px; }
+            .top-bar { padding-left:28px; padding-right:28px; }
+            .top-bar .top-left .header-logo { width:62px; height:62px; max-width:62px; }
+        }
+
+</style>
 </head>
 <body>
 
@@ -721,7 +1076,7 @@
     <div class="loading-screen" id="loadingScreen">
         <img src="./img/logo-nicogym.png" alt="NicoGym" class="loading-logo" />
         <div class="loader"></div>
-        <div class="loader-text">Preparando tu entrenamiento...</div>
+        <div class="loader-text">Cargando NicoGym...</div>
     </div>
 
     <!-- TOP BAR -->
@@ -767,7 +1122,7 @@
         <button class="menu-item" onclick="APP.navegar('fotos')"><i class="fa-solid fa-camera"></i> Fotos</button>
         <button class="menu-item" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</button>
         <button class="menu-item" onclick="APP.confirmarReset()" style="color:var(--danger);"><i class="fa-solid fa-trash"></i> Reset</button>
-        <div class="menu-footer">NicoGym 3.0</div>
+        <div class="menu-footer">NicoGym 2.6</div>
     </nav>
 
     <!-- PAGES -->
@@ -852,7 +1207,7 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '3.0',
+            VERSION: '2.8',
             ALTURA: 165,
             PESO_OBJETIVO: 75,
             STORAGE_KEY: 'nicoGym',
@@ -2081,8 +2436,8 @@ let cardioCompletado = false;
 
                 setTimeout(() => {
                     loading.classList.add('fade-out');
-                    setTimeout(() => { loading.style.display = 'none'; }, 150);
-                }, 100);
+                    setTimeout(() => { loading.style.display = 'none'; }, 500);
+                }, 300);
 
                 setTimeout(() => {
                     this._cargarDatosCompletos();
@@ -2137,88 +2492,64 @@ let cardioCompletado = false;
                 Dashboard.render();
             },
 
-            _navToken: 0,
-            _navActual: 'inicio',
-            _mostrarTransicion(id) {
-                const loading = document.getElementById('loadingScreen');
-                if (!loading) return;
-                const nombres = {
-                    inicio: 'Inicio', rutinas: 'Entrenar', semana: 'Rutina', peso: 'Peso',
-                    agenda: 'Agenda', records: 'Récords', estadisticas: 'Estadísticas', fotos: 'Fotos', ajustes: 'Ajustes'
-                };
-                const txt = loading.querySelector('.loader-text');
-                if (txt) txt.textContent = `Cargando ${nombres[id] || 'NicoGym'}...`;
-                loading.classList.remove('fade-out');
-                loading.classList.add('nav-transition');
-                loading.style.display = 'flex';
-                loading.style.opacity = '1';
-            },
-            _ocultarTransicion() {
-                const loading = document.getElementById('loadingScreen');
-                if (!loading) return;
-                loading.classList.add('fade-out');
-                setTimeout(() => {
-                    loading.style.display = 'none';
-                    loading.classList.remove('nav-transition', 'fade-out');
-                    loading.style.opacity = '';
-                }, 450);
-            },
-
             navegar(id) {
-                if (this._navActual === id) {
-                    if (document.getElementById('sideMenu')?.classList.contains('open')) UI.toggleMenu();
-                    return;
-                }
                 if (modoEntrenoActivo) {
                     UI.toast('⚠️ Termina el entrenamiento primero', 'error');
                     return;
                 }
 
-                const token = ++this._navToken;
-                this._mostrarTransicion(id);
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                const page = document.getElementById(`page-${id}`);
+                if (page) page.classList.add('active');
 
-                // 2,2 s: transición de marca visible y consistente, sin tocar datos ni estado.
-                setTimeout(() => {
-                    if (token !== this._navToken) return;
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                const map = { 'inicio': 0, 'rutinas': 1, 'semana': 2, 'peso': 3, 'estadisticas': 4 };
+                const btns = document.querySelectorAll('.nav-btn');
+                if (map[id] !== undefined && btns[map[id]]) btns[map[id]].classList.add('active');
 
-                    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                    const page = document.getElementById(`page-${id}`);
-                    if (page) page.classList.add('active');
-
-                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                    const map = { 'inicio': 0, 'rutinas': 1, 'semana': 2, 'peso': 3, 'estadisticas': 4 };
-                    const btns = document.querySelectorAll('.nav-btn');
-                    if (map[id] !== undefined && btns[map[id]]) btns[map[id]].classList.add('active');
-
-                    document.querySelectorAll('.side-menu .menu-item').forEach(m => m.classList.remove('active'));
-                    document.querySelectorAll('.side-menu .menu-item').forEach(m => {
-                        const txt = m.textContent.trim().toLowerCase();
-                        if (txt.includes(id) || (id === 'estadisticas' && txt.includes('estadísticas')) ||
-                            (id === 'peso' && txt.includes('peso')) || (id === 'fotos' && txt.includes('fotos')) ||
-                            (id === 'semana' && txt.includes('rutina'))) {
-                            m.classList.add('active');
-                        }
-                    });
-
-                    if (document.getElementById('sideMenu').classList.contains('open')) UI.toggleMenu();
-                    window.scrollTo(0, 0);
-
-                    switch (id) {
-                        case 'rutinas': Rutinas.render(); break;
-                        case 'semana': Semana.render(); break;
-                        case 'peso': Peso.render(); break;
-                        case 'agenda': Agenda.render(); break;
-                        case 'records': Records.render(); break;
-                        case 'estadisticas': Estadisticas.render(); break;
-                        case 'fotos': Fotos.render(); break;
-                        case 'ajustes': Ajustes.render(); break;
-                        case 'inicio':
-                        default: Dashboard.render(); break;
+                document.querySelectorAll('.side-menu .menu-item').forEach(m => m.classList.remove('active'));
+                document.querySelectorAll('.side-menu .menu-item').forEach(m => {
+                    const txt = m.textContent.trim().toLowerCase();
+                    if (txt.includes(id) || (id === 'estadisticas' && txt.includes('estadísticas')) ||
+                        (id === 'peso' && txt.includes('peso')) || (id === 'fotos' && txt.includes('fotos')) ||
+                        (id === 'semana' && txt.includes('rutina'))) {
+                        m.classList.add('active');
                     }
+                });
 
-                    this._navActual = id;
-                    this._ocultarTransicion();
-                }, 2200);
+                if (document.getElementById('sideMenu').classList.contains('open')) UI.toggleMenu();
+                window.scrollTo(0, 0);
+
+                switch (id) {
+                    case 'rutinas':
+                        Rutinas.render();
+                        break;
+                    case 'semana':
+                        Semana.render();
+                        break;
+                    case 'peso':
+                        Peso.render();
+                        break;
+                    case 'agenda':
+                        Agenda.render();
+                        break;
+                    case 'records':
+                        Records.render();
+                        break;
+                    case 'estadisticas':
+                        Estadisticas.render();
+                        break;
+                    case 'fotos':
+                        Fotos.render();
+                        break;
+                    case 'ajustes':
+                        Ajustes.render();
+                        break;
+                    case 'inicio':
+                    default:
+                        Dashboard.render();
+                        break;
+                }
             },
 
             confirmarReset() { UI.confirmar('¿Borrar TODOS los datos? No se puede deshacer.', () => Storage
