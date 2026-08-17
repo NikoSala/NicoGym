@@ -9,19 +9,22 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg: #07110F;
-            --bg-card: #13221E;
-            --bg-card-hover: #182B25;
-            --primary: #16A36A;
-            --primary-dim: rgba(22, 163, 106, 0.12);
-            --primary-glow: rgba(32, 201, 130, 0.30);
-            --success: #20C982;
-            --warning: #B89A5A;
-            --danger: #ef4444;
-            --text: #F1F3F1;
-            --text-secondary: #9AA8A2;
-            --text-muted: #59736A;
-            --border: #263B34;
+            --bg: #07101F;
+            --bg-card: #101C31;
+            --bg-card-hover: #172642;
+            --primary: #20B878;
+            --primary-dim: rgba(32, 184, 120, 0.12);
+            --primary-glow: rgba(32, 184, 120, 0.28);
+            --secondary: #3B82F6;
+            --secondary-dim: rgba(59, 130, 246, 0.13);
+            --secondary-glow: rgba(59, 130, 246, 0.28);
+            --success: #34D399;
+            --warning: #F2B84B;
+            --danger: #F05252;
+            --text: #F4F7FB;
+            --text-secondary: #AAB7C9;
+            --text-muted: #66758C;
+            --border: #263957;
             --radius: 14px;
             --radius-sm: 8px;
             --radius-full: 9999px;
@@ -44,9 +47,10 @@
             pointer-events: none;
             background-image: url('./img/logo-nicogym.png');
             background-position: center;
-            background-size: clamp(220px, 62vw, 420px) auto;
+            background-size: clamp(360px, 78vw, 620px) auto;
             background-repeat: no-repeat;
-            opacity: 0.05;
+            opacity: 0.13;
+            filter: drop-shadow(0 0 24px rgba(22,163,106,0.16));
         }
         ::-webkit-scrollbar { width: 3px; height: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -101,7 +105,7 @@
 
         .top-bar {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 62px;
-            padding: 0 var(--space-sm); background: rgba(7, 17, 15, 0.92);
+            padding: 0 var(--space-sm); background: rgba(11, 16, 32, 0.92);
             backdrop-filter: blur(18px) saturate(1.4); border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between;
         }
@@ -111,9 +115,12 @@
             gap: 10px;
         }
         .top-bar .top-left .header-logo {
-            height: 55px;
+            height: 60px;
             width: auto;
+            max-width: 190px;
             display: block;
+            transform: scale(1.08);
+            filter: drop-shadow(0 0 10px rgba(32,201,130,0.18));
             object-fit: contain;
         }
         .top-bar .top-left .logo-text {
@@ -179,7 +186,7 @@
         .bottom-nav .nav-btn.active i { transform: translateY(-1px); }
         .bottom-nav .nav-btn:active { transform: scale(0.96); }
 
-        .page { display: none; padding: 66px var(--space-sm) 66px; max-width: 480px; margin: 0 auto; min-height: 100vh; }
+        .page { display: none; padding: 72px var(--space-sm) 66px; max-width: 480px; margin: 0 auto; min-height: 100vh; }
         .page.active { display: block; animation: fadeUp 0.3s ease; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -632,7 +639,7 @@
             .card-title, .ex-nombre, .rutina-dia .rd-ejercicio, .ajustes-item { overflow-wrap: anywhere; }
             .top-stats { display: none; }
             .side-menu { width: 260px; left: -260px; }
-            .page { padding: 56px 10px 60px; }
+            .page { padding: 62px 10px 60px; }
             .card { padding: 12px 14px; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
             .peso-grid { grid-template-columns: 1fr 1fr; }
@@ -653,16 +660,23 @@
             .day-tabs .dtab { padding: 8px 16px; font-size: 12px; min-width: 50px; }
             .rutina-dia .rd-dia { font-size: 14px; }
             .rutina-dia .rd-ejercicio { font-size: 12px; }
-            .top-bar .top-left .header-logo { height: 46px; }
+            .top-bar .top-left .header-logo { height: 52px; }
             .top-bar .top-left .logo-text { font-size: 15px; }
         }
         @media (min-width: 600px) {
-            .page { padding: 70px 20px 70px; }
+            .page { padding: 76px 20px 70px; }
             .bottom-nav .nav-btn { padding: 2px 16px; }
             .modo-entreno-overlay .me-ejercicio-card .me-ej-img-wrap { max-height: 160px; }
             .modo-entreno-overlay .me-ejercicio-card .me-ej-img { max-height: 160px; }
         }
-    </style>
+    
+        /* NicoGym palette: verde identidad + azul secundario */
+        .card:nth-of-type(even), .ex-card:nth-of-type(even) { border-color: rgba(59,130,246,0.38); }
+        .btn-secondary, .secondary-accent { background: var(--secondary-dim); color: #7DB2FF; border-color: rgba(59,130,246,0.55); }
+        .btn-secondary:hover, .secondary-accent:hover { background: rgba(59,130,246,0.22); box-shadow: 0 0 18px var(--secondary-glow); }
+        .section-title, .page h2, .page h3 { text-shadow: 0 0 18px rgba(59,130,246,0.10); }
+        .brand-mark-watermark { opacity: 0.045 !important; filter: saturate(1.1) drop-shadow(0 0 24px rgba(59,130,246,0.20)); }
+</style>
 </head>
 <body>
 
@@ -801,7 +815,7 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '2.6',
+            VERSION: '2.8',
             ALTURA: 165,
             PESO_OBJETIVO: 75,
             STORAGE_KEY: 'nicoGym',
@@ -812,14 +826,17 @@
             NOMBRES_DIAS: { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes',
                 sabado: 'Sábado', domingo: 'Domingo' },
             TIPOS_RUTINA: {
-                lunes: 'Pecho / Hombro / Tríceps',
-                martes: 'Espalda + Bíceps + Trapecio',
-                miercoles: 'Caminata 30-45 min',
-                jueves: 'Tren superior — prioridad brazos',
-                viernes: 'Tren superior completo',
-                sabado: 'Caminata 45-60 min',
+                lunes: 'Tren superior · sesión moderada + caminata',
+                martes: 'Tren superior · sesión fuerte',
+                miercoles: 'Tren superior · sesión moderada + caminata',
+                jueves: 'Tren superior · sesión fuerte',
+                viernes: 'Tren superior · sesión moderada + caminata',
+                sabado: 'Descanso',
                 domingo: 'Descanso'
             },
+            DIAS_CINTA: ['lunes', 'miercoles', 'viernes'],
+            MIN_CINTA: 15,
+            MAX_CINTA: 20,
             // TEMPORIZADOR DESACTIVADO POR DEFECTO
             TEMPORIZADOR_DESCANSO: false,
             TIEMPO_MSG_COMPLETADO: 1500
@@ -992,7 +1009,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'lunes',
+                    dia: 'miercoles',
                     dificultad: 'facil',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Hombro': 75 }
@@ -1011,7 +1028,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'lunes',
+                    dia: 'miercoles',
                     dificultad: 'facil',
                     material: ['Mancuerna'],
                     intensidadMuscular: { 'Tríceps': 90 }
@@ -1030,7 +1047,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'lunes',
+                    dia: 'miercoles',
                     dificultad: 'media',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Tríceps': 85, 'Pecho': 50 }
@@ -1186,7 +1203,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: 'miercoles',
                     dificultad: 'facil',
                     material: ['Banco', 'Mancuerna'],
                     intensidadMuscular: { 'Pecho': 70, 'Espalda': 65, 'Tríceps': 40 }
@@ -1300,7 +1317,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: 'miercoles',
                     dificultad: 'media',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Tríceps': 80, 'Pecho': 70 }
@@ -1551,7 +1568,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 90,
-                    dia: 'viernes',
+                    dia: 'martes',
                     dificultad: 'media',
                     material: ['Banco inclinado', 'Mancuernas'],
                     intensidadMuscular: { 'Espalda': 80, 'Bíceps': 50 }
@@ -1570,7 +1587,7 @@
                     series: 4,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'viernes',
+                    dia: 'jueves',
                     dificultad: 'facil',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Pecho': 80, 'Hombro': 50 }
@@ -1608,7 +1625,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'viernes',
+                    dia: 'jueves',
                     dificultad: 'facil',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Bíceps': 80, 'Antebrazo': 70 }
@@ -1627,7 +1644,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'viernes',
+                    dia: 'jueves',
                     dificultad: 'facil',
                     material: ['Mancuerna'],
                     intensidadMuscular: { 'Tríceps': 90 }
@@ -1901,6 +1918,7 @@
         let tiempoDescanso = 0;
         let startTimeEntreno = null;
         let recordsConseguidos = [];
+let cardioCompletado = false;
         let totalPesoLevantadoEntreno = 0;
         let totalVolumenEntreno = 0;
         let totalSeriesEntreno = 0;
@@ -2012,6 +2030,7 @@
         // APP
         // ==========================================
         const APP = {
+            _cardioMostrado: false,
             init() {
                 const loading = document.getElementById('loadingScreen');
                 loading.style.display = 'flex';
@@ -2169,15 +2188,31 @@
                     UI.toast('✅ Este entrenamiento ya fue completado hoy', 'success');
                     return;
                 }
-                if (['miercoles', 'sabado', 'domingo'].includes(dia)) {
+                if (['sabado', 'domingo'].includes(dia)) {
                     UI.toast('🚶 Este día no tiene entrenamiento guiado', 'info');
                     return;
                 }
 
                 modoEntrenoActivo = true;
                 ejerciciosEntreno = ejercicios.map(e => ({ ...e }));
+                if (CONFIG.DIAS_CINTA.includes(dia)) {
+                    ejerciciosEntreno.push({
+                        nombre: 'Caminata en cinta',
+                        grupo: 'Cardio suave',
+                        dia: dia,
+                        esCaminata: true,
+                        series: 1,
+                        reps: `${CONFIG.MIN_CINTA}–${CONFIG.MAX_CINTA} min`,
+                        descanso: 0,
+                        descripcion: 'Camina a un ritmo cómodo durante 15–20 minutos. Con el tiempo iremos aumentando poco a poco el ritmo o la duración.',
+                        material: ['Cinta de correr'],
+                        intensidadMuscular: {}
+                    });
+                }
                 idxEjercicioActual = 0;
                 recordsConseguidos = [];
+                cardioCompletado = false;
+                this._cardioMostrado = false;
                 startTimeEntreno = Date.now();
                 totalPesoLevantadoEntreno = 0;
                 totalVolumenEntreno = 0;
@@ -2199,6 +2234,11 @@
                 const ej = ejerciciosEntreno[idxEjercicioActual];
                 const total = ejerciciosEntreno.length;
                 const progreso = Math.round((idxEjercicioActual / total) * 100);
+
+                if (ej.esCaminata) {
+                    this._mostrarCaminataComoEjercicio(ej, total, progreso);
+                    return;
+                }
 
                 document.getElementById('meProgresoTexto').textContent = `${idxEjercicioActual + 1} / ${total}`;
                 document.getElementById('meProgresoFill').style.width = `${progreso}%`;
@@ -2415,6 +2455,46 @@
                 this._mostrarEjercicio();
             },
 
+            _mostrarCaminataComoEjercicio(ej, total, progreso) {
+                const body = document.getElementById('meBody');
+                document.getElementById('meProgresoTexto').textContent = `${idxEjercicioActual + 1} / ${total}`;
+                document.getElementById('meProgresoFill').style.width = `${progreso}%`;
+                document.getElementById('meProgresoInfo').textContent = `${progreso}% · Último ejercicio`;
+                document.getElementById('meCompletadoMsg').classList.add('hidden');
+                body.innerHTML = `
+                    <div class="me-caminata-card">
+                        <div class="me-ej-numero">Ejercicio ${idxEjercicioActual + 1} de ${total}</div>
+                        <div class="me-caminata-icon"><i class="fa-solid fa-person-walking"></i></div>
+                        <div class="me-caminata-tag">Cardio suave</div>
+                        <div class="me-caminata-title">Caminata en cinta</div>
+                        <div class="me-caminata-time">${CONFIG.MIN_CINTA}–${CONFIG.MAX_CINTA} minutos · andando</div>
+                        <div class="me-caminata-note">Mantén un ritmo cómodo. Con el tiempo iremos aumentando poco a poco el ritmo o la duración.</div>
+                        <button class="btn btn-primary btn-block" onclick="APP._completarCaminataComoEjercicio()">
+                            <i class="fa-solid fa-check"></i> He terminado la caminata
+                        </button>
+                    </div>`;
+                document.getElementById('modoEntreno').scrollTop = 0;
+            },
+
+            _completarCaminataComoEjercicio() {
+                const ej = ejerciciosEntreno[idxEjercicioActual];
+                const hoy = UI.getHoy();
+                let entrenamientoExistente = STATE.historialEntrenos.find(e => e.fecha === hoy && e.dia === ej.dia);
+                const registroCardio = { nombre: ej.nombre, tipo: 'caminata', minutos: `${CONFIG.MIN_CINTA}-${CONFIG.MAX_CINTA}`, notas: '' };
+                if (entrenamientoExistente) {
+                    const existente = entrenamientoExistente.ejercicios.find(e => e.nombre === ej.nombre);
+                    if (existente) Object.assign(existente, registroCardio);
+                    else entrenamientoExistente.ejercicios.push(registroCardio);
+                } else {
+                    STATE.historialEntrenos.push({ fecha: hoy, dia: ej.dia, tipo: CONFIG.TIPOS_RUTINA[ej.dia] || ej.dia.toUpperCase(), ejercicios: [registroCardio] });
+                }
+                cardioCompletado = true;
+                Storage._save();
+                this._mostrarMensajeCompletado(ej.nombre);
+                idxEjercicioActual++;
+                setTimeout(() => this._finalizarEntreno(), CONFIG.TIEMPO_MSG_COMPLETADO + 200);
+            },
+
             _finalizarEntreno() {
                 if (temporizadorDescanso) {
                     clearInterval(temporizadorDescanso);
@@ -2436,7 +2516,7 @@
                     <div class="me-completado-final">
                         <div class="me-feliz">🏆</div>
                         <div class="me-titulo">¡Entrenamiento completado!</div>
-                        <div class="me-sub">${CONFIG.NOMBRES_DIAS[dia]} · ${tiempoEmpleado} minutos</div>
+                        <div class="me-sub">${CONFIG.NOMBRES_DIAS[dia]} · ${tiempoEmpleado} minutos${CONFIG.DIAS_CINTA.includes(dia) ? ' · 🚶 Cinta 15–20 min' : ''}</div>
                         <div class="me-resumen-grid">
                             <div class="me-res-item">
                                 <div class="me-res-valor">${ejerciciosEntreno.length}</div>
@@ -2491,6 +2571,8 @@
                 ejerciciosEntreno = [];
                 idxEjercicioActual = 0;
                 recordsConseguidos = [];
+                cardioCompletado = false;
+                this._cardioMostrado = false;
                 totalPesoLevantadoEntreno = 0;
                 totalVolumenEntreno = 0;
                 totalSeriesEntreno = 0;
@@ -2587,14 +2669,14 @@
                     const d = new Date(hoy);
                     d.setDate(hoy.getDate() + i);
                     const diaKey = diasMap[d.getDay()];
-                    const esDiaEntreno = diaKey !== 'miercoles' && diaKey !== 'sabado' && diaKey !== 'domingo';
+                    const esDiaEntreno = diaKey !== 'sabado' && diaKey !== 'domingo';
                     const yaCompletado = i === 0 && STATE.diasEntrenados.includes(UI.formatFecha(d));
                     if (esDiaEntreno && !yaCompletado) {
                         const ejercicios = getEjerciciosPorDia(diaKey);
                         if (ejercicios.length > 0) {
                             proxDia = diaKey;
                             proxNombre = CONFIG.NOMBRES_DIAS[diaKey];
-                            const iconos = ['🔵', '🟢', '🚶', '🟠', '🔵'];
+                            const iconos = ['🔵', '🟢', '🟠', '🟣', '🔵'];
                             const idx = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'].indexOf(diaKey);
                             proxIcono = idx >= 0 ? iconos[idx] : '💪';
                             proxEjercicios = ejercicios.length;
@@ -2686,10 +2768,10 @@
                     ` : `
                         <div class="card">
                             <div class="card-title">💪 Rutina de hoy</div>
-                            ${dia === 'domingo' || dia === 'sabado' || dia === 'miercoles' ? `
+                            ${dia === 'domingo' || dia === 'sabado' ? `
                                 <div style="text-align:center;padding:6px 0;color:var(--text-secondary);">
-                                    <span style="font-size:28px;display:block;margin-bottom:2px;">${dia === 'miercoles' ? '🚶' : '😌'}</span>
-                                    ${dia === 'miercoles' ? 'Caminata 30-45 min' : 'Día de descanso'}
+                                    <span style="font-size:28px;display:block;margin-bottom:2px;">${dia === 'sabado' ? '😌' : '😌'}</span>
+                                    Día de descanso
                                 </div>
                             ` : entrenadoHoy ? `
                                 <div style="text-align:center;padding:6px 0;color:var(--success);">
@@ -2758,7 +2840,7 @@
                     btn.textContent = `${iconos[idx]} ${nombres[idx]}`;
                     btn.dataset.dia = dia;
 
-                    const esDescanso = dia === 'miercoles';
+                    const esDescanso = ['sabado', 'domingo'].includes(dia);
                     const completado = STATE.diasEntrenados.includes(UI.getHoy()) &&
                         dia === UI.getDiaNombre() &&
                         !esDescanso;
@@ -2768,7 +2850,7 @@
 
                     btn.onclick = () => {
                         if (esDescanso) {
-                            UI.toast('🚶 Día de descanso', 'info');
+                            UI.toast('😌 Día de descanso', 'info');
                             return;
                         }
                         this._seleccionarDia(dia);
@@ -2785,14 +2867,7 @@
                     let panelContent = '';
 
                     if (esDescanso) {
-                        panelContent = `
-                            <div class="card" style="text-align:center;padding:24px;color:var(--text-secondary);">
-                                <span style="font-size:48px;display:block;margin-bottom:8px;">🚶</span>
-                                <div style="font-size:18px;font-weight:600;color:var(--text);">Miércoles</div>
-                                <div style="font-size:13px;margin-top:4px;">Caminata 30-45 minutos</div>
-                                <div style="font-size:12px;color:var(--text-muted);margin-top:8px;">No se registra entrenamiento</div>
-                            </div>
-                        `;
+                        panelContent = `<div class="card" style="text-align:center;padding:24px;color:var(--text-secondary);"><span style="font-size:48px;display:block;margin-bottom:8px;">😌</span><div style="font-size:18px;font-weight:600;color:var(--text);">Día de descanso</div></div>`;
                     } else {
                         const ejercicios = getEjerciciosPorDia(dia);
                         const duracion = calcularDuracionEstimada(ejercicios);
@@ -2853,12 +2928,7 @@
                 const c = document.getElementById('progresoRutinaContainer');
                 if (!c) return;
 
-                if (diaActivo === 'miercoles') {
-                    c.innerHTML = '';
-                    return;
-                }
-
-                const ejercicios = getEjerciciosPorDia(diaActivo);
+                                const ejercicios = getEjerciciosPorDia(diaActivo);
                 if (ejercicios.length === 0) { c.innerHTML = ''; return; }
 
                 let comp = 0;
@@ -2899,11 +2969,11 @@
                 const hoyDia = hoy.getDay();
 
                 const dias = [
-                    { key: 'lunes', nombre: 'LUNES', icono: '🔵', grupo: 'Pecho + Hombros + Tríceps' },
-                    { key: 'martes', nombre: 'MARTES', icono: '🟢', grupo: 'Espalda + Bíceps + Trapecio' },
-                    { key: 'miercoles', nombre: 'MIÉRCOLES', icono: '🚶', grupo: 'Caminata' },
-                    { key: 'jueves', nombre: 'JUEVES', icono: '🟠', grupo: 'Tren superior — prioridad brazos' },
-                    { key: 'viernes', nombre: 'VIERNES', icono: '🔵', grupo: 'Tren superior completo' },
+                    { key: 'lunes', nombre: 'LUNES', icono: '🔵', grupo: 'Tren superior · 5 ejercicios + cinta' },
+                    { key: 'martes', nombre: 'MARTES', icono: '🟢', grupo: 'Tren superior · 8 ejercicios' },
+                    { key: 'miercoles', nombre: 'MIÉRCOLES', icono: '🟣', grupo: 'Tren superior · 5 ejercicios + cinta' },
+                    { key: 'jueves', nombre: 'JUEVES', icono: '🟠', grupo: 'Tren superior · 8 ejercicios' },
+                    { key: 'viernes', nombre: 'VIERNES', icono: '🔵', grupo: 'Tren superior · 4 ejercicios + cinta' },
                     { key: 'sabado', nombre: 'SÁBADO', icono: '🚶', grupo: 'Caminata' },
                     { key: 'domingo', nombre: 'DOMINGO', icono: '😌', grupo: 'Descanso' }
                 ];
@@ -2915,7 +2985,7 @@
 
                 dias.forEach((dia) => {
                     const esHoy = dia.key === diaActualKey;
-                    const esDescanso = (dia.key === 'miercoles' || dia.key === 'sabado' || dia.key === 'domingo');
+                    const esDescanso = (dia.key === 'sabado' || dia.key === 'domingo');
                     let ejercicios = [];
 
                     if (!esDescanso) {
@@ -2936,11 +3006,7 @@
 
                     if (esDescanso) {
                         html += `<div class="rd-ejercicios">`;
-                        if (dia.key === 'miercoles') {
-                            html += `Caminata de 30–45 minutos`;
-                        } else if (dia.key === 'sabado') {
-                            html += `Caminata de 45–60 minutos`;
-                        } else {
+                        if (dia.key === 'sabado') {
                             html += `Descanso`;
                         }
                         html += `</div>`;
@@ -3329,7 +3395,7 @@
                     const d = new Date();
                     d.setDate(d.getDate() + i);
                     const diaKey = diasMap[d.getDay()];
-                    if (diaKey !== 'miercoles' && diaKey !== 'sabado' && diaKey !== 'domingo' && !STATE.diasEntrenados
+                    if (diaKey !== 'sabado' && diaKey !== 'domingo' && !STATE.diasEntrenados
                         .includes(UI.formatFecha(d))) {
                         const ejercicios = getEjerciciosPorDia(diaKey);
                         if (ejercicios.length > 0) {
@@ -3630,7 +3696,7 @@
                     notifs.push({ icono: '📊', texto: `Mañana: ${texto}` });
                 }
 
-                if (dia !== 'domingo' && dia !== 'sabado' && dia !== 'miercoles' && !entrenadoHoy) {
+                if (dia !== 'domingo' && dia !== 'sabado' && !entrenadoHoy) {
                     notifs.push({ icono: '💪', texto: `Entrena ${CONFIG.TIPOS_RUTINA[dia]}` });
                 }
 
