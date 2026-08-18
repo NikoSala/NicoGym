@@ -1207,7 +1207,7 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '3.0.4',
+            VERSION: '3.0.6',
             BACKUP_VERSION: 2,
             ALTURA: 165,
             PESO_OBJETIVO: 75,
@@ -4624,11 +4624,23 @@ let cardioCompletado = false;
                     if (!STATE.config || typeof STATE.config !== 'object') STATE.config = {};
                     const temporizadorActivo = STATE.config.temporizadorDescanso === true || CONFIG.TEMPORIZADOR_DESCANSO === true;
                     const nombre = escapeHTML(STATE.nombre || 'Nico');
-                    const altura = Number.isFinite(Number(STATE.altura)) ? Number(STATE.altura) : CONFIG.ALTURA;
-                    const objetivo = Number.isFinite(Number(CONFIG.PESO_OBJETIVO)) ? Number(CONFIG.PESO_OBJETIVO) : 75;
-                    const freqMediciones = Math.max(1, parseInt(STATE.recordatorios.freqMediciones, 10) || 2);
-                    const freqFotos = Math.max(1, parseInt(STATE.recordatorios.freqFotos, 10) || 4);
-                    const ultimaCompleta = this.getUltimaMedicionCompletaTexto();
+                    const alturaNum = Number(STATE.altura);
+                    const altura = Number.isFinite(alturaNum) && alturaNum > 0 ? alturaNum : Number(CONFIG.ALTURA) || 165;
+                    const objetivoNum = Number(CONFIG.PESO_OBJETIVO);
+                    const objetivo = Number.isFinite(objetivoNum) && objetivoNum > 0 ? objetivoNum : 75;
+                    const rec = (STATE.recordatorios && typeof STATE.recordatorios === 'object') ? STATE.recordatorios : {};
+                    const freqMediciones = Math.max(1, parseInt(rec.freqMediciones, 10) || 2);
+                    const freqFotos = Math.max(1, parseInt(rec.freqFotos, 10) || 4);
+                    let ultimaCompleta = 'Ninguna registrada';
+                    try {
+                        const medidas = Array.isArray(STATE.mediciones) ? STATE.mediciones : [];
+                        const validas = medidas.map(m => ({ fecha: normalizarFechaLocal(m && m.fecha), peso: Number(m && m.peso), cintura: Number(m && m.cintura) }))
+                            .filter(m => m.fecha && Number.isFinite(m.peso) && m.peso > 0)
+                            .sort((a,b) => b.fecha.localeCompare(a.fecha));
+                        const completas = validas.filter(m => Number.isFinite(m.cintura) && m.cintura > 0);
+                        const f = (completas[0] || validas[0] || {}).fecha;
+                        if (f) ultimaCompleta = new Date(f + 'T12:00:00').toLocaleDateString('es-ES', {day:'numeric', month:'long'});
+                    } catch (_) { ultimaCompleta = 'Ninguna registrada'; }
 
                 c.innerHTML = `
                     <div class="card">
@@ -4685,6 +4697,7 @@ let cardioCompletado = false;
                 `;
                 } catch (err) {
                     console.error('NicoGym: error renderizando Ajustes', err);
+                    try { console.error('NicoGym Ajustes detalle:', err && err.stack ? err.stack : err); } catch (_) {}
                     c.innerHTML = `
                         <div class="card">
                             <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> Ajustes</div>
