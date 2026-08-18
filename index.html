@@ -1207,7 +1207,7 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '2.8',
+            VERSION: '3.0.0',
             BACKUP_VERSION: 2,
             ALTURA: 165,
             PESO_OBJETIVO: 75,
@@ -2225,6 +2225,24 @@
             return Math.max(0, Math.min(100, Math.round(progreso)));
         }
 
+        function actualizarEvolutionDesdeMediciones() {
+            if (!Array.isArray(STATE.mediciones) || STATE.mediciones.length === 0) {
+                STATE.evolution.initialWeight = 0;
+                STATE.evolution.currentWeight = 0;
+                STATE.evolution.initialWaist = 0;
+                STATE.evolution.currentWaist = 0;
+                return;
+            }
+            const ordenadas = [...STATE.mediciones].sort((a,b)=>String(a.fecha||'').localeCompare(String(b.fecha||'')));
+            const primera = ordenadas[0];
+            const ultima = ordenadas[ordenadas.length - 1];
+            STATE.evolution.initialWeight = Number(primera.peso) || 0;
+            STATE.evolution.currentWeight = Number(ultima.peso) || 0;
+            STATE.evolution.initialWaist = Number(primera.cintura) || 0;
+            STATE.evolution.currentWaist = Number(ultima.cintura) || 0;
+            STATE.evolution.totalWorkouts = Array.isArray(STATE.diasEntrenados) ? STATE.diasEntrenados.length : 0;
+        }
+
         const Storage = {
             init() {
                 const raw = localStorage.getItem(CONFIG.STORAGE_KEY);
@@ -2253,6 +2271,7 @@
                 if (STATE.config && STATE.config.temporizadorDescanso === undefined) {
                     STATE.config.temporizadorDescanso = false;
                 }
+                actualizarEvolutionDesdeMediciones();
                 this._calcularDiasSinFumar();
                 this._save();
                 return this;
@@ -2402,7 +2421,26 @@
             if (!Array.isArray(state.diasNoFumar)) state.diasNoFumar = [];
             if (!Array.isArray(state.historialEntrenos)) state.historialEntrenos = [];
             if (!Array.isArray(state.records)) state.records = [];
-            if (!state.recordatorios || typeof state.recordatorios !== 'object') state.recordatorios = {};
+            if (!Array.isArray(state.mediciones)) state.mediciones = [];
+
+            // Normalizar mediciones antiguas sin borrar datos existentes.
+            // El Dashboard y los gráficos necesitan un orden cronológico fiable.
+            state.mediciones = state.mediciones
+                .filter(m => m && typeof m === 'object' && /^\d{4}-\d{2}-\d{2}$/.test(String(m.fecha || '')))
+                .map(m => ({
+                    ...m,
+                    fecha: String(m.fecha),
+                    peso: Number(m.peso),
+                    cintura: Number.isFinite(Number(m.cintura)) ? Number(m.cintura) : 0,
+                    grasaPorcentaje: Number.isFinite(Number(m.grasaPorcentaje)) ? Number(m.grasaPorcentaje) : 0,
+                    masaMuscular: Number.isFinite(Number(m.masaMuscular)) ? Number(m.masaMuscular) : 0,
+                    masaMagra: Number.isFinite(Number(m.masaMagra)) ? Number(m.masaMagra) : 0,
+                    grasaVisceral: Number.isFinite(Number(m.grasaVisceral)) ? Number(m.grasaVisceral) : 0
+                }))
+                .filter(m => Number.isFinite(m.peso) && m.peso > 0)
+                .sort((a, b) => a.fecha.localeCompare(b.fecha));
+
+            state.recordatorios = (state.recordatorios && typeof state.recordatorios === 'object') ? state.recordatorios : {};
             state.recordatorios.freqMediciones = Math.max(1, parseInt(state.recordatorios.freqMediciones,10) || 2);
             state.recordatorios.freqFotos = Math.max(1, parseInt(state.recordatorios.freqFotos,10) || 4);
             state.schemaVersion = STATE_SCHEMA_VERSION;
@@ -2640,13 +2678,7 @@ let cardioCompletado = false;
             },
 
             _cargarDatosCompletos() {
-                if (STATE.mediciones.length > 0) {
-                    STATE.evolution.initialWeight = STATE.mediciones[0].peso;
-                    STATE.evolution.currentWeight = STATE.mediciones[STATE.mediciones.length - 1].peso;
-                    STATE.evolution.initialWaist = STATE.mediciones[0].cintura;
-                    STATE.evolution.currentWaist = STATE.mediciones[STATE.mediciones.length - 1].cintura;
-                    STATE.evolution.totalWorkouts = STATE.diasEntrenados.length || 0;
-                }
+                actualizarEvolutionDesdeMediciones();
                 Storage._save();
                 Dashboard.render();
                 STATE._cargado = true;
@@ -3741,6 +3773,7 @@ let cardioCompletado = false;
                     cintura: cintura
                 };
 
+                actualizarEvolutionDesdeMediciones();
                 Storage._save();
                 UI.toast('✅ Datos guardados', 'success');
                 this.render();
@@ -3808,6 +3841,7 @@ let cardioCompletado = false;
             _eliminar(f) {
                 UI.confirmar('¿Eliminar esta medición?', () => {
                     STATE.mediciones = STATE.mediciones.filter(m => m.fecha !== f);
+                    actualizarEvolutionDesdeMediciones();
                     Storage._save();
                     this.render();
                     APP.renderizarTodo();
@@ -4507,13 +4541,64 @@ let cardioCompletado = false;
                 c.appendChild(ach);
             },
             añadirGraficos() {
-                const c=document.getElementById('estadisticasContainer'); if(!c || c.querySelector('.ng-charts')) return;
-                const medidas=[...(STATE.mediciones||[])].slice(-12);
-                const pesoPts=medidas.map((m,i)=>`${i*40+20},${120-(Number(m.peso)||0)*2}`).join(' ');
-                let vol=[];
-                (STATE.historialEntrenos||[]).forEach(e=>{ const d=new Date(e.fecha); const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; let v=0;(e.ejercicios||[]).forEach(x=>{const p=parseReps(x.reps);v+=(Number(x.peso)||0)*(p.valid?p.total:(Number(x.repsTotales)||0));});vol.push({key,v}); });
-                const maxV=Math.max(1,...vol.map(x=>x.v)); const bars=vol.slice(-8).map((x,i)=>{const h=Math.round((x.v/maxV)*90);return `<rect x="${i*42+8}" y="${100-h}" width="28" height="${h}" rx="4"></rect>`}).join('');
-                const card=document.createElement('div'); card.className='card ng-charts'; card.innerHTML=`<div class="card-title">📈 Progreso</div><div class="ng-chart-title">Peso</div><svg viewBox="0 0 500 140" class="ng-svg"><line x1="10" y1="120" x2="490" y2="120" class="axis"></line>${pesoPts?`<polyline points="${pesoPts}" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>`:'<text x="20" y="70">Aún no hay suficientes mediciones</text>'}</svg><div class="ng-chart-title">Volumen reciente</div><svg viewBox="0 0 360 120" class="ng-svg ng-bars">${bars||'<text x="20" y="60">Sin entrenamientos registrados</text>'}</svg><div class="ng-chart-note">Los gráficos usan tus registros locales y se actualizan al guardar datos.</div>`;
+                const c=document.getElementById('estadisticasContainer');
+                if(!c) return;
+                const existente=c.querySelector('.ng-charts');
+                if(existente) existente.remove();
+
+                // Normalizamos y ordenamos aquí también para que los datos ya
+                // guardados en localStorage se representen aunque provengan de
+                // una versión anterior de NicoGym.
+                const medidas=[...(STATE.mediciones||[])]
+                    .filter(m => m && Number.isFinite(Number(m.peso)) && Number(m.peso) > 0)
+                    .sort((a,b)=>String(a.fecha||'').localeCompare(String(b.fecha||'')))
+                    .slice(-12);
+
+                let pesoGrafico='';
+                if (medidas.length) {
+                    const pesos=medidas.map(m=>Number(m.peso));
+                    const minPeso=Math.min(...pesos);
+                    const maxPeso=Math.max(...pesos);
+                    const margen=Math.max(0.5,(maxPeso-minPeso)*0.15);
+                    const lo=minPeso-margen, hi=maxPeso+margen, rango=Math.max(0.001,hi-lo);
+                    const ancho=460, alto=90;
+                    const puntos=medidas.map((m,i)=>{
+                        const x=20+(medidas.length===1 ? ancho/2 : (i/(medidas.length-1))*ancho);
+                        const y=110-((Number(m.peso)-lo)/rango)*alto;
+                        return {x,y,peso:Number(m.peso)};
+                    });
+                    const poly=puntos.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+                    const linea=medidas.length>1 ? `<polyline points="${poly}" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>` : '';
+                    const puntosSvg=puntos.map(p=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="currentColor"><title>${p.peso.toFixed(1)} kg</title></circle>`).join('');
+                    const etiquetaInicio=`<text x="20" y="18" class="ng-chart-label">${minPeso.toFixed(1)} kg</text>`;
+                    const etiquetaFin=`<text x="390" y="18" class="ng-chart-label">${maxPeso.toFixed(1)} kg</text>`;
+                    pesoGrafico=`${etiquetaInicio}${etiquetaFin}${linea}${puntosSvg}`;
+                } else {
+                    pesoGrafico='<text x="20" y="70">Aún no hay mediciones de peso válidas</text>';
+                }
+
+                const porDia=new Map();
+                (STATE.historialEntrenos||[]).forEach(e=>{
+                    const fecha=String(e.fecha||'');
+                    if(!fecha) return;
+                    let v=0;
+                    (e.ejercicios||[]).forEach(x=>{
+                        const p=parseReps(x.reps);
+                        const reps=p.valid?p.total:(Number(x.repsTotales)||0);
+                        v+=(Number(x.peso)||0)*reps;
+                    });
+                    porDia.set(fecha,(porDia.get(fecha)||0)+v);
+                });
+                const vol=[...porDia.entries()].sort((a,b)=>a[0].localeCompare(b[0])).slice(-8).map(([key,v])=>({key,v}));
+                const maxV=Math.max(1,...vol.map(x=>x.v));
+                const bars=vol.map((x,i)=>{
+                    const h=x.v>0?Math.max(4,Math.round((x.v/maxV)*90)):0;
+                    return `<rect x="${i*42+8}" y="${100-h}" width="28" height="${h}" rx="4"><title>${escapeHTML(x.key)}: ${Math.round(x.v).toLocaleString('es-ES')} kg</title></rect>`;
+                }).join('');
+
+                const card=document.createElement('div');
+                card.className='card ng-charts';
+                card.innerHTML=`<div class="card-title">📈 Progreso</div><div class="ng-chart-title">Peso</div><svg viewBox="0 0 500 140" class="ng-svg" role="img" aria-label="Evolución del peso"><line x1="10" y1="120" x2="490" y2="120" class="axis"></line>${pesoGrafico}</svg><div class="ng-chart-title">Volumen reciente</div><svg viewBox="0 0 360 120" class="ng-svg ng-bars" role="img" aria-label="Volumen reciente">${bars||'<text x="20" y="60">Sin entrenamientos registrados</text>'}</svg><div class="ng-chart-note">Los gráficos usan tus registros locales y se actualizan al guardar datos.</div>`;
                 c.appendChild(card);
             },
             sliderFotos() {
