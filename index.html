@@ -3956,14 +3956,18 @@ let cardioCompletado = false;
             },
 
             getUltimaMedicionCompletaTexto() {
-                const medidas = (STATE.mediciones || []).filter(m => m?.fecha).sort((a,b) => String(b.fecha).localeCompare(String(a.fecha)));
+                const medidas = Array.isArray(STATE.mediciones) ? STATE.mediciones
+                    .map(m => ({ ...m, fecha: normalizarFechaLocal(m?.fecha) }))
+                    .filter(m => m.fecha && Number.isFinite(Number(m.peso)) && Number(m.peso) > 0)
+                    .sort((a,b) => b.fecha.localeCompare(a.fecha)) : [];
                 if (!medidas.length) return 'Ninguna registrada';
-                const ultima = medidas[0].fecha;
-                const completas = (STATE.mediciones || []).filter(m => {
-                    const keys = ['peso','cintura','grasaPorcentaje','masaMuscular','masaMagra','grasaVisceral'];
-                    return m?.fecha && keys.slice(0,2).every(k => Number.isFinite(Number(m[k])) && Number(m[k]) > 0);
-                }).sort((a,b)=>String(b.fecha).localeCompare(String(a.fecha)));
-                return UI.formatearFecha((completas[0] || {fecha:ultima}).fecha);
+                // Una medición se considera completa cuando contiene al menos
+                // peso y cintura. Los demás campos son opcionales en modelos
+                // antiguos y no deben hacer que una medición válida desaparezca.
+                const completas = medidas.filter(m => Number.isFinite(Number(m.cintura)) && Number(m.cintura) > 0);
+                const fecha = (completas[0] || medidas[0]).fecha;
+                try { return UI.formatearFecha(fecha); }
+                catch (_) { return fecha; }
             },
 
             _guardar() {
@@ -4612,23 +4616,33 @@ let cardioCompletado = false;
             render() {
                 const c = document.getElementById('ajustesContainer');
                 if (!c) return;
-
-                // Leer estado actual del temporizador
-                const temporizadorActivo = CONFIG.TEMPORIZADOR_DESCANSO;
+                try {
+                    // Nunca asumir que una versión antigua del almacenamiento tiene
+                    // todas las subestructuras. WebView puede conservar estados
+                    // anteriores incluso después de actualizar el HTML.
+                    if (!STATE.recordatorios || typeof STATE.recordatorios !== 'object') STATE.recordatorios = {};
+                    if (!STATE.config || typeof STATE.config !== 'object') STATE.config = {};
+                    const temporizadorActivo = STATE.config.temporizadorDescanso === true || CONFIG.TEMPORIZADOR_DESCANSO === true;
+                    const nombre = escapeHTML(STATE.nombre || 'Nico');
+                    const altura = Number.isFinite(Number(STATE.altura)) ? Number(STATE.altura) : CONFIG.ALTURA;
+                    const objetivo = Number.isFinite(Number(CONFIG.PESO_OBJETIVO)) ? Number(CONFIG.PESO_OBJETIVO) : 75;
+                    const freqMediciones = Math.max(1, parseInt(STATE.recordatorios.freqMediciones, 10) || 2);
+                    const freqFotos = Math.max(1, parseInt(STATE.recordatorios.freqFotos, 10) || 4);
+                    const ultimaCompleta = this.getUltimaMedicionCompletaTexto();
 
                 c.innerHTML = `
                     <div class="card">
                         <div class="card-title"><i class="fa-solid fa-user"></i> Perfil</div>
-                        <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="input input-sm" id="ajusteNombre" value="${escapeHTML(STATE.nombre)}" style="width:120px;"></div>
-                        <div class="ajustes-item"><span class="aj-label">Altura (cm)</span><input class="input input-sm" type="number" id="ajusteAltura" value="${STATE.altura}" style="width:80px;"></div>
-                        <div class="ajustes-item"><span class="aj-label">Peso objetivo (kg)</span><input class="input input-sm" type="number" id="ajusteObjetivo" value="${CONFIG.PESO_OBJETIVO}" style="width:80px;"></div>
+                        <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="input input-sm" id="ajusteNombre" value="${nombre}" style="width:120px;"></div>
+                        <div class="ajustes-item"><span class="aj-label">Altura (cm)</span><input class="input input-sm" type="number" id="ajusteAltura" value="${altura}" style="width:80px;"></div>
+                        <div class="ajustes-item"><span class="aj-label">Peso objetivo (kg)</span><input class="input input-sm" type="number" id="ajusteObjetivo" value="${objetivo}" style="width:80px;"></div>
                         <button class="btn btn-primary btn-block" onclick="Ajustes._guardar()" style="margin-top:10px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                     </div>
 
                     <div class="card">
                         <div class="card-title"><i class="fa-solid fa-bell"></i> Recordatorios</div>
-                        <div class="ajustes-item"><span class="aj-label">📏 Mediciones (semanas)</span><input class="input input-sm" type="number" id="ajusteFreqMediciones" value="${STATE.recordatorios.freqMediciones || 2}" min="1" max="8" style="width:60px;"></div>
-                        <div class="ajustes-item"><span class="aj-label">📸 Fotos (semanas)</span><input class="input input-sm" type="number" id="ajusteFreqFotos" value="${STATE.recordatorios.freqFotos || 4}" min="1" max="12" style="width:60px;"></div>
+                        <div class="ajustes-item"><span class="aj-label">📏 Mediciones (semanas)</span><input class="input input-sm" type="number" id="ajusteFreqMediciones" value="${freqMediciones}" min="1" max="8" style="width:60px;"></div>
+                        <div class="ajustes-item"><span class="aj-label">📸 Fotos (semanas)</span><input class="input input-sm" type="number" id="ajusteFreqFotos" value="${freqFotos}" min="1" max="12" style="width:60px;"></div>
                         <button class="btn btn-primary btn-block" onclick="Ajustes._guardarRecordatorios()" style="margin-top:10px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                     </div>
 
@@ -4648,7 +4662,7 @@ let cardioCompletado = false;
                     <div class="card">
                         <div class="card-title"><i class="fa-solid fa-calendar"></i> Calendario de actualizaciones</div>
                         <div style="font-size:12px;color:var(--text-secondary);padding:4px 0;">
-                            <div>📅 Última medición completa registrada: <strong>${Ajustes.getUltimaMedicionCompletaTexto()}</strong></div>
+                            <div>📅 Última medición completa registrada: <strong>${ultimaCompleta}</strong></div>
                             <div style="margin-top:2px;">🔄 Peso: <strong>cada semana</strong></div>
                             <div style="color:var(--text-secondary);">📏 Mediciones: <strong>cada 2 semanas</strong></div>
                             <div style="color:var(--text-secondary);">📸 Fotos: <strong>cada 4 semanas</strong></div>
@@ -4669,6 +4683,15 @@ let cardioCompletado = false;
                         <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:6px;">NicoGym · Tu compañero de entrenamiento</div>
                     </div>
                 `;
+                } catch (err) {
+                    console.error('NicoGym: error renderizando Ajustes', err);
+                    c.innerHTML = `
+                        <div class="card">
+                            <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> Ajustes</div>
+                            <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">No se pudo cargar esta pantalla correctamente. Tus datos no se han borrado.</div>
+                            <button class="btn btn-primary btn-block" onclick="Ajustes.render()" style="margin-top:10px;">Reintentar</button>
+                        </div>`;
+                }
             },
 
             _guardar() {
