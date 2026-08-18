@@ -1207,7 +1207,7 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '3.0.3',
+            VERSION: '3.0.4',
             BACKUP_VERSION: 2,
             ALTURA: 165,
             PESO_OBJETIVO: 75,
@@ -2199,6 +2199,38 @@
         // ==========================================
         // STORAGE
         // ==========================================
+        // Fechas locales robustas: evita que Android WebView/UTC cambie el día.
+        function normalizarFechaLocal(valor) {
+            if (valor instanceof Date && !Number.isNaN(valor.getTime())) {
+                return `${valor.getFullYear()}-${String(valor.getMonth()+1).padStart(2,'0')}-${String(valor.getDate()).padStart(2,'0')}`;
+            }
+            if (typeof valor === 'number' && Number.isFinite(valor)) {
+                const d = new Date(valor);
+                return Number.isNaN(d.getTime()) ? '' : normalizarFechaLocal(d);
+            }
+            const raw = String(valor ?? '').trim();
+            if (!raw) return '';
+            let m = raw.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/);
+            if (m) {
+                const d = new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
+                return (d.getFullYear()===Number(m[1]) && d.getMonth()===Number(m[2])-1 && d.getDate()===Number(m[3]))
+                    ? `${m[1]}-${String(Number(m[2])).padStart(2,'0')}-${String(Number(m[3])).padStart(2,'0')}` : '';
+            }
+            m = raw.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);
+            if (m) {
+                const d = new Date(Number(m[3]), Number(m[2])-1, Number(m[1]));
+                return (d.getFullYear()===Number(m[3]) && d.getMonth()===Number(m[2])-1 && d.getDate()===Number(m[1]))
+                    ? `${m[3]}-${String(Number(m[2])).padStart(2,'0')}-${String(Number(m[1])).padStart(2,'0')}` : '';
+            }
+            const d = new Date(raw);
+            return Number.isNaN(d.getTime()) ? '' : normalizarFechaLocal(d);
+        }
+
+        function fechaLocalParaDate(fecha) {
+            const f = normalizarFechaLocal(fecha);
+            return f ? new Date(f + 'T00:00:00') : new Date(NaN);
+        }
+
         function parseReps(value) {
             const raw = String(value ?? '').trim();
             if (!raw || raw === '-') return { valid:false, series:[], total:0, reason:'Introduce las repeticiones de cada serie.' };
@@ -2270,12 +2302,12 @@
             const inicial = Number(pesoInicial);
             const actual = Number(pesoActual);
             const meta = Number(objetivo);
-            if (![inicial, actual, meta].every(Number.isFinite)) return 0;
-            if (inicial === meta) return actual === meta ? 100 : 0;
+            if (![inicial, actual, meta].every(Number.isFinite) || inicial <= 0 || actual <= 0 || meta <= 0) return 0;
+            if (Math.abs(inicial - meta) < 0.0001) return Math.abs(actual - meta) < 0.0001 ? 100 : 0;
             const progreso = inicial > meta
                 ? ((inicial - actual) / (inicial - meta)) * 100
                 : ((actual - inicial) / (meta - inicial)) * 100;
-            return Math.max(0, Math.min(100, Math.round(progreso)));
+            return Math.round(Math.max(-100, Math.min(100, progreso)));
         }
 
         function actualizarEvolutionDesdeMediciones() {
@@ -2465,39 +2497,51 @@
                     const fecha = new Date().toISOString().slice(0, 10);
                     const nombreSugerido = `NicoGym_backup_${fecha}.json`;
 
-                    // En navegadores compatibles, abrirá el selector del sistema
-                    // para que el usuario elija carpeta y nombre. Esta API requiere
-                    // un contexto seguro (HTTPS/localhost) y puede no existir si
-                    // NicoGym se abre directamente como archivo local.
-                    if (typeof window.showSaveFilePicker === 'function' && window.isSecureContext) {
-                        const handle = await window.showSaveFilePicker({
-                            suggestedName: nombreSugerido,
-                            types: [{
-                                description: 'Backup de NicoGym',
-                                accept: { 'application/json': ['.json'] }
-                            }]
-                        });
-                        const writable = await handle.createWritable();
-                        await writable.write(blob);
-                        await writable.close();
-                        UI.toast('✅ Backup guardado correctamente', 'success');
-                        return;
+                    // Android WebView: si la APK expone un puente nativo, se lo
+                    // entregamos para que Android pueda abrir su selector/guardar el archivo.
+                    // No dependemos de que ese puente exista: la web sigue funcionando sin él.
+                    const android = window.Android;
+                    if (android) {
+                        try {
+                            if (typeof android.exportBackup === 'function') {
+                                android.exportBackup(contenido, nombreSugerido);
+                                UI.toast('✅ Backup enviado a Android para guardarlo', 'success');
+                                return;
+                            }
+                            if (typeof android.saveBackup === 'function') {
+                                android.saveBackup(contenido, nombreSugerido);
+                                UI.toast('✅ Backup enviado a Android para guardarlo', 'success');
+                                return;
+                            }
+                        } catch (androidErr) {
+                            console.warn('NicoGym: puente Android no disponible o falló; se usa fallback web.', androidErr);
+                        }
                     }
 
-                    // Fallback universal: descarga normal. Algunos navegadores no
-                    // permiten que una página web elija la carpeta de destino.
+                    // Web Share API: suele integrarse mejor con Android WebView que
+                    // showSaveFilePicker y permite elegir una aplicación/ubicación.
+                    try {
+                        const file = new File([blob], nombreSugerido, { type: 'application/json' });
+                        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                            await navigator.share({ title: 'Backup de NicoGym', files: [file] });
+                            UI.toast('✅ Backup compartido/guardado', 'success');
+                            return;
+                        }
+                    } catch (shareErr) {
+                        if (shareErr?.name !== 'AbortError') console.warn('NicoGym: Web Share no disponible.', shareErr);
+                    }
+
+                    // Fallback final para WebView sin puente ni Web Share: descarga normal.
                     const a = document.createElement('a');
                     const url = URL.createObjectURL(blob);
                     a.href = url;
                     a.download = nombreSugerido;
+                    a.rel = 'noopener';
                     a.style.display = 'none';
                     document.body.appendChild(a);
                     a.click();
-                    setTimeout(() => {
-                        URL.revokeObjectURL(url);
-                        a.remove();
-                    }, 1000);
-                    UI.toast('✅ Backup generado. Si no aparece el selector, revisa la carpeta Descargas.', 'success');
+                    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 3000);
+                    UI.toast('✅ Backup generado. Revisa Descargas/Archivos del dispositivo.', 'success');
                 } catch (err) {
                     if (err?.name === 'AbortError') {
                         UI.toast('ℹ️ Exportación cancelada', 'info');
@@ -2590,24 +2634,28 @@
             // historialEntrenos pero no añadían la fecha a diasEntrenados.
             // No se inventan sesiones: solo se usan fechas que ya existen
             // en el historial y que contienen ejercicios.
-            const fechasHistorial = state.historialEntrenos
-                .filter(e => e && /^\d{4}-\d{2}-\d{2}$/.test(String(e.fecha || '')) && Array.isArray(e.ejercicios) && e.ejercicios.length)
-                .map(e => String(e.fecha));
-            state.diasEntrenados = [...new Set([...state.diasEntrenados, ...fechasHistorial])]
-                .filter(f => /^\d{4}-\d{2}-\d{2}$/.test(String(f)))
-                .sort();
-            if (!state.fechaInicioNoFumar || !/^\d{4}-\d{2}-\d{2}$/.test(String(state.fechaInicioNoFumar))) {
-                const candidato = state.evolution?.fechaInicioNoFumar || state.ajustes?.fechaInicioNoFumar;
-                state.fechaInicioNoFumar = /^\d{4}-\d{2}-\d{2}$/.test(String(candidato || '')) ? String(candidato) : CONFIG.FECHA_INICIO_NO_FUMAR;
-            }
+            // Normalizar fechas antiguas en lugar de descartarlas. Versiones
+            // anteriores podían guardar DD/MM/YYYY o valores Date serializados.
+            state.diasEntrenados = [...new Set((state.diasEntrenados || []).map(normalizarFechaLocal).filter(Boolean))].sort();
+            state.diasNoFumar = [...new Set((state.diasNoFumar || []).map(normalizarFechaLocal).filter(Boolean))].sort();
+            state.historialEntrenos = state.historialEntrenos.map(e => ({
+                ...e,
+                fecha: normalizarFechaLocal(e?.fecha),
+                ejercicios: Array.isArray(e?.ejercicios) ? e.ejercicios : []
+            })).filter(e => e.fecha && e.ejercicios.length);
+            const fechasHistorial = state.historialEntrenos.map(e => e.fecha);
+            state.diasEntrenados = [...new Set([...state.diasEntrenados, ...fechasHistorial])].sort();
+            const candidato = state.fechaInicioNoFumar || state.evolution?.fechaInicioNoFumar || state.ajustes?.fechaInicioNoFumar;
+            const fechaNoFumar = normalizarFechaLocal(candidato);
+            state.fechaInicioNoFumar = fechaNoFumar || CONFIG.FECHA_INICIO_NO_FUMAR;
 
             // Normalizar mediciones antiguas sin borrar datos existentes.
             // El Dashboard y los gráficos necesitan un orden cronológico fiable.
             state.mediciones = state.mediciones
-                .filter(m => m && typeof m === 'object' && /^\d{4}-\d{2}-\d{2}$/.test(String(m.fecha || '')))
+                .filter(m => m && typeof m === 'object')
                 .map(m => ({
                     ...m,
-                    fecha: String(m.fecha),
+                    fecha: normalizarFechaLocal(m.fecha),
                     peso: Number(m.peso),
                     cintura: Number.isFinite(Number(m.cintura)) ? Number(m.cintura) : 0,
                     grasaPorcentaje: Number.isFinite(Number(m.grasaPorcentaje)) ? Number(m.grasaPorcentaje) : 0,
@@ -2615,7 +2663,7 @@
                     masaMagra: Number.isFinite(Number(m.masaMagra)) ? Number(m.masaMagra) : 0,
                     grasaVisceral: Number.isFinite(Number(m.grasaVisceral)) ? Number(m.grasaVisceral) : 0
                 }))
-                .filter(m => Number.isFinite(m.peso) && m.peso > 0)
+                .filter(m => m.fecha && Number.isFinite(m.peso) && m.peso > 0)
                 .sort((a, b) => a.fecha.localeCompare(b.fecha));
 
             state.recordatorios = (state.recordatorios && typeof state.recordatorios === 'object') ? state.recordatorios : {};
@@ -3408,12 +3456,12 @@ let cardioCompletado = false;
 
                 let ultimoEntreno = 'Nunca';
                 const fechasEntreno = [...new Set([
-                    ...(STATE.diasEntrenados || []),
-                    ...(STATE.historialEntrenos || []).map(e => e?.fecha).filter(f => /^\d{4}-\d{2}-\d{2}$/.test(String(f || '')) && Array.isArray((STATE.historialEntrenos || []).find(e=>e.fecha===f)?.ejercicios) && (STATE.historialEntrenos || []).find(e=>e.fecha===f).ejercicios.length)
-                ])].sort();
+                    ...(STATE.diasEntrenados || []).map(normalizarFechaLocal),
+                    ...(STATE.historialEntrenos || []).map(e => Array.isArray(e?.ejercicios) && e.ejercicios.length ? normalizarFechaLocal(e.fecha) : '')
+                ].filter(Boolean))].sort();
                 if (fechasEntreno.length > 0) {
                     const ultimo = fechasEntreno[fechasEntreno.length - 1];
-                    const diff = Math.round((new Date() - new Date(ultimo + 'T00:00:00')) / 86400000);
+                    const diff = Math.round((new Date(UI.getHoy() + 'T00:00:00') - new Date(ultimo + 'T00:00:00')) / 86400000);
                     if (diff === 0) ultimoEntreno = 'Hoy';
                     else if (diff === 1) ultimoEntreno = 'Ayer';
                     else if (diff < 7) ultimoEntreno = `Hace ${diff} días`;
@@ -3423,7 +3471,7 @@ let cardioCompletado = false;
                 let ultimaMedicion = 'Nunca';
                 if (STATE.mediciones.length > 0) {
                     const ultima = STATE.mediciones[STATE.mediciones.length - 1];
-                    const diff = Math.round((new Date() - new Date(ultima.fecha)) / 86400000);
+                    const diff = Math.round((new Date(UI.getHoy() + 'T00:00:00') - new Date(normalizarFechaLocal(ultima.fecha) + 'T00:00:00')) / 86400000);
                     if (diff === 0) ultimaMedicion = 'Hoy';
                     else if (diff === 1) ultimaMedicion = 'Ayer';
                     else if (diff < 7) ultimaMedicion = `Hace ${diff} días`;
@@ -3522,7 +3570,7 @@ let cardioCompletado = false;
                                 <div class="label">Peso (kg)</div>
                             </div>
                             <div class="dash-stat">
-                                <div class="num green">${pctObjetivo}%</div>
+                                <div class="num ${pctObjetivo < 0 ? 'danger' : pctObjetivo >= 100 ? 'green' : 'primary'}">${pctObjetivo}%</div>
                                 <div class="label">Objetivo</div>
                             </div>
                         </div>
@@ -3907,6 +3955,17 @@ let cardioCompletado = false;
                 this._renderHistorial();
             },
 
+            getUltimaMedicionCompletaTexto() {
+                const medidas = (STATE.mediciones || []).filter(m => m?.fecha).sort((a,b) => String(b.fecha).localeCompare(String(a.fecha)));
+                if (!medidas.length) return 'Ninguna registrada';
+                const ultima = medidas[0].fecha;
+                const completas = (STATE.mediciones || []).filter(m => {
+                    const keys = ['peso','cintura','grasaPorcentaje','masaMuscular','masaMagra','grasaVisceral'];
+                    return m?.fecha && keys.slice(0,2).every(k => Number.isFinite(Number(m[k])) && Number(m[k]) > 0);
+                }).sort((a,b)=>String(b.fecha).localeCompare(String(a.fecha)));
+                return UI.formatearFecha((completas[0] || {fecha:ultima}).fecha);
+            },
+
             _guardar() {
                 const f = document.getElementById('medFecha').value;
                 if (!f) { UI.toast('Selecciona fecha', 'error'); return; }
@@ -4109,7 +4168,7 @@ let cardioCompletado = false;
                             </div>
                         </div>
                         <div style="margin-top:10px;padding:6px 10px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);text-align:center;font-size:12px;">
-                            🎯 Objetivo: <strong>${CONFIG.PESO_OBJETIVO} kg</strong> · ${STATE.mediciones.length > 0 ? calcularProgresoObjetivo(obtenerPesoInicialHistorico(), Number(STATE.mediciones[STATE.mediciones.length-1].peso), CONFIG.PESO_OBJETIVO) : 0}% completado
+                            🎯 Objetivo: <strong>${CONFIG.PESO_OBJETIVO} kg</strong> · ${STATE.mediciones.length > 0 ? calcularProgresoObjetivo(obtenerPesoInicialHistorico(), Number(STATE.mediciones[STATE.mediciones.length-1].peso), CONFIG.PESO_OBJETIVO) : 0}% de progreso (negativo = te has alejado del objetivo)
                         </div>
                     </div>
 
@@ -4589,7 +4648,7 @@ let cardioCompletado = false;
                     <div class="card">
                         <div class="card-title"><i class="fa-solid fa-calendar"></i> Calendario de actualizaciones</div>
                         <div style="font-size:12px;color:var(--text-secondary);padding:4px 0;">
-                            <div>📅 Primer domingo completo: <strong>16 de agosto de 2026</strong></div>
+                            <div>📅 Última medición completa registrada: <strong>${Ajustes.getUltimaMedicionCompletaTexto()}</strong></div>
                             <div style="margin-top:2px;">🔄 Peso: <strong>cada semana</strong></div>
                             <div style="color:var(--text-secondary);">📏 Mediciones: <strong>cada 2 semanas</strong></div>
                             <div style="color:var(--text-secondary);">📸 Fotos: <strong>cada 4 semanas</strong></div>
@@ -4897,16 +4956,17 @@ let cardioCompletado = false;
             if(!NicoGymFinal.validarEstado(state)) throw new Error('Estado de backup no válido');
             const clean=_migrateStateOriginal(state);
             clean.nombre=String(clean.nombre||'Nico').slice(0,80);
-            if(Array.isArray(clean.diasEntrenados)) clean.diasEntrenados=clean.diasEntrenados.filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(String(x))).slice(-2000);
-            if(Array.isArray(clean.diasNoFumar)) clean.diasNoFumar=clean.diasNoFumar.filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(String(x))).slice(-5000);
+            if(Array.isArray(clean.diasEntrenados)) clean.diasEntrenados=[...new Set(clean.diasEntrenados.map(normalizarFechaLocal).filter(Boolean))].slice(-2000);
+            if(Array.isArray(clean.diasNoFumar)) clean.diasNoFumar=[...new Set(clean.diasNoFumar.map(normalizarFechaLocal).filter(Boolean))].slice(-5000);
             if(Array.isArray(clean.historialEntrenos)) {
                 clean.historialEntrenos=clean.historialEntrenos.slice(-2000).map(ent=>({
                     ...ent,
+                    fecha: normalizarFechaLocal(ent.fecha),
                     ejercicios:Array.isArray(ent.ejercicios) ? ent.ejercicios.map(e=>({
                         ...e,
                         exerciseId:e.exerciseId || normalizarExerciseId(e.nombre)
                     })) : []
-                }));
+                })).filter(ent => ent.fecha);
             }
             if(Array.isArray(clean.records)) {
                 clean.records=clean.records.slice(-500).map(r=>({
