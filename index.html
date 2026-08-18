@@ -1207,7 +1207,7 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '3.0.2',
+            VERSION: '3.0.3',
             BACKUP_VERSION: 2,
             ALTURA: 165,
             PESO_OBJETIVO: 75,
@@ -2230,6 +2230,42 @@
             return { reps, series, cargaAcumulada: carga * series * factor, volumen: carga * reps * factor, factor };
         }
 
+        function obtenerPesoInicialHistorico() {
+            const candidatos = [];
+            const añadir = (v, prioridad=0) => {
+                const n = Number(v);
+                if (Number.isFinite(n) && n > 0) candidatos.push({n, prioridad});
+            };
+
+            // 1) Valor persistido explícitamente en evolution.
+            añadir(STATE.evolution?.initialWeight, 100);
+
+            // 2) Campos históricos usados por versiones anteriores.
+            añadir(STATE.initialWeight, 90);
+            añadir(STATE.ultimasMediciones?.pesoInicial, 80);
+            añadir(STATE.ultimoRegistroPeso?.pesoInicial, 70);
+
+            // 3) Copias de seguridad disponibles en localStorage.
+            for (const clave of [CONFIG.STORAGE_KEY + '.safety', CONFIG.STORAGE_KEY + '.corrupt-backup']) {
+                try {
+                    const raw = localStorage.getItem(clave);
+                    if (!raw) continue;
+                    const b = JSON.parse(raw);
+                    añadir(b?.evolution?.initialWeight, clave.endsWith('.safety') ? 110 : 115);
+                    añadir(b?.initialWeight, 105);
+                    añadir(b?.ultimasMediciones?.pesoInicial, 85);
+                    añadir(b?.pesoInicial, 80);
+                } catch (_) {}
+            }
+
+            // Si existe un valor explícito, conservarlo. Si no, la primera
+            // medición cronológica es el único dato demostrable disponible.
+            candidatos.sort((a,b)=>b.prioridad-a.prioridad);
+            if (candidatos.length) return candidatos[0].n;
+            const medidas=[...(STATE.mediciones||[])].filter(m=>Number.isFinite(Number(m?.peso))&&Number(m.peso)>0).sort((a,b)=>String(a.fecha||'').localeCompare(String(b.fecha||'')));
+            return medidas.length ? Number(medidas[0].peso) : 0;
+        }
+
         function calcularProgresoObjetivo(pesoInicial, pesoActual, objetivo) {
             const inicial = Number(pesoInicial);
             const actual = Number(pesoActual);
@@ -2259,8 +2295,9 @@
             // por la primera medición que quede visible tras una migración.
             const pesoInicialGuardado = Number(STATE.evolution.initialWeight);
             const cinturaInicialGuardada = Number(STATE.evolution.initialWaist);
-            if (!Number.isFinite(pesoInicialGuardado) || pesoInicialGuardado <= 0) {
-                STATE.evolution.initialWeight = Number(primera.peso) || 0;
+            const pesoHistorico = obtenerPesoInicialHistorico();
+            if (!Number.isFinite(pesoInicialGuardado) || pesoInicialGuardado <= 0 || (pesoHistorico > 0 && Math.abs(pesoInicialGuardado - Number(primera.peso)) < 0.001 && Math.abs(pesoHistorico - pesoInicialGuardado) > 0.001)) {
+                STATE.evolution.initialWeight = pesoHistorico || Number(primera.peso) || 0;
             }
             if (!Number.isFinite(cinturaInicialGuardada) || cinturaInicialGuardada <= 0) {
                 STATE.evolution.initialWaist = Number(primera.cintura) || 0;
@@ -2356,14 +2393,16 @@
                 return this;
             },
             _calcularDiasSinFumar() {
-                let c = 0;
-                const f = new Date(STATE.fechaInicioNoFumar || CONFIG.FECHA_INICIO_NO_FUMAR);
-                const h = new Date();
-                while (f <= h) {
-                    if (!STATE.diasNoFumar.includes(UI.formatFecha(f))) c++;
-                    f.setDate(f.getDate() + 1);
+                const inicioStr = STATE.fechaInicioNoFumar || CONFIG.FECHA_INICIO_NO_FUMAR;
+                const inicio = new Date(inicioStr + 'T00:00:00');
+                const hoy = new Date(); hoy.setHours(0,0,0,0);
+                if (Number.isNaN(inicio.getTime()) || inicio > hoy) {
+                    STATE.evolution.daysWithoutSmoking = 0;
+                    return;
                 }
-                STATE.evolution.daysWithoutSmoking = c;
+                const diasTranscurridos = Math.floor((Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()) - Date.UTC(inicio.getFullYear(), inicio.getMonth(), inicio.getDate())) / 86400000) + 1;
+                const recaidas = new Set((STATE.diasNoFumar || []).filter(f => /^\d{4}-\d{2}-\d{2}$/.test(String(f)) && f >= inicioStr && f <= UI.getHoy()));
+                STATE.evolution.daysWithoutSmoking = Math.max(0, diasTranscurridos - recaidas.size);
             },
             _save() {
                 try {
@@ -2402,26 +2441,70 @@
             async exportar() {
                 try {
                     // Las fotos de progreso viven en IndexedDB, no en STATE. Se
-                    // añaden al JSON solo para el backup y no al localStorage.
+                    // incluyen en el backup junto con una copia de las claves de
+                    // localStorage para no perder información persistida durante
+                    // una migración. No se modifica ningún dato del navegador.
                     const fotosProgreso = await Fotos.exportarBackup();
+                    const localStorageSnapshot = {};
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key !== null) localStorageSnapshot[key] = localStorage.getItem(key);
+                    }
+
                     const backup = {
                         app: 'NicoGym',
                         backupVersion: CONFIG.BACKUP_VERSION,
                         createdAt: new Date().toISOString(),
-                        state: { ...STATE },
-                        fotosProgreso: { version: 1, diasFotos: fotosProgreso }
+                        state: JSON.parse(JSON.stringify(STATE)),
+                        fotosProgreso: { version: 1, diasFotos: fotosProgreso },
+                        localStorage: { version: 1, entries: localStorageSnapshot }
                     };
-                    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+
+                    const contenido = JSON.stringify(backup, null, 2);
+                    const blob = new Blob([contenido], { type: 'application/json;charset=utf-8' });
+                    const fecha = new Date().toISOString().slice(0, 10);
+                    const nombreSugerido = `NicoGym_backup_${fecha}.json`;
+
+                    // En navegadores compatibles, abrirá el selector del sistema
+                    // para que el usuario elija carpeta y nombre. Esta API requiere
+                    // un contexto seguro (HTTPS/localhost) y puede no existir si
+                    // NicoGym se abre directamente como archivo local.
+                    if (typeof window.showSaveFilePicker === 'function' && window.isSecureContext) {
+                        const handle = await window.showSaveFilePicker({
+                            suggestedName: nombreSugerido,
+                            types: [{
+                                description: 'Backup de NicoGym',
+                                accept: { 'application/json': ['.json'] }
+                            }]
+                        });
+                        const writable = await handle.createWritable();
+                        await writable.write(blob);
+                        await writable.close();
+                        UI.toast('✅ Backup guardado correctamente', 'success');
+                        return;
+                    }
+
+                    // Fallback universal: descarga normal. Algunos navegadores no
+                    // permiten que una página web elija la carpeta de destino.
                     const a = document.createElement('a');
                     const url = URL.createObjectURL(blob);
                     a.href = url;
-                    a.download = 'nicogym_backup.json';
+                    a.download = nombreSugerido;
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
                     a.click();
-                    setTimeout(() => URL.revokeObjectURL(url), 0);
-                    UI.toast('✅ Datos exportados', 'success');
+                    setTimeout(() => {
+                        URL.revokeObjectURL(url);
+                        a.remove();
+                    }, 1000);
+                    UI.toast('✅ Backup generado. Si no aparece el selector, revisa la carpeta Descargas.', 'success');
                 } catch (err) {
-                    console.error('Error al exportar las fotos:', err);
-                    UI.toast('❌ Error al exportar las fotos', 'error');
+                    if (err?.name === 'AbortError') {
+                        UI.toast('ℹ️ Exportación cancelada', 'info');
+                        return;
+                    }
+                    console.error('Error al exportar el backup:', err);
+                    UI.toast('❌ No se pudo guardar el backup: ' + (err?.message || 'error desconocido'), 'error');
                 }
             },
             // IMPORTAR - función conectada correctamente
@@ -2501,6 +2584,18 @@
             if (!Array.isArray(state.historialEntrenos)) state.historialEntrenos = [];
             if (!Array.isArray(state.records)) state.records = [];
             if (!Array.isArray(state.mediciones)) state.mediciones = [];
+
+            // Reconstruir índices derivados a partir del historial real.
+            // Algunas versiones antiguas guardaban el entrenamiento en
+            // historialEntrenos pero no añadían la fecha a diasEntrenados.
+            // No se inventan sesiones: solo se usan fechas que ya existen
+            // en el historial y que contienen ejercicios.
+            const fechasHistorial = state.historialEntrenos
+                .filter(e => e && /^\d{4}-\d{2}-\d{2}$/.test(String(e.fecha || '')) && Array.isArray(e.ejercicios) && e.ejercicios.length)
+                .map(e => String(e.fecha));
+            state.diasEntrenados = [...new Set([...state.diasEntrenados, ...fechasHistorial])]
+                .filter(f => /^\d{4}-\d{2}-\d{2}$/.test(String(f)))
+                .sort();
             if (!state.fechaInicioNoFumar || !/^\d{4}-\d{2}-\d{2}$/.test(String(state.fechaInicioNoFumar))) {
                 const candidato = state.evolution?.fechaInicioNoFumar || state.ajustes?.fechaInicioNoFumar;
                 state.fechaInicioNoFumar = /^\d{4}-\d{2}-\d{2}$/.test(String(candidato || '')) ? String(candidato) : CONFIG.FECHA_INICIO_NO_FUMAR;
@@ -3291,9 +3386,7 @@ let cardioCompletado = false;
                 const obj = CONFIG.PESO_OBJETIVO;
                 let pctObjetivo = 0;
                 if (STATE.mediciones.length > 0) {
-                    const primero = Number(STATE.evolution?.initialWeight) > 0
-                        ? Number(STATE.evolution.initialWeight)
-                        : Number(STATE.mediciones[0].peso);
+                    const primero = obtenerPesoInicialHistorico();
                     const ultimo = Number(STATE.mediciones[STATE.mediciones.length - 1].peso);
                     pctObjetivo = calcularProgresoObjetivo(primero, ultimo, obj);
                 }
@@ -3314,9 +3407,13 @@ let cardioCompletado = false;
                 }
 
                 let ultimoEntreno = 'Nunca';
-                if (STATE.diasEntrenados.length > 0) {
-                    const ultimo = [...STATE.diasEntrenados].sort().reverse()[0];
-                    const diff = Math.round((new Date() - new Date(ultimo)) / 86400000);
+                const fechasEntreno = [...new Set([
+                    ...(STATE.diasEntrenados || []),
+                    ...(STATE.historialEntrenos || []).map(e => e?.fecha).filter(f => /^\d{4}-\d{2}-\d{2}$/.test(String(f || '')) && Array.isArray((STATE.historialEntrenos || []).find(e=>e.fecha===f)?.ejercicios) && (STATE.historialEntrenos || []).find(e=>e.fecha===f).ejercicios.length)
+                ])].sort();
+                if (fechasEntreno.length > 0) {
+                    const ultimo = fechasEntreno[fechasEntreno.length - 1];
+                    const diff = Math.round((new Date() - new Date(ultimo + 'T00:00:00')) / 86400000);
                     if (diff === 0) ultimoEntreno = 'Hoy';
                     else if (diff === 1) ultimoEntreno = 'Ayer';
                     else if (diff < 7) ultimoEntreno = `Hace ${diff} días`;
@@ -3716,6 +3813,7 @@ let cardioCompletado = false;
 
                 const ultimo = STATE.mediciones.length > 0 ? STATE.mediciones[STATE.mediciones.length - 1] : null;
                 const primero = STATE.mediciones.length > 0 ? STATE.mediciones[0] : null;
+                const pesoInicialHistorico = obtenerPesoInicialHistorico();
 
                 const tipo = APP.obtenerTipoActualizacion();
                 const hoy = new Date();
@@ -3793,7 +3891,7 @@ let cardioCompletado = false;
                         </div>
                         ${primero && ultimo ? `
                             <div style="display:flex;justify-content:space-between;padding:6px 10px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);margin-top:6px;font-size:12px;flex-wrap:wrap;gap:4px;">
-                                <span>📉 Desde inicio: <strong>${(primero.peso - ultimo.peso).toFixed(1)} kg</strong></span>
+                                <span>📉 Desde inicio: <strong>${(pesoInicialHistorico - ultimo.peso).toFixed(1)} kg</strong></span>
                                 <span>📏 Cintura: <strong>${ultimo.cintura} cm</strong></span>
                                 <span>📊 Grasa visceral: <strong>${ultimo.grasaVisceral || '--'}</strong></span>
                             </div>
@@ -3945,8 +4043,10 @@ let cardioCompletado = false;
                 if (!c) return;
 
                 const ev = STATE.evolution;
+                const pesoInicialHistorico = obtenerPesoInicialHistorico();
+                const pesoActual = Number(ev.currentWeight) || Number(STATE.mediciones.at(-1)?.peso) || 0;
                 const total = STATE.diasEntrenados.length || 0;
-                const wc = (ev.currentWeight - ev.initialWeight).toFixed(1);
+                const wc = (pesoActual - pesoInicialHistorico).toFixed(1);
                 const wc2 = (ev.currentWaist - ev.initialWaist).toFixed(1);
                 const altura = STATE.altura || CONFIG.ALTURA;
                 const imc = ev.currentWeight / ((altura / 100) ** 2);
@@ -4009,7 +4109,7 @@ let cardioCompletado = false;
                             </div>
                         </div>
                         <div style="margin-top:10px;padding:6px 10px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);text-align:center;font-size:12px;">
-                            🎯 Objetivo: <strong>${CONFIG.PESO_OBJETIVO} kg</strong> · ${STATE.mediciones.length > 0 ? calcularProgresoObjetivo(Number(STATE.evolution?.initialWeight) > 0 ? Number(STATE.evolution.initialWeight) : Number(STATE.mediciones[0].peso), Number(STATE.mediciones[STATE.mediciones.length-1].peso), CONFIG.PESO_OBJETIVO) : 0}% completado
+                            🎯 Objetivo: <strong>${CONFIG.PESO_OBJETIVO} kg</strong> · ${STATE.mediciones.length > 0 ? calcularProgresoObjetivo(obtenerPesoInicialHistorico(), Number(STATE.mediciones[STATE.mediciones.length-1].peso), CONFIG.PESO_OBJETIVO) : 0}% completado
                         </div>
                     </div>
 
