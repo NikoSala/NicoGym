@@ -1207,7 +1207,7 @@
         // CONFIGURACIÓN
         // ==========================================
         const CONFIG = {
-            VERSION: '3.0.0',
+            VERSION: '3.0.2',
             BACKUP_VERSION: 2,
             ALTURA: 165,
             PESO_OBJETIVO: 75,
@@ -2213,6 +2213,23 @@
             return String(value ?? '').replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch]));
         }
 
+        function calcularCargaEjercicio(ej) {
+            // El modelo actual guarda un único campo 'peso' y no guarda si ese
+            // valor representa una mancuerna, las dos mancuernas o una barra.
+            // Por seguridad no inventamos un factor 2: la carga calculada usa
+            // exactamente el peso que el usuario introdujo.
+            return Number(ej?.factorCarga) > 0 ? Number(ej.factorCarga) : 1;
+        }
+
+        function calcularTotalesEjercicio(ej) {
+            const pr = parseReps(ej?.reps);
+            const reps = pr.valid ? pr.total : (Number(ej?.repsTotales) || 0);
+            const series = pr.valid ? pr.series.length : (Number(ej?.series) || 0);
+            const carga = Number(ej?.peso) || 0;
+            const factor = calcularCargaEjercicio(ej);
+            return { reps, series, cargaAcumulada: carga * series * factor, volumen: carga * reps * factor, factor };
+        }
+
         function calcularProgresoObjetivo(pesoInicial, pesoActual, objetivo) {
             const inicial = Number(pesoInicial);
             const actual = Number(pesoActual);
@@ -2226,19 +2243,29 @@
         }
 
         function actualizarEvolutionDesdeMediciones() {
+            if (!STATE.evolution || typeof STATE.evolution !== 'object') {
+                STATE.evolution = { initialWeight: 0, currentWeight: 0, initialWaist: 0, currentWaist: 0, totalWorkouts: 0, daysWithoutSmoking: 0 };
+            }
             if (!Array.isArray(STATE.mediciones) || STATE.mediciones.length === 0) {
-                STATE.evolution.initialWeight = 0;
                 STATE.evolution.currentWeight = 0;
-                STATE.evolution.initialWaist = 0;
                 STATE.evolution.currentWaist = 0;
+                STATE.evolution.totalWorkouts = Array.isArray(STATE.diasEntrenados) ? STATE.diasEntrenados.length : 0;
                 return;
             }
             const ordenadas = [...STATE.mediciones].sort((a,b)=>String(a.fecha||'').localeCompare(String(b.fecha||'')));
             const primera = ordenadas[0];
             const ultima = ordenadas[ordenadas.length - 1];
-            STATE.evolution.initialWeight = Number(primera.peso) || 0;
+            // El peso inicial histórico es un dato persistente: no lo sustituimos
+            // por la primera medición que quede visible tras una migración.
+            const pesoInicialGuardado = Number(STATE.evolution.initialWeight);
+            const cinturaInicialGuardada = Number(STATE.evolution.initialWaist);
+            if (!Number.isFinite(pesoInicialGuardado) || pesoInicialGuardado <= 0) {
+                STATE.evolution.initialWeight = Number(primera.peso) || 0;
+            }
+            if (!Number.isFinite(cinturaInicialGuardada) || cinturaInicialGuardada <= 0) {
+                STATE.evolution.initialWaist = Number(primera.cintura) || 0;
+            }
             STATE.evolution.currentWeight = Number(ultima.peso) || 0;
-            STATE.evolution.initialWaist = Number(primera.cintura) || 0;
             STATE.evolution.currentWaist = Number(ultima.cintura) || 0;
             STATE.evolution.totalWorkouts = Array.isArray(STATE.diasEntrenados) ? STATE.diasEntrenados.length : 0;
         }
@@ -2267,18 +2294,70 @@
                     if (!STATE.ultimasMediciones) STATE.ultimasMediciones = null;
                     if (!STATE.ultimasFotosGuardadas) STATE.ultimasFotosGuardadas = null;
                 }
+                // Recuperar el peso inicial histórico si una versión anterior lo
+                // sustituyó por la primera medición visible. Se consulta la copia
+                // de seguridad local sin tocar ni borrar el estado actual.
+                try {
+                    const safetyRaw = localStorage.getItem(CONFIG.STORAGE_KEY + '.safety');
+                    if (safetyRaw) {
+                        const safety = JSON.parse(safetyRaw);
+                        // Algunas versiones antiguas filtraban mal las fechas al migrar
+                        // y podían dejar estas listas vacías. Si la copia de seguridad
+                        // conserva los datos, los recuperamos sin inventar registros.
+                        for (const campo of ['diasEntrenados','diasNoFumar','historialEntrenos','records']) {
+                            if (Array.isArray(safety?.[campo]) && safety[campo].length &&
+                                (!Array.isArray(STATE[campo]) || STATE[campo].length === 0)) {
+                                STATE[campo] = safety[campo];
+                            }
+                        }
+                        const inicialActual = Number(STATE.evolution?.initialWeight);
+                        const primeraVisible = Number(STATE.mediciones?.[0]?.peso);
+                        const inicialSafety = Number(safety?.evolution?.initialWeight);
+                        if (Number.isFinite(inicialSafety) && inicialSafety > 0 &&
+                            (!Number.isFinite(inicialActual) || inicialActual <= 0 ||
+                             (Number.isFinite(primeraVisible) && Math.abs(inicialActual - primeraVisible) < 0.001 && Math.abs(inicialSafety - primeraVisible) >= 0.001))) {
+                            STATE.evolution.initialWeight = inicialSafety;
+                        }
+                        const cinturaSafety = Number(safety?.evolution?.initialWaist);
+                        const cinturaActual = Number(STATE.evolution?.initialWaist);
+                        const primeraCintura = Number(STATE.mediciones?.[0]?.cintura);
+                        if (Number.isFinite(cinturaSafety) && cinturaSafety > 0 &&
+                            (!Number.isFinite(cinturaActual) || cinturaActual <= 0 ||
+                             (Number.isFinite(primeraCintura) && Math.abs(cinturaActual - primeraCintura) < 0.001 && Math.abs(cinturaSafety - primeraCintura) >= 0.001))) {
+                            STATE.evolution.initialWaist = cinturaSafety;
+                        }
+                    }
+                } catch (err) { console.warn('NicoGym: no se pudo leer la copia de seguridad histórica', err); }
                 // Si no hay configuración guardada, establecer temporizador en false
                 if (STATE.config && STATE.config.temporizadorDescanso === undefined) {
                     STATE.config.temporizadorDescanso = false;
                 }
                 actualizarEvolutionDesdeMediciones();
                 this._calcularDiasSinFumar();
-                this._save();
+                let fotosPendientes = STATE.fotosProgreso?.diasFotos;
+                if (!Array.isArray(fotosPendientes) || !fotosPendientes.length) {
+                    const posiblesClaves = ['nicoGym.fotosProgreso', 'nicoGymFotos', 'fotosProgreso'];
+                    for (const clave of posiblesClaves) {
+                        try {
+                            const rawFotos = localStorage.getItem(clave);
+                            if (!rawFotos) continue;
+                            const parsedFotos = JSON.parse(rawFotos);
+                            const lista = Array.isArray(parsedFotos) ? parsedFotos : parsedFotos?.diasFotos;
+                            if (Array.isArray(lista) && lista.length) { fotosPendientes = lista; break; }
+                        } catch (_) {}
+                    }
+                }
+                if (Array.isArray(fotosPendientes) && fotosPendientes.length) {
+                    setTimeout(async () => {
+                        try { await Fotos.restaurarBackup(fotosPendientes); delete STATE.fotosProgreso; this._save(); }
+                        catch (err) { console.warn('NicoGym: no se pudieron migrar fotos antiguas', err); }
+                    }, 0);
+                }
                 return this;
             },
             _calcularDiasSinFumar() {
                 let c = 0;
-                const f = new Date(CONFIG.FECHA_INICIO_NO_FUMAR);
+                const f = new Date(STATE.fechaInicioNoFumar || CONFIG.FECHA_INICIO_NO_FUMAR);
                 const h = new Date();
                 while (f <= h) {
                     if (!STATE.diasNoFumar.includes(UI.formatFecha(f))) c++;
@@ -2422,6 +2501,10 @@
             if (!Array.isArray(state.historialEntrenos)) state.historialEntrenos = [];
             if (!Array.isArray(state.records)) state.records = [];
             if (!Array.isArray(state.mediciones)) state.mediciones = [];
+            if (!state.fechaInicioNoFumar || !/^\d{4}-\d{2}-\d{2}$/.test(String(state.fechaInicioNoFumar))) {
+                const candidato = state.evolution?.fechaInicioNoFumar || state.ajustes?.fechaInicioNoFumar;
+                state.fechaInicioNoFumar = /^\d{4}-\d{2}-\d{2}$/.test(String(candidato || '')) ? String(candidato) : CONFIG.FECHA_INICIO_NO_FUMAR;
+            }
 
             // Normalizar mediciones antiguas sin borrar datos existentes.
             // El Dashboard y los gráficos necesitan un orden cronológico fiable.
@@ -2454,6 +2537,7 @@
             mediciones: [],
             historialEntrenos: [],
             diasNoFumar: [],
+            fechaInicioNoFumar: CONFIG.FECHA_INICIO_NO_FUMAR,
             diasEntrenados: [],
             checks: {},
             recordatorios: { freqMediciones: 2, freqFotos: 4, ultimaMedicion: CONFIG.FECHA_REFERENCIA_MEDICIONES,
@@ -2891,8 +2975,9 @@ let cardioCompletado = false;
                         ${record ? `<div class="me-ej-record">🏆 Récord: <strong>${record.weight} kg × ${record.reps}</strong></div>` : ''}
                         <div class="me-ej-inputs">
                             <div class="me-input-group">
-                                <label>Peso (kg)</label>
+                                <label>Peso usado (kg)</label>
                                 <input type="number" id="mePeso" step="0.5" value="${ultimo ? ultimo.peso : ''}" placeholder="0">
+                                <div style="font-size:9px;color:var(--text-secondary);margin-top:3px;">Usa el peso que realmente introduces en cada serie. No se duplica automáticamente para mancuernas.</div>
                             </div>
                             <div class="me-input-group">
                                 <label>Repeticiones (ej: 10,10,9,8)</label>
@@ -2929,10 +3014,9 @@ let cardioCompletado = false;
                 const repsNum = repsData.total;
                 const seriesNum = repsData.series.length;
 
-                // Volumen = peso utilizado × repeticiones totales.
-                // 'peso utilizado' representa el peso introducido para cada serie.
-                totalPesoLevantadoEntreno += peso * seriesNum;
-                totalVolumenEntreno += peso * repsNum;
+                const totalesEjercicio = calcularTotalesEjercicio({ nombre: ej.nombre, peso, reps, series: seriesNum, repsTotales: repsNum });
+                totalPesoLevantadoEntreno += totalesEjercicio.cargaAcumulada;
+                totalVolumenEntreno += totalesEjercicio.volumen;
                 totalSeriesEntreno += seriesNum;
                 totalRepsEntreno += repsNum;
 
@@ -3120,11 +3204,11 @@ let cardioCompletado = false;
                             </div>
                             <div class="me-res-item">
                                 <div class="me-res-valor">${totalPesoLevantadoEntreno.toFixed(1)}</div>
-                                <div class="me-res-label">Peso total</div>
+                                <div class="me-res-label">Carga acumulada (kg)</div>
                             </div>
                             <div class="me-res-item">
                                 <div class="me-res-valor">${totalVolumenEntreno}</div>
-                                <div class="me-res-label">Volumen (kg)</div>
+                                <div class="me-res-label">Volumen (kg·rep)</div>
                             </div>
                             <div class="me-res-item">
                                 <div class="me-res-valor">${recordsConseguidos.length}</div>
@@ -3207,8 +3291,10 @@ let cardioCompletado = false;
                 const obj = CONFIG.PESO_OBJETIVO;
                 let pctObjetivo = 0;
                 if (STATE.mediciones.length > 0) {
-                    const primero = STATE.mediciones[0].peso;
-                    const ultimo = STATE.mediciones[STATE.mediciones.length - 1].peso;
+                    const primero = Number(STATE.evolution?.initialWeight) > 0
+                        ? Number(STATE.evolution.initialWeight)
+                        : Number(STATE.mediciones[0].peso);
+                    const ultimo = Number(STATE.mediciones[STATE.mediciones.length - 1].peso);
                     pctObjetivo = calcularProgresoObjetivo(primero, ultimo, obj);
                 }
 
@@ -3879,10 +3965,9 @@ let cardioCompletado = false;
                 STATE.historialEntrenos.forEach(e => {
                     const fecha = new Date(e.fecha);
                     e.ejercicios.forEach(ej => {
-                        const repsData = parseReps(ej.reps);
-                        const repsNum = repsData.valid ? repsData.total : (Number(ej.repsTotales) || 0);
-                        const vol = (Number(ej.peso) || 0) * repsNum;
-                        pesoTotalLevantado += vol;
+                        const tot = calcularTotalesEjercicio(ej);
+                        const vol = tot.volumen;
+                        pesoTotalLevantado += tot.cargaAcumulada;
                         if (fecha >= inicioSemana) volumenSemana += vol;
                         if (fecha >= inicioMes) volumenMes += vol;
                         conteoEjercicios[ej.nombre] = (conteoEjercicios[ej.nombre] || 0) + 1;
@@ -3916,6 +4001,7 @@ let cardioCompletado = false;
                             <div class="stats-item">
                                 <div class="num green">${ev.daysWithoutSmoking || 0}</div>
                                 <div class="label">Sin fumar</div>
+                                <div style="font-size:9px;color:var(--text-secondary);margin-top:2px;">Desde ${UI.formatearFecha(STATE.fechaInicioNoFumar || CONFIG.FECHA_INICIO_NO_FUMAR)}</div>
                             </div>
                             <div class="stats-item">
                                 <div class="num info">${STATE.records.length}</div>
@@ -3923,7 +4009,7 @@ let cardioCompletado = false;
                             </div>
                         </div>
                         <div style="margin-top:10px;padding:6px 10px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);text-align:center;font-size:12px;">
-                            🎯 Objetivo: <strong>${CONFIG.PESO_OBJETIVO} kg</strong> · ${STATE.mediciones.length > 0 ? calcularProgresoObjetivo(STATE.mediciones[0].peso, STATE.mediciones[STATE.mediciones.length-1].peso, CONFIG.PESO_OBJETIVO) : 0}% completado
+                            🎯 Objetivo: <strong>${CONFIG.PESO_OBJETIVO} kg</strong> · ${STATE.mediciones.length > 0 ? calcularProgresoObjetivo(Number(STATE.evolution?.initialWeight) > 0 ? Number(STATE.evolution.initialWeight) : Number(STATE.mediciones[0].peso), Number(STATE.mediciones[STATE.mediciones.length-1].peso), CONFIG.PESO_OBJETIVO) : 0}% completado
                         </div>
                     </div>
 
@@ -3932,15 +4018,15 @@ let cardioCompletado = false;
                         <div class="stats-grid">
                             <div class="stats-item">
                                 <div class="num primary">${Math.round(volumenSemana)}</div>
-                                <div class="label">Semanal (kg)</div>
+                                <div class="label">Volumen semanal (kg·rep)</div>
                             </div>
                             <div class="stats-item">
                                 <div class="num primary">${Math.round(volumenMes)}</div>
-                                <div class="label">Mensual (kg)</div>
+                                <div class="label">Volumen mensual (kg·rep)</div>
                             </div>
                             <div class="stats-item">
                                 <div class="num primary">${Math.round(pesoTotalLevantado)}</div>
-                                <div class="label">Total (kg)</div>
+                                <div class="label">Carga acumulada (kg)</div>
                             </div>
                         </div>
                     </div>
@@ -4037,6 +4123,7 @@ let cardioCompletado = false;
             db: null,
             DB_NAME: 'FotosProgresoDB',
             STORE_NAME: 'diasFotos',
+            _objectUrls: [],
 
             _abrirDB() {
                 return new Promise(r => {
@@ -4244,38 +4331,74 @@ let cardioCompletado = false;
                 }
             },
 
+            async _fuenteImagen(valor) {
+                if (!valor) return null;
+                if (typeof valor === 'string') return valor;
+                if (valor instanceof Blob) {
+                    const url = URL.createObjectURL(valor);
+                    this._objectUrls.push(url);
+                    return url;
+                }
+                if (valor instanceof ArrayBuffer) {
+                    const url = URL.createObjectURL(new Blob([valor], {type:'image/jpeg'}));
+                    this._objectUrls.push(url);
+                    return url;
+                }
+                if (ArrayBuffer.isView(valor)) {
+                    const url = URL.createObjectURL(new Blob([valor.buffer], {type:'image/jpeg'}));
+                    this._objectUrls.push(url);
+                    return url;
+                }
+                if (typeof valor === 'object') {
+                    if (typeof valor.dataUrl === 'string') return valor.dataUrl;
+                    if (typeof valor.src === 'string') return valor.src;
+                    if (typeof valor.data === 'string') return valor.data;
+                    if (valor.blob instanceof Blob) return this._fuenteImagen(valor.blob);
+                }
+                return null;
+            },
+
             async _comparar() {
                 const f1 = document.getElementById('compararDia1').value;
                 const f2 = document.getElementById('compararDia2').value;
+                const resultado = document.getElementById('comparadorResultado');
                 if (!f1 || !f2) { UI.toast('Selecciona dos días', 'error'); return; }
 
+                this._objectUrls.forEach(u => { try { URL.revokeObjectURL(u); } catch (_) {} });
+                this._objectUrls = [];
                 await this._abrirDB();
+                if (!this.db) { UI.toast('No se pudo abrir la base de fotos', 'error'); return; }
                 const store = this.db.transaction(this.STORE_NAME, 'readonly').objectStore(this.STORE_NAME);
-                const d1 = await new Promise(r => store.get(f1).onsuccess = e => r(e.target.result));
-                const d2 = await new Promise(r => store.get(f2).onsuccess = e => r(e.target.result));
+                const get = key => new Promise((resolve,reject)=>{
+                    const req=store.get(key);
+                    req.onsuccess=e=>resolve(e.target.result || null);
+                    req.onerror=()=>reject(req.error || new Error('No se pudo leer la foto'));
+                });
+                let d1, d2;
+                try { [d1,d2]=await Promise.all([get(f1),get(f2)]); }
+                catch(err){ console.error(err); UI.toast('No se pudieron leer las fotos', 'error'); return; }
 
-                const gen = (t, c) => {
-                    if (!d1?.[c] && !d2?.[c]) return '';
+                const gen = async (t, c) => {
+                    const src1 = await this._fuenteImagen(d1?.[c]);
+                    const src2 = await this._fuenteImagen(d2?.[c]);
+                    if (!src1 && !src2) return '';
+                    const img = (src, fecha, alt) => src
+                        ? `<img src="${escapeHTML(src)}" alt="${alt}" style="width:100%;height:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;display:block;" onclick="UI.abrirLightbox(this.src)">`
+                        : `<div style="height:100%;min-height:220px;border-radius:var(--radius-sm);background:rgba(255,255,255,.03);display:grid;place-items:center;color:var(--text-secondary);font-size:11px;">Sin foto</div>`;
                     return `
-                        <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:8px;margin-bottom:8px;border:1px solid var(--border);">
-                            <h4 style="color:var(--primary);margin-bottom:4px;text-align:center;font-size:12px;">${t}</h4>
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-                                <img src="${d1?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
-                                <img src="${d2?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
+                        <div class="ng-photo-compare" style="background:var(--bg-card);border-radius:var(--radius-sm);padding:8px;margin-bottom:8px;border:1px solid var(--border);">
+                            <h4 style="color:var(--primary);margin-bottom:6px;text-align:center;font-size:12px;">${t}</h4>
+                            <div class="ng-photo-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                                <div style="min-width:0;"><div style="font-size:10px;color:var(--text-secondary);text-align:center;margin-bottom:3px;">${UI.formatearFecha(f1)}</div><div style="aspect-ratio:3/4;overflow:hidden;border-radius:var(--radius-sm);">${img(src1,f1,t+' día 1')}</div></div>
+                                <div style="min-width:0;"><div style="font-size:10px;color:var(--text-secondary);text-align:center;margin-bottom:3px;">${UI.formatearFecha(f2)}</div><div style="aspect-ratio:3/4;overflow:hidden;border-radius:var(--radius-sm);">${img(src2,f2,t+' día 2')}</div></div>
                             </div>
-                            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-secondary);margin-top:3px;">
-                                <span>${UI.formatearFecha(f1)}</span>
-                                <span>${UI.formatearFecha(f2)}</span>
-                            </div>
-                        </div>
-                    `;
+                        </div>`;
                 };
 
-                let html = gen('FRENTE', 'frente') + gen('ESPALDA', 'espalda') + gen('IZQUIERDA', 'izquierda') + gen(
-                    'DERECHA', 'derecha');
-                if (!html) html =
-                    '<div style="text-align:center;padding:16px;color:var(--text-secondary);">No hay fotos para comparar</div>';
-                document.getElementById('comparadorResultado').innerHTML = html;
+                const partes=[];
+                for (const [t,c] of [['FRENTE','frente'],['ESPALDA','espalda'],['IZQUIERDA','izquierda'],['DERECHA','derecha']]) partes.push(await gen(t,c));
+                const html=partes.join('');
+                resultado.innerHTML=html || '<div style="text-align:center;padding:16px;color:var(--text-secondary);">No hay fotos para comparar en esas fechas.</div>';
             }
         };
 
@@ -4468,28 +4591,12 @@ let cardioCompletado = false;
                 (STATE.historialEntrenos||[]).forEach(ent => {
                     const d=new Date(ent.fecha); if(d<monday||d>sunday) return;
                     (ent.ejercicios||[]).forEach(e=>{
-                        const pr=parseReps(e.reps); const r=pr.valid?pr.total:(Number(e.repsTotales)||0);
-                        reps+=r; series+=pr.valid?pr.series.length:(Number(e.series)||0); volumen+=(Number(e.peso)||0)*r;
+                        const tot=calcularTotalesEjercicio(e);
+                        reps+=tot.reps; series+=tot.series; volumen+=tot.volumen;
                     });
                 });
                 const records = (STATE.records||[]).filter(r => { const d=new Date(r.date); return d>=monday && d<=sunday; }).length;
                 return {sesiones: sesiones.size, volumen, reps, series, records};
-            },
-            logros() {
-                const sesiones=(STATE.diasEntrenados||[]).length;
-                let volumen=0;
-                (STATE.historialEntrenos||[]).forEach(ent => (ent.ejercicios||[]).forEach(e => { const p=parseReps(e.reps); volumen+=(Number(e.peso)||0)*(p.valid?p.total:(Number(e.repsTotales)||0)); }));
-                const fotos = STATE.ultimasFotosGuardadas || STATE.recordatorios?.ultimasFotos;
-                const pesoActual=STATE.mediciones?.length ? Number(STATE.mediciones[STATE.mediciones.length-1].peso) : null;
-                const alcanzado=pesoActual!==null && pesoActual<=Number(CONFIG.PESO_OBJETIVO);
-                return [
-                    {icon:'🏆',text:'Primer entrenamiento',ok:sesiones>=1},
-                    {icon:'🔥',text:'7 sesiones completadas',ok:sesiones>=7},
-                    {icon:'💪',text:'10.000 kg de volumen',ok:volumen>=10000},
-                    {icon:'🏆',text:'Primer récord personal',ok:(STATE.records||[]).length>=1},
-                    {icon:'📸',text:'Primer progreso con fotos',ok:!!fotos},
-                    {icon:'🎯',text:'Objetivo de peso alcanzado',ok:alcanzado}
-                ];
             },
             siguienteObjetivo(ej, ultimo) {
                 if (!ultimo) return 'Empieza con un peso que te permita completar el rango con técnica limpia.';
@@ -4532,13 +4639,12 @@ let cardioCompletado = false;
             },
             añadirResumenDashboard() {
                 const c=document.getElementById('dashboardContainer'); if(!c) return;
-                const r=this.resumenSemanal(); const logros=this.logros();
-                const done=logros.filter(x=>x.ok).length;
+                const existente=c.querySelector('.ng-weekly');
+                if (existente) existente.remove();
+                const r=this.resumenSemanal();
                 const weekly=document.createElement('div'); weekly.className='card ng-weekly';
                 weekly.innerHTML=`<div class="card-title">📅 Resumen semanal</div><div class="ng-summary-grid"><div><b>${r.sesiones}</b><span>sesiones</span></div><div><b>${Math.round(r.volumen).toLocaleString('es-ES')}</b><span>kg volumen</span></div><div><b>${r.reps}</b><span>reps</span></div><div><b>${r.records}</b><span>récords</span></div></div>`;
                 c.appendChild(weekly);
-                const ach=document.createElement('div'); ach.className='card'; ach.innerHTML=`<div class="card-title">🏅 Logros <span style="margin-left:auto;font-size:11px;color:var(--text-secondary)">${done}/${logros.length}</span></div><div class="ng-achievements">${logros.map(x=>`<div class="ng-ach ${x.ok?'done':''}"><span>${x.icon}</span><span>${this.escapeHTML(x.text)}</span>${x.ok?'✓':'🔒'}</div>`).join('')}</div>`;
-                c.appendChild(ach);
             },
             añadirGraficos() {
                 const c=document.getElementById('estadisticasContainer');
@@ -4583,9 +4689,7 @@ let cardioCompletado = false;
                     if(!fecha) return;
                     let v=0;
                     (e.ejercicios||[]).forEach(x=>{
-                        const p=parseReps(x.reps);
-                        const reps=p.valid?p.total:(Number(x.repsTotales)||0);
-                        v+=(Number(x.peso)||0)*reps;
+                        v+=calcularTotalesEjercicio(x).volumen;
                     });
                     porDia.set(fecha,(porDia.get(fecha)||0)+v);
                 });
@@ -4671,9 +4775,7 @@ let cardioCompletado = false;
             _dashboardOriginal();
             const c=document.getElementById('dashboardContainer');
             if(c){
-                const last=c.querySelector('.ng-weekly,.ng-achievements'); if(!last) NicoGymFinal.añadirResumenDashboard();
-                const txt=c.querySelector('.card:last-of-type .card-title');
-                if(txt && txt.textContent.includes('Logros')) {}
+                const last=c.querySelector('.ng-weekly'); if(!last) NicoGymFinal.añadirResumenDashboard();
             }
         };
 
@@ -4681,9 +4783,8 @@ let cardioCompletado = false;
         const _statsOriginal=Estadisticas.render.bind(Estadisticas);
         Estadisticas.render=function(){ _statsOriginal(); NicoGymFinal.añadirGraficos(); };
 
-        // Comparación de fotos con slider sobre la UI existente.
-        const _compararOriginal=Fotos._comparar.bind(Fotos);
-        Fotos._comparar=async function(){ await _compararOriginal(); const result=document.getElementById('comparadorResultado'); if(result){ result.querySelectorAll('div[style*="grid-template-columns:1fr 1fr"]').forEach(g=>g.parentElement.classList.add('ng-photo-pair')); NicoGymFinal.sliderFotos(); } };
+        // El comparador de fotos renderiza directamente las dos imágenes; no se aplica
+        // una segunda capa que pueda ocultar o sustituir las imágenes originales.
 
         // Accesibilidad de modal.
         const _modalAbrir=Modal.abrir.bind(Modal);
@@ -4696,8 +4797,8 @@ let cardioCompletado = false;
             if(!NicoGymFinal.validarEstado(state)) throw new Error('Estado de backup no válido');
             const clean=_migrateStateOriginal(state);
             clean.nombre=String(clean.nombre||'Nico').slice(0,80);
-            if(Array.isArray(clean.diasEntrenados)) clean.diasEntrenados=clean.diasEntrenados.filter(x=>/^\\d{4}-\\d{2}-\\d{2}$/.test(String(x))).slice(-2000);
-            if(Array.isArray(clean.diasNoFumar)) clean.diasNoFumar=clean.diasNoFumar.filter(x=>/^\\d{4}-\\d{2}-\\d{2}$/.test(String(x))).slice(-5000);
+            if(Array.isArray(clean.diasEntrenados)) clean.diasEntrenados=clean.diasEntrenados.filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(String(x))).slice(-2000);
+            if(Array.isArray(clean.diasNoFumar)) clean.diasNoFumar=clean.diasNoFumar.filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(String(x))).slice(-5000);
             if(Array.isArray(clean.historialEntrenos)) {
                 clean.historialEntrenos=clean.historialEntrenos.slice(-2000).map(ent=>({
                     ...ent,
@@ -4726,8 +4827,8 @@ let cardioCompletado = false;
         const ngStyle=document.createElement('style'); ngStyle.textContent=`
             .ng-next-goal{margin:10px 0;padding:10px 12px;border-radius:10px;background:linear-gradient(135deg,rgba(128,0,32,.16),rgba(212,175,55,.08));border:1px solid var(--border);font-weight:600;font-size:12px}
             .ng-warmup{padding:28px 18px;text-align:center}.ng-warmup-icon{font-size:48px}.ng-warmup h3{margin:8px 0}.ng-warmup p,.ng-warmup-list{color:var(--text-secondary);font-size:13px;line-height:1.55}.ng-warmup-list{text-align:left;max-width:330px;margin:12px auto 18px}
-            .ng-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.ng-summary-grid>div{padding:10px 5px;text-align:center;background:rgba(255,255,255,.03);border-radius:9px}.ng-summary-grid b{display:block;font-size:17px}.ng-summary-grid span{display:block;font-size:10px;color:var(--text-secondary);margin-top:3px}.ng-achievements{display:grid;grid-template-columns:1fr 1fr;gap:7px}.ng-ach{display:flex;align-items:center;gap:7px;padding:8px;border-radius:8px;background:rgba(255,255,255,.025);font-size:11px;color:var(--text-muted)}.ng-ach.done{color:var(--text-primary);border:1px solid var(--border)}.ng-ach span:last-child{margin-left:auto}.ng-chart-title{font-size:11px;font-weight:700;margin:8px 0 2px;color:var(--text-secondary)}.ng-svg{width:100%;height:auto;display:block;background:rgba(255,255,255,.02);border-radius:9px;color:var(--primary)}.ng-svg .axis{stroke:var(--border)}.ng-chart-note{font-size:10px;color:var(--text-secondary);margin-top:6px}.ng-bars rect{fill:currentColor}.ng-slider{position:relative;overflow:hidden;border-radius:9px;aspect-ratio:4/3;background:#111}.ng-slider img{width:100%;height:100%;object-fit:cover;display:block}.ng-slide-before,.ng-slide-after{position:absolute;inset:0}.ng-slide-after{width:50%;overflow:hidden;border-right:2px solid #fff}.ng-slide-after img{width:200%;max-width:none}.ng-slider input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize}.ng-slide-handle{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;color:#111;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;pointer-events:none}.ng-photo-pair>div:first-child{display:none!important}
-            @media(min-width:900px){.ng-summary-grid{max-width:720px}.ng-achievements{grid-template-columns:repeat(3,1fr)} }
+            .ng-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.ng-summary-grid>div{padding:10px 5px;text-align:center;background:rgba(255,255,255,.03);border-radius:9px}.ng-summary-grid b{display:block;font-size:17px}.ng-summary-grid span{display:block;font-size:10px;color:var(--text-secondary);margin-top:3px}.ng-chart-title{font-size:11px;font-weight:700;margin:8px 0 2px;color:var(--text-secondary)}.ng-svg{width:100%;height:auto;display:block;background:rgba(255,255,255,.02);border-radius:9px;color:var(--primary)}.ng-svg .axis{stroke:var(--border)}.ng-chart-note{font-size:10px;color:var(--text-secondary);margin-top:6px}.ng-bars rect{fill:currentColor}.ng-slider{position:relative;overflow:hidden;border-radius:9px;aspect-ratio:4/3;background:#111}.ng-slider img{width:100%;height:100%;object-fit:cover;display:block}.ng-slide-before,.ng-slide-after{position:absolute;inset:0}.ng-slide-after{width:50%;overflow:hidden;border-right:2px solid #fff}.ng-slide-after img{width:200%;max-width:none}.ng-slider input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize}.ng-slide-handle{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;color:#111;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;pointer-events:none}
+            @media(min-width:900px){.ng-summary-grid{max-width:720px} }
         `; document.head.appendChild(ngStyle);
 
         window.addEventListener('error', e => console.error('NicoGym error:', e.error || e.message));
