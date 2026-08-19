@@ -253,7 +253,6 @@
                         <div class="me-ej-inputs">
                             <div class="me-input-group"><label>Peso (kg)</label><input type="number" id="mePeso" step="0.5" min="0.5" value="${pesoActualEntreno || ''}" placeholder="0" ${seriesActualesEntreno.length ? 'readonly' : ''}></div>
                             <div class="me-input-group"><label>Repeticiones de esta serie</label><input type="number" id="meRepsSerie" min="1" max="100" step="1" placeholder="${PROGRESION.REPS_OBJETIVO}"></div>
-                            <div class="me-input-group"><label>RIR (0–5)</label><input type="number" id="meRIR" min="0" max="5" step="1" value="${registro?.rir ?? ''}" placeholder="2"><small style="color:var(--text-muted);font-size:10px;">0 = fallo · 2 = aprox. 2 reps en reserva</small></div>
                             <div class="me-input-group"><label>Notas del ejercicio</label><textarea id="meNotas" placeholder="Comentarios..." rows="2">${notasActualesEntreno}</textarea></div>
                         </div>
                         <div class="me-ej-botones">
@@ -271,11 +270,8 @@
                 const peso = parseFloat(document.getElementById('mePeso')?.value);
                 const reps = parseInt(document.getElementById('meRepsSerie')?.value, 10);
                 const notas = document.getElementById('meNotas')?.value.trim() || '';
-                const rirRaw = document.getElementById('meRIR')?.value;
-                const rir = (rirRaw === '' || rirRaw === undefined) ? null : parseInt(rirRaw, 10);
                 if (!Number.isFinite(peso) || peso <= 0) { UI.toast('Introduce un peso válido', 'error'); return; }
                 if (!Number.isInteger(reps) || reps < 1 || reps > 100) { UI.toast('Introduce entre 1 y 100 repeticiones', 'error'); return; }
-                if (rir !== null && (!Number.isInteger(rir) || rir < 0 || rir > 5)) { UI.toast('El RIR debe estar entre 0 y 5', 'error'); return; }
                 if (seriesActualesEntreno.length >= PROGRESION.SERIES_OBJETIVO) { UI.toast('Este ejercicio ya está completado', 'info'); return; }
 
                 pesoActualEntreno = peso;
@@ -299,7 +295,6 @@
                 registro.series = seriesActualesEntreno.length;
                 registro.repsTotales = seriesActualesEntreno.reduce((a,b)=>a+b,0);
                 registro.notas = notas;
-                registro.rir = rir;
                 registro.timestamp = Date.now();
 
                 this._recalcularTotalesSesion();
@@ -469,7 +464,7 @@
                     ultimaFecha: hoyStr,
                     completo: recomendacion.completo,
                     targetReps: PROGRESION.REPS_OBJETIVO,
-                    siguienteReps: PROGRESION.REPS_OBJETIVO,
+                    siguienteReps: recomendacion.completo ? PROGRESION.REPS_SIGUIENTE : PROGRESION.REPS_OBJETIVO,
                     recomendaciones: recomendacion.recomendaciones,
                     timestamp: Date.now()
                 };
@@ -495,7 +490,7 @@
                             <div class="me-progresion-list">
                                 ${recomendacion.recomendaciones.map(r => `<div class="me-progresion-row"><span>${r.nombre}</span><strong>${r.texto}</strong></div>`).join('')}
                             </div>
-                            ${recomendacion.completo ? `<div class="me-progresion-next">Objetivo de la próxima sesión: <strong>4×${PROGRESION.REPS_OBJETIVO}</strong> con la carga recomendada si se siente cómoda.</div>` : ''}
+                            ${recomendacion.completo ? `<div class="me-progresion-next">Objetivo de la próxima sesión: <strong>4×${PROGRESION.REPS_SIGUIENTE}</strong> si el aumento de carga se siente cómodo.</div>` : ''}
                         </div>
                         ${recordsConseguidos.length ? `<div class="me-records"><div class="me-rec-titulo">🏆 Nuevos récords</div><div class="me-rec-item">${recordsConseguidos.join(', ')}</div></div>` : ''}
                         <button class="btn btn-primary btn-block" onclick="APP._salirEntreno()" style="margin-top:10px;"><i class="fa-solid fa-check"></i> Finalizar entrenamiento</button>

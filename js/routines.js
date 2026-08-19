@@ -17,31 +17,31 @@ const ROUTINES = {
         ['dumbbell-shrug', 4, 12, 60],
         ['alternating-dumbbell-curl', 4, 12, 60],
         ['hammer-curl', 4, 12, 60],
-        ['reverse-dumbbell-curl', 4, 12, 60]
+        ['reverse-dumbbell-curl', 4, 12, 60],
+        ['remo-banco-inclinado', 4, 12, 90]
     ],
     miercoles: [
         ['elevaciones-frontales', 4, 12, 60],
         ['extension-triceps-cabeza', 4, 12, 60],
-        ['press-cerrado', 4, 12, 60]
+        ['press-cerrado', 4, 12, 60],
+        ['dumbbell-pullover', 4, 12, 60],
+        ['dumbbell-squeeze-press', 4, 12, 60]
     ],
     jueves: [
-        ['dumbbell-pullover', 4, 12, 60],
         ['incline-dumbbell-curl', 4, 12, 60],
         ['dumbbell-zottman-curl', 4, 12, 60],
         ['dumbbell-preacher-curl', 4, 12, 60],
         ['dumbbell-spider-curl', 4, 12, 60],
         ['dumbbell-tate-press', 4, 12, 60],
-        ['dumbbell-squeeze-press', 4, 12, 60]
+        ['aperturas', 4, 12, 60],
+        ['hammer-curl', 4, 12, 60],
+        ['extension-triceps-cabeza', 4, 12, 60]
     ],
     viernes: [
         ['press-plano', 4, 12, 90],
         ['one-arm-dumbbell-row', 4, 12, 90],
         ['press-militar', 4, 12, 90],
-        ['remo-banco-inclinado', 4, 12, 90],
-        ['aperturas', 4, 12, 60],
-        ['elevaciones-laterales', 4, 12, 60],
-        ['hammer-curl', 4, 12, 60],
-        ['extension-triceps-cabeza', 4, 12, 60]
+        ['elevaciones-laterales', 4, 12, 60]
     ]
 };
 

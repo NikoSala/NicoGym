@@ -21,7 +21,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 90,
-                    dia: 'lunes',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Pecho': 90, 'Tríceps': 75, 'Hombro': 65 }
@@ -40,7 +40,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 90,
-                    dia: 'lunes',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Banco inclinado', 'Mancuernas'],
                     intensidadMuscular: { 'Pecho': 85, 'Hombro': 70, 'Tríceps': 70 }
@@ -59,7 +59,7 @@
                     series: 4,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'lunes',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Pecho': 80, 'Hombro': 50 }
@@ -78,7 +78,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 90,
-                    dia: 'lunes',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Hombro': 90, 'Tríceps': 70, 'Trapecio': 60 }
@@ -97,7 +97,7 @@
                     series: 4,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'lunes',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Hombro': 85 }
@@ -116,7 +116,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'miercoles',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Hombro': 75 }
@@ -135,7 +135,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'miercoles',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Mancuerna'],
                     intensidadMuscular: { 'Tríceps': 90 }
@@ -154,7 +154,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'miercoles',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Tríceps': 85, 'Pecho': 50 }
@@ -175,7 +175,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 90,
-                    dia: 'martes',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Barra', 'Discos'],
                     intensidadMuscular: { 'Espalda': 90, 'Bíceps': 60 }
@@ -194,7 +194,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 90,
-                    dia: 'martes',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Banco', 'Mancuerna'],
                     intensidadMuscular: { 'Espalda': 85, 'Bíceps': 55 }
@@ -213,7 +213,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'martes',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Espalda': 80, 'Hombro': 60 }
@@ -232,7 +232,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 45,
-                    dia: 'martes',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Trapecio': 90 }
@@ -251,7 +251,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'martes',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Bíceps': 90 }
@@ -270,7 +270,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'martes',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Bíceps': 80, 'Antebrazo': 70 }
@@ -289,7 +289,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 45,
-                    dia: 'martes',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Bíceps': 70, 'Antebrazo': 85 }
@@ -310,7 +310,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Banco', 'Mancuerna'],
                     intensidadMuscular: { 'Pecho': 70, 'Espalda': 65, 'Tríceps': 40 }
@@ -329,7 +329,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Banco inclinado', 'Mancuernas'],
                     intensidadMuscular: { 'Bíceps': 90 }
@@ -348,7 +348,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Bíceps': 85, 'Antebrazo': 75 }
@@ -367,7 +367,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Banco', 'Mancuerna'],
                     intensidadMuscular: { 'Bíceps': 90 }
@@ -386,7 +386,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'facil',
                     material: ['Banco inclinado', 'Mancuernas'],
                     intensidadMuscular: { 'Bíceps': 90 }
@@ -405,7 +405,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Tríceps': 85 }
@@ -424,7 +424,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Tríceps': 80, 'Pecho': 70 }
@@ -618,7 +618,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 90,
-                    dia: 'viernes',
+                    dia: null,
                     dificultad: 'media',
                     material: ['Banco inclinado', 'Mancuernas'],
                     intensidadMuscular: { 'Espalda': 80, 'Bíceps': 50 }

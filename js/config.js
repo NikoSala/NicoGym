@@ -15,11 +15,11 @@
             NOMBRES_DIAS: { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes',
                 sabado: 'Sábado', domingo: 'Domingo' },
             TIPOS_RUTINA: {
-                lunes: 'Tren superior · sesión moderada + caminata',
-                martes: 'Tren superior · sesión fuerte',
-                miercoles: 'Tren superior · sesión moderada + caminata',
-                jueves: 'Tren superior · sesión fuerte',
-                viernes: 'Tren superior · sesión moderada + caminata',
+                lunes: 'Tren superior · 5 ejercicios + cinta',
+                martes: 'Tren superior · 7 ejercicios',
+                miercoles: 'Tren superior · 3 ejercicios + cinta',
+                jueves: 'Tren superior · 7 ejercicios',
+                viernes: 'Tren superior · 8 ejercicios + cinta',
                 sabado: 'Descanso',
                 domingo: 'Descanso'
             },

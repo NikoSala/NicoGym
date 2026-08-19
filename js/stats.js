@@ -125,7 +125,7 @@ const Estadisticas = {
 
             <div class="card">
                 <div class="card-title"><i class="fa-solid fa-bullseye"></i> Progresión de rutina</div>
-                ${Object.entries(STATE.progresion || {}).map(([dia, p]) => `<div style="display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px;"><span>${CONFIG.NOMBRES_DIAS[dia] || dia}</span><strong style="color:${p.completo?'var(--primary)':'var(--text-secondary)'}">${p.completo ? '4×12 conseguido · carga progresiva recomendada' : 'Objetivo actual: 4×12'}</strong></div>`).join('') || '<div style="font-size:11px;color:var(--text-secondary);">Todavía no hay sesiones suficientes para generar recomendaciones.</div>'}
+                ${Object.entries(STATE.progresion || {}).map(([dia, p]) => `<div style="display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px;"><span>${CONFIG.NOMBRES_DIAS[dia] || dia}</span><strong style="color:${p.completo?'var(--primary)':'var(--text-secondary)'}">${p.completo ? '4×12 conseguido · siguiente 4×15' : 'Objetivo actual: 4×12'}</strong></div>`).join('') || '<div style="font-size:11px;color:var(--text-secondary);">Todavía no hay sesiones suficientes para generar recomendaciones.</div>'}
             </div>
         `;
     }

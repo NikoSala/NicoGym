@@ -6,7 +6,6 @@ const Modal = {
     abrir(html) {
         this._previousFocus = document.activeElement;
         document.getElementById('modalGlobalContent').innerHTML = html;
-        document.getElementById('modalGlobal').setAttribute('aria-hidden', 'false');
         const modal = document.getElementById('modalGlobal');
         modal.classList.remove('hidden');
         requestAnimationFrame(() => {
@@ -17,7 +16,6 @@ const Modal = {
     cerrar() {
         const modal = document.getElementById('modalGlobal');
         modal.classList.add('hidden');
-        modal.setAttribute('aria-hidden', 'true');
         this._previousFocus?.focus?.();
     }
 };
