@@ -203,6 +203,14 @@
                 }
             },
 
+
+            _moverComparador(id, value) {
+                const wrap = document.getElementById(id);
+                if (!wrap) return;
+                const after = wrap.querySelector('.after');
+                if (after) after.style.width = `${Number(value)}%`;
+            },
+
             async _comparar() {
                 const f1 = document.getElementById('compararDia1').value;
                 const f2 = document.getElementById('compararDia2').value;
@@ -215,16 +223,18 @@
 
                 const gen = (t, c) => {
                     if (!d1?.[c] && !d2?.[c]) return '';
+                    const id = `cmp_${c}_${Math.random().toString(36).slice(2,8)}`;
                     return `
                         <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:8px;margin-bottom:8px;border:1px solid var(--border);">
                             <h4 style="color:var(--primary);margin-bottom:4px;text-align:center;font-size:12px;">${t}</h4>
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-                                <img src="${d1?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
-                                <img src="${d2?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
+                            <div class="photo-compare-slider" id="${id}">
+                                <img src="${d2?.[c]||''}" alt="Después" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
+                                <div class="after" style="width:50%;"><img src="${d1?.[c]||''}" alt="Antes" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'"></div>
                             </div>
+                            <input class="photo-compare-range" type="range" min="0" max="100" value="50" aria-label="Comparación ${t}" oninput="Fotos._moverComparador('${id}', this.value)">
                             <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-secondary);margin-top:3px;">
-                                <span>${UI.formatearFecha(f1)}</span>
-                                <span>${UI.formatearFecha(f2)}</span>
+                                <span>ANTES · ${UI.formatearFecha(f1)}</span>
+                                <span>DESPUÉS · ${UI.formatearFecha(f2)}</span>
                             </div>
                         </div>
                     `;

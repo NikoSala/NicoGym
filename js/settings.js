@@ -41,10 +41,10 @@
                     <div class="card">
                         <div class="card-title"><i class="fa-solid fa-calendar"></i> Calendario de actualizaciones</div>
                         <div style="font-size:12px;color:var(--text-secondary);padding:4px 0;">
-                            <div>📅 Primer domingo completo: <strong>16 de agosto de 2026</strong></div>
+                            <div>📅 Próxima fecha: <strong>${UI.formatearFecha(APP.obtenerProximaActualizacion())}</strong></div>
                             <div style="margin-top:2px;">🔄 Peso: <strong>cada semana</strong></div>
-                            <div style="color:var(--text-secondary);">📏 Mediciones: <strong>cada 2 semanas</strong></div>
-                            <div style="color:var(--text-secondary);">📸 Fotos: <strong>cada 4 semanas</strong></div>
+                            <div>📏 Mediciones: <strong>cada ${STATE.recordatorios.freqMediciones || 2} semanas</strong></div>
+                            <div>📸 Fotos: <strong>cada ${STATE.recordatorios.freqFotos || 4} semanas</strong></div>
                         </div>
                     </div>
 

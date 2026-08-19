@@ -87,15 +87,7 @@
                 const btns = document.querySelectorAll('.nav-btn');
                 if (map[id] !== undefined && btns[map[id]]) btns[map[id]].classList.add('active');
 
-                document.querySelectorAll('.side-menu .menu-item').forEach(m => m.classList.remove('active'));
-                document.querySelectorAll('.side-menu .menu-item').forEach(m => {
-                    const txt = m.textContent.trim().toLowerCase();
-                    if (txt.includes(id) || (id === 'estadisticas' && txt.includes('estadísticas')) ||
-                        (id === 'peso' && txt.includes('peso')) || (id === 'fotos' && txt.includes('fotos')) ||
-                        (id === 'semana' && txt.includes('rutina'))) {
-                        m.classList.add('active');
-                    }
-                });
+                document.querySelectorAll('.side-menu .menu-item').forEach(m => m.classList.toggle('active', m.dataset.page === id));
 
                 if (document.getElementById('sideMenu').classList.contains('open')) UI.toggleMenu();
                 window.scrollTo(0, 0);
@@ -190,6 +182,9 @@
                 totalVolumenEntreno = 0;
                 totalSeriesEntreno = 0;
                 totalRepsEntreno = 0;
+                seriesActualesEntreno = [];
+                pesoActualEntreno = 0;
+                notasActualesEntreno = '';
 
                 document.getElementById('modoEntreno').classList.add('open');
                 document.getElementById('meTitulo').textContent = `🏋️ ${CONFIG.NOMBRES_DIAS[dia]}`;
@@ -205,183 +200,164 @@
 
                 const ej = ejerciciosEntreno[idxEjercicioActual];
                 const total = ejerciciosEntreno.length;
-                const progreso = Math.round((idxEjercicioActual / total) * 100);
 
                 if (ej.esCaminata) {
+                    const progreso = this._calcularProgresoGlobal();
                     this._mostrarCaminataComoEjercicio(ej, total, progreso);
                     return;
                 }
 
+                const hoy = UI.getHoy();
+                const entrenamiento = STATE.historialEntrenos.find(e => e.fecha === hoy && e.dia === ej.dia);
+                const registro = entrenamiento?.ejercicios?.find(e => e.nombre === ej.nombre);
+                const parsed = registro ? parseReps(registro.reps) : { valid: true, series: [] };
+                seriesActualesEntreno = parsed.valid ? [...parsed.series] : [];
+                pesoActualEntreno = Number(registro?.peso) || Number(this._getUltimoEntreno(ej.nombre)?.peso) || 0;
+                notasActualesEntreno = registro?.notas || '';
+                ejercicioIniciadoAt = Date.now();
+
+                const progreso = this._calcularProgresoGlobal();
                 document.getElementById('meProgresoTexto').textContent = `${idxEjercicioActual + 1} / ${total}`;
                 document.getElementById('meProgresoFill').style.width = `${progreso}%`;
-                document.getElementById('meProgresoInfo').textContent = `${progreso}%`;
+                document.getElementById('meProgresoInfo').textContent = `${progreso}% · ${seriesActualesEntreno.length}/${PROGRESION.SERIES_OBJETIVO} series`;
                 document.getElementById('meCompletadoMsg').classList.add('hidden');
 
                 const ultimo = this._getUltimoEntreno(ej.nombre);
                 const record = Records.getRecord(ej.nombre);
-
                 const dificultadColor = getDificultadColor(ej.dificultad);
                 const dificultadTexto = getDificultadTexto(ej.dificultad);
                 const intensidad = ej.intensidadMuscular || {};
-
+                const objetivoDia = PROGRESION.recomendarDia(ej.dia, getEjerciciosPorDia(ej.dia), entrenamiento);
                 const body = document.getElementById('meBody');
+                const seriesHtml = Array.from({ length: PROGRESION.SERIES_OBJETIVO }, (_, i) => {
+                    const valor = seriesActualesEntreno[i];
+                    return `<div class="me-serie-chip ${valor ? 'done' : ''}"><span>Serie ${i + 1}</span><strong>${valor ? valor + ' reps' : '—'}</strong></div>`;
+                }).join('');
 
-                let html = `
+                body.innerHTML = `
                     <div class="me-ejercicio-card">
                         <div class="me-ej-numero">Ejercicio ${idxEjercicioActual + 1} de ${total}</div>
                         <div class="me-ej-nombre">${ej.nombre}</div>
                         <div class="me-ej-grupo">${ej.grupo}</div>
-                        ${ej.urlGif ? `
-                            <div class="me-ej-img-wrap">
-                                <img src="${ej.urlGif}" class="me-ej-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'me-ej-img-fallback\\'>💪</div>'" onclick="UI.abrirLightbox(this.src)" alt="${ej.nombre}" loading="lazy">
-                            </div>
-                        ` : `
-                            <div class="me-ej-img-fallback">💪</div>
-                        `}
+                        ${ej.urlGif ? `<div class="me-ej-img-wrap"><img src="${ej.urlGif}" class="me-ej-img" onclick="UI.abrirLightbox(this.src)" alt="${ej.nombre}" loading="lazy"></div>` : `<div class="me-ej-img-fallback">💪</div>`}
                         <div class="me-ej-descripcion">${ej.descripcion}</div>
-                        <div class="me-ej-dificultad">
-                            <span class="dif-label">Dificultad</span>
-                            ${dificultadColor} ${dificultadTexto}
-                        </div>
-                        ${ej.material && ej.material.length > 0 ? `
-                            <div class="me-ej-material">
-                                ${ej.material.map(m => `<span class="mat-tag">✔ ${m}</span>`).join('')}
-                            </div>
-                        ` : ''}
-                        ${Object.keys(intensidad).length > 0 ? `
-                            <div class="me-ej-musculos">
-                                ${Object.entries(intensidad).map(([musculo, valor]) => `
-                                    <div class="musc-row">
-                                        <span class="musc-name">${musculo}</span>
-                                        <div class="musc-bar">
-                                            <div class="musc-fill" style="width:${Math.min(valor, 100)}%;"></div>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        ` : ''}
-                        ${ej.consejos ? `
-                            <div class="me-ej-consejos">
-                                <div class="me-ej-consejo-titulo">💡 Consejos</div>
-                                <div class="me-ej-consejo-texto">${ej.consejos.split('\n').filter(c => c.trim()).map(c => '• ' + c.trim()).join('<br>')}</div>
-                            </div>
-                        ` : ''}
-                        ${ej.errores ? `
-                            <div class="me-ej-errores">
-                                <div class="me-ej-error-titulo">❌ Evita</div>
-                                <div class="me-ej-error-texto">${ej.errores.split('\n').filter(e => e.trim()).map(e => '• ' + e.trim()).join('<br>')}</div>
-                            </div>
-                        ` : ''}
-                        <div class="me-ej-datos">
-                            <span>🎯 ${ej.series} × ${ej.reps}</span>
-                            <span>⏱ ${ej.descanso}s descanso</span>
-                        </div>
-                        ${ultimo ? `<div class="me-ej-ultimo">Último: <strong>${ultimo.peso} kg</strong> · ${ultimo.reps} (${UI.formatearFecha(ultimo.fecha)})</div>` : ''}
-                        ${record ? `<div class="me-ej-record">🏆 Récord: <strong>${record.weight} kg × ${record.reps}</strong></div>` : ''}
+                        <div class="me-ej-dificultad"><span class="dif-label">Dificultad</span> ${dificultadColor} ${dificultadTexto}</div>
+                        ${ej.material?.length ? `<div class="me-ej-material">${ej.material.map(m => `<span class="mat-tag">✔ ${m}</span>`).join('')}</div>` : ''}
+                        ${Object.keys(intensidad).length ? `<div class="me-ej-musculos">${Object.entries(intensidad).map(([musculo, valor]) => `<div class="musc-row"><span class="musc-name">${musculo}</span><div class="musc-bar"><div class="musc-fill" style="width:${Math.min(valor,100)}%;"></div></div></div>`).join('')}</div>` : ''}
+                        ${ej.consejos ? `<div class="me-ej-consejos"><div class="me-ej-consejo-titulo">💡 Consejos</div><div class="me-ej-consejo-texto">${ej.consejos.split('\n').filter(c=>c.trim()).map(c=>'• '+c.trim()).join('<br>')}</div></div>` : ''}
+                        ${ej.errores ? `<div class="me-ej-errores"><div class="me-ej-error-titulo">❌ Evita</div><div class="me-ej-error-texto">${ej.errores.split('\n').filter(e=>e.trim()).map(e=>'• '+e.trim()).join('<br>')}</div></div>` : ''}
+                        <div class="me-ej-datos"><span>🎯 Objetivo: <strong>${PROGRESION.SERIES_OBJETIVO} × ${PROGRESION.REPS_OBJETIVO}</strong></span><span>⏱ ${ej.descanso}s descanso</span></div>
+                        ${ultimo ? `<div class="me-ej-ultimo">Último: <strong>${ultimo.peso} kg</strong> · ${ultimo.reps}</div>` : ''}
+                        ${record ? `<div class="me-ej-record">🏆 Récord: <strong>${record.weight} kg × ${record.reps}</strong> · 1RM est. ${PROGRESION.estimar1RM(record.weight, record.reps).toFixed(1)} kg</div>` : ''}
+                        <div class="me-series-grid">${seriesHtml}</div>
                         <div class="me-ej-inputs">
-                            <div class="me-input-group">
-                                <label>Peso (kg)</label>
-                                <input type="number" id="mePeso" step="0.5" value="${ultimo ? ultimo.peso : ''}" placeholder="0">
-                            </div>
-                            <div class="me-input-group">
-                                <label>Repeticiones (ej: 10,10,9,8)</label>
-                                <input type="text" id="meReps" placeholder="10,10,9,8" value="${ultimo ? ultimo.reps : ''}">
-                            </div>
-                            <div class="me-input-group">
-                                <label>Notas</label>
-                                <textarea id="meNotas" placeholder="Comentarios..." rows="2"></textarea>
-                            </div>
+                            <div class="me-input-group"><label>Peso (kg)</label><input type="number" id="mePeso" step="0.5" min="0.5" value="${pesoActualEntreno || ''}" placeholder="0" ${seriesActualesEntreno.length ? 'readonly' : ''}></div>
+                            <div class="me-input-group"><label>Repeticiones de esta serie</label><input type="number" id="meRepsSerie" min="1" max="100" step="1" placeholder="${PROGRESION.REPS_OBJETIVO}"></div>
+                            <div class="me-input-group"><label>Notas del ejercicio</label><textarea id="meNotas" placeholder="Comentarios..." rows="2">${notasActualesEntreno}</textarea></div>
                         </div>
                         <div class="me-ej-botones">
-                            <button class="btn btn-success" onclick="APP._guardarEjercicio()"><i class="fa-solid fa-check"></i> Guardar ejercicio</button>
+                            <button class="btn btn-success" onclick="APP._guardarSerie()"><i class="fa-solid fa-check"></i> Guardar serie ${Math.min(seriesActualesEntreno.length + 1, PROGRESION.SERIES_OBJETIVO)}</button>
                         </div>
+                        ${objetivoDia.completo ? `<div class="me-progresion-hint">💪 El último día completaste 4×12 en todo el entrenamiento. Al terminar hoy podrás recibir una recomendación de carga.</div>` : ''}
                     </div>
                 `;
-
-                body.innerHTML = html;
                 document.getElementById('modoEntreno').scrollTop = 0;
+                document.getElementById('meRepsSerie')?.focus();
             },
 
-            _guardarEjercicio() {
+            _guardarSerie() {
                 const ej = ejerciciosEntreno[idxEjercicioActual];
-                const peso = parseFloat(document.getElementById('mePeso').value);
-                const reps = document.getElementById('meReps').value.trim() || '-';
-                const notas = document.getElementById('meNotas').value.trim() || '';
+                const peso = parseFloat(document.getElementById('mePeso')?.value);
+                const reps = parseInt(document.getElementById('meRepsSerie')?.value, 10);
+                const notas = document.getElementById('meNotas')?.value.trim() || '';
+                if (!Number.isFinite(peso) || peso <= 0) { UI.toast('Introduce un peso válido', 'error'); return; }
+                if (!Number.isInteger(reps) || reps < 1 || reps > 100) { UI.toast('Introduce entre 1 y 100 repeticiones', 'error'); return; }
+                if (seriesActualesEntreno.length >= PROGRESION.SERIES_OBJETIVO) { UI.toast('Este ejercicio ya está completado', 'info'); return; }
 
-                if (!peso || peso === 0) {
-                    UI.toast('Introduce un peso válido', 'error');
-                    return;
-                }
-
-                const repsData = parseReps(reps);
-                if (!repsData.valid) {
-                    UI.toast(`Repeticiones no válidas: ${repsData.error}`, 'error');
-                    return;
-                }
-                const repsNum = repsData.total;
-                const seriesNum = repsData.series.length;
-
-                totalPesoLevantadoEntreno += peso * seriesNum;
-                totalVolumenEntreno += peso * repsNum;
-                totalSeriesEntreno += seriesNum;
-                totalRepsEntreno += repsNum;
+                pesoActualEntreno = peso;
+                notasActualesEntreno = notas;
+                seriesActualesEntreno.push(reps);
 
                 const hoy = UI.getHoy();
                 const dia = ej.dia;
-                let entrenamientoExistente = STATE.historialEntrenos.find(e => e.fecha === hoy && e.dia === dia);
-
-                const registroEjercicio = {
-                    nombre: ej.nombre,
-                    peso: peso,
-                    reps: reps,
-                    tipo: 'mancuerna',
-                    discos: {},
-                    notas: notas,
-                    series: seriesNum,
-                    repsTotales: repsNum
-                };
-
-                if (entrenamientoExistente) {
-                    const ejExistente = entrenamientoExistente.ejercicios.find(e => e.nombre === ej.nombre);
-                    if (ejExistente) Object.assign(ejExistente, registroEjercicio);
-                    else entrenamientoExistente.ejercicios.push(registroEjercicio);
-                } else {
-                    STATE.historialEntrenos.push({
-                        fecha: hoy,
-                        dia: dia,
-                        tipo: CONFIG.TIPOS_RUTINA[dia] || dia.toUpperCase(),
-                        ejercicios: [registroEjercicio]
-                    });
+                let entrenamiento = STATE.historialEntrenos.find(e => e.fecha === hoy && e.dia === dia);
+                if (!entrenamiento) {
+                    entrenamiento = { fecha: hoy, dia, tipo: CONFIG.TIPOS_RUTINA[dia] || dia.toUpperCase(), ejercicios: [] };
+                    STATE.historialEntrenos.push(entrenamiento);
                 }
+                let registro = entrenamiento.ejercicios.find(e => e.nombre === ej.nombre);
+                if (!registro) {
+                    registro = { nombre: ej.nombre, peso, reps: '', tipo: 'mancuerna', discos: {}, notas: '', series: 0, repsTotales: 0 };
+                    entrenamiento.ejercicios.push(registro);
+                }
+                registro.peso = peso;
+                registro.reps = seriesActualesEntreno.join(',');
+                registro.series = seriesActualesEntreno.length;
+                registro.repsTotales = seriesActualesEntreno.reduce((a,b)=>a+b,0);
+                registro.notas = notas;
+                registro.timestamp = Date.now();
 
-                if (peso > 0 && repsNum > 0) {
-                    const date = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit',
-                        year: 'numeric' });
-                    if (Records.actualizar(ej.nombre, peso, repsNum, date)) {
+                this._recalcularTotalesSesion();
+                const ejerciciosDia = getEjerciciosPorDia(dia);
+                const idxEjercicio = ejerciciosDia.findIndex(e => e.id === ej.id);
+                if (idxEjercicio >= 0 && seriesActualesEntreno.length >= PROGRESION.SERIES_OBJETIVO) STATE.checks[`${dia}-${idxEjercicio}`] = true;
+
+                if (seriesActualesEntreno.length >= PROGRESION.SERIES_OBJETIVO) {
+                    const totalReps = registro.repsTotales;
+                    const date = new Date().toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'numeric' });
+                    if (Records.actualizar(ej.nombre, peso, totalReps, date)) {
                         recordsConseguidos.push(ej.nombre);
                         UI.toast('🏆 ¡Nuevo récord!', 'success');
                     }
-                }
-
-                const ejerciciosDia = getEjerciciosPorDia(dia);
-                const idxEjercicio = ejerciciosDia.findIndex(e => e.nombre === ej.nombre);
-                if (idxEjercicio >= 0) {
-                    const id = `${dia}-${idxEjercicio}`;
-                    if (!STATE.checks[id]) STATE.checks[id] = true;
-                }
-
-                Storage._save();
-
-                this._mostrarMensajeCompletado(ej.nombre);
-
-                idxEjercicioActual++;
-                if (idxEjercicioActual >= ejerciciosEntreno.length) {
-                    setTimeout(() => this._finalizarEntreno(), CONFIG.TIEMPO_MSG_COMPLETADO + 300);
-                } else if (CONFIG.TEMPORIZADOR_DESCANSO) {
-                    setTimeout(() => this._mostrarDescanso(), CONFIG.TIEMPO_MSG_COMPLETADO);
+                    Storage._save();
+                    this._mostrarMensajeCompletado(`${ej.nombre} · 4 series completadas`);
+                    idxEjercicioActual++;
+                    seriesActualesEntreno = [];
+                    pesoActualEntreno = 0;
+                    notasActualesEntreno = '';
+                    if (idxEjercicioActual >= ejerciciosEntreno.length) setTimeout(() => this._finalizarEntreno(), CONFIG.TIEMPO_MSG_COMPLETADO + 300);
+                    else if (CONFIG.TEMPORIZADOR_DESCANSO) setTimeout(() => this._mostrarDescanso(), CONFIG.TIEMPO_MSG_COMPLETADO);
+                    else setTimeout(() => this._mostrarEjercicio(), CONFIG.TIEMPO_MSG_COMPLETADO);
                 } else {
-                    setTimeout(() => this._mostrarEjercicio(), CONFIG.TIEMPO_MSG_COMPLETADO);
+                    Storage._save();
+                    UI.toast(`Serie ${seriesActualesEntreno.length}/${PROGRESION.SERIES_OBJETIVO} guardada`, 'success');
+                    this._mostrarEjercicio();
                 }
+            },
+
+            _recalcularTotalesSesion() {
+                totalPesoLevantadoEntreno = 0;
+                totalVolumenEntreno = 0;
+                totalSeriesEntreno = 0;
+                totalRepsEntreno = 0;
+                const hoy = UI.getHoy();
+                const dia = ejerciciosEntreno[0]?.dia;
+                const entrenamiento = STATE.historialEntrenos.find(e => e.fecha === hoy && e.dia === dia);
+                (entrenamiento?.ejercicios || []).forEach(ej => {
+                    if (ej.tipo === 'caminata') return;
+                    const parsed = parseReps(ej.reps);
+                    if (!parsed.valid) return;
+                    totalPesoLevantadoEntreno += (Number(ej.peso)||0) * parsed.series.length;
+                    totalVolumenEntreno += (Number(ej.peso)||0) * parsed.total;
+                    totalSeriesEntreno += parsed.series.length;
+                    totalRepsEntreno += parsed.total;
+                });
+            },
+
+            _calcularProgresoGlobal() {
+                const fuerza = ejerciciosEntreno.filter(e => !e.esCaminata);
+                const totalObjetivo = Math.max(1, fuerza.length * PROGRESION.SERIES_OBJETIVO + ejerciciosEntreno.filter(e => e.esCaminata).length);
+                const hoy = UI.getHoy();
+                const dia = ejerciciosEntreno[0]?.dia;
+                const entrenamiento = STATE.historialEntrenos.find(e => e.fecha === hoy && e.dia === dia);
+                let completadas = 0;
+                fuerza.forEach(ej => {
+                    const r = entrenamiento?.ejercicios?.find(x => x.nombre === ej.nombre);
+                    const p = r ? parseReps(r.reps) : { valid:false, series:[] };
+                    if (p.valid) completadas += Math.min(PROGRESION.SERIES_OBJETIVO, p.series.length);
+                });
+                if (cardioCompletado) completadas++;
+                return Math.min(100, Math.round((completadas / totalObjetivo) * 100));
             },
 
             _mostrarMensajeCompletado(nombre) {
@@ -473,73 +449,58 @@
             },
 
             _finalizarEntreno() {
-                if (temporizadorDescanso) {
-                    clearInterval(temporizadorDescanso);
-                    temporizadorDescanso = null;
-                }
+                if (temporizadorDescanso) { clearInterval(temporizadorDescanso); temporizadorDescanso = null; }
                 if (msgCompletadoTimeout) clearTimeout(msgCompletadoTimeout);
 
-                const tiempoEmpleado = Math.round((Date.now() - startTimeEntreno) / 60000);
+                const tiempoEmpleado = Math.max(1, Math.round((Date.now() - startTimeEntreno) / 60000));
                 const dia = ejerciciosEntreno[0]?.dia || '';
-
                 const hoyStr = UI.getHoy();
-                if (!STATE.diasEntrenados.includes(hoyStr)) {
-                    STATE.diasEntrenados.push(hoyStr);
-                    Storage._save();
-                }
+                const ejerciciosDia = getEjerciciosPorDia(dia);
+                const entrenamiento = STATE.historialEntrenos.find(e => e.fecha === hoyStr && e.dia === dia);
+                const recomendacion = PROGRESION.recomendarDia(dia, ejerciciosDia, entrenamiento);
+
+                if (!STATE.diasEntrenados.includes(hoyStr)) STATE.diasEntrenados.push(hoyStr);
+                STATE.progresion[dia] = {
+                    ultimaFecha: hoyStr,
+                    completo: recomendacion.completo,
+                    targetReps: PROGRESION.REPS_OBJETIVO,
+                    siguienteReps: recomendacion.completo ? PROGRESION.REPS_SIGUIENTE : PROGRESION.REPS_OBJETIVO,
+                    recomendaciones: recomendacion.recomendaciones,
+                    timestamp: Date.now()
+                };
+                Storage._save();
 
                 const body = document.getElementById('meBody');
                 body.innerHTML = `
                     <div class="me-completado-final">
                         <div class="me-feliz">🏆</div>
                         <div class="me-titulo">¡Entrenamiento completado!</div>
-                        <div class="me-sub">${CONFIG.NOMBRES_DIAS[dia]} · ${tiempoEmpleado} minutos${CONFIG.DIAS_CINTA.includes(dia) ? ' · 🚶 Cinta 15–20 min' : ''}</div>
+                        <div class="me-sub">${CONFIG.NOMBRES_DIAS[dia]} · ${tiempoEmpleado} min${CONFIG.DIAS_CINTA.includes(dia) ? ' · 🚶 Cinta 15–20 min' : ''}</div>
                         <div class="me-resumen-grid">
-                            <div class="me-res-item">
-                                <div class="me-res-valor">${ejerciciosEntreno.length}</div>
-                                <div class="me-res-label">Ejercicios</div>
-                            </div>
-                            <div class="me-res-item">
-                                <div class="me-res-valor">${totalSeriesEntreno}</div>
-                                <div class="me-res-label">Series</div>
-                            </div>
-                            <div class="me-res-item">
-                                <div class="me-res-valor">${totalRepsEntreno}</div>
-                                <div class="me-res-label">Repeticiones</div>
-                            </div>
-                            <div class="me-res-item">
-                                <div class="me-res-valor">${totalPesoLevantadoEntreno.toFixed(1)}</div>
-                                <div class="me-res-label">Carga × series (kg)</div>
-                            </div>
-                            <div class="me-res-item">
-                                <div class="me-res-valor">${totalVolumenEntreno}</div>
-                                <div class="me-res-label">Volumen (kg)</div>
-                            </div>
-                            <div class="me-res-item">
-                                <div class="me-res-valor">${recordsConseguidos.length}</div>
-                                <div class="me-res-label">Récords</div>
-                            </div>
+                            <div class="me-res-item"><div class="me-res-valor">${ejerciciosDia.length}</div><div class="me-res-label">Ejercicios</div></div>
+                            <div class="me-res-item"><div class="me-res-valor">${totalSeriesEntreno}</div><div class="me-res-label">Series</div></div>
+                            <div class="me-res-item"><div class="me-res-valor">${totalRepsEntreno}</div><div class="me-res-label">Repeticiones</div></div>
+                            <div class="me-res-item"><div class="me-res-valor">${totalPesoLevantadoEntreno.toFixed(1)}</div><div class="me-res-label">Carga × series (kg)</div></div>
+                            <div class="me-res-item"><div class="me-res-valor">${Math.round(totalVolumenEntreno)}</div><div class="me-res-label">Volumen (kg)</div></div>
+                            <div class="me-res-item"><div class="me-res-valor">${recordsConseguidos.length}</div><div class="me-res-label">Récords</div></div>
                         </div>
-                        ${recordsConseguidos.length > 0 ? `
-                            <div class="me-records">
-                                <div class="me-rec-titulo">🏆 Nuevos récords</div>
-                                <div class="me-rec-item">${recordsConseguidos.join(', ')}</div>
+                        <div class="me-progresion-card ${recomendacion.completo ? 'ok' : 'keep'}">
+                            <div class="me-progresion-title">💪 ${recomendacion.titulo}</div>
+                            <div class="me-progresion-text">${recomendacion.mensaje}</div>
+                            <div class="me-progresion-list">
+                                ${recomendacion.recomendaciones.map(r => `<div class="me-progresion-row"><span>${r.nombre}</span><strong>${r.texto}</strong></div>`).join('')}
                             </div>
-                        ` : ''}
-                        <button class="btn btn-primary btn-block" onclick="APP._salirEntreno()" style="margin-top:10px;">
-                            <i class="fa-solid fa-check"></i> Finalizar entrenamiento
-                        </button>
-                    </div>
-                `;
-
-                document.getElementById('meProgresoTexto').textContent = `¡Completado!`;
-                document.getElementById('meProgresoFill').style.width = `100%`;
-                document.getElementById('meProgresoInfo').textContent = `100%`;
+                            ${recomendacion.completo ? `<div class="me-progresion-next">Objetivo de la próxima sesión: <strong>4×${PROGRESION.REPS_SIGUIENTE}</strong> si el aumento de carga se siente cómodo.</div>` : ''}
+                        </div>
+                        ${recordsConseguidos.length ? `<div class="me-records"><div class="me-rec-titulo">🏆 Nuevos récords</div><div class="me-rec-item">${recordsConseguidos.join(', ')}</div></div>` : ''}
+                        <button class="btn btn-primary btn-block" onclick="APP._salirEntreno()" style="margin-top:10px;"><i class="fa-solid fa-check"></i> Finalizar entrenamiento</button>
+                    </div>`;
+                document.getElementById('meProgresoTexto').textContent = '¡Completado!';
+                document.getElementById('meProgresoFill').style.width = '100%';
+                document.getElementById('meProgresoInfo').textContent = '100%';
                 document.getElementById('meCompletadoMsg').classList.add('hidden');
-
-                Storage._save();
                 APP.renderizarTodo();
-                confetti({ particleCount: 120, spread: 70 });
+                if (typeof confetti === 'function') confetti({ particleCount: 120, spread: 70 });
                 UI.toast('🎉 ¡Entrenamiento completado!', 'success');
             },
 
@@ -554,6 +515,9 @@
                 totalVolumenEntreno = 0;
                 totalSeriesEntreno = 0;
                 totalRepsEntreno = 0;
+                seriesActualesEntreno = [];
+                pesoActualEntreno = 0;
+                notasActualesEntreno = '';
                 if (temporizadorDescanso) {
                     clearInterval(temporizadorDescanso);
                     temporizadorDescanso = null;
