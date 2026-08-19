@@ -16,7 +16,7 @@ const Dashboard = {
     const rutinaNombre = CONFIG.TIPOS_RUTINA[dia];
     const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
     const ejercicios = getEjerciciosPorDia(dia);
-    const rutinaNombreActualizada = `Tren superior · ${ejercicios.length} ejercicios${["lunes", "miercoles", "viernes"].includes(dia) ? " + cinta" : ""}`;
+    const rutinaNombreActualizada = `Tren superior · ${getEjerciciosPorDia(dia).length} ejercicios${["lunes", "miercoles", "viernes"].includes(dia) ? " + cinta" : ""}`;
 
     const peso =
       STATE.mediciones.length > 0
