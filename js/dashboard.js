@@ -15,6 +15,7 @@ const Dashboard = {
     const dia = UI.getDiaNombre();
     const rutinaNombre = CONFIG.TIPOS_RUTINA[dia];
     const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
+    const ejercicios = getEjerciciosPorDia(dia);
 
     const peso =
       STATE.mediciones.length > 0
@@ -203,7 +204,7 @@ const Dashboard = {
                                 <div style="text-align:center;padding:6px 0;color:var(--success);">
                                     <span style="font-size:28px;display:block;margin-bottom:2px;">✅</span>
                                     Completado
-                                    <div style="font-size:11px;color:var(--text-secondary);">${rutinaNombre}</div>
+                                    <div style="font-size:11px;color:var(--text-secondary);">Tren superior · ${ejercicios.length} ejercicios${["lunes", "miercoles", "viernes"].includes(dia) ? " + cinta" : ""}</div>
                                 </div>
                             `
                                   : `
