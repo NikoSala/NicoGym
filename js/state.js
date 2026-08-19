@@ -2,6 +2,7 @@
         // STATE
         // ==========================================
         const STATE = {
+            schemaVersion: 3,
             nombre: 'Nico',
             altura: CONFIG.ALTURA,
             mediciones: [],
@@ -19,7 +20,8 @@
             _cargado: false,
             ultimoRegistroPeso: null,
             ultimasMediciones: null,
-            ultimasFotosGuardadas: null
+            ultimasFotosGuardadas: null,
+            progresion: {}
         };
 
         let diaActivo = 'lunes';
@@ -36,4 +38,8 @@ let cardioCompletado = false;
         let totalSeriesEntreno = 0;
         let totalRepsEntreno = 0;
         let msgCompletadoTimeout = null;
+let seriesActualesEntreno = [];
+let pesoActualEntreno = 0;
+let notasActualesEntreno = '';
+let ejercicioIniciadoAt = null;
 

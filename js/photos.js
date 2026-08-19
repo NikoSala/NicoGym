@@ -71,9 +71,26 @@
 
             _leerArchivo(file) {
                 if (!file) return Promise.resolve(null);
-                return new Promise(r => { const reader = new FileReader();
-                    reader.onload = e => r(e.target.result);
-                    reader.readAsDataURL(file); });
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const max = 1600;
+                            const scale = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+                            const canvas = document.createElement('canvas');
+                            canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+                            canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                            resolve(canvas.toDataURL('image/jpeg', 0.8));
+                        };
+                        img.onerror = () => reject(new Error('No se pudo procesar la imagen'));
+                        img.src = e.target.result;
+                    };
+                    reader.onerror = () => reject(reader.error || new Error('No se pudo leer la imagen'));
+                    reader.readAsDataURL(file);
+                });
             },
 
             async render() {
@@ -82,26 +99,7 @@
 
                 const fechas = await this._obtenerFechas();
 
-                const tipo = APP.obtenerTipoActualizacion();
-                const hoy = new Date();
-                const esDomingo = hoy.getDay() === 0;
-                const esFechaValida = tipo !== null;
-                const permitirFotos = (esDomingo && esFechaValida && tipo === 'completa');
-
-                let mensajeFotos = '';
-                if (esDomingo && esFechaValida && tipo === 'mediciones') {
-                    mensajeFotos = `
-                        <div style="padding:10px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);margin-bottom:10px;text-align:center;font-size:13px;color:var(--text-secondary);">
-                            📸 Hoy solo toca peso y mediciones. Las fotos se conservan de la última actualización completa (cada 4 semanas).
-                        </div>
-                    `;
-                } else if (esDomingo && esFechaValida && tipo === 'solo-peso') {
-                    mensajeFotos = `
-                        <div style="padding:10px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);margin-bottom:10px;text-align:center;font-size:13px;color:var(--text-secondary);">
-                            📸 Hoy solo toca peso. Las fotos se conservan de la última actualización completa (cada 4 semanas).
-                        </div>
-                    `;
-                }
+                const mensajeFotos = '';
 
                 c.innerHTML = `
                     <div class="card">
@@ -116,13 +114,7 @@
                             <div class="equip-card"><div class="label">Izquierda</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Izquierda')"><img id="previewIzquierda" class="foto-preview hidden"></div>
                             <div class="equip-card"><div class="label">Derecha</div><input type="file" accept="image/*" onchange="Fotos._preview(this,'Derecha')"><img id="previewDerecha" class="foto-preview hidden"></div>
                         </div>
-                        ${permitirFotos ? `
-                            <button class="btn btn-primary btn-block" onclick="Fotos._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar fotos</button>
-                        ` : `
-                            <button class="btn btn-ghost btn-block" style="opacity:0.5;cursor:default;">
-                                <i class="fa-solid fa-lock"></i> ${tipo === 'completa' ? 'Sube tus fotos' : 'Solo en actualización completa (cada 4 semanas)'}
-                            </button>
-                        `}
+                        <button class="btn btn-primary btn-block" onclick="Fotos._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar fotos</button>
                     </div>
 
                     <div class="card">
@@ -174,13 +166,20 @@
                 if (!fr && !es && !iz && !de) { UI.toast('Selecciona al menos una foto', 'error'); return; }
 
                 await this._abrirDB();
-                await this.db.transaction(this.STORE_NAME, 'readwrite').objectStore(this.STORE_NAME).put({
-                    fecha: f,
-                    timestamp: Date.now(),
-                    frente: fr,
-                    espalda: es,
-                    izquierda: iz,
-                    derecha: de
+                if (!this.db) throw new Error('No se pudo abrir la base de fotos');
+                await new Promise((resolve, reject) => {
+                    const tx = this.db.transaction(this.STORE_NAME, 'readwrite');
+                    tx.objectStore(this.STORE_NAME).put({
+                        fecha: f,
+                        timestamp: Date.now(),
+                        frente: fr,
+                        espalda: es,
+                        izquierda: iz,
+                        derecha: de
+                    });
+                    tx.oncomplete = resolve;
+                    tx.onerror = () => reject(tx.error || new Error('No se pudieron guardar las fotos'));
+                    tx.onabort = () => reject(tx.error || new Error('Se canceló el guardado de fotos'));
                 });
                 STATE.recordatorios.ultimasFotos = f;
                 Storage._save();
@@ -204,6 +203,14 @@
                 }
             },
 
+
+            _moverComparador(id, value) {
+                const wrap = document.getElementById(id);
+                if (!wrap) return;
+                const after = wrap.querySelector('.after');
+                if (after) after.style.width = `${Number(value)}%`;
+            },
+
             async _comparar() {
                 const f1 = document.getElementById('compararDia1').value;
                 const f2 = document.getElementById('compararDia2').value;
@@ -216,16 +223,18 @@
 
                 const gen = (t, c) => {
                     if (!d1?.[c] && !d2?.[c]) return '';
+                    const id = `cmp_${c}_${Math.random().toString(36).slice(2,8)}`;
                     return `
                         <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:8px;margin-bottom:8px;border:1px solid var(--border);">
                             <h4 style="color:var(--primary);margin-bottom:4px;text-align:center;font-size:12px;">${t}</h4>
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-                                <img src="${d1?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
-                                <img src="${d2?.[c]||''}" style="width:100%;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
+                            <div class="photo-compare-slider" id="${id}">
+                                <img src="${d2?.[c]||''}" alt="Después" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
+                                <div class="after" style="width:50%;"><img src="${d1?.[c]||''}" alt="Antes" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'"></div>
                             </div>
+                            <input class="photo-compare-range" type="range" min="0" max="100" value="50" aria-label="Comparación ${t}" oninput="Fotos._moverComparador('${id}', this.value)">
                             <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-secondary);margin-top:3px;">
-                                <span>${UI.formatearFecha(f1)}</span>
-                                <span>${UI.formatearFecha(f2)}</span>
+                                <span>ANTES · ${UI.formatearFecha(f1)}</span>
+                                <span>DESPUÉS · ${UI.formatearFecha(f2)}</span>
                             </div>
                         </div>
                     `;
