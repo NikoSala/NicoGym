@@ -28,10 +28,12 @@ const PROGRESION = {
         const parsed = parseReps(registro.reps);
         if (!parsed.valid) return { completo: false, series: [], total: 0, mejor1RM: 0 };
         const series = parsed.series;
+        const rir = Number.isFinite(Number(registro.rir)) ? Number(registro.rir) : null;
         return {
             completo: series.length >= this.SERIES_OBJETIVO && series.slice(0, this.SERIES_OBJETIVO).every(r => r >= this.REPS_OBJETIVO),
             series,
             total: parsed.total,
+            rir,
             mejor1RM: this.estimar1RM(registro.peso, Math.max(...series, 0))
         };
     },
@@ -67,15 +69,27 @@ const PROGRESION = {
 
         const recomendaciones = analisis.detalle.map(x => {
             const peso = Number(x.registro.peso) || 0;
-            const incremento = this.incrementoSugerido(peso);
-            const siguientePeso = peso + incremento;
+            const base = this.incrementoSugerido(peso);
+            const rir = x.rir;
+            let incremento = base;
+            let texto;
+            if (rir !== null && rir <= 0) {
+                incremento = 0;
+                texto = `Mantén ${peso} kg: completaste 4×12, pero llegaste al fallo. Busca 4×12 con RIR 1–2 antes de subir.`;
+            } else if (rir !== null && rir === 1) {
+                incremento = Math.max(0.5, Math.round((base * 0.5) * 10) / 10);
+                texto = `Prueba ${peso + incremento} kg (+${incremento} kg) y busca 4×12. Si mantienes RIR 1–2, podrás seguir progresando.`;
+            } else {
+                texto = `Prueba ${peso + incremento} kg (+${incremento} kg). Objetivo: 4×12; si resulta cómodo, avanza hacia 4×15.`;
+            }
             return {
                 nombre: x.ejercicio.nombre,
                 pesoActual: peso,
-                siguientePeso,
+                siguientePeso: peso + incremento,
                 incremento,
+                rir,
                 oneRM: Math.round(x.mejor1RM * 10) / 10,
-                texto: `Prueba ${siguientePeso} kg (+${incremento} kg). Si se siente fácil, busca 15 reps por serie.`
+                texto
             };
         });
 

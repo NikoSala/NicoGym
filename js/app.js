@@ -247,12 +247,13 @@
                         ${ej.consejos ? `<div class="me-ej-consejos"><div class="me-ej-consejo-titulo">💡 Consejos</div><div class="me-ej-consejo-texto">${ej.consejos.split('\n').filter(c=>c.trim()).map(c=>'• '+c.trim()).join('<br>')}</div></div>` : ''}
                         ${ej.errores ? `<div class="me-ej-errores"><div class="me-ej-error-titulo">❌ Evita</div><div class="me-ej-error-texto">${ej.errores.split('\n').filter(e=>e.trim()).map(e=>'• '+e.trim()).join('<br>')}</div></div>` : ''}
                         <div class="me-ej-datos"><span>🎯 Objetivo: <strong>${PROGRESION.SERIES_OBJETIVO} × ${PROGRESION.REPS_OBJETIVO}</strong></span><span>⏱ ${ej.descanso}s descanso</span></div>
-                        ${ultimo ? `<div class="me-ej-ultimo">Último: <strong>${ultimo.peso} kg</strong> · ${ultimo.reps}</div>` : ''}
+                        ${ultimo ? `<div class="me-ej-ultimo">Último: <strong>${ultimo.peso} kg</strong> · ${ultimo.reps}${ultimo.rir !== undefined && ultimo.rir !== null ? ` · RIR ${ultimo.rir}` : ''}</div>` : ''}
                         ${record ? `<div class="me-ej-record">🏆 Récord: <strong>${record.weight} kg × ${record.reps}</strong> · 1RM est. ${PROGRESION.estimar1RM(record.weight, record.reps).toFixed(1)} kg</div>` : ''}
                         <div class="me-series-grid">${seriesHtml}</div>
                         <div class="me-ej-inputs">
                             <div class="me-input-group"><label>Peso (kg)</label><input type="number" id="mePeso" step="0.5" min="0.5" value="${pesoActualEntreno || ''}" placeholder="0" ${seriesActualesEntreno.length ? 'readonly' : ''}></div>
                             <div class="me-input-group"><label>Repeticiones de esta serie</label><input type="number" id="meRepsSerie" min="1" max="100" step="1" placeholder="${PROGRESION.REPS_OBJETIVO}"></div>
+                            <div class="me-input-group"><label>RIR del ejercicio</label><input type="number" id="meRir" min="0" max="5" step="1" placeholder="0–5"></div>
                             <div class="me-input-group"><label>Notas del ejercicio</label><textarea id="meNotas" placeholder="Comentarios..." rows="2">${notasActualesEntreno}</textarea></div>
                         </div>
                         <div class="me-ej-botones">
@@ -269,9 +270,12 @@
                 const ej = ejerciciosEntreno[idxEjercicioActual];
                 const peso = parseFloat(document.getElementById('mePeso')?.value);
                 const reps = parseInt(document.getElementById('meRepsSerie')?.value, 10);
+                const rirRaw = document.getElementById('meRir')?.value;
+                const rir = rirRaw === '' || rirRaw === undefined ? null : parseInt(rirRaw, 10);
                 const notas = document.getElementById('meNotas')?.value.trim() || '';
                 if (!Number.isFinite(peso) || peso <= 0) { UI.toast('Introduce un peso válido', 'error'); return; }
                 if (!Number.isInteger(reps) || reps < 1 || reps > 100) { UI.toast('Introduce entre 1 y 100 repeticiones', 'error'); return; }
+                if (rir !== null && (!Number.isInteger(rir) || rir < 0 || rir > 5)) { UI.toast('El RIR debe estar entre 0 y 5', 'error'); return; }
                 if (seriesActualesEntreno.length >= PROGRESION.SERIES_OBJETIVO) { UI.toast('Este ejercicio ya está completado', 'info'); return; }
 
                 pesoActualEntreno = peso;
@@ -295,6 +299,7 @@
                 registro.series = seriesActualesEntreno.length;
                 registro.repsTotales = seriesActualesEntreno.reduce((a,b)=>a+b,0);
                 registro.notas = notas;
+                if (rir !== null) registro.rir = rir;
                 registro.timestamp = Date.now();
 
                 this._recalcularTotalesSesion();
