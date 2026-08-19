@@ -31,7 +31,7 @@
                 <span>·</span>
                 <span>🎯 <strong id="topObjetivo">75</strong></span>
             </div>
-            <div class="bell-wrap" id="bellWrap" role="button" tabindex="0" aria-label="Abrir notificaciones" onclick="UI.toggleNotif()">
+            <div class="bell-wrap" id="bellWrap" onclick="UI.toggleNotif()">
                 <i class="fa-regular fa-bell"></i>
                 <span class="badge hidden" id="bellBadge">0</span>
                 <div class="notif-dropdown" id="notifDropdown">
@@ -41,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-ghost btn-sm" aria-label="Abrir menú" onclick="UI.toggleMenu()" style="padding:2px 8px;font-size:14px;border:none;">
+            <button class="btn btn-ghost btn-sm" onclick="UI.toggleMenu()" style="padding:2px 8px;font-size:14px;border:none;">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
@@ -50,18 +50,18 @@
     <!-- SIDE MENU -->
     <div class="side-overlay" id="sideOverlay" onclick="UI.toggleMenu()"></div>
     <nav class="side-menu" id="sideMenu">
-        <button class="menu-item active" data-page="inicio" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i> Inicio</button>
-        <button class="menu-item" data-page="rutinas" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i> Entrenar</button>
-        <button class="menu-item" data-page="semana" onclick="APP.navegar('semana')"><i class="fa-solid fa-calendar-week"></i> Rutina</button>
-        <button class="menu-item" data-page="peso" onclick="APP.navegar('peso')"><i class="fa-solid fa-scale-balanced"></i> Peso</button>
-        <button class="menu-item" data-page="agenda" onclick="APP.navegar('agenda')"><i class="fa-solid fa-calendar-check"></i> Agenda</button>
-        <button class="menu-item" data-page="records" onclick="APP.navegar('records')"><i class="fa-solid fa-trophy"></i> Récords</button>
-        <button class="menu-item" data-page="estadisticas" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i> Estadísticas</button>
+        <button class="menu-item active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i> Inicio</button>
+        <button class="menu-item" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i> Entrenar</button>
+        <button class="menu-item" onclick="APP.navegar('semana')"><i class="fa-solid fa-calendar-week"></i> Rutina</button>
+        <button class="menu-item" onclick="APP.navegar('peso')"><i class="fa-solid fa-scale-balanced"></i> Peso</button>
+        <button class="menu-item" onclick="APP.navegar('agenda')"><i class="fa-solid fa-calendar-check"></i> Agenda</button>
+        <button class="menu-item" onclick="APP.navegar('records')"><i class="fa-solid fa-trophy"></i> Récords</button>
+        <button class="menu-item" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i> Estadísticas</button>
         <div class="menu-divider"></div>
-        <button class="menu-item" data-page="fotos" onclick="APP.navegar('fotos')"><i class="fa-solid fa-camera"></i> Fotos</button>
-        <button class="menu-item" data-page="ajustes" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</button>
+        <button class="menu-item" onclick="APP.navegar('fotos')"><i class="fa-solid fa-camera"></i> Fotos</button>
+        <button class="menu-item" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</button>
         <button class="menu-item" onclick="APP.confirmarReset()" style="color:var(--danger);"><i class="fa-solid fa-trash"></i> Reset</button>
-        <div class="menu-footer">NicoGym 3.2</div>
+        <div class="menu-footer">NicoGym 2.6</div>
     </nav>
 
     <!-- PAGES -->
@@ -113,10 +113,9 @@
     </nav>
 
     <!-- MODAL -->
-    <div class="modal-overlay hidden" id="modalGlobal" role="dialog" aria-modal="true" aria-labelledby="modalGlobalTitle">
+    <div class="modal-overlay hidden" id="modalGlobal">
         <div class="modal-panel" id="modalGlobalPanel">
-            <button class="modal-close" aria-label="Cerrar" onclick="Modal.cerrar()"><i class="fa-solid fa-xmark"></i></button>
-            <div id="modalGlobalTitle" class="sr-only">Ventana NicoGym</div>
+            <button class="modal-close" onclick="Modal.cerrar()"><i class="fa-solid fa-xmark"></i></button>
             <div id="modalGlobalContent"></div>
         </div>
     </div>
@@ -147,13 +146,11 @@
     <script src="js/exercises.js"></script>
     <script src="js/helpers.js"></script>
     <script src="js/calendar.js"></script>
-    <script src="js/routines.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/state.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/modal.js"></script>
     <script src="js/records.js"></script>
-    <script src="js/progression.js"></script>
     <script src="js/app.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/workouts.js"></script>
