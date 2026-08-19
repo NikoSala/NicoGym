@@ -1,15 +1,15 @@
 // ==========================================
-        // AJUSTES
-        // ==========================================
-        const Ajustes = {
-            render() {
-                const c = document.getElementById('ajustesContainer');
-                if (!c) return;
+// AJUSTES
+// ==========================================
+const Ajustes = {
+  render() {
+    const c = document.getElementById("ajustesContainer");
+    if (!c) return;
 
-                // Leer estado actual del temporizador
-                const temporizadorActivo = CONFIG.TEMPORIZADOR_DESCANSO;
+    // Leer estado actual del temporizador
+    const temporizadorActivo = CONFIG.TEMPORIZADOR_DESCANSO;
 
-                c.innerHTML = `
+    c.innerHTML = `
                     <div class="card">
                         <div class="card-title"><i class="fa-solid fa-user"></i> Perfil</div>
                         <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="input input-sm" id="ajusteNombre" value="${STATE.nombre}" style="width:120px;"></div>
@@ -30,10 +30,10 @@
                         <div class="ajustes-item">
                             <span class="aj-label">⏱️ Temporizador de descanso</span>
                             <div class="switch-container">
-                                <div class="switch ${temporizadorActivo ? 'active' : ''}" onclick="Ajustes._toggleDescanso()">
+                                <div class="switch ${temporizadorActivo ? "active" : ""}" onclick="Ajustes._toggleDescanso()">
                                     <div class="switch-thumb"></div>
                                 </div>
-                                <span class="switch-label">${temporizadorActivo ? 'Activado' : 'Desactivado'}</span>
+                                <span class="switch-label">${temporizadorActivo ? "Activado" : "Desactivado"}</span>
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                     <div class="card">
                         <div class="card-title"><i class="fa-solid fa-calendar"></i> Calendario de actualizaciones</div>
                         <div style="font-size:12px;color:var(--text-secondary);padding:4px 0;">
-                            <div>📅 Primer domingo completo: <strong>16 de agosto de 2026</strong></div>
+                            <div>📅 Próxima actualización: <strong>${new Date(APP.obtenerProximaActualizacion()).toLocaleDateString("es-ES")}</strong></div>
                             <div style="margin-top:2px;">🔄 Peso: <strong>cada semana</strong></div>
                             <div style="color:var(--text-secondary);">📏 Mediciones: <strong>cada 2 semanas</strong></div>
                             <div style="color:var(--text-secondary);">📸 Fotos: <strong>cada 4 semanas</strong></div>
@@ -62,37 +62,43 @@
                         <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:6px;">NicoGym · Tu compañero de entrenamiento</div>
                     </div>
                 `;
-            },
+  },
 
-            _guardar() {
-                const nombre = document.getElementById('ajusteNombre').value || 'Nico';
-                const altura = parseInt(document.getElementById('ajusteAltura').value) || CONFIG.ALTURA;
-                const objetivo = parseInt(document.getElementById('ajusteObjetivo').value) || CONFIG.PESO_OBJETIVO;
-                STATE.nombre = nombre;
-                STATE.altura = altura;
-                CONFIG.PESO_OBJETIVO = objetivo;
-                STATE.ajustes = { nombre, altura, objetivo };
-                Storage._save();
-                UI.toast('✅ Ajustes guardados', 'success');
-                APP.renderizarTodo();
-            },
+  _guardar() {
+    const nombre = document.getElementById("ajusteNombre").value || "Nico";
+    const altura =
+      parseInt(document.getElementById("ajusteAltura").value) || CONFIG.ALTURA;
+    const objetivo =
+      parseInt(document.getElementById("ajusteObjetivo").value) ||
+      CONFIG.PESO_OBJETIVO;
+    STATE.nombre = nombre;
+    STATE.altura = altura;
+    CONFIG.PESO_OBJETIVO = objetivo;
+    STATE.ajustes = { nombre, altura, objetivo };
+    Storage._save();
+    UI.toast("✅ Ajustes guardados", "success");
+    APP.renderizarTodo();
+  },
 
-            _guardarRecordatorios() {
-                const fm = parseInt(document.getElementById('ajusteFreqMediciones').value) || 2;
-                const ff = parseInt(document.getElementById('ajusteFreqFotos').value) || 4;
-                STATE.recordatorios.freqMediciones = fm;
-                STATE.recordatorios.freqFotos = ff;
-                Storage._save();
-                UI.toast('✅ Recordatorios guardados', 'success');
-                APP.renderizarTodo();
-            },
+  _guardarRecordatorios() {
+    const fm =
+      parseInt(document.getElementById("ajusteFreqMediciones").value) || 2;
+    const ff = parseInt(document.getElementById("ajusteFreqFotos").value) || 4;
+    STATE.recordatorios.freqMediciones = fm;
+    STATE.recordatorios.freqFotos = ff;
+    Storage._save();
+    UI.toast("✅ Recordatorios guardados", "success");
+    APP.renderizarTodo();
+  },
 
-            _toggleDescanso() {
-                CONFIG.TEMPORIZADOR_DESCANSO = !CONFIG.TEMPORIZADOR_DESCANSO;
-                STATE.config.temporizadorDescanso = CONFIG.TEMPORIZADOR_DESCANSO;
-                Storage._save();
-                this.render();
-                UI.toast(`⏱️ Temporizador ${CONFIG.TEMPORIZADOR_DESCANSO ? 'activado' : 'desactivado'}`, 'info');
-            }
-        };
-
+  _toggleDescanso() {
+    CONFIG.TEMPORIZADOR_DESCANSO = !CONFIG.TEMPORIZADOR_DESCANSO;
+    STATE.config.temporizadorDescanso = CONFIG.TEMPORIZADOR_DESCANSO;
+    Storage._save();
+    this.render();
+    UI.toast(
+      `⏱️ Temporizador ${CONFIG.TEMPORIZADOR_DESCANSO ? "activado" : "desactivado"}`,
+      "info",
+    );
+  },
+};
