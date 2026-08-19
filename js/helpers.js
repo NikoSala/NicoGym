@@ -1,0 +1,44 @@
+// ==========================================
+        // FUNCIONES AUX
+        // ==========================================
+        function getEjercicioPorNombre(nombre) {
+            return getExerciseDatabase().find(e => e.nombre === nombre);
+        }
+
+        function getEjerciciosPorDia(dia) {
+            return getExerciseDatabase().filter(e => e.dia === dia);
+        }
+
+        function getDificultadColor(dificultad) {
+            const map = { 'facil': '🟢', 'media': '🟡', 'dificil': '🔴' };
+            return map[dificultad] || '🟡';
+        }
+
+        function getDificultadTexto(dificultad) {
+            const map = { 'facil': 'Fácil', 'media': 'Media', 'dificil': 'Difícil' };
+            return map[dificultad] || 'Media';
+        }
+
+        function calcularDuracionEstimada(ejercicios) {
+            let total = 0;
+            ejercicios.forEach(ej => {
+                total += (ej.series || 0) * 0.5 + (ej.descanso || 60) / 60;
+            });
+            return Math.round(total);
+        }
+
+        function getProximoDomingo(desde, cadaSemanas) {
+            const d = new Date(desde);
+            const hoy = new Date();
+            while (d <= hoy) d.setDate(d.getDate() + 7 * cadaSemanas);
+            while (d.getDay() !== 0) d.setDate(d.getDate() + 1);
+            return d;
+        }
+
+        function getDiasHasta(fecha) {
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            fecha.setHours(0, 0, 0, 0);
+            return Math.round((fecha - hoy) / 86400000);
+        }
+
