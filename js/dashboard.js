@@ -16,6 +16,7 @@ const Dashboard = {
     const rutinaNombre = CONFIG.TIPOS_RUTINA[dia];
     const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
     const ejercicios = getEjerciciosPorDia(dia);
+    const rutinaNombreActualizada = `Tren superior · ${ejercicios.length} ejercicios${["lunes", "miercoles", "viernes"].includes(dia) ? " + cinta" : ""}`;
 
     const peso =
       STATE.mediciones.length > 0
@@ -180,7 +181,7 @@ const Dashboard = {
                             <div class="pe-titulo">${diasParaProx === 0 ? "🔵 HOY" : diasParaProx === 1 ? "🔴 MAÑANA" : "📅 PRÓXIMO ENTRENO"}</div>
                             <div class="pe-nombre">${proxIcono} ${proxNombre}</div>
                             <div class="pe-datos">
-                                <span>📋 ${CONFIG.TIPOS_RUTINA[proxDia]}</span>
+                                <span>📋 Tren superior · ${proxEjercicios} ejercicios${["lunes", "miercoles", "viernes"].includes(proxDia) ? " + cinta" : ""}</span>
                                 <span>🏋️ ${proxEjercicios} ejercicios</span>
                             </div>
                             <button class="pe-btn" onclick="event.stopPropagation();APP.iniciarEntreno('${proxDia}')">
@@ -210,7 +211,7 @@ const Dashboard = {
                                   : `
                                 <div style="display:flex;align-items:center;justify-content:space-between;">
                                     <div>
-                                        <div style="font-size:14px;font-weight:600;">${rutinaNombre}</div>
+                                        <div style="font-size:14px;font-weight:600;">${rutinaNombreActualizada}</div>
                                         <div style="font-size:11px;color:var(--text-secondary);">${getEjerciciosPorDia(dia).length} ejercicios</div>
                                     </div>
                                     <button class="btn btn-primary btn-sm" onclick="APP.iniciarEntreno('${dia}')"><i class="fa-solid fa-play"></i> Entrenar</button>
