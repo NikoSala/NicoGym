@@ -702,10 +702,19 @@
                 linear-gradient(180deg, #090B0E 0%, #080A0D 100%);
         }
 
-        body::before {
+       body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
             z-index: 0;
-            opacity: 0.13;
+            pointer-events: none;
+
+            background-image: url('../img/logo-nicogym.png');
+            background-position: center;
             background-size: clamp(420px, 66vw, 760px) auto;
+            background-repeat: no-repeat;
+
+            opacity: 0.13;
             filter: grayscale(.2) saturate(.8) drop-shadow(0 0 34px rgba(125,16,40,.18));
         }
 
