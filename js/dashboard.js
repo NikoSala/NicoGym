@@ -13,7 +13,7 @@ const Dashboard = {
     if (horas >= 21 || horas < 6) saludo = "Buenas noches";
 
     const dia = UI.getDiaNombre();
-    const rutinaNombre = CONFIG.TIPOS_RUTINA[dia] || "Descanso";
+    const rutinaNombre = CONFIG.TIPOS_RUTINA[dia];
     const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
 
     const peso =
