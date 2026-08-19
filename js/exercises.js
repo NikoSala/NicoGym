@@ -310,7 +310,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'miercoles',
+                    dia: 'jueves',
                     dificultad: 'facil',
                     material: ['Banco', 'Mancuerna'],
                     intensidadMuscular: { 'Pecho': 70, 'Espalda': 65, 'Tríceps': 40 }
@@ -424,7 +424,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'miercoles',
+                    dia: 'jueves',
                     dificultad: 'media',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Tríceps': 80, 'Pecho': 70 }
@@ -675,7 +675,7 @@
                     series: 4,
                     reps: '8-12',
                     descanso: 90,
-                    dia: 'martes',
+                    dia: 'viernes',
                     dificultad: 'media',
                     material: ['Banco inclinado', 'Mancuernas'],
                     intensidadMuscular: { 'Espalda': 80, 'Bíceps': 50 }
@@ -694,7 +694,7 @@
                     series: 4,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: 'viernes',
                     dificultad: 'facil',
                     material: ['Banco', 'Mancuernas'],
                     intensidadMuscular: { 'Pecho': 80, 'Hombro': 50 }
@@ -732,7 +732,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: 'viernes',
                     dificultad: 'facil',
                     material: ['Mancuernas'],
                     intensidadMuscular: { 'Bíceps': 80, 'Antebrazo': 70 }
@@ -751,7 +751,7 @@
                     series: 3,
                     reps: '10-15',
                     descanso: 60,
-                    dia: 'jueves',
+                    dia: 'viernes',
                     dificultad: 'facil',
                     material: ['Mancuerna'],
                     intensidadMuscular: { 'Tríceps': 90 }

@@ -313,10 +313,15 @@
                     return;
                 }
 
-                const repsNum = reps.split(',').map(Number).reduce((a, b) => a + b, 0) || 0;
-                const seriesNum = reps.split(',').length || 0;
+                const repsData = parseReps(reps);
+                if (!repsData.valid) {
+                    UI.toast(`Repeticiones no válidas: ${repsData.error}`, 'error');
+                    return;
+                }
+                const repsNum = repsData.total;
+                const seriesNum = repsData.series.length;
 
-                totalPesoLevantadoEntreno += peso;
+                totalPesoLevantadoEntreno += peso * seriesNum;
                 totalVolumenEntreno += peso * repsNum;
                 totalSeriesEntreno += seriesNum;
                 totalRepsEntreno += repsNum;
@@ -504,7 +509,7 @@
                             </div>
                             <div class="me-res-item">
                                 <div class="me-res-valor">${totalPesoLevantadoEntreno.toFixed(1)}</div>
-                                <div class="me-res-label">Peso total</div>
+                                <div class="me-res-label">Carga × series (kg)</div>
                             </div>
                             <div class="me-res-item">
                                 <div class="me-res-valor">${totalVolumenEntreno}</div>

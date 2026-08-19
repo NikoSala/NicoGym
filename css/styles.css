@@ -31,7 +31,7 @@
         body { position: relative; isolation: isolate; }
         body::before {
             content: '';
-            position: relative;
+            position: fixed;
             inset: 0;
             z-index: 1;
             pointer-events: none;
@@ -702,19 +702,9 @@
                 linear-gradient(180deg, #090B0E 0%, #080A0D 100%);
         }
 
-       body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-
-            background-image: url('../img/logo-nicogym.png');
-            background-position: center;
+        body::before {
+            opacity: .055;
             background-size: clamp(420px, 66vw, 760px) auto;
-            background-repeat: no-repeat;
-
-            opacity: 0.13;
             filter: grayscale(.2) saturate(.8) drop-shadow(0 0 34px rgba(125,16,40,.18));
         }
 

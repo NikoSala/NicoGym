@@ -9,6 +9,20 @@
             return getExerciseDatabase().filter(e => e.dia === dia);
         }
 
+        function parseReps(valor) {
+            const texto = String(valor ?? '').trim();
+            if (!texto) return { series: [], total: 0, valid: false, error: 'Introduce las repeticiones.' };
+            const partes = texto.split(',').map(v => v.trim());
+            if (partes.some(v => !/^\d+$/.test(v))) {
+                return { series: [], total: 0, valid: false, error: 'Usa solo números separados por comas.' };
+            }
+            const series = partes.map(Number);
+            if (series.some(v => v < 1 || v > 100)) {
+                return { series: [], total: 0, valid: false, error: 'Cada serie debe estar entre 1 y 100 repeticiones.' };
+            }
+            return { series, total: series.reduce((a, b) => a + b, 0), valid: true };
+        }
+
         function getDificultadColor(dificultad) {
             const map = { 'facil': '🟢', 'media': '🟡', 'dificil': '🔴' };
             return map[dificultad] || '🟡';
