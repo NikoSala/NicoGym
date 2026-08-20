@@ -72,6 +72,31 @@ const Dashboard = {
       entrenamientoPendiente.dia === diaHoy &&
       Array.isArray(entrenamientoPendiente.ejerciciosEntreno) &&
       entrenamientoPendiente.ejerciciosEntreno.length > 0;
+    const ejerciciosHoy = getEjerciciosPorDia(diaHoy);
+
+    let ejerciciosCompletadosHoy = 0;
+
+    ejerciciosHoy.forEach((_, idx) => {
+      if (STATE.checks[`${diaHoy}-${idx}`]) {
+        ejerciciosCompletadosHoy++;
+      }
+    });
+
+    const totalEjerciciosHoy = ejerciciosHoy.length;
+
+    let mensajeProgreso = "";
+
+    if (
+      totalEjerciciosHoy > 0 &&
+      ejerciciosCompletadosHoy > 0 &&
+      !entrenadoHoy
+    ) {
+      if (ejerciciosCompletadosHoy >= totalEjerciciosHoy - 1) {
+        mensajeProgreso = "⚡ Último esfuerzo";
+      } else {
+        mensajeProgreso = `🔥 ${ejerciciosCompletadosHoy} de ${totalEjerciciosHoy} ejercicios`;
+      }
+    }
 
     // ===== BANNER DE ACTUALIZACIÓN =====
     const tipoActualizacion = APP.obtenerTipoActualizacion();
@@ -165,6 +190,21 @@ const Dashboard = {
                 }
 
                 ${updateBanner}
+                ${
+                  mensajeProgreso
+                    ? `
+                        <div class="card progreso-sesion-card">
+                            <div class="card-title">💪 Progreso de hoy</div>
+                            <div style="font-size:18px;font-weight:700;margin-top:4px;">
+                                ${mensajeProgreso}
+                            </div>
+                            <div style="font-size:11px;color:var(--text-secondary);margin-top:3px;">
+                                ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} ejercicios completados
+                            </div>
+                        </div>
+                        `
+                    : ""
+                }
                      <div class="card card-accent">
                     <div class="card-title">📊 Resumen</div>
                     <div class="dash-grid">
