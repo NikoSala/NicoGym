@@ -520,6 +520,31 @@
 
         .btn-entrenar-dia { width: 100%; padding: 12px; font-size: 14px; font-weight: 700; border-radius: var(--radius-sm); margin-top: 6px; }
         .proximo-entreno-card { background: linear-gradient(135deg, var(--primary), #0B6B47); border-radius: var(--radius); padding: 16px 20px; margin-bottom: var(--space-sm); color: #fff; cursor: pointer; transition: var(--transition); }
+        .proximo-entreno-card.entrenamiento-pausado {
+                background: var(--surface);
+                color: var(--text-primary);
+                border: 1px solid var(--warning);
+                border-left: 4px solid var(--warning);
+            }
+
+            .proximo-entreno-card.entrenamiento-pausado .pe-titulo {
+                color: var(--warning);
+                opacity: 1;
+            }
+
+            .proximo-entreno-card.entrenamiento-pausado .pe-datos {
+                color: var(--text-secondary);
+            }
+
+            .proximo-entreno-card.entrenamiento-pausado .pe-btn {
+                background: var(--warning);
+                color: #fff;
+            }
+
+            .proximo-entreno-card.entrenamiento-pausado .pe-btn:hover {
+                background: var(--warning);
+                filter: brightness(0.92);
+            }
         .proximo-entreno-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(165,29,58,0.35); }
         .proximo-entreno-card .pe-titulo { font-size: 10px; font-weight: 500; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; }
         .proximo-entreno-card .pe-nombre { font-size: 20px; font-weight: 700; margin: 2px 0; }

@@ -177,7 +177,8 @@ const APP = {
     if (
       pendiente &&
       pendiente.semana === semanaActual &&
-      pendiente.dia === dia
+      pendiente.dia === dia &&
+      pendiente.dia === UI.getDiaNombre()
     ) {
       modoEntrenoActivo = true;
 
@@ -383,15 +384,36 @@ const APP = {
   _controlesNavegacion() {
     const esPrimero = idxEjercicioActual === 0;
     const esUltimo = idxEjercicioActual === ejerciciosEntreno.length - 1;
+
+    const ejercicioActual = ejerciciosEntreno[idxEjercicioActual];
+    const esCaminata = ejercicioActual?.esCaminata === true;
+
+    const ejercicioCompletado = esCaminata
+      ? cardioCompletado
+      : seriesActualesEntreno.length >= PROGRESION.SERIES_OBJETIVO;
+
+    const puedeSiguiente = !esUltimo && ejercicioCompletado;
+
     return `
-                    <div class="me-navegacion" aria-label="Navegación entre ejercicios">
-                        <button class="btn btn-ghost me-nav-btn" type="button" onclick="APP._navegarEjercicio(-1)" ${esPrimero ? "disabled" : ""} aria-label="Ejercicio anterior">
-                            <i class="fa-solid fa-arrow-left"></i> Anterior
-                        </button>
-                        <button class="btn btn-ghost me-nav-btn" type="button" onclick="APP._navegarEjercicio(1)" ${esUltimo ? "disabled" : ""} aria-label="Ejercicio siguiente">
-                            Siguiente <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>`;
+        <div class="me-navegacion" aria-label="Navegación entre ejercicios">
+            <button
+                class="btn btn-ghost me-nav-btn"
+                type="button"
+                onclick="APP._navegarEjercicio(-1)"
+                ${esPrimero ? "disabled" : ""}
+                aria-label="Ejercicio anterior">
+                <i class="fa-solid fa-arrow-left"></i> Anterior
+            </button>
+
+            <button
+                class="btn btn-ghost me-nav-btn"
+                type="button"
+                onclick="APP._navegarEjercicio(1)"
+                ${!puedeSiguiente ? "disabled" : ""}
+                aria-label="Ejercicio siguiente">
+                Siguiente <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>`;
   },
 
   _navegarEjercicio(direccion) {

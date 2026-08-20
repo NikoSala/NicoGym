@@ -1,159 +1,270 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
     <title>NicoGym</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
     <!-- LOADING SCREEN -->
     <div class="loading-screen" id="loadingScreen">
-        <img src="./img/logo-nicogym.png" alt="NicoGym" class="loading-logo" />
-        <div class="loader"></div>
-        <div class="loader-text">Cargando NicoGym...</div>
+      <img src="./img/logo-nicogym.png" alt="NicoGym" class="loading-logo" />
+      <div class="loader"></div>
+      <div class="loader-text">Cargando NicoGym...</div>
     </div>
 
     <!-- TOP BAR -->
     <header class="top-bar">
-        <div class="top-left">
-        <div class="logo" onclick="APP.navegar('inicio')" style="cursor:pointer;" role="button" aria-label="Volver al inicio">
-            <img src="./img/logo-nicogym.png" alt="NicoGym" class="header-logo" />
+      <div class="top-left">
+        <div
+          class="logo"
+          onclick="APP.navegar('inicio')"
+          style="cursor: pointer"
+          role="button"
+          aria-label="Volver al inicio"
+        >
+          <img src="./img/logo-nicogym.png" alt="NicoGym" class="header-logo" />
         </div>
+      </div>
+      <div class="top-right">
+        <div class="top-stats hidden">
+          <span id="topPesoDisplay">-- kg</span>
+          <span>·</span>
+          <span>🎯 <strong id="topObjetivo">75</strong></span>
         </div>
-        <div class="top-right">
-            <div class="top-stats hidden">
-                <span id="topPesoDisplay">-- kg</span>
-                <span>·</span>
-                <span>🎯 <strong id="topObjetivo">75</strong></span>
+        <div
+          class="bell-wrap"
+          id="bellWrap"
+          role="button"
+          tabindex="0"
+          aria-label="Abrir notificaciones"
+          onclick="UI.toggleNotif()"
+        >
+          <i class="fa-regular fa-bell"></i>
+          <span class="badge hidden" id="bellBadge">0</span>
+          <div class="notif-dropdown" id="notifDropdown">
+            <div class="notif-header">🔔 Pendientes</div>
+            <div id="notifList">
+              <div class="notif-empty">Sin notificaciones</div>
             </div>
-            <div class="bell-wrap" id="bellWrap" role="button" tabindex="0" aria-label="Abrir notificaciones" onclick="UI.toggleNotif()">
-                <i class="fa-regular fa-bell"></i>
-                <span class="badge hidden" id="bellBadge">0</span>
-                <div class="notif-dropdown" id="notifDropdown">
-                    <div class="notif-header">🔔 Pendientes</div>
-                    <div id="notifList">
-                        <div class="notif-empty">Sin notificaciones</div>
-                    </div>
-                </div>
-            </div>
-            <button class="btn btn-ghost btn-sm" aria-label="Abrir menú" onclick="UI.toggleMenu()" style="padding:2px 8px;font-size:14px;border:none;">
-                <i class="fa-solid fa-bars"></i>
-            </button>
+          </div>
         </div>
+        <button
+          class="btn btn-ghost btn-sm"
+          aria-label="Abrir menú"
+          onclick="UI.toggleMenu()"
+          style="padding: 2px 8px; font-size: 14px; border: none"
+        >
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
     </header>
 
     <!-- SIDE MENU -->
     <div class="side-overlay" id="sideOverlay" onclick="UI.toggleMenu()"></div>
     <nav class="side-menu" id="sideMenu">
-        <button class="menu-item active" data-page="inicio" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i> Inicio</button>
-        <button class="menu-item" data-page="rutinas" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i> Entrenar</button>
-        <button class="menu-item" data-page="semana" onclick="APP.navegar('semana')"><i class="fa-solid fa-calendar-week"></i> Rutina</button>
-        <button class="menu-item" data-page="peso" onclick="APP.navegar('peso')"><i class="fa-solid fa-scale-balanced"></i> Peso</button>
-        <button class="menu-item" data-page="agenda" onclick="APP.navegar('agenda')"><i class="fa-solid fa-calendar-check"></i> Agenda</button>
-        <button class="menu-item" data-page="records" onclick="APP.navegar('records')"><i class="fa-solid fa-trophy"></i> Récords</button>
-        <button class="menu-item" data-page="estadisticas" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i> Estadísticas</button>
-        <div class="menu-divider"></div>
-        <button class="menu-item" data-page="fotos" onclick="APP.navegar('fotos')"><i class="fa-solid fa-camera"></i> Fotos</button>
-        <button class="menu-item" data-page="ajustes" onclick="APP.navegar('ajustes')"><i class="fa-solid fa-gear"></i> Ajustes</button>
-        <button class="menu-item" onclick="APP.confirmarReset()" style="color:var(--danger);"><i class="fa-solid fa-trash"></i> Reset</button>
-        <div class="menu-footer">NicoGym 3.2</div>
+      <button
+        class="menu-item active"
+        data-page="inicio"
+        onclick="APP.navegar('inicio')"
+      >
+        <i class="fa-solid fa-house"></i> Inicio
+      </button>
+      <button
+        class="menu-item"
+        data-page="rutinas"
+        onclick="APP.navegar('rutinas')"
+      >
+        <i class="fa-solid fa-dumbbell"></i> Entrenar
+      </button>
+      <button
+        class="menu-item"
+        data-page="semana"
+        onclick="APP.navegar('semana')"
+      >
+        <i class="fa-solid fa-calendar-week"></i> Rutina
+      </button>
+      <button class="menu-item" data-page="peso" onclick="APP.navegar('peso')">
+        <i class="fa-solid fa-scale-balanced"></i> Peso
+      </button>
+      <button
+        class="menu-item"
+        data-page="agenda"
+        onclick="APP.navegar('agenda')"
+      >
+        <i class="fa-solid fa-calendar-check"></i> Agenda
+      </button>
+      <button
+        class="menu-item"
+        data-page="records"
+        onclick="APP.navegar('records')"
+      >
+        <i class="fa-solid fa-trophy"></i> Récords
+      </button>
+      <button
+        class="menu-item"
+        data-page="estadisticas"
+        onclick="APP.navegar('estadisticas')"
+      >
+        <i class="fa-solid fa-chart-bar"></i> Estadísticas
+      </button>
+      <div class="menu-divider"></div>
+      <button
+        class="menu-item"
+        data-page="fotos"
+        onclick="APP.navegar('fotos')"
+      >
+        <i class="fa-solid fa-camera"></i> Fotos
+      </button>
+      <button
+        class="menu-item"
+        data-page="ajustes"
+        onclick="APP.navegar('ajustes')"
+      >
+        <i class="fa-solid fa-gear"></i> Ajustes
+      </button>
+      <button
+        class="menu-item"
+        onclick="APP.confirmarReset()"
+        style="color: var(--danger)"
+      >
+        <i class="fa-solid fa-trash"></i> Reset
+      </button>
+      <div class="menu-footer">NicoGym 3.2</div>
     </nav>
 
     <!-- PAGES -->
     <div class="page active" id="page-inicio">
-        <div id="dashboardContainer"></div>
+      <div id="dashboardContainer"></div>
     </div>
 
     <div class="page" id="page-rutinas">
-        <div id="progresoRutinaContainer"></div>
-        <div class="day-tabs" id="dayTabs"></div>
-        <div id="dayPanelsContainer"></div>
+      <div id="progresoRutinaContainer"></div>
+      <div class="day-tabs" id="dayTabs"></div>
+      <div id="dayPanelsContainer"></div>
     </div>
 
     <div class="page" id="page-semana">
-        <div id="semanaContainer"></div>
+      <div id="semanaContainer"></div>
     </div>
 
     <div class="page" id="page-peso">
-        <div id="pesoContainer"></div>
+      <div id="pesoContainer"></div>
     </div>
 
     <div class="page" id="page-agenda">
-        <div id="agendaContainer"></div>
+      <div id="agendaContainer"></div>
     </div>
 
     <div class="page" id="page-records">
-        <div id="recordsContainer"></div>
+      <div id="recordsContainer"></div>
     </div>
 
     <div class="page" id="page-estadisticas">
-        <div id="estadisticasContainer"></div>
+      <div id="estadisticasContainer"></div>
     </div>
 
     <div class="page" id="page-fotos">
-        <div id="fotosContainer"></div>
+      <div id="fotosContainer"></div>
     </div>
 
     <div class="page" id="page-ajustes">
-        <div id="ajustesContainer"></div>
+      <div id="ajustesContainer"></div>
     </div>
 
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
-        <button class="nav-btn active" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i>Inicio</button>
-        <button class="nav-btn" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i>Entrenar</button>
-        <button class="nav-btn" onclick="APP.navegar('semana')"><i class="fa-solid fa-calendar-week"></i>Rutina</button>
-        <button class="nav-btn" onclick="APP.navegar('peso')"><i class="fa-solid fa-scale-balanced"></i>Peso</button>
-        <button class="nav-btn" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i>Stats</button>
+      <button class="nav-btn active" onclick="APP.navegar('inicio')">
+        <i class="fa-solid fa-house"></i>Inicio
+      </button>
+      <button class="nav-btn" onclick="APP.navegar('rutinas')">
+        <i class="fa-solid fa-dumbbell"></i>Entrenar
+      </button>
+      <button class="nav-btn" onclick="APP.navegar('semana')">
+        <i class="fa-solid fa-calendar-week"></i>Rutina
+      </button>
+      <button class="nav-btn" onclick="APP.navegar('peso')">
+        <i class="fa-solid fa-scale-balanced"></i>Peso
+      </button>
+      <button class="nav-btn" onclick="APP.navegar('estadisticas')">
+        <i class="fa-solid fa-chart-bar"></i>Stats
+      </button>
     </nav>
 
     <!-- MODAL -->
-    <div class="modal-overlay hidden" id="modalGlobal" role="dialog" aria-modal="true" aria-labelledby="modalGlobalTitle">
-        <div class="modal-panel" id="modalGlobalPanel">
-            <button class="modal-close" aria-label="Cerrar" onclick="Modal.cerrar()"><i class="fa-solid fa-xmark"></i></button>
-            <div id="modalGlobalTitle" class="sr-only">Ventana NicoGym</div>
-            <div id="modalGlobalContent"></div>
-        </div>
+    <div
+      class="modal-overlay hidden"
+      id="modalGlobal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalGlobalTitle"
+    >
+      <div class="modal-panel" id="modalGlobalPanel">
+        <button
+          class="modal-close"
+          aria-label="Cerrar"
+          onclick="Modal.cerrar()"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div id="modalGlobalTitle" class="sr-only">Ventana NicoGym</div>
+        <div id="modalGlobalContent"></div>
+      </div>
     </div>
 
     <!-- LIGHTBOX -->
     <div class="lightbox" id="lightbox" onclick="UI.cerrarLightbox()">
-        <img id="lightboxImg" src="" alt="Imagen ampliada">
+      <img id="lightboxImg" src="" alt="Imagen ampliada" />
     </div>
 
     <!-- MODO ENTRENO -->
     <div class="modo-entreno-overlay" id="modoEntreno">
-        <div class="me-header">
-            <button
-                type="button"
-                class="me-logo-btn"
-                onclick="APP._pausarEntreno()"
-                aria-label="Guardar y volver al inicio"
-                title="Guardar y volver al inicio"
-            >
-                <img src="img/logo-nicogym.png" alt="NicoGym">
-            </button>
+      <div class="me-header">
+        <button
+          type="button"
+          class="me-logo-btn"
+          onclick="APP._pausarEntreno()"
+          aria-label="Guardar y volver al inicio"
+          title="Guardar y volver al inicio"
+        >
+          <img src="img/logo-nicogym.png" alt="NicoGym" />
+        </button>
 
-            <span class="me-titulo" id="meTitulo">🏋️ Entrenando</span>
+        <span class="me-titulo" id="meTitulo">🏋️ Entrenando</span>
 
-            <span class="me-progreso-texto" id="meProgresoTexto">0 / 0</span>
+        <span class="me-progreso-texto" id="meProgresoTexto">0 / 0</span>
+      </div>
+      <div class="me-progreso-bar">
+        <div class="me-progreso-track">
+          <div
+            class="me-progreso-fill"
+            id="meProgresoFill"
+            style="width: 0%"
+          ></div>
         </div>
-        <div class="me-progreso-bar">
-            <div class="me-progreso-track">
-                <div class="me-progreso-fill" id="meProgresoFill" style="width:0%;"></div>
-            </div>
-            <div class="me-progreso-info" id="meProgresoInfo">0%</div>
-        </div>
-        <div id="meCompletadoMsg" class="me-completado-msg hidden">✔ Ejercicio completado</div>
-        <div class="me-body" id="meBody"></div>
+        <div class="me-progreso-info" id="meProgresoInfo">0%</div>
+      </div>
+      <div id="meCompletadoMsg" class="me-completado-msg hidden">
+        ✔ Ejercicio completado
+      </div>
+      <div class="me-body" id="meBody"></div>
     </div>
 
-        <script src="js/config.js"></script>
+    <script src="js/config.js"></script>
     <script src="js/exercise-names.js"></script>
     <script src="js/exercises.js"></script>
     <script src="js/helpers.js"></script>
@@ -176,5 +287,5 @@
     <script src="js/notifications.js"></script>
     <script src="js/settings.js"></script>
     <script src="js/init.js"></script>
-</body>
+  </body>
 </html>

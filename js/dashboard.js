@@ -111,6 +111,14 @@ const Dashboard = {
 
     const notifs = Notificaciones.generar();
 
+    const entrenamientoPendiente = STATE.entrenamientoPendiente;
+    const hayEntrenamientoPendiente =
+      entrenamientoPendiente &&
+      entrenamientoPendiente.dia === dia &&
+      entrenamientoPendiente.semana === Storage._getSemanaKey(hoy) &&
+      Array.isArray(entrenamientoPendiente.ejerciciosEntreno) &&
+      entrenamientoPendiente.ejerciciosEntreno.length > 0;
+
     // ===== BANNER DE ACTUALIZACIÓN =====
     const tipoActualizacion = APP.obtenerTipoActualizacion();
     let updateBanner = "";
@@ -155,11 +163,29 @@ const Dashboard = {
     }
 
     c.innerHTML = `
-                    <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
-                    <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
+                <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
+                <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
 
-                    ${updateBanner}
+                ${
+                  hayEntrenamientoPendiente
+                    ? `
+                    <div class="proximo-entreno-card" style="border-left:3px solid var(--warning);">
+                        <div class="pe-titulo">⏸️ ENTRENAMIENTO PAUSADO</div>
+                        <div class="pe-nombre">
+                            💪 ${CONFIG.NOMBRES_DIAS[entrenamientoPendiente.dia] || entrenamientoPendiente.dia}
+                        </div>
+                        <div class="pe-datos">
+                            <span>▶️ Puedes continuar donde lo dejaste</span>
+                        </div>
+                        <button class="pe-btn" onclick="APP.iniciarEntreno('${entrenamientoPendiente.dia}')">
+                            <i class="fa-solid fa-play"></i> Reanudar entrenamiento
+                        </button>
+                    </div>
+                    `
+                    : ""
+                }
 
+                ${updateBanner}
                     <div class="card card-accent">
                         <div class="card-title">📊 Resumen</div>
                         <div class="dash-grid">
