@@ -34,11 +34,6 @@ const Notificaciones = {
         tipo: "entrenamiento",
       });
     }
-    notifs.push({
-      icono: "🚨",
-      texto: "PRUEBA — notificación importante",
-      tipo: "importante",
-    });
 
     return notifs;
   },

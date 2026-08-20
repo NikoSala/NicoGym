@@ -165,39 +165,75 @@ const Dashboard = {
                 <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
                 <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
 
-                ${
+                $${
                   hayEntrenamientoPendiente
                     ? `
-                    <div class="proximo-entreno-card entrenamiento-pausado">
-                        <div class="pe-titulo">⏸️ ENTRENAMIENTO PAUSADO</div>
-                        <div class="pe-nombre">
-                            💪 ${CONFIG.NOMBRES_DIAS[entrenamientoPendiente.dia] || entrenamientoPendiente.dia}
-                        </div>
-                        <div class="pe-datos">
-                            <span>▶️ Puedes continuar donde lo dejaste</span>
-                        </div>
-                        <button class="pe-btn" onclick="APP.iniciarEntreno('${entrenamientoPendiente.dia}')">
-                            <i class="fa-solid fa-play"></i> Reanudar entrenamiento
-                        </button>
-                    </div>
-                    `
-                    : ""
+                            <div class="proximo-entreno-card entrenamiento-pausado">
+                                <div class="pe-titulo">⏸️ ENTRENAMIENTO PAUSADO</div>
+                                <div class="pe-nombre">
+                                    💪 ${CONFIG.NOMBRES_DIAS[entrenamientoPendiente.dia] || entrenamientoPendiente.dia}
+                                </div>
+                                <div class="pe-datos">
+                                    <span>▶️ Puedes continuar donde lo dejaste</span>
+                                </div>
+                                <button class="pe-btn" onclick="APP.iniciarEntreno('${entrenamientoPendiente.dia}')">
+                                    <i class="fa-solid fa-play"></i> Reanudar entrenamiento
+                                </button>
+                            </div>
+                        `
+                    : dia === "sabado" || dia === "domingo"
+                      ? `
+                                <div class="proximo-entreno-card">
+                                    <div class="pe-titulo">😌 DESCANSO</div>
+                                    <div class="pe-nombre">
+                                        Hoy toca recuperar
+                                    </div>
+                                    <div class="pe-datos">
+                                        <span>🛌 Sábado y domingo · descanso</span>
+                                    </div>
+                                </div>
+                            `
+                      : `
+                                <div class="proximo-entreno-card">
+                                    <div class="pe-titulo">💪 HOY</div>
+                                    <div class="pe-nombre">
+                                        ${CONFIG.TIPOS_RUTINA[dia]}
+                                    </div>
+                                    <div class="pe-datos">
+                                        <span>🏋️ ${getEjerciciosPorDia(dia).length} ejercicios</span>
+                                    </div>
+                                    <button class="pe-btn" onclick="APP.iniciarEntreno('${dia}')">
+                                        <i class="fa-solid fa-play"></i> Comenzar entrenamiento
+                                    </button>
+                                </div>
+                            `
                 }
 
                 ${updateBanner}
-                    <div class="card card-accent">
-                        <div class="card-title">📊 Resumen</div>
-                        <div class="dash-grid">
-                            <div class="dash-stat">
-                                <div class="num primary">${peso}</div>
-                                <div class="label">Peso (kg)</div>
-                            </div>
-                            <div class="dash-stat">
-                                <div class="num green">${pctObjetivo}%</div>
-                                <div class="label">Objetivo</div>
+                        <div class="card card-accent">
+                            <div class="card-title">📊 Resumen</div>
+                            <div class="dash-grid">
+                                <div class="dash-stat">
+                                    <div class="num primary">${peso}</div>
+                                    <div class="label">Peso (kg)</div>
+                                </div>
+
+                                <div class="dash-stat">
+                                    <div class="num green">${pctObjetivo}%</div>
+                                    <div class="label">Objetivo</div>
+                                </div>
+
+                                <div class="dash-stat">
+                                    <div class="num">${racha}</div>
+                                    <div class="label">🔥 Racha</div>
+                                </div>
+
+                                <div class="dash-stat">
+                                    <div class="num">${STATE.diasEntrenados.length}</div>
+                                    <div class="label">🏋️ Entrenos</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
                     ${
                       proxDia && diasParaProx <= 3
@@ -245,13 +281,6 @@ const Dashboard = {
                             }
                         </div>
                     `
-                    }
-
-                    <div class="card">
-                        <div class="card-title">📋 Último entrenamiento</div>
-                        <div style="font-size:14px;font-weight:600;">${ultimoEntreno}</div>
-                        ${racha > 0 ? `<div style="font-size:11px;color:var(--text-secondary);">🔥 Racha: ${racha} días</div>` : ""}
-                    </div>
-                `;
+                    
   },
 };
