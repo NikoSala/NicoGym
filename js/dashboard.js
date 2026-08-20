@@ -210,30 +210,19 @@ const Dashboard = {
                 }
 
                 ${updateBanner}
-                        <div class="card card-accent">
-                            <div class="card-title">📊 Resumen</div>
-                            <div class="dash-grid">
-                                <div class="dash-stat">
-                                    <div class="num primary">${peso}</div>
-                                    <div class="label">Peso (kg)</div>
-                                </div>
-
-                                <div class="dash-stat">
-                                    <div class="num green">${pctObjetivo}%</div>
-                                    <div class="label">Objetivo</div>
-                                </div>
-
-                                <div class="dash-stat">
-                                    <div class="num">${racha}</div>
-                                    <div class="label">🔥 Racha</div>
-                                </div>
-
-                                <div class="dash-stat">
-                                    <div class="num">${STATE.diasEntrenados.length}</div>
-                                    <div class="label">🏋️ Entrenos</div>
-                                </div>
+                    <div class="card card-accent">
+                        <div class="card-title">📊 Resumen</div>
+                        <div class="dash-grid">
+                            <div class="dash-stat">
+                                <div class="num primary">${peso}</div>
+                                <div class="label">Peso (kg)</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="num green">${pctObjetivo}%</div>
+                                <div class="label">Objetivo</div>
                             </div>
                         </div>
+                    </div>
 
                     ${
                       proxDia && diasParaProx <= 3
@@ -281,6 +270,6 @@ const Dashboard = {
                             }
                         </div>
                     `
-                    
+                    }
   },
 };
