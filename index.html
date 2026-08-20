@@ -129,7 +129,18 @@
     <!-- MODO ENTRENO -->
     <div class="modo-entreno-overlay" id="modoEntreno">
         <div class="me-header">
+            <button
+                type="button"
+                class="me-logo-btn"
+                onclick="APP._pausarEntreno()"
+                aria-label="Guardar y volver al inicio"
+                title="Guardar y volver al inicio"
+            >
+                <img src="img/logo-nicogym.png" alt="NicoGym">
+            </button>
+
             <span class="me-titulo" id="meTitulo">🏋️ Entrenando</span>
+
             <span class="me-progreso-texto" id="meProgresoTexto">0 / 0</span>
         </div>
         <div class="me-progreso-bar">

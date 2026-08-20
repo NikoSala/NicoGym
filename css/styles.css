@@ -1020,6 +1020,38 @@
             border-bottom:1px solid #2A2E35 !important;
             backdrop-filter:blur(18px);
         }
+        .me-logo-btn {
+            width: 42px;
+            height: 42px;
+            padding: 4px;
+            margin: 0;
+            border: 0;
+            border-radius: 10px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 42px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .me-logo-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .me-logo-btn:active {
+            transform: scale(0.92);
+        }
+
+        .me-logo-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+        
         .me-progreso-track { background:#25292F !important; }
         .me-progreso-fill { background:linear-gradient(90deg,#5F0B20,#A51D3A,#C7CBD1) !important; }
         .me-completado-msg { color:#D6A94A !important; }
