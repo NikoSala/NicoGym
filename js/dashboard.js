@@ -109,8 +109,6 @@ const Dashboard = {
       }
     }
 
-    const notifs = Notificaciones.generar();
-
     const entrenamientoPendiente = STATE.entrenamientoPendiente;
     const diaHoy = UI.getDiaNombre();
 
@@ -254,32 +252,6 @@ const Dashboard = {
                         <div style="font-size:14px;font-weight:600;">${ultimoEntreno}</div>
                         ${racha > 0 ? `<div style="font-size:11px;color:var(--text-secondary);">🔥 Racha: ${racha} días</div>` : ""}
                     </div>
-
-                    <div class="card">
-                        <div class="card-title">📏 Última medición</div>
-                        <div style="font-size:14px;font-weight:600;">${ultimaMedicion}</div>
-                    </div>
-
-                    ${
-                      notifs.length > 0
-                        ? `
-                        <div class="card" style="border-left:3px solid var(--warning);">
-                            <div class="card-title">🔔 Pendientes (${notifs.length})</div>
-                            ${notifs
-                              .map(
-                                (n) => `
-                                <div class="pending-item">
-                                    <span class="pi-icon">${n.icono}</span>
-                                    <span>${n.texto}</span>
-                                </div>
-                            `,
-                              )
-                              .join("")}
-                            <div style="text-align:center;margin-top:6px;font-size:10px;color:var(--text-secondary);cursor:pointer;" onclick="APP.navegar('agenda')">Ver todas →</div>
-                        </div>
-                    `
-                        : ""
-                    }
                 `;
   },
 };
