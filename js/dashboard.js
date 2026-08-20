@@ -64,51 +64,6 @@ const Dashboard = {
       else ultimaMedicion = UI.formatearFecha(ultima.fecha);
     }
 
-    const diasMap = {
-      0: "domingo",
-      1: "lunes",
-      2: "martes",
-      3: "miercoles",
-      4: "jueves",
-      5: "viernes",
-      6: "sabado",
-    };
-    let proxDia = null;
-    let proxNombre = "";
-    let proxIcono = "";
-    let proxEjercicios = 0;
-    let diasParaProx = 0;
-
-    // Empezar por hoy. Si ya se completó, el recorrido continúa con
-    // el siguiente día real de entrenamiento de la rutina semanal.
-    for (let i = 0; i <= 7; i++) {
-      const d = new Date(hoy);
-      d.setDate(hoy.getDate() + i);
-      const diaKey = diasMap[d.getDay()];
-      const esDiaEntreno = diaKey !== "sabado" && diaKey !== "domingo";
-      const yaCompletado =
-        i === 0 && STATE.diasEntrenados.includes(UI.formatFecha(d));
-      if (esDiaEntreno && !yaCompletado) {
-        const ejercicios = getEjerciciosPorDia(diaKey);
-        if (ejercicios.length > 0) {
-          proxDia = diaKey;
-          proxNombre = CONFIG.NOMBRES_DIAS[diaKey];
-          const iconos = ["🔵", "🟢", "🟠", "🟣", "🔵"];
-          const idx = [
-            "lunes",
-            "martes",
-            "miercoles",
-            "jueves",
-            "viernes",
-          ].indexOf(diaKey);
-          proxIcono = idx >= 0 ? iconos[idx] : "💪";
-          proxEjercicios = ejercicios.length;
-          diasParaProx = i;
-          break;
-        }
-      }
-    }
-
     const entrenamientoPendiente = STATE.entrenamientoPendiente;
     const diaHoy = UI.getDiaNombre();
 
@@ -210,67 +165,19 @@ const Dashboard = {
                 }
 
                 ${updateBanner}
-                    <div class="card card-accent">
-                        <div class="card-title">📊 Resumen</div>
-                        <div class="dash-grid">
-                            <div class="dash-stat">
-                                <div class="num primary">${peso}</div>
-                                <div class="label">Peso (kg)</div>
-                            </div>
-                            <div class="dash-stat">
-                                <div class="num green">${pctObjetivo}%</div>
-                                <div class="label">Objetivo</div>
-                            </div>
+                     <div class="card card-accent">
+                    <div class="card-title">📊 Resumen</div>
+                    <div class="dash-grid">
+                        <div class="dash-stat">
+                            <div class="num primary">${peso}</div>
+                            <div class="label">Peso (kg)</div>
+                        </div>
+                        <div class="dash-stat">
+                            <div class="num green">${pctObjetivo}%</div>
+                            <div class="label">Objetivo</div>
                         </div>
                     </div>
-
-                    ${
-                      proxDia && diasParaProx <= 3
-                        ? `
-                        <div class="proximo-entreno-card" onclick="APP.navegar('rutinas')">
-                            <div class="pe-titulo">${diasParaProx === 0 ? "🔵 HOY" : diasParaProx === 1 ? "🔴 MAÑANA" : "📅 PRÓXIMO ENTRENO"}</div>
-                            <div class="pe-nombre">${proxIcono} ${proxNombre}</div>
-                            <div class="pe-datos">
-                                <span>📋 ${CONFIG.TIPOS_RUTINA[proxDia]}</span>
-                                <span>🏋️ ${proxEjercicios} ejercicios</span>
-                            </div>
-                            <button class="pe-btn" onclick="event.stopPropagation();APP.iniciarEntreno('${proxDia}')">
-                                <i class="fa-solid fa-play"></i> Comenzar
-                            </button>
-                        </div>
-                    `
-                        : `
-                        <div class="card">
-                            <div class="card-title">💪 Rutina de hoy</div>
-                            ${
-                              dia === "domingo" || dia === "sabado"
-                                ? `
-                                <div style="text-align:center;padding:6px 0;color:var(--text-secondary);">
-                                    <span style="font-size:28px;display:block;margin-bottom:2px;">${dia === "sabado" ? "😌" : "😌"}</span>
-                                    Día de descanso
-                                </div>
-                            `
-                                : entrenadoHoy
-                                  ? `
-                                <div style="text-align:center;padding:6px 0;color:var(--success);">
-                                    <span style="font-size:28px;display:block;margin-bottom:2px;">✅</span>
-                                    Completado
-                                    <div style="font-size:11px;color:var(--text-secondary);">${CONFIG.TIPOS_RUTINA[dia]}</div>
-                                </div>
-                            `
-                                  : `
-                                <div style="display:flex;align-items:center;justify-content:space-between;">
-                                    <div>
-                                        <div style="font-size:14px;font-weight:600;">${rutinaNombreActualizada}</div>
-                                        <div style="font-size:11px;color:var(--text-secondary);">${getEjerciciosPorDia(dia).length} ejercicios</div>
-                                    </div>
-                                    <button class="btn btn-primary btn-sm" onclick="APP.iniciarEntreno('${dia}')"><i class="fa-solid fa-play"></i> Entrenar</button>
-                                </div>
-                            `
-                            }
-                        </div>
-                    `
-                    }
-`;
+                </div>
+            `;
   },
 };
