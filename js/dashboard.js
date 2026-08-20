@@ -165,7 +165,7 @@ const Dashboard = {
                 <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
                 <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
 
-                $${
+                ${
                   hayEntrenamientoPendiente
                     ? `
                             <div class="proximo-entreno-card entrenamiento-pausado">
@@ -271,5 +271,6 @@ const Dashboard = {
                         </div>
                     `
                     }
+`;
   },
 };
