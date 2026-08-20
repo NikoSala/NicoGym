@@ -323,6 +323,7 @@ const APP = {
 
     body.innerHTML = `
                     <div class="me-ejercicio-card">
+                      ${this._controlesNavegacion()}
                         <div class="me-ej-numero">Ejercicio ${idxEjercicioActual + 1} de ${total}</div>
                         <div class="me-ej-nombre">${ej.nombre}</div>
                         <div class="me-ej-grupo">${ej.grupo}</div>
@@ -374,7 +375,6 @@ const APP = {
                             <button class="btn btn-success" onclick="APP._guardarSerie()"><i class="fa-solid fa-check"></i> Guardar serie ${Math.min(seriesActualesEntreno.length + 1, PROGRESION.SERIES_OBJETIVO)}</button>
                         </div>
                         ${objetivoDia.completo ? `<div class="me-progresion-hint">💪 El último día completaste 4×12 en todo el entrenamiento. Al terminar hoy podrás recibir una recomendación de carga.</div>` : ""}
-                        ${this._controlesNavegacion()}
                     </div>
                 `;
     document.getElementById("modoEntreno").scrollTop = 0;
@@ -385,35 +385,26 @@ const APP = {
     const esPrimero = idxEjercicioActual === 0;
     const esUltimo = idxEjercicioActual === ejerciciosEntreno.length - 1;
 
-    const ejercicioActual = ejerciciosEntreno[idxEjercicioActual];
-    const esCaminata = ejercicioActual?.esCaminata === true;
-
-    const ejercicioCompletado = esCaminata
-      ? cardioCompletado
-      : seriesActualesEntreno.length >= PROGRESION.SERIES_OBJETIVO;
-
-    const puedeSiguiente = !esUltimo && ejercicioCompletado;
-
     return `
-        <div class="me-navegacion" aria-label="Navegación entre ejercicios">
-            <button
-                class="btn btn-ghost me-nav-btn"
-                type="button"
-                onclick="APP._navegarEjercicio(-1)"
-                ${esPrimero ? "disabled" : ""}
-                aria-label="Ejercicio anterior">
-                <i class="fa-solid fa-arrow-left"></i> Anterior
-            </button>
+          <div class="me-navegacion" aria-label="Navegación entre ejercicios">
+              <button
+                  class="btn btn-ghost me-nav-btn"
+                  type="button"
+                  onclick="APP._navegarEjercicio(-1)"
+                  ${esPrimero ? "disabled" : ""}
+                  aria-label="Ejercicio anterior">
+                  <i class="fa-solid fa-arrow-left"></i> Anterior
+              </button>
 
-            <button
-                class="btn btn-ghost me-nav-btn"
-                type="button"
-                onclick="APP._navegarEjercicio(1)"
-                ${!puedeSiguiente ? "disabled" : ""}
-                aria-label="Ejercicio siguiente">
-                Siguiente <i class="fa-solid fa-arrow-right"></i>
-            </button>
-        </div>`;
+              <button
+                  class="btn btn-ghost me-nav-btn"
+                  type="button"
+                  onclick="APP._navegarEjercicio(1)"
+                  ${esUltimo ? "disabled" : ""}
+                  aria-label="Ejercicio siguiente">
+                  Siguiente <i class="fa-solid fa-arrow-right"></i>
+              </button>
+          </div>`;
   },
 
   _navegarEjercicio(direccion) {

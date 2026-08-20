@@ -112,10 +112,11 @@ const Dashboard = {
     const notifs = Notificaciones.generar();
 
     const entrenamientoPendiente = STATE.entrenamientoPendiente;
+    const diaHoy = UI.getDiaNombre();
+
     const hayEntrenamientoPendiente =
       entrenamientoPendiente &&
-      entrenamientoPendiente.dia === dia &&
-      entrenamientoPendiente.semana === Storage._getSemanaKey(hoy) &&
+      entrenamientoPendiente.dia === diaHoy &&
       Array.isArray(entrenamientoPendiente.ejerciciosEntreno) &&
       entrenamientoPendiente.ejerciciosEntreno.length > 0;
 
@@ -169,7 +170,7 @@ const Dashboard = {
                 ${
                   hayEntrenamientoPendiente
                     ? `
-                    <div class="proximo-entreno-card" style="border-left:3px solid var(--warning);">
+                    <div class="proximo-entreno-card entrenamiento-pausado">
                         <div class="pe-titulo">⏸️ ENTRENAMIENTO PAUSADO</div>
                         <div class="pe-nombre">
                             💪 ${CONFIG.NOMBRES_DIAS[entrenamientoPendiente.dia] || entrenamientoPendiente.dia}
