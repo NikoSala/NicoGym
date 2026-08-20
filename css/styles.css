@@ -66,7 +66,7 @@
             background-position: center 52%;
             background-size: clamp(300px, 72vw, 560px) auto;
             background-repeat: no-repeat;
-            opacity: 0.30;
+            opacity: 0.45;
             filter: saturate(1.05) drop-shadow(0 0 26px rgba(165,29,58,0.18));
         }
         .page > * { position: relative; z-index: 1; }

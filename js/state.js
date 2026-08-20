@@ -33,6 +33,7 @@ const STATE = {
   ultimasMediciones: null,
   ultimasFotosGuardadas: null,
   progresion: {},
+  entrenamientoPendiente: null,
 };
 
 let diaActivo = "lunes";
