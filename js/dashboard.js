@@ -76,14 +76,17 @@ const Dashboard = {
 
     let ejerciciosCompletadosHoy = 0;
 
-    ejerciciosHoy.forEach((_, idx) => {
-      if (STATE.checks[`${diaHoy}-${idx}`]) {
-        ejerciciosCompletadosHoy++;
-      }
-    });
+    if (Array.isArray(ejerciciosHoy) && STATE.checks) {
+      ejerciciosHoy.forEach((_, idx) => {
+        if (STATE.checks[`${diaHoy}-${idx}`] === true) {
+          ejerciciosCompletadosHoy++;
+        }
+      });
+    }
 
-    const totalEjerciciosHoy = ejerciciosHoy.length;
-
+    const totalEjerciciosHoy = Array.isArray(ejerciciosHoy)
+      ? ejerciciosHoy.length
+      : 0;
     let mensajeProgreso = "";
 
     if (
