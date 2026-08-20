@@ -9,7 +9,7 @@
                 // LUNES (sin cambios)
                 {
                     id: 'press-plano',
-                    nombre: 'Press plano con mancuernas',
+                    nombre: 'Press de pecho con mancuernas',
                     grupo: 'Pecho',
                     categoria: 'Press',
                     urlGif: 'https://gymvisual.com/img/p/1/8/6/4/5/18645.gif',
@@ -66,7 +66,7 @@
                 },
                 {
                     id: 'press-militar',
-                    nombre: 'Press militar sentado',
+                    nombre: 'Press de hombros con mancuernas',
                     grupo: 'Hombro',
                     categoria: 'Press',
                     urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif',
@@ -85,7 +85,7 @@
                 },
                 {
                     id: 'elevaciones-laterales',
-                    nombre: 'Elevaciones laterales',
+                    nombre: 'Elevaciones laterales con mancuernas',
                     grupo: 'Hombro',
                     categoria: 'Aislamiento',
                     urlGif: 'https://gymvisual.com/img/p/5/1/3/7/5137.gif',
@@ -104,7 +104,7 @@
                 },
                 {
                     id: 'elevaciones-frontales',
-                    nombre: 'Elevaciones frontales',
+                    nombre: 'Elevaciones frontales con mancuernas',
                     grupo: 'Hombro',
                     categoria: 'Aislamiento',
                     urlGif: 'https://gymvisual.com/img/p/2/4/9/4/0/24940.gif',
@@ -123,7 +123,7 @@
                 },
                 {
                     id: 'extension-triceps-cabeza',
-                    nombre: 'Extensión de tríceps por encima de la cabeza',
+                    nombre: 'Extensión de tríceps sobre la cabeza',
                     grupo: 'Tríceps',
                     categoria: 'Aislamiento',
                     urlGif: 'https://media.tenor.com/V3J-mg9gH0kAAAAM/seated-dumbbell-triceps-extension.gif',
@@ -139,6 +139,63 @@
                     dificultad: 'facil',
                     material: ['Mancuerna'],
                     intensidadMuscular: { 'Tríceps': 90 }
+                },
+                {
+                    id: 'extension-triceps-tumbado',
+                    nombre: 'Extensión de tríceps tumbado con mancuernas',
+                    grupo: 'Tríceps',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://api.smartworkout.app/asset/image/25d73444-e5d4-482c-9000-405867eedfa0',
+                    descripcion: 'Tumbado en un banco, sujeta una mancuerna en cada mano con los brazos extendidos sobre el pecho. Flexiona los codos para bajar las mancuernas a los lados de la cabeza y vuelve a extenderlos sin mover los hombros.',
+                    consejos: '• Mantén los codos apuntando hacia arriba.\n• Mantén los hombros estables.\n• Baja las mancuernas de forma controlada.',
+                    errores: '• No abras los codos en exceso.\n• No muevas los hombros hacia delante.\n• No uses impulso al extender.',
+                    musculosPrincipales: ['Tríceps (cabeza larga)'],
+                    musculosSecundarios: ['Tríceps (cabeza lateral)', 'Tríceps (cabeza medial)'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: null,
+                    dificultad: 'media',
+                    material: ['Banco', 'Mancuernas'],
+                    intensidadMuscular: { 'Tríceps': 90 }
+                },
+                {
+                    id: 'jm-press',
+                    nombre: 'JM Press con barra',
+                    grupo: 'Tríceps',
+                    categoria: 'Press',
+                    urlGif: 'https://fitcron.com/wp-content/uploads/2021/03/04501301-EZ-Barbell-JM-Bench-Press_Upper-Arms_720.gif',
+                    descripcion: 'Tumbado en un banco, baja la barra hacia la parte alta del pecho flexionando los codos y manteniéndolos cerca del cuerpo. Extiende los codos para volver a la posición inicial, combinando el recorrido de un press cerrado y una extensión de tríceps.',
+                    consejos: '• Mantén los codos cerca del cuerpo.\n• Controla el descenso de la barra.\n• Usa un agarre algo más cerrado que el del press de banca.',
+                    errores: '• No abras los codos hacia los lados.\n• No rebotes la barra sobre el pecho.\n• No cargues más peso del que puedas controlar.',
+                    musculosPrincipales: ['Tríceps (cabeza lateral)', 'Tríceps (cabeza medial)'],
+                    musculosSecundarios: ['Pectoral mayor', 'Deltoides anterior'],
+                    series: 3,
+                    reps: '8-12',
+                    descanso: 90,
+                    dia: null,
+                    dificultad: 'dificil',
+                    material: ['Banco', 'Barra', 'Discos'],
+                    intensidadMuscular: { 'Tríceps': 90, 'Pecho': 45, 'Hombro': 35 }
+                },
+                {
+                    id: 'patada-triceps',
+                    nombre: 'Patada de tríceps con mancuerna',
+                    grupo: 'Tríceps',
+                    categoria: 'Aislamiento',
+                    urlGif: 'https://api.smartworkout.app/asset/image/58de0b7d-03c6-4a44-80ce-ccb5700f95ef',
+                    descripcion: 'Inclina el torso con la espalda recta, apoya una mano en el banco si lo necesitas y lleva el codo a la altura del cuerpo. Extiende el antebrazo hacia atrás hasta contraer el tríceps y vuelve lentamente sin mover el codo.',
+                    consejos: '• Mantén el codo fijo y elevado.\n• Extiende el brazo completamente sin bloquearlo.\n• Controla el regreso de la mancuerna.',
+                    errores: '• No balancees el torso.\n• No dejes caer el codo.\n• No uses impulso para extender el brazo.',
+                    musculosPrincipales: ['Tríceps (cabeza lateral)'],
+                    musculosSecundarios: ['Tríceps (cabeza larga)', 'Tríceps (cabeza medial)'],
+                    series: 3,
+                    reps: '10-15',
+                    descanso: 60,
+                    dia: null,
+                    dificultad: 'facil',
+                    material: ['Mancuerna'],
+                    intensidadMuscular: { 'Tríceps': 85 }
                 },
                 {
                     id: 'press-cerrado',
@@ -163,7 +220,7 @@
                 // MARTES (sin cambios)
                 {
                     id: 'barbell-row',
-                    nombre: 'Barbell Row',
+                    nombre: 'Remo con barra',
                     grupo: 'Espalda',
                     categoria: 'Remo',
                     urlGif: 'https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif',
@@ -182,7 +239,7 @@
                 },
                 {
                     id: 'one-arm-dumbbell-row',
-                    nombre: 'One-Arm Dumbbell Row',
+                    nombre: 'Remo con mancuerna a una mano',
                     grupo: 'Espalda',
                     categoria: 'Remo',
                     urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif',
@@ -201,7 +258,7 @@
                 },
                 {
                     id: 'dumbbell-reverse-fly',
-                    nombre: 'Dumbbell Reverse Fly',
+                    nombre: 'Pájaros con mancuernas',
                     grupo: 'Espalda',
                     categoria: 'Aislamiento',
                     urlGif: 'https://gymvisual.com/img/p/5/1/2/4/5124.gif',
@@ -220,7 +277,7 @@
                 },
                 {
                     id: 'dumbbell-shrug',
-                    nombre: 'Dumbbell Shrug',
+                    nombre: 'Encogimientos con mancuernas',
                     grupo: 'Trapecio',
                     categoria: 'Aislamiento',
                     urlGif: 'https://gymvisual.com/img/p/1/0/0/7/3/10073.gif',
@@ -239,7 +296,7 @@
                 },
                 {
                     id: 'alternating-dumbbell-curl',
-                    nombre: 'Alternating Dumbbell Curl',
+                    nombre: 'Curl alterno con mancuernas',
                     grupo: 'Bíceps',
                     categoria: 'Curl',
                     urlGif: 'https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif',
@@ -258,7 +315,7 @@
                 },
                 {
                     id: 'hammer-curl',
-                    nombre: 'Hammer Curl',
+                    nombre: 'Curl martillo',
                     grupo: 'Bíceps',
                     categoria: 'Curl',
                     urlGif: 'https://api.smartworkout.app/asset/image/8588e41c-5c2d-4ee0-90ca-ad69b7d0438a',
@@ -277,7 +334,7 @@
                 },
                 {
                     id: 'reverse-dumbbell-curl',
-                    nombre: 'Reverse Dumbbell Curl',
+                    nombre: 'Curl inverso con mancuernas',
                     grupo: 'Antebrazo',
                     categoria: 'Curl',
                     urlGif: 'https://fitnessprogramer.com/wp-content/uploads/2021/04/dumbbell-reverse-curl.gif',
@@ -298,7 +355,7 @@
                 // JUEVES - NUEVA RUTINA (Tren superior - prioridad brazos)
                 {
                     id: 'dumbbell-pullover',
-                    nombre: 'Dumbbell Pullover',
+                    nombre: 'Pullover con mancuerna',
                     grupo: 'Pecho / Espalda',
                     categoria: 'Aislamiento',
                     urlGif: 'https://gymvisual.com/img/p/2/8/3/2/8/28328.gif',
@@ -317,7 +374,7 @@
                 },
                 {
                     id: 'incline-dumbbell-curl',
-                    nombre: 'Incline Dumbbell Curl',
+                    nombre: 'Curl inclinado con mancuernas',
                     grupo: 'Bíceps',
                     categoria: 'Curl',
                     urlGif: 'https://gymvisual.com/img/p/5/0/4/8/5048.gif',
@@ -336,7 +393,7 @@
                 },
                 {
                     id: 'dumbbell-zottman-curl',
-                    nombre: 'Dumbbell Zottman Curl',
+                    nombre: 'Curl Zottman con mancuernas',
                     grupo: 'Bíceps / Antebrazo',
                     categoria: 'Curl',
                     urlGif: 'https://i.pinimg.com/originals/4b/e4/68/4be46841032506b311d43b8d49c6a58a.gif',
@@ -355,7 +412,7 @@
                 },
                 {
                     id: 'dumbbell-preacher-curl',
-                    nombre: 'Dumbbell Preacher Curl',
+                    nombre: 'Curl predicador con mancuerna',
                     grupo: 'Bíceps',
                     categoria: 'Curl',
                     urlGif: 'https://gymvisual.com/img/p/1/5/7/7/8/15778.gif',
@@ -374,7 +431,7 @@
                 },
                 {
                     id: 'dumbbell-spider-curl',
-                    nombre: 'Dumbbell Spider Curl',
+                    nombre: 'Curl araña con mancuernas',
                     grupo: 'Bíceps',
                     categoria: 'Curl',
                     urlGif: 'https://api.smartworkout.app/asset/image/7a6c7c0b-0480-4c45-ba66-18959ec9001f',
@@ -393,10 +450,10 @@
                 },
                 {
                     id: 'dumbbell-tate-press',
-                    nombre: 'Dumbbell Tate Press',
+                    nombre: 'Press Tate con mancuernas',
                     grupo: 'Tríceps',
                     categoria: 'Press',
-                    urlGif: 'https://gymvisual.com/animated-gifs/1937-dumbbell-tate-press.html',
+                    urlGif: 'https://api.smartworkout.app/asset/image/deff1b63-c052-42b3-a3e4-aad93db0159f',
                     descripcion: 'Tumbado en un banco plano, sujeta una mancuerna en cada mano con las palmas mirando hacia el techo y los codos apuntando hacia afuera. Baja las mancuernas hacia el pecho manteniendo los codos fijos y extiende los brazos para completar el movimiento, sintiendo el tríceps.',
                     consejos: '• Mantén los codos apuntando hacia afuera.\n• Controla la bajada.\n• Siente la contracción del tríceps.',
                     errores: '• No muevas los codos.\n• No uses demasiado peso.\n• No bajes demasiado rápido.',
@@ -412,7 +469,7 @@
                 },
                 {
                     id: 'dumbbell-squeeze-press',
-                    nombre: 'Dumbbell Squeeze Press',
+                    nombre: 'Press de compresión con mancuernas',
                     grupo: 'Pecho / Tríceps',
                     categoria: 'Press',
                     urlGif: 'https://gymvisual.com/img/p/1/8/3/5/3/18353.gif',
@@ -509,7 +566,7 @@
                 },
                 {
                     id: 'hip-thrust',
-                    nombre: 'Hip Thrust',
+                    nombre: 'Empuje de cadera',
                     grupo: 'Piernas — Gimnasio / Futuro',
                     categoria: 'Aislamiento',
                     urlGif: 'https://gymvisual.com/img/p/2/0/9/5/6/20956.gif',
@@ -626,4 +683,3 @@
             ];
             return exerciseDatabase;
         }
-

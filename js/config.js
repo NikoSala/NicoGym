@@ -15,11 +15,11 @@
             NOMBRES_DIAS: { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes',
                 sabado: 'Sábado', domingo: 'Domingo' },
             TIPOS_RUTINA: {
-                lunes: 'Tren superior · 5 ejercicios + cinta',
-                martes: 'Tren superior · 7 ejercicios',
-                miercoles: 'Tren superior · 3 ejercicios + cinta',
-                jueves: 'Tren superior · 7 ejercicios',
-                viernes: 'Tren superior · 8 ejercicios + cinta',
+                lunes: 'Pecho + Bíceps · 5 ejercicios + cinta',
+                martes: 'Espalda + Trapecio + Antebrazo · 8 ejercicios',
+                miercoles: 'Hombros + Tríceps · 5 ejercicios + cinta',
+                jueves: 'Brazos · 8 ejercicios',
+                viernes: 'Torso completo · 4 ejercicios + cinta',
                 sabado: 'Descanso',
                 domingo: 'Descanso'
             },
@@ -31,4 +31,3 @@
             PROGRESION: { seriesObjetivo: 4, repsObjetivo: 12, repsSiguiente: 15 },
             TIEMPO_MSG_COMPLETADO: 1500
         };
-

@@ -16,7 +16,7 @@ const Dashboard = {
     const rutinaNombre = CONFIG.TIPOS_RUTINA[dia];
     const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
     const ejercicios = getEjerciciosPorDia(dia);
-    const rutinaNombreActualizada = `Tren superior · ${getEjerciciosPorDia(dia).length} ejercicios${["lunes", "miercoles", "viernes"].includes(dia) ? " + cinta" : ""}`;
+    const rutinaNombreActualizada = CONFIG.TIPOS_RUTINA[dia];
 
     const peso =
       STATE.mediciones.length > 0
@@ -181,7 +181,7 @@ const Dashboard = {
                             <div class="pe-titulo">${diasParaProx === 0 ? "🔵 HOY" : diasParaProx === 1 ? "🔴 MAÑANA" : "📅 PRÓXIMO ENTRENO"}</div>
                             <div class="pe-nombre">${proxIcono} ${proxNombre}</div>
                             <div class="pe-datos">
-                                <span>📋 Tren superior · ${proxEjercicios} ejercicios${["lunes", "miercoles", "viernes"].includes(proxDia) ? " + cinta" : ""}</span>
+                                <span>📋 ${CONFIG.TIPOS_RUTINA[proxDia]}</span>
                                 <span>🏋️ ${proxEjercicios} ejercicios</span>
                             </div>
                             <button class="pe-btn" onclick="event.stopPropagation();APP.iniciarEntreno('${proxDia}')">
@@ -205,7 +205,7 @@ const Dashboard = {
                                 <div style="text-align:center;padding:6px 0;color:var(--success);">
                                     <span style="font-size:28px;display:block;margin-bottom:2px;">✅</span>
                                     Completado
-                                    <div style="font-size:11px;color:var(--text-secondary);">Tren superior · ${ejercicios.length} ejercicios${["lunes", "miercoles", "viernes"].includes(dia) ? " + cinta" : ""}</div>
+                                    <div style="font-size:11px;color:var(--text-secondary);">${CONFIG.TIPOS_RUTINA[dia]}</div>
                                 </div>
                             `
                                   : `

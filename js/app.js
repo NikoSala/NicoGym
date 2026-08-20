@@ -260,10 +260,33 @@
                             <button class="btn btn-success" onclick="APP._guardarSerie()"><i class="fa-solid fa-check"></i> Guardar serie ${Math.min(seriesActualesEntreno.length + 1, PROGRESION.SERIES_OBJETIVO)}</button>
                         </div>
                         ${objetivoDia.completo ? `<div class="me-progresion-hint">💪 El último día completaste 4×12 en todo el entrenamiento. Al terminar hoy podrás recibir una recomendación de carga.</div>` : ''}
+                        ${this._controlesNavegacion()}
                     </div>
                 `;
                 document.getElementById('modoEntreno').scrollTop = 0;
                 document.getElementById('meRepsSerie')?.focus();
+            },
+
+            _controlesNavegacion() {
+                const esPrimero = idxEjercicioActual === 0;
+                const esUltimo = idxEjercicioActual === ejerciciosEntreno.length - 1;
+                return `
+                    <div class="me-navegacion" aria-label="Navegación entre ejercicios">
+                        <button class="btn btn-ghost me-nav-btn" type="button" onclick="APP._navegarEjercicio(-1)" ${esPrimero ? 'disabled' : ''} aria-label="Ejercicio anterior">
+                            <i class="fa-solid fa-arrow-left"></i> Anterior
+                        </button>
+                        <button class="btn btn-ghost me-nav-btn" type="button" onclick="APP._navegarEjercicio(1)" ${esUltimo ? 'disabled' : ''} aria-label="Ejercicio siguiente">
+                            Siguiente <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>`;
+            },
+
+            _navegarEjercicio(direccion) {
+                const siguienteIndice = idxEjercicioActual + direccion;
+                if (siguienteIndice < 0 || siguienteIndice >= ejerciciosEntreno.length) return;
+                idxEjercicioActual = siguienteIndice;
+                document.getElementById('meCompletadoMsg').classList.add('hidden');
+                this._mostrarEjercicio();
             },
 
             _guardarSerie() {
@@ -430,6 +453,7 @@
                         <button class="btn btn-primary btn-block" onclick="APP._completarCaminataComoEjercicio()">
                             <i class="fa-solid fa-check"></i> He terminado la caminata
                         </button>
+                        ${this._controlesNavegacion()}
                     </div>`;
                 document.getElementById('modoEntreno').scrollTop = 0;
             },
@@ -542,4 +566,3 @@
                 return null;
             }
         };
-

@@ -23,7 +23,7 @@ const Notificaciones = {
 
     if (dia !== "domingo" && dia !== "sabado" && !entrenadoHoy) {
       const ejercicios = getEjerciciosPorDia(dia);
-      const rutinaActual = `Tren superior · ${ejercicios.length} ejercicios${["lunes", "miercoles", "viernes"].includes(dia) ? " + cinta" : ""}`;
+      const rutinaActual = CONFIG.TIPOS_RUTINA[dia];
       notifs.push({ icono: "💪", texto: `Entrena ${rutinaActual}` });
     }
 

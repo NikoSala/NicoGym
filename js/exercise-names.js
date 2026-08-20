@@ -2,13 +2,13 @@
         // MAPEO DE NOMBRES EN ESPAÑOL PARA RUTINA
         // ==========================================
         const NOMBRES_ESPANOL = {
-            'Press plano con mancuernas': 'Press de pecho con mancuernas',
+            'Press de pecho con mancuernas': 'Press de pecho con mancuernas',
             'Press inclinado con mancuernas': 'Press inclinado con mancuernas',
             'Aperturas con mancuernas': 'Aperturas con mancuernas',
-            'Press militar sentado': 'Press de hombros con mancuernas',
-            'Elevaciones laterales': 'Elevaciones laterales con mancuernas',
-            'Elevaciones frontales': 'Elevaciones frontales con mancuernas',
-            'Extensión de tríceps por encima de la cabeza': 'Extensión de tríceps sobre la cabeza',
+            'Press de hombros con mancuernas': 'Press de hombros con mancuernas',
+            'Elevaciones laterales con mancuernas': 'Elevaciones laterales con mancuernas',
+            'Elevaciones frontales con mancuernas': 'Elevaciones frontales con mancuernas',
+            'Extensión de tríceps sobre la cabeza': 'Extensión de tríceps sobre la cabeza',
             'Press cerrado con mancuernas': 'Press cerrado con mancuernas',
             'Barbell Row': 'Remo con barra',
             'One-Arm Dumbbell Row': 'Remo con mancuerna a una mano',
@@ -43,7 +43,6 @@
             'Bicicleta abdominal': 'Bicicleta abdominal'
         };
 
-        function getNombreEspanol(nombreIngles) {
-            return NOMBRES_ESPANOL[nombreIngles] || nombreIngles;
+        function getNombreEspanol(nombre) {
+            return NOMBRES_ESPANOL[nombre] || nombre;
         }
-

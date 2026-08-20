@@ -203,12 +203,36 @@
                 }
             },
 
+            _activarComparadores() {
+                document.querySelectorAll('.photo-compare-hold').forEach(comparador => {
+                    comparador.addEventListener('pointerdown', event => this._iniciarComparacion(event, comparador));
+                    comparador.addEventListener('pointerup', event => this._finalizarComparacion(event, comparador));
+                    comparador.addEventListener('pointercancel', event => this._finalizarComparacion(event, comparador));
+                    comparador.addEventListener('lostpointercapture', event => this._finalizarComparacion(event, comparador));
+                    comparador.addEventListener('contextmenu', event => event.preventDefault());
+                    comparador.addEventListener('dragstart', event => event.preventDefault());
+                });
+            },
 
-            _moverComparador(id, value) {
-                const wrap = document.getElementById(id);
-                if (!wrap) return;
-                const after = wrap.querySelector('.after');
-                if (after) after.style.width = `${Number(value)}%`;
+            _iniciarComparacion(event, comparador) {
+                if (event.pointerType === 'mouse' && event.button !== 0) return;
+                event.preventDefault();
+                comparador.dataset.pulsadoDesde = String(Date.now());
+                comparador.classList.add('mostrando-actual');
+                if (comparador.setPointerCapture) comparador.setPointerCapture(event.pointerId);
+            },
+
+            _finalizarComparacion(event, comparador) {
+                if (!comparador.classList.contains('mostrando-actual')) return;
+                const duracion = Date.now() - Number(comparador.dataset.pulsadoDesde || 0);
+                comparador.classList.remove('mostrando-actual');
+                delete comparador.dataset.pulsadoDesde;
+                if (comparador.hasPointerCapture?.(event.pointerId)) comparador.releasePointerCapture(event.pointerId);
+
+                // Un toque corto conserva el acceso al lightbox; al mantener pulsado no se abre.
+                if (event.type === 'pointerup' && duracion < 300 && comparador.dataset.fotoLightbox) {
+                    UI.abrirLightbox(comparador.dataset.fotoLightbox);
+                }
             },
 
             async _comparar() {
@@ -220,21 +244,27 @@
                 const store = this.db.transaction(this.STORE_NAME, 'readonly').objectStore(this.STORE_NAME);
                 const d1 = await new Promise(r => store.get(f1).onsuccess = e => r(e.target.result));
                 const d2 = await new Promise(r => store.get(f2).onsuccess = e => r(e.target.result));
+                const primeraEsMasAntigua = new Date(`${f1}T00:00:00`) <= new Date(`${f2}T00:00:00`);
+                const fechaAntigua = primeraEsMasAntigua ? f1 : f2;
+                const fechaActual = primeraEsMasAntigua ? f2 : f1;
+                const fotoAntigua = primeraEsMasAntigua ? d1 : d2;
+                const fotoActual = primeraEsMasAntigua ? d2 : d1;
 
                 const gen = (t, c) => {
-                    if (!d1?.[c] && !d2?.[c]) return '';
-                    const id = `cmp_${c}_${Math.random().toString(36).slice(2,8)}`;
+                    const antigua = fotoAntigua?.[c] || '';
+                    const actual = fotoActual?.[c] || '';
+                    if (!antigua && !actual) return '';
                     return `
                         <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:8px;margin-bottom:8px;border:1px solid var(--border);">
                             <h4 style="color:var(--primary);margin-bottom:4px;text-align:center;font-size:12px;">${t}</h4>
-                            <div class="photo-compare-slider" id="${id}">
-                                <img src="${d2?.[c]||''}" alt="Después" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'">
-                                <div class="after" style="width:50%;"><img src="${d1?.[c]||''}" alt="Antes" onclick="UI.abrirLightbox(this.src)" onerror="this.style.display='none'"></div>
+                            <div class="photo-compare-hold ${antigua && actual ? 'tiene-foto-actual' : ''} ${antigua ? '' : 'sin-foto-antigua'}" data-foto-lightbox="${antigua || actual}" aria-label="Mantén pulsado para ver la foto actual">
+                                ${antigua ? `<img class="photo-compare-img photo-compare-antigua" src="${antigua}" alt="${t} · antes" draggable="false">` : ''}
+                                ${actual ? `<img class="photo-compare-img photo-compare-actual" src="${actual}" alt="${t} · después" draggable="false">` : ''}
+                                ${antigua && actual ? '<div class="photo-compare-hint"><i class="fa-solid fa-hand-pointer"></i> Mantén pulsado para ver la actual</div>' : ''}
                             </div>
-                            <input class="photo-compare-range" type="range" min="0" max="100" value="50" aria-label="Comparación ${t}" oninput="Fotos._moverComparador('${id}', this.value)">
                             <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-secondary);margin-top:3px;">
-                                <span>ANTES · ${UI.formatearFecha(f1)}</span>
-                                <span>DESPUÉS · ${UI.formatearFecha(f2)}</span>
+                                <span>ANTES · ${UI.formatearFecha(fechaAntigua)}</span>
+                                <span>ACTUAL · ${UI.formatearFecha(fechaActual)}</span>
                             </div>
                         </div>
                     `;
@@ -245,6 +275,6 @@
                 if (!html) html =
                     '<div style="text-align:center;padding:16px;color:var(--text-secondary);">No hay fotos para comparar</div>';
                 document.getElementById('comparadorResultado').innerHTML = html;
+                this._activarComparadores();
             }
         };
-
