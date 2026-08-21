@@ -72,6 +72,42 @@ const Dashboard = {
       entrenamientoPendiente.dia === diaHoy &&
       Array.isArray(entrenamientoPendiente.ejerciciosEntreno) &&
       entrenamientoPendiente.ejerciciosEntreno.length > 0;
+    const progresionDia = STATE.progresion[dia] || null;
+
+    const recomendacionesProximaSesion =
+      progresionDia && Array.isArray(progresionDia.recomendaciones)
+        ? progresionDia.recomendaciones
+        : [];
+
+    let bloqueProgresion = "";
+
+    if (recomendacionesProximaSesion.length > 0) {
+      bloqueProgresion = `
+        <div class="card progreso-sesion-card">
+        <div class="card-title">🎯 Objetivo próxima sesión</div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">
+            Basado en tu último entrenamiento
+        </div>
+        <div>
+            ${recomendacionesProximaSesion
+              .map(
+                (r) => `
+                <div style="padding:7px 0;border-bottom:1px solid var(--border);">
+                    <div style="font-weight:600;font-size:13px;">
+                    ${r.nombre}
+                    </div>
+                    <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">
+                    ${r.texto}
+                    </div>
+                </div>
+                `,
+              )
+              .join("")}
+        </div>
+        </div>
+    `;
+    }
+
     const ejerciciosHoy = getEjerciciosPorDia(diaHoy);
 
     let ejerciciosCompletadosHoy = 0;
@@ -208,6 +244,8 @@ const Dashboard = {
                         `
                     : ""
                 }
+                ${bloqueProgresion}
+                
                      <div class="card card-accent">
                     <div class="card-title">📊 Resumen</div>
                     <div class="dash-grid">
