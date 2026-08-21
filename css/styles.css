@@ -1414,3 +1414,301 @@
   font-weight: 700;
   margin-bottom: 10px;
 }
+/* ==========================================
+   ILUSTRACIÓN DE CARGA - MANCUERNAS / BARRA
+   ========================================== */
+
+.me-carga-visual {
+  width: 100%;
+  margin: 18px 0 10px;
+  padding: 22px 10px 12px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.me-carga-dibujo {
+  width: 100%;
+  min-height: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================
+   MANCUERNA
+   ========================================== */
+
+.me-mancuerna-real {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90px;
+  max-width: 100%;
+}
+
+/* Discos */
+
+.me-discos-reales {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 90px;
+}
+
+.me-disco-real {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 72px;
+  border-radius: 8px;
+  background:
+    linear-gradient(
+      90deg,
+      #17191c 0%,
+      #34383d 18%,
+      #111315 45%,
+      #383c41 70%,
+      #151719 100%
+    );
+  border: 2px solid #090a0b;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,.05),
+    0 4px 8px rgba(0,0,0,.45);
+}
+
+.me-disco-real::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #090a0b;
+  border: 2px solid #777;
+}
+
+/* Diferentes grosores visuales */
+
+.me-disco-real.disco-125 {
+  width: 19px;
+  height: 62px;
+}
+
+.me-disco-real.disco-150 {
+  width: 23px;
+  height: 69px;
+}
+
+.me-disco-real.disco-200 {
+  width: 28px;
+  height: 76px;
+}
+
+/* ==========================================
+   MANGO
+   ========================================== */
+
+.me-mango {
+  position: relative;
+  width: 105px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.me-mango-metal {
+  width: 18px;
+  height: 22px;
+  background: linear-gradient(
+    90deg,
+    #666,
+    #d8d8d8,
+    #777
+  );
+}
+
+.me-mango-rojo {
+  width: 69px;
+  height: 25px;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #7d1010 0,
+      #7d1010 7px,
+      #c71919 7px,
+      #c71919 12px,
+      #771010 12px,
+      #771010 17px
+    );
+  border: 1px solid #4e0909;
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.12),
+    inset 0 -3px 4px rgba(0,0,0,.35);
+}
+
+/* ==========================================
+   CIERRES
+   ========================================== */
+
+.me-cierre {
+  width: 13px;
+  height: 58px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.me-cierre span {
+  display: block;
+  width: 13px;
+  height: 21px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    #777,
+    #ddd,
+    #777
+  );
+  border: 1px solid #555;
+}
+
+/* ==========================================
+   DOS MANCUERNAS
+   ========================================== */
+
+.me-dos-mancuernas-real {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 170px;
+}
+
+.me-dos-mancuernas-real .me-mancuerna-real {
+  transform: scale(.82);
+}
+
+/* ==========================================
+   BARRA
+   ========================================== */
+
+.me-barra-real {
+  width: 100%;
+  max-width: 720px;
+  height: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.me-barra-centro-real {
+  flex: 1;
+  height: 22px;
+  min-width: 90px;
+  max-width: 430px;
+  background:
+    linear-gradient(
+      180deg,
+      #bdbdbd,
+      #666,
+      #dedede,
+      #555
+    );
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #333;
+  position: relative;
+}
+
+.me-barra-agarre-rojo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 145px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #7d1010 0,
+      #7d1010 8px,
+      #c71919 8px,
+      #c71919 14px,
+      #771010 14px,
+      #771010 19px
+    );
+  border: 1px solid #4e0909;
+}
+
+/* ==========================================
+   TEXTO DE CONFIGURACIÓN
+   ========================================== */
+
+.me-carga-detalle {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ==========================================
+   MÓVIL
+   ========================================== */
+
+@media (max-width: 600px) {
+
+  .me-carga-visual {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .me-mango {
+    width: 75px;
+  }
+
+  .me-mango-rojo {
+    width: 48px;
+  }
+
+  .me-discos-reales {
+    gap: 2px;
+  }
+
+  .me-disco-real {
+    width: 23px;
+  }
+
+  .me-disco-real.disco-125 {
+    width: 15px;
+  }
+
+  .me-disco-real.disco-150 {
+    width: 19px;
+  }
+
+  .me-disco-real.disco-200 {
+    width: 23px;
+  }
+
+  .me-cierre {
+    width: 10px;
+  }
+
+  .me-cierre span {
+    width: 10px;
+  }
+
+  .me-barra-centro-real {
+    min-width: 45px;
+  }
+
+  .me-barra-agarre-rojo {
+    width: 90px;
+  }
+}
