@@ -224,47 +224,191 @@ const APP = {
       UI.toast("🚶 Este día no tiene entrenamiento guiado", "info");
       return;
     }
-    // Pedir el peso una sola vez para toda la sesión
-    if (!this.pesoSesionEntreno) {
-      const pesoElegido = window.prompt(
-        "¿Qué peso vas a utilizar en este entrenamiento? (kg)",
-        "8.5",
-      );
-
-      if (pesoElegido === null) {
+      // Elegir la carga antes de comenzar el entrenamiento.
+      // Todavía no iniciamos el modo entreno hasta confirmar.
+      if (!this.pesoSesionEntreno) {
+        this._mostrarSelectorCargaInicio(dia);
         return;
       }
 
-      const peso = Number(pesoElegido);
+      modoEntrenoActivo = true;
+      ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
 
-      if (!Number.isFinite(peso) || peso <= 0) {
-        UI.toast("Introduce un peso válido", "error");
+      idxEjercicioActual = 0;
+      recordsConseguidos = [];
+      cardioCompletado = false;
+      this._cardioMostrado = false;
+      startTimeEntreno = Date.now();
+      totalPesoLevantadoEntreno = 0;
+      totalVolumenEntreno = 0;
+      totalSeriesEntreno = 0;
+      totalRepsEntreno = 0;
+      seriesActualesEntreno = [];
+      pesoActualEntreno = 0;
+
+      document.getElementById("modoEntreno").classList.add("open");
+      document.getElementById("meTitulo").textContent =
+        `🏋️ ${CONFIG.NOMBRES_DIAS[dia]}`;
+      document.getElementById("meCompletadoMsg").classList.add("hidden");
+      this._mostrarEjercicio();
+    },
+    _mostrarSelectorCargaInicio(dia) {
+    const ejercicios = getEjerciciosPorDia(dia);
+    const primerEjercicio = ejercicios.find((e) => !e.esCaminata);
+
+    if (!primerEjercicio) {
+      UI.toast("No hay ejercicios de fuerza para seleccionar carga", "error");
+      return;
+    }
+
+    const tipo = primerEjercicio.tipoCarga;
+
+    if (
+      typeof WEIGHTS === "undefined" ||
+      !tipo ||
+      typeof WEIGHTS.obtenerConfiguraciones !== "function"
+    ) {
+      UI.toast("No se ha podido cargar la configuración de pesos", "error");
+      return;
+    }
+
+    const configuraciones = WEIGHTS.obtenerConfiguraciones(tipo);
+
+    if (!configuraciones.length) {
+      UI.toast("No hay pesos disponibles para este ejercicio", "error");
+      return;
+    }
+
+    const opciones = configuraciones
+      .map(
+        (config, index) => `
+          <option value="${config.peso}" ${index === 0 ? "selected" : ""}>
+            ${config.peso} kg
+          </option>
+        `,
+      )
+      .join("");
+
+    const primeraConfiguracion = configuraciones[0];
+
+    const body = document.getElementById("meBody");
+
+    document.getElementById("meTitulo").textContent =
+      `🏋️ Preparar entrenamiento · ${CONFIG.NOMBRES_DIAS[dia]}`;
+
+    document.getElementById("meCompletadoMsg").classList.add("hidden");
+
+    body.innerHTML = `
+      <div class="me-ejercicio-card">
+
+        <div class="me-ej-numero">
+          Preparación del entrenamiento
+        </div>
+
+        <div class="me-ej-nombre">
+          Selecciona el peso
+        </div>
+
+        <div class="me-ej-grupo">
+          ${primerEjercicio.nombre}
+        </div>
+
+        <div class="me-input-group">
+          <label for="mePesoInicio">
+            ${
+              tipo === WEIGHTS.TIPOS.UNA_MANCUERNA
+                ? "Peso de la mancuerna"
+                : tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS
+                  ? "Peso por mancuerna"
+                  : "Peso de la barra"
+            }
+          </label>
+
+          <select id="mePesoInicio">
+            ${opciones}
+          </select>
+        </div>
+
+        <div id="meCargaVisualInicio">
+          ${this._renderVisualCarga(primeraConfiguracion, tipo)}
+        </div>
+
+        <div class="me-carga-confirmacion">
+          <div class="me-carga-confirmacion-titulo">
+            ¿Has colocado este peso en real?
+          </div>
+
+          <div id="mePesoConfirmacion" class="me-carga-sesion">
+            <strong>🏋️ ${primeraConfiguracion.peso} kg</strong>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-success btn-block"
+            id="btnConfirmarCarga"
+          >
+            <i class="fa-solid fa-check"></i>
+            Confirmar y empezar
+          </button>
+        </div>
+
+      </div>
+    `;
+
+    document.getElementById("modoEntreno").classList.add("open");
+
+    const select = document.getElementById("mePesoInicio");
+    const visual = document.getElementById("meCargaVisualInicio");
+    const confirmacion = document.getElementById("mePesoConfirmacion");
+    const boton = document.getElementById("btnConfirmarCarga");
+
+    select.addEventListener("change", () => {
+      const peso = Number(select.value);
+
+      const config = this._buscarConfiguracionCarga(tipo, peso);
+
+      visual.innerHTML = this._renderVisualCarga(config, tipo);
+
+      confirmacion.innerHTML = `
+        <strong>🏋️ ${peso} kg</strong>
+      `;
+    });
+
+    boton.addEventListener("click", () => {
+      const peso = Number(select.value);
+      const config = this._buscarConfiguracionCarga(tipo, peso);
+
+      if (!config) {
+        UI.toast("Selecciona un peso válido", "error");
         return;
       }
 
       this.pesoSesionEntreno = peso;
-    }
 
-    modoEntrenoActivo = true;
-    ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
+      modoEntrenoActivo = true;
+      ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
 
-    idxEjercicioActual = 0;
-    recordsConseguidos = [];
-    cardioCompletado = false;
-    this._cardioMostrado = false;
-    startTimeEntreno = Date.now();
-    totalPesoLevantadoEntreno = 0;
-    totalVolumenEntreno = 0;
-    totalSeriesEntreno = 0;
-    totalRepsEntreno = 0;
-    seriesActualesEntreno = [];
-    pesoActualEntreno = 0;
+      idxEjercicioActual = 0;
+      recordsConseguidos = [];
+      cardioCompletado = false;
+      this._cardioMostrado = false;
+      startTimeEntreno = Date.now();
+      totalPesoLevantadoEntreno = 0;
+      totalVolumenEntreno = 0;
+      totalSeriesEntreno = 0;
+      totalRepsEntreno = 0;
+      seriesActualesEntreno = [];
+      pesoActualEntreno = 0;
 
-    document.getElementById("modoEntreno").classList.add("open");
-    document.getElementById("meTitulo").textContent =
-      `🏋️ ${CONFIG.NOMBRES_DIAS[dia]}`;
-    document.getElementById("meCompletadoMsg").classList.add("hidden");
-    this._mostrarEjercicio();
+      document.getElementById("meTitulo").textContent =
+        `🏋️ ${CONFIG.NOMBRES_DIAS[dia]}`;
+
+      document.getElementById("meCompletadoMsg").classList.add("hidden");
+
+      this._mostrarEjercicio();
+    });
+
+    document.getElementById("modoEntreno").scrollTop = 0;
   },
   _renderSelectorCarga(ej, pesoActual) {
     const tipo = ej.tipoCarga;
