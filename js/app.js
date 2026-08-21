@@ -353,19 +353,44 @@ const APP = {
     const d150 = Number(discos[1.5] || 0);
     const d200 = Number(discos[2] || 0);
 
+    /*
+     * Cada disco se representa como un disco grueso de goma.
+     * El tamaño visual aumenta ligeramente según su peso.
+     */
     const crearDiscos = () => {
       let html = "";
 
       for (let i = 0; i < d125; i++) {
-        html += `<span class="me-disco disco-125"></span>`;
+        html += `
+          <span
+            class="me-disco-real disco-125"
+            title="Disco 1,25 kg"
+            aria-label="Disco de 1,25 kg">
+            <span class="me-disco-agujero"></span>
+          </span>
+        `;
       }
 
       for (let i = 0; i < d150; i++) {
-        html += `<span class="me-disco disco-150"></span>`;
+        html += `
+          <span
+            class="me-disco-real disco-150"
+            title="Disco 1,50 kg"
+            aria-label="Disco de 1,50 kg">
+            <span class="me-disco-agujero"></span>
+          </span>
+        `;
       }
 
       for (let i = 0; i < d200; i++) {
-        html += `<span class="me-disco disco-200"></span>`;
+        html += `
+          <span
+            class="me-disco-real disco-200"
+            title="Disco 2 kg"
+            aria-label="Disco de 2 kg">
+            <span class="me-disco-agujero"></span>
+          </span>
+        `;
       }
 
       return html;
@@ -373,86 +398,197 @@ const APP = {
 
     const texto = this._textoConfiguracionCarga(config, tipo);
 
+    /* ==========================================
+      UNA MANCUERNA
+      ========================================== */
     if (tipo === WEIGHTS.TIPOS.UNA_MANCUERNA) {
       return `
-            <div class="me-carga-visual">
-              <div class="me-carga-dibujo">
-                <div class="me-mancuerna">
-                  <div class="me-discos-izq">
-                    ${crearDiscos()}
-                  </div>
+        <div class="me-carga-visual">
+          <div class="me-carga-dibujo me-dibujo-mancuerna-real">
 
-                  <div class="me-barra-mancuerna"></div>
+            <div class="me-mancuerna-real">
 
-                  <div class="me-discos-der">
-                    ${crearDiscos()}
-                  </div>
-                </div>
+              <div class="me-cierre">
+                <span></span>
+                <span></span>
               </div>
 
-              <div class="me-carga-detalle">
-                ${texto}
+              <div class="me-discos-reales me-discos-izq">
+                ${crearDiscos()}
               </div>
+
+              <div class="me-mango">
+                <div class="me-mango-metal"></div>
+                <div class="me-mango-rojo"></div>
+                <div class="me-mango-metal"></div>
+              </div>
+
+              <div class="me-discos-reales me-discos-der">
+                ${crearDiscos()}
+              </div>
+
+              <div class="me-cierre">
+                <span></span>
+                <span></span>
+              </div>
+
             </div>
-          `;
+
+          </div>
+
+          <div class="me-carga-detalle">
+            ${texto}
+          </div>
+        </div>
+      `;
     }
 
+    /* ==========================================
+      DOS MANCUERNAS
+      ========================================== */
     if (tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS) {
       return `
-            <div class="me-carga-visual">
-              <div class="me-carga-dibujo me-dos-mancuernas">
+        <div class="me-carga-visual">
+          <div class="me-carga-dibujo me-dos-mancuernas-real">
 
-                <div class="me-mancuerna">
-                  <div class="me-discos-izq">
-                    ${crearDiscos()}
-                  </div>
-                  <div class="me-barra-mancuerna"></div>
-                  <div class="me-discos-der">
-                    ${crearDiscos()}
-                  </div>
-                </div>
+            <div class="me-mancuerna-real">
 
-                <div class="me-mancuerna">
-                  <div class="me-discos-izq">
-                    ${crearDiscos()}
-                  </div>
-                  <div class="me-barra-mancuerna"></div>
-                  <div class="me-discos-der">
-                    ${crearDiscos()}
-                  </div>
-                </div>
-
+              <div class="me-cierre">
+                <span></span>
+                <span></span>
               </div>
 
-              <div class="me-carga-detalle">
-                ${texto}
+              <div class="me-discos-reales me-discos-izq">
+                ${crearDiscos()}
               </div>
+
+              <div class="me-mango">
+                <div class="me-mango-metal"></div>
+                <div class="me-mango-rojo"></div>
+                <div class="me-mango-metal"></div>
+              </div>
+
+              <div class="me-discos-reales me-discos-der">
+                ${crearDiscos()}
+              </div>
+
+              <div class="me-cierre">
+                <span></span>
+                <span></span>
+              </div>
+
             </div>
-          `;
+
+            <div class="me-mancuerna-real">
+
+              <div class="me-cierre">
+                <span></span>
+                <span></span>
+              </div>
+
+              <div class="me-discos-reales me-discos-izq">
+                ${crearDiscos()}
+              </div>
+
+              <div class="me-mango">
+                <div class="me-mango-metal"></div>
+                <div class="me-mango-rojo"></div>
+                <div class="me-mango-metal"></div>
+              </div>
+
+              <div class="me-discos-reales me-discos-der">
+                ${crearDiscos()}
+              </div>
+
+              <div class="me-cierre">
+                <span></span>
+                <span></span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="me-carga-detalle">
+            ${texto}
+          </div>
+        </div>
+      `;
     }
 
+    /* ==========================================
+      BARRA LARGA
+      ========================================== */
     if (tipo === WEIGHTS.TIPOS.BARRA_LARGA) {
-      return `
-            <div class="me-carga-visual">
-              <div class="me-carga-dibujo me-barra-larga">
+      if (config.modalidad === "dos_mancuernas_unidas") {
+        return `
+          <div class="me-carga-visual">
+            <div class="me-carga-dibujo me-barra-real">
 
-                <div class="me-discos-izq">
-                  ${crearDiscos()}
-                </div>
-
-                <div class="me-barra-larga-centro"></div>
-
-                <div class="me-discos-der">
-                  ${crearDiscos()}
-                </div>
-
+              <div class="me-discos-reales me-discos-izq">
+                ${crearDiscos()}
               </div>
 
-              <div class="me-carga-detalle">
-                ${texto}
+              <div class="me-cierre">
+                <span></span>
+                <span></span>
               </div>
+
+              <div class="me-barra-centro-real">
+                <div class="me-barra-agarre-rojo"></div>
+              </div>
+
+              <div class="me-cierre">
+                <span></span>
+                <span></span>
+              </div>
+
+              <div class="me-discos-reales me-discos-der">
+                ${crearDiscos()}
+              </div>
+
             </div>
-          `;
+
+            <div class="me-carga-detalle">
+              ${texto}
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="me-carga-visual">
+          <div class="me-carga-dibujo me-barra-real">
+
+            <div class="me-discos-reales me-discos-izq">
+              ${crearDiscos()}
+            </div>
+
+            <div class="me-cierre">
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="me-barra-centro-real">
+              <div class="me-barra-agarre-rojo"></div>
+            </div>
+
+            <div class="me-cierre">
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="me-discos-reales me-discos-der">
+              ${crearDiscos()}
+            </div>
+
+          </div>
+
+          <div class="me-carga-detalle">
+            ${texto}
+          </div>
+        </div>
+      `;
     }
 
     return "";

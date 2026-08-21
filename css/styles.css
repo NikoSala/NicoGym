@@ -522,16 +522,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 54px;
-            min-width: 130px;
+            height: 58px;
+            min-width: 140px;
         }
 
+        /* Soportes de discos */
         .me-discos-izq,
         .me-discos-der {
             display: flex;
             align-items: center;
             gap: 2px;
-            height: 100%;
+            height: 58px;
+            flex-shrink: 0;
         }
 
         .me-discos-izq {
@@ -542,61 +544,85 @@
             flex-direction: row;
         }
 
+        /* Mango central */
         .me-barra-mancuerna {
-            width: 42px;
+            width: 44px;
             height: 8px;
-            background: linear-gradient(
-                180deg,
-                #D8D8D8,
-                #777,
-                #C8C8C8
-            );
+            flex-shrink: 0;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #eeeeee 0%,
+                    #a8a8a8 35%,
+                    #666666 55%,
+                    #cfcfcf 100%
+                );
+
             border-radius: 4px;
+
             box-shadow:
-                inset 0 1px 1px rgba(255,255,255,.35),
-                0 2px 5px rgba(0,0,0,.5);
+                inset 0 1px 1px rgba(255,255,255,.5),
+                0 2px 5px rgba(0,0,0,.6);
         }
+
 
         /* ---------- DISCOS ---------- */
 
         .me-disco {
             display: block;
-            width: 8px;
-            border-radius: 3px;
-            background: linear-gradient(
-                90deg,
-                #5D6269,
-                #C7CBD1,
-                #555A61
-            );
-            border: 1px solid #30343B;
+
+            width: 9px;
+
+            border-radius: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #4b5056 0%,
+                    #9da2a8 25%,
+                    #e0e2e5 50%,
+                    #858a90 75%,
+                    #454a50 100%
+                );
+
+            border: 1px solid #30343a;
+
             box-shadow:
-                inset 0 0 2px rgba(255,255,255,.35),
-                0 2px 4px rgba(0,0,0,.45);
+                inset 0 0 2px rgba(255,255,255,.45),
+                0 2px 4px rgba(0,0,0,.55);
         }
 
+
+        /* 1,25 kg */
         .me-disco.disco-125 {
-            height: 30px;
+            height: 28px;
         }
 
+
+        /* 1,50 kg */
         .me-disco.disco-150 {
-            height: 36px;
+            height: 35px;
         }
 
+
+        /* 2 kg */
         .me-disco.disco-200 {
             height: 43px;
         }
 
+
         /* ---------- DOS MANCUERNAS ---------- */
 
         .me-dos-mancuernas {
-            gap: 28px;
-            flex-wrap: wrap;
+            gap: 22px;
+            flex-wrap: nowrap;
         }
 
         .me-dos-mancuernas .me-mancuerna {
             transform: scale(.82);
         }
+
 
         /* ---------- BARRA LARGA ---------- */
 
@@ -616,16 +642,21 @@
             max-width: 190px;
             min-width: 80px;
             height: 7px;
-            background: linear-gradient(
-                180deg,
-                #D8D8D8,
-                #777,
-                #C8C8C8
-            );
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #eeeeee 0%,
+                    #999999 40%,
+                    #666666 55%,
+                    #cccccc 100%
+                );
+
             border-radius: 4px;
+
             box-shadow:
-                inset 0 1px 1px rgba(255,255,255,.35),
-                0 2px 5px rgba(0,0,0,.5);
+                inset 0 1px 1px rgba(255,255,255,.4),
+                0 2px 5px rgba(0,0,0,.55);
         }
 
         /* ---------- TEXTO DE LA CONFIGURACIÓN ---------- */
@@ -643,27 +674,29 @@
         @media (max-width: 420px) {
 
             .me-carga-visual {
-                padding: 8px 5px;
+                padding: 8px 4px;
             }
 
             .me-carga-dibujo {
-                gap: 10px;
+                gap: 6px;
+                min-height: 58px;
             }
 
             .me-mancuerna {
-                transform: scale(.9);
+                min-width: 125px;
+                transform: scale(.86);
             }
 
             .me-dos-mancuernas {
-                gap: 12px;
+                gap: 2px;
             }
 
             .me-dos-mancuernas .me-mancuerna {
-                transform: scale(.68);
+                transform: scale(.64);
             }
 
             .me-barra-larga-centro {
-                min-width: 45px;
+                min-width: 35px;
             }
         }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-botones { display: flex; gap: var(--space-sm); margin-top: 8px; }
