@@ -249,38 +249,38 @@ const APP = {
 
     if (!tipo || typeof WEIGHTS === "undefined") {
       return `
-        <div class="me-input-group">
-          <label>Peso (kg)</label>
-          <input
-            type="number"
-            id="mePeso"
-            step="0.5"
-            min="0.5"
-            value="${pesoActual || ""}"
-            placeholder="0"
-            ${seriesActualesEntreno.length ? "readonly" : ""}
-          >
-        </div>
-      `;
+          <div class="me-input-group">
+            <label>Peso (kg)</label>
+            <input
+              type="number"
+              id="mePeso"
+              step="0.5"
+              min="0.5"
+              value="${pesoActual || ""}"
+              placeholder="0"
+              ${seriesActualesEntreno.length ? "readonly" : ""}
+            >
+          </div>
+        `;
     }
 
     const configuraciones = WEIGHTS.obtenerConfiguraciones(tipo);
 
     if (!configuraciones.length) {
       return `
-        <div class="me-input-group">
-          <label>Peso (kg)</label>
-          <input
-            type="number"
-            id="mePeso"
-            step="0.5"
-            min="0.5"
-            value="${pesoActual || ""}"
-            placeholder="0"
-            ${seriesActualesEntreno.length ? "readonly" : ""}
-          >
-        </div>
-      `;
+          <div class="me-input-group">
+            <label>Peso (kg)</label>
+            <input
+              type="number"
+              id="mePeso"
+              step="0.5"
+              min="0.5"
+              value="${pesoActual || ""}"
+              placeholder="0"
+              ${seriesActualesEntreno.length ? "readonly" : ""}
+            >
+          </div>
+        `;
     }
 
     const opciones = configuraciones
@@ -310,36 +310,181 @@ const APP = {
         }
 
         return `
-          <option
-            value="${config.peso}"
-            ${Math.abs(Number(config.peso) - Number(pesoActual)) < 0.001 ? "selected" : ""}
-          >
-            ${texto}
-          </option>
-        `;
+            <option
+              value="${config.peso}"
+              ${Math.abs(Number(config.peso) - Number(pesoActual)) < 0.001 ? "selected" : ""}
+            >
+              ${texto}
+            </option>
+          `;
       })
       .join("");
 
     return `
-      <div class="me-input-group">
-        <label>
-          ${
-            tipo === WEIGHTS.TIPOS.UNA_MANCUERNA
-              ? "Mancuerna"
-              : tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS
-                ? "Mancuernas"
-                : "Barra"
-          }
-        </label>
+        <div class="me-input-group">
+          <label>
+            ${
+              tipo === WEIGHTS.TIPOS.UNA_MANCUERNA
+                ? "Mancuerna"
+                : tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS
+                  ? "Mancuernas"
+                  : "Barra"
+            }
+          </label>
 
-        <select
-          id="mePeso"
-          ${seriesActualesEntreno.length ? "disabled" : ""}
-        >
-          ${opciones}
-        </select>
-      </div>
-    `;
+          <select id="mePeso" onchange="APP._actualizarVisualCarga('${tipo}')" ${seriesActualesEntreno.length ? "disabled" : ""}>
+            ${opciones}
+          </select>
+          <div id="meCargaVisual">
+            ${this._renderVisualCarga(
+              this._buscarConfiguracionCarga(tipo, pesoActual),
+              tipo,
+            )}
+          </div>
+        </div>
+      `;
+  },
+  _renderVisualCarga(config, tipo) {
+    if (!config) return "";
+
+    const discos = config.discosPorLado || config.discosPorExtremo || {};
+
+    const d125 = Number(discos[1.25] || 0);
+    const d150 = Number(discos[1.5] || 0);
+    const d200 = Number(discos[2] || 0);
+
+    const crearDiscos = () => {
+      let html = "";
+
+      for (let i = 0; i < d125; i++) {
+        html += `<span class="me-disco disco-125"></span>`;
+      }
+
+      for (let i = 0; i < d150; i++) {
+        html += `<span class="me-disco disco-150"></span>`;
+      }
+
+      for (let i = 0; i < d200; i++) {
+        html += `<span class="me-disco disco-200"></span>`;
+      }
+
+      return html;
+    };
+
+    const texto = this._textoConfiguracionCarga(config, tipo);
+
+    if (tipo === WEIGHTS.TIPOS.UNA_MANCUERNA) {
+      return `
+            <div class="me-carga-visual">
+              <div class="me-carga-dibujo">
+                <div class="me-mancuerna">
+                  <div class="me-discos-izq">
+                    ${crearDiscos()}
+                  </div>
+
+                  <div class="me-barra-mancuerna"></div>
+
+                  <div class="me-discos-der">
+                    ${crearDiscos()}
+                  </div>
+                </div>
+              </div>
+
+              <div class="me-carga-detalle">
+                ${texto}
+              </div>
+            </div>
+          `;
+    }
+
+    if (tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS) {
+      return `
+            <div class="me-carga-visual">
+              <div class="me-carga-dibujo me-dos-mancuernas">
+
+                <div class="me-mancuerna">
+                  <div class="me-discos-izq">
+                    ${crearDiscos()}
+                  </div>
+                  <div class="me-barra-mancuerna"></div>
+                  <div class="me-discos-der">
+                    ${crearDiscos()}
+                  </div>
+                </div>
+
+                <div class="me-mancuerna">
+                  <div class="me-discos-izq">
+                    ${crearDiscos()}
+                  </div>
+                  <div class="me-barra-mancuerna"></div>
+                  <div class="me-discos-der">
+                    ${crearDiscos()}
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="me-carga-detalle">
+                ${texto}
+              </div>
+            </div>
+          `;
+    }
+
+    if (tipo === WEIGHTS.TIPOS.BARRA_LARGA) {
+      return `
+            <div class="me-carga-visual">
+              <div class="me-carga-dibujo me-barra-larga">
+
+                <div class="me-discos-izq">
+                  ${crearDiscos()}
+                </div>
+
+                <div class="me-barra-larga-centro"></div>
+
+                <div class="me-discos-der">
+                  ${crearDiscos()}
+                </div>
+
+              </div>
+
+              <div class="me-carga-detalle">
+                ${texto}
+              </div>
+            </div>
+          `;
+    }
+
+    return "";
+  },
+  _buscarConfiguracionCarga(tipo, peso) {
+    if (
+      typeof WEIGHTS === "undefined" ||
+      !tipo ||
+      typeof WEIGHTS.obtenerConfiguraciones !== "function"
+    ) {
+      return null;
+    }
+
+    const configuraciones = WEIGHTS.obtenerConfiguraciones(tipo);
+
+    return (
+      configuraciones.find(
+        (config) => Math.abs(Number(config.peso) - Number(peso)) < 0.001,
+      ) || null
+    );
+  },
+
+  _actualizarVisualCarga(tipo) {
+    const select = document.getElementById("mePeso");
+    const contenedor = document.getElementById("meCargaVisual");
+
+    if (!select || !contenedor) return;
+
+    const peso = Number(select.value);
+    const config = this._buscarConfiguracionCarga(tipo, peso);
+
+    contenedor.innerHTML = this._renderVisualCarga(config, tipo);
   },
   _obtenerOpcionesCarga(ej) {
     if (

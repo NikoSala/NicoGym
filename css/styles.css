@@ -495,6 +495,177 @@
         .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group input:focus,
         .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-dim); }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea { grid-column: span 2; text-align: left; font-weight: 400; resize: vertical; min-height: 36px; }
+        /* ==========================================================
+        VISUAL DE CARGA — MANCUERNAS / BARRA
+        ========================================================== */
+
+        .me-carga-visual {
+            margin-top: 8px;
+            padding: 10px 8px;
+            border: 1px solid #2A2E35;
+            border-radius: 12px;
+            background: linear-gradient(145deg, #15181D, #0C0F13);
+        }
+
+        .me-carga-dibujo {
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            overflow: hidden;
+        }
+
+        /* ---------- MANCUERNA ---------- */
+
+        .me-mancuerna {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 54px;
+            min-width: 130px;
+        }
+
+        .me-discos-izq,
+        .me-discos-der {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 100%;
+        }
+
+        .me-discos-izq {
+            flex-direction: row-reverse;
+        }
+
+        .me-discos-der {
+            flex-direction: row;
+        }
+
+        .me-barra-mancuerna {
+            width: 42px;
+            height: 8px;
+            background: linear-gradient(
+                180deg,
+                #D8D8D8,
+                #777,
+                #C8C8C8
+            );
+            border-radius: 4px;
+            box-shadow:
+                inset 0 1px 1px rgba(255,255,255,.35),
+                0 2px 5px rgba(0,0,0,.5);
+        }
+
+        /* ---------- DISCOS ---------- */
+
+        .me-disco {
+            display: block;
+            width: 8px;
+            border-radius: 3px;
+            background: linear-gradient(
+                90deg,
+                #5D6269,
+                #C7CBD1,
+                #555A61
+            );
+            border: 1px solid #30343B;
+            box-shadow:
+                inset 0 0 2px rgba(255,255,255,.35),
+                0 2px 4px rgba(0,0,0,.45);
+        }
+
+        .me-disco.disco-125 {
+            height: 30px;
+        }
+
+        .me-disco.disco-150 {
+            height: 36px;
+        }
+
+        .me-disco.disco-200 {
+            height: 43px;
+        }
+
+        /* ---------- DOS MANCUERNAS ---------- */
+
+        .me-dos-mancuernas {
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+
+        .me-dos-mancuernas .me-mancuerna {
+            transform: scale(.82);
+        }
+
+        /* ---------- BARRA LARGA ---------- */
+
+        .me-barra-larga {
+            width: 100%;
+            min-height: 58px;
+            gap: 0;
+        }
+
+        .me-barra-larga .me-discos-izq,
+        .me-barra-larga .me-discos-der {
+            flex-shrink: 0;
+        }
+
+        .me-barra-larga-centro {
+            flex: 1;
+            max-width: 190px;
+            min-width: 80px;
+            height: 7px;
+            background: linear-gradient(
+                180deg,
+                #D8D8D8,
+                #777,
+                #C8C8C8
+            );
+            border-radius: 4px;
+            box-shadow:
+                inset 0 1px 1px rgba(255,255,255,.35),
+                0 2px 5px rgba(0,0,0,.5);
+        }
+
+        /* ---------- TEXTO DE LA CONFIGURACIÓN ---------- */
+
+        .me-carga-detalle {
+            margin-top: 7px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 10px;
+            line-height: 1.4;
+        }
+
+        /* ---------- AJUSTE EN MÓVIL ---------- */
+
+        @media (max-width: 420px) {
+
+            .me-carga-visual {
+                padding: 8px 5px;
+            }
+
+            .me-carga-dibujo {
+                gap: 10px;
+            }
+
+            .me-mancuerna {
+                transform: scale(.9);
+            }
+
+            .me-dos-mancuernas {
+                gap: 12px;
+            }
+
+            .me-dos-mancuernas .me-mancuerna {
+                transform: scale(.68);
+            }
+
+            .me-barra-larga-centro {
+                min-width: 45px;
+            }
+        }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-botones { display: flex; gap: var(--space-sm); margin-top: 8px; }
         .modo-entreno-overlay .me-ejercicio-card .me-ej-botones .btn { flex: 1; }
         .modo-entreno-overlay .me-navegacion { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); margin-top: 12px; }
