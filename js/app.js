@@ -341,7 +341,37 @@ const APP = {
       </div>
     `;
   },
+  _obtenerOpcionesCarga(ej) {
+    if (
+      typeof WEIGHTS === "undefined" ||
+      !ej?.tipoCarga ||
+      typeof WEIGHTS.obtenerConfiguraciones !== "function"
+    ) {
+      return [];
+    }
 
+    return WEIGHTS.obtenerConfiguraciones(ej.tipoCarga);
+  },
+
+  _textoConfiguracionCarga(config, tipo) {
+    if (!config) return "";
+
+    const discos = config.discosPorLado || config.discosPorExtremo || {};
+
+    const partes = [];
+
+    if (discos[1.25]) partes.push(`1,25 kg × ${discos[1.25]}`);
+
+    if (discos[1.5]) partes.push(`1,50 kg × ${discos[1.5]}`);
+
+    if (discos[2]) partes.push(`2 kg × ${discos[2]}`);
+
+    if (!partes.length) return "";
+
+    const etiqueta = config.discosPorExtremo ? "por extremo" : "por lado";
+
+    return `${partes.join(" · ")} ${etiqueta}`;
+  },
   _mostrarEjercicio() {
     if (idxEjercicioActual >= ejerciciosEntreno.length) {
       this._finalizarEntreno();
@@ -482,6 +512,24 @@ const APP = {
                 `;
     document.getElementById("modoEntreno").scrollTop = 0;
     document.getElementById("meRepsSerie")?.focus();
+    const selectorPeso = document.getElementById("mePeso");
+    if (selectorPeso && selectorPeso.tagName === "SELECT") {
+      selectorPeso.addEventListener("change", () => {
+        const opciones = this._obtenerOpcionesCarga(ej);
+
+        const config = opciones.find(
+          (c) => Math.abs(Number(c.peso) - Number(selectorPeso.value)) < 0.001,
+        );
+
+        const detalle = document.querySelector(".me-carga-detalle");
+
+        if (detalle) {
+          detalle.textContent = config
+            ? this._textoConfiguracionCarga(config, ej.tipoCarga)
+            : "";
+        }
+      });
+    }
   },
 
   _controlesNavegacion() {
