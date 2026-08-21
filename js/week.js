@@ -40,7 +40,7 @@ const Semana = {
         icono: "🔵",
         grupo: "Torso completo · 4 ejercicios + cinta",
       },
-      { key: "sabado", nombre: "SÁBADO", icono: "🚶", grupo: "Caminata" },
+      { key: "sabado", nombre: "SÁBADO", icono: "🚶", grupo: "Descanso" },
       { key: "domingo", nombre: "DOMINGO", icono: "😌", grupo: "Descanso" },
     ];
 

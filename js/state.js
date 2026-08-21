@@ -33,6 +33,10 @@ const STATE = {
   ultimasMediciones: null,
   ultimasFotosGuardadas: null,
   progresion: {},
+  progresionConfig: {
+    semanaBase: null,
+    ejerciciosBase: {},
+  },
   entrenamientoPendiente: null,
 };
 

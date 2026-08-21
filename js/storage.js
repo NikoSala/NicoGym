@@ -41,15 +41,28 @@ const Storage = {
     while (version < CONFIG.STATE_SCHEMA_VERSION) {
       if (version === 1) {
         d.progresion = d.progresion || {};
+        d.progresionConfig = d.progresionConfig || {
+          semanaBase: null,
+          ejerciciosBase: {},
+        };
         version = 2;
       } else if (version === 2) {
         d.progresion = d.progresion || {};
+        d.progresionConfig = d.progresionConfig || {
+          semanaBase: null,
+          ejerciciosBase: {},
+        };
         d.schemaVersion = 3;
         version = 3;
+      }
       } else {
         break;
       }
     }
+    d.progresionConfig = d.progresionConfig || {
+      semanaBase: null,
+      ejerciciosBase: {},
+    };
     d.schemaVersion = CONFIG.STATE_SCHEMA_VERSION;
 
     // Normaliza nombres antiguos duplicados de viernes a sus ejercicios únicos.
@@ -114,6 +127,23 @@ const Storage = {
       STATE.config.temporizadorDescanso = false;
     if (!STATE.progresion || typeof STATE.progresion !== "object")
       STATE.progresion = {};
+        if (
+        !STATE.progresionConfig ||
+        typeof STATE.progresionConfig !== "object" ||
+        Array.isArray(STATE.progresionConfig)
+      ) {
+        STATE.progresionConfig = {
+          semanaBase: null,
+          ejerciciosBase: {},
+        };
+      }
+if (
+  !STATE.progresionConfig.ejerciciosBase ||
+  typeof STATE.progresionConfig.ejerciciosBase !== "object" ||
+  Array.isArray(STATE.progresionConfig.ejerciciosBase)
+) {
+  STATE.progresionConfig.ejerciciosBase = {};
+}
     if (
       STATE.entrenamientoPendiente !== null &&
       (typeof STATE.entrenamientoPendiente !== "object" ||
@@ -279,6 +309,9 @@ const Storage = {
           evolution: "object",
           config: "object",
           ajustes: "object",
+          progresion: "object",
+          progresionConfig: "object",
+          
         };
         for (const [campo, tipo] of Object.entries(campos)) {
           if (datosEstado[campo] === undefined) continue;
