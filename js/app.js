@@ -182,7 +182,7 @@ const APP = {
     ) {
       modoEntrenoActivo = true;
 
-      ejerciciosEntreno = pendiente.ejerciciosEntreno.map((e) => ({ ...e }));
+      ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
 
       idxEjercicioActual = Math.min(
         Math.max(Number(pendiente.idxEjercicioActual) || 0, 0),
@@ -225,21 +225,7 @@ const APP = {
 
     modoEntrenoActivo = true;
     ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
-    if (CONFIG.DIAS_CINTA.includes(dia)) {
-      ejerciciosEntreno.push({
-        nombre: "Caminata en cinta",
-        grupo: "Cardio suave",
-        dia: dia,
-        esCaminata: true,
-        series: 1,
-        reps: `${CONFIG.MIN_CINTA}–${CONFIG.MAX_CINTA} min`,
-        descanso: 0,
-        descripcion:
-          "Camina a un ritmo cómodo durante 15–20 minutos. Con el tiempo iremos aumentando poco a poco el ritmo o la duración.",
-        material: ["Cinta de correr"],
-        intensidadMuscular: {},
-      });
-    }
+
     idxEjercicioActual = 0;
     recordsConseguidos = [];
     cardioCompletado = false;
@@ -257,6 +243,103 @@ const APP = {
       `🏋️ ${CONFIG.NOMBRES_DIAS[dia]}`;
     document.getElementById("meCompletadoMsg").classList.add("hidden");
     this._mostrarEjercicio();
+  },
+  _renderSelectorCarga(ej, pesoActual) {
+    const tipo = ej.tipoCarga;
+
+    if (!tipo || typeof WEIGHTS === "undefined") {
+      return `
+        <div class="me-input-group">
+          <label>Peso (kg)</label>
+          <input
+            type="number"
+            id="mePeso"
+            step="0.5"
+            min="0.5"
+            value="${pesoActual || ""}"
+            placeholder="0"
+            ${seriesActualesEntreno.length ? "readonly" : ""}
+          >
+        </div>
+      `;
+    }
+
+    const configuraciones = WEIGHTS.obtenerConfiguraciones(tipo);
+
+    if (!configuraciones.length) {
+      return `
+        <div class="me-input-group">
+          <label>Peso (kg)</label>
+          <input
+            type="number"
+            id="mePeso"
+            step="0.5"
+            min="0.5"
+            value="${pesoActual || ""}"
+            placeholder="0"
+            ${seriesActualesEntreno.length ? "readonly" : ""}
+          >
+        </div>
+      `;
+    }
+
+    const opciones = configuraciones
+      .map((config) => {
+        let texto = `${config.peso} kg`;
+
+        if (tipo === WEIGHTS.TIPOS.UNA_MANCUERNA) {
+          texto += " · 1 mancuerna";
+        }
+
+        if (tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS) {
+          texto += " por mancuerna";
+        }
+
+        if (
+          tipo === WEIGHTS.TIPOS.BARRA_LARGA &&
+          config.modalidad === "dos_mancuernas_unidas"
+        ) {
+          texto += " · 2 mancuernas";
+        }
+
+        if (
+          tipo === WEIGHTS.TIPOS.BARRA_LARGA &&
+          config.modalidad === "discos_directos"
+        ) {
+          texto += " · discos directos";
+        }
+
+        return `
+          <option
+            value="${config.peso}"
+            ${Math.abs(Number(config.peso) - Number(pesoActual)) < 0.001 ? "selected" : ""}
+          >
+            ${texto}
+          </option>
+        `;
+      })
+      .join("");
+
+    return `
+      <div class="me-input-group">
+        <label>
+          ${
+            tipo === WEIGHTS.TIPOS.UNA_MANCUERNA
+              ? "Mancuerna"
+              : tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS
+                ? "Mancuernas"
+                : "Barra"
+          }
+        </label>
+
+        <select
+          id="mePeso"
+          ${seriesActualesEntreno.length ? "disabled" : ""}
+        >
+          ${opciones}
+        </select>
+      </div>
+    `;
   },
 
   _mostrarEjercicio() {
@@ -358,13 +441,38 @@ const APP = {
                                 .join("<br>")}</div></div>`
                             : ""
                         }
-                        <div class="me-ej-datos"><span>🎯 Objetivo: <strong>${PROGRESION.SERIES_OBJETIVO} × ${PROGRESION.REPS_OBJETIVO}</strong></span><span>⏱ ${ej.descanso}s descanso</span></div>
+                        <div class="me-ej-datos">
+                        <span>
+                          🎯 Objetivo:
+                          <strong>${PROGRESION.SERIES_OBJETIVO} × ${PROGRESION.REPS_OBJETIVO}</strong>
+                        </span>
+
+                        ${
+                          CONFIG.TEMPORIZADOR_DESCANSO
+                            ? `<span>⏱ ${ej.descanso || 90}s descanso</span>`
+                            : ""
+                        }
+                      </div>
                         ${ultimo ? `<div class="me-ej-ultimo">Último: <strong>${ultimo.peso} kg</strong> · ${ultimo.reps}</div>` : ""}
                         ${record ? `<div class="me-ej-record">🏆 Récord: <strong>${record.weight} kg × ${record.reps}</strong> · 1RM est. ${PROGRESION.estimar1RM(record.weight, record.reps).toFixed(1)} kg</div>` : ""}
                         <div class="me-series-grid">${seriesHtml}</div>
                         <div class="me-ej-inputs">
-                            <div class="me-input-group"><label>Peso (kg)</label><input type="number" id="mePeso" step="0.5" min="0.5" value="${pesoActualEntreno || ""}" placeholder="0" ${seriesActualesEntreno.length ? "readonly" : ""}></div>
-                            <div class="me-input-group"><label>Repeticiones de esta serie</label><input type="number" id="meRepsSerie" min="1" max="100" step="1" placeholder="${PROGRESION.REPS_OBJETIVO}"></div>
+
+                          ${this._renderSelectorCarga(ej, pesoActualEntreno)}
+
+                          <div class="me-input-group">
+                            <label>Repeticiones de esta serie</label>
+
+                            <input
+                              type="number"
+                              id="meRepsSerie"
+                              min="1"
+                              max="100"
+                              step="1"
+                              placeholder="${PROGRESION.REPS_OBJETIVO}"
+                            >
+                          </div>
+
                         </div>
                         <div class="me-ej-botones">
                             <button class="btn btn-success" onclick="APP._guardarSerie()"><i class="fa-solid fa-check"></i> Guardar serie ${Math.min(seriesActualesEntreno.length + 1, PROGRESION.SERIES_OBJETIVO)}</button>
@@ -447,19 +555,41 @@ const APP = {
       STATE.historialEntrenos.push(entrenamiento);
     }
     let registro = entrenamiento.ejercicios.find((e) => e.nombre === ej.nombre);
+
+    const configuracionCarga =
+      typeof WEIGHTS !== "undefined" && ej.tipoCarga
+        ? WEIGHTS.buscar(peso, ej.tipoCarga)
+        : null;
+
     if (!registro) {
       registro = {
         nombre: ej.nombre,
         peso,
         reps: "",
-        tipo: "mancuerna",
-        discos: {},
+        tipoCarga: ej.tipoCarga || null,
+        tipo: ej.tipoCarga || "mancuerna",
+        discos: configuracionCarga
+          ? {
+              ...(configuracionCarga.discosPorLado || {}),
+              ...(configuracionCarga.discosPorExtremo || {}),
+            }
+          : {},
+        configuracionCarga: configuracionCarga
+          ? { ...configuracionCarga }
+          : null,
         series: 0,
         repsTotales: 0,
       };
+
       entrenamiento.ejercicios.push(registro);
     }
+
     registro.peso = peso;
+    registro.tipoCarga = ej.tipoCarga || null;
+    registro.configuracionCarga = configuracionCarga
+      ? { ...configuracionCarga }
+      : null;
+
     registro.reps = seriesActualesEntreno.join(",");
     registro.series = seriesActualesEntreno.length;
     registro.repsTotales = seriesActualesEntreno.reduce((a, b) => a + b, 0);
