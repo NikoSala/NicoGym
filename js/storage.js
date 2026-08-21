@@ -54,7 +54,6 @@ const Storage = {
         };
         d.schemaVersion = 3;
         version = 3;
-      }
       } else {
         break;
       }
@@ -127,23 +126,23 @@ const Storage = {
       STATE.config.temporizadorDescanso = false;
     if (!STATE.progresion || typeof STATE.progresion !== "object")
       STATE.progresion = {};
-        if (
-        !STATE.progresionConfig ||
-        typeof STATE.progresionConfig !== "object" ||
-        Array.isArray(STATE.progresionConfig)
-      ) {
-        STATE.progresionConfig = {
-          semanaBase: null,
-          ejerciciosBase: {},
-        };
-      }
-if (
-  !STATE.progresionConfig.ejerciciosBase ||
-  typeof STATE.progresionConfig.ejerciciosBase !== "object" ||
-  Array.isArray(STATE.progresionConfig.ejerciciosBase)
-) {
-  STATE.progresionConfig.ejerciciosBase = {};
-}
+    if (
+      !STATE.progresionConfig ||
+      typeof STATE.progresionConfig !== "object" ||
+      Array.isArray(STATE.progresionConfig)
+    ) {
+      STATE.progresionConfig = {
+        semanaBase: null,
+        ejerciciosBase: {},
+      };
+    }
+    if (
+      !STATE.progresionConfig.ejerciciosBase ||
+      typeof STATE.progresionConfig.ejerciciosBase !== "object" ||
+      Array.isArray(STATE.progresionConfig.ejerciciosBase)
+    ) {
+      STATE.progresionConfig.ejerciciosBase = {};
+    }
     if (
       STATE.entrenamientoPendiente !== null &&
       (typeof STATE.entrenamientoPendiente !== "object" ||
@@ -311,7 +310,6 @@ if (
           ajustes: "object",
           progresion: "object",
           progresionConfig: "object",
-          
         };
         for (const [campo, tipo] of Object.entries(campos)) {
           if (datosEstado[campo] === undefined) continue;
