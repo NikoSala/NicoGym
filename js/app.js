@@ -418,80 +418,122 @@ const APP = {
     </div>
   `;
 
-    document.getElementById("modoEntreno").classList.add("open");
+  document.getElementById("modoEntreno").classList.add("open");
 
-    const select = document.getElementById("mePesoInicio");
-      document.querySelectorAll(".me-peso-opcion").forEach((opcion) => {
-      opcion.addEventListener("click", () => {
+  // ==========================================
+  // SELECTOR DE PESO
+  // ==========================================
 
-      const peso = Number(opcion.dataset.peso);
+  let pesoSeleccionado = Number(primeraConfiguracion.peso);
 
-        document
-          .querySelectorAll(".me-peso-opcion")
-          .forEach((item) => item.classList.remove("selected"));
+  const opcionesPeso = document.querySelectorAll(".me-peso-opcion");
+  const visual = document.getElementById("meCargaVisualInicio");
+  const confirmacion = document.getElementById("mePesoConfirmacion");
+  const boton = document.getElementById("btnConfirmarCarga");
 
-        opcion.classList.add("selected");
+  // Selección inicial
+  this.pesoSesionEntreno = pesoSeleccionado;
+  pesoActualEntreno = pesoSeleccionado;
 
-        const radio = opcion.querySelector('input[type="radio"]');
+  // Al seleccionar una opción
+  opcionesPeso.forEach((opcion) => {
+  opcion.addEventListener("click", () => {
+  const peso = Number(opcion.dataset.peso);
 
-        if (radio) {
-          radio.checked = true;
-        }
+  if (!Number.isFinite(peso) || peso <= 0) {
+  return;
+  }
 
-        select.value = String(peso);
+  pesoSeleccionado = peso;
 
-        select.dispatchEvent(new Event("change"));
-      });
-    });
-    const visual = document.getElementById("meCargaVisualInicio");
-    const confirmacion = document.getElementById("mePesoConfirmacion");
-    const boton = document.getElementById("btnConfirmarCarga");
+  // Quitar selección anterior
+  opcionesPeso.forEach((item) => {
+  item.classList.remove("selected");
+  });
 
-    select.addEventListener("change", () => {
-      const peso = Number(select.value);
+  // Marcar selección actual
+  opcion.classList.add("selected");
 
-      const config = this._buscarConfiguracionCarga(tipo, peso);
+  // Marcar radio
+  const radio = opcion.querySelector('input[type="radio"]');
 
-      visual.innerHTML = this._renderVisualCarga(config, tipo);
+  if (radio) {
+  radio.checked = true;
+  }
 
-      confirmacion.innerHTML = `
-        <strong>🏋️ ${peso} kg</strong>
-      `;
-    });
+  // Guardar peso
+  this.pesoSesionEntreno = peso;
+  pesoActualEntreno = peso;
 
-    boton.addEventListener("click", () => {
-      const peso = Number(select.value);
-      const config = this._buscarConfiguracionCarga(tipo, peso);
+  // Buscar configuración
+  const config = this._buscarConfiguracionCarga(tipo, peso);
 
-      if (!config) {
-        UI.toast("Selecciona un peso válido", "error");
-        return;
-      }
+  if (!config) {
+  UI.toast("No existe configuración para este peso", "error");
+  return;
+  }
 
-      this.pesoSesionEntreno = peso;
+  // Actualizar dibujo
+  if (visual) {
+  visual.innerHTML = this._renderVisualCarga(config, tipo);
+  }
 
-      modoEntrenoActivo = true;
-      ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
+  // Actualizar texto
+  if (confirmacion) {
+  confirmacion.innerHTML = `
+  <strong>🏋️ ${peso} kg</strong>
+  `;
+  }
+  });
+  });
 
-      idxEjercicioActual = 0;
-      recordsConseguidos = [];
-      cardioCompletado = false;
-      this._cardioMostrado = false;
-      startTimeEntreno = Date.now();
-      totalPesoLevantadoEntreno = 0;
-      totalVolumenEntreno = 0;
-      totalSeriesEntreno = 0;
-      totalRepsEntreno = 0;
-      seriesActualesEntreno = [];
-      pesoActualEntreno = 0;
+  // ==========================================
+  // BOTÓN CONFIRMAR Y EMPEZAR
+  // ==========================================
 
-      document.getElementById("meTitulo").textContent =
-        `🏋️ ${CONFIG.NOMBRES_DIAS[dia]}`;
+  boton.addEventListener("click", () => {
+  const peso = Number(pesoSeleccionado);
 
-      document.getElementById("meCompletadoMsg").classList.add("hidden");
+  if (!Number.isFinite(peso) || peso <= 0) {
+  UI.toast("Selecciona un peso válido", "error");
+  return;
+  }
 
-      this._mostrarEjercicio();
-    });
+  const config = this._buscarConfiguracionCarga(tipo, peso);
+
+  if (!config) {
+  UI.toast("No existe configuración para este peso", "error");
+  return;
+  }
+
+  // Guardar definitivamente el peso de la sesión
+  this.pesoSesionEntreno = peso;
+  pesoActualEntreno = peso;
+
+  modoEntrenoActivo = true;
+  ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
+
+  idxEjercicioActual = 0;
+  recordsConseguidos = [];
+  cardioCompletado = false;
+  this._cardioMostrado = false;
+
+  startTimeEntreno = Date.now();
+
+  totalPesoLevantadoEntreno = 0;
+  totalVolumenEntreno = 0;
+  totalSeriesEntreno = 0;
+  totalRepsEntreno = 0;
+
+  seriesActualesEntreno = [];
+
+  document.getElementById("meTitulo").textContent =
+  `🏋️ ${CONFIG.NOMBRES_DIAS[dia]}`;
+
+  document.getElementById("meCompletadoMsg").classList.add("hidden");
+
+  this._mostrarEjercicio();
+  });
 
     document.getElementById("modoEntreno").scrollTop = 0;
   },
