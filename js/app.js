@@ -583,7 +583,11 @@ const APP = {
             }
           </label>
 
-          <select id="mePeso" onchange="APP._actualizarVisualCarga('${tipo}')" ${seriesActualesEntreno.length ? "disabled" : ""}>
+          <select
+            id="mePeso"
+            onchange="APP._actualizarVisualCarga('${tipo}')"
+            ${seriesActualesEntreno.length ? "disabled" : ""}
+          >
             ${opciones}
           </select>
           <div id="meCargaVisual">
@@ -866,12 +870,24 @@ const APP = {
     const select = document.getElementById("mePeso");
     const contenedor = document.getElementById("meCargaVisual");
 
-    if (!select || !contenedor) return;
+    if (!select) return;
 
     const peso = Number(select.value);
-    const config = this._buscarConfiguracionCarga(tipo, peso);
 
-    contenedor.innerHTML = this._renderVisualCarga(config, tipo);
+    if (!Number.isFinite(peso) || peso <= 0) {
+      UI.toast("Selecciona un peso válido", "error");
+      return;
+    }
+
+    // Guardamos el peso seleccionado para la sesión.
+    this.pesoSesionEntreno = peso;
+    pesoActualEntreno = peso;
+
+    // Actualizamos la representación visual de los discos.
+    if (contenedor) {
+      const config = this._buscarConfiguracionCarga(tipo, peso);
+      contenedor.innerHTML = this._renderVisualCarga(config, tipo);
+    }
   },
   _obtenerOpcionesCarga(ej) {
     if (
@@ -1018,27 +1034,7 @@ const APP = {
               <div class="me-series-grid">${seriesHtml}</div>
               <div class="me-ej-inputs">
 
-                ${`
-                  <input
-                    type="hidden"
-                    id="mePeso"
-                    value="${pesoActualEntreno}"
-                  >
-                  <div class="me-carga-sesion">
-                    <strong>🏋️ ${pesoActualEntreno} kg</strong>
-                    <span> · peso de la sesión</span>
-                  </div>
-
-                  <div id="meCargaVisual">
-                    ${this._renderVisualCarga(
-                      this._buscarConfiguracionCarga(
-                        ej.tipoCarga,
-                        pesoActualEntreno,
-                      ),
-                      ej.tipoCarga,
-                    )}
-                  </div>
-                `}
+                ${this._renderSelectorCarga(ej, pesoActualEntreno)}
 
                 <div class="me-input-group">
                   <label>Repeticiones de esta serie</label>
