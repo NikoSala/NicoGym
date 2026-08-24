@@ -300,15 +300,6 @@ const APP = {
 
     body.innerHTML = `
       <div class="me-ejercicio-card">
-        <button
-          type="button"
-          class="me-volver-inicio"
-          onclick="APP._salirEntreno()"
-        >
-          <i class="fa-solid fa-house"></i>
-          Inicio
-        </button>
-
         <div class="me-ej-numero">
           Preparación del entrenamiento
         </div>
