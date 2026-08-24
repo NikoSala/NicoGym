@@ -300,6 +300,14 @@ const APP = {
 
     body.innerHTML = `
       <div class="me-ejercicio-card">
+        <button
+          type="button"
+          class="me-volver-inicio"
+          onclick="APP._salirEntreno()"
+        >
+          <i class="fa-solid fa-house"></i>
+          Inicio
+        </button>
 
         <div class="me-ej-numero">
           Preparación del entrenamiento
@@ -313,20 +321,31 @@ const APP = {
           ${primerEjercicio.nombre}
         </div>
 
-        <div class="me-input-group">
-          <label for="mePesoInicio">
-            ${
-              tipo === WEIGHTS.TIPOS.UNA_MANCUERNA
-                ? "Peso de la mancuerna"
-                : tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS
-                  ? "Peso por mancuerna"
-                  : "Peso de la barra"
-            }
-          </label>
+        <div class="me-selector-peso">
 
-          <select id="mePesoInicio">
-            ${opciones}
-          </select>
+          <div class="me-selector-peso-titulo">
+            <span>Selecciona tu carga</span>
+            <small>
+              ${
+                tipo === WEIGHTS.TIPOS.UNA_MANCUERNA
+                  ? "Peso de la mancuerna"
+                  : tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS
+                    ? "Peso por mancuerna"
+                    : "Peso de la barra"
+              }
+            </small>
+          </div>
+
+          <div class="me-selector-peso-control">
+            <i class="fa-solid fa-dumbbell"></i>
+
+            <select id="mePesoInicio">
+              ${opciones}
+            </select>
+
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+
         </div>
 
         <div id="meCargaVisualInicio">
