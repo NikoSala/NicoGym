@@ -971,136 +971,686 @@ const APP = {
     const ej = ejerciciosEntreno[idxEjercicioActual];
     const total = ejerciciosEntreno.length;
 
+    // ==========================================
+    // CAMINATA
+    // ==========================================
     if (ej.esCaminata) {
       const progreso = this._calcularProgresoGlobal();
       this._mostrarCaminataComoEjercicio(ej, total, progreso);
       return;
     }
 
+    // ==========================================
+    // DATOS DEL EJERCICIO
+    // ==========================================
+
     const hoy = UI.getHoy();
+
     const entrenamiento = STATE.historialEntrenos.find(
       (e) => e.fecha === hoy && e.dia === ej.dia,
     );
+
     const registro = entrenamiento?.ejercicios?.find(
       (e) => e.nombre === ej.nombre,
     );
+
     const parsed = registro
       ? parseReps(registro.reps)
       : { valid: true, series: [] };
-    seriesActualesEntreno = parsed.valid ? [...parsed.series] : [];
 
-    // El peso lo hemos elegido al comenzar la sesión
+    seriesActualesEntreno = parsed.valid
+      ? [...parsed.series]
+      : [];
+
+    // El peso YA ha sido elegido al iniciar la sesión.
     pesoActualEntreno = this.pesoSesionEntreno;
 
     ejercicioIniciadoAt = Date.now();
 
+    // ==========================================
+    // PROGRESO
+    // ==========================================
+
     const progreso = this._calcularProgresoGlobal();
+
     document.getElementById("meProgresoTexto").textContent =
       `${idxEjercicioActual + 1} / ${total}`;
-    document.getElementById("meProgresoFill").style.width = `${progreso}%`;
+
+    document.getElementById("meProgresoFill").style.width =
+      `${progreso}%`;
+
     document.getElementById("meProgresoInfo").textContent =
       `${progreso}% · ${seriesActualesEntreno.length}/${PROGRESION.SERIES_OBJETIVO} series`;
-    document.getElementById("meCompletadoMsg").classList.add("hidden");
+
+    document
+      .getElementById("meCompletadoMsg")
+      .classList.add("hidden");
+
+    // ==========================================
+    // INFORMACIÓN
+    // ==========================================
 
     const ultimo = this._getUltimoEntreno(ej.nombre);
     const record = Records.getRecord(ej.nombre);
+
     const dificultadColor = getDificultadColor(ej.dificultad);
     const dificultadTexto = getDificultadTexto(ej.dificultad);
+
     const intensidad = ej.intensidadMuscular || {};
+
     const objetivoDia = PROGRESION.recomendarDia(
       ej.dia,
       getEjerciciosPorDia(ej.dia),
       entrenamiento,
     );
-    const body = document.getElementById("meBody");
+
+    // ==========================================
+    // SERIES
+    // ==========================================
+
     const seriesHtml = Array.from(
       { length: PROGRESION.SERIES_OBJETIVO },
       (_, i) => {
         const valor = seriesActualesEntreno[i];
-        return `<div class="me-serie-chip ${valor ? "done" : ""}"><span>Serie ${i + 1}</span><strong>${valor ? valor + " reps" : "—"}</strong></div>`;
-      },
-    ).join("");
 
-    body.innerHTML = `
-          <div class="me-ejercicio-card">
-            ${this._controlesNavegacion()}
-              <div class="me-ej-numero">Ejercicio ${idxEjercicioActual + 1} de ${total}</div>
-              <div class="me-ej-nombre">${ej.nombre}</div>
-              <div class="me-ej-grupo">${ej.grupo}</div>
-              ${ej.urlGif ? `<div class="me-ej-img-wrap"><img src="${ej.urlGif}" class="me-ej-img" onclick="UI.abrirLightbox(this.src)" alt="${ej.nombre}" loading="lazy"></div>` : `<div class="me-ej-img-fallback">💪</div>`}
-              <div class="me-ej-descripcion">${ej.descripcion}</div>
-              <div class="me-ej-dificultad"><span class="dif-label">Dificultad</span> ${dificultadColor} ${dificultadTexto}</div>
-              ${ej.material?.length ? `<div class="me-ej-material">${ej.material.map((m) => `<span class="mat-tag">✔ ${m}</span>`).join("")}</div>` : ""}
-              ${
-                Object.keys(intensidad).length
-                  ? `<div class="me-ej-musculos">${Object.entries(intensidad)
-                      .map(
-                        ([musculo, valor]) =>
-                          `<div class="musc-row"><span class="musc-name">${musculo}</span><div class="musc-bar"><div class="musc-fill" style="width:${Math.min(valor, 100)}%;"></div></div></div>`,
-                      )
-                      .join("")}</div>`
-                  : ""
-              }
-              ${
-                ej.consejos
-                  ? `<div class="me-ej-consejos"><div class="me-ej-consejo-titulo">💡 Consejos</div><div class="me-ej-consejo-texto">${ej.consejos
-                      .split("\n")
-                      .filter((c) => c.trim())
-                      .map((c) => "• " + c.trim())
-                      .join("<br>")}</div></div>`
-                  : ""
-              }
-              ${
-                ej.errores
-                  ? `<div class="me-ej-errores"><div class="me-ej-error-titulo">❌ Evita</div><div class="me-ej-error-texto">${ej.errores
-                      .split("\n")
-                      .filter((e) => e.trim())
-                      .map((e) => "• " + e.trim())
-                      .join("<br>")}</div></div>`
-                  : ""
-              }
-              <div class="me-ej-datos">
-              <span>
-                🎯 Objetivo:
-                <strong>${PROGRESION.SERIES_OBJETIVO} × ${PROGRESION.REPS_OBJETIVO}</strong>
+        return `
+          <div class="me-workout-set-card ${valor ? "completed" : ""}">
+            
+            <div class="me-workout-set-header">
+              <span class="me-workout-set-number">
+                ${i + 1}
               </span>
 
+              <strong>
+                SERIE ${i + 1}
+              </strong>
+
               ${
-                CONFIG.TEMPORIZADOR_DESCANSO
-                  ? `<span>⏱ ${ej.descanso || 90}s descanso</span>`
+                valor
+                  ? `<i class="fa-solid fa-check me-workout-set-check"></i>`
                   : ""
               }
             </div>
-              ${ultimo ? `<div class="me-ej-ultimo">Último: <strong>${ultimo.peso} kg</strong> · ${ultimo.reps}</div>` : ""}
-              ${record ? `<div class="me-ej-record">🏆 Récord: <strong>${record.weight} kg × ${record.reps}</strong> · 1RM est. ${PROGRESION.estimar1RM(record.weight, record.reps).toFixed(1)} kg</div>` : ""}
-              <div class="me-series-grid">${seriesHtml}</div>
-              <div class="me-ej-inputs">
 
-                ${this._renderSelectorCarga(ej, pesoActualEntreno)}
+            <div class="me-workout-set-value">
+              ${valor || "—"}
+            </div>
 
-                <div class="me-input-group">
-                  <label>Repeticiones de esta serie</label>
+            <div class="me-workout-set-label">
+              reps
+            </div>
 
-                  <input
-                    type="number"
-                    id="meRepsSerie"
-                    min="1"
-                    max="100"
-                    step="1"
-                    placeholder="${PROGRESION.REPS_OBJETIVO}"
-                  >
+          </div>
+        `;
+      },
+    ).join("");
+
+    // ==========================================
+    // MATERIAL
+    // ==========================================
+
+    const materialHtml = ej.material?.length
+      ? ej.material
+          .map(
+            (m) => `
+              <span class="me-workout-material-tag">
+                <i class="fa-solid fa-check"></i>
+                ${m}
+              </span>
+            `,
+          )
+          .join("")
+      : "";
+
+    // ==========================================
+    // MÚSCULOS
+    // ==========================================
+
+    const musculosHtml = Object.keys(intensidad).length
+      ? Object.entries(intensidad)
+          .map(
+            ([musculo, valor]) => `
+              <div class="me-workout-muscle-row">
+
+                <div class="me-workout-muscle-name">
+                  ${musculo}
+                </div>
+
+                <div class="me-workout-muscle-bar">
+                  <div
+                    class="me-workout-muscle-fill"
+                    style="width:${Math.min(Number(valor) || 0, 100)}%;"
+                  ></div>
+                </div>
+
+                <div class="me-workout-muscle-value">
+                  ${valor}%
                 </div>
 
               </div>
-              <div class="me-ej-botones">
-                  <button class="btn btn-success" onclick="APP._guardarSerie()"><i class="fa-solid fa-check"></i> Guardar serie ${Math.min(seriesActualesEntreno.length + 1, PROGRESION.SERIES_OBJETIVO)}</button>
-              </div>
-              ${objetivoDia.completo ? `<div class="me-progresion-hint">💪 El último día completaste 4×12 en todo el entrenamiento. Al terminar hoy podrás recibir una recomendación de carga.</div>` : ""}
+            `,
+          )
+          .join("")
+      : `
+          <div class="me-workout-empty">
+            Información muscular no disponible
           </div>
-      `;
+        `;
+
+    // ==========================================
+    // CONSEJOS
+    // ==========================================
+
+    const consejosHtml = ej.consejos
+      ? ej.consejos
+          .split("\n")
+          .filter((c) => c.trim())
+          .map(
+            (c) => `
+              <div class="me-workout-tip">
+                <i class="fa-solid fa-check"></i>
+                <span>${c.trim()}</span>
+              </div>
+            `,
+          )
+          .join("")
+      : `
+          <div class="me-workout-empty">
+            No hay consejos disponibles.
+          </div>
+        `;
+
+    // ==========================================
+    // ERRORES
+    // ==========================================
+
+    const erroresHtml = ej.errores
+      ? ej.errores
+          .split("\n")
+          .filter((e) => e.trim())
+          .map(
+            (e) => `
+              <div class="me-workout-warning">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>${e.trim()}</span>
+              </div>
+            `,
+          )
+          .join("")
+      : `
+          <div class="me-workout-empty">
+            No hay errores registrados.
+          </div>
+        `;
+
+    // ==========================================
+    // CONFIGURACIÓN DEL PESO
+    // ==========================================
+
+    const configuracionCarga =
+      typeof WEIGHTS !== "undefined" && ej.tipoCarga
+        ? this._buscarConfiguracionCarga(
+            ej.tipoCarga,
+            this.pesoSesionEntreno,
+          )
+        : null;
+
+    const textoCarga = configuracionCarga
+      ? this._textoConfiguracionCarga(
+          configuracionCarga,
+          ej.tipoCarga,
+        )
+      : "";
+
+    let etiquetaCarga = "Carga seleccionada";
+
+    if (
+      typeof WEIGHTS !== "undefined" &&
+      ej.tipoCarga === WEIGHTS.TIPOS.UNA_MANCUERNA
+    ) {
+      etiquetaCarga = "Carga seleccionada";
+    } else if (
+      typeof WEIGHTS !== "undefined" &&
+      ej.tipoCarga === WEIGHTS.TIPOS.DOS_MANCUERNAS
+    ) {
+      etiquetaCarga = "Carga seleccionada";
+    }
+
+    // ==========================================
+    // ÚLTIMO ENTRENAMIENTO
+    // ==========================================
+
+    const ultimoHtml = ultimo
+      ? `
+          <div class="me-workout-info-card">
+
+            <div class="me-workout-info-title">
+              <i class="fa-regular fa-clock"></i>
+              ÚLTIMO ENTRENAMIENTO
+            </div>
+
+            <div class="me-workout-info-main">
+              ${ultimo.peso} kg × ${ultimo.reps}
+            </div>
+
+            <div class="me-workout-info-secondary">
+              ${ultimo.fecha || ""}
+            </div>
+
+          </div>
+        `
+      : `
+          <div class="me-workout-info-card">
+
+            <div class="me-workout-info-title">
+              <i class="fa-regular fa-clock"></i>
+              ÚLTIMO ENTRENAMIENTO
+            </div>
+
+            <div class="me-workout-info-main">
+              Sin registros
+            </div>
+
+          </div>
+        `;
+
+    // ==========================================
+    // RÉCORD
+    // ==========================================
+
+    const recordHtml = record
+      ? `
+          <div class="me-workout-info-card">
+
+            <div class="me-workout-info-title">
+              <i class="fa-solid fa-trophy"></i>
+              RÉCORD PERSONAL
+            </div>
+
+            <div class="me-workout-record-value">
+              ${record.weight} kg × ${record.reps} reps
+            </div>
+
+            <div class="me-workout-info-secondary">
+              1RM estimado:
+              ${PROGRESION
+                .estimar1RM(record.weight, record.reps)
+                .toFixed(1)} kg
+            </div>
+
+          </div>
+        `
+      : `
+          <div class="me-workout-info-card">
+
+            <div class="me-workout-info-title">
+              <i class="fa-solid fa-trophy"></i>
+              RÉCORD PERSONAL
+            </div>
+
+            <div class="me-workout-info-main">
+              Sin récord todavía
+            </div>
+
+          </div>
+        `;
+
+    // ==========================================
+    // CUERPO PRINCIPAL
+    // ==========================================
+
+    const body = document.getElementById("meBody");
+
+    body.innerHTML = `
+
+      <div class="me-workout-redesign">
+
+        <!-- =====================================
+            CABECERA DEL EJERCICIO
+            ===================================== -->
+
+        <section class="me-workout-top-grid">
+
+          <!-- INFORMACIÓN -->
+          <div class="me-workout-title-card">
+
+            <div class="me-workout-exercise-number">
+              EJERCICIO ${idxEjercicioActual + 1} DE ${total}
+            </div>
+
+            <h1 class="me-workout-title">
+              ${ej.nombre}
+            </h1>
+
+            <div class="me-workout-group">
+              ${ej.grupo}
+            </div>
+
+            <div class="me-workout-title-details">
+
+              <div>
+                <span class="me-workout-detail-label">
+                  DIFICULTAD
+                </span>
+
+                <span class="me-workout-difficulty">
+                  ${dificultadColor}
+                  ${dificultadTexto}
+                </span>
+              </div>
+
+              ${
+                materialHtml
+                  ? `
+                    <div>
+                      <span class="me-workout-detail-label">
+                        MATERIAL
+                      </span>
+
+                      <div class="me-workout-material">
+                        ${materialHtml}
+                      </div>
+                    </div>
+                  `
+                  : ""
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- GIF -->
+          <div class="me-workout-image-card">
+
+            ${
+              ej.urlGif
+                ? `
+                  <img
+                    src="${ej.urlGif}"
+                    class="me-workout-exercise-image"
+                    onclick="UI.abrirLightbox(this.src)"
+                    alt="${ej.nombre}"
+                    loading="lazy"
+                  >
+
+                  <button
+                    type="button"
+                    class="me-workout-image-button"
+                    onclick="UI.abrirLightbox('${ej.urlGif}')"
+                  >
+                    <i class="fa-solid fa-expand"></i>
+                    Ver animación
+                  </button>
+                `
+                : `
+                  <div class="me-workout-image-fallback">
+                    <i class="fa-solid fa-dumbbell"></i>
+                  </div>
+                `
+            }
+
+          </div>
+
+
+          <!-- MÚSCULOS -->
+          <div class="me-workout-muscles-card">
+
+            <div class="me-workout-section-title">
+              MÚSCULOS TRABAJADOS
+            </div>
+
+            <div class="me-workout-muscles">
+              ${musculosHtml}
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+            HISTORIAL + CONSEJOS
+            ===================================== -->
+
+        <section class="me-workout-middle-grid">
+
+          <div class="me-workout-history-grid">
+
+            ${ultimoHtml}
+
+            ${recordHtml}
+
+          </div>
+
+
+          <div class="me-workout-advice-card">
+
+            <div class="me-workout-advice-column">
+
+              <div class="me-workout-advice-title">
+                <i class="fa-solid fa-lightbulb"></i>
+                CONSEJOS
+              </div>
+
+              <div class="me-workout-advice-list">
+                ${consejosHtml}
+              </div>
+
+            </div>
+
+
+            <div class="me-workout-advice-divider"></div>
+
+
+            <div class="me-workout-advice-column">
+
+              <div class="me-workout-warning-title">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                EVITA
+              </div>
+
+              <div class="me-workout-advice-list">
+                ${erroresHtml}
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+            ZONA DE ENTRENAMIENTO
+            ===================================== -->
+
+        <section class="me-workout-training-grid">
+
+
+          <!-- CARGA FIJA -->
+          <div class="me-workout-load-card">
+
+            <div class="me-workout-load-content">
+
+              <div class="me-workout-load-title">
+                <i class="fa-solid fa-dumbbell"></i>
+                ${etiquetaCarga}
+              </div>
+
+              <div class="me-workout-load-value">
+                ${this.pesoSesionEntreno} kg
+              </div>
+
+              <div class="me-workout-load-subtitle">
+                ${
+                  ej.tipoCarga ===
+                  WEIGHTS?.TIPOS?.UNA_MANCUERNA
+                    ? "mancuerna"
+                    : "por mancuerna"
+                }
+              </div>
+
+              ${
+                textoCarga
+                  ? `
+                    <div class="me-workout-load-detail">
+                      <i class="fa-solid fa-circle"></i>
+                      ${textoCarga}
+                    </div>
+                  `
+                  : ""
+              }
+
+            </div>
+
+
+            ${
+              configuracionCarga
+                ? `
+                  <div class="me-workout-load-image">
+                    ${this._renderVisualCarga(
+                      configuracionCarga,
+                      ej.tipoCarga,
+                    )}
+                  </div>
+                `
+                : ""
+            }
+
+          </div>
+
+
+          <!-- REPETICIONES -->
+          <div class="me-workout-reps-card">
+
+            <div class="me-workout-reps-title">
+              REPETICIONES DE ESTA SERIE
+            </div>
+
+            <div class="me-workout-reps-row">
+
+              <button
+                type="button"
+                class="me-workout-reps-button"
+                onclick="APP._ajustarReps(-1)"
+                aria-label="Restar repetición"
+              >
+                <i class="fa-solid fa-minus"></i>
+              </button>
+
+              <input
+                type="number"
+                id="meRepsSerie"
+                class="me-workout-reps-input"
+                min="1"
+                max="100"
+                step="1"
+                value="${PROGRESION.REPS_OBJETIVO}"
+              >
+
+              <button
+                type="button"
+                class="me-workout-reps-button"
+                onclick="APP._ajustarReps(1)"
+                aria-label="Añadir repetición"
+              >
+                <i class="fa-solid fa-plus"></i>
+              </button>
+
+            </div>
+
+            <div class="me-workout-reps-target">
+              Objetivo: ${PROGRESION.SERIES_OBJETIVO} × ${PROGRESION.REPS_OBJETIVO} reps
+            </div>
+
+          </div>
+
+
+          <!-- GUARDAR -->
+          <button
+            type="button"
+            class="me-workout-save-button"
+            onclick="APP._guardarSerie()"
+          >
+
+            <span class="me-workout-save-main">
+              <i class="fa-solid fa-check"></i>
+              Guardar serie ${Math.min(
+                seriesActualesEntreno.length + 1,
+                PROGRESION.SERIES_OBJETIVO
+              )}
+            </span>
+
+            <span class="me-workout-save-sub">
+              Serie ${Math.min(
+                seriesActualesEntreno.length + 1,
+                PROGRESION.SERIES_OBJETIVO
+              )} de ${PROGRESION.SERIES_OBJETIVO}
+            </span>
+
+          </button>
+
+        </section>
+
+
+        <!-- =====================================
+            SERIES
+            ===================================== -->
+
+        <section class="me-workout-series-grid">
+
+          ${seriesHtml}
+
+        </section>
+
+
+        <!-- =====================================
+            NAVEGACIÓN
+            ===================================== -->
+
+        <section class="me-workout-navigation">
+
+          <button
+            type="button"
+            class="me-workout-nav-button"
+            onclick="APP._navegarEjercicio(-1)"
+            ${idxEjercicioActual === 0 ? "disabled" : ""}
+          >
+            <i class="fa-solid fa-arrow-left"></i>
+            Anterior
+          </button>
+
+
+          <button
+            type="button"
+            class="me-workout-nav-button next"
+            onclick="APP._navegarEjercicio(1)"
+            ${
+              idxEjercicioActual === ejerciciosEntreno.length - 1
+                ? "disabled"
+                : ""
+            }
+          >
+            Siguiente
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+
+        </section>
+
+      </div>
+    `;
+
+    // ==========================================
+    // SCROLL ARRIBA
+    // ==========================================
+
     document.getElementById("modoEntreno").scrollTop = 0;
-    document.getElementById("meRepsSerie")?.focus();
+
+    // No hacemos autofocus para no abrir el teclado
+    // accidentalmente en dispositivos táctiles.
   },
+
 
   _controlesNavegacion() {
     const esPrimero = idxEjercicioActual === 0;
@@ -1135,6 +1685,24 @@ const APP = {
     idxEjercicioActual = siguienteIndice;
     document.getElementById("meCompletadoMsg").classList.add("hidden");
     this._mostrarEjercicio();
+  },
+  
+  _ajustarReps(delta) {
+    const input = document.getElementById("meRepsSerie");
+
+    if (!input) return;
+
+    let valor = parseInt(input.value, 10);
+
+    if (!Number.isFinite(valor)) {
+      valor = PROGRESION.REPS_OBJETIVO;
+    }
+
+    valor += delta;
+
+    valor = Math.max(1, Math.min(100, valor));
+
+    input.value = valor;
   },
 
   _guardarSerie() {
