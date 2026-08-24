@@ -299,81 +299,150 @@ const APP = {
     document.getElementById("meCompletadoMsg").classList.add("hidden");
 
     body.innerHTML = `
-          <div class="me-carga-inicio-card">
+    <div class="me-selector-peso-page">
 
-            <div class="me-carga-inicio-header">
-              <div class="me-carga-inicio-kicker">
-                Preparación del entrenamiento
-              </div>
+      <div class="me-selector-peso-header">
+        <div class="me-selector-peso-kicker">
+          🏋️ PREPARACIÓN DEL ENTRENAMIENTO
+        </div>
 
-              <div class="me-carga-inicio-titulo">
-                Selecciona el peso
-              </div>
+        <div class="me-selector-peso-title">
+          Selecciona el peso
+        </div>
 
-              <div class="me-carga-inicio-ejercicio">
-                ${primerEjercicio.nombre}
-              </div>
-            </div>
+        <div class="me-selector-peso-subtitle">
+          ${primerEjercicio.nombre}
+        </div>
+      </div>
 
-            <div class="me-carga-selector">
-              <div class="me-carga-selector-label">
-                ${
-                  tipo === WEIGHTS.TIPOS.UNA_MANCUERNA
-                    ? "Peso de la mancuerna"
-                    : tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS
-                      ? "Peso por mancuerna"
-                      : "Peso de la barra"
-                }
-              </div>
+      <div class="me-selector-peso-layout">
 
-              <div class="me-carga-selector-control">
-                <i class="fa-solid fa-dumbbell"></i>
+        <!-- COLUMNA IZQUIERDA -->
+        <div class="me-selector-peso-left">
 
-                <select id="mePesoInicio">
-                  ${opciones}
-                </select>
+          <div class="me-selector-peso-section-title">
+            <i class="fa-solid fa-dumbbell"></i>
+            ${
+              tipo === WEIGHTS.TIPOS.UNA_MANCUERNA
+                ? "PESO DE LA MANCUERNA"
+                : tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS
+                  ? "PESO POR MANCUERNA"
+                  : "PESO DE LA BARRA"
+            }
+          </div>
 
-                <i class="fa-solid fa-chevron-down me-carga-chevron"></i>
-              </div>
-            </div>
+          <div class="me-peso-opciones">
 
-            <div class="me-carga-preview">
-              <div class="me-carga-preview-titulo">
-                CONFIGURACIÓN
-              </div>
+            ${configuraciones
+              .map(
+                (config, index) => `
+                  <label
+                    class="me-peso-opcion ${index === 0 ? "selected" : ""}"
+                    data-peso="${config.peso}"
+                  >
+                    <input
+                      type="radio"
+                      name="pesoInicio"
+                      value="${config.peso}"
+                      ${index === 0 ? "checked" : ""}
+                    >
 
-              <div id="meCargaVisualInicio">
-                ${this._renderVisualCarga(primeraConfiguracion, tipo)}
-              </div>
-            </div>
+                    <span class="me-peso-radio"></span>
 
-            <div class="me-carga-confirmacion">
+                    <span class="me-peso-opcion-texto">
+                      ${config.peso} kg
+                    </span>
 
-              <div class="me-carga-confirmacion-titulo">
-                ¿Has colocado este peso en real?
-              </div>
-
-              <div id="mePesoConfirmacion" class="me-carga-sesion">
-                <strong>🏋️ ${primeraConfiguracion.peso} kg</strong>
-              </div>
-
-              <button
-                type="button"
-                class="btn btn-success btn-block"
-                id="btnConfirmarCarga"
-              >
-                <i class="fa-solid fa-check"></i>
-                Confirmar y empezar
-              </button>
-
-            </div>
+                    <span class="me-peso-check">
+                      <i class="fa-solid fa-check"></i>
+                    </span>
+                  </label>
+                `,
+              )
+              .join("")}
 
           </div>
-        `;
+
+          <div class="me-peso-info">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>
+              Todos los pesos están calculados<br>
+              según tu kit disponible
+            </span>
+          </div>
+
+        </div>
+
+        <!-- COLUMNA DERECHA -->
+        <div class="me-selector-peso-right">
+
+          <div class="me-preview-header">
+            <i class="fa-regular fa-eye"></i>
+            VISTA PREVIA DEL PESO SELECCIONADO
+          </div>
+
+          <div
+            id="meCargaVisualInicio"
+            class="me-selector-preview"
+          >
+            ${this._renderVisualCarga(primeraConfiguracion, tipo)}
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- CONFIRMACIÓN -->
+      <div class="me-selector-confirmacion">
+
+        <div class="me-carga-confirmacion-titulo">
+          ¿Has colocado este peso en real?
+        </div>
+
+        <div id="mePesoConfirmacion" class="me-carga-sesion">
+          <strong>🏋️ ${primeraConfiguracion.peso} kg</strong>
+        </div>
+
+      </div>
+
+      <!-- BOTÓN -->
+      <button
+        type="button"
+        class="btn btn-success btn-block me-selector-confirmar"
+        id="btnConfirmarCarga"
+      >
+        <i class="fa-solid fa-check"></i>
+        Confirmar y empezar
+      </button>
+
+    </div>
+  `;
 
     document.getElementById("modoEntreno").classList.add("open");
 
     const select = document.getElementById("mePesoInicio");
+      document.querySelectorAll(".me-peso-opcion").forEach((opcion) => {
+      opcion.addEventListener("click", () => {
+
+      const peso = Number(opcion.dataset.peso);
+
+        document
+          .querySelectorAll(".me-peso-opcion")
+          .forEach((item) => item.classList.remove("selected"));
+
+        opcion.classList.add("selected");
+
+        const radio = opcion.querySelector('input[type="radio"]');
+
+        if (radio) {
+          radio.checked = true;
+        }
+
+        select.value = String(peso);
+
+        select.dispatchEvent(new Event("change"));
+      });
+    });
     const visual = document.getElementById("meCargaVisualInicio");
     const confirmacion = document.getElementById("mePesoConfirmacion");
     const boton = document.getElementById("btnConfirmarCarga");
