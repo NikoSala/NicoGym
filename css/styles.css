@@ -575,6 +575,19 @@
             background: linear-gradient(145deg, #15181D, #0C0F13);
         }
 
+        .me-carga-visual-movil {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 12px 0;
+            padding: 14px 12px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
         .me-carga-dibujo {
             min-height: 58px;
             display: flex;
@@ -1654,8 +1667,12 @@
 .me-dos-mancuernas-real {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 12px;
   min-height: 170px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .me-dos-mancuernas-real .me-mancuerna-real {

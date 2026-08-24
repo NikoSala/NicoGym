@@ -576,7 +576,7 @@ const APP = {
         `;
     }
 
-    const opciones = configuraciones
+        const opciones = configuraciones
       .map((config) => {
         let texto = `${config.peso} kg`;
 
@@ -606,9 +606,7 @@ const APP = {
             <option
               value="${config.peso}"
               ${Math.abs(Number(config.peso) - Number(pesoActual)) < 0.001 ? "selected" : ""}
-            >
-              ${texto}
-            </option>
+            >${texto}</option>
           `;
       })
       .join("");
@@ -693,14 +691,15 @@ const APP = {
       return html;
     };
 
-    const texto = this._textoConfiguracionCarga(config, tipo);
+      const texto = this._textoConfiguracionCarga(config, tipo);
+      const peso = Number(config.peso || 0);
 
     /* ==========================================
       UNA MANCUERNA
       ========================================== */
     if (tipo === WEIGHTS.TIPOS.UNA_MANCUERNA) {
       return `
-        <div class="me-carga-visual">
+        <div class="me-carga-visual me-carga-visual-movil">
           <div class="me-carga-dibujo me-dibujo-mancuerna-real">
 
             <div class="me-mancuerna-real">
@@ -745,7 +744,7 @@ const APP = {
       ========================================== */
     if (tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS) {
       return `
-        <div class="me-carga-visual">
+        <div class="me-carga-visual me-carga-visual-movil">
           <div class="me-carga-dibujo me-dos-mancuernas-real">
 
             <div class="me-mancuerna-real">
@@ -819,7 +818,7 @@ const APP = {
     if (tipo === WEIGHTS.TIPOS.BARRA_LARGA) {
       if (config.modalidad === "dos_mancuernas_unidas") {
         return `
-          <div class="me-carga-visual">
+          <div class="me-carga-visual me-carga-visual-movil">
             <div class="me-carga-dibujo me-barra-real">
 
               <div class="me-discos-reales me-discos-izq">
@@ -854,7 +853,7 @@ const APP = {
       }
 
       return `
-        <div class="me-carga-visual">
+        <div class="me-carga-visual me-carga-visual-movil">
           <div class="me-carga-dibujo me-barra-real">
 
             <div class="me-discos-reales me-discos-izq">
