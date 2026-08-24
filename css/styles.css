@@ -1780,3 +1780,219 @@
     width: 90px;
   }
 }
+/* ==========================================================
+   SELECTOR DE PESO — REDISEÑO
+   ========================================================== */
+
+.me-carga-inicio-card {
+    background: linear-gradient(145deg, #181C22, #0F1216);
+    border: 1px solid #30343B;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 18px 45px rgba(0,0,0,.28);
+    animation: fadeUp .3s ease;
+}
+
+.me-carga-inicio-header {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.me-carga-inicio-kicker {
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.me-carga-inicio-titulo {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    color: var(--text);
+}
+
+.me-carga-inicio-ejercicio {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+}
+
+/* ---------- SELECTOR ---------- */
+
+.me-carga-selector {
+    margin-bottom: 12px;
+}
+
+.me-carga-selector-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.me-carga-selector-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #0D1014;
+    border: 1px solid #353A42;
+    border-radius: 13px;
+    min-height: 58px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.me-carga-selector-control:focus-within {
+    border-color: #8E1831;
+    box-shadow: 0 0 0 3px rgba(125,16,40,.14);
+}
+
+.me-carga-selector-control > i:first-child {
+    width: 48px;
+    text-align: center;
+    color: #B72B49;
+    font-size: 17px;
+    flex-shrink: 0;
+}
+
+.me-carga-selector-control select {
+    flex: 1;
+    width: 100%;
+    height: 56px;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 40px 0 4px;
+    text-align: center;
+    text-align-last: center;
+    font-size: 21px;
+    font-weight: 800;
+    color: #F1F1F1 !important;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.me-carga-chevron {
+    position: absolute;
+    right: 15px;
+    color: #777E87;
+    font-size: 11px;
+    pointer-events: none;
+}
+
+/* ---------- PREVISUALIZACIÓN ---------- */
+
+.me-carga-preview {
+    background: rgba(0,0,0,.18);
+    border: 1px solid #292E35;
+    border-radius: 14px;
+    min-height: 175px;
+    padding: 12px 10px 8px;
+    margin-bottom: 14px;
+}
+
+.me-carga-preview-titulo {
+    text-align: center;
+    font-size: 9px;
+    color: #777E87;
+    font-weight: 800;
+    letter-spacing: .14em;
+    margin-bottom: 2px;
+}
+
+/* Reducimos visualmente la representación de las mancuernas */
+.me-carga-preview .me-carga-dibujo {
+    transform: scale(1);
+    transform-origin: center center;
+}
+
+/* La previsualización no necesita ocupar tanta altura */
+.me-carga-preview .me-carga-visual {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.me-carga-preview .me-carga-detalle {
+    font-size: 11px;
+    color: #969CA5;
+    text-align: center;
+    margin-top: -8px;
+}
+
+/* ---------- CONFIRMACIÓN ---------- */
+
+.me-carga-inicio-card .me-carga-confirmacion {
+    border-top: 1px solid #292E35;
+    padding-top: 14px;
+    text-align: center;
+}
+
+.me-carga-inicio-card .me-carga-confirmacion-titulo {
+    font-size: 13px;
+    font-weight: 700;
+    color: #E5E7EB;
+    margin-bottom: 8px;
+}
+
+.me-carga-inicio-card .me-carga-sesion {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    padding: 7px 18px;
+    margin-bottom: 12px;
+    border-radius: 999px;
+    background: rgba(214,169,74,.09);
+    border: 1px solid rgba(214,169,74,.28);
+    color: #D6A94A;
+    font-size: 14px;
+}
+
+.me-carga-inicio-card .me-carga-sesion strong {
+    color: #D6A94A;
+}
+
+.me-carga-inicio-card #btnConfirmarCarga {
+    min-height: 48px;
+    font-size: 14px;
+    font-weight: 800;
+    border-radius: 12px;
+}
+
+/* ---------- MÓVIL ---------- */
+
+@media (max-width: 420px) {
+
+    .me-carga-inicio-card {
+        padding: 14px;
+        border-radius: 15px;
+    }
+
+    .me-carga-inicio-titulo {
+        font-size: 21px;
+    }
+
+    .me-carga-selector-control {
+        min-height: 54px;
+    }
+
+    .me-carga-selector-control select {
+        height: 52px;
+        font-size: 19px;
+    }
+
+    .me-carga-preview {
+        min-height: 155px;
+    }
+
+    .me-carga-preview .me-carga-dibujo {
+        transform: scale(.88);
+    }
+}

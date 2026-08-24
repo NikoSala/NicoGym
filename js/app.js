@@ -299,71 +299,77 @@ const APP = {
     document.getElementById("meCompletadoMsg").classList.add("hidden");
 
     body.innerHTML = `
-      <div class="me-ejercicio-card">
-        <div class="me-ej-numero">
-          Preparación del entrenamiento
-        </div>
+          <div class="me-carga-inicio-card">
 
-        <div class="me-ej-nombre">
-          Selecciona el peso
-        </div>
+            <div class="me-carga-inicio-header">
+              <div class="me-carga-inicio-kicker">
+                Preparación del entrenamiento
+              </div>
 
-        <div class="me-ej-grupo">
-          ${primerEjercicio.nombre}
-        </div>
+              <div class="me-carga-inicio-titulo">
+                Selecciona el peso
+              </div>
 
-        <div class="me-selector-peso">
+              <div class="me-carga-inicio-ejercicio">
+                ${primerEjercicio.nombre}
+              </div>
+            </div>
 
-          <div class="me-selector-peso-titulo">
-            <span>Selecciona tu carga</span>
-            <small>
-              ${
-                tipo === WEIGHTS.TIPOS.UNA_MANCUERNA
-                  ? "Peso de la mancuerna"
-                  : tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS
-                    ? "Peso por mancuerna"
-                    : "Peso de la barra"
-              }
-            </small>
+            <div class="me-carga-selector">
+              <div class="me-carga-selector-label">
+                ${
+                  tipo === WEIGHTS.TIPOS.UNA_MANCUERNA
+                    ? "Peso de la mancuerna"
+                    : tipo === WEIGHTS.TIPOS.DOS_MANCUERNAS
+                      ? "Peso por mancuerna"
+                      : "Peso de la barra"
+                }
+              </div>
+
+              <div class="me-carga-selector-control">
+                <i class="fa-solid fa-dumbbell"></i>
+
+                <select id="mePesoInicio">
+                  ${opciones}
+                </select>
+
+                <i class="fa-solid fa-chevron-down me-carga-chevron"></i>
+              </div>
+            </div>
+
+            <div class="me-carga-preview">
+              <div class="me-carga-preview-titulo">
+                CONFIGURACIÓN
+              </div>
+
+              <div id="meCargaVisualInicio">
+                ${this._renderVisualCarga(primeraConfiguracion, tipo)}
+              </div>
+            </div>
+
+            <div class="me-carga-confirmacion">
+
+              <div class="me-carga-confirmacion-titulo">
+                ¿Has colocado este peso en real?
+              </div>
+
+              <div id="mePesoConfirmacion" class="me-carga-sesion">
+                <strong>🏋️ ${primeraConfiguracion.peso} kg</strong>
+              </div>
+
+              <button
+                type="button"
+                class="btn btn-success btn-block"
+                id="btnConfirmarCarga"
+              >
+                <i class="fa-solid fa-check"></i>
+                Confirmar y empezar
+              </button>
+
+            </div>
+
           </div>
-
-          <div class="me-selector-peso-control">
-            <i class="fa-solid fa-dumbbell"></i>
-
-            <select id="mePesoInicio">
-              ${opciones}
-            </select>
-
-            <i class="fa-solid fa-chevron-down"></i>
-          </div>
-
-        </div>
-
-        <div id="meCargaVisualInicio">
-          ${this._renderVisualCarga(primeraConfiguracion, tipo)}
-        </div>
-
-        <div class="me-carga-confirmacion">
-          <div class="me-carga-confirmacion-titulo">
-            ¿Has colocado este peso en real?
-          </div>
-
-          <div id="mePesoConfirmacion" class="me-carga-sesion">
-            <strong>🏋️ ${primeraConfiguracion.peso} kg</strong>
-          </div>
-
-          <button
-            type="button"
-            class="btn btn-success btn-block"
-            id="btnConfirmarCarga"
-          >
-            <i class="fa-solid fa-check"></i>
-            Confirmar y empezar
-          </button>
-        </div>
-
-      </div>
-    `;
+        `;
 
     document.getElementById("modoEntreno").classList.add("open");
 
