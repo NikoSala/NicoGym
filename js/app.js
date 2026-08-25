@@ -279,16 +279,6 @@ const APP = {
       return;
     }
 
-    const opciones = configuraciones
-      .map(
-        (config, index) => `
-          <option value="${config.peso}" ${index === 0 ? "selected" : ""}>
-            ${config.peso} kg
-          </option>
-        `,
-      )
-      .join("");
-
     const primeraConfiguracion = configuraciones[0];
 
     const body = document.getElementById("meBody");
@@ -331,37 +321,24 @@ const APP = {
             }
           </div>
 
-          <div class="me-peso-opciones">
-
-            ${configuraciones
-              .map(
-                (config, index) => `
-                  <label
-                    class="me-peso-opcion ${index === 0 ? "selected" : ""}"
-                    data-peso="${config.peso}"
-                  >
-                    <input
-                      type="radio"
-                      name="pesoInicio"
-                      value="${config.peso}"
-                      ${index === 0 ? "checked" : ""}
-                    >
-
-                    <span class="me-peso-radio"></span>
-
-                    <span class="me-peso-opcion-texto">
-                      ${config.peso} kg
-                    </span>
-
-                    <span class="me-peso-check">
-                      <i class="fa-solid fa-check"></i>
-                    </span>
-                  </label>
-                `,
-              )
-              .join("")}
-
-          </div>
+          <label class="me-peso-selector-wrap" for="mePesoInicio">
+            <span class="me-peso-selector-label">Peso a utilizar</span>
+            <span class="me-peso-selector-control">
+              <i class="fa-solid fa-weight-hanging"></i>
+              <select id="mePesoInicio">
+                ${configuraciones
+                  .map(
+                    (config, index) => `
+                      <option value="${config.peso}" ${index === 0 ? "selected" : ""}>
+                        ${config.peso} kg
+                      </option>
+                    `,
+                  )
+                  .join("")}
+              </select>
+              <i class="fa-solid fa-chevron-down"></i>
+            </span>
+          </label>
 
           <div class="me-peso-info">
             <i class="fa-solid fa-circle-info"></i>
@@ -426,7 +403,7 @@ const APP = {
 
   let pesoSeleccionado = Number(primeraConfiguracion.peso);
 
-  const opcionesPeso = document.querySelectorAll(".me-peso-opcion");
+  const selectorPeso = document.getElementById("mePesoInicio");
   const visual = document.getElementById("meCargaVisualInicio");
   const confirmacion = document.getElementById("mePesoConfirmacion");
   const boton = document.getElementById("btnConfirmarCarga");
@@ -435,31 +412,15 @@ const APP = {
   this.pesoSesionEntreno = pesoSeleccionado;
   pesoActualEntreno = pesoSeleccionado;
 
-  // Al seleccionar una opción
-  opcionesPeso.forEach((opcion) => {
-  opcion.addEventListener("click", () => {
-  const peso = Number(opcion.dataset.peso);
+  // Al seleccionar un peso
+  selectorPeso.addEventListener("change", () => {
+  const peso = Number(selectorPeso.value);
 
   if (!Number.isFinite(peso) || peso <= 0) {
   return;
   }
 
   pesoSeleccionado = peso;
-
-  // Quitar selección anterior
-  opcionesPeso.forEach((item) => {
-  item.classList.remove("selected");
-  });
-
-  // Marcar selección actual
-  opcion.classList.add("selected");
-
-  // Marcar radio
-  const radio = opcion.querySelector('input[type="radio"]');
-
-  if (radio) {
-  radio.checked = true;
-  }
 
   // Guardar peso
   this.pesoSesionEntreno = peso;
@@ -484,7 +445,6 @@ const APP = {
   <strong>🏋️ ${peso} kg</strong>
   `;
   }
-  });
   });
 
   // ==========================================
