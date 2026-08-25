@@ -1,3 +1,119 @@
+        .agenda-month-count {
+          color: var(--text-muted);
+          font-size: 11px;
+          font-weight: 500;
+        }
+
+        .agenda-calendar-header,
+        .agenda-weekdays,
+        .agenda-calendar-grid {
+          display: grid;
+          grid-template-columns: repeat(7, minmax(0, 1fr));
+          gap: 5px;
+        }
+
+        .agenda-calendar-header {
+          grid-template-columns: 40px 1fr 40px;
+          align-items: center;
+          margin: 8px 0 10px;
+          text-align: center;
+        }
+
+        .agenda-weekdays {
+          color: var(--text-muted);
+          font-size: 10px;
+          font-weight: 700;
+          text-align: center;
+          text-transform: uppercase;
+        }
+
+        .agenda-day {
+          min-height: 48px;
+          padding: 5px 3px;
+          border: 1px solid var(--border);
+          border-radius: var(--radius-sm);
+          background: rgba(0, 0, 0, .12);
+          color: var(--text);
+          cursor: pointer;
+        }
+
+        .agenda-day:hover,
+        .agenda-day-selected {
+          border-color: var(--primary);
+          background: var(--primary-dim);
+        }
+
+        .agenda-day-empty {
+          border-color: transparent;
+          background: transparent;
+          cursor: default;
+        }
+
+        .agenda-day-today .agenda-day-number {
+          display: inline-flex;
+          width: 22px;
+          height: 22px;
+          align-items: center;
+          justify-content: center;
+          border-radius: var(--radius-full);
+          background: var(--primary);
+          color: white;
+        }
+
+        .agenda-day-number {
+          display: block;
+          font-size: 12px;
+          font-weight: 700;
+          text-align: center;
+        }
+
+        .agenda-day-events {
+          display: flex;
+          justify-content: center;
+          gap: 4px;
+          min-height: 14px;
+          margin-top: 3px;
+        }
+
+        .agenda-event {
+          font-size: 10px;
+          line-height: 1;
+        }
+
+        .agenda-event-entreno { color: var(--secondary); }
+        .agenda-event-actualizacion { color: var(--warning); }
+        .agenda-event-completado { color: var(--success); }
+
+        .agenda-legend {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 10px;
+          color: var(--text-secondary);
+          font-size: 10px;
+        }
+
+        .agenda-dot {
+          display: inline-block;
+          width: 7px;
+          height: 7px;
+          margin-right: 3px;
+          border-radius: var(--radius-full);
+        }
+
+        .agenda-dot-workout { background: var(--secondary); }
+        .agenda-dot-update { background: var(--warning); }
+        .agenda-dot-done { background: var(--success); }
+
+        .agenda-detail-card { margin-top: 10px; }
+        .agenda-detail-list { display: grid; gap: 8px; }
+        .agenda-detail-item { display: flex; gap: 8px; align-items: center; font-size: 13px; }
+        .agenda-empty { color: var(--text-secondary); font-size: 13px; }
+
+        @media (max-width: 480px) {
+          .agenda-day { min-height: 43px; }
+          .agenda-legend { gap: 7px; }
+        }
         :root {
             --bg: #090B0E;
             --bg-card: rgba(16,28,49,0.90);

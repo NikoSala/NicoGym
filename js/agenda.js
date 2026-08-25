@@ -1,70 +1,114 @@
 // ==========================================
-        // AGENDA
-        // ==========================================
-        const Agenda = {
-            render() {
-                const c = document.getElementById('agendaContainer');
-                if (!c) return;
+// AGENDA
+// ==========================================
+const Agenda = {
+  mesMostrado: new Date(),
+  fechaSeleccionada: UI.getHoy(),
 
-                const hoy = new Date();
-                const dia = UI.getDiaNombre();
-                const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
+  render() {
+    const container = document.getElementById("agendaContainer");
+    if (!container) return;
 
-                const proximaActualizacion = APP.obtenerProximaActualizacion();
-                const diasHastaActualizacion = getDiasHasta(proximaActualizacion);
-                const tipoActualizacion = getTipoActualizacion(proximaActualizacion);
+    const mes = new Date(this.mesMostrado);
+    mes.setDate(1);
+    const nombreMes = mes.toLocaleDateString("es-ES", { month: "long", year: "numeric" });
+    const primerDia = (mes.getDay() + 6) % 7;
+    const diasMes = new Date(mes.getFullYear(), mes.getMonth() + 1, 0).getDate();
+    const totalCeldas = Math.ceil((primerDia + diasMes) / 7) * 7;
+    const celdas = [];
 
-                let textoActualizacion = '';
-                if (tipoActualizacion === 'completa') {
-                    textoActualizacion = '📊 Actualización completa (peso + mediciones + fotos)';
-                } else if (tipoActualizacion === 'mediciones') {
-                    textoActualizacion = '📊 Actualización de mediciones (peso + mediciones)';
-                } else if (tipoActualizacion === 'solo-peso') {
-                    textoActualizacion = '📊 Actualización semanal (solo peso)';
-                }
+    for (let i = 0; i < totalCeldas; i++) {
+      const numero = i - primerDia + 1;
+      if (numero < 1 || numero > diasMes) {
+        celdas.push('<div class="agenda-day agenda-day-empty"></div>');
+        continue;
+      }
+      const fecha = new Date(mes.getFullYear(), mes.getMonth(), numero);
+      const fechaKey = UI.formatFecha(fecha);
+      const eventos = this._eventosDeFecha(fecha, fechaKey);
+      const clases = ["agenda-day"];
+      if (fechaKey === UI.getHoy()) clases.push("agenda-day-today");
+      if (fechaKey === this.fechaSeleccionada) clases.push("agenda-day-selected");
+      if (eventos.some((evento) => evento.tipo === "completado")) clases.push("agenda-day-done");
+      celdas.push(`
+        <button class="${clases.join(" ")}" onclick="Agenda.seleccionar('${fechaKey}')">
+          <span class="agenda-day-number">${numero}</span>
+          <span class="agenda-day-events">${eventos.map((evento) => `<span class="agenda-event agenda-event-${evento.tipo}" title="${evento.texto}">${evento.icono}</span>`).join("")}</span>
+        </button>
+      `);
+    }
 
-                let proxDia = null;
-                const diasMap = { 1: 'lunes', 2: 'martes', 3: 'miercoles', 4: 'jueves', 5: 'viernes', 6: 'sabado', 0: 'domingo' };
-                for (let i = 1; i <= 7; i++) {
-                    const d = new Date();
-                    d.setDate(d.getDate() + i);
-                    const diaKey = diasMap[d.getDay()];
-                    if (diaKey !== 'sabado' && diaKey !== 'domingo' && !STATE.diasEntrenados
-                        .includes(UI.formatFecha(d))) {
-                        const ejercicios = getEjerciciosPorDia(diaKey);
-                        if (ejercicios.length > 0) {
-                            proxDia = CONFIG.NOMBRES_DIAS[diaKey];
-                            break;
-                        }
-                    }
-                }
+    const detalle = this._detalleFecha(this.fechaSeleccionada);
+    container.innerHTML = `
+      <section class="card agenda-card">
+        <div class="card-title"><span>📅 Agenda</span><span class="agenda-month-count">${this._contarEventosMes(mes, diasMes)} eventos</span></div>
+        <div class="agenda-calendar-header">
+          <button class="btn btn-ghost btn-sm" aria-label="Mes anterior" onclick="Agenda.cambiarMes(-1)">‹</button>
+          <strong>${nombreMes.charAt(0).toUpperCase() + nombreMes.slice(1)}</strong>
+          <button class="btn btn-ghost btn-sm" aria-label="Mes siguiente" onclick="Agenda.cambiarMes(1)">›</button>
+        </div>
+        <div class="agenda-weekdays"><span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+        <div class="agenda-calendar-grid">${celdas.join("")}</div>
+        <div class="agenda-legend"><span><i class="agenda-dot agenda-dot-workout"></i> Entreno</span><span><i class="agenda-dot agenda-dot-update"></i> Actualización</span><span><i class="agenda-dot agenda-dot-done"></i> Completado</span></div>
+      </section>
+      <section class="card agenda-detail-card">
+        <div class="card-title">${detalle.titulo}</div>
+        <div class="agenda-detail-list">${detalle.html}</div>
+      </section>
+    `;
+  },
 
-                c.innerHTML = `
-                    <div class="card">
-                        <div class="card-title">📅 Agenda</div>
-                        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString('es-ES', {day:'numeric', month:'long'})}</div>
+  cambiarMes(delta) {
+    this.mesMostrado.setMonth(this.mesMostrado.getMonth() + delta);
+    this.render();
+  },
 
-                        <div style="font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Hoy</div>
-                        <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-                            <div class="pending-item">
-                                <span class="pi-icon">${(dia === 'domingo' || dia === 'sabado') ? '😌' : (entrenadoHoy ? '✅' : '⏳')}</span>
-                                <span>${(dia === 'domingo' || dia === 'sabado') ? 'Día de descanso' : (entrenadoHoy ? 'Entreno completado' : 'Entreno pendiente')}</span>
-                            </div>
-                        </div>
+  seleccionar(fecha) {
+    this.fechaSeleccionada = fecha;
+    this.mesMostrado = new Date(`${fecha}T00:00:00`);
+    this.render();
+  },
 
-                        <div style="font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Próximos</div>
-                        <div style="display:flex;flex-direction:column;gap:4px;">
-                            <div class="pending-item" style="${diasHastaActualizacion <= 1 ? '' : 'opacity:0.5;'}">
-                                <span class="pi-icon">📊</span>
-                                <span>${textoActualizacion} ${diasHastaActualizacion <= 1 ? 'mañana' : `en ${diasHastaActualizacion} días`}</span>
-                            </div>
-                            <div class="pending-item">
-                                <span class="pi-icon">💪</span>
-                                <span>Próximo entreno: ${proxDia || '--'}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-        };
+  _eventosDeFecha(fecha, fechaKey) {
+    const eventos = [];
+    const nombres = ["domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sabado"];
+    const dia = nombres[fecha.getDay()];
+    const finDeSemana = fecha.getDay() === 0 || fecha.getDay() === 6;
+    const entrenado = STATE.diasEntrenados.includes(fechaKey);
+    if (!finDeSemana && getEjerciciosPorDia(dia).length > 0) {
+      eventos.push({ tipo: entrenado ? "completado" : "entreno", icono: entrenado ? "✓" : "●", texto: entrenado ? "Entrenamiento completado" : "Entrenamiento previsto" });
+    }
+    if (getTipoActualizacion(fechaKey)) eventos.push({ tipo: "actualizacion", icono: "◆", texto: "Actualización de progreso" });
+    return eventos;
+  },
 
+  _contarEventosMes(mes, diasMes) {
+    let total = 0;
+    for (let dia = 1; dia <= diasMes; dia++) {
+      const fecha = new Date(mes.getFullYear(), mes.getMonth(), dia);
+      total += this._eventosDeFecha(fecha, UI.formatFecha(fecha)).length;
+    }
+    return total;
+  },
+
+  _detalleFecha(fechaKey) {
+    const fecha = new Date(`${fechaKey}T00:00:00`);
+    const eventos = this._eventosDeFecha(fecha, fechaKey);
+    const titulo = fecha.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
+    const nombres = ["domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sabado"];
+    const dia = nombres[fecha.getDay()];
+    const elementos = [];
+
+    if (eventos.some((evento) => evento.tipo === "completado")) elementos.push('<div class="agenda-detail-item"><span>✅</span><span>Entrenamiento completado</span></div>');
+    else if (eventos.some((evento) => evento.tipo === "entreno")) elementos.push(`<div class="agenda-detail-item"><span>💪</span><span>Entrenamiento previsto: ${CONFIG.TIPOS_RUTINA[dia]}</span></div><button class="btn btn-primary btn-block" onclick="APP.navegar('rutinas')">Ir a entrenar</button>`);
+    else if (fecha.getDay() === 0 || fecha.getDay() === 6) elementos.push('<div class="agenda-detail-item"><span>😌</span><span>Día de descanso</span></div>');
+
+    const tipo = getTipoActualizacion(fechaKey);
+    if (tipo) {
+      const texto = tipo === "completa" ? "Peso, mediciones y fotos" : tipo === "mediciones" ? "Peso y mediciones" : "Solo peso";
+      elementos.push(`<div class="agenda-detail-item"><span>📊</span><span>Actualización: ${texto}</span></div><button class="btn btn-ghost btn-block" onclick="APP.navegar('peso')">Registrar progreso</button>`);
+    }
+    if (elementos.length === 0) elementos.push('<div class="agenda-empty">Sin eventos para este día.</div>');
+    return { titulo, html: elementos.join("") };
+  },
+};

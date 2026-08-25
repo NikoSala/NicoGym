@@ -1418,6 +1418,8 @@ const APP = {
       UI.toast("Este ejercicio ya está completado", "info");
       return;
     }
+    if (this._guardandoSerie) return;
+    this._guardandoSerie = true;
 
     pesoActualEntreno = peso;
     seriesActualesEntreno.push(reps);
@@ -1514,12 +1516,14 @@ const APP = {
           () => this._mostrarEjercicio(),
           CONFIG.TIEMPO_MSG_COMPLETADO,
         );
+      this._guardandoSerie = false;
     } else {
       Storage._save();
       UI.toast(
         `Serie ${seriesActualesEntreno.length}/${PROGRESION.SERIES_OBJETIVO} guardada`,
         "success",
       );
+      this._guardandoSerie = false;
       this._mostrarEjercicio();
     }
   },

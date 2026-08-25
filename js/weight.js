@@ -11,6 +11,8 @@ const Peso = {
         ? STATE.mediciones[STATE.mediciones.length - 1]
         : null;
     const primero = STATE.mediciones.length > 0 ? STATE.mediciones[0] : null;
+    const mostrarMedida = (valor) =>
+      Number.isFinite(Number(valor)) && Number(valor) > 0 ? valor : "--";
 
     const tipo = APP.obtenerTipoActualizacion();
     const hoy = new Date();
@@ -50,9 +52,9 @@ const Peso = {
           mensajeAdicional += `
                                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;color:var(--text-secondary);background:rgba(0,0,0,0.1);padding:8px;border-radius:var(--radius-sm);margin-bottom:8px;">
                                     <div>Último peso: <strong style="color:var(--text);">${ultimo.peso} kg</strong></div>
-                                    <div>Última grasa: <strong style="color:var(--text);">${ultimo.grasaPorcentaje}%</strong></div>
-                                    <div>Último músculo: <strong style="color:var(--text);">${ultimo.masaMuscular} kg</strong></div>
-                                    <div>Última cintura: <strong style="color:var(--text);">${ultimo.cintura} cm</strong></div>
+                                    <div>Última grasa: <strong style="color:var(--text);">${mostrarMedida(ultimo.grasaPorcentaje)}%</strong></div>
+                                    <div>Último músculo: <strong style="color:var(--text);">${mostrarMedida(ultimo.masaMuscular)} kg</strong></div>
+                                    <div>Última cintura: <strong style="color:var(--text);">${mostrarMedida(ultimo.cintura)} cm</strong></div>
                                 </div>
                             `;
         }
@@ -100,8 +102,8 @@ const Peso = {
                             ? `
                             <div style="display:flex;justify-content:space-between;padding:6px 10px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);margin-top:6px;font-size:12px;flex-wrap:wrap;gap:4px;">
                                 <span>📉 Desde inicio: <strong>${(primero.peso - ultimo.peso).toFixed(1)} kg</strong></span>
-                                <span>📏 Cintura: <strong>${ultimo.cintura} cm</strong></span>
-                                <span>📊 Grasa visceral: <strong>${ultimo.grasaVisceral || "--"}</strong></span>
+                                <span>📏 Cintura: <strong>${mostrarMedida(ultimo.cintura)} cm</strong></span>
+                                <span>📊 Grasa visceral: <strong>${mostrarMedida(ultimo.grasaVisceral)}</strong></span>
                             </div>
                         `
                             : ""
@@ -138,16 +140,19 @@ const Peso = {
     const ultimoRegistro = (idx !== -1 ? STATE.mediciones[idx] : null) ||
       ultimo ||
       STATE.ultimasMediciones || {
-        grasaPorcentaje: 0,
-        masaMuscular: 0,
-        masaMagra: 0,
-        grasaVisceral: 0,
-        cintura: 0,
+        grasaPorcentaje: null,
+        masaMuscular: null,
+        masaMagra: null,
+        grasaVisceral: null,
+        cintura: null,
       };
     const conservarSiVacio = (id, valorAnterior) => {
       const input = document.getElementById(id);
       const valor = input ? parseFloat(input.value) : NaN;
-      return Number.isFinite(valor) ? valor : (valorAnterior ?? 0);
+      if (Number.isFinite(valor)) return valor;
+      return Number.isFinite(Number(valorAnterior)) && Number(valorAnterior) > 0
+        ? Number(valorAnterior)
+        : null;
     };
     const grasaPorcentaje = conservarSiVacio(
       "medGrasa",
@@ -168,8 +173,8 @@ const Peso = {
       peso: peso,
       grasaPorcentaje: grasaPorcentaje,
       masaMuscular: masaMuscular,
-      masaMagra: masaMagra || 0,
-      grasaVisceral: grasaVisceral || 0,
+      masaMagra: masaMagra,
+      grasaVisceral: grasaVisceral,
       cintura: cintura,
     };
 
@@ -182,8 +187,8 @@ const Peso = {
     STATE.ultimasMediciones = {
       grasaPorcentaje: grasaPorcentaje,
       masaMuscular: masaMuscular,
-      masaMagra: masaMagra || 0,
-      grasaVisceral: grasaVisceral || 0,
+      masaMagra: masaMagra,
+      grasaVisceral: grasaVisceral,
       cintura: cintura,
     };
 
@@ -214,18 +219,18 @@ const Peso = {
                                 <span style="font-weight:600;">${m.peso} kg</span>
                             </div>
                             <div class="med-resumen">
-                                <span class="med-item">📏 <span class="valor">${m.cintura}</span> cm</span>
-                                <span class="med-item">💪 <span class="valor">${m.masaMuscular}</span> kg</span>
-                                <span class="med-item">🔥 <span class="valor">${m.grasaPorcentaje}</span>%</span>
+                                <span class="med-item">📏 <span class="valor">${mostrarMedida(m.cintura)}</span> cm</span>
+                                <span class="med-item">💪 <span class="valor">${mostrarMedida(m.masaMuscular)}</span> kg</span>
+                                <span class="med-item">🔥 <span class="valor">${mostrarMedida(m.grasaPorcentaje)}</span>%</span>
                                 ${diff !== null && Math.abs(parseFloat(diff)) > 0 ? `<span class="med-item ${parseFloat(diff) < 0 ? "positive" : "negative"}">${parseFloat(diff) > 0 ? "+" : ""}${diff} kg</span>` : ""}
                             </div>
                             <div class="historial-medicion-detalle" id="pesoDetalle-${i}">
                                 <div class="detalle-item"><span>Peso</span><span>${m.peso} kg</span></div>
-                                <div class="detalle-item"><span>Cintura</span><span>${m.cintura} cm</span></div>
-                                <div class="detalle-item"><span>% Grasa</span><span>${m.grasaPorcentaje}%</span></div>
-                                <div class="detalle-item"><span>Masa muscular</span><span>${m.masaMuscular} kg</span></div>
-                                <div class="detalle-item"><span>Masa magra</span><span>${m.masaMagra || "--"} kg</span></div>
-                                <div class="detalle-item"><span>Grasa visceral</span><span>${m.grasaVisceral || "--"}</span></div>
+                                <div class="detalle-item"><span>Cintura</span><span>${mostrarMedida(m.cintura)} cm</span></div>
+                                <div class="detalle-item"><span>% Grasa</span><span>${mostrarMedida(m.grasaPorcentaje)}%</span></div>
+                                <div class="detalle-item"><span>Masa muscular</span><span>${mostrarMedida(m.masaMuscular)} kg</span></div>
+                                <div class="detalle-item"><span>Masa magra</span><span>${mostrarMedida(m.masaMagra)} kg</span></div>
+                                <div class="detalle-item"><span>Grasa visceral</span><span>${mostrarMedida(m.grasaVisceral)}</span></div>
                                 <div style="margin-top:6px;display:flex;gap:6px;justify-content:center;">
                                     <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();Peso._editar('${m.fecha}')"><i class="fa-solid fa-pen"></i> Editar</button>
                                     <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();Peso._eliminar('${m.fecha}')"><i class="fa-solid fa-trash"></i> Eliminar</button>
