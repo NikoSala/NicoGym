@@ -1089,6 +1089,34 @@ const APP = {
 
       <div class="me-workout-redesign">
 
+        <section class="me-workout-navigation">
+
+          <button
+            type="button"
+            class="me-workout-nav-button"
+            onclick="APP._navegarEjercicio(-1)"
+            ${idxEjercicioActual === 0 ? "disabled" : ""}
+          >
+            <i class="fa-solid fa-arrow-left"></i>
+            Anterior
+          </button>
+
+          <button
+            type="button"
+            class="me-workout-nav-button next"
+            onclick="APP._navegarEjercicio(1)"
+            ${
+              idxEjercicioActual === ejerciciosEntreno.length - 1
+                ? "disabled"
+                : ""
+            }
+          >
+            Siguiente
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+
+        </section>
+
         <div class="me-workout-main-card">
 
         <!-- =====================================
@@ -1305,39 +1333,6 @@ const APP = {
 
         </section>
 
-
-        <!-- =====================================
-            NAVEGACIÓN
-            ===================================== -->
-
-        <section class="me-workout-navigation">
-
-          <button
-            type="button"
-            class="me-workout-nav-button"
-            onclick="APP._navegarEjercicio(-1)"
-            ${idxEjercicioActual === 0 ? "disabled" : ""}
-          >
-            <i class="fa-solid fa-arrow-left"></i>
-            Anterior
-          </button>
-
-
-          <button
-            type="button"
-            class="me-workout-nav-button next"
-            onclick="APP._navegarEjercicio(1)"
-            ${
-              idxEjercicioActual === ejerciciosEntreno.length - 1
-                ? "disabled"
-                : ""
-            }
-          >
-            Siguiente
-            <i class="fa-solid fa-arrow-right"></i>
-          </button>
-
-        </section>
 
       </div>
     `;
