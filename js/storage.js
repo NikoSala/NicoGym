@@ -214,7 +214,7 @@ const Storage = {
         app: "NicoGym",
         createdAt: new Date().toISOString(),
         state: JSON.parse(JSON.stringify(STATE)),
-        fotosProgreso: { version: 1, diasFotos: fotosProgreso },
+        fotosProgreso: { version: 2, diasFotos: fotosProgreso },
       };
       const contenido = JSON.stringify(backup, null, 2);
       const blob = new Blob([contenido], {
@@ -323,7 +323,9 @@ const Storage = {
         }
         const fotosProgreso = Array.isArray(datos.fotosProgreso?.diasFotos)
           ? datos.fotosProgreso.diasFotos
-          : null;
+          : Array.isArray(datos.fotosProgreso)
+            ? datos.fotosProgreso
+            : null;
         const estadoImportado = this.migrate(datosEstado);
         Object.keys(STATE).forEach((k) => {
           if (Object.prototype.hasOwnProperty.call(estadoImportado, k))

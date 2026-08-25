@@ -7,15 +7,23 @@
             STORE_NAME: 'diasFotos',
 
             _abrirDB() {
-                return new Promise(r => {
+                if (this.db) return Promise.resolve(this.db);
+
+                return new Promise((resolve, reject) => {
                     const req = indexedDB.open(this.DB_NAME, 1);
                     req.onupgradeneeded = e => {
                         if (!e.target.result.objectStoreNames.contains(this.STORE_NAME))
                             e.target.result.createObjectStore(this.STORE_NAME, { keyPath: 'fecha' });
                     };
-                    req.onsuccess = e => { this.db = e.target.result;
-                        r(); };
-                    req.onerror = () => r();
+                    req.onsuccess = e => {
+                        this.db = e.target.result;
+                        this.db.onversionchange = () => {
+                            this.db.close();
+                            this.db = null;
+                        };
+                        resolve(this.db);
+                    };
+                    req.onerror = () => reject(req.error || new Error('No se pudo abrir la base de fotos'));
                 });
             },
 
@@ -31,11 +39,11 @@
                             .filter(dia => dia && typeof dia.fecha === 'string')
                             .map(dia => ({
                                 fecha: dia.fecha,
-                                timestamp: dia.timestamp,
-                                frente: dia.frente || null,
-                                espalda: dia.espalda || null,
-                                izquierda: dia.izquierda || null,
-                                derecha: dia.derecha || null
+                                timestamp: Number(dia.timestamp) || 0,
+                                frente: typeof dia.frente === 'string' ? dia.frente : null,
+                                espalda: typeof dia.espalda === 'string' ? dia.espalda : null,
+                                izquierda: typeof dia.izquierda === 'string' ? dia.izquierda : null,
+                                derecha: typeof dia.derecha === 'string' ? dia.derecha : null
                             }));
                         resolve(fotos);
                     };
@@ -48,14 +56,14 @@
                 if (!this.db) throw new Error('No se pudo abrir la base de fotos');
 
                 const fotosValidas = diasFotos
-                    .filter(dia => dia && typeof dia.fecha === 'string')
+                    .filter(dia => dia && typeof dia.fecha === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dia.fecha))
                     .map(dia => ({
                         fecha: dia.fecha,
-                        timestamp: Number.isFinite(dia.timestamp) ? dia.timestamp : Date.now(),
-                        frente: dia.frente || null,
-                        espalda: dia.espalda || null,
-                        izquierda: dia.izquierda || null,
-                        derecha: dia.derecha || null
+                        timestamp: Number(dia.timestamp) || new Date(`${dia.fecha}T12:00:00`).getTime(),
+                        frente: typeof dia.frente === 'string' ? dia.frente : null,
+                        espalda: typeof dia.espalda === 'string' ? dia.espalda : null,
+                        izquierda: typeof dia.izquierda === 'string' ? dia.izquierda : null,
+                        derecha: typeof dia.derecha === 'string' ? dia.derecha : null
                     }));
 
                 return new Promise((resolve, reject) => {
