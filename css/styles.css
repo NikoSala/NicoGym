@@ -229,7 +229,7 @@
         /* Marca de agua de NicoGym en cada pestaña: visible, pero siempre detrás del contenido. */
         .page::before {
             content: '';
-            position: absolute;
+          position: fixed;
             inset: 0;
             z-index: 0;
             pointer-events: none;
@@ -350,12 +350,13 @@
         .bottom-nav .nav-btn:active { transform: scale(0.96); }
 
         .page { display: none; padding: 72px var(--space-sm) 66px; max-width: 480px; margin: 0 auto; min-height: 100vh; }
-        .page.active { display: block; animation: fadeUp 0.3s ease; }
+        .page.active { display: block; }
+        body.app-ready .page.active { animation: fadeUp 0.3s ease; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-        .page.active .card { animation: cardReveal 0.35s ease both; }
-        .page.active .card:nth-child(2) { animation-delay: 40ms; }
-        .page.active .card:nth-child(3) { animation-delay: 80ms; }
-        .page.active .card:nth-child(4) { animation-delay: 120ms; }
+        body.app-ready .page.active .card { animation: cardReveal 0.35s ease both; }
+        body.app-ready .page.active .card:nth-child(2) { animation-delay: 40ms; }
+        body.app-ready .page.active .card:nth-child(3) { animation-delay: 80ms; }
+        body.app-ready .page.active .card:nth-child(4) { animation-delay: 120ms; }
         @keyframes cardReveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (prefers-reduced-motion: reduce) {
@@ -406,6 +407,7 @@
         .saludo { font-size: 22px; font-weight: 700; margin-bottom: 2px; letter-spacing: -0.5px; }
         .saludo span { color: var(--primary); }
         .saludo-dia { font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-md); }
+        .frase-motivadora { margin: -6px 0 var(--space-md); color: var(--text-secondary); font-size: 12px; font-style: italic; }
 
         .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); }
         .dash-stat { background: rgba(0,0,0,0.15); border-radius: var(--radius-sm); padding: 10px 8px; text-align: center; }

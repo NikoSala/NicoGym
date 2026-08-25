@@ -139,6 +139,16 @@ const Dashboard = {
 
     const nombresDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
     const etiquetasDias = ["L", "M", "X", "J", "V", "S", "D"];
+    const frasesMotivadoras = [
+      "La constancia de hoy construye tu fuerza de mañana.",
+      "Un paso más también cuenta.",
+      "Entrena con intención, descansa con orgullo.",
+      "Tu mejor marca empieza con una decisión.",
+      "No necesitas hacerlo perfecto, sólo seguir avanzando.",
+      "Cada repetición suma.",
+      "Hazlo por la persona en la que te estás convirtiendo.",
+    ];
+    const fraseMotivadora = frasesMotivadoras[hoy.getDay() === 0 ? 6 : hoy.getDay() - 1];
     const inicioSemana = new Date(hoy);
     inicioSemana.setHours(0, 0, 0, 0);
     inicioSemana.setDate(hoy.getDate() - ((hoy.getDay() + 6) % 7));
@@ -242,6 +252,7 @@ const Dashboard = {
     c.innerHTML = `
                 <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
                 <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
+                <div class="frase-motivadora">${fraseMotivadora}</div>
 
                 ${accionesRapidas}
                 ${bloqueSemana}

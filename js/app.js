@@ -20,6 +20,7 @@ const APP = {
       loading.classList.add("fade-out");
       setTimeout(() => {
         loading.style.display = "none";
+        document.body.classList.add("app-ready");
       }, 250);
     });
 
