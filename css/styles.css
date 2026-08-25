@@ -1746,6 +1746,7 @@
     width: 90px;
   }
 }
+
 /* ==========================================================
    SELECTOR DE PESO — REDISEÑO
    ========================================================== */
@@ -3161,4 +3162,36 @@
     font-size: 12px;
   }
 
+}
+
+/* Pulido visual final de los controles de entrenamiento. */
+.me-workout-main-card,
+.me-workout-title-card,
+.me-workout-load-card,
+.me-workout-reps-card,
+.me-workout-set-card {
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .16);
+}
+
+.me-workout-save-button {
+  border-color: #f0bd43;
+  background: linear-gradient(145deg, #e5a916, #bc7e0d);
+  box-shadow: 0 8px 20px rgba(183, 127, 21, .24);
+}
+
+.me-workout-save-button:hover {
+  box-shadow: 0 10px 24px rgba(229, 169, 22, .30);
+}
+
+.me-workout-title,
+.me-workout-load-value,
+.me-workout-save-main {
+  line-height: 1.1;
+}
+
+.me-workout-nav-button,
+.me-workout-reps-button,
+.me-workout-reps-input {
+  font-size: 14px;
 }
