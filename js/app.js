@@ -15,17 +15,14 @@ const APP = {
 
     this._cargarAjustesBasicos();
     this._renderDashboardInicial();
+    this._cargarDatosCompletos();
 
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       loading.classList.add("fade-out");
       setTimeout(() => {
         loading.style.display = "none";
-      }, 500);
-    }, 300);
-
-    setTimeout(() => {
-      this._cargarDatosCompletos();
-    }, 100);
+      }, 250);
+    });
 
     document.addEventListener("click", (e) => {
       const bell = document.getElementById("bellWrap");
