@@ -1186,38 +1186,36 @@ const APP = {
               ${ej.grupo}
             </div>
 
-          </div>
+            <div class="me-workout-image-card">
 
+              ${
+                ej.urlGif
+                  ? `
+                    <img
+                      src="${ej.urlGif}"
+                      class="me-workout-exercise-image"
+                      onclick="UI.abrirLightbox(this.src)"
+                      alt="${ej.nombre}"
+                      loading="lazy"
+                    >
 
-          <!-- GIF -->
-          <div class="me-workout-image-card">
+                    <button
+                      type="button"
+                      class="me-workout-image-button"
+                      onclick="UI.abrirLightbox('${ej.urlGif}')"
+                      aria-label="Ampliar animación del ejercicio"
+                    >
+                      <i class="fa-solid fa-expand"></i>
+                    </button>
+                  `
+                  : `
+                    <div class="me-workout-image-fallback">
+                      <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+                  `
+              }
 
-            ${
-              ej.urlGif
-                ? `
-                  <img
-                    src="${ej.urlGif}"
-                    class="me-workout-exercise-image"
-                    onclick="UI.abrirLightbox(this.src)"
-                    alt="${ej.nombre}"
-                    loading="lazy"
-                  >
-
-                  <button
-                    type="button"
-                    class="me-workout-image-button"
-                    onclick="UI.abrirLightbox('${ej.urlGif}')"
-                  >
-                    <i class="fa-solid fa-expand"></i>
-                    Ver animación
-                  </button>
-                `
-                : `
-                  <div class="me-workout-image-fallback">
-                    <i class="fa-solid fa-dumbbell"></i>
-                  </div>
-                `
-            }
+            </div>
 
           </div>
 

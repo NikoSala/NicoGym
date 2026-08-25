@@ -2485,22 +2485,38 @@
     }
 
     .me-selector-peso-layout {
-        grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
     }
 
     .me-selector-peso-right {
-        min-height: 330px;
-        order: -1;
-      border-left: 0;
-      border-top: 1px solid #30343B;
+      min-height: 240px;
+      padding: 12px 8px;
+      order: 0;
+      border-left: 1px solid #30343B;
+      border-top: 0;
     }
 
     .me-selector-preview {
-        min-height: 240px;
+      min-height: 180px;
     }
 
     .me-selector-preview .me-carga-dibujo {
-        min-height: 210px;
+      min-height: 160px;
+    }
+
+    .me-peso-opcion {
+      min-height: 42px;
+      padding: 0 10px;
+    }
+
+    .me-peso-radio {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+    }
+
+    .me-peso-opcion-texto {
+      font-size: 14px;
     }
 
     .me-selector-peso-title {
@@ -2532,11 +2548,15 @@
     }
 
     .me-selector-peso-right {
-        min-height: 260px;
+      min-height: 210px;
     }
 
     .me-selector-preview {
-        min-height: 190px;
+      min-height: 155px;
+    }
+
+    .me-selector-preview .me-carga-dibujo {
+      min-height: 135px;
     }
 
     .me-peso-opcion {
@@ -2588,7 +2608,7 @@
 
 .me-workout-top-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 12px;
   margin-bottom: 12px;
 }
@@ -2618,11 +2638,18 @@
    ========================================================= */
 
 .me-workout-title-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 125px;
+  grid-template-rows: auto auto auto;
+  column-gap: 16px;
+  align-items: center;
   padding: 18px;
-  min-height: 150px;
+  min-height: 126px;
 }
 
 .me-workout-exercise-number {
+  grid-column: 1;
+  grid-row: 1;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -2631,6 +2658,8 @@
 }
 
 .me-workout-title {
+  grid-column: 1;
+  grid-row: 2;
   margin: 0;
   color: #ffffff;
   font-size: clamp(25px, 2vw, 34px);
@@ -2640,6 +2669,8 @@
 }
 
 .me-workout-group {
+  grid-column: 1;
+  grid-row: 3;
   margin-top: 6px;
   color: #a7adb7;
   font-size: 16px;
@@ -2703,8 +2734,10 @@
    ========================================================= */
 
 .me-workout-image-card {
+  grid-column: 2;
+  grid-row: 1 / -1;
   position: relative;
-  min-height: 150px;
+  min-height: 100px;
   overflow: hidden;
 
   display: flex;
@@ -2714,7 +2747,7 @@
 
 .me-workout-exercise-image {
   width: 100%;
-  height: 150px;
+  height: 100px;
 
   object-fit: contain;
 
@@ -2734,7 +2767,9 @@
 
   border-radius: 9px;
 
-  padding: 9px 13px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
 
   font-size: 12px;
   font-weight: 700;
@@ -2819,7 +2854,7 @@
 
 .me-workout-middle-grid {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr;
   gap: 12px;
   margin-bottom: 12px;
 }
@@ -3496,11 +3531,11 @@
   }
 
   .me-workout-image-card {
-    min-height: 190px;
+    min-height: 92px;
   }
 
   .me-workout-exercise-image {
-    height: 190px;
+    height: 92px;
   }
 
   .me-workout-muscles-card {
