@@ -187,6 +187,15 @@ const Dashboard = {
       </section>
     `;
 
+    const accionesRapidas = `
+      <div class="inicio-acciones-rapidas" aria-label="Acciones rápidas">
+        <button onclick="${dia === "sabado" || dia === "domingo" ? "APP.navegar('semana')" : `APP.iniciarEntreno('${dia}')`}"><span>▶</span><small>${dia === "sabado" || dia === "domingo" ? "Plan" : "Entrenar"}</small></button>
+        <button onclick="APP.navegar('peso')"><span>⚖</span><small>Peso</small></button>
+        <button onclick="APP.navegar('fotos')"><span>▣</span><small>Foto</small></button>
+        <button onclick="APP.navegar('semana')"><span>☷</span><small>Rutina</small></button>
+      </div>
+    `;
+
     // ===== BANNER DE ACTUALIZACIÓN =====
     const tipoActualizacion = APP.obtenerTipoActualizacion();
     let updateBanner = "";
@@ -234,6 +243,7 @@ const Dashboard = {
                 <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
                 <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
 
+                ${accionesRapidas}
                 ${bloqueSemana}
 
                 ${

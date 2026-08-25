@@ -68,6 +68,11 @@ const Semana = {
       if (!esDescanso) {
         ejercicios = getEjerciciosPorDia(dia.key);
       }
+      const ejerciciosCompletados = ejercicios.reduce(
+        (total, _, ejercicioIndex) =>
+          total + (STATE.checks[`${dia.key}-${ejercicioIndex}`] ? 1 : 0),
+        0,
+      );
 
       const claseDia = esHoy ? "rutina-dia hoy" : "rutina-dia";
       const claseDescanso = esDescanso ? " descanso" : "";
@@ -86,6 +91,7 @@ const Semana = {
         }
         html += `</div>`;
       } else {
+        html += `<div class="rd-progreso"><span>Progreso</span><strong>${ejerciciosCompletados}/${ejercicios.length}</strong><i><b style="width:${ejercicios.length ? Math.round((ejerciciosCompletados / ejercicios.length) * 100) : 0}%"></b></i></div>`;
         html += `<div class="rd-ejercicios">`;
         ejercicios.forEach((ej, index) => {
           const nombreEspanol = getNombreEspanol(ej.nombre);
