@@ -3042,6 +3042,10 @@
     margin-bottom: 10px;
   }
 
+  .me-workout-training-grid {
+    grid-template-columns: minmax(0, 1fr) 88px;
+  }
+
   .me-workout-main-card {
     padding: 6px;
   }
