@@ -151,11 +151,9 @@ const Dashboard = {
       return { diaNombre, etiqueta: etiquetasDias[indice], fechaKey, descanso, completado, esHoy: fechaKey === UI.getHoy() };
     });
     const entrenamientosSemana = diasSemana.filter((diaSemana) => diaSemana.completado).length;
-    const entrenamientosEsperados = diasSemana.filter((diaSemana) => !diaSemana.descanso && diaSemana.fechaKey <= UI.getHoy()).length;
-    const porcentajeConsistencia = entrenamientosEsperados > 0
-      ? Math.min(100, Math.round((entrenamientosSemana / entrenamientosEsperados) * 100))
-      : 0;
-    const semaforo = entrenamientosEsperados === 0 || porcentajeConsistencia >= 80
+    const entrenamientosObjetivoSemana = 5;
+    const porcentajeConsistencia = Math.min(100, Math.round((entrenamientosSemana / entrenamientosObjetivoSemana) * 100));
+    const semaforo = porcentajeConsistencia >= 80
       ? { clase: "verde", titulo: "Buen ritmo", texto: "Vas cumpliendo la semana" }
       : porcentajeConsistencia >= 50
         ? { clase: "amarillo", titulo: "Puedes remontar", texto: "Todavía estás a tiempo" }
@@ -167,7 +165,7 @@ const Dashboard = {
           <div class="inicio-panel-kicker">ESTADO DE LA SEMANA</div>
           <div class="semaforo-main"><span class="semaforo-luz"></span><div><strong>${semaforo.titulo}</strong><span>${semaforo.texto}</span></div></div>
           <div class="semaforo-track"><span style="width:${porcentajeConsistencia}%"></span></div>
-          <div class="semaforo-foot"><span>${porcentajeConsistencia}% de consistencia</span><span>${entrenamientosSemana}/${entrenamientosEsperados || 5} entrenos</span></div>
+          <div class="semaforo-foot"><span>${porcentajeConsistencia}% de consistencia</span><span>${entrenamientosSemana}/${entrenamientosObjetivoSemana} entrenos</span></div>
         </div>
         <div class="card consistencia-card">
           <div class="card-title">📈 Consistencia</div>
