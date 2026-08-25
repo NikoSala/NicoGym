@@ -167,7 +167,7 @@
         .rd-progreso strong { color:var(--text-secondary); justify-self:end; }
         .rd-progreso i { display:block; grid-column:1 / -1; height:5px; overflow:hidden; border-radius:99px; background:rgba(255,255,255,.08); }
         .rd-progreso b { display:block; height:100%; border-radius:inherit; background:var(--success); }
-        @media (max-width:600px) { .inicio-semana-grid, .rutina-semana-grid { grid-template-columns:1fr !important; } .rutina-semana-intro { display:block; } .rutina-semana-intro small { display:block; margin-top:3px; } .rutina-semana-grid .rutina-dia { width:100%; box-sizing:border-box; } }
+        @media (max-width:600px) { .inicio-semana-grid { grid-template-columns:1fr !important; } .rutina-semana-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:8px; } .rutina-semana-intro { display:block; } .rutina-semana-intro small { display:block; margin-top:3px; } .rutina-semana-grid .rutina-dia { width:100%; box-sizing:border-box; } }
 
         :root {
             --bg: #090B0E;
