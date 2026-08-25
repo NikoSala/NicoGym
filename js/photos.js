@@ -5,6 +5,7 @@
             db: null,
             DB_NAME: 'FotosProgresoDB',
             STORE_NAME: 'diasFotos',
+            MAX_FILE_BYTES: 12 * 1024 * 1024,
 
             _abrirDB() {
                 if (this.db) return Promise.resolve(this.db);
@@ -79,19 +80,21 @@
 
             _leerArchivo(file) {
                 if (!file) return Promise.resolve(null);
+                if (file.size > this.MAX_FILE_BYTES)
+                    return Promise.reject(new Error('La imagen supera el límite de 12 MB'));
                 return new Promise((resolve, reject) => {
                     const reader = new FileReader();
                     reader.onload = e => {
                         const img = new Image();
                         img.onload = () => {
-                            const max = 1600;
+                            const max = 1400;
                             const scale = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
                             const canvas = document.createElement('canvas');
                             canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
                             canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
                             const ctx = canvas.getContext('2d');
                             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                            resolve(canvas.toDataURL('image/jpeg', 0.8));
+                            resolve(canvas.toDataURL('image/jpeg', 0.72));
                         };
                         img.onerror = () => reject(new Error('No se pudo procesar la imagen'));
                         img.src = e.target.result;

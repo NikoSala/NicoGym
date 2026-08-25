@@ -2,6 +2,8 @@
 // STORAGE · LOCALSTORAGE + MIGRACIONES
 // ==========================================
 const Storage = {
+  MAX_BACKUP_BYTES: 12 * 1024 * 1024,
+
   init() {
     const raw = localStorage.getItem(CONFIG.STORAGE_KEY);
     if (raw) {
@@ -206,17 +208,58 @@ const Storage = {
     location.reload();
   },
 
+  _sanearImportado(valor) {
+    if (typeof valor === "string")
+      return valor.replace(/<\/?[^>]+>/g, "");
+    if (Array.isArray(valor)) return valor.map((item) => this._sanearImportado(item));
+    if (valor && typeof valor === "object") {
+      return Object.fromEntries(
+        Object.entries(valor).map(([clave, item]) => [
+          clave,
+          this._sanearImportado(item),
+        ]),
+      );
+    }
+    return valor;
+  },
+
+  _resumenBackup(backup) {
+    const state = backup.state || {};
+    const diasFotos = backup.fotosProgreso?.diasFotos || [];
+    return [
+      `Fecha: ${new Date(backup.createdAt).toLocaleString("es-ES")}`,
+      `Entrenamientos: ${(state.historialEntrenos || []).length}`,
+      `Mediciones: ${(state.mediciones || []).length}`,
+      `Días con fotos: ${diasFotos.length}`,
+    ].join("\n");
+  },
+
   async exportar() {
     try {
-      const fotosProgreso = await Fotos.exportarBackup();
+      let fotosProgreso = [];
+      let fotosDisponibles = true;
+      try {
+        fotosProgreso = await Fotos.exportarBackup();
+      } catch (err) {
+        fotosDisponibles = false;
+        console.warn("No se pudieron incluir las fotos en el backup:", err);
+      }
       const backup = {
         version: CONFIG.BACKUP_VERSION,
         app: "NicoGym",
         createdAt: new Date().toISOString(),
         state: JSON.parse(JSON.stringify(STATE)),
-        fotosProgreso: { version: 2, diasFotos: fotosProgreso },
+        fotosProgreso: {
+          version: 2,
+          disponibles: fotosDisponibles,
+          diasFotos: fotosProgreso,
+        },
       };
       const contenido = JSON.stringify(backup, null, 2);
+      const tamano = new Blob([contenido]).size;
+      if (tamano > this.MAX_BACKUP_BYTES) {
+        UI.toast("⚠️ El backup supera 12 MB; puede fallar al compartirlo", "error");
+      }
       const blob = new Blob([contenido], {
         type: "application/json;charset=utf-8",
       });
@@ -269,7 +312,12 @@ const Storage = {
         URL.revokeObjectURL(url);
         a.remove();
       }, 3000);
-      UI.toast("✅ Backup generado", "success");
+      UI.toast(
+        fotosDisponibles
+          ? `✅ Backup generado (${fotosProgreso.length} días con fotos)`
+          : "✅ Backup generado sin fotos",
+        fotosDisponibles ? "success" : "error",
+      );
     } catch (err) {
       console.error("Error al exportar:", err);
       UI.toast("❌ Error al exportar los datos", "error");
@@ -296,7 +344,7 @@ const Storage = {
           if (!Number.isInteger(v) || v < 1 || v > CONFIG.BACKUP_VERSION)
             throw new Error("Versión de backup no compatible");
         }
-        const datosEstado = esNuevo ? datos.state : datos;
+        const datosEstado = this._sanearImportado(esNuevo ? datos.state : datos);
         const campos = {
           mediciones: "array",
           historialEntrenos: "array",
@@ -326,6 +374,10 @@ const Storage = {
           : Array.isArray(datos.fotosProgreso)
             ? datos.fotosProgreso
             : null;
+        const resumen = esNuevo
+          ? this._resumenBackup(datos)
+          : "Backup antiguo sin resumen disponible.";
+        if (!window.confirm(`¿Importar este backup?\n\n${resumen}`)) return;
         const estadoImportado = this.migrate(datosEstado);
         Object.keys(STATE).forEach((k) => {
           if (Object.prototype.hasOwnProperty.call(estadoImportado, k))
@@ -334,9 +386,22 @@ const Storage = {
         this._normalizarEstado();
         CONFIG.TEMPORIZADOR_DESCANSO =
           STATE.config.temporizadorDescanso === true;
-        if (fotosProgreso) await Fotos.restaurarBackup(fotosProgreso);
+        let fotosRestauradas = false;
+        if (fotosProgreso) {
+          try {
+            await Fotos.restaurarBackup(fotosProgreso);
+            fotosRestauradas = true;
+          } catch (err) {
+            console.warn("No se pudieron restaurar las fotos:", err);
+          }
+        }
         this._save();
-        UI.toast("✅ Datos importados correctamente", "success");
+        UI.toast(
+          fotosProgreso && !fotosRestauradas
+            ? "⚠️ Datos importados; no se pudieron restaurar las fotos"
+            : "✅ Datos importados correctamente",
+          fotosProgreso && !fotosRestauradas ? "error" : "success",
+        );
         APP.renderizarTodo();
       } catch (err) {
         console.error("Error al importar:", err);

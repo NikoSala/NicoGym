@@ -453,13 +453,6 @@
         .modo-entreno-overlay .me-completado-msg { padding: 6px 12px; background: rgba(125,16,40,0.12); border-radius: var(--radius-sm); color: var(--success); font-weight: 600; font-size: 13px; text-align: center; margin-bottom: 10px; border: 1px solid rgba(165,29,58,0.2); animation: fadeUp 0.3s ease; }
         .modo-entreno-overlay .me-body { flex: 1; overflow-y: auto; padding-bottom: 12px; }
 
-        .modo-entreno-overlay .me-ejercicio-card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 14px 16px;
-            border: 1px solid var(--border);
-            animation: fadeUp 0.3s ease;
-        }
         .me-selector-peso {
             margin-top: 12px;
             padding: 14px;
@@ -528,41 +521,7 @@
             background: #15181D;
             color: #fff;
         }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-numero { font-size: 11px; color: var(--text-secondary); margin-bottom: 2px; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-nombre { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-grupo { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-img-wrap { width: 100%; max-height: 140px; border-radius: var(--radius-sm); overflow: hidden; margin: 4px 0 8px; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-img { width: 100%; height: auto; max-height: 140px; object-fit: contain; cursor: pointer; background: rgba(0,0,0,0.2); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-img-fallback { width: 100%; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); margin: 4px 0 8px; background: var(--primary-dim); color: var(--primary); font-size: 32px; border: 1px solid var(--border); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-descripcion { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin: 4px 0; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-dificultad { display: flex; align-items: center; gap: 6px; margin: 4px 0; font-size: 12px; color: var(--text-secondary); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-dificultad .dif-label { font-weight: 600; text-transform: uppercase; font-size: 10px; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-material { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-material .mat-tag { background: rgba(255,255,255,0.06); color: var(--text-secondary); padding: 1px 10px; border-radius: var(--radius-full); font-size: 10px; font-weight: 500; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos { margin: 4px 0; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row { display: flex; align-items: center; gap: 8px; margin: 2px 0; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-name { font-size: 11px; color: var(--text-secondary); min-width: 50px; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row .musc-fill { height: 100%; background: var(--primary); border-radius: 4px; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos { background: rgba(125,16,40,0.06); border-left: 3px solid var(--success); padding: 6px 10px; border-radius: var(--radius-sm); margin: 4px 0; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos .me-ej-consejo-titulo { font-size: 9px; color: var(--success); text-transform: uppercase; font-weight: 600; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-consejos .me-ej-consejo-texto { font-size: 12px; color: var(--text-secondary); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-errores { background: rgba(239,68,68,0.06); border-left: 3px solid var(--danger); padding: 6px 10px; border-radius: var(--radius-sm); margin: 4px 0; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-errores .me-ej-error-titulo { font-size: 9px; color: var(--danger); text-transform: uppercase; font-weight: 600; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-errores .me-ej-error-texto { font-size: 12px; color: var(--text-secondary); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-datos { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0; font-size: 12px; color: var(--text-secondary); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-datos span { background: rgba(0,0,0,0.15); padding: 1px 8px; border-radius: var(--radius-full); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-ultimo { font-size: 12px; color: var(--text-secondary); margin: 3px 0; padding: 4px 8px; background: rgba(0,0,0,0.1); border-radius: var(--radius-sm); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-ultimo strong { color: var(--text); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-record { font-size: 12px; color: var(--text-secondary); margin: 3px 0; padding: 4px 8px; background: var(--primary-dim); border: 1px solid rgba(165,29,58,0.15); border-radius: var(--radius-sm); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-record strong { color: var(--primary); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); margin: 8px 0; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group label { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 1px; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group input,
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea { width: 100%; padding: 6px 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: var(--text); font-size: 14px; font-weight: 600; font-family: var(--font); outline: none; text-align: center; transition: var(--transition); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group input:focus,
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-dim); }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea { grid-column: span 2; text-align: left; font-weight: 400; resize: vertical; min-height: 36px; }
+        .modo-entreno-overlay .me-ej-numero { font-size: 11px; color: var(--text-secondary); margin-bottom: 2px; }
         /* ==========================================================
         VISUAL DE CARGA — MANCUERNAS / BARRA
         ========================================================== */
@@ -780,8 +739,6 @@
                 min-width: 35px;
             }
         }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-botones { display: flex; gap: var(--space-sm); margin-top: 8px; }
-        .modo-entreno-overlay .me-ejercicio-card .me-ej-botones .btn { flex: 1; }
         .modo-entreno-overlay .me-navegacion { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); margin-top: 12px; }
         .modo-entreno-overlay .me-nav-btn { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
         .modo-entreno-overlay .me-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -960,12 +917,6 @@
             .dash-stat .num { font-size: 20px; }
             .modal-panel { padding: 14px; }
             .ex-img { max-height: 100px; }
-            .modo-entreno-overlay .me-ejercicio-card .me-ej-nombre { font-size: 16px; }
-            .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs { grid-template-columns: 1fr; }
-            .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs .me-input-group textarea { grid-column: span 1; }
-            .modo-entreno-overlay .me-ejercicio-card { padding: 10px 12px; }
-            .modo-entreno-overlay .me-ejercicio-card .me-ej-img-wrap { max-height: 120px; }
-            .modo-entreno-overlay .me-ejercicio-card .me-ej-img { max-height: 120px; }
             .proximo-entreno-card { padding: 12px 16px; }
             .proximo-entreno-card .pe-nombre { font-size: 16px; }
             .modo-entreno-overlay .me-completado-final .me-resumen-grid { grid-template-columns: 1fr 1fr; }
@@ -978,8 +929,6 @@
         @media (min-width: 600px) {
             .page { padding: 76px 20px 70px; }
             .bottom-nav .nav-btn { padding: 2px 16px; }
-            .modo-entreno-overlay .me-ejercicio-card .me-ej-img-wrap { max-height: 160px; }
-            .modo-entreno-overlay .me-ejercicio-card .me-ej-img { max-height: 160px; }
         }
     
         /* NicoGym palette: verde identidad + azul secundario */
@@ -1372,7 +1321,7 @@
         .me-progreso-track { background:#25292F !important; }
         .me-progreso-fill { background:linear-gradient(90deg,#5F0B20,#A51D3A,#C7CBD1) !important; }
         .me-completado-msg { color:#D6A94A !important; }
-        .me-ejercicio-card, .me-caminata-card, .me-completado-final {
+        .me-caminata-card, .me-completado-final {
             background:linear-gradient(145deg,#181C22,#0F1216) !important;
             border:1px solid #30343B !important;
             box-shadow:0 20px 55px rgba(0,0,0,.34) !important;
@@ -2295,150 +2244,6 @@
 
 
 /* ==========================================================
-   MODO EJERCICIO — CARGA COMPACTA
-   ========================================================== */
-
-.modo-entreno-overlay .me-ejercicio-card {
-    position: relative;
-}
-
-.modo-entreno-overlay .me-ejercicio-card .me-ej-inputs {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 155px;
-    grid-template-rows: auto auto;
-    gap: 8px 14px;
-    align-items: center;
-}
-
-.modo-entreno-overlay .me-ej-inputs .me-carga-sesion {
-    grid-column: 1;
-    grid-row: 1;
-    margin: 0;
-}
-
-.modo-entreno-overlay .me-ej-inputs #meCargaVisual {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    width: 155px;
-    height: 76px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.modo-entreno-overlay .me-ej-inputs #meCargaVisual .me-carga-visual {
-    width: 155px;
-    height: 76px;
-    min-height: 0;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    overflow: visible;
-}
-
-.modo-entreno-overlay .me-ej-inputs #meCargaVisual .me-carga-dibujo {
-    min-height: 0;
-    height: 50px;
-    width: 150px;
-    transform: scale(.42);
-    transform-origin: center center;
-}
-
-.modo-entreno-overlay .me-ej-inputs #meCargaVisual .me-dos-mancuernas-real {
-    min-height: 55px;
-    height: 55px;
-    gap: 0;
-}
-
-.modo-entreno-overlay .me-ej-inputs #meCargaVisual .me-dos-mancuernas-real .me-mancuerna-real {
-    transform: scale(.55);
-}
-
-.modo-entreno-overlay .me-ej-inputs #meCargaVisual .me-carga-detalle {
-    margin: -2px 0 0;
-    font-size: 8px;
-    white-space: nowrap;
-    transform: none;
-}
-
-.modo-entreno-overlay .me-ej-inputs .me-input-group {
-    grid-column: 1;
-    grid-row: 2;
-}
-
-
-/* ==========================================================
-   EJERCICIO — MÁS COMPACTO Y BONITO
-   ========================================================== */
-
-.modo-entreno-overlay .me-ejercicio-card {
-    padding: 16px 18px;
-    border-radius: 16px;
-    background:
-        linear-gradient(145deg, rgba(25,29,35,.98), rgba(12,15,19,.98)) !important;
-}
-
-.modo-entreno-overlay .me-ejercicio-card .me-ej-numero {
-    color: #777E88;
-    font-size: 10px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-}
-
-.modo-entreno-overlay .me-ejercicio-card .me-ej-nombre {
-    font-size: 20px;
-    font-weight: 850;
-    letter-spacing: -.025em;
-}
-
-.modo-entreno-overlay .me-ejercicio-card .me-ej-grupo {
-    color: #8F959E;
-}
-
-.modo-entreno-overlay .me-ejercicio-card .me-ej-img-wrap {
-    height: 100px;
-    max-height: 100px;
-    margin: 6px 0;
-    border-radius: 12px;
-    background: #090B0E;
-    border: 1px solid #25292F;
-}
-
-.modo-entreno-overlay .me-ejercicio-card .me-ej-img {
-    max-height: 94px;
-    width: auto;
-    max-width: 100%;
-}
-
-.modo-entreno-overlay .me-ejercicio-card .me-ej-descripcion {
-    font-size: 11px;
-    line-height: 1.45;
-    color: #A5AAB3;
-}
-
-.modo-entreno-overlay .me-ejercicio-card .me-ej-musculos {
-    margin: 6px 0;
-}
-
-.modo-entreno-overlay .me-ejercicio-card .me-ej-musculos .musc-row {
-    margin: 2px 0;
-}
-
-.modo-entreno-overlay .me-ejercicio-card .me-ej-consejos,
-.modo-entreno-overlay .me-ejercicio-card .me-ej-errores {
-    padding: 7px 10px;
-    margin: 5px 0;
-    border-radius: 10px;
-}
-
-.modo-entreno-overlay .me-ejercicio-card .me-ej-datos {
-    margin: 6px 0;
-}
-
-
-/* ==========================================================
    MÓVIL
    ========================================================== */
 
@@ -2484,22 +2289,6 @@
         font-size: 23px;
     }
 
-    .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs {
-        grid-template-columns: 1fr 110px;
-        gap: 6px 8px;
-    }
-
-    .modo-entreno-overlay .me-ej-inputs #meCargaVisual {
-        width: 110px;
-    }
-
-    .modo-entreno-overlay .me-ej-inputs #meCargaVisual .me-carga-visual {
-        width: 110px;
-    }
-
-    .modo-entreno-overlay .me-ej-inputs #meCargaVisual .me-carga-dibujo {
-        transform: scale(.32);
-    }
 }
 
 @media (max-width: 480px) {
@@ -2529,26 +2318,6 @@
       height: 145px;
     }
 
-    .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs {
-        grid-template-columns: 1fr;
-    }
-
-    .modo-entreno-overlay .me-ej-inputs #meCargaVisual {
-        grid-column: 1;
-        grid-row: 1;
-        width: 100%;
-        height: 58px;
-    }
-
-    .modo-entreno-overlay .me-ej-inputs .me-carga-sesion {
-        grid-column: 1;
-        grid-row: 2;
-    }
-
-    .modo-entreno-overlay .me-ej-inputs .me-input-group {
-        grid-column: 1;
-        grid-row: 3;
-    }
 }
 /* =========================================================
    MODO ENTRENAMIENTO — REDISEÑO PREMIUM
