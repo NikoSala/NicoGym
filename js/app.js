@@ -1030,6 +1030,22 @@ const APP = {
       },
     ).join("");
 
+    const consejosHtml = ej.consejos
+      ? ej.consejos
+          .split("\n")
+          .filter((consejo) => consejo.trim())
+          .map((consejo) => `<li>${consejo.trim()}</li>`)
+          .join("")
+      : "<li>No hay consejos disponibles.</li>";
+
+    const erroresHtml = ej.errores
+      ? ej.errores
+          .split("\n")
+          .filter((error) => error.trim())
+          .map((error) => `<li>${error.trim()}</li>`)
+          .join("")
+      : "<li>No hay errores registrados.</li>";
+
     // ==========================================
     // CONFIGURACIÓN DEL PESO
     // ==========================================
@@ -1073,6 +1089,8 @@ const APP = {
 
       <div class="me-workout-redesign">
 
+        <div class="me-workout-main-card">
+
         <!-- =====================================
             CABECERA DEL EJERCICIO
             ===================================== -->
@@ -1093,6 +1111,17 @@ const APP = {
             <div class="me-workout-group">
               ${ej.grupo}
             </div>
+
+            <details class="me-workout-tips">
+              <summary>
+                <i class="fa-solid fa-lightbulb"></i>
+                Consejos rápidos
+              </summary>
+              <div class="me-workout-tips-content">
+                <ul>${consejosHtml}</ul>
+                <ul class="me-workout-tips-errors">${erroresHtml}</ul>
+              </div>
+            </details>
 
             <div class="me-workout-image-card">
 
@@ -1262,6 +1291,8 @@ const APP = {
           </button>
 
         </section>
+
+        </div>
 
 
         <!-- =====================================

@@ -2449,26 +2449,27 @@
     }
 
     .me-selector-peso-layout {
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+      grid-template-columns: 1fr;
     }
 
     .me-selector-peso-right {
-      height: 250px;
+      height: 220px;
       min-height: 0;
       padding: 12px 8px;
       order: 0;
-      border-left: 1px solid #30343B;
-      border-top: 0;
+      border-left: 0;
+      border-top: 1px solid #30343B;
     }
 
     .me-selector-preview {
       min-height: 0;
-      height: 200px;
+      height: 175px;
     }
 
     .me-selector-preview .me-carga-dibujo {
       min-height: 0;
-      height: 175px;
+      height: 165px;
+      transform: scale(.95);
     }
 
     .me-peso-selector-wrap {
@@ -2508,7 +2509,7 @@
     }
 
     .me-selector-peso-right {
-      height: 220px;
+      height: 205px;
     }
 
     .me-peso-selector-control {
@@ -2521,11 +2522,11 @@
     }
 
     .me-selector-preview {
-      height: 175px;
+      height: 160px;
     }
 
     .me-selector-preview .me-carga-dibujo {
-      height: 155px;
+      height: 145px;
     }
 
     .modo-entreno-overlay .me-ejercicio-card .me-ej-inputs {
@@ -2562,6 +2563,13 @@
   color: #f4f4f5;
 }
 
+.me-workout-main-card {
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(25,29,35,.98), rgba(12,15,19,.98));
+}
+
 
 /* =========================================================
    CABECERA
@@ -2570,23 +2578,17 @@
 .me-workout-top-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .me-workout-title-card,
 .me-workout-image-card,
 .me-workout-load-card,
 .me-workout-reps-card {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(25, 29, 34, 0.98),
-      rgba(13, 16, 20, 0.98)
-    );
-
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  border-radius: 14px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
   box-sizing: border-box;
 }
 
@@ -2598,11 +2600,11 @@
 .me-workout-title-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 125px;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto auto auto auto;
   column-gap: 16px;
   align-items: center;
-  padding: 18px;
-  min-height: 126px;
+  padding: 14px;
+  min-height: 124px;
 }
 
 .me-workout-exercise-number {
@@ -2633,6 +2635,45 @@
   color: #a7adb7;
   font-size: 16px;
   font-weight: 500;
+}
+
+.me-workout-tips {
+  grid-column: 1;
+  grid-row: 4;
+  margin-top: 7px;
+  color: #d7a126;
+  font-size: 11px;
+}
+
+.me-workout-tips summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 800;
+  list-style: none;
+}
+
+.me-workout-tips summary::-webkit-details-marker {
+  display: none;
+}
+
+.me-workout-tips-content {
+  display: grid;
+  gap: 4px;
+  margin-top: 6px;
+  color: #bfc4cc;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.me-workout-tips-content ul {
+  margin: 0;
+  padding-left: 15px;
+}
+
+.me-workout-tips-errors {
+  color: #e3264e;
 }
 
 /* =========================================================
@@ -2715,13 +2756,17 @@
   margin-bottom: 16px;
 }
 
+.me-workout-main-card .me-workout-training-grid {
+  margin-bottom: 0;
+}
+
 
 /* =========================================================
    CARGA
    ========================================================= */
 
 .me-workout-load-card {
-  min-height: 130px;
+  min-height: 108px;
 
   display: flex;
   align-items: stretch;
@@ -2731,7 +2776,7 @@
 
 .me-workout-load-content {
   flex: 1;
-  padding: 16px 18px 12px;
+  padding: 12px 14px 10px;
   min-width: 0;
 }
 
@@ -2751,22 +2796,22 @@
 }
 
 .me-workout-load-value {
-  margin-top: 10px;
+  margin-top: 7px;
 
   color: #d7a126;
 
-  font-size: 34px;
+  font-size: 28px;
   line-height: 1;
 
   font-weight: 900;
 }
 
 .me-workout-load-subtitle {
-  margin-top: 6px;
+  margin-top: 3px;
 
   color: #e3e5e8;
 
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -2788,7 +2833,7 @@
 }
 
 .me-workout-load-image {
-  width: 205px;
+  width: 160px;
 
   display: flex;
   align-items: center;
@@ -2800,7 +2845,7 @@
 }
 
 .me-workout-load-image .me-carga-visual {
-  transform: scale(0.68);
+  transform: scale(0.58);
   transform-origin: center;
   width: 180%;
 }
@@ -2815,7 +2860,7 @@
    ========================================================= */
 
 .me-workout-reps-card {
-  padding: 18px 18px 14px;
+  padding: 12px 14px 10px;
 }
 
 .me-workout-reps-title {
@@ -2824,14 +2869,14 @@
   font-size: 12px;
   font-weight: 900;
 
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .me-workout-reps-row {
   display: grid;
   grid-template-columns: 58px 1fr 58px;
   gap: 10px;
-  height: 80px;
+  height: 58px;
 }
 
 .me-workout-reps-button {
@@ -2878,7 +2923,7 @@
 
   text-align: center;
 
-  font-size: 40px;
+  font-size: 28px;
 
   font-weight: 900;
 
@@ -2917,7 +2962,7 @@
    ========================================================= */
 
 .me-workout-save-button {
-  min-height: 130px;
+  min-height: 108px;
 
   border: 1px solid #d7a126;
 
@@ -2960,7 +3005,7 @@
 }
 
 .me-workout-save-main {
-  font-size: 21px;
+  font-size: 15px;
   font-weight: 900;
 }
 
@@ -2969,7 +3014,7 @@
 }
 
 .me-workout-save-sub {
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 700;
   opacity: 0.9;
 }
@@ -3159,9 +3204,20 @@
     padding: 12px;
   }
 
-  .me-workout-top-grid,
-  .me-workout-training-grid {
+  .me-workout-main-card {
+    padding: 8px;
+  }
+
+  .me-workout-top-grid {
     grid-template-columns: 1fr;
+  }
+
+  .me-workout-training-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .me-workout-load-card {
+    grid-column: 1 / -1;
   }
 
   .me-workout-series-grid {
@@ -3169,7 +3225,7 @@
   }
 
   .me-workout-navigation {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
 }
@@ -3190,6 +3246,10 @@
     margin-bottom: 10px;
   }
 
+  .me-workout-main-card {
+    padding: 6px;
+  }
+
   .me-workout-title-card,
   .me-workout-load-card,
   .me-workout-reps-card {
@@ -3198,7 +3258,7 @@
 
   .me-workout-title-card {
     min-height: 0;
-    padding: 18px;
+    padding: 12px;
   }
 
   .me-workout-title {
@@ -3214,45 +3274,45 @@
   }
 
   .me-workout-load-card {
-    min-height: 140px;
+    min-height: 92px;
   }
 
   .me-workout-load-content {
-    padding: 18px 16px 14px;
+    padding: 10px 12px 8px;
   }
 
   .me-workout-load-value {
-    margin-top: 12px;
-    font-size: 30px;
+    margin-top: 6px;
+    font-size: 25px;
   }
 
   .me-workout-load-image {
-    width: 150px;
+    width: 115px;
   }
 
   .me-workout-load-image .me-carga-visual {
-    transform: scale(0.62);
+    transform: scale(0.52);
   }
 
   .me-workout-reps-row {
     grid-template-columns: 52px minmax(0, 1fr) 52px;
-    height: 68px;
+    height: 54px;
   }
 
   .me-workout-reps-input {
-    font-size: 34px;
+    font-size: 28px;
   }
 
   .me-workout-save-button {
-    min-height: 82px;
+    min-height: 92px;
   }
 
   .me-workout-save-main {
-    font-size: 17px;
+    font-size: 14px;
   }
 
   .me-workout-save-sub {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .me-workout-series-grid {
@@ -3261,8 +3321,8 @@
   }
 
   .me-workout-set-card {
-    min-height: 96px;
-    padding: 12px;
+    min-height: 78px;
+    padding: 8px;
   }
 
   .me-workout-set-header {
@@ -3276,8 +3336,8 @@
   }
 
   .me-workout-set-value {
-    margin-top: 8px;
-    font-size: 24px;
+    margin-top: 5px;
+    font-size: 20px;
   }
 
   .me-workout-set-label {
