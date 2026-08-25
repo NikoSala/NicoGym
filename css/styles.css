@@ -2021,7 +2021,7 @@
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
-    padding: 18px 22px 24px;
+    padding: 14px 18px 16px;
     background:
         linear-gradient(145deg, #181C22, #0F1216);
     border: 1px solid #30343B;
@@ -2033,7 +2033,7 @@
 
 .me-selector-peso-header {
     text-align: center;
-    margin-bottom: 22px;
+    margin-bottom: 12px;
 }
 
 .me-selector-peso-kicker {
@@ -2062,8 +2062,8 @@
 
 .me-selector-peso-layout {
     display: grid;
-    grid-template-columns: minmax(320px, 390px) 1fr;
-  gap: 0;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+    gap: 0;
     align-items: stretch;
   border: 1px solid #30343B;
   border-radius: 17px;
@@ -2098,8 +2098,8 @@
 /* ---------- OPCIONES ---------- */
 
 .me-peso-opciones {
-    display: flex;
-    flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
     gap: 7px;
 }
 
@@ -2107,8 +2107,8 @@
     position: relative;
     display: flex;
     align-items: center;
-    min-height: 48px;
-    padding: 0 14px;
+    min-height: 42px;
+    padding: 0 10px;
     border: 1px solid #30343B;
     border-radius: 12px;
     background: #111419;
@@ -2133,11 +2133,11 @@
 }
 
 .me-peso-radio {
-    width: 24px;
-    height: 24px;
+  width: 20px;
+  height: 20px;
     border: 2px solid #454B54;
     border-radius: 50%;
-    margin-right: 12px;
+    margin-right: 8px;
     flex-shrink: 0;
     position: relative;
 }
@@ -2152,7 +2152,7 @@
 }
 
 .me-peso-opcion-texto {
-    font-size: 16px;
+  font-size: 14px;
     font-weight: 700;
     color: #E8EAED;
 }
@@ -2203,19 +2203,19 @@
     display: flex;
     align-items: flex-start;
     gap: 11px;
-    margin-top: 16px;
-    padding: 14px;
+    margin-top: 10px;
+    padding: 9px;
     border: 1px solid #353A42;
     border-radius: 13px;
     background: rgba(0,0,0,.16);
     color: #B6BBC2;
-    font-size: 12px;
+    font-size: 10px;
     line-height: 1.45;
 }
 
 .me-peso-info i {
     color: #D6A94A;
-    font-size: 19px;
+    font-size: 15px;
     margin-top: 1px;
     flex-shrink: 0;
 }
@@ -2225,8 +2225,9 @@
 
 .me-selector-peso-right {
     min-width: 0;
-  min-height: 280px;
-  padding: 14px 18px;
+  height: 235px;
+  min-height: 0;
+  padding: 10px 8px;
   border-left: 1px solid #30343B;
     background:
         radial-gradient(circle at center, rgba(255,255,255,.045), transparent 55%),
@@ -2237,11 +2238,11 @@
 
 .me-preview-header {
     align-self: center;
-    padding: 8px 16px;
+    padding: 6px 8px;
     border: 1px solid #3A3F47;
     border-radius: 999px;
     color: #D6A94A;
-    font-size: 12px;
+    font-size: 9px;
     font-weight: 800;
     letter-spacing: .04em;
     background: rgba(0,0,0,.18);
@@ -2253,7 +2254,9 @@
 
 .me-selector-preview {
     flex: 1;
-  min-height: 220px;
+  min-height: 0;
+  height: 185px;
+  overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2268,7 +2271,9 @@
 }
 
 .me-selector-preview .me-carga-dibujo {
-  min-height: 210px;
+    min-height: 0;
+    height: 155px;
+    transform: scale(.72);
 }
 
 .me-selector-preview .me-mancuerna-real {
@@ -2292,17 +2297,17 @@
 /* ---------- CONFIRMACIÓN ---------- */
 
 .me-selector-confirmacion {
-    margin-top: 18px;
-    padding-top: 17px;
+  margin-top: 10px;
+  padding-top: 8px;
     border-top: 1px solid #2A2E35;
     text-align: center;
 }
 
 .me-selector-confirmacion .me-carga-confirmacion-titulo {
-    font-size: 15px;
+  font-size: 12px;
     font-weight: 800;
     color: #F1F1F1;
-    margin-bottom: 9px;
+    margin-bottom: 5px;
 }
 
 .me-selector-confirmacion .me-carga-sesion {
@@ -2310,7 +2315,7 @@
     align-items: center;
     justify-content: center;
     min-width: 110px;
-    padding: 7px 18px;
+    padding: 4px 14px;
     border-radius: 999px;
     background: rgba(214,169,74,.08);
     border: 1px solid rgba(214,169,74,.30);
@@ -2322,8 +2327,8 @@
 
 .me-selector-confirmar {
     width: 100%;
-    min-height: 52px;
-    margin-top: 14px;
+    min-height: 44px;
+    margin-top: 9px;
     border-radius: 12px !important;
     font-size: 15px !important;
     font-weight: 800 !important;
@@ -2615,7 +2620,6 @@
 
 .me-workout-title-card,
 .me-workout-image-card,
-.me-workout-advice-card,
 .me-workout-load-card,
 .me-workout-reps-card {
   background:
@@ -2736,88 +2740,6 @@
 }
 
 
-.me-workout-middle-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-/* =========================================================
-   CONSEJOS / EVITA
-   ========================================================= */
-
-.me-workout-advice-card {
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
-
-  gap: 18px;
-
-  padding: 14px 18px;
-
-  min-height: 110px;
-}
-
-.me-workout-advice-divider {
-  width: 1px;
-  background: rgba(255,255,255,0.10);
-}
-
-.me-workout-advice-title,
-.me-workout-warning-title {
-  font-size: 14px;
-  font-weight: 900;
-
-  margin-bottom: 10px;
-}
-
-.me-workout-advice-title {
-  color: #d7a126;
-}
-
-.me-workout-warning-title {
-  color: #e3264e;
-}
-
-.me-workout-advice-title i,
-.me-workout-warning-title i {
-  margin-right: 7px;
-}
-
-.me-workout-advice-list {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-
-.me-workout-tip,
-.me-workout-warning {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-
-  color: #d2d5da;
-
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-.me-workout-tip i {
-  color: #e7e9ec;
-  margin-top: 2px;
-}
-
-.me-workout-warning i {
-  color: #e3264e;
-  margin-top: 2px;
-}
-
-.me-workout-empty {
-  color: #777e87;
-  font-size: 12px;
-}
-
-
 /* =========================================================
    ZONA DE ENTRENAMIENTO
    ========================================================= */
@@ -2910,7 +2832,7 @@
 }
 
 .me-workout-load-image {
-  width: 175px;
+  width: 205px;
 
   display: flex;
   align-items: center;
@@ -2922,7 +2844,7 @@
 }
 
 .me-workout-load-image .me-carga-visual {
-  transform: scale(0.55);
+  transform: scale(0.68);
   transform-origin: center;
   width: 180%;
 }
@@ -3264,10 +3186,6 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .me-workout-middle-grid {
-    grid-template-columns: 1fr;
-  }
-
   .me-workout-training-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -3286,18 +3204,8 @@
   }
 
   .me-workout-top-grid,
-  .me-workout-middle-grid,
   .me-workout-training-grid {
     grid-template-columns: 1fr;
-  }
-
-  .me-workout-advice-card {
-    grid-template-columns: 1fr;
-  }
-
-  .me-workout-advice-divider {
-    width: 100%;
-    height: 1px;
   }
 
   .me-workout-series-grid {
@@ -3321,14 +3229,12 @@
   }
 
   .me-workout-top-grid,
-  .me-workout-middle-grid,
   .me-workout-training-grid {
     gap: 10px;
     margin-bottom: 10px;
   }
 
   .me-workout-title-card,
-  .me-workout-advice-card,
   .me-workout-load-card,
   .me-workout-reps-card {
     border-radius: 12px;
@@ -3351,20 +3257,6 @@
     height: 92px;
   }
 
-  .me-workout-advice-card {
-    gap: 14px;
-    padding: 18px;
-  }
-
-  .me-workout-advice-list {
-    gap: 7px;
-  }
-
-  .me-workout-tip,
-  .me-workout-warning {
-    font-size: 12px;
-  }
-
   .me-workout-load-card {
     min-height: 140px;
   }
@@ -3379,7 +3271,11 @@
   }
 
   .me-workout-load-image {
-    width: 128px;
+    width: 150px;
+  }
+
+  .me-workout-load-image .me-carga-visual {
+    transform: scale(0.62);
   }
 
   .me-workout-reps-row {

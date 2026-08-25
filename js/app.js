@@ -1029,12 +1029,6 @@ const APP = {
     // INFORMACIÓN
     // ==========================================
 
-    const objetivoDia = PROGRESION.recomendarDia(
-      ej.dia,
-      getEjerciciosPorDia(ej.dia),
-      entrenamiento,
-    );
-
     // ==========================================
     // SERIES
     // ==========================================
@@ -1075,52 +1069,6 @@ const APP = {
         `;
       },
     ).join("");
-
-    // ==========================================
-    // CONSEJOS
-    // ==========================================
-
-    const consejosHtml = ej.consejos
-      ? ej.consejos
-          .split("\n")
-          .filter((c) => c.trim())
-          .map(
-            (c) => `
-              <div class="me-workout-tip">
-                <i class="fa-solid fa-check"></i>
-                <span>${c.trim()}</span>
-              </div>
-            `,
-          )
-          .join("")
-      : `
-          <div class="me-workout-empty">
-            No hay consejos disponibles.
-          </div>
-        `;
-
-    // ==========================================
-    // ERRORES
-    // ==========================================
-
-    const erroresHtml = ej.errores
-      ? ej.errores
-          .split("\n")
-          .filter((e) => e.trim())
-          .map(
-            (e) => `
-              <div class="me-workout-warning">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <span>${e.trim()}</span>
-              </div>
-            `,
-          )
-          .join("")
-      : `
-          <div class="me-workout-empty">
-            No hay errores registrados.
-          </div>
-        `;
 
     // ==========================================
     // CONFIGURACIÓN DEL PESO
@@ -1219,49 +1167,6 @@ const APP = {
 
           </div>
 
-
-        </section>
-
-
-        <!-- =====================================
-            HISTORIAL + CONSEJOS
-            ===================================== -->
-
-        <section class="me-workout-middle-grid">
-
-          <div class="me-workout-advice-card">
-
-            <div class="me-workout-advice-column">
-
-              <div class="me-workout-advice-title">
-                <i class="fa-solid fa-lightbulb"></i>
-                CONSEJOS
-              </div>
-
-              <div class="me-workout-advice-list">
-                ${consejosHtml}
-              </div>
-
-            </div>
-
-
-            <div class="me-workout-advice-divider"></div>
-
-
-            <div class="me-workout-advice-column">
-
-              <div class="me-workout-warning-title">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                EVITA
-              </div>
-
-              <div class="me-workout-advice-list">
-                ${erroresHtml}
-              </div>
-
-            </div>
-
-          </div>
 
         </section>
 
