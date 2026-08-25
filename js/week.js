@@ -55,11 +55,14 @@ const Semana = {
     };
     const diaActualKey = diaMap[hoyDia];
 
-    let html = `<div class="rutina-semana">`;
+    let html = `<div class="rutina-semana-intro"><span>Tu plan semanal</span><small>Selecciona un día para ver sus ejercicios</small></div><div class="rutina-semana-grid">`;
 
-    dias.forEach((dia) => {
+    dias.forEach((dia, indice) => {
       const esHoy = dia.key === diaActualKey;
       const esDescanso = dia.key === "sabado" || dia.key === "domingo";
+      const fecha = new Date(hoy);
+      fecha.setDate(hoy.getDate() + indice - ((hoyDia + 6) % 7));
+      const completado = !esDescanso && STATE.diasEntrenados.includes(UI.formatFecha(fecha));
       let ejercicios = [];
 
       if (!esDescanso) {
@@ -69,13 +72,11 @@ const Semana = {
       const claseDia = esHoy ? "rutina-dia hoy" : "rutina-dia";
       const claseDescanso = esDescanso ? " descanso" : "";
 
-      html += `<div class="${claseDia}${claseDescanso}">`;
+      html += `<article class="${claseDia}${claseDescanso}">`;
       html += `<div class="rd-header">`;
       html += `<div><span class="rd-dia">${dia.icono} ${dia.nombre}</span>`;
       html += `<div class="rd-grupo">${dia.grupo}</div></div>`;
-      if (esHoy) {
-        html += `<span style="font-size:11px;color:var(--primary);font-weight:600;">HOY</span>`;
-      }
+      html += `<span class="rd-estado ${completado ? "completado" : esHoy ? "actual" : esDescanso ? "reposo" : "pendiente"}">${completado ? "HECHO" : esHoy ? "HOY" : esDescanso ? "DESCANSO" : "PENDIENTE"}</span>`;
       html += `</div>`;
 
       if (esDescanso) {
@@ -91,12 +92,18 @@ const Semana = {
           html += `<div class="rd-ejercicio"><span class="rd-numero">${index + 1}.</span> ${nombreEspanol}</div>`;
         });
         html += `</div>`;
+        html += `<button class="rd-ver-btn" onclick="Semana.verDia('${dia.key}')">Ver rutina <span>→</span></button>`;
       }
 
-      html += `</div>`;
+      html += `</article>`;
     });
 
     html += `</div>`;
     c.innerHTML = html;
+  },
+
+  verDia(dia) {
+    APP.navegar("rutinas");
+    setTimeout(() => Rutinas._seleccionarDia(dia), 0);
   },
 };

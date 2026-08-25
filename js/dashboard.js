@@ -137,6 +137,58 @@ const Dashboard = {
       }
     }
 
+    const nombresDias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+    const etiquetasDias = ["L", "M", "X", "J", "V", "S", "D"];
+    const inicioSemana = new Date(hoy);
+    inicioSemana.setHours(0, 0, 0, 0);
+    inicioSemana.setDate(hoy.getDate() - ((hoy.getDay() + 6) % 7));
+    const diasSemana = nombresDias.map((diaNombre, indice) => {
+      const fecha = new Date(inicioSemana);
+      fecha.setDate(inicioSemana.getDate() + indice);
+      const fechaKey = UI.formatFecha(fecha);
+      const descanso = indice > 4;
+      const completado = STATE.diasEntrenados.includes(fechaKey);
+      return { diaNombre, etiqueta: etiquetasDias[indice], fechaKey, descanso, completado, esHoy: fechaKey === UI.getHoy() };
+    });
+    const entrenamientosSemana = diasSemana.filter((diaSemana) => diaSemana.completado).length;
+    const entrenamientosEsperados = diasSemana.filter((diaSemana) => !diaSemana.descanso && diaSemana.fechaKey <= UI.getHoy()).length;
+    const porcentajeConsistencia = entrenamientosEsperados > 0
+      ? Math.min(100, Math.round((entrenamientosSemana / entrenamientosEsperados) * 100))
+      : 0;
+    const semaforo = entrenamientosEsperados === 0 || porcentajeConsistencia >= 80
+      ? { clase: "verde", titulo: "Buen ritmo", texto: "Vas cumpliendo la semana" }
+      : porcentajeConsistencia >= 50
+        ? { clase: "amarillo", titulo: "Puedes remontar", texto: "Todavía estás a tiempo" }
+        : { clase: "rojo", titulo: "Semana pendiente", texto: "Empieza con el entrenamiento de hoy" };
+
+    const bloqueSemana = `
+      <section class="inicio-semana-grid">
+        <div class="card inicio-semaforo-card semaforo-${semaforo.clase}">
+          <div class="inicio-panel-kicker">ESTADO DE LA SEMANA</div>
+          <div class="semaforo-main"><span class="semaforo-luz"></span><div><strong>${semaforo.titulo}</strong><span>${semaforo.texto}</span></div></div>
+          <div class="semaforo-track"><span style="width:${porcentajeConsistencia}%"></span></div>
+          <div class="semaforo-foot"><span>${porcentajeConsistencia}% de consistencia</span><span>${entrenamientosSemana}/${entrenamientosEsperados || 5} entrenos</span></div>
+        </div>
+        <div class="card consistencia-card">
+          <div class="card-title">📈 Consistencia</div>
+          <div class="consistencia-number">${entrenamientosSemana}<small>/5</small></div>
+          <div class="consistencia-label">entrenamientos esta semana</div>
+          <div class="consistencia-streak">🔥 Racha actual: <strong>${racha} días</strong></div>
+        </div>
+      </section>
+      <section class="card tu-semana-card">
+        <div class="card-title"><span>🗓️ Tu Semana</span><button class="text-action" onclick="APP.navegar('semana')">Ver rutina</button></div>
+        <div class="tu-semana-days">
+          ${diasSemana.map((diaSemana) => `
+            <button class="tu-semana-day ${diaSemana.esHoy ? "actual" : ""} ${diaSemana.completado ? "hecho" : ""} ${diaSemana.descanso ? "descanso" : ""}" onclick="${diaSemana.descanso ? "" : `APP.navegar('rutinas')`}">
+              <span>${diaSemana.etiqueta}</span><strong>${diaSemana.descanso ? "·" : diaSemana.completado ? "✓" : "○"}</strong>
+            </button>
+          `).join("")}
+        </div>
+        <div class="tu-semana-caption">${entrenamientosSemana >= 5 ? "Semana completada" : `Te quedan ${Math.max(0, 5 - entrenamientosSemana)} entrenamientos previstos`}</div>
+      </section>
+    `;
+
     // ===== BANNER DE ACTUALIZACIÓN =====
     const tipoActualizacion = APP.obtenerTipoActualizacion();
     let updateBanner = "";
@@ -183,6 +235,8 @@ const Dashboard = {
     c.innerHTML = `
                 <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
                 <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
+
+                ${bloqueSemana}
 
                 ${
                   hayEntrenamientoPendiente
