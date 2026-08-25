@@ -1,6 +1,9 @@
 // ==========================================
 // PESO
 // ==========================================
+const mostrarMedida = (valor) =>
+  Number.isFinite(Number(valor)) && Number(valor) > 0 ? valor : "--";
+
 const Peso = {
   render() {
     const c = document.getElementById("pesoContainer");
@@ -11,8 +14,6 @@ const Peso = {
         ? STATE.mediciones[STATE.mediciones.length - 1]
         : null;
     const primero = STATE.mediciones.length > 0 ? STATE.mediciones[0] : null;
-    const mostrarMedida = (valor) =>
-      Number.isFinite(Number(valor)) && Number(valor) > 0 ? valor : "--";
 
     const tipo = APP.obtenerTipoActualizacion();
     const hoy = new Date();
