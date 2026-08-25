@@ -2063,8 +2063,12 @@
 .me-selector-peso-layout {
     display: grid;
     grid-template-columns: minmax(320px, 390px) 1fr;
-    gap: 24px;
+  gap: 0;
     align-items: stretch;
+  border: 1px solid #30343B;
+  border-radius: 17px;
+  background: rgba(0,0,0,.12);
+  overflow: hidden;
 }
 
 
@@ -2221,10 +2225,9 @@
 
 .me-selector-peso-right {
     min-width: 0;
-    min-height: 500px;
-    padding: 16px;
-    border: 1px solid #30343B;
-    border-radius: 17px;
+  min-height: 280px;
+  padding: 14px 18px;
+  border-left: 1px solid #30343B;
     background:
         radial-gradient(circle at center, rgba(255,255,255,.045), transparent 55%),
         linear-gradient(145deg, #15191E, #0C0F13);
@@ -2250,7 +2253,7 @@
 
 .me-selector-preview {
     flex: 1;
-    min-height: 390px;
+  min-height: 220px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2265,7 +2268,7 @@
 }
 
 .me-selector-preview .me-carga-dibujo {
-    min-height: 300px;
+  min-height: 210px;
 }
 
 .me-selector-preview .me-mancuerna-real {
@@ -2488,6 +2491,8 @@
     .me-selector-peso-right {
         min-height: 330px;
         order: -1;
+      border-left: 0;
+      border-top: 1px solid #30343B;
     }
 
     .me-selector-preview {
@@ -2571,7 +2576,7 @@
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 18px 20px 24px;
+  padding: 12px 16px 16px;
   box-sizing: border-box;
   color: #f4f4f5;
 }
@@ -2583,9 +2588,9 @@
 
 .me-workout-top-grid {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr 1.05fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .me-workout-title-card,
@@ -2613,8 +2618,8 @@
    ========================================================= */
 
 .me-workout-title-card {
-  padding: 26px;
-  min-height: 205px;
+  padding: 18px;
+  min-height: 150px;
 }
 
 .me-workout-exercise-number {
@@ -2622,7 +2627,7 @@
   font-weight: 800;
   letter-spacing: 0.12em;
   color: #9ca3af;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .me-workout-title {
@@ -2635,7 +2640,7 @@
 }
 
 .me-workout-group {
-  margin-top: 8px;
+  margin-top: 6px;
   color: #a7adb7;
   font-size: 16px;
   font-weight: 500;
@@ -2699,7 +2704,7 @@
 
 .me-workout-image-card {
   position: relative;
-  min-height: 205px;
+  min-height: 150px;
   overflow: hidden;
 
   display: flex;
@@ -2709,7 +2714,7 @@
 
 .me-workout-exercise-image {
   width: 100%;
-  height: 205px;
+  height: 150px;
 
   object-fit: contain;
 
@@ -2815,8 +2820,8 @@
 .me-workout-middle-grid {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .me-workout-history-grid {
@@ -2882,11 +2887,11 @@
   display: grid;
   grid-template-columns: 1fr 1px 1fr;
 
-  gap: 26px;
+  gap: 18px;
 
-  padding: 22px 25px;
+  padding: 14px 18px;
 
-  min-height: 145px;
+  min-height: 110px;
 }
 
 .me-workout-advice-divider {
@@ -2899,7 +2904,7 @@
   font-size: 14px;
   font-weight: 900;
 
-  margin-bottom: 17px;
+  margin-bottom: 10px;
 }
 
 .me-workout-advice-title {
@@ -2961,7 +2966,7 @@
     minmax(330px, 1.25fr)
     minmax(300px, 1.05fr);
 
-  gap: 16px;
+  gap: 12px;
 
   align-items: stretch;
 
@@ -2974,7 +2979,7 @@
    ========================================================= */
 
 .me-workout-load-card {
-  min-height: 160px;
+  min-height: 130px;
 
   display: flex;
   align-items: stretch;
@@ -2984,7 +2989,7 @@
 
 .me-workout-load-content {
   flex: 1;
-  padding: 20px 20px 15px;
+  padding: 16px 18px 12px;
   min-width: 0;
 }
 
@@ -3004,7 +3009,7 @@
 }
 
 .me-workout-load-value {
-  margin-top: 16px;
+  margin-top: 10px;
 
   color: #d7a126;
 
@@ -3170,7 +3175,7 @@
    ========================================================= */
 
 .me-workout-save-button {
-  min-height: 160px;
+  min-height: 130px;
 
   border: 1px solid #d7a126;
 
@@ -3238,15 +3243,15 @@
   grid-template-columns:
     repeat(4, minmax(0, 1fr));
 
-  gap: 16px;
+  gap: 12px;
 
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .me-workout-set-card {
-  min-height: 115px;
+  min-height: 85px;
 
-  padding: 15px 18px;
+  padding: 10px 14px;
 
   border-radius: 11px;
 
@@ -3319,7 +3324,7 @@
 }
 
 .me-workout-set-value {
-  margin-top: 12px;
+  margin-top: 7px;
 
   text-align: center;
 
@@ -3348,7 +3353,7 @@
 
   grid-template-columns: 1fr 1fr;
 
-  gap: 16px;
+  gap: 12px;
 }
 
 .me-workout-nav-button {

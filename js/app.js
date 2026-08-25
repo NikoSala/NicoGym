@@ -1029,14 +1029,6 @@ const APP = {
     // INFORMACIÓN
     // ==========================================
 
-    const ultimo = this._getUltimoEntreno(ej.nombre);
-    const record = Records.getRecord(ej.nombre);
-
-    const dificultadColor = getDificultadColor(ej.dificultad);
-    const dificultadTexto = getDificultadTexto(ej.dificultad);
-
-    const intensidad = ej.intensidadMuscular || {};
-
     const objetivoDia = PROGRESION.recomendarDia(
       ej.dia,
       getEjerciciosPorDia(ej.dia),
@@ -1083,58 +1075,6 @@ const APP = {
         `;
       },
     ).join("");
-
-    // ==========================================
-    // MATERIAL
-    // ==========================================
-
-    const materialHtml = ej.material?.length
-      ? ej.material
-          .map(
-            (m) => `
-              <span class="me-workout-material-tag">
-                <i class="fa-solid fa-check"></i>
-                ${m}
-              </span>
-            `,
-          )
-          .join("")
-      : "";
-
-    // ==========================================
-    // MÚSCULOS
-    // ==========================================
-
-    const musculosHtml = Object.keys(intensidad).length
-      ? Object.entries(intensidad)
-          .map(
-            ([musculo, valor]) => `
-              <div class="me-workout-muscle-row">
-
-                <div class="me-workout-muscle-name">
-                  ${musculo}
-                </div>
-
-                <div class="me-workout-muscle-bar">
-                  <div
-                    class="me-workout-muscle-fill"
-                    style="width:${Math.min(Number(valor) || 0, 100)}%;"
-                  ></div>
-                </div>
-
-                <div class="me-workout-muscle-value">
-                  ${valor}%
-                </div>
-
-              </div>
-            `,
-          )
-          .join("")
-      : `
-          <div class="me-workout-empty">
-            Información muscular no disponible
-          </div>
-        `;
 
     // ==========================================
     // CONSEJOS
@@ -1216,85 +1156,6 @@ const APP = {
     }
 
     // ==========================================
-    // ÚLTIMO ENTRENAMIENTO
-    // ==========================================
-
-    const ultimoHtml = ultimo
-      ? `
-          <div class="me-workout-info-card">
-
-            <div class="me-workout-info-title">
-              <i class="fa-regular fa-clock"></i>
-              ÚLTIMO ENTRENAMIENTO
-            </div>
-
-            <div class="me-workout-info-main">
-              ${ultimo.peso} kg × ${ultimo.reps}
-            </div>
-
-            <div class="me-workout-info-secondary">
-              ${ultimo.fecha || ""}
-            </div>
-
-          </div>
-        `
-      : `
-          <div class="me-workout-info-card">
-
-            <div class="me-workout-info-title">
-              <i class="fa-regular fa-clock"></i>
-              ÚLTIMO ENTRENAMIENTO
-            </div>
-
-            <div class="me-workout-info-main">
-              Sin registros
-            </div>
-
-          </div>
-        `;
-
-    // ==========================================
-    // RÉCORD
-    // ==========================================
-
-    const recordHtml = record
-      ? `
-          <div class="me-workout-info-card">
-
-            <div class="me-workout-info-title">
-              <i class="fa-solid fa-trophy"></i>
-              RÉCORD PERSONAL
-            </div>
-
-            <div class="me-workout-record-value">
-              ${record.weight} kg × ${record.reps} reps
-            </div>
-
-            <div class="me-workout-info-secondary">
-              1RM estimado:
-              ${PROGRESION
-                .estimar1RM(record.weight, record.reps)
-                .toFixed(1)} kg
-            </div>
-
-          </div>
-        `
-      : `
-          <div class="me-workout-info-card">
-
-            <div class="me-workout-info-title">
-              <i class="fa-solid fa-trophy"></i>
-              RÉCORD PERSONAL
-            </div>
-
-            <div class="me-workout-info-main">
-              Sin récord todavía
-            </div>
-
-          </div>
-        `;
-
-    // ==========================================
     // CUERPO PRINCIPAL
     // ==========================================
 
@@ -1323,37 +1184,6 @@ const APP = {
 
             <div class="me-workout-group">
               ${ej.grupo}
-            </div>
-
-            <div class="me-workout-title-details">
-
-              <div>
-                <span class="me-workout-detail-label">
-                  DIFICULTAD
-                </span>
-
-                <span class="me-workout-difficulty">
-                  ${dificultadColor}
-                  ${dificultadTexto}
-                </span>
-              </div>
-
-              ${
-                materialHtml
-                  ? `
-                    <div>
-                      <span class="me-workout-detail-label">
-                        MATERIAL
-                      </span>
-
-                      <div class="me-workout-material">
-                        ${materialHtml}
-                      </div>
-                    </div>
-                  `
-                  : ""
-              }
-
             </div>
 
           </div>
@@ -1392,19 +1222,6 @@ const APP = {
           </div>
 
 
-          <!-- MÚSCULOS -->
-          <div class="me-workout-muscles-card">
-
-            <div class="me-workout-section-title">
-              MÚSCULOS TRABAJADOS
-            </div>
-
-            <div class="me-workout-muscles">
-              ${musculosHtml}
-            </div>
-
-          </div>
-
         </section>
 
 
@@ -1413,15 +1230,6 @@ const APP = {
             ===================================== -->
 
         <section class="me-workout-middle-grid">
-
-          <div class="me-workout-history-grid">
-
-            ${ultimoHtml}
-
-            ${recordHtml}
-
-          </div>
-
 
           <div class="me-workout-advice-card">
 
