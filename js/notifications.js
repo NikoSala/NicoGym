@@ -11,6 +11,18 @@ const Notificaciones = {
     const diasHasta = getDiasHasta(proximaActualizacion);
     const tipo = getTipoActualizacion(proximaActualizacion);
 
+    const ultimoBackup = STATE.recordatorios?.ultimoBackup;
+    const necesitaBackup = !ultimoBackup ||
+      Date.now() - new Date(ultimoBackup).getTime() >= 30 * 86400000;
+
+    if (necesitaBackup) {
+      notifs.push({
+        icono: "💾",
+        texto: "Hace un mes o más que no haces una copia de seguridad",
+        tipo: "importante",
+      });
+    }
+
     if (diasHasta <= 1 && tipo) {
       let texto = "";
       if (tipo === "completa")

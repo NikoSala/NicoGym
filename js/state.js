@@ -15,6 +15,7 @@ const STATE = {
     freqFotos: 4,
     ultimaMedicion: CONFIG.FECHA_REFERENCIA_MEDICIONES,
     ultimasFotos: null,
+    ultimoBackup: null,
     ultimoPeso: null,
   },
   records: [],

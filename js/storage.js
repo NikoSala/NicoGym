@@ -111,6 +111,10 @@ const Storage = {
     );
     if (!STATE.recordatorios.ultimaMedicion)
       STATE.recordatorios.ultimaMedicion = CONFIG.FECHA_REFERENCIA_MEDICIONES;
+    if (STATE.recordatorios.ultimoBackup !== null &&
+        (typeof STATE.recordatorios.ultimoBackup !== "string" ||
+          !Number.isFinite(new Date(STATE.recordatorios.ultimoBackup).getTime())))
+      STATE.recordatorios.ultimoBackup = null;
     if (!STATE.records || !Array.isArray(STATE.records)) STATE.records = [];
     if (!STATE.evolution || typeof STATE.evolution !== "object")
       STATE.evolution = {};
@@ -265,6 +269,8 @@ const Storage = {
       });
       const fecha = new Date().toISOString().slice(0, 10);
       const nombre = `NicoGym_backup_${fecha}.json`;
+      STATE.recordatorios.ultimoBackup = new Date().toISOString();
+      this._save();
 
       const android = window.Android;
       if (android) {
