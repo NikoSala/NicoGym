@@ -2958,7 +2958,7 @@
   }
 
   .me-workout-training-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1.35fr) minmax(92px, .65fr);
   }
 
   .me-workout-save-button {
@@ -3009,6 +3009,10 @@
   .me-workout-reps-card,
   .me-workout-save-button {
     min-height: 82px;
+  }
+
+  .me-workout-reps-card {
+    min-width: 0;
   }
 
   .me-workout-series-grid {
@@ -3088,7 +3092,7 @@
   }
 
   .me-workout-reps-row {
-    grid-template-columns: 52px minmax(0, 1fr) 52px;
+    grid-template-columns: 42px minmax(54px, 1fr) 42px;
     height: 54px;
   }
 
@@ -3097,11 +3101,13 @@
   }
 
   .me-workout-save-button {
-    min-height: 74px;
+    min-height: 68px;
+    padding: 6px;
   }
 
   .me-workout-save-main {
-    font-size: 14px;
+    font-size: 12px;
+    text-align: center;
   }
 
   .me-workout-save-sub {
