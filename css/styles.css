@@ -3449,3 +3449,176 @@
   }
 
 }
+
+@media (max-width: 600px) {
+
+  .modo-entreno-overlay {
+    padding: 48px 0 12px;
+  }
+
+  .me-workout-redesign {
+    padding: 10px;
+  }
+
+  .me-workout-top-grid,
+  .me-workout-middle-grid,
+  .me-workout-training-grid {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .me-workout-title-card,
+  .me-workout-muscles-card,
+  .me-workout-info-card,
+  .me-workout-advice-card,
+  .me-workout-load-card,
+  .me-workout-reps-card {
+    border-radius: 12px;
+  }
+
+  .me-workout-title-card {
+    min-height: 0;
+    padding: 18px;
+  }
+
+  .me-workout-title {
+    font-size: 26px;
+  }
+
+  .me-workout-title-details {
+    gap: 24px;
+    margin-top: 20px;
+  }
+
+  .me-workout-image-card {
+    min-height: 190px;
+  }
+
+  .me-workout-exercise-image {
+    height: 190px;
+  }
+
+  .me-workout-muscles-card {
+    min-height: 0;
+    padding: 18px;
+  }
+
+  .me-workout-section-title {
+    margin-bottom: 16px;
+  }
+
+  .me-workout-muscles {
+    gap: 12px;
+  }
+
+  .me-workout-muscle-row {
+    grid-template-columns: minmax(58px, 78px) minmax(0, 1fr) 36px;
+    gap: 7px;
+  }
+
+  .me-workout-muscle-name,
+  .me-workout-muscle-value {
+    font-size: 11px;
+  }
+
+  .me-workout-history-grid {
+    gap: 10px;
+  }
+
+  .me-workout-info-card {
+    min-height: 112px;
+    padding: 16px;
+  }
+
+  .me-workout-info-main,
+  .me-workout-record-value {
+    margin-top: 16px;
+    font-size: 15px;
+  }
+
+  .me-workout-advice-card {
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .me-workout-advice-list {
+    gap: 7px;
+  }
+
+  .me-workout-tip,
+  .me-workout-warning {
+    font-size: 12px;
+  }
+
+  .me-workout-load-card {
+    min-height: 140px;
+  }
+
+  .me-workout-load-content {
+    padding: 18px 16px 14px;
+  }
+
+  .me-workout-load-value {
+    margin-top: 12px;
+    font-size: 30px;
+  }
+
+  .me-workout-load-image {
+    width: 128px;
+  }
+
+  .me-workout-reps-row {
+    grid-template-columns: 52px minmax(0, 1fr) 52px;
+    height: 68px;
+  }
+
+  .me-workout-reps-input {
+    font-size: 34px;
+  }
+
+  .me-workout-save-button {
+    min-height: 82px;
+  }
+
+  .me-workout-save-main {
+    font-size: 17px;
+  }
+
+  .me-workout-save-sub {
+    font-size: 11px;
+  }
+
+  .me-workout-series-grid {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .me-workout-set-card {
+    min-height: 96px;
+    padding: 12px;
+  }
+
+  .me-workout-set-header {
+    font-size: 11px;
+  }
+
+  .me-workout-set-number {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+
+  .me-workout-set-value {
+    margin-top: 8px;
+    font-size: 24px;
+  }
+
+  .me-workout-set-label {
+    font-size: 10px;
+  }
+
+  .me-workout-navigation {
+    gap: 10px;
+  }
+
+}
