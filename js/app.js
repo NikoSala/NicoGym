@@ -14,7 +14,6 @@ const APP = {
       UI.toast("🔄 Nueva semana. ¡A marcar los ejercicios!", "success");
 
     this._cargarAjustesBasicos();
-    this._renderDashboardInicial();
     this._cargarDatosCompletos();
 
     requestAnimationFrame(() => {
@@ -67,7 +66,7 @@ const APP = {
       STATE.evolution.totalWorkouts = STATE.diasEntrenados.length || 0;
     }
     Storage._save();
-    Dashboard.render();
+    this._renderDashboardInicial();
     STATE._cargado = true;
   },
 
