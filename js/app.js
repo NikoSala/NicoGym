@@ -1918,14 +1918,4 @@ const APP = {
     APP.navegar("inicio");
   },
 
-  _getUltimoEntreno(nombre) {
-    const ord = [...STATE.historialEntrenos].sort(
-      (a, b) => new Date(b.fecha) - new Date(a.fecha),
-    );
-    for (const e of ord) {
-      const ej = e.ejercicios.find((x) => x.nombre === nombre);
-      if (ej) return { fecha: e.fecha, peso: ej.peso, reps: ej.reps };
-    }
-    return null;
-  },
 };

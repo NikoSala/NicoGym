@@ -19,16 +19,6 @@
             return { series, total: series.reduce((a, b) => a + b, 0), valid: true };
         }
 
-        function getDificultadColor(dificultad) {
-            const map = { 'facil': '🟢', 'media': '🟡', 'dificil': '🔴' };
-            return map[dificultad] || '🟡';
-        }
-
-        function getDificultadTexto(dificultad) {
-            const map = { 'facil': 'Fácil', 'media': 'Media', 'dificil': 'Difícil' };
-            return map[dificultad] || 'Media';
-        }
-
         function calcularDuracionEstimada(ejercicios) {
             let fuerza = 0;
             let cardio = 0;

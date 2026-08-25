@@ -2615,8 +2615,6 @@
 
 .me-workout-title-card,
 .me-workout-image-card,
-.me-workout-muscles-card,
-.me-workout-info-card,
 .me-workout-advice-card,
 .me-workout-load-card,
 .me-workout-reps-card {
@@ -2676,58 +2674,6 @@
   font-size: 16px;
   font-weight: 500;
 }
-
-.me-workout-title-details {
-  display: flex;
-  gap: 42px;
-  align-items: flex-start;
-  margin-top: 28px;
-}
-
-.me-workout-detail-label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 12px;
-  font-weight: 800;
-  color: #d7a126;
-  letter-spacing: 0.05em;
-}
-
-.me-workout-difficulty {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #f1f1f1;
-}
-
-.me-workout-material {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.me-workout-material-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 7px 11px;
-
-  border-radius: 999px;
-
-  background: rgba(255,255,255,0.07);
-  color: #d7dbe1;
-
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.me-workout-material-tag i {
-  color: #b7bcc4;
-}
-
 
 /* =========================================================
    IMAGEN
@@ -2790,129 +2736,12 @@
 }
 
 
-/* =========================================================
-   MÚSCULOS
-   ========================================================= */
-
-.me-workout-muscles-card {
-  padding: 24px;
-  min-height: 205px;
-}
-
-.me-workout-section-title {
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  color: #d9dde3;
-  margin-bottom: 27px;
-}
-
-.me-workout-muscles {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.me-workout-muscle-row {
-  display: grid;
-  grid-template-columns: 70px 1fr 42px;
-  align-items: center;
-  gap: 10px;
-}
-
-.me-workout-muscle-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: #e6e7e9;
-}
-
-.me-workout-muscle-bar {
-  height: 9px;
-  border-radius: 999px;
-  background: #20252b;
-  overflow: hidden;
-}
-
-.me-workout-muscle-fill {
-  height: 100%;
-  border-radius: inherit;
-  background: #c7193d;
-  box-shadow: 0 0 10px rgba(199,25,61,0.18);
-}
-
-.me-workout-muscle-value {
-  text-align: right;
-  color: #c4c8ce;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-
-/* =========================================================
-   HISTORIAL
-   ========================================================= */
-
 .me-workout-middle-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
   margin-bottom: 12px;
 }
-
-.me-workout-history-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.me-workout-info-card {
-  padding: 20px;
-  min-height: 145px;
-}
-
-.me-workout-info-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  font-size: 12px;
-  font-weight: 900;
-
-  color: #aeb4bd;
-  letter-spacing: 0.03em;
-}
-
-.me-workout-info-title i {
-  color: #d7a126;
-}
-
-.me-workout-info-main {
-  margin-top: 24px;
-
-  color: #f3f4f6;
-
-  font-size: 17px;
-  font-weight: 800;
-}
-
-.me-workout-record-value {
-  margin-top: 24px;
-
-  color: #e3264e;
-
-  font-size: 17px;
-  font-weight: 900;
-}
-
-.me-workout-info-secondary {
-  margin-top: 14px;
-
-  color: #8f969f;
-
-  font-size: 12px;
-  font-weight: 600;
-}
-
 
 /* =========================================================
    CONSEJOS / EVITA
@@ -3435,10 +3264,6 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .me-workout-muscles-card {
-    grid-column: 1 / -1;
-  }
-
   .me-workout-middle-grid {
     grid-template-columns: 1fr;
   }
@@ -3462,13 +3287,8 @@
 
   .me-workout-top-grid,
   .me-workout-middle-grid,
-  .me-workout-history-grid,
   .me-workout-training-grid {
     grid-template-columns: 1fr;
-  }
-
-  .me-workout-muscles-card {
-    grid-column: auto;
   }
 
   .me-workout-advice-card {
@@ -3508,8 +3328,6 @@
   }
 
   .me-workout-title-card,
-  .me-workout-muscles-card,
-  .me-workout-info-card,
   .me-workout-advice-card,
   .me-workout-load-card,
   .me-workout-reps-card {
@@ -3525,55 +3343,12 @@
     font-size: 26px;
   }
 
-  .me-workout-title-details {
-    gap: 24px;
-    margin-top: 20px;
-  }
-
   .me-workout-image-card {
     min-height: 92px;
   }
 
   .me-workout-exercise-image {
     height: 92px;
-  }
-
-  .me-workout-muscles-card {
-    min-height: 0;
-    padding: 18px;
-  }
-
-  .me-workout-section-title {
-    margin-bottom: 16px;
-  }
-
-  .me-workout-muscles {
-    gap: 12px;
-  }
-
-  .me-workout-muscle-row {
-    grid-template-columns: minmax(58px, 78px) minmax(0, 1fr) 36px;
-    gap: 7px;
-  }
-
-  .me-workout-muscle-name,
-  .me-workout-muscle-value {
-    font-size: 11px;
-  }
-
-  .me-workout-history-grid {
-    gap: 10px;
-  }
-
-  .me-workout-info-card {
-    min-height: 112px;
-    padding: 16px;
-  }
-
-  .me-workout-info-main,
-  .me-workout-record-value {
-    margin-top: 16px;
-    font-size: 15px;
   }
 
   .me-workout-advice-card {
