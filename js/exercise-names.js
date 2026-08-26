@@ -31,16 +31,6 @@
             'Dumbbell Preacher Curl': 'Curl predicador con mancuerna',
             'Dumbbell Spider Curl': 'Curl araña con mancuernas',
             'Dumbbell Tate Press': 'Press Tate con mancuernas',
-            'Dumbbell Squeeze Press': 'Press de compresión con mancuernas',
-            'Sentadilla Goblet con mancuerna': 'Sentadilla Goblet con mancuerna',
-            'Peso muerto rumano': 'Peso muerto rumano',
-            'Zancadas estáticas con mancuernas': 'Zancadas estáticas con mancuernas',
-            'Sentadilla búlgara': 'Sentadilla búlgara',
-            'Hip Thrust': 'Hip Thrust',
-            'Elevación de gemelos de pie': 'Elevación de gemelos de pie',
-            'Crunch abdominal': 'Crunch abdominal',
-            'Elevación de piernas': 'Elevación de piernas',
-            'Bicicleta abdominal': 'Bicicleta abdominal'
         };
 
         function getNombreEspanol(nombre) {
