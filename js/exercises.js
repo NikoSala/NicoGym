@@ -17,7 +17,8 @@ function getExerciseDatabase() {
       nombre: "Press de pecho con mancuernas",
       grupo: "Pecho",
       categoria: "Press",
-      urlGif: "https://gymvisual.com/img/p/1/8/6/4/5/18645.gif",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/03/02891301-Dumbbell-Bench-Press_Chest_720.gif",
       descripcion:
         "Tumbado sobre un banco plano, baja las mancuernas de forma controlada hasta el pecho y empuja hacia arriba manteniendo siempre el control del movimiento.",
       consejos:
@@ -45,7 +46,7 @@ function getExerciseDatabase() {
       grupo: "Pecho",
       categoria: "Press",
       urlGif:
-        "https://fitnessprogramer.com/wp-content/uploads/2022/07/Dumbbell-Reverse-Grip-30-Degrees-Incline-Bench-Press.gif",
+        "https://fitcron.com/wp-content/uploads/2021/03/03241301-Dumbbell-Incline-Palm-in-Press_Chest_720.gif",
       descripcion:
         "Con el banco inclinado entre 30° y 45°, baja las mancuernas lentamente hasta el pecho y vuelve a empujarlas hacia arriba trabajando la parte superior del pectoral.",
       consejos:
@@ -76,7 +77,8 @@ function getExerciseDatabase() {
       nombre: "Aperturas con mancuernas",
       grupo: "Pecho",
       categoria: "Apertura",
-      urlGif: "https://gymvisual.com/img/p/1/0/2/8/0/10280.gif",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/03/03081301-Dumbbell-Fly_Chest-FIX_720.gif",
       descripcion:
         "Tumbado en banco plano, abre los brazos manteniendo una ligera flexión de los codos hasta notar el estiramiento del pecho, y vuelve lentamente.",
       consejos:
@@ -102,7 +104,7 @@ function getExerciseDatabase() {
       grupo: "Bíceps",
       categoria: "Curl",
       urlGif:
-        "https://i.pinimg.com/originals/7d/3c/de/7d3cdeed84c1c19ad372d5b25beffd08.gif",
+        "https://fitcron.com/wp-content/uploads/2021/04/03181301-Dumbbell-Incline-Curl_Upper-Arms_720.gif",
       descripcion:
         "De pie, sujeta una mancuerna en cada mano con las palmas mirando hacia delante. Flexiona un codo para llevar una mancuerna hacia el hombro mientras mantienes el otro brazo quieto. Baja lentamente y repite con el brazo contrario. Mantén los codos cerca del cuerpo y evita balancear el torso para ayudarte.",
       consejos:
@@ -128,7 +130,7 @@ function getExerciseDatabase() {
       grupo: "Bíceps",
       categoria: "Curl",
       urlGif:
-        "https://api.smartworkout.app/asset/image/8588e41c-5c2d-4ee0-90ca-ad69b7d0438a",
+        "https://fitcron.com/wp-content/uploads/2021/04/02981301-Dumbbell-Cross-Body-Hammer-Curl_Forearms_720.gif",
       descripcion:
         "De pie, sujeta una mancuerna en cada mano con las palmas enfrentadas entre sí. Manteniendo los codos cerca del cuerpo, flexiona los brazos y lleva las mancuernas hacia los hombros sin cambiar el agarre. Baja lentamente y controla todo el recorrido. Evita balancear el cuerpo.",
       consejos:
@@ -159,7 +161,7 @@ function getExerciseDatabase() {
       grupo: "Hombro",
       categoria: "Press",
       urlGif:
-        "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif",
+        "https://fitcron.com/wp-content/uploads/2021/04/11651301-Barbell-Standing-Military-Press-without-rack_Shoulders_720.gif",
       descripcion:
         "Sentado en el banco con la espalda apoyada, empuja las mancuernas por encima de la cabeza y baja lentamente hasta la altura de los hombros.",
       consejos:
@@ -185,7 +187,8 @@ function getExerciseDatabase() {
       nombre: "Elevaciones laterales con mancuernas",
       grupo: "Hombro",
       categoria: "Aislamiento",
-      urlGif: "https://gymvisual.com/img/p/5/1/3/7/5137.gif",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/04/03341301-Dumbbell-Lateral-Raise_shoulder-AFIX_720.gif",
       descripcion:
         "De pie o sentado, eleva las mancuernas lateralmente hasta la altura de los hombros manteniendo una ligera flexión en los codos.",
       consejos:
@@ -209,7 +212,8 @@ function getExerciseDatabase() {
       nombre: "Elevaciones frontales con mancuernas",
       grupo: "Hombro",
       categoria: "Aislamiento",
-      urlGif: "https://gymvisual.com/img/p/2/4/9/4/0/24940.gif",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/04/03101301-Dumbbell-Front-Raise_Shoulders_720.gif",
       descripcion:
         "De pie, eleva las mancuernas hacia delante hasta la altura de los hombros sin balancear el cuerpo.",
       consejos:
@@ -262,7 +266,7 @@ function getExerciseDatabase() {
       grupo: "Tríceps",
       categoria: "Aislamiento",
       urlGif:
-        "https://api.smartworkout.app/asset/image/25d73444-e5d4-482c-9000-405867eedfa0",
+        "https://fitcron.com/wp-content/uploads/2021/04/03061301-Dumbbell-Decline-Triceps-Extension_Upper-Arms_720.gif",
       descripcion:
         "Tumbado en un banco, sujeta una mancuerna en cada mano con los brazos extendidos sobre el pecho. Flexiona los codos para bajar las mancuernas a los lados de la cabeza y vuelve a extenderlos sin mover los hombros.",
       consejos:
@@ -290,7 +294,8 @@ function getExerciseDatabase() {
       nombre: "Press cerrado con mancuernas",
       grupo: "Tríceps",
       categoria: "Press",
-      urlGif: "https://gymvisual.com/img/p/7/5/3/5/7535.gif",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/03/36811301-Dumbbell-Squeeze-Bench-Press_Chest_720.gif",
       descripcion:
         "Tumbado en banco plano, mantén las mancuernas juntas durante todo el recorrido, con las palmas enfrentadas.",
       consejos: "• Mantén las mancuernas juntas.\n• Controla el movimiento.",
@@ -319,7 +324,7 @@ function getExerciseDatabase() {
       grupo: "Espalda",
       categoria: "Remo",
       urlGif:
-        "https://mundoentrenamiento.com/wp-content/uploads/2019/10/Remo-con-barra-agarre-cerrado.gif",
+        "https://fitcron.com/wp-content/uploads/2021/04/00271301-Barbell-Bent-Over-Row_Back-FIX_720.gif",
       descripcion:
         "De pie, con una barra sujeta con las manos y las rodillas ligeramente flexionadas, inclina el torso hacia delante manteniendo la espalda recta. Lleva la barra hacia la parte baja del abdomen, acercando los codos al cuerpo. Aprieta la espalda al llegar arriba y baja la barra de forma controlada. Evita redondear la espalda o utilizar impulso.",
       consejos:
@@ -372,7 +377,8 @@ function getExerciseDatabase() {
       nombre: "Remo en banco inclinado con mancuernas",
       grupo: "Espalda",
       categoria: "Remo",
-      urlGif: "https://gymvisual.com/img/p/1/4/9/7/3/14973.gif",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/04/03271301-Dumbbell-Incline-Row_Back_720.gif",
       descripcion:
         "Tumbado boca abajo en banco inclinado, tira las mancuernas hacia arriba manteniendo la espalda recta.",
       consejos:
@@ -397,7 +403,8 @@ function getExerciseDatabase() {
       nombre: "Pullover con mancuerna",
       grupo: "Pecho / Espalda",
       categoria: "Aislamiento",
-      urlGif: "https://gymvisual.com/img/p/2/8/3/2/8/28328.gif",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/04/04331301-Dumbbell-Straight-Arm-Pullover_Chest-FIX_720.gif",
       descripcion:
         "Tumbado perpendicular en un banco con la cabeza al borde, sujeta una mancuerna con ambas manos sobre el pecho. Mantén los brazos ligeramente flexionados y lleva la mancuerna de forma controlada por detrás de la cabeza hasta sentir el estiramiento en el pecho y la espalda, y vuelve a la posición inicial sin extender completamente los brazos.",
       consejos:
@@ -424,7 +431,8 @@ function getExerciseDatabase() {
       nombre: "Pájaros con mancuernas",
       grupo: "Espalda",
       categoria: "Aislamiento",
-      urlGif: "https://gymvisual.com/img/p/5/1/2/4/5124.gif",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/04/03801301-Dumbbell-Rear-Lateral-Raise_Shoulders_720.gif",
       descripcion:
         "Inclínate hacia delante manteniendo la espalda recta y sujeta una mancuerna en cada mano con los brazos ligeramente flexionados. Abre los brazos hacia los lados hasta aproximadamente la altura de los hombros, juntando los omóplatos de forma natural. Baja las mancuernas lentamente y repite. Mantén el movimiento controlado y evita balancear el cuerpo.",
       consejos:
@@ -450,7 +458,8 @@ function getExerciseDatabase() {
       nombre: "Encogimientos con mancuernas",
       grupo: "Trapecio",
       categoria: "Aislamiento",
-      urlGif: "https://gymvisual.com/img/p/1/0/0/7/3/10073.gif",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/04/04061301-Dumbbell-Shrug_Back-FIX_720.gif",
       descripcion:
         "De pie, con una mancuerna en cada mano y los brazos extendidos a los lados, mantén el cuerpo erguido y eleva los hombros directamente hacia las orejas. Haz una breve pausa en la posición superior y baja lentamente los hombros. No dobles los codos ni hagas círculos con los hombros. El movimiento debe ser vertical y controlado.",
       consejos:
@@ -506,7 +515,8 @@ function getExerciseDatabase() {
       nombre: "Curl inclinado con mancuernas",
       grupo: "Bíceps",
       categoria: "Curl",
-      urlGif: "https://gymvisual.com/img/p/5/0/4/8/5048.gif",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/04/03221301-Dumbbell-Incline-Inner-Biceps-Curl_Upper-Arms_720.gif",
       descripcion:
         "Sentado en un banco inclinado (45°), sujeta una mancuerna en cada mano con los brazos extendidos hacia abajo. Curva las mancuernas hacia los hombros manteniendo los codos fijos y siente la contracción del bíceps. Baja controladamente hasta extender los brazos.",
       consejos:
@@ -558,7 +568,8 @@ function getExerciseDatabase() {
       nombre: "Curl predicador con mancuerna",
       grupo: "Bíceps",
       categoria: "Curl",
-      urlGif: "https://gymvisual.com/img/p/1/5/7/7/8/15778.gif",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/04/03721301-Dumbbell-Preacher-Curl_Upper-Arms_720.gif",
       descripcion:
         "Coloca un brazo apoyado sobre el respaldo de un banco inclinado (o sobre el propio banco) de forma que el brazo quede extendido y el hombro estable. Sujeta una mancuerna con la mano y curva el brazo hacia el hombro manteniendo el codo fijo. Baja lentamente hasta extender el brazo. Este ejercicio aísla el bíceps y evita el impulso del cuerpo.",
       consejos:
@@ -584,7 +595,7 @@ function getExerciseDatabase() {
       grupo: "Bíceps",
       categoria: "Curl",
       urlGif:
-        "https://api.smartworkout.app/asset/image/7a6c7c0b-0480-4c45-ba66-18959ec9001f",
+        "https://fitcron.com/wp-content/uploads/2021/04/00721301-Barbell-Prone-Incline-Curl_Upper-Arms_720.gif",
       descripcion:
         "Tumbado boca abajo sobre un banco inclinado, deja los brazos colgando hacia el suelo con las mancuernas. Curva las mancuernas hacia los hombros manteniendo los codos fijos y siente la contracción del bíceps al final del recorrido.",
       consejos:
@@ -610,7 +621,7 @@ function getExerciseDatabase() {
       grupo: "Tríceps",
       categoria: "Press",
       urlGif:
-        "https://api.smartworkout.app/asset/image/deff1b63-c052-42b3-a3e4-aad93db0159f",
+        "https://fitcron.com/wp-content/uploads/2021/04/04361301-Dumbbell-Tate-Press_Triceps_720.gif",
       descripcion:
         "Tumbado en un banco plano, sujeta una mancuerna en cada mano con las palmas mirando hacia el techo y los codos apuntando hacia afuera. Baja las mancuernas hacia el pecho manteniendo los codos fijos y extiende los brazos para completar el movimiento, sintiendo el tríceps.",
       consejos:
@@ -695,7 +706,7 @@ function getExerciseDatabase() {
       grupo: "Tríceps",
       categoria: "Aislamiento",
       urlGif:
-        "https://api.smartworkout.app/asset/image/58de0b7d-03c6-4a44-80ce-ccb5700f95ef",
+        "https://fitcron.com/wp-content/uploads/2021/04/03331301-Dumbbell-Kickback_Upper-Arms_720.gif",
       descripcion:
         "Inclina el torso con la espalda recta, apoya una mano en el banco si lo necesitas y lleva el codo a la altura del cuerpo. Extiende el antebrazo hacia atrás hasta contraer el tríceps y vuelve lentamente sin mover el codo.",
       consejos:
