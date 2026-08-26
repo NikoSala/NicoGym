@@ -25,29 +25,30 @@ const ROUTINES = {
   ],
 
   miercoles: [
-    ["press-militar", 4, 12],
-    ["elevaciones-laterales", 4, 12],
-    ["elevaciones-frontales", 4, 12],
-    ["press-cerrado", 4, 12],
-    ["extension-triceps-tumbado", 4, 12],
+    ["press-arnold-mancuernas", 4, 12],
+    ["elevacion-lateral-inclinada-aislada", 4, 12],
+    ["remo-menton-mancuernas", 4, 12],
+    ["extensiones-inclinadas-mancuernas", 4, 12],
+    ["press-frances-inclinado-alterno", 4, 12],
   ],
 
   jueves: [
-    ["incline-dumbbell-curl", 4, 12],
-    ["dumbbell-zottman-curl", 4, 12],
-    ["dumbbell-preacher-curl", 4, 12],
-    ["dumbbell-spider-curl", 4, 12],
-    ["dumbbell-tate-press", 4, 12],
-    ["extension-triceps-cabeza", 4, 12],
-    ["jm-press", 4, 12],
-    ["patada-triceps", 4, 12],
+    ["curl-inclinado-neutro-alterno", 4, 12],
+    ["curl-aislado-hacia-abajo", 4, 12],
+    ["curl-aislado-pronacion", 4, 12],
+    ["curl-horizontal-giro", 4, 12],
+    ["curl-concentrado-supinacion", 4, 12],
+    ["extension-horizontal-concentrada-interna", 4, 12],
+    ["press-banca-supinacion-aislado", 4, 12],
+    ["press-banca-neutro", 4, 12],
   ],
 
   viernes: [
-    ["press-plano", 4, 12],
-    ["one-arm-dumbbell-row", 4, 12],
-    ["press-militar", 4, 12],
-    ["elevaciones-laterales", 4, 12],
+    ["elevaciones-circulares", 4, 12],
+    ["remo-superior-trasero", 4, 12],
+    ["elevaciones-completas", 4, 12],
+    ["press-cubano", 4, 12],
+    ["extension-delante-detras", 4, 12],
   ],
 };
 

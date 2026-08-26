@@ -19,7 +19,7 @@
                 martes: 'Espalda + Trapecio + Antebrazo · 8 ejercicios',
                 miercoles: 'Hombros + Tríceps · 5 ejercicios + cinta',
                 jueves: 'Brazos · 8 ejercicios',
-                viernes: 'Torso completo · 4 ejercicios + cinta',
+                viernes: 'Hombros + Tríceps · 5 ejercicios + cinta',
                 sabado: 'Descanso',
                 domingo: 'Descanso'
             },
