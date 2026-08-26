@@ -233,7 +233,7 @@
             inset: 0;
             z-index: 0;
             pointer-events: none;
-            background-image: url('../img/logo-nicogym.png');
+            background-image: url('../img/logo-nicogym-600.jpg');
             background-position: center 52%;
             background-size: clamp(300px, 72vw, 560px) auto;
             background-repeat: no-repeat;
@@ -611,7 +611,7 @@
             inset: 0;
             z-index: 0;
             pointer-events: none;
-            background-image: url('../img/logo-nicogym.png');
+            background-image: url('../img/logo-nicogym-600.jpg');
             background-position: center;
             background-size: clamp(220px, 62vw, 420px) auto;
             background-repeat: no-repeat;

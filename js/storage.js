@@ -6,12 +6,14 @@ const Storage = {
 
   init() {
     const raw = localStorage.getItem(CONFIG.STORAGE_KEY);
+    let debeGuardar = false;
     if (raw) {
       try {
         const d = JSON.parse(raw);
         if (!d || typeof d !== "object" || Array.isArray(d))
           throw new Error("Estado guardado no válido");
         const migrado = this.migrate(d);
+        debeGuardar = this._ultimoCambioMigracion === true;
         Object.keys(STATE).forEach((clave) => {
           if (Object.prototype.hasOwnProperty.call(migrado, clave))
             STATE[clave] = migrado[clave];
@@ -33,12 +35,17 @@ const Storage = {
     this._normalizarEstado();
     CONFIG.TEMPORIZADOR_DESCANSO = STATE.config.temporizadorDescanso === true;
     this._calcularDiasSinFumar();
-    this._save();
+    // Serializar todo el estado puede bloquear el hilo principal si hay mucho
+    // historial. Solo se persiste al arrancar cuando realmente cambió algo.
+    if (debeGuardar) this._save();
     return this;
   },
 
   migrate(data) {
-    const d = JSON.parse(JSON.stringify(data));
+    // `data` ya procede de JSON.parse al iniciar o de un backup validado. Evitar
+    // clonarlo/serializarlo de nuevo ahorra trabajo apreciable con historiales largos.
+    const d = data;
+    let cambio = false;
     let version = Number(d.schemaVersion) || 1;
     while (version < CONFIG.STATE_SCHEMA_VERSION) {
       if (version === 1) {
@@ -48,6 +55,7 @@ const Storage = {
           ejerciciosBase: {},
         };
         version = 2;
+        cambio = true;
       } else if (version === 2) {
         d.progresion = d.progresion || {};
         d.progresionConfig = d.progresionConfig || {
@@ -56,15 +64,19 @@ const Storage = {
         };
         d.schemaVersion = 3;
         version = 3;
+        cambio = true;
       } else {
         break;
       }
     }
-    d.progresionConfig = d.progresionConfig || {
-      semanaBase: null,
-      ejerciciosBase: {},
-    };
-    d.schemaVersion = CONFIG.STATE_SCHEMA_VERSION;
+    if (!d.progresionConfig) {
+      d.progresionConfig = { semanaBase: null, ejerciciosBase: {} };
+      cambio = true;
+    }
+    if (d.schemaVersion !== CONFIG.STATE_SCHEMA_VERSION) {
+      d.schemaVersion = CONFIG.STATE_SCHEMA_VERSION;
+      cambio = true;
+    }
 
     // Normaliza nombres antiguos duplicados de viernes a sus ejercicios únicos.
     const aliases = {
@@ -80,15 +92,22 @@ const Storage = {
     if (Array.isArray(d.historialEntrenos)) {
       d.historialEntrenos.forEach((ent) => {
         (ent.ejercicios || []).forEach((ej) => {
-          if (aliases[ej.nombre]) ej.nombre = aliases[ej.nombre];
+          if (aliases[ej.nombre]) {
+            ej.nombre = aliases[ej.nombre];
+            cambio = true;
+          }
         });
       });
     }
     if (Array.isArray(d.records)) {
       d.records.forEach((r) => {
-        if (aliases[r.exerciseName]) r.exerciseName = aliases[r.exerciseName];
+        if (aliases[r.exerciseName]) {
+          r.exerciseName = aliases[r.exerciseName];
+          cambio = true;
+        }
       });
     }
+    this._ultimoCambioMigracion = cambio;
     return d;
   },
 

@@ -10,20 +10,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" /></noscript>
     <link
-      rel="stylesheet"
+      rel="preload"
+      as="style"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" /></noscript>
     <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="preload" as="image" href="img/logo-nicogym-600.jpg" fetchpriority="high" />
     <link rel="stylesheet" href="css/styles.css?v=20260828" />
   </head>
   <body>
     <!-- LOADING SCREEN -->
     <div class="loading-screen" id="loadingScreen">
-      <img src="./img/logo-nicogym.png" alt="NicoGym" class="loading-logo" />
+      <img src="img/logo-nicogym-600.jpg" alt="NicoGym" class="loading-logo" width="600" height="600" fetchpriority="high" decoding="async" />
       <div class="loader"></div>
       <div class="loader-text">Cargando NicoGym...</div>
     </div>
@@ -38,7 +45,7 @@
           role="button"
           aria-label="Volver al inicio"
         >
-          <img src="./img/logo-nicogym.png" alt="NicoGym" class="header-logo" />
+          <img src="img/logo-nicogym-600.jpg" alt="NicoGym" class="header-logo" width="600" height="600" decoding="async" />
         </div>
       </div>
       <div class="top-right">
@@ -242,7 +249,7 @@
           aria-label="Guardar y volver al inicio"
           title="Guardar y volver al inicio"
         >
-          <img src="img/logo-nicogym.png" alt="NicoGym" />
+          <img src="img/logo-nicogym-600.jpg" alt="NicoGym" width="600" height="600" loading="lazy" decoding="async" />
         </button>
 
         <span class="me-titulo" id="meTitulo">🏋️ Entrenando</span>
