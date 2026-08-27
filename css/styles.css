@@ -3510,148 +3510,60 @@
   color: var(--danger);
 }
 /* ==========================================
-   SALUDO + MINI CALENDARIO (Layout ajustado)
+   SALUDO + MINI CALENDARIO (Layout final)
    ========================================== */
 .saludo-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .saludo-info {
   flex: 1;
   min-width: 0;
-}
-
-.mini-calendario-card {
-  width: 130px;
-  min-width: 130px;
-  max-width: 130px;
-  padding: 8px;
-  margin: 0;
-  border-radius: 12px;
-  cursor: pointer;
-  background: linear-gradient(145deg, rgba(24,28,34,.96), rgba(14,17,21,.96));
-  border: 1px solid #2A2E35;
-  box-shadow: 0 10px 28px rgba(0,0,0,.24);
-  transition: var(--transition);
-}
-
-.mini-calendario-card:hover {
-  border-color: rgba(165,29,58,.48);
-}
-
-.mini-cal-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+}
+
+.saludo {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 2px;
+  letter-spacing: -.04em;
+}
+
+.saludo-dia {
+  font-size: 11px;
+  color: #777E88;
   margin-bottom: 6px;
-  font-size: 10px;
-  font-weight: 800;
-  color: #D9DCE0;
-  text-transform: uppercase;
-  letter-spacing: .06em;
+  letter-spacing: .04em;
 }
 
-.mini-cal-header i {
-  color: var(--primary);
-  font-size: 10px;
-}
-
-.mini-cal-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-}
-
-.mini-cal-weekday {
-  text-align: center;
-  font-size: 7px;
-  color: var(--text-muted);
-  font-weight: 700;
-}
-
-.mini-cal-day {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 3px;
-  background: transparent;
-  border: 1px solid transparent;
-  font-size: 8px;
-  font-weight: 600;
+.frase-motivadora {
+  font-size: 12px;
   color: var(--text-secondary);
-  cursor: pointer;
-  transition: var(--transition);
-  min-height: 14px;
-}
-
-.mini-cal-day:hover {
-  background: rgba(255,255,255,0.05);
-  border-color: var(--border);
-}
-
-.mini-cal-hoy {
-  background: var(--primary);
-  color: #fff;
-  font-weight: 800;
-}
-
-.mini-cal-completado {
-  background: rgba(214,169,74,0.15);
-  color: var(--success);
-}
-
-.mini-cal-vacaciones {
-  background: rgba(0,0,0,0.25);
-  color: var(--text-muted);
-  border-color: var(--border);
-}
-
-.mini-cal-lesionado {
-  background: rgba(198,59,79,0.15);
-  color: var(--danger);
-  border-color: rgba(198,59,79,0.3);
-}
-
-.mini-cal-empty {
-  aspect-ratio: 1;
-  min-height: 14px;
+  font-style: italic;
+  margin-bottom: 10px;
 }
 
 /* ==========================================
-   SALUDO + MINI CALENDARIO (Layout ajustado)
+   MINI CALENDARIO
    ========================================== */
-.saludo-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.saludo-info {
-  flex: 1;
-  min-width: 0;
-}
-
 .mini-calendario-card {
-  width: 155px;
-  min-width: 155px;
-  max-width: 155px;
+  width: 160px;
+  min-width: 160px;
+  max-width: 160px;
   padding: 10px;
   margin: 0;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
   background: linear-gradient(145deg, rgba(24,28,34,.96), rgba(14,17,21,.96));
   border: 1px solid #2A2E35;
   box-shadow: 0 10px 28px rgba(0,0,0,.24);
   transition: var(--transition);
-  /* Mover un poco hacia la izquierda */
-  margin-right: -8px;
+  flex-shrink: 0;
 }
 
 .mini-calendario-card:hover {
@@ -3740,11 +3652,15 @@
 /* ==========================================
    ACCIONES RÁPIDAS (2 filas: 2 arriba, 2 abajo)
    ========================================== */
+.inicio-acciones-layout {
+  margin-top: 4px;
+}
+
 .inicio-acciones-rapidas {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 6px;
-  max-width: 240px;
+  max-width: 230px;
 }
 
 .accion-rapida {
@@ -3780,18 +3696,12 @@
 }
 
 /* ==========================================
-   RESPONSIVE MÓVIL (mantener misma fila, ajustar tamaños)
+   RESPONSIVE MÓVIL (mantener mismo layout)
    ========================================== */
 @media (max-width: 600px) {
   .saludo-header {
-    flex-direction: row;
     align-items: flex-start;
     gap: 6px;
-  }
-  
-  .saludo-info {
-    flex: 1;
-    min-width: 0;
   }
   
   .saludo {
@@ -3804,7 +3714,7 @@
   
   .frase-motivadora {
     font-size: 10px;
-    margin-bottom: 0;
+    margin-bottom: 8px;
   }
   
   .mini-calendario-card {
@@ -3812,11 +3722,10 @@
     min-width: 145px;
     max-width: 145px;
     padding: 8px;
-    margin-right: -6px;
   }
   
   .mini-cal-header {
-    font-size: 9px;
+    font-size: 8px;
     margin-bottom: 4px;
   }
   
@@ -3825,18 +3734,17 @@
   }
   
   .mini-cal-day {
-    font-size: 9px;
-    min-height: 16px;
+    font-size: 8px;
+    min-height: 15px;
   }
   
   .inicio-acciones-rapidas {
-    max-width: 220px;
-    grid-template-columns: repeat(2, 1fr);
+    max-width: 200px;
     gap: 5px;
   }
   
   .accion-rapida {
-    min-height: 42px;
+    min-height: 40px;
     border-radius: 8px;
   }
   
@@ -3846,5 +3754,6 @@
   
   .accion-texto {
     font-size: 8px;
+    margin-top: 2px;
   }
 }

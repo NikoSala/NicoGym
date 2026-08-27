@@ -282,11 +282,11 @@ const Dashboard = {
                         <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
                         <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
                         <div class="frase-motivadora">${fraseMotivadora}</div>
+                        <div class="inicio-acciones-layout">
+                            ${accionesRapidas}
+                        </div>
                     </div>
                     ${miniCalendario}
-                </div>
-                <div class="inicio-acciones-layout">
-                    ${accionesRapidas}
                 </div>
                 ${bloqueSemana}
 
@@ -371,7 +371,7 @@ const Dashboard = {
   // ==========================================
   // MINI CALENDARIO
   // ==========================================
-    _renderMiniCalendario() {
+     _renderMiniCalendario() {
     const hoy = new Date();
     const mes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
     const primerDia = (mes.getDay() + 6) % 7;
