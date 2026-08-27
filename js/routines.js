@@ -43,12 +43,13 @@ const ROUTINES = {
     ["rotacion-muneca", 4, 12],
   ],
 
-  viernes: [
-    ["elevaciones-circulares", 4, 12],
-    ["remo-superior-trasero", 4, 12],
-    ["elevaciones-completas", 4, 12],
-    ["press-cubano", 4, 12],
-    ["extension-delante-detras", 4, 12],
+   viernes: [
+    ["press-alterno-banco", 4, 12],
+    ["aperturas-declinadas", 4, 12],
+    ["remo-supinacion", 4, 12],
+    ["remo-deltoide-posterior", 4, 12],
+    ["press-banca-giro", 4, 12],
+    ["press-inclinado-aislado", 4, 12],
   ],
 };
 
