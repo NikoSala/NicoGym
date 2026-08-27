@@ -10,8 +10,7 @@ Aplicación PWA desarrollada para gestionar mis entrenamientos, progreso físico
 - Fotos comparativas
 - Récords
 - Agenda
-- Nutrición
-- Biblioteca de ejercicios
+
 
 ## Tecnologías
 
