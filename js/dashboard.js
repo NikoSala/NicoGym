@@ -264,9 +264,9 @@ const Dashboard = {
                     `;
     }
 
-        c.innerHTML = `
+    c.innerHTML = `
                 <div class="saludo-header">
-                    <div>
+                    <div class="saludo-info">
                         <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
                         <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
                         <div class="frase-motivadora">${fraseMotivadora}</div>
@@ -358,7 +358,7 @@ const Dashboard = {
   // ==========================================
   // MINI CALENDARIO
   // ==========================================
-  _renderMiniCalendario() {
+      _renderMiniCalendario() {
     const hoy = new Date();
     const mes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
     const primerDia = (mes.getDay() + 6) % 7;
@@ -395,8 +395,11 @@ const Dashboard = {
     }
     
     return `
-      <div class="card mini-calendario-card" onclick="APP.navegar('agenda')">
-        <div class="card-title"><span>📅 ${nombreMes.slice(0, 3).toUpperCase()}</span></div>
+      <div class="mini-calendario-card" onclick="APP.navegar('agenda')">
+        <div class="mini-cal-header">
+          <span>📅 ${nombreMes.charAt(0).toUpperCase() + nombreMes.slice(1)}</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
         <div class="mini-cal-grid">
           <span class="mini-cal-weekday">L</span><span class="mini-cal-weekday">M</span><span class="mini-cal-weekday">X</span><span class="mini-cal-weekday">J</span><span class="mini-cal-weekday">V</span><span class="mini-cal-weekday">S</span><span class="mini-cal-weekday">D</span>
           ${celdas}

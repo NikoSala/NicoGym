@@ -3510,40 +3510,54 @@
   color: var(--danger);
 }
 /* ==========================================
-   SALUDO + MINI CALENDARIO (Layout)
+   SALUDO + MINI CALENDARIO (Layout ajustado)
    ========================================== */
 .saludo-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
-.saludo-header > div:first-child {
+.saludo-info {
   flex: 1;
   min-width: 0;
 }
 
 .mini-calendario-card {
-  width: 130px;          /* Ancho fijo para que sea compacto */
-  min-width: 130px;
-  max-width: 130px;
-  padding: 8px 10px;
-  margin: 0;              /* Quitar margen inferior */
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+  padding: 10px;
+  margin: 0;
   border-radius: 14px;
   cursor: pointer;
+  background: linear-gradient(145deg, rgba(24,28,34,.96), rgba(14,17,21,.96));
+  border: 1px solid #2A2E35;
+  box-shadow: 0 10px 28px rgba(0,0,0,.24);
+  transition: var(--transition);
 }
 
-.mini-calendario-card .card-title {
-  font-size: 9px;
-  margin-bottom: 4px;
-  text-align: center;
+.mini-calendario-card:hover {
+  border-color: rgba(165,29,58,.48);
 }
 
-.mini-calendario-card .card-title .text-action {
-  font-size: 8px;
-  margin-left: 4px;
+.mini-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #D9DCE0;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.mini-cal-header i {
+  color: var(--primary);
+  font-size: 10px;
 }
 
 .mini-cal-grid {
@@ -3560,14 +3574,30 @@
 }
 
 .mini-cal-day {
-  min-height: 18px;
-  font-size: 9px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 4px;
+  background: transparent;
+  border: 1px solid transparent;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  min-height: 16px;
+}
+
+.mini-cal-day:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: var(--border);
 }
 
 .mini-cal-hoy {
   background: var(--primary);
   color: #fff;
+  font-weight: 800;
 }
 
 .mini-cal-completado {
@@ -3578,9 +3608,16 @@
 .mini-cal-vacaciones {
   background: rgba(0,0,0,0.25);
   color: var(--text-muted);
+  border-color: var(--border);
 }
 
 .mini-cal-lesionado {
   background: rgba(198,59,79,0.15);
   color: var(--danger);
+  border-color: rgba(198,59,79,0.3);
+}
+
+.mini-cal-empty {
+  aspect-ratio: 1;
+  min-height: 16px;
 }
