@@ -1,5 +1,5 @@
 // ==========================================
-// RECORDS
+// RECORDS (VERSIÓN COMPACTA)
 // ==========================================
 const Records = {
   getRecord(name) {
@@ -24,10 +24,10 @@ const Records = {
     if (STATE.records.length === 0) {
       c.innerHTML = `
         <div class="card">
-          <div style="text-align:center;color:var(--text-secondary);padding:24px;">
-            <div style="font-size:48px;margin-bottom:12px;">🏆</div>
-            <p style="font-size:15px;font-weight:600;">Aún no has batido ningún récord</p>
-            <p style="font-size:12px;margin-top:4px;">Completa entrenamientos para conseguir tu primera marca</p>
+          <div style="text-align:center;color:var(--text-secondary);padding:20px;">
+            <div style="font-size:40px;margin-bottom:8px;">🏆</div>
+            <p style="font-size:14px;font-weight:600;">Aún no has batido ningún récord</p>
+            <p style="font-size:11px;margin-top:3px;">Completa entrenamientos para conseguir tu primera marca</p>
           </div>
         </div>
       `;
@@ -43,12 +43,12 @@ const Records = {
     )[0];
 
     c.innerHTML = `
-      <div class="records-header">
-        <div style="font-size:22px;font-weight:800;color:var(--text);">🏆 Récords</div>
-        <div style="font-size:11px;color:var(--text-secondary);">${STATE.records.length} marcas conseguidas</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="font-size:20px;font-weight:800;color:var(--text);">🏆 Récords</div>
+        <div style="font-size:11px;color:var(--text-secondary);">${STATE.records.length} marcas</div>
       </div>
       
-      <div style="display:grid;gap:10px;">
+      <div class="records-grid">
         ${sorted.map((r, index) => {
           // Buscar el récord anterior (si existe)
           const anteriores = STATE.historialEntrenos
@@ -61,36 +61,36 @@ const Records = {
           const esReciente = r.exerciseName === recordMasReciente.exerciseName;
 
           return `
-            <div class="record-card-modern ${esReciente ? 'record-card-reciente' : ''}" style="animation-delay:${index * 50}ms;">
-              <div class="record-card-header">
-                <div class="record-icon">${esReciente ? '🥇' : '🏆'}</div>
-                <div class="record-info">
-                  <div class="record-name">${r.exerciseName}</div>
-                  <div class="record-date">📅 ${r.date}</div>
+            <div class="record-card-compact ${esReciente ? 'record-card-reciente' : ''}" style="animation-delay:${index * 40}ms;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                <span style="font-size:16px;">${esReciente ? '🥇' : '🏆'}</span>
+                <span style="font-size:11px;font-weight:700;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.exerciseName}</span>
+                <span style="font-size:9px;color:var(--text-muted);">${r.date}</span>
+              </div>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <div style="flex:1;text-align:center;background:rgba(0,0,0,0.15);border-radius:8px;padding:6px 4px;">
+                  <div style="font-size:16px;font-weight:800;color:var(--primary);">${r.weight}</div>
+                  <div style="font-size:8px;color:var(--text-secondary);">KG</div>
+                </div>
+                <div style="flex:1;text-align:center;background:rgba(0,0,0,0.15);border-radius:8px;padding:6px 4px;">
+                  <div style="font-size:16px;font-weight:800;color:var(--success);">${r.reps}</div>
+                  <div style="font-size:8px;color:var(--text-secondary);">REPS</div>
+                </div>
+                <div style="flex:1;text-align:center;background:rgba(0,0,0,0.15);border-radius:8px;padding:6px 4px;">
+                  <div style="font-size:16px;font-weight:800;color:var(--warning);">${(r.weight * r.reps).toFixed(0)}</div>
+                  <div style="font-size:8px;color:var(--text-secondary);">VOL</div>
                 </div>
               </div>
-              <div class="record-stats-modern">
-                <div class="record-stat">
-                  <div class="record-stat-value" style="color:var(--primary);">${r.weight} kg</div>
-                  <div class="record-stat-label">Peso</div>
-                </div>
-                <div class="record-stat">
-                  <div class="record-stat-value" style="color:var(--success);">${r.reps}</div>
-                  <div class="record-stat-label">Reps</div>
-                </div>
-                <div class="record-stat">
-                  <div class="record-stat-value" style="color:var(--warning);">${(r.weight * r.reps).toFixed(0)}</div>
-                  <div class="record-stat-label">Volumen</div>
-                </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px;">
+                ${diff ? `
+                  <span style="font-size:9px;font-weight:600;color:${Number(diff) > 0 ? 'var(--success)' : 'var(--danger)'};">
+                    ${Number(diff) > 0 ? '📈' : '📉'} ${Number(diff) > 0 ? '+' : ''}${diff} kg
+                  </span>
+                ` : '<span style="font-size:9px;color:var(--text-muted);">🏁 Primer récord</span>'}
+                <button class="btn-historial-compact" onclick="Records._verHistorial('${r.exerciseName}')">
+                  📊
+                </button>
               </div>
-              ${diff ? `
-                <div class="record-diff ${Number(diff) > 0 ? 'positive' : 'negative'}">
-                  ${Number(diff) > 0 ? '📈' : '📉'} ${Number(diff) > 0 ? '+' : ''}${diff} kg vs anterior
-                </div>
-              ` : '<div class="record-diff">🏁 Primer récord conseguido</div>'}
-              <button class="btn-historial-record" onclick="Records._verHistorial('${r.exerciseName}')">
-                📊 Ver historial
-              </button>
             </div>
           `;
         }).join('')}
@@ -121,22 +121,22 @@ const Records = {
       const esRécord = STATE.records.find(r => r.exerciseName === nombre && r.date === ent.fecha);
 
       return `
-        <div style="padding:10px;border-bottom:1px solid var(--border);${index === 0 ? 'background:rgba(255,255,255,0.03);' : ''}">
+        <div style="padding:8px;border-bottom:1px solid var(--border);${index === 0 ? 'background:rgba(255,255,255,0.03);' : ''}">
           <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-weight:600;font-size:13px;">📅 ${fecha}</span>
-            ${esRécord ? '<span style="font-size:10px;color:var(--success);background:rgba(214,169,74,0.15);padding:2px 8px;border-radius:99px;">🏆 RÉCORD</span>' : ''}
+            <span style="font-weight:600;font-size:12px;">📅 ${fecha}</span>
+            ${esRécord ? '<span style="font-size:9px;color:var(--success);background:rgba(214,169,74,0.15);padding:2px 6px;border-radius:99px;">🏆 RÉCORD</span>' : ''}
           </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:6px;font-size:11px;">
-            <div style="text-align:center;background:rgba(0,0,0,0.15);padding:6px;border-radius:8px;">
-              <div style="color:var(--text-muted);font-size:9px;">PESO</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px;font-size:10px;">
+            <div style="text-align:center;background:rgba(0,0,0,0.15);padding:5px;border-radius:6px;">
+              <div style="color:var(--text-muted);font-size:8px;">PESO</div>
               <div style="font-weight:700;color:var(--text);">${peso} kg</div>
             </div>
-            <div style="text-align:center;background:rgba(0,0,0,0.15);padding:6px;border-radius:8px;">
-              <div style="color:var(--text-muted);font-size:9px;">REPS</div>
+            <div style="text-align:center;background:rgba(0,0,0,0.15);padding:5px;border-radius:6px;">
+              <div style="color:var(--text-muted);font-size:8px;">REPS</div>
               <div style="font-weight:700;color:var(--text);">${reps}</div>
             </div>
-            <div style="text-align:center;background:rgba(0,0,0,0.15);padding:6px;border-radius:8px;">
-              <div style="color:var(--text-muted);font-size:9px;">VOLUMEN</div>
+            <div style="text-align:center;background:rgba(0,0,0,0.15);padding:5px;border-radius:6px;">
+              <div style="color:var(--text-muted);font-size:8px;">VOLUMEN</div>
               <div style="font-weight:700;color:var(--text);">${((Number(peso) || 0) * (Number(reps) || 0)).toFixed(0)} kg</div>
             </div>
           </div>
@@ -146,7 +146,7 @@ const Records = {
 
     Modal.abrir(`
       <h3>📊 Historial de ${nombre}</h3>
-      <div style="max-height:60vh;overflow-y:auto;margin-top:10px;">
+      <div style="max-height:60vh;overflow-y:auto;margin-top:8px;">
         ${historialHtml}
       </div>
     `);
