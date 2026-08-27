@@ -3516,8 +3516,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .saludo-info {
@@ -3526,12 +3526,12 @@
 }
 
 .mini-calendario-card {
-  width: 200px;
-  min-width: 200px;
-  max-width: 200px;
-  padding: 10px;
+  width: 130px;
+  min-width: 130px;
+  max-width: 130px;
+  padding: 8px;
   margin: 0;
-  border-radius: 14px;
+  border-radius: 12px;
   cursor: pointer;
   background: linear-gradient(145deg, rgba(24,28,34,.96), rgba(14,17,21,.96));
   border: 1px solid #2A2E35;
@@ -3547,8 +3547,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 11px;
+  margin-bottom: 6px;
+  font-size: 10px;
   font-weight: 800;
   color: #D9DCE0;
   text-transform: uppercase;
@@ -3568,7 +3568,7 @@
 
 .mini-cal-weekday {
   text-align: center;
-  font-size: 8px;
+  font-size: 7px;
   color: var(--text-muted);
   font-weight: 700;
 }
@@ -3578,15 +3578,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 3px;
   background: transparent;
   border: 1px solid transparent;
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 600;
   color: var(--text-secondary);
   cursor: pointer;
   transition: var(--transition);
-  min-height: 16px;
+  min-height: 14px;
 }
 
 .mini-cal-day:hover {
@@ -3619,5 +3619,121 @@
 
 .mini-cal-empty {
   aspect-ratio: 1;
-  min-height: 16px;
+  min-height: 14px;
+}
+
+/* ==========================================
+   ACCIONES RÁPIDAS (debajo a la izquierda)
+   ========================================== */
+.inicio-acciones-layout {
+  margin-bottom: 14px;
+}
+
+.inicio-acciones-rapidas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  max-width: 240px;
+}
+
+.accion-rapida {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.accion-rapida:active {
+  transform: scale(.97);
+}
+
+.accion-icono {
+  display: block;
+  color: var(--primary);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.accion-texto {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 9px;
+  margin-top: 3px;
+}
+
+/* ==========================================
+   RESPONSIVE MÓVIL (mantener misma fila)
+   ========================================== */
+@media (max-width: 600px) {
+  .saludo-header {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .saludo-info {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+  }
+  
+  .saludo {
+    font-size: 20px;
+  }
+  
+  .saludo-dia {
+    font-size: 10px;
+  }
+  
+  .frase-motivadora {
+    font-size: 10px;
+    margin-bottom: 0;
+  }
+  
+  .mini-calendario-card {
+    width: 110px;
+    min-width: 110px;
+    max-width: 110px;
+    padding: 6px;
+  }
+  
+  .mini-cal-header {
+    font-size: 8px;
+    margin-bottom: 4px;
+  }
+  
+  .mini-cal-weekday {
+    font-size: 6px;
+  }
+  
+  .mini-cal-day {
+    font-size: 7px;
+    min-height: 12px;
+  }
+  
+  .inicio-acciones-rapidas {
+    max-width: 100%;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+  
+  .accion-rapida {
+    min-height: 44px;
+    border-radius: 8px;
+  }
+  
+  .accion-icono {
+    font-size: 12px;
+  }
+  
+  .accion-texto {
+    font-size: 8px;
+  }
 }

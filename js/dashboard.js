@@ -211,10 +211,22 @@ const Dashboard = {
 
     const accionesRapidas = `
       <div class="inicio-acciones-rapidas" aria-label="Acciones rápidas">
-        <button onclick="${dia === "sabado" || dia === "domingo" ? "APP.navegar('semana')" : `APP.iniciarEntreno('${dia}')`}"><span>▶</span><small>${dia === "sabado" || dia === "domingo" ? "Plan" : "Entrenar"}</small></button>
-        <button onclick="APP.navegar('peso')"><span>⚖</span><small>Peso</small></button>
-        <button onclick="APP.navegar('fotos')"><span>▣</span><small>Foto</small></button>
-        <button onclick="APP.navegar('semana')"><span>☷</span><small>Rutina</small></button>
+        <button class="accion-rapida" onclick="${dia === "sabado" || dia === "domingo" ? "APP.navegar('semana')" : `APP.iniciarEntreno('${dia}')`}">
+          <span class="accion-icono">▶</span>
+          <span class="accion-texto">${dia === "sabado" || dia === "domingo" ? "Plan" : "Entrenar"}</span>
+        </button>
+        <button class="accion-rapida" onclick="APP.navegar('peso')">
+          <span class="accion-icono">⚖</span>
+          <span class="accion-texto">Peso</span>
+        </button>
+        <button class="accion-rapida" onclick="APP.navegar('fotos')">
+          <span class="accion-icono">▣</span>
+          <span class="accion-texto">Foto</span>
+        </button>
+        <button class="accion-rapida" onclick="APP.navegar('semana')">
+          <span class="accion-icono">☷</span>
+          <span class="accion-texto">Rutina</span>
+        </button>
       </div>
     `;
     
@@ -273,8 +285,9 @@ const Dashboard = {
                     </div>
                     ${miniCalendario}
                 </div>
-
-                ${accionesRapidas}
+                <div class="inicio-acciones-layout">
+                    ${accionesRapidas}
+                </div>
                 ${bloqueSemana}
 
                 ${
@@ -358,7 +371,7 @@ const Dashboard = {
   // ==========================================
   // MINI CALENDARIO
   // ==========================================
-      _renderMiniCalendario() {
+    _renderMiniCalendario() {
     const hoy = new Date();
     const mes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
     const primerDia = (mes.getDay() + 6) % 7;
