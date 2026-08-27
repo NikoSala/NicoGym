@@ -160,14 +160,26 @@ const Dashboard = {
       const completado = STATE.diasEntrenados.includes(fechaKey);
       return { diaNombre, etiqueta: etiquetasDias[indice], fechaKey, descanso, completado, esHoy: fechaKey === UI.getHoy() };
     });
+    // --- NUEVO: Calcular consistencia considerando días especiales ---
+    const diasExentos = diasSemana.filter(diaSemana => {
+      const estado = STATE.diasEspeciales?.[diaSemana.fechaKey];
+      return estado === 'vacaciones' || estado === 'lesionado';
+    }).length;
+    
+    const entrenamientosObjetivoSemana = Math.max(1, 5 - diasExentos);
     const entrenamientosSemana = diasSemana.filter((diaSemana) => diaSemana.completado).length;
-    const entrenamientosObjetivoSemana = 5;
     const porcentajeConsistencia = Math.min(100, Math.round((entrenamientosSemana / entrenamientosObjetivoSemana) * 100));
-    const semaforo = porcentajeConsistencia >= 80
-      ? { clase: "verde", titulo: "Buen ritmo", texto: "Vas cumpliendo la semana" }
-      : porcentajeConsistencia >= 50
-        ? { clase: "amarillo", titulo: "Puedes remontar", texto: "Todavía estás a tiempo" }
-        : { clase: "rojo", titulo: "Semana pendiente", texto: "Empieza con el entrenamiento de hoy" };
+    
+    let semaforo;
+    if (diasExentos > 0) {
+      semaforo = { clase: "amarillo", titulo: "Semana ajustada", texto: `${diasExentos} día(s) marcado(s) como exento(s)` };
+    } else {
+      semaforo = porcentajeConsistencia >= 80
+        ? { clase: "verde", titulo: "Buen ritmo", texto: "Vas cumpliendo la semana" }
+        : porcentajeConsistencia >= 50
+          ? { clase: "amarillo", titulo: "Puedes remontar", texto: "Todavía estás a tiempo" }
+          : { clase: "rojo", titulo: "Semana pendiente", texto: "Empieza con el entrenamiento de hoy" };
+    }
 
     const bloqueSemana = `
       <section class="inicio-semana-grid">
@@ -205,7 +217,10 @@ const Dashboard = {
         <button onclick="APP.navegar('semana')"><span>☷</span><small>Rutina</small></button>
       </div>
     `;
-
+    
+    // ===== MINI CALENDARIO =====
+    const miniCalendario = this._renderMiniCalendario();
+    
     // ===== BANNER DE ACTUALIZACIÓN =====
     const tipoActualizacion = APP.obtenerTipoActualizacion();
     let updateBanner = "";
@@ -249,12 +264,13 @@ const Dashboard = {
                     `;
     }
 
-    c.innerHTML = `
+        c.innerHTML = `
                 <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
                 <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
                 <div class="frase-motivadora">${fraseMotivadora}</div>
 
                 ${accionesRapidas}
+                ${miniCalendario}
                 ${bloqueSemana}
 
                 ${
@@ -333,5 +349,55 @@ const Dashboard = {
                     </div>
                 </div>
             `;
+  },
+
+  // ==========================================
+  // MINI CALENDARIO
+  // ==========================================
+  _renderMiniCalendario() {
+    const hoy = new Date();
+    const mes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    const primerDia = (mes.getDay() + 6) % 7;
+    const diasMes = new Date(mes.getFullYear(), mes.getMonth() + 1, 0).getDate();
+    const totalCeldas = Math.ceil((primerDia + diasMes) / 7) * 7;
+    
+    const nombreMes = mes.toLocaleDateString("es-ES", { month: "long", year: "numeric" });
+    
+    let celdas = "";
+    for (let i = 0; i < totalCeldas; i++) {
+      const numero = i - primerDia + 1;
+      if (numero < 1 || numero > diasMes) {
+        celdas += '<div class="mini-cal-empty"></div>';
+        continue;
+      }
+      
+      const fecha = new Date(mes.getFullYear(), mes.getMonth(), numero);
+      const fechaKey = UI.formatFecha(fecha);
+      const esHoy = fechaKey === UI.getHoy();
+      const estadoEspecial = STATE.diasEspeciales?.[fechaKey];
+      const completado = STATE.diasEntrenados.includes(fechaKey);
+      
+      let clase = "mini-cal-day";
+      if (esHoy) clase += " mini-cal-hoy";
+      if (estadoEspecial === 'vacaciones') clase += " mini-cal-vacaciones";
+      if (estadoEspecial === 'lesionado') clase += " mini-cal-lesionado";
+      if (completado) clase += " mini-cal-completado";
+      
+      celdas += `
+        <button class="${clase}" onclick="APP.navegar('agenda'); setTimeout(() => Agenda.seleccionar('${fechaKey}'), 100);">
+          ${numero}
+        </button>
+      `;
+    }
+    
+    return `
+      <div class="card mini-calendario-card" onclick="APP.navegar('agenda')">
+        <div class="card-title"><span>📅 ${nombreMes.charAt(0).toUpperCase() + nombreMes.slice(1)}</span><button class="text-action" onclick="event.stopPropagation(); APP.navegar('agenda')">Ver agenda</button></div>
+        <div class="mini-cal-grid">
+          <span class="mini-cal-weekday">L</span><span class="mini-cal-weekday">M</span><span class="mini-cal-weekday">X</span><span class="mini-cal-weekday">J</span><span class="mini-cal-weekday">V</span><span class="mini-cal-weekday">S</span><span class="mini-cal-weekday">D</span>
+          ${celdas}
+        </div>
+      </div>
+    `;
   },
 };

@@ -40,6 +40,7 @@ const STATE = {
   },
   entrenamientoPendiente: null,
   pesosAjustados: {},
+  diasEspeciales: {}, // Formato: { "2026-08-27": "vacaciones" | "lesionado" }
 };
 
 let diaActivo = "lunes";

@@ -3413,3 +3413,99 @@
 .rd-ejercicio:hover .rd-numero {
   color: var(--primary);
 }
+/* ==========================================
+   MINI CALENDARIO
+   ========================================== */
+.mini-calendario-card {
+  cursor: pointer;
+  padding: 12px 14px;
+}
+
+.mini-calendario-card:hover {
+  border-color: var(--primary);
+}
+
+.mini-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  margin-top: 6px;
+}
+
+.mini-cal-weekday {
+  text-align: center;
+  font-size: 9px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.mini-cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.12);
+  border: 1px solid transparent;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  min-height: 24px;
+}
+
+.mini-cal-day:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: var(--border);
+}
+
+.mini-cal-hoy {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 800;
+}
+
+.mini-cal-completado {
+  background: rgba(214,169,74,0.15);
+  color: var(--success);
+}
+
+.mini-cal-vacaciones {
+  background: rgba(0,0,0,0.25);
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+
+.mini-cal-lesionado {
+  background: rgba(198,59,79,0.15);
+  color: var(--danger);
+  border-color: rgba(198,59,79,0.3);
+}
+
+.mini-cal-empty {
+  aspect-ratio: 1;
+  min-height: 24px;
+}
+
+/* ==========================================
+   DIAS ESPECIALES EN CALENDARIO GRANDE
+   ========================================== */
+.agenda-day-vacaciones {
+  background: rgba(0,0,0,0.3);
+  border-color: var(--border);
+  opacity: 0.7;
+}
+
+.agenda-day-lesionado {
+  background: rgba(198,59,79,0.1);
+  border-color: rgba(198,59,79,0.4);
+}
+
+.agenda-day-vacaciones .agenda-day-number {
+  color: var(--text-muted);
+}
+
+.agenda-day-lesionado .agenda-day-number {
+  color: var(--danger);
+}

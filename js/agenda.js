@@ -30,6 +30,11 @@ const Agenda = {
       if (fechaKey === UI.getHoy()) clases.push("agenda-day-today");
       if (fechaKey === this.fechaSeleccionada) clases.push("agenda-day-selected");
       if (eventos.some((evento) => evento.tipo === "completado")) clases.push("agenda-day-done");
+      
+      // --- NUEVO: Colores para días especiales ---
+      const estadoEspecial = STATE.diasEspeciales?.[fechaKey];
+      if (estadoEspecial === 'vacaciones') clases.push("agenda-day-vacaciones");
+      if (estadoEspecial === 'lesionado') clases.push("agenda-day-lesionado");
       celdas.push(`
         <button class="${clases.join(" ")}" onclick="Agenda.seleccionar('${fechaKey}')">
           <span class="agenda-day-number">${numero}</span>
@@ -99,8 +104,34 @@ const Agenda = {
     const dia = nombres[fecha.getDay()];
     const elementos = [];
 
+    // --- NUEVO: Estado especial del día ---
+    const estadoEspecial = STATE.diasEspeciales?.[fechaKey] || "normal";
+    
+    elementos.push(`
+      <div style="padding:8px;background:rgba(0,0,0,0.15);border-radius:var(--radius-sm);margin-bottom:8px;">
+        <div style="font-size:11px;color:var(--text-secondary);margin-bottom:5px;">Marcar día como:</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;">
+          <button class="btn btn-sm ${estadoEspecial === 'normal' ? 'btn-primary' : 'btn-ghost'}" 
+            onclick="Agenda.marcarDia('${fechaKey}', 'normal')">
+            ✅ Normal
+          </button>
+          <button class="btn btn-sm ${estadoEspecial === 'vacaciones' ? 'btn-primary' : 'btn-ghost'}" 
+            onclick="Agenda.marcarDia('${fechaKey}', 'vacaciones')">
+            🏖️ Vacaciones
+          </button>
+          <button class="btn btn-sm ${estadoEspecial === 'lesionado' ? 'btn-primary' : 'btn-ghost'}" 
+            onclick="Agenda.marcarDia('${fechaKey}', 'lesionado')">
+            🤕 Lesionado
+          </button>
+        </div>
+      </div>
+    `);
+
+    // --- Continúa con la lógica existente ---
     if (eventos.some((evento) => evento.tipo === "completado")) elementos.push('<div class="agenda-detail-item"><span>✅</span><span>Entrenamiento completado</span></div>');
-    else if (eventos.some((evento) => evento.tipo === "entreno")) elementos.push(`<div class="agenda-detail-item"><span>💪</span><span>Entrenamiento previsto: ${CONFIG.TIPOS_RUTINA[dia]}</span></div><button class="btn btn-primary btn-block" onclick="APP.navegar('rutinas')">Ir a entrenar</button>`);
+    else if (eventos.some((evento) => evento.tipo === "entreno") && estadoEspecial === 'normal') elementos.push(`<div class="agenda-detail-item"><span>💪</span><span>Entrenamiento previsto: ${CONFIG.TIPOS_RUTINA[dia]}</span></div><button class="btn btn-primary btn-block" onclick="APP.navegar('rutinas')">Ir a entrenar</button>`);
+    else if (eventos.some((evento) => evento.tipo === "entreno") && estadoEspecial === 'vacaciones') elementos.push('<div class="agenda-detail-item"><span>🏖️</span><span>Vacaciones - No entrenar</span></div>');
+    else if (eventos.some((evento) => evento.tipo === "entreno") && estadoEspecial === 'lesionado') elementos.push('<div class="agenda-detail-item"><span>🤕</span><span>Lesionado - Descanso recomendado</span></div>');
     else if (fecha.getDay() === 0 || fecha.getDay() === 6) elementos.push('<div class="agenda-detail-item"><span>😌</span><span>Día de descanso</span></div>');
 
     const tipo = getTipoActualizacion(fechaKey);
@@ -110,5 +141,21 @@ const Agenda = {
     }
     if (elementos.length === 0) elementos.push('<div class="agenda-empty">Sin eventos para este día.</div>');
     return { titulo, html: elementos.join("") };
+  },
+  marcarDia(fechaKey, estado) {
+    if (!STATE.diasEspeciales) STATE.diasEspeciales = {};
+    
+    if (estado === 'normal') {
+      delete STATE.diasEspeciales[fechaKey];
+    } else {
+      STATE.diasEspeciales[fechaKey] = estado;
+    }
+    
+    Storage._save();
+    this.render();
+    APP.renderizarTodo();
+    
+    const mensaje = estado === 'vacaciones' ? '🏖️ Día marcado como vacaciones' : estado === 'lesionado' ? '🤕 Día marcado como lesionado' : '✅ Día marcado como normal';
+    UI.toast(mensaje, 'info');
   },
 };
