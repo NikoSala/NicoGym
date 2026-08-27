@@ -80,7 +80,10 @@ const Objetivos = {
     return { pct, actual: `${mejor} kg`, objetivo: `${obj.pesoObjetivo} kg` };
   },
 
-    _nuevo() {
+  // ==========================================
+  // NUEVA META (CON PREDEFINIDAS)
+  // ==========================================
+  _nuevo() {
     Modal.abrir(`
       <h3>🎯 Nueva meta</h3>
       <div class="form-field" style="margin-bottom:8px;">
@@ -147,35 +150,39 @@ const Objetivos = {
         nombre.value = "Press banca 10 kg";
         tipo.value = "ejercicio";
         pesoObjetivo.value = 10;
+        // Asegurarse de que el campo ejercicio existe
+        this._cambiarTipo();
         document.getElementById("objNombreEjercicio").value = "Press de pecho con mancuernas";
         break;
       case 'press12':
         nombre.value = "Press banca 12 kg";
         tipo.value = "ejercicio";
         pesoObjetivo.value = 12;
+        this._cambiarTipo();
         document.getElementById("objNombreEjercicio").value = "Press de pecho con mancuernas";
         break;
       case 'curl7':
         nombre.value = "Curl martillo 7 kg";
         tipo.value = "ejercicio";
         pesoObjetivo.value = 7;
+        this._cambiarTipo();
         document.getElementById("objNombreEjercicio").value = "Curl martillo";
         break;
       case 'remo20':
         nombre.value = "Remo con barra 20 kg";
         tipo.value = "ejercicio";
         pesoObjetivo.value = 20;
+        this._cambiarTipo();
         document.getElementById("objNombreEjercicio").value = "Remo con barra";
         break;
       case '4x12':
         nombre.value = "Hacer 4x12 en press";
         tipo.value = "ejercicio";
         pesoObjetivo.value = 12;
+        this._cambiarTipo();
         document.getElementById("objNombreEjercicio").value = "Press de pecho con mancuernas";
         break;
     }
-
-    this._cambiarTipo();
   },
 
   _cambiarTipo() {
