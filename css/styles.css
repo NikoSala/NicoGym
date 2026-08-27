@@ -3920,30 +3920,44 @@
 .record-diff.negative {
   color: var(--danger);
 }
+/* ==========================================
+   RECORDS - MÓVIL (AJUSTADO PARA 2 COLUMNAS)
+   ========================================== */
 
-/* ---------- MÓVIL ---------- */
 @media (max-width: 768px) {
   .records-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 4px;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Ajusta a 2 columnas iguales */
+    gap: 6px;
+    width: 100%; /* Asegura que no se desborde */
+    overflow: hidden; /* Evita desbordes */
   }
 
   .record-card-compact {
     padding: 6px;
     border-radius: 8px;
+    width: 100%; /* Ocupa el 100% de su celda */
+    min-width: 0; /* Permite que se encoja */
+    box-sizing: border-box; /* Incluye padding y border en el ancho */
   }
 
   .record-card-compact .record-name {
     font-size: 9px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .record-card-compact .record-date {
     font-size: 7px;
+    white-space: nowrap;
   }
 
   .record-card-compact .record-stat-value {
     font-size: 12px;
-    padding: 4px 2px;
+  }
+
+  .record-card-compact .record-stat {
+    padding: 3px 2px;
   }
 
   .record-card-compact .record-stat-label {
@@ -3952,7 +3966,6 @@
 
   .record-card-compact .record-diff {
     font-size: 7px;
-    padding: 3px 4px;
   }
 
   .record-card-compact .btn-historial-compact {
@@ -3962,13 +3975,16 @@
 
 @media (max-width: 480px) {
   .records-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 4px;
   }
 
   .record-card-compact {
-    padding: 5px;
+    padding: 4px;
     border-radius: 6px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
 
   .record-card-compact .record-name {
