@@ -135,11 +135,6 @@
         .semaforo-amarillo .semaforo-track span { background:#f2b84b; }
         .semaforo-verde .semaforo-track span { background:#65c18c; }
         .semaforo-foot { display:flex; justify-content:space-between; gap:8px; margin-top:7px; color:var(--text-secondary); font-size:11px; }
-        .consistencia-number { color:var(--text); font-size:38px; font-weight:800; line-height:1; margin-top:13px; }
-        .consistencia-number small { color:var(--text-muted); font-size:17px; }
-        .consistencia-label { color:var(--text-secondary); font-size:11px; margin-top:4px; }
-        .consistencia-streak { border-top:1px solid var(--border); color:var(--text-secondary); font-size:12px; margin-top:15px; padding-top:10px; }
-        .consistencia-streak strong { color:var(--warning); }
         .tu-semana-card { margin-bottom:var(--space-sm); }
         .tu-semana-card .card-title { display:flex; justify-content:space-between; align-items:center; }
         .text-action { background:none; border:0; color:var(--primary); cursor:pointer; font-size:11px; font-weight:700; }

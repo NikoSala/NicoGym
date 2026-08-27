@@ -182,33 +182,19 @@ const Dashboard = {
     }
 
     const bloqueSemana = `
-      <section class="inicio-semana-grid">
-        <div class="card inicio-semaforo-card semaforo-${semaforo.clase}">
-          <div class="inicio-panel-kicker">ESTADO DE LA SEMANA</div>
-          <div class="semaforo-main"><span class="semaforo-luz"></span><div><strong>${semaforo.titulo}</strong><span>${semaforo.texto}</span></div></div>
-          <div class="semaforo-track"><span style="width:${porcentajeConsistencia}%"></span></div>
-          <div class="semaforo-foot"><span>${porcentajeConsistencia}% de consistencia</span><span>${entrenamientosSemana}/${entrenamientosObjetivoSemana} entrenos</span></div>
+      <section class="card inicio-semaforo-card semaforo-${semaforo.clase}">
+        <div class="inicio-panel-kicker">ESTADO DE LA SEMANA</div>
+        <div class="semaforo-main"><span class="semaforo-luz"></span><div><strong>${semaforo.titulo}</strong><span>${semaforo.texto}</span></div></div>
+        <div class="semaforo-track"><span style="width:${porcentajeConsistencia}%"></span></div>
+        <div class="semaforo-foot">
+          <span>${porcentajeConsistencia}% de consistencia</span>
+          <span>${entrenamientosSemana}/${entrenamientosObjetivoSemana} entrenos</span>
         </div>
-        <div class="card consistencia-card">
-          <div class="card-title">📈 Consistencia</div>
-          <div class="consistencia-number">${entrenamientosSemana}<small>/5</small></div>
-          <div class="consistencia-label">entrenamientos esta semana</div>
-          <div class="consistencia-streak">🔥 Racha actual: <strong>${racha} días</strong></div>
+        <div class="semaforo-foot" style="margin-top:4px;">
+          <span>🔥 Racha: <strong>${racha} días</strong></span>
         </div>
-      </section>
-      <section class="card tu-semana-card">
-        <div class="card-title"><span>🗓️ Tu Semana</span><button class="text-action" onclick="APP.navegar('semana')">Ver rutina</button></div>
-        <div class="tu-semana-days">
-          ${diasSemana.map((diaSemana) => `
-            <button class="tu-semana-day ${diaSemana.esHoy ? "actual" : ""} ${diaSemana.completado ? "hecho" : ""} ${diaSemana.descanso ? "descanso" : ""}" onclick="${diaSemana.descanso ? "" : `APP.navegar('rutinas')`}">
-              <span>${diaSemana.etiqueta}</span><strong>${diaSemana.descanso ? "·" : diaSemana.completado ? "✓" : "○"}</strong>
-            </button>
-          `).join("")}
-        </div>
-        <div class="tu-semana-caption">${entrenamientosSemana >= 5 ? "Semana completada" : `Te quedan ${Math.max(0, 5 - entrenamientosSemana)} entrenamientos previstos`}</div>
       </section>
     `;
-
     const accionesRapidas = `
       <div class="inicio-acciones-rapidas" aria-label="Acciones rápidas">
         <button class="accion-rapida" onclick="APP.navegar('fotos')">
