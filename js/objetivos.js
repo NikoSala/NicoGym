@@ -80,9 +80,22 @@ const Objetivos = {
     return { pct, actual: `${mejor} kg`, objetivo: `${obj.pesoObjetivo} kg` };
   },
 
-  _nuevo() {
+    _nuevo() {
     Modal.abrir(`
       <h3>🎯 Nueva meta</h3>
+      <div class="form-field" style="margin-bottom:8px;">
+        <label>Meta predefinida</label>
+        <select id="objPredefinida" class="input" onchange="Objetivos._cargarPredefinida()">
+          <option value="">— Personalizada —</option>
+          <option value="perder5">Perder 5 kg</option>
+          <option value="llegar70">Llegar a 70 kg</option>
+          <option value="press10">Press banca 10 kg</option>
+          <option value="press12">Press banca 12 kg</option>
+          <option value="curl7">Curl martillo 7 kg</option>
+          <option value="remo20">Remo con barra 20 kg</option>
+          <option value="4x12">Hacer 4x12 en press</option>
+        </select>
+      </div>
       <div class="form-field" style="margin-bottom:8px;">
         <label>Nombre</label>
         <input type="text" id="objNombre" class="input" placeholder="Ej: Perder 5 kg">
@@ -108,6 +121,61 @@ const Objetivos = {
         <i class="fa-solid fa-check"></i> Crear meta
       </button>
     `);
+  },
+
+  _cargarPredefinida() {
+    const valor = document.getElementById("objPredefinida").value;
+    const nombre = document.getElementById("objNombre");
+    const tipo = document.getElementById("objTipo");
+    const pesoObjetivo = document.getElementById("objPesoObjetivo");
+
+    if (!valor) return;
+
+    switch (valor) {
+      case 'perder5':
+        nombre.value = "Perder 5 kg";
+        tipo.value = "peso";
+        const pesoActual = STATE.mediciones.length > 0 ? STATE.mediciones[STATE.mediciones.length - 1].peso : 80;
+        pesoObjetivo.value = Math.round(pesoActual - 5);
+        break;
+      case 'llegar70':
+        nombre.value = "Llegar a 70 kg";
+        tipo.value = "peso";
+        pesoObjetivo.value = 70;
+        break;
+      case 'press10':
+        nombre.value = "Press banca 10 kg";
+        tipo.value = "ejercicio";
+        pesoObjetivo.value = 10;
+        document.getElementById("objNombreEjercicio").value = "Press de pecho con mancuernas";
+        break;
+      case 'press12':
+        nombre.value = "Press banca 12 kg";
+        tipo.value = "ejercicio";
+        pesoObjetivo.value = 12;
+        document.getElementById("objNombreEjercicio").value = "Press de pecho con mancuernas";
+        break;
+      case 'curl7':
+        nombre.value = "Curl martillo 7 kg";
+        tipo.value = "ejercicio";
+        pesoObjetivo.value = 7;
+        document.getElementById("objNombreEjercicio").value = "Curl martillo";
+        break;
+      case 'remo20':
+        nombre.value = "Remo con barra 20 kg";
+        tipo.value = "ejercicio";
+        pesoObjetivo.value = 20;
+        document.getElementById("objNombreEjercicio").value = "Remo con barra";
+        break;
+      case '4x12':
+        nombre.value = "Hacer 4x12 en press";
+        tipo.value = "ejercicio";
+        pesoObjetivo.value = 12;
+        document.getElementById("objNombreEjercicio").value = "Press de pecho con mancuernas";
+        break;
+    }
+
+    this._cambiarTipo();
   },
 
   _cambiarTipo() {
