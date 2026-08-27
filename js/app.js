@@ -1518,7 +1518,6 @@ const APP = {
       
       // Actualizar variables globales
       pesoActualEntreno = nuevoPeso;
-      this.pesoSesionEntreno = nuevoPeso;
       
       // Actualizar el registro en el historial
       const hoy = UI.getHoy();
@@ -1549,7 +1548,7 @@ const APP = {
 
   _guardarSerie() {
     const ej = ejerciciosEntreno[idxEjercicioActual];
-    const peso = this.pesoSesionEntreno;
+    const peso = pesoActualEntreno;
     const reps = parseInt(document.getElementById("meRepsSerie")?.value, 10);
 
     if (!Number.isFinite(peso) || peso <= 0) {
@@ -1649,7 +1648,7 @@ const APP = {
       this._mostrarMensajeCompletado(`${ej.nombre} · 4 series completadas`);
       idxEjercicioActual++;
       seriesActualesEntreno = [];
-      pesoActualEntreno = 0;
+      
       if (idxEjercicioActual >= ejerciciosEntreno.length)
         setTimeout(
           () => this._finalizarEntreno(),
