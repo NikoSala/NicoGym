@@ -39,6 +39,7 @@ const STATE = {
     ejerciciosBase: {},
   },
   entrenamientoPendiente: null,
+  pesosAjustados: {},
 };
 
 let diaActivo = "lunes";

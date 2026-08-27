@@ -959,7 +959,13 @@ const APP = {
       : [];
 
     // El peso YA ha sido elegido al iniciar la sesión.
-    pesoActualEntreno = this.pesoSesionEntreno;
+    // Ahora buscamos si hubo un ajuste manual para este ejercicio concreto.
+    // Si lo hubo, usamos ese; si no, usamos el peso de la sesión.
+
+    const pesoEspecifico = STATE.pesosAjustados?.[ej.nombre];
+    pesoActualEntreno = Number.isFinite(pesoEspecifico) && pesoEspecifico > 0
+        ? pesoEspecifico
+        : this.pesoSesionEntreno;
 
     ejercicioIniciadoAt = Date.now();
 
@@ -1192,7 +1198,7 @@ const APP = {
         <section class="me-workout-training-grid">
 
 
-          <!-- CARGA FIJA -->
+                   <!-- CARGA AJUSTABLE -->
           <div class="me-workout-load-card">
 
             <div class="me-workout-load-content">
@@ -1202,17 +1208,18 @@ const APP = {
                 ${etiquetaCarga}
               </div>
 
-              <div class="me-workout-load-value">
-                ${this.pesoSesionEntreno} kg
+              <div class="me-workout-load-value" style="cursor: pointer;" onclick="APP._abrirSelectorPeso('${ej.nombre}')">
+                <span id="mePesoEjercicioDisplay" style="font-size: 28px; font-weight: 900; color: #d7a126;">
+                  ${pesoActualEntreno}
+                </span> kg
               </div>
 
               <div class="me-workout-load-subtitle">
-                ${
-                  ej.tipoCarga ===
-                  WEIGHTS?.TIPOS?.UNA_MANCUERNA
-                    ? "mancuerna"
-                    : "por mancuerna"
-                }
+                ${ej.tipoCarga === WEIGHTS?.TIPOS?.UNA_MANCUERNA ? "mancuerna" : "por mancuerna"}
+              </div>
+
+              <div class="me-workout-load-hint" style="margin-top:4px;font-size:9px;color:var(--text-muted);">
+                <i class="fa-solid fa-pen"></i> Toca para cambiar el peso
               </div>
 
               ${
@@ -1228,22 +1235,17 @@ const APP = {
 
             </div>
 
-
             ${
               configuracionCarga
                 ? `
                   <div class="me-workout-load-image">
-                    ${this._renderVisualCarga(
-                      configuracionCarga,
-                      ej.tipoCarga,
-                    )}
+                    ${this._renderVisualCarga(configuracionCarga, ej.tipoCarga)}
                   </div>
                 `
                 : ""
             }
 
           </div>
-
 
           <!-- REPETICIONES -->
           <div class="me-workout-reps-card">
@@ -1396,6 +1398,147 @@ const APP = {
     valor = Math.max(1, Math.min(100, valor));
 
     input.value = valor;
+  },
+
+    _abrirSelectorPeso(nombreEjercicio) {
+    const ej = ejerciciosEntreno[idxEjercicioActual];
+    
+    if (!ej || !ej.tipoCarga) {
+      UI.toast("Este ejercicio no tiene selector de peso", "error");
+      return;
+    }
+
+    const tipo = ej.tipoCarga;
+    const configuraciones = WEIGHTS.obtenerConfiguraciones(tipo);
+    const pesoActual = pesoActualEntreno || this.pesoSesionEntreno;
+
+    // Buscar la configuración actual para seleccionarla en el desplegable
+    const configuracionActual = this._buscarConfiguracionCarga(tipo, pesoActual);
+
+    const modalContent = `
+      <div class="me-selector-peso-page" style="box-shadow: none; border: none;">
+        <div class="me-selector-peso-header">
+          <div class="me-selector-peso-kicker">
+            🏋️ AJUSTE DE CARGA
+          </div>
+          <div class="me-selector-peso-title" style="font-size: 18px;">
+            ${ej.nombre}
+          </div>
+          <div class="me-selector-peso-subtitle">
+            Cambia el peso para este ejercicio
+          </div>
+        </div>
+
+        <div class="me-selector-peso-layout" style="grid-template-columns: 1fr; border: none; background: transparent;">
+          <div class="me-selector-peso-left" style="padding: 0; background: transparent;">
+            <label class="me-peso-selector-wrap" for="mePesoModal">
+              <span class="me-peso-selector-label">Peso a utilizar</span>
+              <span class="me-peso-selector-control">
+                <i class="fa-solid fa-weight-hanging"></i>
+                <select id="mePesoModal">
+                  ${configuraciones
+                    .map((config) => `
+                      <option value="${config.peso}" ${Math.abs(Number(config.peso) - Number(pesoActual)) < 0.001 ? "selected" : ""}>
+                        ${config.peso} kg
+                      </option>
+                    `)
+                    .join("")}
+                </select>
+                <i class="fa-solid fa-chevron-down"></i>
+              </span>
+            </label>
+
+            <div class="me-peso-info">
+              <i class="fa-solid fa-circle-info"></i>
+              <span>
+                El peso se guardará solo para <strong>${ej.nombre}</strong>
+              </span>
+            </div>
+          </div>
+
+          <div class="me-selector-peso-right" style="height: 180px; min-height: 180px; border-top: 1px solid var(--border);">
+            <div class="me-preview-header">
+              <i class="fa-regular fa-eye"></i>
+              VISTA PREVIA
+            </div>
+            <div id="meCargaVisualModal" class="me-selector-preview" style="height: 130px; min-height: 130px;">
+              ${this._renderVisualCarga(configuracionActual || configuraciones[0], tipo)}
+            </div>
+          </div>
+        </div>
+
+        <div class="me-selector-confirmacion" style="border-top: 1px solid var(--border);">
+          <button
+            type="button"
+            class="btn btn-success btn-block me-selector-confirmar"
+            id="btnConfirmarPesoModal"
+          >
+            <i class="fa-solid fa-check"></i>
+            Aplicar peso
+          </button>
+        </div>
+      </div>
+    `;
+
+    // Abrir el modal con el selector
+    Modal.abrir(modalContent);
+
+    // Configurar el desplegable
+    const select = document.getElementById("mePesoModal");
+    const visual = document.getElementById("meCargaVisualModal");
+    const confirmarBtn = document.getElementById("btnConfirmarPesoModal");
+
+    select.addEventListener("change", () => {
+      const peso = Number(select.value);
+      const config = this._buscarConfiguracionCarga(tipo, peso);
+      
+      if (visual) {
+        visual.innerHTML = this._renderVisualCarga(config, tipo);
+      }
+    });
+
+    // Configurar el botón de confirmar
+    confirmarBtn.addEventListener("click", () => {
+      const nuevoPeso = Number(select.value);
+      
+      if (!Number.isFinite(nuevoPeso) || nuevoPeso <= 0) {
+        UI.toast("Introduce un peso válido", "error");
+        return;
+      }
+
+      // Guardar el peso ajustado
+      if (!STATE.pesosAjustados) STATE.pesosAjustados = {};
+      STATE.pesosAjustados[nombreEjercicio] = nuevoPeso;
+      
+      // Actualizar variables globales
+      pesoActualEntreno = nuevoPeso;
+      this.pesoSesionEntreno = nuevoPeso;
+      
+      // Actualizar el registro en el historial
+      const hoy = UI.getHoy();
+      const dia = ejerciciosEntreno[0]?.dia;
+      const entrenamiento = STATE.historialEntrenos.find(
+        (e) => e.fecha === hoy && e.dia === dia,
+      );
+
+      if (entrenamiento) {
+        const registro = entrenamiento.ejercicios.find(
+          (e) => e.nombre === nombreEjercicio,
+        );
+
+        if (registro) {
+          registro.peso = nuevoPeso;
+        }
+      }
+
+      Storage._save();
+
+      // Cerrar el modal y actualizar la vista
+      Modal.cerrar();
+      this._mostrarEjercicio();
+      
+      UI.toast(`⚙️ Peso ajustado a ${nuevoPeso} kg para ${nombreEjercicio}`, "info");
+    });
   },
 
   _guardarSerie() {

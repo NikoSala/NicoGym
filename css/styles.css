@@ -3377,3 +3377,25 @@
 .me-workout-reps-input {
   font-size: 14px;
 }
+
+/* Modal de ajuste de peso */
+.me-selector-peso-page {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.me-selector-peso-page .me-selector-peso-header {
+  margin-bottom: 10px;
+}
+
+.me-selector-peso-page .me-selector-peso-title {
+  font-size: 20px;
+}
+
+.me-workout-load-value {
+  transition: transform 0.15s ease;
+}
+
+.me-workout-load-value:hover {
+  transform: scale(1.05);
+}
