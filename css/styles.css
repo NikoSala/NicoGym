@@ -3800,48 +3800,82 @@
   color: var(--text-secondary);
 }
 /* ==========================================
-   RECORDS COMPACTOS
+   RECORDS MODERNOS
    ========================================== */
-.records-grid {
+
+.record-card-modern:hover {
+  border-color: rgba(165,29,58,.48);
+  transform: translateY(-1px);
+}
+
+.record-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.record-icon {
+  font-size: 28px;
+}
+
+.record-info {
+  flex: 1;
+}
+
+.record-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.record-date {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.record-stats-modern {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
+}
+
+.btn-historial-record:hover {
+  border-color: var(--primary);
+  color: var(--text);
+  background: rgba(125,16,40,.08);
+}
+/* ==========================================
+   RECORDS COMPACTOS - MÓVIL
+   ========================================== */
+@media (max-width: 768px) {
+  .records-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .record-card-compact {
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+  .record-card-compact .record-name {
+    font-size: 10px;
+  }
+
+  .record-card-compact .record-stat-value {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
   .records-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
   }
-}
 
-.record-card-compact {
-  background: linear-gradient(145deg, rgba(24,28,34,.96), rgba(14,17,21,.96));
-  border: 1px solid #2A2E35;
-  border-radius: 12px;
-  padding: 10px;
-  transition: var(--transition);
-  animation: cardReveal 0.3s ease both;
-}
-
-.record-card-compact:hover {
-  border-color: rgba(165,29,58,.48);
-}
-
-.record-card-reciente {
-  border-left: 3px solid var(--success);
-  background: linear-gradient(145deg, rgba(214,169,74,.08), rgba(14,17,21,.96));
-}
-
-.btn-historial-compact {
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 14px;
-  cursor: pointer;
-  padding: 2px;
-  transition: var(--transition);
-}
-
-.btn-historial-compact:hover {
-  color: var(--primary);
+  .record-card-compact {
+    padding: 8px;
+  }
 }
