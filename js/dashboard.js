@@ -265,12 +265,16 @@ const Dashboard = {
     }
 
         c.innerHTML = `
-                <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
-                <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
-                <div class="frase-motivadora">${fraseMotivadora}</div>
+                <div class="saludo-header">
+                    <div>
+                        <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
+                        <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
+                        <div class="frase-motivadora">${fraseMotivadora}</div>
+                    </div>
+                    ${miniCalendario}
+                </div>
 
                 ${accionesRapidas}
-                ${miniCalendario}
                 ${bloqueSemana}
 
                 ${
@@ -392,7 +396,7 @@ const Dashboard = {
     
     return `
       <div class="card mini-calendario-card" onclick="APP.navegar('agenda')">
-        <div class="card-title"><span>📅 ${nombreMes.charAt(0).toUpperCase() + nombreMes.slice(1)}</span><button class="text-action" onclick="event.stopPropagation(); APP.navegar('agenda')">Ver agenda</button></div>
+        <div class="card-title"><span>📅 ${nombreMes.slice(0, 3).toUpperCase()}</span></div>
         <div class="mini-cal-grid">
           <span class="mini-cal-weekday">L</span><span class="mini-cal-weekday">M</span><span class="mini-cal-weekday">X</span><span class="mini-cal-weekday">J</span><span class="mini-cal-weekday">V</span><span class="mini-cal-weekday">S</span><span class="mini-cal-weekday">D</span>
           ${celdas}

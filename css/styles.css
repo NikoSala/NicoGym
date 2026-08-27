@@ -3509,3 +3509,78 @@
 .agenda-day-lesionado .agenda-day-number {
   color: var(--danger);
 }
+/* ==========================================
+   SALUDO + MINI CALENDARIO (Layout)
+   ========================================== */
+.saludo-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.saludo-header > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.mini-calendario-card {
+  width: 130px;          /* Ancho fijo para que sea compacto */
+  min-width: 130px;
+  max-width: 130px;
+  padding: 8px 10px;
+  margin: 0;              /* Quitar margen inferior */
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.mini-calendario-card .card-title {
+  font-size: 9px;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.mini-calendario-card .card-title .text-action {
+  font-size: 8px;
+  margin-left: 4px;
+}
+
+.mini-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.mini-cal-weekday {
+  text-align: center;
+  font-size: 8px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.mini-cal-day {
+  min-height: 18px;
+  font-size: 9px;
+  border-radius: 4px;
+}
+
+.mini-cal-hoy {
+  background: var(--primary);
+  color: #fff;
+}
+
+.mini-cal-completado {
+  background: rgba(214,169,74,0.15);
+  color: var(--success);
+}
+
+.mini-cal-vacaciones {
+  background: rgba(0,0,0,0.25);
+  color: var(--text-muted);
+}
+
+.mini-cal-lesionado {
+  background: rgba(198,59,79,0.15);
+  color: var(--danger);
+}
