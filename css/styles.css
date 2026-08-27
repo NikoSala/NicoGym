@@ -262,7 +262,7 @@
         .loading-screen .loader-text { margin-top: 12px; font-size: 13px; color: var(--text-secondary); font-weight: 500; }
 
         .top-bar {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 62px;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 54px;
             padding: 0 var(--space-sm); background: rgba(11, 16, 32, 0.92);
             backdrop-filter: blur(18px) saturate(1.4); border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between;
@@ -273,9 +273,9 @@
             gap: 10px;
         }
         .top-bar .top-left .header-logo {
-            height: 60px;
-            width: auto;
-            max-width: 190px;
+            height: 38px;
+            width: 38px;
+            max-width: 38px;
             display: block;
             transform: scale(1.08);
             filter: drop-shadow(0 0 10px rgba(125,16,40,0.18));
@@ -299,9 +299,9 @@
         .top-stats { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 500; background: var(--bg-card); padding: 3px 10px; border-radius: var(--radius-full); border: 1px solid var(--border); color: var(--text-secondary); }
         .top-stats strong { color: var(--text); }
 
-        .bell-wrap { position: relative; cursor: pointer; padding: 4px; border-radius: 50%; transition: var(--transition); background: transparent; border: none; color: var(--text-secondary); font-size: 16px; }
+        .bell-wrap { position: relative; cursor: pointer; padding: 3px; border-radius: 50%; transition: var(--transition); background: transparent; border: none; color: var(--text-secondary); font-size: 14px; }
         .bell-wrap:hover { background: var(--bg-card); color: var(--text); }
-        .bell-wrap .badge { position: absolute; top: -2px; right: -2px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 50%; background: var(--danger); color: #fff; font-size: 8px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4); }
+        .bell-wrap .badge { position: absolute; top: -2px; right: -2px; min-width: 14px; height: 14px; padding: 0 3px; border-radius: 50%; background: var(--danger); color: #fff; font-size: 7px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4); }
 
         .notif-dropdown {
             position: absolute; top: calc(100% + 6px); right: -8px; width: 280px; max-height: 340px;
@@ -3523,7 +3523,7 @@
 }
 
 .saludo {
-  font-size: 26px;
+  font-size: 19px;
   font-weight: 800;
   margin-bottom: 2px;
   letter-spacing: -.04em;
@@ -3663,9 +3663,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
+  min-height: 36px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--bg-card);
   color: var(--text);
   cursor: pointer;
@@ -3679,20 +3679,16 @@
 .accion-icono {
   display: block;
   color: var(--primary);
-  font-size: 14px;
+  font-size: 11px;
   line-height: 1;
 }
 
 .accion-texto {
   display: block;
   color: var(--text-secondary);
-  font-size: 9px;
-  margin-top: 3px;
+  font-size: 7px;
+  margin-top: 2px;
 }
-
-/* ==========================================
-   RESPONSIVE MÓVIL (mantener mismo layout)
-   ========================================== */
 @media (max-width: 600px) {
   .saludo-header {
     align-items: flex-start;
@@ -3700,7 +3696,7 @@
   }
   
   .saludo {
-    font-size: 21px;
+    font-size: 19px;
   }
   
   .saludo-dia {
@@ -3739,16 +3735,16 @@
   }
   
   .accion-rapida {
-    min-height: 40px;
+    min-height: 36px;
     border-radius: 8px;
   }
   
   .accion-icono {
-    font-size: 12px;
+    font-size: 11px;
   }
   
   .accion-texto {
-    font-size: 8px;
+    font-size: 7px;
     margin-top: 2px;
   }
 }
