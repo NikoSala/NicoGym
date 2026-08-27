@@ -38,9 +38,9 @@ const ROUTINES = {
     ["curl-aislado-pronacion", 4, 12],
     ["curl-horizontal-giro", 4, 12],
     ["curl-concentrado-supinacion", 4, 12],
-    ["extension-horizontal-concentrada-interna", 4, 12],
-    ["press-banca-supinacion-aislado", 4, 12],
-    ["press-banca-neutro", 4, 12],
+    ["curl-inverso-muneca", 4, 12],
+    ["curl-muneca-neutro", 4, 12],
+    ["rotacion-muneca", 4, 12],
   ],
 
   viernes: [

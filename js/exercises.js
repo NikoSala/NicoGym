@@ -729,6 +729,73 @@ function getExerciseDatabase() {
       },
     },
 
+        // ==========================================
+    // JUEVES - ANTEBRAZO (NUEVOS)
+    // ==========================================
+    {
+      id: "curl-inverso-muneca",
+      nombre: "Curl inverso de muñeca a una mano con mancuerna",
+      grupo: "Antebrazo",
+      categoria: "Aislamiento",
+      urlGif: "https://fitcron.com/wp-content/uploads/2021/03/03581301-Dumbbell-One-arm-Revers-Wrist-Curl_Forearms_720.gif",
+      descripcion: "Siéntate y apoya el antebrazo sobre el muslo o banco, manteniendo la palma hacia abajo. Flexiona y extiende la muñeca de forma controlada para mover la mancuerna sin levantar el antebrazo.",
+      consejos: "• Mantén el antebrazo completamente apoyado.\n• Utiliza poco peso.\n• Controla especialmente la bajada.",
+      errores: "• Levantar el antebrazo.\n• Utilizar impulso.\n• Cargar demasiado peso.",
+      musculosPrincipales: ["Antebrazo"],
+      musculosSecundarios: ["Braquiorradial"],
+      series: 4,
+      reps: "12",
+      dia: null,
+      dificultad: "facil",
+      material: ["Mancuerna"],
+      tipoCarga: "una_mancuerna",
+      intensidadMuscular: {
+        Antebrazo: 95,
+      },
+    },
+    {
+      id: "curl-muneca-neutro",
+      nombre: "Curl de muñeca neutro sentado a una mano con mancuerna",
+      grupo: "Antebrazo",
+      categoria: "Aislamiento",
+      urlGif: "https://fitcron.com/wp-content/uploads/2021/03/14151301-Dumbbell-One-Arm-Seated-Neutral-Wrist-Curl_Forearms_720.gif",
+      descripcion: "Sentado, apoya el antebrazo sobre el muslo manteniendo la mano en posición neutra. Realiza una flexión controlada de la muñeca mientras mantienes el antebrazo estable.",
+      consejos: "• Mantén el codo y antebrazo apoyados.\n• Realiza un recorrido controlado.\n• Evita utilizar el brazo para generar impulso.",
+      errores: "• Mover el antebrazo.\n• Hacer rebotes.\n• Utilizar demasiado peso.",
+      musculosPrincipales: ["Antebrazo"],
+      musculosSecundarios: ["Braquial"],
+      series: 4,
+      reps: "12",
+      dia: null,
+      dificultad: "facil",
+      material: ["Mancuerna"],
+      tipoCarga: "una_mancuerna",
+      intensidadMuscular: {
+        Antebrazo: 95,
+      },
+    },
+    {
+      id: "rotacion-muneca",
+      nombre: "Rotación de muñeca sentado a una mano con mancuerna",
+      grupo: "Antebrazo",
+      categoria: "Aislamiento",
+      urlGif: "https://fitcron.com/wp-content/uploads/2021/03/03991301-Dumbbell-Seated-One-Arm-Rotate_Forearms_720.gif",
+      descripcion: "Sentado y con el antebrazo apoyado, sujeta la mancuerna y realiza una rotación controlada de la muñeca y antebrazo, trabajando la pronación y supinación.",
+      consejos: "• Utiliza una mancuerna ligera.\n• Mantén el codo estable.\n• Realiza la rotación lentamente.",
+      errores: "• Utilizar demasiado peso.\n• Mover todo el brazo.\n• Realizar la rotación bruscamente.",
+      musculosPrincipales: ["Antebrazo"],
+      musculosSecundarios: ["Braquiorradial"],
+      series: 4,
+      reps: "12",
+      dia: null,
+      dificultad: "media",
+      material: ["Mancuerna"],
+      tipoCarga: "una_mancuerna",
+      intensidadMuscular: {
+        Antebrazo: 90,
+      },
+    },
+
     // ==========================================
     // RUTINA ACTUALIZADA · MIÉRCOLES A VIERNES
     // ==========================================
