@@ -138,6 +138,12 @@ const APP = {
       default:
         Dashboard.render();
         break;
+      case "comparador":
+        Comparador.render();
+        break;
+      case "objetivos":
+        Objetivos.render();
+        break;
     }
   },
 

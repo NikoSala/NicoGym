@@ -3757,3 +3757,45 @@
     margin-top: 2px;
   }
 }
+/* ==========================================
+   COMPARADOR Y OBJETIVOS
+   ========================================== */
+.comparador-resultado {
+  margin-top: 10px;
+}
+
+.objetivo-card {
+  background: rgba(0,0,0,0.15);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+}
+
+.objetivo-card .objetivo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.objetivo-card .objetivo-progreso {
+  background: rgba(255,255,255,0.08);
+  border-radius: 99px;
+  height: 6px;
+  overflow: hidden;
+}
+
+.objetivo-card .objetivo-progreso-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--success));
+  border-radius: 99px;
+}
+
+.objetivo-card .objetivo-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--text-secondary);
+}

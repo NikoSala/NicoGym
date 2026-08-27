@@ -211,21 +211,21 @@ const Dashboard = {
 
     const accionesRapidas = `
       <div class="inicio-acciones-rapidas" aria-label="Acciones rápidas">
-        <button class="accion-rapida" onclick="${dia === "sabado" || dia === "domingo" ? "APP.navegar('semana')" : `APP.iniciarEntreno('${dia}')`}">
-          <span class="accion-icono">▶</span>
-          <span class="accion-texto">${dia === "sabado" || dia === "domingo" ? "Plan" : "Entrenar"}</span>
-        </button>
-        <button class="accion-rapida" onclick="APP.navegar('peso')">
-          <span class="accion-icono">⚖</span>
-          <span class="accion-texto">Peso</span>
-        </button>
         <button class="accion-rapida" onclick="APP.navegar('fotos')">
-          <span class="accion-icono">▣</span>
+          <span class="accion-icono">📷</span>
           <span class="accion-texto">Foto</span>
         </button>
-        <button class="accion-rapida" onclick="APP.navegar('semana')">
-          <span class="accion-icono">☷</span>
-          <span class="accion-texto">Rutina</span>
+        <button class="accion-rapida" onclick="APP.navegar('records')">
+          <span class="accion-icono">🏆</span>
+          <span class="accion-texto">Records</span>
+        </button>
+        <button class="accion-rapida" onclick="APP.navegar('comparador')">
+          <span class="accion-icono">⚖️</span>
+          <span class="accion-texto">Comparar</span>
+        </button>
+        <button class="accion-rapida" onclick="APP.navegar('objetivos')">
+          <span class="accion-icono">🎯</span>
+          <span class="accion-texto">Metas</span>
         </button>
       </div>
     `;
