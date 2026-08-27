@@ -35,15 +35,6 @@ const Dashboard = {
         );
     }
 
-    let racha = 0;
-    let h = new Date();
-    for (let i = 0; i < 100; i++) {
-      let f = new Date(h);
-      f.setDate(h.getDate() - i);
-      if (STATE.diasEntrenados.includes(UI.formatFecha(f))) racha++;
-      else break;
-    }
-
     let ultimoEntreno = "Nunca";
     if (STATE.diasEntrenados.length > 0) {
       const ultimo = [...STATE.diasEntrenados].sort().reverse()[0];
@@ -189,9 +180,6 @@ const Dashboard = {
         <div class="semaforo-foot">
           <span>${porcentajeConsistencia}% de consistencia</span>
           <span>${entrenamientosSemana}/${entrenamientosObjetivoSemana} entrenos</span>
-        </div>
-        <div class="semaforo-foot" style="margin-top:4px;">
-          <span>🔥 Racha: <strong>${racha} días</strong></span>
         </div>
       </section>
     `;
