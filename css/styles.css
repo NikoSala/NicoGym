@@ -3799,37 +3799,201 @@
   font-size: 10px;
   color: var(--text-secondary);
 }
-
 /* ==========================================
-   RECORDS COMPACTOS - MÓVIL
+   RECORDS - ESTILOS COMPLETOS
    ========================================== */
+
+/* ---------- CONTENEDOR ---------- */
+.records-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.records-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+/* ---------- TARJETA COMPACTA ---------- */
+.record-card-compact {
+  background: linear-gradient(145deg, rgba(24,28,34,.96), rgba(14,17,21,.96));
+  border: 1px solid #2A2E35;
+  border-radius: 12px;
+  padding: 10px;
+  transition: var(--transition);
+  animation: cardReveal 0.3s ease both;
+}
+
+.record-card-compact:hover {
+  border-color: rgba(165,29,58,.48);
+}
+
+.record-card-reciente {
+  border-left: 3px solid var(--success);
+  background: linear-gradient(145deg, rgba(214,169,74,.08), rgba(14,17,21,.96));
+}
+
+/* ---------- CABECERA TARJETA ---------- */
+.record-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.record-icon {
+  font-size: 16px;
+}
+
+.record-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.record-date {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* ---------- ESTADÍSTICAS ---------- */
+.record-stats {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.record-stat {
+  flex: 1;
+  text-align: center;
+  background: rgba(0,0,0,0.15);
+  border-radius: 8px;
+  padding: 6px 4px;
+}
+
+.record-stat-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.record-stat-label {
+  font-size: 8px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+/* ---------- BOTÓN HISTORIAL ---------- */
+.btn-historial-compact {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px;
+  transition: var(--transition);
+}
+
+.btn-historial-compact:hover {
+  color: var(--primary);
+}
+
+/* ---------- DIFERENCIA ---------- */
+.record-diff {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.record-diff.positive {
+  color: var(--success);
+}
+
+.record-diff.negative {
+  color: var(--danger);
+}
+
+/* ---------- MÓVIL ---------- */
 @media (max-width: 768px) {
   .records-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    gap: 4px;
   }
 
   .record-card-compact {
-    padding: 8px;
-    border-radius: 10px;
+    padding: 6px;
+    border-radius: 8px;
   }
 
   .record-card-compact .record-name {
-    font-size: 10px;
+    font-size: 9px;
+  }
+
+  .record-card-compact .record-date {
+    font-size: 7px;
   }
 
   .record-card-compact .record-stat-value {
-    font-size: 14px;
+    font-size: 12px;
+    padding: 4px 2px;
+  }
+
+  .record-card-compact .record-stat-label {
+    font-size: 6px;
+  }
+
+  .record-card-compact .record-diff {
+    font-size: 7px;
+    padding: 3px 4px;
+  }
+
+  .record-card-compact .btn-historial-compact {
+    font-size: 12px;
   }
 }
 
 @media (max-width: 480px) {
   .records-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    gap: 4px;
   }
 
   .record-card-compact {
-    padding: 8px;
+    padding: 5px;
+    border-radius: 6px;
+  }
+
+  .record-card-compact .record-name {
+    font-size: 8px;
+  }
+
+  .record-card-compact .record-date {
+    font-size: 6px;
+  }
+
+  .record-card-compact .record-stat-value {
+    font-size: 11px;
+    padding: 3px 2px;
+  }
+
+  .record-card-compact .record-stat-label {
+    font-size: 5px;
+  }
+
+  .record-card-compact .record-diff {
+    font-size: 6px;
+    padding: 2px 3px;
+  }
+
+  .record-card-compact .btn-historial-compact {
+    font-size: 10px;
   }
 }
