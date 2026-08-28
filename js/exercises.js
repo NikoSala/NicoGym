@@ -808,8 +808,8 @@ function getExerciseDatabase() {
       dificultad: "media", material: ["Banco inclinado", "Mancuernas"], tipoCarga: "dos_mancuernas", intensidadMuscular: { Hombro: 90, Trapecio: 50, Tríceps: 45 },
     },
     {
-      id: "elevacion-lateral-inclinada-aislada", nombre: "Elevaciones laterales inclinadas", grupo: "Hombro", categoria: "Aislamiento",
-      urlGif: "https://fitcron.com/wp-content/uploads/2021/04/03231301-Dumbbell-Incline-One-Arm-Lateral-Raise_shoulders_720.gif",
+      id: "elevacion-lateral-inclinada-aislada", nombre: "Elevaciones Laterales Horizontales con Mancuernas", grupo: "Hombro", categoria: "Aislamiento",
+      urlGif: "https://fitcron.com/wp-content/uploads/2021/04/04081301-Dumbbell-Side-Lying-One-Hand-Raise_Shoulders_720.gif",
       descripcion: "Tumbado de lado en un banco inclinado, eleva la mancuerna lateralmente hasta la vertical y desciende bajo control.",
       consejos: "• Mantén el torso estable.\n• Controla la bajada.", errores: "• No balancees el cuerpo.\n• No encogas los hombros.",
       musculosPrincipales: ["Deltoides medio"], musculosSecundarios: ["Trapecio"], series: 4, reps: "12", dia: null,
