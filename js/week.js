@@ -32,7 +32,7 @@ const Semana = {
         key: "jueves",
         nombre: "JUEVES",
         icono: "🟠",
-        grupo: "Bíceps + Antebrazo · 8 ejercicios",
+        grupo: "Bíceps · 8 ejercicios",
       },
       {
         key: "viernes",

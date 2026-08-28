@@ -34,13 +34,13 @@ const ROUTINES = {
 
   jueves: [
     ["curl-inclinado-neutro-alterno", 4, 12],
-    ["curl-aislado-hacia-abajo", 4, 12],
-    ["curl-aislado-pronacion", 4, 12],
-    ["curl-horizontal-giro", 4, 12],
+    ["curl-spider-pronacion-barra", 4, 12],
+    ["curl-aislado-neutro", 4, 12],
+    ["curl-inclinado-lateral", 4, 12],
     ["curl-concentrado-supinacion", 4, 12],
-    ["curl-inverso-muneca", 4, 12],
-    ["curl-muneca-neutro", 4, 12],
-    ["rotacion-muneca", 4, 12],
+    ["curl-lateral-mancuernas", 4, 12],
+    ["curl-inclinado-alterno-supinacion", 4, 12],
+    ["curl-supinacion-barra", 4, 12],
   ],
 
    viernes: [
