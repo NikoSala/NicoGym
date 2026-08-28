@@ -258,23 +258,6 @@ const WEIGHTS = {
   },
 
   // ==========================================
-  // PESO ANTERIOR
-  // ==========================================
-
-  pesoAnterior(pesoActual, tipo) {
-    const configuraciones = this.obtenerConfiguraciones(tipo);
-    const peso = Number(pesoActual);
-
-    const anteriores = configuraciones.filter(
-      (config) => config.peso < peso,
-    );
-
-    return anteriores.length
-      ? anteriores[anteriores.length - 1]
-      : null;
-  },
-
-  // ==========================================
   // BUSCAR CONFIGURACIÓN EXACTA
   // ==========================================
 
