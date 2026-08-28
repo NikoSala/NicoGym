@@ -64,7 +64,7 @@ const Objetivos = {
     if (obj.pesoObjetivo < inicial) {
       const total = inicial - obj.pesoObjetivo;
       const recorrido = inicial - actual;
-      const pct = total > 0 ? Math.min(100, Math.round((recorrido / total) * 100)) : 100;
+      const pct = total > 0 ? Math.min(100, Math.max(0, Math.round((recorrido / total) * 100))) : 100;
       return { pct, actual: `${actual} kg`, objetivo: `${obj.pesoObjetivo} kg` };
     }
     
@@ -72,7 +72,7 @@ const Objetivos = {
     if (obj.pesoObjetivo > inicial) {
       const total = obj.pesoObjetivo - inicial;
       const recorrido = actual - inicial;
-      const pct = total > 0 ? Math.min(100, Math.round((recorrido / total) * 100)) : 100;
+      const pct = total > 0 ? Math.min(100, Math.max(0, Math.round((recorrido / total) * 100))) : 100;
       return { pct, actual: `${actual} kg`, objetivo: `${obj.pesoObjetivo} kg` };
     }
     
@@ -253,11 +253,13 @@ const Objetivos = {
   },
 
   _eliminar(i) {
+    if (!STATE.objetivos) STATE.objetivos = [];  // Asegura que existe
     UI.confirmar("¿Eliminar esta meta?", () => {
+      if (!STATE.objetivos) STATE.objetivos = [];
       STATE.objetivos.splice(i, 1);
       Storage._save();
       this.render();
       UI.toast("🗑️ Meta eliminada", "success");
     });
-  }
+  },
 };
