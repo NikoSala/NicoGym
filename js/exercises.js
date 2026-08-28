@@ -958,7 +958,7 @@ function getExerciseDatabase() {
       nombre: "Remo en supinación con mancuernas",
       grupo: "Espalda",
       categoria: "Remo",
-      urlGif: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwNsSWK6iSiO_H8Rf8tudDeENqhg-myGueR-5zorxOlw&s=10",
+      urlGif: "https://fitcron.com/wp-content/uploads/2021/04/37991301-Dumbbell-Bent-Over-Reverse-Row_Back_720.gif",
       descripcion: "Inclina el torso hacia delante manteniendo la espalda neutra y lleva las mancuernas hacia el abdomen con las palmas hacia arriba. Mantén los codos cerca del cuerpo y baja de forma controlada.",
       consejos: "• Mantén la espalda estable.\n• Lleva los codos hacia atrás.\n• Aprieta la espalda en la parte superior.",
       errores: "• Redondear la espalda.\n• Utilizar impulso.\n• Convertir el movimiento en un curl de bíceps.",
