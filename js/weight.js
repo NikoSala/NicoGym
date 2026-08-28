@@ -263,7 +263,7 @@ const Peso = {
 
   _eliminar(f) {
     UI.confirmar("¿Eliminar esta medición?", () => {
-      STATE.mediciones = STATE.mediciones.filter((m) => m.fecha !== f);
+     // STATE.mediciones = STATE.mediciones.filter((m) => m.fecha !== f);
       Storage._save();
       this.render();
       APP.renderizarTodo();
