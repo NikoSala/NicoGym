@@ -59,10 +59,25 @@ const Objetivos = {
     if (STATE.mediciones.length === 0) return { pct: 0, actual: '-- kg', objetivo: `${obj.pesoObjetivo} kg` };
     const actual = STATE.mediciones[STATE.mediciones.length - 1].peso;
     const inicial = STATE.mediciones[0].peso;
-    const total = Math.abs(inicial - obj.pesoObjetivo);
-    const recorrido = Math.abs(inicial - actual);
-    const pct = total > 0 ? Math.min(100, Math.round((recorrido / total) * 100)) : 100;
-    return { pct, actual: `${actual} kg`, objetivo: `${obj.pesoObjetivo} kg` };
+    
+    // Si la meta es bajar peso
+    if (obj.pesoObjetivo < inicial) {
+      const total = inicial - obj.pesoObjetivo;
+      const recorrido = inicial - actual;
+      const pct = total > 0 ? Math.min(100, Math.round((recorrido / total) * 100)) : 100;
+      return { pct, actual: `${actual} kg`, objetivo: `${obj.pesoObjetivo} kg` };
+    }
+    
+    // Si la meta es subir peso
+    if (obj.pesoObjetivo > inicial) {
+      const total = obj.pesoObjetivo - inicial;
+      const recorrido = actual - inicial;
+      const pct = total > 0 ? Math.min(100, Math.round((recorrido / total) * 100)) : 100;
+      return { pct, actual: `${actual} kg`, objetivo: `${obj.pesoObjetivo} kg` };
+    }
+    
+    // Si la meta es mantener peso (inicial = objetivo)
+    return { pct: 100, actual: `${actual} kg`, objetivo: `${obj.pesoObjetivo} kg` };
   },
 
   _progresoEjercicio(obj) {
