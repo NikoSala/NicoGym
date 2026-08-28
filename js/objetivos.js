@@ -253,10 +253,9 @@ const Objetivos = {
   },
 
   _eliminar(i) {
-    if (!STATE.objetivos) STATE.objetivos = [];  // Asegura que existe
     UI.confirmar("¿Eliminar esta meta?", () => {
       if (!STATE.objetivos) STATE.objetivos = [];
-      STATE.objetivos.splice(i, 1);
+      STATE.objetivos = STATE.objetivos.filter((_, index) => index !== i);
       Storage._save();
       this.render();
       UI.toast("🗑️ Meta eliminada", "success");
