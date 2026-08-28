@@ -13,10 +13,17 @@
                 Modal.abrir(`
                     <h3>${msg}</h3>
                     <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-                        <button class="btn btn-danger" onclick="Modal.cerrar(); (${cb.toString()})()">Confirmar</button>
-                        <button class="btn btn-ghost" onclick="Modal.cerrar()">Cancelar</button>
+                        <button type="button" class="btn btn-danger" data-confirmar-accion>Confirmar</button>
+                        <button type="button" class="btn btn-ghost" data-cancelar-accion>Cancelar</button>
                     </div>
                 `);
+
+                const contenido = document.getElementById('modalGlobalContent');
+                contenido.querySelector('[data-confirmar-accion]').addEventListener('click', () => {
+                    Modal.cerrar();
+                    cb();
+                });
+                contenido.querySelector('[data-cancelar-accion]').addEventListener('click', () => Modal.cerrar());
             },
             toggleMenu() {
                 document.getElementById('sideMenu').classList.toggle('open');
