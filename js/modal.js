@@ -3,6 +3,7 @@
 // ==========================================
 const Modal = {
     _previousFocus: null,
+
     abrir(html) {
         this._previousFocus = document.activeElement;
         document.getElementById('modalGlobalContent').innerHTML = html;
@@ -13,12 +14,14 @@ const Modal = {
             (first || document.getElementById('modalGlobalPanel')).focus?.();
         });
     },
+
     cerrar() {
         const modal = document.getElementById('modalGlobal');
         modal.classList.add('hidden');
         this._previousFocus?.focus?.();
     }
 };
+
 document.addEventListener('keydown', e => {
     const modal = document.getElementById('modalGlobal');
     if (!modal || modal.classList.contains('hidden')) return;
