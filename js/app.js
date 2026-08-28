@@ -227,7 +227,7 @@ const APP = {
       UI.toast("🚶 Este día no tiene entrenamiento guiado", "info");
       return;
     }
-            // Ya no hay selector de peso inicial. Empezamos directamente.
+   // Ya no hay selector de peso inicial. Empezamos directamente.
       modoEntrenoActivo = true;
       ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
       
