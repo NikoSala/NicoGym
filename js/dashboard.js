@@ -13,10 +13,8 @@ const Dashboard = {
     if (horas >= 21 || horas < 6) saludo = "Buenas noches";
 
     const dia = UI.getDiaNombre();
-    const rutinaNombre = CONFIG.TIPOS_RUTINA[dia];
     const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
     const ejercicios = getEjerciciosPorDia(dia);
-    const rutinaNombreActualizada = CONFIG.TIPOS_RUTINA[dia];
 
     const peso =
       STATE.mediciones.length > 0
@@ -45,16 +43,6 @@ const Dashboard = {
       else ultimoEntreno = UI.formatearFecha(ultimo);
     }
 
-    let ultimaMedicion = "Nunca";
-    if (STATE.mediciones.length > 0) {
-      const ultima = STATE.mediciones[STATE.mediciones.length - 1];
-      const diff = Math.round((new Date() - new Date(ultima.fecha)) / 86400000);
-      if (diff === 0) ultimaMedicion = "Hoy";
-      else if (diff === 1) ultimaMedicion = "Ayer";
-      else if (diff < 7) ultimaMedicion = `Hace ${diff} días`;
-      else ultimaMedicion = UI.formatearFecha(ultima.fecha);
-    }
-
     const entrenamientoPendiente = STATE.entrenamientoPendiente;
     const diaHoy = UI.getDiaNombre();
 
@@ -63,42 +51,6 @@ const Dashboard = {
       entrenamientoPendiente.dia === diaHoy &&
       Array.isArray(entrenamientoPendiente.ejerciciosEntreno) &&
       entrenamientoPendiente.ejerciciosEntreno.length > 0;
-    const progresionDia = STATE.progresion[dia] || null;
-
-    const recomendacionesProximaSesion =
-      progresionDia && Array.isArray(progresionDia.recomendaciones)
-        ? progresionDia.recomendaciones
-        : [];
-
-    let bloqueProgresion = "";
-
-    if (recomendacionesProximaSesion.length > 0) {
-      bloqueProgresion = `
-        <div class="card progreso-sesion-card">
-        <div class="card-title">🎯 Objetivo próxima sesión</div>
-        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">
-            Basado en tu último entrenamiento
-        </div>
-        <div>
-            ${recomendacionesProximaSesion
-              .map(
-                (r) => `
-                <div style="padding:7px 0;border-bottom:1px solid var(--border);">
-                    <div style="font-weight:600;font-size:13px;">
-                    ${r.nombre}
-                    </div>
-                    <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">
-                    ${r.texto}
-                    </div>
-                </div>
-                `,
-              )
-              .join("")}
-        </div>
-        </div>
-    `;
-    }
-
     const ejerciciosHoy = getEjerciciosPorDia(diaHoy);
 
     let ejerciciosCompletadosHoy = 0;
@@ -201,55 +153,16 @@ const Dashboard = {
           <span class="accion-icono">🎯</span>
           <span class="accion-texto">Metas</span>
         </button>
+        <button class="accion-rapida" onclick="APP.navegar('historial')">
+          <span class="accion-icono">📚</span>
+          <span class="accion-texto">Historial</span>
+        </button>
       </div>
     `;
     
     // ===== MINI CALENDARIO =====
     const miniCalendario = this._renderMiniCalendario();
     
-    // ===== BANNER DE ACTUALIZACIÓN =====
-    const tipoActualizacion = APP.obtenerTipoActualizacion();
-    let updateBanner = "";
-    const hoyStr = UI.getHoy();
-
-    if (tipoActualizacion === "completa") {
-      updateBanner = `
-                        <div class="update-banner">
-                            <div class="ub-titulo">📊 Actualización completa — Peso + Mediciones + Fotos</div>
-                            <div class="ub-descripcion">Hoy es domingo de actualización completa. Registra todos tus datos.</div>
-                            <div class="ub-boton">
-                                <button class="btn btn-primary btn-block btn-sm" onclick="APP.navegar('peso')">
-                                    <i class="fa-solid fa-scale-balanced"></i> Ir a mediciones
-                                </button>
-                            </div>
-                        </div>
-                    `;
-    } else if (tipoActualizacion === "mediciones") {
-      updateBanner = `
-                        <div class="update-banner mediciones">
-                            <div class="ub-titulo">📊 Actualización de mediciones — Peso + Mediciones</div>
-                            <div class="ub-descripcion">Hoy actualiza peso y mediciones. Las fotos se conservan.</div>
-                            <div class="ub-boton">
-                                <button class="btn btn-primary btn-block btn-sm" onclick="APP.navegar('peso')" style="background:var(--primary);border-color:var(--primary);color:#fff;">
-                                    <i class="fa-solid fa-scale-balanced"></i> Ir a mediciones
-                                </button>
-                            </div>
-                        </div>
-                    `;
-    } else if (tipoActualizacion === "solo-peso") {
-      updateBanner = `
-                        <div class="update-banner peso">
-                            <div class="ub-titulo">📊 Actualización semanal — Solo peso</div>
-                            <div class="ub-descripcion">Hoy solo debes registrar tu peso. Mediciones y fotos se conservan.</div>
-                            <div class="ub-boton">
-                                <button class="btn btn-primary btn-block btn-sm" onclick="APP.navegar('peso')" style="background:var(--text-muted);border-color:var(--text-muted);">
-                                    <i class="fa-solid fa-scale-balanced"></i> Registrar peso
-                                </button>
-                            </div>
-                        </div>
-                    `;
-    }
-
     c.innerHTML = `
                 <div class="saludo-header">
                     <div class="saludo-info">
@@ -308,7 +221,6 @@ const Dashboard = {
                             `
                 }
 
-                ${updateBanner}
                 ${
                   mensajeProgreso
                     ? `
@@ -324,8 +236,6 @@ const Dashboard = {
                         `
                     : ""
                 }
-                ${bloqueProgresion}
-                
                      <div class="card card-accent">
                     <div class="card-title">📊 Resumen</div>
                     <div class="dash-grid">

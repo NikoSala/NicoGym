@@ -49,29 +49,15 @@ const Storage = {
     let version = Number(d.schemaVersion) || 1;
     while (version < CONFIG.STATE_SCHEMA_VERSION) {
       if (version === 1) {
-        d.progresion = d.progresion || {};
-        d.progresionConfig = d.progresionConfig || {
-          semanaBase: null,
-          ejerciciosBase: {},
-        };
         version = 2;
         cambio = true;
       } else if (version === 2) {
-        d.progresion = d.progresion || {};
-        d.progresionConfig = d.progresionConfig || {
-          semanaBase: null,
-          ejerciciosBase: {},
-        };
         d.schemaVersion = 3;
         version = 3;
         cambio = true;
       } else {
         break;
       }
-    }
-    if (!d.progresionConfig) {
-      d.progresionConfig = { semanaBase: null, ejerciciosBase: {} };
-      cambio = true;
     }
     if (d.schemaVersion !== CONFIG.STATE_SCHEMA_VERSION) {
       d.schemaVersion = CONFIG.STATE_SCHEMA_VERSION;
@@ -118,22 +104,6 @@ const Storage = {
     if (!Array.isArray(STATE.diasNoFumar)) STATE.diasNoFumar = [];
     if (!Array.isArray(STATE.diasEntrenados)) STATE.diasEntrenados = [];
     if (!STATE.checks || typeof STATE.checks !== "object") STATE.checks = {};
-    if (!STATE.recordatorios || typeof STATE.recordatorios !== "object")
-      STATE.recordatorios = {};
-    STATE.recordatorios.freqMediciones = Math.max(
-      1,
-      Number(STATE.recordatorios.freqMediciones) || 2,
-    );
-    STATE.recordatorios.freqFotos = Math.max(
-      1,
-      Number(STATE.recordatorios.freqFotos) || 4,
-    );
-    if (!STATE.recordatorios.ultimaMedicion)
-      STATE.recordatorios.ultimaMedicion = CONFIG.FECHA_REFERENCIA_MEDICIONES;
-    if (STATE.recordatorios.ultimoBackup !== null &&
-        (typeof STATE.recordatorios.ultimoBackup !== "string" ||
-          !Number.isFinite(new Date(STATE.recordatorios.ultimoBackup).getTime())))
-      STATE.recordatorios.ultimoBackup = null;
     if (!STATE.records || !Array.isArray(STATE.records)) STATE.records = [];
     if (!STATE.evolution || typeof STATE.evolution !== "object")
       STATE.evolution = {};
@@ -149,25 +119,6 @@ const Storage = {
     if (!STATE.config || typeof STATE.config !== "object") STATE.config = {};
     if (typeof STATE.config.temporizadorDescanso !== "boolean")
       STATE.config.temporizadorDescanso = false;
-    if (!STATE.progresion || typeof STATE.progresion !== "object")
-      STATE.progresion = {};
-    if (
-      !STATE.progresionConfig ||
-      typeof STATE.progresionConfig !== "object" ||
-      Array.isArray(STATE.progresionConfig)
-    ) {
-      STATE.progresionConfig = {
-        semanaBase: null,
-        ejerciciosBase: {},
-      };
-    }
-    if (
-      !STATE.progresionConfig.ejerciciosBase ||
-      typeof STATE.progresionConfig.ejerciciosBase !== "object" ||
-      Array.isArray(STATE.progresionConfig.ejerciciosBase)
-    ) {
-      STATE.progresionConfig.ejerciciosBase = {};
-    }
     if (
       STATE.entrenamientoPendiente !== null &&
       (typeof STATE.entrenamientoPendiente !== "object" ||
@@ -175,10 +126,7 @@ const Storage = {
     ) {
       STATE.entrenamientoPendiente = null;
     }
-    if (STATE.ultimoRegistroPeso === undefined) STATE.ultimoRegistroPeso = null;
     if (STATE.ultimasMediciones === undefined) STATE.ultimasMediciones = null;
-    if (STATE.ultimasFotosGuardadas === undefined)
-      STATE.ultimasFotosGuardadas = null;
   },
 
   _calcularDiasSinFumar() {
@@ -288,7 +236,6 @@ const Storage = {
       });
       const fecha = new Date().toISOString().slice(0, 10);
       const nombre = `NicoGym_backup_${fecha}.json`;
-      STATE.recordatorios.ultimoBackup = new Date().toISOString();
       this._save();
 
       const android = window.Android;
@@ -376,13 +323,10 @@ const Storage = {
           diasNoFumar: "array",
           diasEntrenados: "array",
           checks: "object",
-          recordatorios: "object",
           records: "array",
           evolution: "object",
           config: "object",
           ajustes: "object",
-          progresion: "object",
-          progresionConfig: "object",
         };
         for (const [campo, tipo] of Object.entries(campos)) {
           if (datosEstado[campo] === undefined) continue;

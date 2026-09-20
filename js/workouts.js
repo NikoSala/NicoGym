@@ -52,6 +52,9 @@ const Rutinas = {
         panelContent = `<div class="card" style="text-align:center;padding:24px;color:var(--text-secondary);"><span style="font-size:48px;display:block;margin-bottom:8px;">😌</span><div style="font-size:18px;font-weight:600;color:var(--text);">Día de descanso</div></div>`;
       } else {
         const ejercicios = getEjerciciosPorDia(dia);
+        const tieneSesionAnterior = STATE.historialEntrenos.some(
+          (sesion) => sesion.dia === dia && sesion.ejercicios?.length,
+        );
 
         panelContent = `
                             <div class="card" style="text-align:center;padding:20px;">
@@ -75,6 +78,13 @@ const Rutinas = {
                                         <i class="fa-solid fa-play"></i> Comenzar entrenamiento
                                     </button>
                                 `
+                                }
+                                ${
+                                  tieneSesionAnterior && !yaCompletado
+                                    ? `<button class="btn btn-ghost btn-block" onclick="APP.iniciarEntreno('${dia}', true)" style="margin-top:8px;">
+                                        <i class="fa-solid fa-copy"></i> Repetir última sesión
+                                      </button>`
+                                    : ""
                                 }
                             </div>
                         `;

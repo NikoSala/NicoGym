@@ -54,7 +54,10 @@ const Agenda = {
         </div>
         <div class="agenda-weekdays"><span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
         <div class="agenda-calendar-grid">${celdas.join("")}</div>
-        <div class="agenda-legend"><span><i class="agenda-dot agenda-dot-workout"></i> Entreno</span><span><i class="agenda-dot agenda-dot-update"></i> Actualización</span><span><i class="agenda-dot agenda-dot-done"></i> Completado</span></div>
+        <div class="agenda-legend">
+          <span><i class="agenda-dot agenda-dot-workout"></i> Entreno</span>
+          <span><i class="agenda-dot agenda-dot-done"></i> Completado</span>
+        </div>
       </section>
       <section class="card agenda-detail-card">
         <div class="card-title">${detalle.titulo}</div>
@@ -83,7 +86,6 @@ const Agenda = {
     if (!finDeSemana && getEjerciciosPorDia(dia).length > 0) {
       eventos.push({ tipo: entrenado ? "completado" : "entreno", icono: entrenado ? "✓" : "●", texto: entrenado ? "Entrenamiento completado" : "Entrenamiento previsto" });
     }
-    if (getTipoActualizacion(fechaKey)) eventos.push({ tipo: "actualizacion", icono: "◆", texto: "Actualización de progreso" });
     return eventos;
   },
 
@@ -134,11 +136,6 @@ const Agenda = {
     else if (eventos.some((evento) => evento.tipo === "entreno") && estadoEspecial === 'lesionado') elementos.push('<div class="agenda-detail-item"><span>🤕</span><span>Lesionado - Descanso recomendado</span></div>');
     else if (fecha.getDay() === 0 || fecha.getDay() === 6) elementos.push('<div class="agenda-detail-item"><span>😌</span><span>Día de descanso</span></div>');
 
-    const tipo = getTipoActualizacion(fechaKey);
-    if (tipo) {
-      const texto = tipo === "completa" ? "Peso, mediciones y fotos" : tipo === "mediciones" ? "Peso y mediciones" : "Solo peso";
-      elementos.push(`<div class="agenda-detail-item"><span>📊</span><span>Actualización: ${texto}</span></div><button class="btn btn-ghost btn-block" onclick="APP.navegar('peso')">Registrar progreso</button>`);
-    }
     if (elementos.length === 0) elementos.push('<div class="agenda-empty">Sin eventos para este día.</div>');
     return { titulo, html: elementos.join("") };
   },

@@ -15,58 +15,10 @@ const Peso = {
         : null;
     const primero = STATE.mediciones.length > 0 ? STATE.mediciones[0] : null;
 
-    const tipo = APP.obtenerTipoActualizacion();
-    const hoy = new Date();
-    const esDomingo = hoy.getDay() === 0;
-    const esFechaValida = tipo !== null;
-
     let titulo = "Nueva medición";
     let descripcion = "Registra todos tus datos corporales.";
     let mensajeAdicional = "";
-
-    if (esDomingo && esFechaValida) {
-      if (tipo === "completa") {
-        titulo = "📊 Actualización completa — Peso + Mediciones + Fotos";
-        descripcion = "Registra peso, mediciones y fotos.";
-      } else if (tipo === "mediciones") {
-        titulo = "📊 Actualización de mediciones — Peso + Mediciones";
-        descripcion = "Hoy registra peso y mediciones. Las fotos se conservan.";
-        mensajeAdicional = `
-                            <div style="padding:10px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);margin-bottom:8px;text-align:center;">
-                                <span style="font-size:13px;color:var(--text-secondary);">
-                                    📸 Las fotos se conservan de la última actualización completa.
-                                </span>
-                            </div>
-                        `;
-      } else if (tipo === "solo-peso") {
-        titulo = "📊 Actualización semanal — Solo peso";
-        descripcion =
-          "Hoy solo debes registrar tu peso. Mediciones y fotos se conservan.";
-        mensajeAdicional = `
-                            <div style="padding:10px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);margin-bottom:8px;text-align:center;">
-                                <span style="font-size:13px;color:var(--text-secondary);">
-                                    📏 Mediciones y fotos se conservan de la última actualización completa.
-                                </span>
-                            </div>
-                        `;
-        if (ultimo) {
-          mensajeAdicional += `
-                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;color:var(--text-secondary);background:rgba(0,0,0,0.1);padding:8px;border-radius:var(--radius-sm);margin-bottom:8px;">
-                                    <div>Último peso: <strong style="color:var(--text);">${ultimo.peso} kg</strong></div>
-                                    <div>Última grasa: <strong style="color:var(--text);">${mostrarMedida(ultimo.grasaPorcentaje)}%</strong></div>
-                                    <div>Último músculo: <strong style="color:var(--text);">${mostrarMedida(ultimo.masaMuscular)} kg</strong></div>
-                                    <div>Última cintura: <strong style="color:var(--text);">${mostrarMedida(ultimo.cintura)} cm</strong></div>
-                                </div>
-                            `;
-        }
-      }
-    }
-
-    const mostrarCamposCompletos =
-      tipo === "completa" ||
-      tipo === "mediciones" ||
-      !esDomingo ||
-      !esFechaValida;
+    const mostrarCamposCompletos = true;
 
     let html = `
                     <div class="card">
@@ -183,8 +135,6 @@ const Peso = {
     else STATE.mediciones.push(nm);
 
     STATE.mediciones.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
-    STATE.recordatorios.ultimaMedicion = f;
-
     STATE.ultimasMediciones = {
       grasaPorcentaje: grasaPorcentaje,
       masaMuscular: masaMuscular,

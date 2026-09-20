@@ -29,9 +29,6 @@
                 document.getElementById('sideMenu').classList.toggle('open');
                 document.getElementById('sideOverlay').classList.toggle('open');
             },
-            toggleNotif() {
-                document.getElementById('notifDropdown').classList.toggle('open');
-            },
             cerrarLightbox() { document.getElementById('lightbox').classList.remove('active'); },
             abrirLightbox(src) { document.getElementById('lightboxImg').src = src;
                 document.getElementById('lightbox').classList.add('active'); },

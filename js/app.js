@@ -24,13 +24,6 @@ const APP = {
       }, 250);
     });
 
-    document.addEventListener("click", (e) => {
-      const bell = document.getElementById("bellWrap");
-      const drop = document.getElementById("notifDropdown");
-      if (bell && drop && !bell.contains(e.target))
-        drop.classList.remove("open");
-    });
-
     return this;
   },
 
@@ -53,7 +46,6 @@ const APP = {
   _renderDashboardInicial() {
     UI.actualizarTopBar();
     Dashboard.render();
-    Notificaciones.render();
   },
 
   _cargarDatosCompletos() {
@@ -125,6 +117,9 @@ const APP = {
       case "records":
         Records.render();
         break;
+      case "historial":
+        Historial.render();
+        break;
       case "estadisticas":
         Estadisticas.render();
         break;
@@ -148,27 +143,33 @@ const APP = {
   },
 
   confirmarReset() {
-    UI.confirmar("¿Borrar TODOS los datos? No se puede deshacer.", () =>
-      Storage.resetAll(),
-    );
+    Modal.abrir(`
+      <h3>¿Borrar todos los datos?</h3>
+      <p style="color:var(--text-secondary);font-size:12px;margin-top:8px;">
+        Esta acción no se puede deshacer. Escribe BORRAR para confirmar.
+      </p>
+      <input class="input" id="resetConfirmacion" autocomplete="off" placeholder="BORRAR" style="margin-top:10px;">
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <button type="button" class="btn btn-danger" onclick="APP._confirmarResetTexto()">Borrar datos</button>
+        <button type="button" class="btn btn-ghost" onclick="Modal.cerrar()">Cancelar</button>
+      </div>
+    `);
   },
 
-  // ==========================================
-  // CALENDARIO DE ACTUALIZACIONES
-  // ==========================================
-  obtenerTipoActualizacion() {
-    const hoy = new Date();
-    return getTipoActualizacion(hoy);
-  },
-
-  obtenerProximaActualizacion() {
-    return getProximaActualizacion();
+  _confirmarResetTexto() {
+    const input = document.getElementById("resetConfirmacion");
+    if (input?.value.trim() !== "BORRAR") {
+      UI.toast("Escribe BORRAR para confirmar", "error");
+      return;
+    }
+    Modal.cerrar();
+    Storage.resetAll();
   },
 
   // ==========================================
   // MODO ENTRENO GUIADO
   // ==========================================
-  iniciarEntreno(dia) {
+  iniciarEntreno(dia, duplicarUltima = false) {
     const ejercicios = getEjerciciosPorDia(dia);
 
     if (ejercicios.length === 0) {
@@ -188,6 +189,7 @@ const APP = {
       modoEntrenoActivo = true;
 
       ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
+      notasActualesEntreno = pendiente.notasSesion || "";
 
       idxEjercicioActual = Math.min(
         Math.max(Number(pendiente.idxEjercicioActual) || 0, 0),
@@ -230,6 +232,29 @@ const APP = {
    // Ya no hay selector de peso inicial. Empezamos directamente.
       modoEntrenoActivo = true;
       ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
+      notasActualesEntreno = "";
+
+      if (duplicarUltima) {
+        const ultimaSesion = [...STATE.historialEntrenos]
+          .filter((sesion) => sesion.dia === dia && sesion.ejercicios?.length)
+          .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))[0];
+
+        if (ultimaSesion) {
+          ejerciciosEntreno = ejerciciosEntreno.map((ejercicio) => {
+            const anterior = ultimaSesion.ejercicios.find(
+              (registro) => registro.nombre === ejercicio.nombre,
+            );
+            if (!anterior) return ejercicio;
+            const reps = parseReps(anterior.reps);
+            return {
+              ...ejercicio,
+              pesoInicial: Number(anterior.peso) || 0,
+              repsSugeridas: reps.valid ? reps.series : [],
+            };
+          });
+          notasActualesEntreno = ultimaSesion.notas || "";
+        }
+      }
       
       idxEjercicioActual = 0;
       recordsConseguidos = [];
@@ -720,8 +745,8 @@ const APP = {
 
     const pesoEspecifico = STATE.pesosAjustados?.[ej.nombre];
     pesoActualEntreno = Number.isFinite(pesoEspecifico) && pesoEspecifico > 0
-        ? pesoEspecifico
-        : this.pesoSesionEntreno;
+      ? pesoEspecifico
+      : this.pesoSesionEntreno || ej.pesoInicial || 0;
 
     ejercicioIniciadoAt = Date.now();
 
@@ -813,7 +838,7 @@ const APP = {
       typeof WEIGHTS !== "undefined" && ej.tipoCarga
         ? this._buscarConfiguracionCarga(
             ej.tipoCarga,
-            this.pesoSesionEntreno,
+            pesoActualEntreno || this.pesoSesionEntreno,
           )
         : null;
 
@@ -1021,7 +1046,7 @@ const APP = {
                 min="1"
                 max="100"
                 step="1"
-                value="${PROGRESION.REPS_OBJETIVO}"
+                value="${ej.repsSugeridas?.[seriesActualesEntreno.length] || PROGRESION.REPS_OBJETIVO}"
               >
 
               <button
@@ -1039,6 +1064,11 @@ const APP = {
               Objetivo: ${PROGRESION.SERIES_OBJETIVO} × ${PROGRESION.REPS_OBJETIVO} reps
             </div>
 
+          </div>
+
+          <div class="me-workout-reps-card">
+            <div class="me-workout-reps-title">NOTAS DE LA SESIÓN</div>
+            <textarea id="meNotasSesion" class="input" rows="3" maxlength="500" placeholder="Sensaciones, molestias o comentarios...">${notasActualesEntreno}</textarea>
           </div>
 
 
@@ -1123,6 +1153,7 @@ const APP = {
   },
 
   _navegarEjercicio(direccion) {
+    this._capturarNotaSesion();
     const siguienteIndice = idxEjercicioActual + direccion;
     if (siguienteIndice < 0 || siguienteIndice >= ejerciciosEntreno.length)
       return;
@@ -1147,6 +1178,11 @@ const APP = {
     valor = Math.max(1, Math.min(100, valor));
 
     input.value = valor;
+  },
+
+  _capturarNotaSesion() {
+    const input = document.getElementById("meNotasSesion");
+    if (input) notasActualesEntreno = input.value;
   },
 
     _abrirSelectorPeso(nombreEjercicio) {
@@ -1290,6 +1326,7 @@ const APP = {
   },
 
   _guardarSerie() {
+    this._capturarNotaSesion();
     const ej = ejerciciosEntreno[idxEjercicioActual];
     const peso = pesoActualEntreno;
     const reps = parseInt(document.getElementById("meRepsSerie")?.value, 10);
@@ -1586,24 +1623,9 @@ const APP = {
     const entrenamiento = STATE.historialEntrenos.find(
       (e) => e.fecha === hoyStr && e.dia === dia,
     );
-    const recomendacion = PROGRESION.recomendarDia(
-      dia,
-      ejerciciosDia,
-      entrenamiento,
-    );
-
     if (!STATE.diasEntrenados.includes(hoyStr))
       STATE.diasEntrenados.push(hoyStr);
-    STATE.progresion[dia] = {
-      ultimaFecha: hoyStr,
-      completo: recomendacion.completo,
-      targetReps: PROGRESION.REPS_OBJETIVO,
-      siguienteReps: recomendacion.completo
-        ? PROGRESION.REPS_SIGUIENTE
-        : PROGRESION.REPS_OBJETIVO,
-      recomendaciones: recomendacion.recomendaciones,
-      timestamp: Date.now(),
-    };
+    if (entrenamiento) entrenamiento.notas = notasActualesEntreno.trim();
     STATE.entrenamientoPendiente = null;
     Storage._save();
 
@@ -1620,14 +1642,6 @@ const APP = {
                             <div class="me-res-item"><div class="me-res-valor">${totalPesoLevantadoEntreno.toFixed(1)}</div><div class="me-res-label">Carga × series (kg)</div></div>
                             <div class="me-res-item"><div class="me-res-valor">${Math.round(totalVolumenEntreno)}</div><div class="me-res-label">Volumen (kg)</div></div>
                             <div class="me-res-item"><div class="me-res-valor">${recordsConseguidos.length}</div><div class="me-res-label">Récords</div></div>
-                        </div>
-                        <div class="me-progresion-card ${recomendacion.completo ? "ok" : "keep"}">
-                            <div class="me-progresion-title">💪 ${recomendacion.titulo}</div>
-                            <div class="me-progresion-text">${recomendacion.mensaje}</div>
-                            <div class="me-progresion-list">
-                                ${recomendacion.recomendaciones.map((r) => `<div class="me-progresion-row"><span>${r.nombre}</span><strong>${r.texto}</strong></div>`).join("")}
-                            </div>
-                            ${recomendacion.completo ? `<div class="me-progresion-next">Objetivo de la próxima sesión: <strong>4×${PROGRESION.REPS_SIGUIENTE}</strong> si el aumento de carga se siente cómodo.</div>` : ""}
                         </div>
                         ${recordsConseguidos.length ? `<div class="me-records"><div class="me-rec-titulo">🏆 Nuevos récords</div><div class="me-rec-item">${recordsConseguidos.join(", ")}</div></div>` : ""}
                         <button class="btn btn-primary btn-block" onclick="APP._salirEntreno()" style="margin-top:10px;"><i class="fa-solid fa-check"></i> Finalizar entrenamiento</button>
@@ -1662,6 +1676,7 @@ const APP = {
       totalVolumenEntreno,
       totalSeriesEntreno,
       totalRepsEntreno,
+      notasSesion: notasActualesEntreno,
     };
 
     Storage._save();
@@ -1688,6 +1703,7 @@ const APP = {
     totalVolumenEntreno = 0;
     totalSeriesEntreno = 0;
     totalRepsEntreno = 0;
+    notasActualesEntreno = "";
     seriesActualesEntreno = [];
     pesoActualEntreno = 0;
 

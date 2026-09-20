@@ -10,14 +10,6 @@ const STATE = {
   diasNoFumar: [],
   diasEntrenados: [],
   checks: {},
-  recordatorios: {
-    freqMediciones: 2,
-    freqFotos: 4,
-    ultimaMedicion: CONFIG.FECHA_REFERENCIA_MEDICIONES,
-    ultimasFotos: null,
-    ultimoBackup: null,
-    ultimoPeso: null,
-  },
   records: [],
   evolution: {
     initialWeight: 0,
@@ -30,14 +22,7 @@ const STATE = {
   ajustes: {},
   config: { temporizadorDescanso: false },
   _cargado: false,
-  ultimoRegistroPeso: null,
   ultimasMediciones: null,
-  ultimasFotosGuardadas: null,
-  progresion: {},
-  progresionConfig: {
-    semanaBase: null,
-    ejerciciosBase: {},
-  },
   entrenamientoPendiente: null,
   pesosAjustados: {},
   diasEspeciales: {}, // Formato: { "2026-08-27": "vacaciones" | "lesionado" }
