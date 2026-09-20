@@ -124,93 +124,13 @@ const PROGRESION = {
   recomendarDia(dia, ejercicios, entrenamiento) {
     const analisis = this.analizarDia(dia, ejercicios, entrenamiento);
 
-    if (!analisis.detalle.length) {
-      return {
-        ...analisis,
-        titulo: "",
-        mensaje: "",
-        recomendaciones: [],
-      };
-    }
-
-    // ----------------------------------------------
-    // SEMANA BASE
-    // ----------------------------------------------
-    if (this.esSemanaBase()) {
-      return {
-        ...analisis,
-
-        titulo: "Semana de referencia",
-
-        mensaje:
-          "Esta semana sirve para establecer tus pesos iniciales. No se propone subir ni bajar carga. Mantén el mismo peso durante las 4 series de cada ejercicio y registra las repeticiones conseguidas.",
-
-        recomendaciones: analisis.detalle.map((x) => ({
-          nombre: x.ejercicio.nombre,
-
-          pesoActual: Number(x.registro?.peso) || 0,
-
-          siguientePeso: null,
-
-          texto: x.registro?.peso
-            ? `Peso base: ${x.registro.peso} kg. Mantén esta carga durante las 4 series y registra las repeticiones.`
-            : "Elige un peso inicial que puedas mantener durante las 4 series.",
-        })),
-      };
-    }
-
-    // ----------------------------------------------
-    // TODAVÍA NO SE HAN COMPLETADO 4x12
-    // ----------------------------------------------
-    if (!analisis.completo) {
-      return {
-        ...analisis,
-
-        titulo: "Consolida el peso",
-
-        mensaje: `La prioridad es completar ${this.SERIES_OBJETIVO}×${this.REPS_OBJETIVO} con el mismo peso antes de aumentar la carga.`,
-
-        recomendaciones: analisis.incompletos.map((x) => ({
-          nombre: x.ejercicio.nombre,
-
-          pesoActual: Number(x.registro?.peso) || 0,
-
-          siguientePeso: null,
-
-          texto: x.registro?.peso
-            ? `Mantén ${x.registro.peso} kg y trata de aumentar las repeticiones hasta conseguir 4×12.`
-            : "Registra el peso utilizado y busca una carga que puedas mantener durante las 4 series.",
-        })),
-      };
-    }
-
-    // ----------------------------------------------
-    // 4x12 COMPLETADO
-    // ----------------------------------------------
-    const recomendaciones = analisis.detalle.map((x) => {
-      const peso = Number(x.registro?.peso) || 0;
-
-      return {
-        nombre: x.ejercicio.nombre,
-
-        pesoActual: peso,
-
-        siguientePeso: null,
-
-        incremento: null,
-
-        texto: `Has completado 4×12 con ${peso} kg. El siguiente objetivo será consolidar esta carga y, cuando corresponda, pasar a una carga físicamente disponible superior.`,
-      };
-    });
-
     return {
       ...analisis,
-
-      titulo: "4×12 completado · preparado para progresar",
-
-      mensaje: `Has conseguido ${this.SERIES_OBJETIVO}×${this.REPS_OBJETIVO}. La siguiente progresión se decidirá utilizando las cargas reales disponibles de tu material.`,
-
-      recomendaciones,
+      completo: false,
+      titulo: "Entrenamiento registrado",
+      mensaje:
+        "Se guardan el peso, las series y las repeticiones en el historial. Las sugerencias automáticas de progresión están desactivadas.",
+      recomendaciones: [],
     };
   },
 };

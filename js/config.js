@@ -15,15 +15,15 @@
             NOMBRES_DIAS: { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes',
                 sabado: 'Sábado', domingo: 'Domingo' },
             TIPOS_RUTINA: {
-                lunes: 'Pecho + Bíceps · 5 ejercicios + cinta',
-                martes: 'Espalda + Trapecio + Antebrazo · 8 ejercicios',
-                miercoles: 'Hombros + Tríceps · 5 ejercicios + cinta',
-                jueves: 'Bíceps + Antebrazo · 8 ejercicios',
-                viernes: 'Pecho + Espalda + Tríceps · 6 ejercicios',
+                lunes: 'Pecho + Hombro + Tríceps · 6 ejercicios + cinta',
+                martes: 'Espalda + Bíceps · 6 ejercicios',
+                miercoles: 'Pierna completa · 6 ejercicios',
+                jueves: 'Bíceps + Tríceps · 6 ejercicios',
+                viernes: 'Hombro + Pecho · 6 ejercicios + cinta',
                 sabado: 'Descanso',
                 domingo: 'Descanso'
             },
-            DIAS_CINTA: ['lunes', 'miercoles', 'viernes'],
+            DIAS_CINTA: ['lunes', 'viernes'],
             MIN_CINTA: 15,
             MAX_CINTA: 20,
             // TEMPORIZADOR DESACTIVADO POR DEFECTO

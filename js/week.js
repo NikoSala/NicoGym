@@ -14,31 +14,31 @@ const Semana = {
         key: "lunes",
         nombre: "LUNES",
         icono: "🔵",
-        grupo: "Pecho + Bíceps · 5 ejercicios + cinta",
+        grupo: "Pecho + Hombro + Tríceps · 6 ejercicios + cinta",
       },
       {
         key: "martes",
         nombre: "MARTES",
         icono: "🟢",
-        grupo: "Espalda + Trapecio + Antebrazo · 8 ejercicios",
+        grupo: "Espalda + Bíceps · 6 ejercicios",
       },
       {
         key: "miercoles",
         nombre: "MIÉRCOLES",
         icono: "🟣",
-        grupo: "Hombros + Tríceps · 5 ejercicios + cinta",
+        grupo: "Pierna completa · 6 ejercicios",
       },
       {
         key: "jueves",
         nombre: "JUEVES",
         icono: "🟠",
-        grupo: "Bíceps · 8 ejercicios",
+        grupo: "Bíceps + Tríceps · 6 ejercicios",
       },
       {
         key: "viernes",
         nombre: "VIERNES",
         icono: "🔵",
-        grupo: "Pecho + Espalda + Tríceps · 6 ejercicios",
+        grupo: "Hombro + Pecho · 6 ejercicios + cinta",
       },
     ];
 
