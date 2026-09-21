@@ -13,11 +13,11 @@
             NOMBRES_DIAS: { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes',
                 sabado: 'Sábado', domingo: 'Domingo' },
             TIPOS_RUTINA: {
-                lunes: 'Pecho + Hombro + Tríceps · 6 ejercicios + cinta',
+                lunes: 'Pecho + Hombro + Tríceps · 6 ejercicios',
                 martes: 'Espalda + Bíceps · 6 ejercicios',
                 miercoles: 'Pierna completa · 6 ejercicios',
                 jueves: 'Bíceps + Tríceps · 6 ejercicios',
-                viernes: 'Hombro + Pecho · 6 ejercicios + cinta',
+                viernes: 'Hombro + Pecho · 6 ejercicios',
                 sabado: 'Descanso',
                 domingo: 'Descanso'
             },

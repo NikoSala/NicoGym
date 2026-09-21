@@ -189,8 +189,6 @@ const APP = {
       modoEntrenoActivo = true;
 
       ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
-      notasActualesEntreno = pendiente.notasSesion || "";
-
       idxEjercicioActual = Math.min(
         Math.max(Number(pendiente.idxEjercicioActual) || 0, 0),
         Math.max(ejerciciosEntreno.length - 1, 0),
@@ -232,7 +230,6 @@ const APP = {
    // Ya no hay selector de peso inicial. Empezamos directamente.
       modoEntrenoActivo = true;
       ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
-      notasActualesEntreno = "";
 
       if (duplicarUltima) {
         const ultimaSesion = [...STATE.historialEntrenos]
@@ -252,7 +249,6 @@ const APP = {
               repsSugeridas: reps.valid ? reps.series : [],
             };
           });
-          notasActualesEntreno = ultimaSesion.notas || "";
         }
       }
       
@@ -946,6 +942,7 @@ const APP = {
                       onclick="UI.abrirLightbox(this.src)"
                       alt="${ej.nombre}"
                       loading="lazy"
+                      onerror="this.onerror=null; this.src='img/logo-nicogym-600.jpg'; this.alt='NicoGym';"
                     >
 
                     <button
@@ -1066,12 +1063,6 @@ const APP = {
 
           </div>
 
-          <div class="me-workout-reps-card">
-            <div class="me-workout-reps-title">NOTAS DE LA SESIÓN</div>
-            <textarea id="meNotasSesion" class="input" rows="3" maxlength="500" placeholder="Sensaciones, molestias o comentarios...">${notasActualesEntreno}</textarea>
-          </div>
-
-
           <!-- GUARDAR -->
           <button
             type="button"
@@ -1153,7 +1144,6 @@ const APP = {
   },
 
   _navegarEjercicio(direccion) {
-    this._capturarNotaSesion();
     const siguienteIndice = idxEjercicioActual + direccion;
     if (siguienteIndice < 0 || siguienteIndice >= ejerciciosEntreno.length)
       return;
@@ -1181,8 +1171,7 @@ const APP = {
   },
 
   _capturarNotaSesion() {
-    const input = document.getElementById("meNotasSesion");
-    if (input) notasActualesEntreno = input.value;
+    // El modo de entrenamiento ya no incluye notas de sesión.
   },
 
     _abrirSelectorPeso(nombreEjercicio) {
@@ -1326,7 +1315,6 @@ const APP = {
   },
 
   _guardarSerie() {
-    this._capturarNotaSesion();
     const ej = ejerciciosEntreno[idxEjercicioActual];
     const peso = pesoActualEntreno;
     const reps = parseInt(document.getElementById("meRepsSerie")?.value, 10);
@@ -1625,7 +1613,6 @@ const APP = {
     );
     if (!STATE.diasEntrenados.includes(hoyStr))
       STATE.diasEntrenados.push(hoyStr);
-    if (entrenamiento) entrenamiento.notas = notasActualesEntreno.trim();
     STATE.entrenamientoPendiente = null;
     Storage._save();
 
@@ -1676,7 +1663,6 @@ const APP = {
       totalVolumenEntreno,
       totalSeriesEntreno,
       totalRepsEntreno,
-      notasSesion: notasActualesEntreno,
     };
 
     Storage._save();
@@ -1703,7 +1689,6 @@ const APP = {
     totalVolumenEntreno = 0;
     totalSeriesEntreno = 0;
     totalRepsEntreno = 0;
-    notasActualesEntreno = "";
     seriesActualesEntreno = [];
     pesoActualEntreno = 0;
 

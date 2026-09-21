@@ -14,7 +14,7 @@ const Semana = {
         key: "lunes",
         nombre: "LUNES",
         icono: "🔵",
-        grupo: "Pecho + Hombro + Tríceps · 6 ejercicios + cinta",
+        grupo: "Pecho + Hombro + Tríceps · 6 ejercicios",
       },
       {
         key: "martes",
@@ -38,7 +38,7 @@ const Semana = {
         key: "viernes",
         nombre: "VIERNES",
         icono: "🔵",
-        grupo: "Hombro + Pecho · 6 ejercicios + cinta",
+        grupo: "Hombro + Pecho · 6 ejercicios",
       },
     ];
 

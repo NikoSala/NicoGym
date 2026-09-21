@@ -7,7 +7,7 @@
 const ROUTINES = {
   lunes: [
     ["press-plano", 4, 12],
-    ["press-inclinado", 4, 12],
+    ["aperturas", 3, 15],
     ["press-arnold-mancuernas", 3, 12],
     ["elevaciones-laterales", 3, 15],
     ["press-frances-inclinado-alterno", 3, 12],
@@ -17,7 +17,7 @@ const ROUTINES = {
   martes: [
     ["barbell-row", 4, 12],
     ["one-arm-dumbbell-row", 4, 12],
-    ["remo-banco-inclinado", 3, 12],
+    ["remo-supinacion", 3, 12],
     ["dumbbell-pullover", 3, 15],
     ["alternating-dumbbell-curl", 3, 12],
     ["hammer-curl", 3, 12],
@@ -34,7 +34,7 @@ const ROUTINES = {
 
   jueves: [
     ["curl-inclinado-neutro-alterno", 3, 12],
-    ["curl-spider-pronacion-barra", 3, 12],
+    ["curl-supinacion-barra", 3, 12],
     ["curl-concentrado-supinacion", 3, 15],
     ["press-frances-inclinado-alterno", 3, 12],
     ["extension-triceps-cabeza", 3, 15],

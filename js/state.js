@@ -45,5 +45,4 @@ let totalRepsEntreno = 0;
 let msgCompletadoTimeout = null;
 let seriesActualesEntreno = [];
 let pesoActualEntreno = 0;
-let notasActualesEntreno = "";
 let ejercicioIniciadoAt = null;
