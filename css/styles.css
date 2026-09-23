@@ -929,7 +929,7 @@
         .modo-entreno-overlay .me-completado-final .me-records .me-rec-item { font-size: 13px; font-weight: 600; margin-top: 3px; color: var(--primary); }
 
         .btn-entrenar-dia { width: 100%; padding: 12px; font-size: 14px; font-weight: 700; border-radius: var(--radius-sm); margin-top: 6px; }
-        .proximo-entreno-card { background: linear-gradient(135deg, var(--primary), #0B6B47); border-radius: var(--radius); padding: 16px 20px; margin-bottom: var(--space-sm); color: #fff; cursor: pointer; transition: var(--transition); }
+        .proximo-entreno-card { background: linear-gradient(135deg, var(--primary), #5F0B20); border-radius: var(--radius); padding: 16px 20px; margin-bottom: var(--space-sm); color: #fff; cursor: pointer; transition: var(--transition); }
         .proximo-entreno-card.entrenamiento-pausado {
                 background: var(--surface);
                 color: var(--text-primary);
@@ -1959,6 +1959,160 @@
 
   .me-barra-agarre-rojo {
     width: 90px;
+  }
+}
+
+/* Pulido final de pantallas secundarias y componentes globales. */
+#recordsContainer,
+#agendaContainer,
+#objetivosContainer,
+#ajustesContainer,
+#comparadorContainer {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+#recordsContainer .record-card-compact {
+  border-color: var(--nico-border);
+  background: linear-gradient(145deg, rgba(24, 28, 34, .96), rgba(14, 17, 21, .96));
+}
+
+#recordsContainer .record-card-compact:hover,
+#recordsContainer .record-card-reciente {
+  border-color: rgba(214, 169, 74, .45);
+}
+
+#recordsContainer .records-grid {
+  gap: 10px;
+}
+
+#recordsContainer .record-card-compact .record-stat-value {
+  color: var(--nico-steel) !important;
+}
+
+#recordsContainer .record-card-compact .record-stat-value:nth-child(2) {
+  color: var(--nico-green-bright) !important;
+}
+
+#recordsContainer .btn-historial-compact {
+  min-width: 36px;
+  min-height: 36px;
+  border-color: var(--nico-border);
+  color: var(--nico-steel);
+}
+
+#agendaContainer .agenda-card,
+#agendaContainer .agenda-detail-card,
+#comparadorContainer > .card,
+#objetivosContainer > .card,
+#ajustesContainer .card {
+  border-color: var(--nico-border);
+  background: linear-gradient(145deg, rgba(24, 28, 34, .96), rgba(14, 17, 21, .96));
+}
+
+#agendaContainer .agenda-calendar-header strong,
+#agendaContainer .agenda-detail-card .card-title {
+  color: var(--text);
+}
+
+#agendaContainer .agenda-day {
+  min-height: 52px;
+  transition: var(--transition);
+}
+
+#agendaContainer .agenda-day-done {
+  border-color: rgba(101, 193, 140, .42);
+}
+
+#agendaContainer .agenda-legend {
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+#objetivosContainer > .card > .btn-primary {
+  margin-top: 12px;
+}
+
+#objetivosContainer #listaObjetivos > div {
+  border-color: var(--nico-border) !important;
+  background: rgba(0, 0, 0, .16) !important;
+}
+
+#objetivosContainer #listaObjetivos > div:hover {
+  border-color: rgba(165, 29, 58, .42) !important;
+}
+
+#objetivosContainer #listaObjetivos > div > div:nth-child(3) > div {
+  background: linear-gradient(90deg, var(--nico-burgundy), var(--nico-green-bright)) !important;
+}
+
+#ajustesContainer {
+  display: grid;
+  gap: var(--space-md);
+}
+
+#ajustesContainer .card {
+  margin-bottom: 0;
+}
+
+#ajustesContainer .ajustes-item {
+  min-height: 42px;
+}
+
+#ajustesContainer .switch {
+  width: 42px;
+  height: 23px;
+}
+
+#ajustesContainer .switch .switch-thumb {
+  width: 19px;
+  height: 19px;
+}
+
+#ajustesContainer .switch.active .switch-thumb {
+  left: 21px;
+}
+
+#comparadorContainer > .card > div[style*="display:flex"] {
+  gap: 10px !important;
+}
+
+#comparadorContainer #comparadorResultado > div {
+  border-color: var(--nico-border) !important;
+  background: rgba(0, 0, 0, .16) !important;
+}
+
+#comparadorContainer #comparadorResultado > div > div {
+  border-color: rgba(199, 203, 209, .10) !important;
+}
+
+#comparadorContainer #comparadorResultado [style*="color:var(--success)"] {
+  color: var(--nico-green-bright) !important;
+}
+
+.modal-panel .btn-primary,
+.modal-panel .btn-success,
+.modal-panel .btn-danger {
+  min-height: 42px;
+}
+
+.btn-danger {
+  color: var(--nico-danger) !important;
+}
+
+.btn-ghost,
+.btn-secondary {
+  color: var(--nico-steel);
+}
+
+@media (min-width: 760px) {
+  #ajustesContainer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  #ajustesContainer .card:last-child {
+    grid-column: 1 / -1;
   }
 }
 
@@ -3418,9 +3572,9 @@
   --bg: var(--nico-charcoal);
   --bg-card: var(--nico-surface);
   --bg-card-hover: var(--nico-surface-raised);
-  --primary: var(--nico-green);
-  --primary-dim: rgba(11, 107, 71, .16);
-  --primary-glow: rgba(101, 193, 140, .24);
+  --primary: var(--nico-burgundy);
+  --primary-dim: rgba(125, 16, 40, .16);
+  --primary-glow: rgba(165, 29, 58, .28);
   --secondary: var(--nico-steel);
   --secondary-dim: rgba(199, 203, 209, .10);
   --secondary-glow: rgba(229, 231, 235, .18);
@@ -3504,7 +3658,7 @@ body {
 }
 
 .card-accent {
-  border-left-color: var(--nico-green-bright) !important;
+  border-left-color: var(--nico-burgundy-bright) !important;
 }
 
 .card:hover,
@@ -3517,14 +3671,15 @@ body {
 
 .btn-primary,
 .dia-entrenar-btn:not(.completado) {
-  background: linear-gradient(135deg, var(--nico-green), #0B6B47) !important;
-  border-color: var(--nico-green-bright) !important;
-  box-shadow: 0 8px 20px rgba(11, 107, 71, .26), inset 0 1px 0 rgba(255, 255, 255, .10);
+  background: linear-gradient(135deg, var(--nico-burgundy), #5F0B20) !important;
+  border-color: var(--nico-burgundy-bright) !important;
+  box-shadow: 0 8px 20px rgba(125, 16, 40, .26), inset 0 1px 0 rgba(255, 255, 255, .10);
 }
 
 .btn-primary:hover,
 .dia-entrenar-btn:not(.completado):hover {
-  box-shadow: 0 12px 26px rgba(11, 107, 71, .34), 0 0 0 1px rgba(101, 193, 140, .12);
+  background: var(--nico-burgundy-bright) !important;
+  box-shadow: 0 12px 26px rgba(165, 29, 58, .34), 0 0 0 1px rgba(199, 203, 209, .08);
 }
 
 .btn-success,
@@ -3545,14 +3700,14 @@ textarea {
 .input:focus,
 select:focus,
 textarea:focus {
-  border-color: var(--nico-green-bright) !important;
-  box-shadow: 0 0 0 3px rgba(11, 107, 71, .20) !important;
+  border-color: var(--nico-burgundy-bright) !important;
+  box-shadow: 0 0 0 3px rgba(125, 16, 40, .18) !important;
 }
 
 .day-tabs .dtab.active {
-  background: linear-gradient(135deg, var(--nico-green), #0B6B47);
-  border-color: var(--nico-green-bright);
-  box-shadow: 0 8px 22px rgba(11, 107, 71, .28), inset 0 1px 0 rgba(255, 255, 255, .12);
+  background: linear-gradient(135deg, var(--nico-burgundy-bright), var(--nico-burgundy));
+  border-color: var(--nico-burgundy-bright);
+  box-shadow: 0 8px 22px rgba(125, 16, 40, .28), inset 0 1px 0 rgba(255, 255, 255, .12);
 }
 
 .day-tabs .dtab.completado {
@@ -4827,6 +4982,182 @@ textarea:focus {
   }
 }
 
+/* Pulido final: burdeos/acero como identidad; verde reservado a estados. */
+.side-menu .menu-item.active {
+  background: linear-gradient(90deg, rgba(125, 16, 40, .26), rgba(125, 16, 40, .08));
+  border-color: rgba(165, 29, 58, .42);
+  box-shadow: inset 3px 0 0 var(--nico-burgundy-bright), 0 8px 20px rgba(0, 0, 0, .18);
+}
+
+.side-menu .menu-item.active i,
+.card-title i,
+.section-title,
+.text-primary,
+.dashboard-kicker,
+.peso-page-kicker,
+.history-page-kicker,
+.photos-page-kicker,
+.stats-eyebrow {
+  color: var(--nico-burgundy-bright);
+}
+
+.btn-primary,
+.dia-entrenar-btn:not(.completado),
+.dashboard-primary-action {
+  background: linear-gradient(135deg, var(--nico-burgundy), #5F0B20) !important;
+  border-color: var(--nico-burgundy-bright) !important;
+  box-shadow: 0 8px 20px rgba(125, 16, 40, .26), inset 0 1px 0 rgba(255, 255, 255, .10);
+}
+
+.btn-primary:hover,
+.dia-entrenar-btn:not(.completado):hover,
+.dashboard-primary-action:hover {
+  background: var(--nico-burgundy-bright) !important;
+  box-shadow: 0 12px 26px rgba(165, 29, 58, .34), 0 0 0 1px rgba(199, 203, 209, .08);
+}
+
+.day-tabs .dtab.active {
+  background: linear-gradient(135deg, var(--nico-burgundy-bright), var(--nico-burgundy));
+  border-color: var(--nico-burgundy-bright);
+  box-shadow: 0 8px 22px rgba(125, 16, 40, .28), inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+
+.input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--nico-burgundy-bright) !important;
+  box-shadow: 0 0 0 3px rgba(125, 16, 40, .18) !important;
+}
+
+.bottom-nav .nav-btn.active {
+  color: var(--nico-burgundy-bright) !important;
+  border-top-color: var(--nico-burgundy-bright);
+  background: linear-gradient(180deg, rgba(125, 16, 40, .16), transparent);
+}
+
+.bottom-nav .nav-btn.active i {
+  color: var(--nico-burgundy-bright);
+  filter: drop-shadow(0 0 7px rgba(165, 29, 58, .30));
+}
+
+.dashboard-primary-action {
+  color: #F1F1F1;
+}
+
+.dashboard-status-pill,
+.dashboard-week-score,
+.dashboard-week-status .semaforo-luz,
+.stats-body-primary > div:first-child strong {
+  color: var(--nico-burgundy-bright);
+}
+
+.dashboard-week-day.actual {
+  border-color: var(--nico-burgundy-bright);
+}
+
+.dashboard-week-day.actual span {
+  color: var(--nico-burgundy-bright);
+}
+
+.stats-focus-icon {
+  color: var(--nico-burgundy-bright);
+  background: rgba(125, 16, 40, .20);
+}
+
+.stats-chart-card .chart-bar {
+  background: linear-gradient(90deg, var(--nico-burgundy), var(--nico-steel));
+}
+
+.stats-chart-card .weight-bar {
+  background: linear-gradient(90deg, var(--nico-burgundy), var(--nico-gold), var(--nico-steel));
+}
+
+.record-card-compact .record-stat-value:first-child,
+.records-grid .record-card-compact .record-stat-value {
+  color: var(--nico-steel);
+}
+
+.record-card-compact .record-stat-value:nth-child(2) {
+  color: var(--nico-green-bright);
+}
+
+.record-card-reciente {
+  border-color: rgba(214, 169, 74, .45) !important;
+}
+
+.agenda-day:hover,
+.agenda-day-selected,
+.mini-cal-day:hover {
+  border-color: var(--nico-burgundy-bright);
+  background: var(--primary-dim);
+}
+
+.agenda-day-today .agenda-day-number,
+.mini-cal-hoy {
+  background: var(--nico-burgundy);
+}
+
+.agenda-event-completado,
+.agenda-dot-done,
+.mini-cal-completado {
+  color: var(--nico-green-bright);
+}
+
+.agenda-day-lesionado,
+.mini-cal-lesionado {
+  color: var(--nico-danger);
+}
+
+.agenda-day-vacaciones,
+.mini-cal-vacaciones {
+  color: var(--text-muted);
+}
+
+.objetivo-card,
+.objective-card {
+  border-color: var(--nico-border);
+}
+
+.switch.active {
+  background: var(--nico-burgundy);
+}
+
+.me-workout-save-button,
+.me-workout-redesign .me-workout-save-button {
+  background: linear-gradient(135deg, var(--nico-burgundy), #5F0B20) !important;
+  border-color: var(--nico-burgundy-bright) !important;
+  box-shadow: 0 10px 24px rgba(125, 16, 40, .26) !important;
+}
+
+.me-workout-save-button:hover {
+  background: var(--nico-burgundy-bright) !important;
+  box-shadow: 0 13px 28px rgba(165, 29, 58, .36) !important;
+}
+
+.me-workout-load-title i,
+.me-workout-progress-panel strong,
+.me-workout-progress-track span,
+.me-workout-set-card.completed .me-workout-set-header,
+.me-workout-set-card.completed .me-workout-set-check,
+.me-workout-set-card.completed .me-workout-set-number {
+  color: var(--nico-green-bright);
+}
+
+.me-workout-progress-track span {
+  background: linear-gradient(90deg, var(--nico-green), var(--nico-green-bright));
+}
+
+@media (max-width: 600px) {
+  .top-settings-btn,
+  .top-bar .btn-ghost {
+    color: var(--nico-steel);
+  }
+
+  .bottom-nav .nav-btn {
+    min-height: 44px;
+  }
+}
+
 /* =========================================================
    FASE 3 · EXPERIENCIA DE ENTRENAMIENTO
    Capa visual sobre el flujo guiado existente.
@@ -5081,13 +5412,14 @@ textarea:focus {
 .me-workout-save-button {
   order: 3;
   min-height: 64px;
-  border-color: var(--nico-green-bright) !important;
-  background: linear-gradient(135deg, var(--nico-green), #0B6B47) !important;
-  box-shadow: 0 10px 24px rgba(11, 107, 71, .26) !important;
+  border-color: var(--nico-burgundy-bright) !important;
+  background: linear-gradient(135deg, var(--nico-burgundy), #5F0B20) !important;
+  box-shadow: 0 10px 24px rgba(125, 16, 40, .26) !important;
 }
 
 .me-workout-save-button:hover {
-  box-shadow: 0 13px 28px rgba(11, 107, 71, .36) !important;
+  background: var(--nico-burgundy-bright) !important;
+  box-shadow: 0 13px 28px rgba(165, 29, 58, .36) !important;
 }
 
 .me-workout-set-card {
@@ -5576,7 +5908,7 @@ textarea:focus {
   padding: 10px 16px;
   border: 1px solid var(--nico-green-bright);
   border-radius: var(--radius-sm);
-  background: var(--nico-green);
+  background: var(--nico-burgundy);
   color: #F1F1F1;
   cursor: pointer;
   font-family: var(--font);
@@ -5587,8 +5919,8 @@ textarea:focus {
 }
 
 .dashboard-primary-action:hover {
-  background: #0B6B47;
-  box-shadow: 0 10px 24px rgba(11, 107, 71, .32);
+  background: var(--nico-burgundy-bright);
+  box-shadow: 0 10px 24px rgba(165, 29, 58, .32);
   transform: translateY(-1px);
 }
 
