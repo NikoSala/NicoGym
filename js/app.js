@@ -88,7 +88,7 @@ const APP = {
     document
       .querySelectorAll(".nav-btn")
       .forEach((b) => b.classList.remove("active"));
-    const map = { inicio: 0, rutinas: 1, semana: 2, peso: 3, estadisticas: 4 };
+    const map = { inicio: 0, rutinas: 1, semana: 2, estadisticas: 3 };
     const btns = document.querySelectorAll(".nav-btn");
     if (map[id] !== undefined && btns[map[id]])
       btns[map[id]].classList.add("active");

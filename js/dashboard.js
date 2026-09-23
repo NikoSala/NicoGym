@@ -66,6 +66,24 @@ const Dashboard = {
     const totalEjerciciosHoy = Array.isArray(ejerciciosHoy)
       ? ejerciciosHoy.length
       : 0;
+    const ultimaMedicion = STATE.mediciones.length > 0
+      ? STATE.mediciones[STATE.mediciones.length - 1]
+      : null;
+    const medicionAnterior = STATE.mediciones.length > 1
+      ? STATE.mediciones[STATE.mediciones.length - 2]
+      : null;
+    const cambioPeso = medicionAnterior
+      ? Number((Number(ultimaMedicion.peso) - Number(medicionAnterior.peso)).toFixed(1))
+      : null;
+    const cambioPesoTexto = cambioPeso === null
+      ? "Sin medición anterior"
+      : `${cambioPeso > 0 ? "+" : ""}${cambioPeso.toFixed(1)} kg`;
+    const cinturaTexto = ultimaMedicion?.cintura > 0
+      ? `${ultimaMedicion.cintura} cm`
+      : "--";
+    const progresoEntreno = totalEjerciciosHoy > 0
+      ? Math.round((ejerciciosCompletadosHoy / totalEjerciciosHoy) * 100)
+      : 0;
     let mensajeProgreso = "";
 
     if (
@@ -125,37 +143,43 @@ const Dashboard = {
     }
 
     const bloqueSemana = `
-      <section class="card inicio-semaforo-card semaforo-${semaforo.clase}">
-        <div class="inicio-panel-kicker">ESTADO DE LA SEMANA</div>
-        <div class="semaforo-main"><span class="semaforo-luz"></span><div><strong>${semaforo.titulo}</strong><span>${semaforo.texto}</span></div></div>
+      <section class="dashboard-week-card card semaforo-${semaforo.clase}">
+        <div class="dashboard-section-heading">
+          <div>
+            <span class="dashboard-kicker">ESTA SEMANA</span>
+            <h2>Tu ritmo</h2>
+          </div>
+          <span class="dashboard-week-score">${porcentajeConsistencia}%</span>
+        </div>
+        <div class="dashboard-week-status"><span class="semaforo-luz"></span><strong>${semaforo.titulo}</strong><span>${semaforo.texto}</span></div>
         <div class="semaforo-track"><span style="width:${porcentajeConsistencia}%"></span></div>
-        <div class="semaforo-foot">
-          <span>${porcentajeConsistencia}% de consistencia</span>
+        <div class="dashboard-week-footer">
           <span>${entrenamientosSemana}/${entrenamientosObjetivoSemana} entrenos</span>
+          <span>Objetivo semanal</span>
+        </div>
+        <div class="dashboard-week-days" aria-label="Días de la semana">
+          ${diasSemana.map((diaSemana) => `
+            <button class="dashboard-week-day${diaSemana.esHoy ? " actual" : ""}${diaSemana.completado ? " hecho" : ""}${diaSemana.descanso ? " descanso" : ""}" onclick="APP.navegar('agenda'); setTimeout(() => Agenda.seleccionar('${diaSemana.fechaKey}'), 100);" aria-label="${diaSemana.diaNombre}">
+              <span>${diaSemana.etiqueta}</span>
+              <strong>${diaSemana.completado ? "✓" : diaSemana.descanso ? "·" : "—"}</strong>
+            </button>
+          `).join("")}
         </div>
       </section>
     `;
     const accionesRapidas = `
-      <div class="inicio-acciones-rapidas" aria-label="Acciones rápidas">
+      <div class="dashboard-quick-actions" aria-label="Acciones rápidas">
         <button class="accion-rapida" onclick="APP.navegar('fotos')">
-          <span class="accion-icono">📷</span>
-          <span class="accion-texto">Foto</span>
+          <i class="fa-solid fa-camera"></i>
+          <span>Fotos</span>
         </button>
-        <button class="accion-rapida" onclick="APP.navegar('records')">
-          <span class="accion-icono">🏆</span>
-          <span class="accion-texto">Records</span>
-        </button>
-        <button class="accion-rapida" onclick="APP.navegar('comparador')">
-          <span class="accion-icono">⚖️</span>
-          <span class="accion-texto">Comparar</span>
-        </button>
-        <button class="accion-rapida" onclick="APP.navegar('objetivos')">
-          <span class="accion-icono">🎯</span>
-          <span class="accion-texto">Metas</span>
+        <button class="accion-rapida" onclick="APP.navegar('peso')">
+          <i class="fa-solid fa-scale-balanced"></i>
+          <span>Peso</span>
         </button>
         <button class="accion-rapida" onclick="APP.navegar('historial')">
-          <span class="accion-icono">📚</span>
-          <span class="accion-texto">Historial</span>
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Historial</span>
         </button>
       </div>
     `;
@@ -163,93 +187,87 @@ const Dashboard = {
     // ===== MINI CALENDARIO =====
     const miniCalendario = this._renderMiniCalendario();
     
+    const bloqueEntrenamiento = hayEntrenamientoPendiente
+      ? `
+        <section class="dashboard-workout-card dashboard-workout-paused">
+          <div class="dashboard-workout-topline"><span class="dashboard-kicker">ENTRENAMIENTO EN CURSO</span><span class="dashboard-status-pill">Pausado</span></div>
+          <div class="dashboard-workout-day">${CONFIG.NOMBRES_DIAS[entrenamientoPendiente.dia] || entrenamientoPendiente.dia}</div>
+          <h1>${CONFIG.TIPOS_RUTINA[entrenamientoPendiente.dia] || "Entrenamiento"}</h1>
+          <div class="dashboard-workout-meta"><span><i class="fa-solid fa-dumbbell"></i> ${totalEjerciciosHoy} ejercicios</span><span><i class="fa-solid fa-chart-simple"></i> ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} completados</span></div>
+          <div class="dashboard-progress"><span style="width:${progresoEntreno}%"></span></div>
+          <button class="dashboard-primary-action" onclick="APP.iniciarEntreno('${entrenamientoPendiente.dia}')"><i class="fa-solid fa-play"></i> Continuar entrenamiento</button>
+        </section>
+      `
+      : dia === "sabado" || dia === "domingo"
+        ? `
+          <section class="dashboard-workout-card dashboard-workout-rest">
+            <span class="dashboard-kicker">HOY</span>
+            <div class="dashboard-workout-day">${UI.getDiaSemanaNombre(hoy)}</div>
+            <h1>Día de descanso</h1>
+            <p>Hoy toca recuperar para volver con energía.</p>
+          </section>
+        `
+        : `
+          <section class="dashboard-workout-card">
+            <div class="dashboard-workout-topline"><span class="dashboard-kicker">ENTRENAMIENTO DE HOY</span><span class="dashboard-status-pill">${entrenadoHoy ? "Completado" : "Pendiente"}</span></div>
+            <div class="dashboard-workout-day">${UI.getDiaSemanaNombre(hoy)}</div>
+            <h1>${CONFIG.TIPOS_RUTINA[dia]}</h1>
+            <div class="dashboard-workout-meta"><span><i class="fa-solid fa-dumbbell"></i> ${totalEjerciciosHoy} ejercicios</span><span><i class="fa-solid fa-list-check"></i> ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} completados</span></div>
+            <div class="dashboard-progress"><span style="width:${progresoEntreno}%"></span></div>
+            <div class="dashboard-workout-progress-label">${progresoEntreno}% de la sesión</div>
+            <button class="dashboard-primary-action" onclick="${entrenadoHoy ? "APP.navegar('historial')" : `APP.iniciarEntreno('${dia}')`}"><i class="fa-solid ${entrenadoHoy ? "fa-clock-rotate-left" : "fa-play"}"></i> ${entrenadoHoy ? "Ver entrenamiento" : ejerciciosCompletadosHoy > 0 ? "Continuar entrenamiento" : "Comenzar entrenamiento"}</button>
+          </section>
+        `;
+
+    const bloqueCuerpo = `
+      <section class="dashboard-body-card card card-accent">
+        <div class="dashboard-section-heading">
+          <div><span class="dashboard-kicker">PROGRESO CORPORAL</span><h2>Tu evolución</h2></div>
+          <button class="dashboard-inline-action" onclick="APP.navegar('peso')">Ver peso <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        ${ultimaMedicion ? `
+          <div class="dashboard-body-stats">
+            <div><strong>${peso} kg</strong><span>Peso actual</span></div>
+            <div><strong class="${cambioPeso !== null && cambioPeso < 0 ? "positive" : ""}">${cambioPesoTexto}</strong><span>Desde última medición</span></div>
+            <div><strong>${cinturaTexto}</strong><span>Cintura</span></div>
+            <div><strong>${obj} kg</strong><span>Objetivo · ${pctObjetivo}%</span></div>
+          </div>
+        ` : `
+          <div class="dashboard-empty-state"><i class="fa-solid fa-scale-balanced"></i><div><strong>Aún no hay mediciones</strong><span>Registra tu peso para empezar a ver tu evolución.</span></div><button class="dashboard-inline-action" onclick="APP.navegar('peso')">Registrar peso</button></div>
+        `}
+      </section>
+    `;
+
+    const bloqueActividad = `
+      <section class="dashboard-activity-card card">
+        <div class="dashboard-section-heading"><div><span class="dashboard-kicker">ACTIVIDAD</span><h2>Tu recorrido</h2></div><i class="fa-solid fa-arrow-trend-up dashboard-heading-icon"></i></div>
+        <div class="dashboard-activity-row"><span>Último entrenamiento</span><strong>${ultimoEntreno}</strong></div>
+        <div class="dashboard-activity-row"><span>Sesiones registradas</span><strong>${STATE.historialEntrenos.length || 0}</strong></div>
+        <div class="dashboard-activity-row"><span>Objetivos activos</span><strong>${STATE.objetivos?.length || 0}</strong></div>
+        ${STATE.historialEntrenos.length === 0 ? '<p class="dashboard-muted-note">Cuando completes tu primera sesión aparecerá aquí.</p>' : ""}
+      </section>
+    `;
+
     c.innerHTML = `
-                <div class="saludo-header">
-                    <div class="saludo-info">
-                        <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
-                        <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
-                        <div class="frase-motivadora">${fraseMotivadora}</div>
-                        <div class="inicio-acciones-layout">
-                            ${accionesRapidas}
-                        </div>
-                    </div>
-                    ${miniCalendario}
-                </div>
-                ${bloqueSemana}
-
-                ${
-                  hayEntrenamientoPendiente
-                    ? `
-                            <div class="proximo-entreno-card entrenamiento-pausado">
-                                <div class="pe-titulo">⏸️ ENTRENAMIENTO PAUSADO</div>
-                                <div class="pe-nombre">
-                                    💪 ${CONFIG.NOMBRES_DIAS[entrenamientoPendiente.dia] || entrenamientoPendiente.dia}
-                                </div>
-                                <div class="pe-datos">
-                                    <span>▶️ Puedes continuar donde lo dejaste</span>
-                                </div>
-                                <button class="pe-btn" onclick="APP.iniciarEntreno('${entrenamientoPendiente.dia}')">
-                                    <i class="fa-solid fa-play"></i> Reanudar entrenamiento
-                                </button>
-                            </div>
-                        `
-                    : dia === "sabado" || dia === "domingo"
-                      ? `
-                                <div class="proximo-entreno-card">
-                                    <div class="pe-titulo">😌 DESCANSO</div>
-                                    <div class="pe-nombre">
-                                        Hoy toca recuperar
-                                    </div>
-                                    <div class="pe-datos">
-                                        <span>🛌 Sábado y domingo · descanso</span>
-                                    </div>
-                                </div>
-                            `
-                      : `
-                                <div class="proximo-entreno-card">
-                                    <div class="pe-titulo">💪 HOY</div>
-                                    <div class="pe-nombre">
-                                        ${CONFIG.TIPOS_RUTINA[dia]}
-                                    </div>
-                                    <div class="pe-datos">
-                                        <span>🏋️ ${getEjerciciosPorDia(dia).length} ejercicios</span>
-                                    </div>
-                                    <button class="pe-btn" onclick="APP.iniciarEntreno('${dia}')">
-                                        <i class="fa-solid fa-play"></i> Comenzar entrenamiento
-                                    </button>
-                                </div>
-                            `
-                }
-
-                ${
-                  mensajeProgreso
-                    ? `
-                        <div class="card progreso-sesion-card">
-                            <div class="card-title">💪 Progreso de hoy</div>
-                            <div style="font-size:18px;font-weight:700;margin-top:4px;">
-                                ${mensajeProgreso}
-                            </div>
-                            <div style="font-size:11px;color:var(--text-secondary);margin-top:3px;">
-                                ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} ejercicios completados
-                            </div>
-                        </div>
-                        `
-                    : ""
-                }
-                     <div class="card card-accent">
-                    <div class="card-title">📊 Resumen</div>
-                    <div class="dash-grid">
-                        <div class="dash-stat">
-                            <div class="num primary">${peso}</div>
-                            <div class="label">Peso (kg)</div>
-                        </div>
-                        <div class="dash-stat">
-                            <div class="num green">${pctObjetivo}%</div>
-                            <div class="label">Objetivo</div>
-                        </div>
-                    </div>
-                </div>
-            `;
+      <div class="dashboard-layout">
+        <header class="dashboard-header">
+          <div class="dashboard-brand-line"><span class="dashboard-brand-dot"></span><span>NicoGym</span></div>
+          <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
+          <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
+          <p class="frase-motivadora">${fraseMotivadora}</p>
+        </header>
+        <main class="dashboard-main-column">
+          ${bloqueEntrenamiento}
+          ${bloqueSemana}
+          ${bloqueCuerpo}
+        </main>
+        <aside class="dashboard-side-column">
+          ${miniCalendario}
+          ${bloqueActividad}
+          ${accionesRapidas}
+        </aside>
+      </div>
+    `;
   },
 
   // ==========================================

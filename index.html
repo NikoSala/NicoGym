@@ -58,6 +58,14 @@
           <span>🎯 <strong id="topObjetivo">75</strong></span>
         </div>
         <button
+          class="btn btn-ghost btn-sm top-settings-btn"
+          aria-label="Abrir ajustes"
+          title="Ajustes"
+          onclick="APP.navegar('ajustes')"
+        >
+          <i class="fa-solid fa-gear"></i>
+        </button>
+        <button
           class="btn btn-ghost btn-sm"
           aria-label="Abrir menú"
           onclick="UI.toggleMenu()"
@@ -70,7 +78,7 @@
 
     <!-- SIDE MENU -->
     <div class="side-overlay" id="sideOverlay" onclick="UI.toggleMenu()"></div>
-    <nav class="side-menu" id="sideMenu">
+    <nav class="side-menu" id="sideMenu" aria-label="Menú principal">
       <button
         class="menu-item active"
         data-page="inicio"
@@ -130,6 +138,20 @@
         onclick="APP.navegar('fotos')"
       >
         <i class="fa-solid fa-camera"></i> Fotos
+      </button>
+      <button
+        class="menu-item"
+        data-page="comparador"
+        onclick="APP.navegar('comparador')"
+      >
+        <i class="fa-solid fa-code-compare"></i> Comparador
+      </button>
+      <button
+        class="menu-item"
+        data-page="objetivos"
+        onclick="APP.navegar('objetivos')"
+      >
+        <i class="fa-solid fa-bullseye"></i> Objetivos
       </button>
       <button
         class="menu-item"
@@ -201,7 +223,7 @@
     </div>
 
     <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
+    <nav class="bottom-nav" aria-label="Navegación principal">
       <button class="nav-btn active" onclick="APP.navegar('inicio')">
         <i class="fa-solid fa-house"></i>Inicio
       </button>
@@ -211,11 +233,15 @@
       <button class="nav-btn" onclick="APP.navegar('semana')">
         <i class="fa-solid fa-calendar-week"></i>Rutina
       </button>
-      <button class="nav-btn" onclick="APP.navegar('peso')">
-        <i class="fa-solid fa-scale-balanced"></i>Peso
-      </button>
       <button class="nav-btn" onclick="APP.navegar('estadisticas')">
-        <i class="fa-solid fa-chart-bar"></i>Stats
+        <i class="fa-solid fa-chart-line"></i>Progreso
+      </button>
+      <button
+        class="nav-btn nav-btn-more"
+        onclick="UI.toggleMenu()"
+        aria-label="Abrir más opciones"
+      >
+        <i class="fa-solid fa-ellipsis"></i>Más
       </button>
     </nav>
 
