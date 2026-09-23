@@ -247,6 +247,7 @@ const Dashboard = {
             <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
             <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
           </div>
+          ${accionesRapidas}
           <button class="dashboard-settings-action" onclick="APP.navegar('ajustes')" aria-label="Abrir ajustes"><i class="fa-solid fa-gear"></i></button>
         </header>
         <main class="dashboard-main-column">
@@ -257,7 +258,6 @@ const Dashboard = {
               ${bloqueCuerpo}
               ${bloqueActividad}
             </div>
-            ${accionesRapidas}
           </div>
         </main>
       </div>

@@ -6794,3 +6794,45 @@ textarea:focus {
     padding-inline: 8px;
   }
 }
+
+/* Acciones rápidas junto al saludo */
+.dashboard-header > .dashboard-quick-actions {
+  margin: 0 4px 0 auto;
+  flex: 0 0 auto;
+}
+
+.dashboard-header .dashboard-quick-actions .accion-rapida {
+  min-height: 36px;
+  padding: 6px 9px;
+  border: 0;
+  font-size: 11px;
+}
+
+@media (max-width: 680px) {
+  .dashboard-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 5px;
+  }
+
+  .dashboard-header > .dashboard-quick-actions {
+    grid-column: 1;
+    grid-row: 2;
+    justify-content: flex-start;
+    gap: 3px;
+    margin: 0;
+  }
+
+  .dashboard-header > .dashboard-settings-action {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .dashboard-header .dashboard-quick-actions .accion-rapida {
+    flex: 0 0 auto;
+    min-height: 32px;
+    padding: 5px 8px;
+  }
+}
