@@ -4224,6 +4224,503 @@ textarea:focus {
   }
 }
 
+/* =========================================================
+   FASE 3 · EXPERIENCIA DE ENTRENAMIENTO
+   Capa visual sobre el flujo guiado existente.
+   ========================================================= */
+
+.modo-entreno-overlay {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(125, 16, 40, .16), transparent 34%),
+    linear-gradient(180deg, var(--nico-charcoal) 0%, #0D1014 100%);
+}
+
+.modo-entreno-overlay .me-header {
+  min-height: 52px;
+  padding: 5px 0 9px;
+  border-bottom-color: rgba(199, 203, 209, .16) !important;
+}
+
+.modo-entreno-overlay .me-header .me-titulo {
+  max-width: min(62vw, 560px);
+  overflow: hidden;
+  color: var(--text);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modo-entreno-overlay .me-header .me-progreso-texto {
+  color: var(--nico-green-bright);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.modo-entreno-overlay .me-progreso-bar {
+  margin: 10px 0 14px;
+}
+
+.modo-entreno-overlay .me-progreso-track {
+  height: 6px;
+  background: rgba(255, 255, 255, .10) !important;
+}
+
+.modo-entreno-overlay .me-progreso-fill {
+  background: linear-gradient(90deg, var(--nico-burgundy), var(--nico-green), var(--nico-green-bright)) !important;
+}
+
+.modo-entreno-overlay .me-progreso-info {
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.me-workout-redesign {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 920px;
+  padding: 8px 0 20px;
+}
+
+.me-workout-redesign .me-workout-main-card {
+  order: 1;
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.me-workout-redesign .me-workout-navigation {
+  order: 4;
+  margin: 0;
+}
+
+.me-workout-redesign .me-workout-series-grid {
+  order: 2;
+  margin: 0;
+}
+
+.me-workout-redesign .me-workout-top-grid {
+  display: block;
+  margin: 0;
+}
+
+.me-workout-title-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px;
+  grid-template-rows: auto auto auto auto;
+  column-gap: 18px;
+  align-items: center;
+  min-height: 188px;
+  padding: 18px;
+  border-color: rgba(165, 29, 58, .38);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(11, 107, 71, .14), transparent 42%),
+    linear-gradient(145deg, rgba(24, 28, 34, .98), rgba(14, 17, 21, .98));
+  box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, .03);
+}
+
+.me-workout-exercise-number {
+  color: var(--nico-green-bright);
+  font-size: 10px;
+  letter-spacing: .14em;
+}
+
+.me-workout-title {
+  max-width: 520px;
+  color: var(--text);
+  font-size: clamp(24px, 4vw, 36px);
+  line-height: 1.06;
+}
+
+.me-workout-group {
+  color: var(--nico-steel);
+  font-size: 12px;
+}
+
+.me-workout-tips {
+  align-self: start;
+  margin-top: 3px;
+}
+
+.me-workout-tips summary {
+  color: var(--nico-gold);
+}
+
+.me-workout-image-card {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  min-height: 150px;
+  border-color: rgba(199, 203, 209, .14);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, .22);
+}
+
+.me-workout-exercise-image {
+  height: 150px;
+  border-radius: var(--radius-sm);
+}
+
+.me-workout-image-fallback {
+  color: var(--nico-green-bright);
+}
+
+.me-workout-image-button {
+  right: 8px;
+  bottom: 8px;
+  border-color: rgba(199, 203, 209, .24);
+  color: var(--nico-steel);
+}
+
+.me-workout-progress-panel {
+  grid-column: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 5px 10px;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.me-workout-progress-panel > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.me-workout-progress-panel strong {
+  color: var(--nico-green-bright);
+}
+
+.me-workout-progress-track {
+  grid-column: 1 / -1;
+  height: 5px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, .08);
+}
+
+.me-workout-progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--nico-green), var(--nico-green-bright));
+}
+
+.me-workout-redesign .me-workout-load-card,
+.me-workout-redesign .me-workout-reps-card {
+  min-height: 0;
+  border-color: rgba(199, 203, 209, .14);
+  background: linear-gradient(145deg, rgba(24, 28, 34, .96), rgba(14, 17, 21, .96));
+}
+
+.me-workout-load-title,
+.me-workout-reps-title {
+  color: var(--nico-steel);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.me-workout-load-title i {
+  color: var(--nico-green-bright);
+}
+
+.me-workout-load-value {
+  color: var(--nico-gold);
+}
+
+.me-workout-load-value span {
+  color: var(--nico-gold) !important;
+}
+
+.me-workout-load-subtitle {
+  color: var(--text-secondary);
+}
+
+.me-workout-load-detail {
+  border-top-color: rgba(255, 255, 255, .08);
+}
+
+.me-workout-reps-row {
+  height: 64px;
+}
+
+.me-workout-reps-button {
+  min-width: 58px;
+  border-color: rgba(101, 193, 140, .25);
+  background: rgba(11, 107, 71, .10);
+  color: var(--nico-green-bright);
+}
+
+.me-workout-reps-button:hover {
+  border-color: var(--nico-green-bright);
+  background: rgba(11, 107, 71, .20);
+}
+
+.me-workout-reps-input {
+  border-color: rgba(101, 193, 140, .28);
+  background: #0B1110;
+}
+
+.me-workout-reps-input:focus {
+  border-color: var(--nico-green-bright);
+  box-shadow: 0 0 0 3px rgba(11, 107, 71, .18);
+}
+
+.me-workout-reps-target {
+  color: var(--text-muted);
+}
+
+.me-workout-save-button {
+  order: 3;
+  min-height: 64px;
+  border-color: var(--nico-green-bright) !important;
+  background: linear-gradient(135deg, var(--nico-green), #084C35) !important;
+  box-shadow: 0 10px 24px rgba(11, 107, 71, .26) !important;
+}
+
+.me-workout-save-button:hover {
+  box-shadow: 0 13px 28px rgba(11, 107, 71, .36) !important;
+}
+
+.me-workout-set-card {
+  min-height: 78px;
+  border-color: rgba(199, 203, 209, .14);
+  background: linear-gradient(145deg, rgba(24, 28, 34, .96), rgba(14, 17, 21, .96));
+}
+
+.me-workout-set-card.completed {
+  border-color: rgba(101, 193, 140, .56);
+  background: rgba(101, 193, 140, .09);
+}
+
+.me-workout-set-card.completed .me-workout-set-header,
+.me-workout-set-card.completed .me-workout-set-check {
+  color: var(--nico-green-bright);
+}
+
+.me-workout-set-card.completed .me-workout-set-number {
+  background: var(--nico-green-bright);
+  color: #07130D;
+}
+
+.me-workout-set-number {
+  background: #303840;
+}
+
+.me-workout-context {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.me-workout-previous,
+.me-workout-record {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid rgba(199, 203, 209, .14);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, .16);
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.me-workout-previous {
+  flex: 1 1 180px;
+}
+
+.me-workout-record {
+  flex: 1 1 210px;
+  border-color: rgba(214, 169, 74, .25);
+  color: var(--nico-gold);
+}
+
+.me-workout-previous-label {
+  color: var(--text-muted);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.me-workout-previous-label i,
+.me-workout-record i {
+  margin-right: 4px;
+}
+
+.me-workout-previous strong {
+  color: var(--text);
+  font-size: 12px;
+}
+
+.me-workout-previous strong span {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.me-workout-record strong {
+  color: var(--nico-gold);
+}
+
+.me-descanso-modern {
+  max-width: 520px;
+  margin: 14px auto;
+  padding: 28px 22px 22px;
+  border: 1px solid rgba(101, 193, 140, .32);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 50% 0, rgba(11, 107, 71, .18), transparent 50%),
+    linear-gradient(145deg, rgba(24, 28, 34, .98), rgba(14, 17, 21, .98));
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.me-descanso-kicker {
+  color: var(--nico-green-bright);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.me-timer {
+  margin-top: 12px;
+  color: var(--text);
+  font-size: clamp(56px, 15vw, 84px);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.me-timer-label {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.me-descanso-next {
+  display: grid;
+  gap: 3px;
+  margin: 20px 0 16px;
+  padding: 10px;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.me-descanso-next span {
+  color: var(--text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.me-descanso-next strong {
+  color: var(--text);
+  font-size: 15px;
+}
+
+.me-descanso-modern .me-siguiente {
+  min-height: 46px;
+}
+
+.me-caminata-card,
+.me-completado-final {
+  max-width: 720px;
+  margin: 0 auto;
+  border-color: rgba(101, 193, 140, .28) !important;
+  background: linear-gradient(145deg, rgba(24, 28, 34, .98), rgba(14, 17, 21, .98)) !important;
+}
+
+.me-completado-final .me-res-item {
+  background: rgba(0, 0, 0, .16) !important;
+  border: 1px solid rgba(199, 203, 209, .10);
+}
+
+.me-completado-final .me-res-valor {
+  color: var(--nico-green-bright);
+}
+
+.me-completado-final .me-records {
+  border-color: rgba(214, 169, 74, .28);
+  background: rgba(214, 169, 74, .08);
+}
+
+@media (max-width: 700px) {
+  .me-workout-redesign {
+    gap: 10px;
+    padding: 4px 0 14px;
+  }
+
+  .me-workout-title-card {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 8px;
+    min-height: 0;
+    padding: 15px;
+  }
+
+  .me-workout-image-card {
+    grid-column: 1;
+    grid-row: auto;
+    min-height: 132px;
+    margin-top: 3px;
+  }
+
+  .me-workout-exercise-image {
+    height: 132px;
+  }
+
+  .me-workout-progress-panel {
+    margin-top: 2px;
+  }
+
+  .me-workout-redesign .me-workout-load-card,
+  .me-workout-redesign .me-workout-reps-card {
+    width: 100%;
+  }
+
+  .me-workout-load-image {
+    height: 76px;
+  }
+
+  .me-workout-series-grid {
+    gap: 7px;
+  }
+
+  .me-workout-set-card {
+    min-height: 70px;
+    padding: 7px 3px;
+  }
+
+  .me-workout-set-header {
+    font-size: 8px;
+  }
+
+  .me-workout-set-value {
+    font-size: 20px;
+  }
+
+  .me-workout-context {
+    display: grid;
+  }
+
+  .me-workout-previous,
+  .me-workout-record {
+    width: 100%;
+  }
+
+  .me-workout-navigation {
+    gap: 8px;
+  }
+
+  .me-workout-nav-button {
+    min-height: 46px;
+  }
+}
+
 @media (max-width: 480px) {
   .records-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

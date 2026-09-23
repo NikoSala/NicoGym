@@ -727,6 +727,12 @@ const APP = {
       (e) => e.nombre === ej.nombre,
     );
 
+    const registroAnterior = [...STATE.historialEntrenos]
+      .filter((sesion) => sesion.fecha !== hoy && sesion.ejercicios?.length)
+      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+      .map((sesion) => sesion.ejercicios.find((e) => e.nombre === ej.nombre))
+      .find(Boolean);
+
     const parsed = registro
       ? parseReps(registro.reps)
       : { valid: true, series: [] };
@@ -751,6 +757,9 @@ const APP = {
     // ==========================================
 
     const progreso = this._calcularProgresoGlobal();
+
+    document.getElementById("meTitulo").textContent =
+      `${CONFIG.NOMBRES_DIAS[ej.dia]} · ${CONFIG.TIPOS_RUTINA[ej.dia] || "Entrenamiento"}`;
 
     document.getElementById("meProgresoTexto").textContent =
       `${idxEjercicioActual + 1} / ${total}`;
@@ -847,6 +856,20 @@ const APP = {
 
     let etiquetaCarga = "Carga seleccionada";
 
+    const anteriorHtml = registroAnterior
+      ? `
+        <div class="me-workout-previous">
+          <div class="me-workout-previous-label"><i class="fa-solid fa-clock-rotate-left"></i> Anterior</div>
+          <strong>${registroAnterior.peso || "--"} kg <span>×</span> ${registroAnterior.reps || "--"}</strong>
+        </div>
+      `
+      : "";
+
+    const recordActual = Records.getRecord(ej.nombre);
+    const recordHtml = recordActual
+      ? `<div class="me-workout-record"><i class="fa-solid fa-trophy"></i> Récord: <strong>${recordActual.weight} kg × ${recordActual.reps} reps</strong></div>`
+      : "";
+
     if (
       typeof WEIGHTS !== "undefined" &&
       ej.tipoCarga === WEIGHTS.TIPOS.UNA_MANCUERNA
@@ -920,6 +943,11 @@ const APP = {
               ${ej.grupo}
             </div>
 
+            <div class="me-workout-progress-panel">
+              <div><span>Series completadas</span><strong>${seriesActualesEntreno.length}/${PROGRESION.SERIES_OBJETIVO}</strong></div>
+              <div class="me-workout-progress-track"><span style="width:${Math.min(100, Math.round((seriesActualesEntreno.length / PROGRESION.SERIES_OBJETIVO) * 100))}%"></span></div>
+            </div>
+
             <details class="me-workout-tips">
               <summary>
                 <i class="fa-solid fa-lightbulb"></i>
@@ -988,7 +1016,7 @@ const APP = {
               </div>
               
               <div class="me-workout-load-subtitle">
-                ${ej.tipoCarga === WEIGHTS?.TIPOS?.UNA_MANCUERNA ? "mancuerna" : "por mancuerna"}
+                ${ej.tipoCarga === WEIGHTS?.TIPOS?.UNA_MANCUERNA ? "Una mancuerna" : ej.tipoCarga === WEIGHTS?.TIPOS?.BARRA_LARGA ? "Barra" : "Por mancuerna"}
               </div>
               
               <div class="me-workout-load-hint" style="margin-top:4px;font-size:9px;color:var(--text-muted);">
@@ -1018,11 +1046,16 @@ const APP = {
             }
           </div>
 
+          <div class="me-workout-context">
+            ${anteriorHtml}
+            ${recordHtml}
+          </div>
+
           <!-- REPETICIONES -->
           <div class="me-workout-reps-card">
 
             <div class="me-workout-reps-title">
-              REPETICIONES DE ESTA SERIE
+              REPETICIONES DE LA SERIE ${Math.min(seriesActualesEntreno.length + 1, PROGRESION.SERIES_OBJETIVO)}
             </div>
 
             <div class="me-workout-reps-row">
@@ -1500,15 +1533,15 @@ const APP = {
 
     const body = document.getElementById("meBody");
     body.innerHTML = `
-                    <div class="me-descanso">
-                        <div style="font-size:22px;margin-bottom:6px;">⏱️</div>
-                        <div class="me-timer" id="meTimer">${tiempoDescanso}</div>
-                        <div class="me-timer-label">Descanso antes del siguiente ejercicio</div>
-                        <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">Próximo: ${ej.nombre}</div>
-                        <button class="btn btn-primary me-siguiente" onclick="APP._saltarDescanso()">
-                            <i class="fa-solid fa-forward"></i> Saltar descanso
-                        </button>
-                    </div>
+            <div class="me-descanso me-descanso-modern">
+              <div class="me-descanso-kicker"><i class="fa-solid fa-stopwatch"></i> Descanso</div>
+              <div class="me-timer" id="meTimer">${tiempoDescanso}</div>
+              <div class="me-timer-label">Recupera antes del siguiente ejercicio</div>
+              <div class="me-descanso-next"><span>Siguiente</span><strong>${ej.nombre}</strong></div>
+              <button class="btn btn-primary me-siguiente" onclick="APP._saltarDescanso()">
+                <i class="fa-solid fa-forward"></i> Saltar descanso
+              </button>
+            </div>
                 `;
 
     if (temporizadorDescanso) clearInterval(temporizadorDescanso);
