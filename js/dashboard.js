@@ -7,11 +7,6 @@ const Dashboard = {
     if (!c) return;
 
     const hoy = new Date();
-    const horas = hoy.getHours();
-    let saludo = "Buenos días";
-    if (horas >= 14 && horas < 21) saludo = "Buenas tardes";
-    if (horas >= 21 || horas < 6) saludo = "Buenas noches";
-
     const dia = UI.getDiaNombre();
     const entrenadoHoy = STATE.diasEntrenados.includes(UI.getHoy());
 
@@ -81,23 +76,6 @@ const Dashboard = {
         </div>
       </section>
     `;
-    const accionesRapidas = `
-      <div class="dashboard-quick-actions" aria-label="Acciones rápidas">
-        <button class="accion-rapida" onclick="APP.navegar('fotos')">
-          <i class="fa-solid fa-camera"></i>
-          <span>Fotos</span>
-        </button>
-        <button class="accion-rapida" onclick="APP.navegar('peso')">
-          <i class="fa-solid fa-scale-balanced"></i>
-          <span>Peso</span>
-        </button>
-        <button class="accion-rapida" onclick="APP.navegar('historial')">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          <span>Historial</span>
-        </button>
-      </div>
-    `;
-    
     const bloqueEntrenamiento = hayEntrenamientoPendiente
       ? `
         <section class="dashboard-workout-card dashboard-workout-paused">
@@ -157,13 +135,6 @@ const Dashboard = {
 
     c.innerHTML = `
       <div class="dashboard-layout">
-        <header class="dashboard-header">
-          <div>
-            <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
-            <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
-          </div>
-          ${accionesRapidas}
-        </header>
         <main class="dashboard-main-column">
           ${bloqueEntrenamiento}
           <div class="dashboard-overview-grid">
