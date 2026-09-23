@@ -100,6 +100,15 @@ const Storage = {
   _normalizarEstado() {
     STATE.schemaVersion = CONFIG.STATE_SCHEMA_VERSION;
     if (!Array.isArray(STATE.mediciones)) STATE.mediciones = [];
+    if (!Array.isArray(STATE.materialDisponible)) STATE.materialDisponible = [];
+    STATE.materialDisponible = STATE.materialDisponible
+      .filter((item) => item && typeof item === "object" && !Array.isArray(item))
+      .map((item, index) => ({
+        id: String(item.id || `material-${index + 1}`),
+        nombre: String(item.nombre || "Material").trim().slice(0, 80) || "Material",
+        detalle: String(item.detalle || "").trim().slice(0, 180),
+        activo: item.activo !== false,
+      }));
     if (!Array.isArray(STATE.historialEntrenos)) STATE.historialEntrenos = [];
     if (!Array.isArray(STATE.diasNoFumar)) STATE.diasNoFumar = [];
     if (!Array.isArray(STATE.diasEntrenados)) STATE.diasEntrenados = [];
@@ -351,6 +360,7 @@ const Storage = {
           evolution: "object",
           config: "object",
           ajustes: "object",
+          materialDisponible: "array",
           rutinasPersonalizadas: "object",
         };
         for (const [campo, tipo] of Object.entries(campos)) {

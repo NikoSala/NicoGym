@@ -6471,6 +6471,22 @@ textarea:focus {
   }
 }
 
+#ajustesContainer .inventory-hint { margin: -2px 0 12px; color: var(--text-muted); font-size: 12px; line-height: 1.45; }
+#ajustesContainer .inventory-list { display: grid; gap: 10px; }
+#ajustesContainer .inventory-item { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 8px; padding: 10px 0; border-top: 1px solid var(--border); }
+#ajustesContainer .inventory-fields { display: grid; gap: 6px; min-width: 0; }
+#ajustesContainer .inventory-fields input { width: 100%; min-width: 0; }
+#ajustesContainer .inventory-toggle { display: flex; align-items: center; gap: 5px; color: var(--text-secondary); font-size: 11px; white-space: nowrap; }
+#ajustesContainer .inventory-toggle input { accent-color: var(--success, #65c18c); }
+#ajustesContainer .inventory-add { display: flex; gap: 8px; margin-top: 12px; }
+#ajustesContainer .inventory-add input { flex: 1; min-width: 0; }
+@media (max-width: 520px) {
+  #ajustesContainer .inventory-item { grid-template-columns: minmax(0,1fr) auto; }
+  #ajustesContainer .inventory-fields { grid-column: 1 / -1; }
+  #ajustesContainer .inventory-toggle { grid-column: 1; }
+  #ajustesContainer .inventory-remove { grid-column: 2; grid-row: 2; }
+}
+
 /* NicoGym dashboard: compact training-first hierarchy */
 .dashboard-layout {
   display: block;

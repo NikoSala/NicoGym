@@ -8,6 +8,8 @@
 
                 // Leer estado actual del temporizador
                 const temporizadorActivo = CONFIG.TEMPORIZADOR_DESCANSO;
+                const escapar = (valor) => String(valor ?? "").replace(/[&<>\"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" })[c]);
+                if (!Array.isArray(STATE.materialDisponible)) STATE.materialDisponible = [];
 
                 c.innerHTML = `
                     <div class="card">
@@ -16,6 +18,24 @@
                         <div class="ajustes-item"><span class="aj-label">Altura (cm)</span><input class="input input-sm" type="number" id="ajusteAltura" value="${STATE.altura}" style="width:80px;"></div>
                         <div class="ajustes-item"><span class="aj-label">Peso objetivo (kg)</span><input class="input input-sm" type="number" id="ajusteObjetivo" value="${CONFIG.PESO_OBJETIVO}" style="width:80px;"></div>
                         <button class="btn btn-primary btn-block" onclick="Ajustes._guardar()" style="margin-top:10px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                    </div>
+
+                    <div class="card inventory-card">
+                        <div class="card-title"><i class="fa-solid fa-dumbbell"></i> Mi material</div>
+                        <p class="inventory-hint">Activa lo que tienes disponible para entrenar. Puedes cambiarlo cuando quieras.</p>
+                        <div class="inventory-list">${STATE.materialDisponible.map((item, index) => `
+                            <div class="inventory-item" data-index="${index}">
+                                <div class="inventory-fields">
+                                    <input class="input input-sm inventory-name" aria-label="Nombre del material" maxlength="80" value="${escapar(item.nombre)}" placeholder="Material">
+                                    <input class="input input-sm inventory-detail" aria-label="Detalle del material" maxlength="180" value="${escapar(item.detalle)}" placeholder="Detalle opcional">
+                                </div>
+                                <label class="inventory-toggle"><input type="checkbox" class="inventory-active" ${item.activo !== false ? "checked" : ""}> Disponible</label>
+                                <button type="button" class="btn btn-ghost btn-sm inventory-remove" aria-label="Eliminar ${escapar(item.nombre)}" title="Eliminar material"><i class="fa-solid fa-trash"></i></button>
+                            </div>`).join("")}</div>
+                        <form class="inventory-add" id="inventoryAddForm">
+                            <input class="input input-sm" id="inventoryNewName" maxlength="80" placeholder="Añadir material" aria-label="Nombre del material" required>
+                            <button class="btn btn-ghost btn-sm" type="submit"><i class="fa-solid fa-plus"></i> Añadir</button>
+                        </form>
                     </div>
 
                     <div class="card">
@@ -45,6 +65,32 @@
                         <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:6px;">NicoGym · Tu compañero de entrenamiento</div>
                     </div>
                 `;
+
+                c.querySelectorAll('.inventory-item').forEach((row) => {
+                    const index = Number(row.dataset.index);
+                    const guardar = () => {
+                        const item = STATE.materialDisponible[index];
+                        if (!item) return;
+                        item.nombre = row.querySelector('.inventory-name').value.trim() || 'Material';
+                        item.detalle = row.querySelector('.inventory-detail').value.trim();
+                        item.activo = row.querySelector('.inventory-active').checked;
+                        Storage._save();
+                    };
+                    row.querySelectorAll('input').forEach((input) => input.addEventListener('change', guardar));
+                    row.querySelector('.inventory-remove').addEventListener('click', () => {
+                        STATE.materialDisponible.splice(index, 1);
+                        Storage._save();
+                        this.render();
+                    });
+                });
+                c.querySelector('#inventoryAddForm')?.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const nombre = c.querySelector('#inventoryNewName').value.trim();
+                    if (!nombre) return;
+                    STATE.materialDisponible.push({ id: `material-${Date.now()}`, nombre, detalle: '', activo: true });
+                    Storage._save();
+                    this.render();
+                });
             },
 
             _guardar() {
