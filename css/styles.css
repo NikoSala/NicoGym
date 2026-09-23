@@ -6811,7 +6811,7 @@ textarea:focus {
 @media (max-width: 680px) {
   .dashboard-header {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
     align-items: center;
     column-gap: 8px;
     row-gap: 5px;
@@ -6825,14 +6825,76 @@ textarea:focus {
     margin: 0;
   }
 
-  .dashboard-header > .dashboard-settings-action {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
   .dashboard-header .dashboard-quick-actions .accion-rapida {
     flex: 0 0 auto;
     min-height: 32px;
     padding: 5px 8px;
+  }
+}
+
+/* Dashboard: menos ruido visual y métricas corporales concisas */
+.dashboard-overview-grid {
+  gap: 10px;
+}
+
+.dashboard-overview-grid > .dashboard-section,
+.dashboard-detail-grid > .dashboard-section {
+  padding: 15px 2px;
+  border: 0;
+  border-bottom: 1px solid rgba(199, 203, 209, .10);
+  border-radius: 0;
+  background: transparent;
+}
+
+.dashboard-overview-grid > .dashboard-week-section {
+  padding-top: 0;
+}
+
+.dashboard-week-section .dashboard-section-heading {
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.dashboard-week-section .dashboard-section-heading h2 {
+  font-size: 16px;
+}
+
+.dashboard-week-count {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dashboard-week-section .dashboard-week-days {
+  margin-top: 0;
+}
+
+.dashboard-body-stats,
+.dashboard-body-card .dashboard-body-stats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.dashboard-body-stats > button:first-child,
+.dashboard-body-stats > div:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.dashboard-body-stats strong {
+  font-size: clamp(16px, 2vw, 20px);
+}
+
+.dashboard-body-stats span {
+  font-size: 11px;
+}
+
+@media (max-width: 680px) {
+  .dashboard-detail-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dashboard-body-card .dashboard-body-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
