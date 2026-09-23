@@ -12,7 +12,16 @@ const ExerciseLibrary = {
   render() {
     const container = document.getElementById("bibliotecaContainer");
     if (!container) return;
-    const ejercicios = getExerciseDatabase();
+    const catalogo = getExerciseDatabase();
+    const ejerciciosPorNombre = new Map();
+    catalogo.forEach((ej) => {
+      const clave = (ej.nombre || "").trim().toLocaleLowerCase("es");
+      const actual = ejerciciosPorNombre.get(clave);
+      const tieneGif = /\.gif(?:$|[?#])/i.test(ej.urlGif || "");
+      const actualTieneGif = /\.gif(?:$|[?#])/i.test(actual?.urlGif || "");
+      if (!actual || (tieneGif && !actualTieneGif)) ejerciciosPorNombre.set(clave, ej);
+    });
+    const ejercicios = [...ejerciciosPorNombre.values()];
     const grupos = [...new Set(ejercicios.map((ej) => ej.grupo).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
     const filtrados = ejercicios.filter((ej) => {
       const coincideGrupo = this.grupoActivo === "Todos" || ej.grupo === this.grupoActivo;
