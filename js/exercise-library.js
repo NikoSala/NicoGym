@@ -10,6 +10,38 @@ const ExerciseLibrary = {
     })[caracter]);
   },
 
+  _gruposMusculares(ejercicio) {
+    const grupos = new Set();
+    const normalizar = (musculo) => {
+      const nombre = String(musculo || "")
+        .toLocaleLowerCase("es")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+      if (/pectoral|pecho|serrato/.test(nombre)) return "Pecho";
+      if (/espalda|dorsal|romboide|erector/.test(nombre)) return "Espalda";
+      if (/deltoid|hombro|supraespinoso|manguito/.test(nombre)) return "Hombro";
+      if (/triceps/.test(nombre)) return "Tríceps";
+      if (/biceps|braquial/.test(nombre) && !/braquiorradial/.test(nombre)) return "Bíceps";
+      if (/antebrazo|braquiorradial|agarre/.test(nombre)) return "Antebrazo";
+      if (/trapecio/.test(nombre)) return "Trapecio";
+      if (/glute/.test(nombre)) return "Glúteo";
+      if (/cuadriceps|isquio|aductor|abductor|pierna/.test(nombre)) return "Pierna";
+      if (/gemelo|soleo/.test(nombre)) return "Gemelos";
+      if (/abdominal|oblicuo|\bcore\b/.test(nombre)) return "Abdominales";
+      return null;
+    };
+
+    String(ejercicio?.grupo || "").split("/").forEach((grupo) => {
+      const normalizado = normalizar(grupo.trim());
+      if (normalizado) grupos.add(normalizado);
+    });
+    (ejercicio?.musculosPrincipales || []).forEach((musculo) => {
+      const normalizado = normalizar(musculo);
+      if (normalizado) grupos.add(normalizado);
+    });
+    return [...grupos];
+  },
+
   render() {
     const container = document.getElementById("bibliotecaContainer");
     if (!container) return;
@@ -25,10 +57,11 @@ const ExerciseLibrary = {
     const ejercicios = [...ejerciciosPorNombre.values()];
     const asignados = new Set(DAY_KEYS_ROUTINE.flatMap((dia) => getRutinaDelDia(dia).map(([id]) => id)));
     const ejerciciosEnRutina = ejercicios.filter((ej) => asignados.has(ej.id)).length;
-    const grupos = [...new Set(ejercicios.map((ej) => ej.grupo).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
+    const grupos = [...new Set(ejercicios.flatMap((ej) => this._gruposMusculares(ej)))].sort((a, b) => a.localeCompare(b, "es"));
     const filtrados = ejercicios.filter((ej) => {
-      const coincideGrupo = this.grupoActivo === "Todos" || ej.grupo === this.grupoActivo;
-      const texto = `${ej.nombre} ${ej.grupo || ""} ${(ej.material || []).join(" ")} ${(ej.musculosPrincipales || []).join(" ")}`.toLocaleLowerCase("es");
+      const gruposEjercicio = this._gruposMusculares(ej);
+      const coincideGrupo = this.grupoActivo === "Todos" || gruposEjercicio.includes(this.grupoActivo);
+      const texto = `${ej.nombre} ${gruposEjercicio.join(" ")} ${(ej.material || []).join(" ")} ${(ej.musculosPrincipales || []).join(" ")}`.toLocaleLowerCase("es");
       return coincideGrupo && texto.includes(this.busqueda.trim().toLocaleLowerCase("es"));
     });
     const tamanoPagina = window.matchMedia?.("(max-width: 650px)").matches ? 8 : 12;
@@ -54,7 +87,7 @@ const ExerciseLibrary = {
           const diaNombre = CONFIG.NOMBRES_DIAS[dia];
           return `<button type="button" class="library-day-toggle ${seleccionado ? "active" : ""}" data-day="${dia}" data-exercise-id="${this._escapar(ej.id)}" aria-label="${seleccionado ? "Quitar" : "Añadir"} ${this._escapar(ej.nombre)} ${seleccionado ? "de" : "a"} ${this._escapar(diaNombre)}" aria-pressed="${seleccionado}" title="${this._escapar(diaNombre)}">${etiqueta}</button>`;
         }).join("");
-        return `<article class="library-card"><button type="button" class="library-card-main" data-exercise="${indice}" aria-label="Ver detalles de ${this._escapar(ej.nombre)}"><span class="library-card-media ${media ? "" : "is-placeholder"}">${media}<i class="fa-solid fa-dumbbell" aria-hidden="true"></i></span><span class="library-card-copy"><span class="library-card-group">${this._escapar(ej.grupo || ej.categoria || "Ejercicio")}</span><strong>${this._escapar(ej.nombre)}</strong><span class="library-card-meta">${this._escapar((ej.musculosPrincipales || []).slice(0, 2).join(" · ") || ej.categoria || "Ver detalles")}</span></span><i class="fa-solid fa-chevron-right library-card-arrow" aria-hidden="true"></i></button><div class="library-routine-edit"><span>Añadir a</span><div class="library-day-toggles" aria-label="Días de rutina">${dias}</div></div></article>`;
+        return `<article class="library-card"><button type="button" class="library-card-main" data-exercise="${indice}" aria-label="Ver detalles de ${this._escapar(ej.nombre)}"><span class="library-card-media ${media ? "" : "is-placeholder"}">${media}<i class="fa-solid fa-dumbbell" aria-hidden="true"></i></span><span class="library-card-copy"><span class="library-card-group">${this._escapar(this._gruposMusculares(ej).join(" · ") || ej.categoria || "Ejercicio")}</span><strong>${this._escapar(ej.nombre)}</strong><span class="library-card-meta">${this._escapar((ej.musculosPrincipales || []).slice(0, 2).join(" · ") || ej.categoria || "Ver detalles")}</span></span><i class="fa-solid fa-chevron-right library-card-arrow" aria-hidden="true"></i></button><div class="library-routine-edit"><span>Añadir a</span><div class="library-day-toggles" aria-label="Días de rutina">${dias}</div></div></article>`;
       }).join("") || `<p class="library-empty">No hay ejercicios que coincidan con la búsqueda.</p>`}</div>
       ${totalPaginas > 1 ? `<nav class="library-pagination" aria-label="Páginas de ejercicios"><button type="button" class="library-page-button" data-page="${this.pagina - 1}" ${this.pagina === 1 ? "disabled" : ""}>Anterior</button><span>Página ${this.pagina} de ${totalPaginas}</span><button type="button" class="library-page-button" data-page="${this.pagina + 1}" ${this.pagina === totalPaginas ? "disabled" : ""}>Siguiente</button></nav>` : ""}`;
 
@@ -71,6 +104,6 @@ const ExerciseLibrary = {
     const lista = (items) => items?.length ? `<ul>${items.map((item) => `<li>${this._escapar(item)}</li>`).join("")}</ul>` : "";
     const texto = (value) => value ? `<p>${this._escapar(value)}</p>` : "";
     const media = ej.urlGif ? `<img class="library-detail-image" src="${this._escapar(ej.urlGif)}" alt="Demostración de ${this._escapar(ej.nombre)}" onerror="this.style.display='none'">` : "";
-    Modal.abrir(`<article class="library-detail">${media}<span class="library-eyebrow">${this._escapar(ej.grupo || ej.categoria || "Ejercicio")}</span><h2>${this._escapar(ej.nombre)}</h2>${texto(ej.descripcion)}${ej.musculosPrincipales?.length ? `<h3>Músculos principales</h3><p>${this._escapar(ej.musculosPrincipales.join(" · "))}</p>` : ""}${ej.material?.length ? `<h3>Material</h3><p>${this._escapar(ej.material.join(" · "))}</p>` : ""}${ej.consejos ? `<h3>Consejos</h3>${lista(ej.consejos.split(/\r?\n/).map((x) => x.replace(/^•\s*/, "")).filter(Boolean))}` : ""}${ej.errores ? `<h3>Errores frecuentes</h3>${lista(ej.errores.split(/\r?\n/).map((x) => x.replace(/^•\s*/, "")).filter(Boolean))}` : ""}</article>`);
+    Modal.abrir(`<article class="library-detail">${media}<span class="library-eyebrow">${this._escapar(this._gruposMusculares(ej).join(" · ") || ej.categoria || "Ejercicio")}</span><h2>${this._escapar(ej.nombre)}</h2>${texto(ej.descripcion)}${ej.musculosPrincipales?.length ? `<h3>Músculos principales</h3><p>${this._escapar(ej.musculosPrincipales.join(" · "))}</p>` : ""}${ej.material?.length ? `<h3>Material</h3><p>${this._escapar(ej.material.join(" · "))}</p>` : ""}${ej.consejos ? `<h3>Consejos</h3>${lista(ej.consejos.split(/\r?\n/).map((x) => x.replace(/^•\s*/, "")).filter(Boolean))}` : ""}${ej.errores ? `<h3>Errores frecuentes</h3>${lista(ej.errores.split(/\r?\n/).map((x) => x.replace(/^•\s*/, "")).filter(Boolean))}` : ""}</article>`);
   },
 };
