@@ -3871,7 +3871,7 @@ body {
 }
 
 .page::before {
-  opacity: .035;
+  opacity: .12;
   filter: saturate(1.05) drop-shadow(0 0 26px rgba(125, 16, 40, .18));
 }
 
