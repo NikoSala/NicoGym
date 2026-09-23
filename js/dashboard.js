@@ -185,7 +185,7 @@ const Dashboard = {
           <h1>${CONFIG.TIPOS_RUTINA[entrenamientoPendiente.dia] || "Entrenamiento"}</h1>
           <div class="dashboard-workout-meta"><span><i class="fa-solid fa-dumbbell"></i> ${totalEjerciciosHoy} ejercicios</span><span><i class="fa-solid fa-chart-simple"></i> ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} completados</span></div>
           <div class="dashboard-progress"><span style="width:${progresoEntreno}%"></span></div>
-          <button class="dashboard-primary-action" onclick="APP.iniciarEntreno('${entrenamientoPendiente.dia}')"><i class="fa-solid fa-play"></i> Continuar entrenamiento</button>
+          <button class="dashboard-primary-action" onclick="APP.iniciarEntreno('${entrenamientoPendiente.dia}')"><i class="fa-solid fa-play"></i> CONTINUAR</button>
         </section>
       `
       : dia === "sabado" || dia === "domingo"
@@ -205,7 +205,7 @@ const Dashboard = {
             <div class="dashboard-workout-meta"><span><i class="fa-solid fa-dumbbell"></i> ${totalEjerciciosHoy} ejercicios</span><span><i class="fa-solid fa-list-check"></i> ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} completados</span></div>
             <div class="dashboard-progress"><span style="width:${progresoEntreno}%"></span></div>
             <div class="dashboard-workout-progress-label">${progresoEntreno}% de la sesión</div>
-            <button class="dashboard-primary-action" onclick="${entrenadoHoy ? "APP.navegar('historial')" : `APP.iniciarEntreno('${dia}')`}"><i class="fa-solid ${entrenadoHoy ? "fa-clock-rotate-left" : "fa-play"}"></i> ${entrenadoHoy ? "Ver entrenamiento" : ejerciciosCompletadosHoy > 0 ? "Continuar entrenamiento" : "Comenzar entrenamiento"}</button>
+            <button class="dashboard-primary-action" onclick="${entrenadoHoy ? "APP.navegar('historial')" : `APP.iniciarEntreno('${dia}')`}"><i class="fa-solid ${entrenadoHoy ? "fa-clock-rotate-left" : "fa-play"}"></i> ${entrenadoHoy ? "Ver entrenamiento" : ejerciciosCompletadosHoy > 0 ? "CONTINUAR" : "ENTRENAR"}</button>
           </section>
         `;
 
@@ -251,10 +251,14 @@ const Dashboard = {
         </header>
         <main class="dashboard-main-column">
           ${bloqueEntrenamiento}
-          ${bloqueSemana}
-          ${bloqueCuerpo}
-          ${bloqueActividad}
-          ${accionesRapidas}
+          <div class="dashboard-overview-grid">
+            ${bloqueSemana}
+            <div class="dashboard-detail-grid">
+              ${bloqueCuerpo}
+              ${bloqueActividad}
+            </div>
+            ${accionesRapidas}
+          </div>
         </main>
       </div>
     `;

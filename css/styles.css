@@ -6470,3 +6470,327 @@ textarea:focus {
     font-size: 9px;
   }
 }
+
+/* NicoGym dashboard: compact training-first hierarchy */
+.dashboard-layout {
+  display: block;
+  max-width: 1040px;
+  padding: 0 clamp(14px, 3vw, 30px) 28px;
+}
+
+.dashboard-header {
+  align-items: center;
+  padding: 4px 0 18px;
+}
+
+.dashboard-brand-line {
+  margin-bottom: 5px;
+  color: var(--text-muted);
+}
+
+.dashboard-header .saludo {
+  font-size: clamp(22px, 4vw, 28px);
+}
+
+.dashboard-header .saludo-dia {
+  font-size: 13px;
+}
+
+.dashboard-main-column {
+  gap: 20px;
+}
+
+.dashboard-workout-card {
+  min-height: 270px;
+  padding: clamp(22px, 4vw, 38px);
+  border: 1px solid rgba(165, 29, 58, .42);
+  border-left: 4px solid var(--nico-burgundy-bright);
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse at 90% 0%, rgba(165, 29, 58, .17), transparent 45%),
+    linear-gradient(125deg, rgba(30, 24, 28, .98), rgba(17, 20, 25, .98) 65%);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, .22);
+}
+
+.dashboard-workout-card::after {
+  right: -44px;
+  bottom: -104px;
+  width: 260px;
+  height: 260px;
+  border-color: rgba(199, 203, 209, .08);
+  box-shadow: 0 0 0 30px rgba(165, 29, 58, .035), 0 0 0 62px rgba(165, 29, 58, .025);
+}
+
+.dashboard-workout-paused {
+  border-left-color: var(--nico-gold);
+  background: radial-gradient(ellipse at 90% 0%, rgba(214, 169, 74, .12), transparent 45%), linear-gradient(125deg, rgba(30, 24, 28, .98), rgba(17, 20, 25, .98) 65%);
+}
+
+.dashboard-workout-rest {
+  min-height: 190px;
+  border-left-color: var(--nico-steel);
+  background: linear-gradient(125deg, rgba(199, 203, 209, .08), rgba(17, 20, 25, .98) 60%);
+}
+
+.dashboard-kicker {
+  color: var(--nico-steel);
+  font-size: 11px;
+  letter-spacing: .12em;
+}
+
+.dashboard-status-pill {
+  border-color: rgba(199, 203, 209, .2);
+  color: var(--nico-steel);
+  background: rgba(199, 203, 209, .06);
+}
+
+.dashboard-workout-day {
+  margin-top: 26px;
+  font-size: 14px;
+}
+
+.dashboard-workout-card h1 {
+  margin: 7px 0 16px;
+  font-size: clamp(28px, 5vw, 42px);
+}
+
+.dashboard-workout-meta {
+  gap: 10px 22px;
+  font-size: 13px;
+}
+
+.dashboard-progress {
+  max-width: 560px;
+  height: 6px;
+  margin-top: 22px;
+}
+
+.dashboard-primary-action {
+  width: auto;
+  min-width: 200px;
+  min-height: 48px;
+  margin-top: 16px;
+  border-color: var(--nico-burgundy);
+  border-radius: 8px;
+  background: var(--nico-burgundy);
+  font-size: 13px;
+}
+
+.dashboard-primary-action:hover {
+  border-color: var(--nico-burgundy-bright);
+}
+
+.dashboard-overview-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.dashboard-section {
+  min-width: 0;
+  padding: 18px 20px;
+  border: 1px solid rgba(199, 203, 209, .10);
+  border-radius: 12px;
+  background: rgba(17, 20, 25, .66);
+}
+
+.dashboard-section-heading {
+  margin-bottom: 12px;
+}
+
+.dashboard-section-heading h2 {
+  font-size: 18px;
+}
+
+.dashboard-week-score {
+  color: var(--text);
+}
+
+.dashboard-week-status {
+  gap: 7px;
+  font-size: 12px;
+}
+
+.dashboard-week-status > span:last-child {
+  margin-left: auto;
+  color: var(--text-muted);
+}
+
+.dashboard-week-section .semaforo-track {
+  margin: 9px 0 0;
+}
+
+.dashboard-week-days {
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.dashboard-week-day {
+  min-height: 48px;
+  padding: 6px 3px;
+  border-color: transparent;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .035);
+}
+
+.dashboard-week-day.actual {
+  border-color: rgba(165, 29, 58, .56);
+  background: rgba(125, 16, 40, .12);
+}
+
+.dashboard-week-day.actual span {
+  color: var(--text);
+}
+
+.dashboard-week-day.hecho {
+  border-color: rgba(101, 193, 140, .28);
+  background: rgba(11, 107, 71, .12);
+}
+
+.dashboard-week-day.actual.hecho span,
+.dashboard-week-day.hecho strong {
+  color: var(--nico-green-bright);
+}
+
+.dashboard-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.dashboard-body-card,
+.dashboard-activity-card {
+  margin: 0;
+}
+
+.dashboard-body-stats {
+  gap: 10px;
+}
+
+.dashboard-body-stats > button,
+.dashboard-body-stats > div {
+  min-width: 0;
+  padding: 4px 10px;
+  border: 0;
+  border-left: 1px solid rgba(199, 203, 209, .16);
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.dashboard-body-stats > button {
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+.dashboard-body-stats strong {
+  font-size: clamp(16px, 2vw, 20px);
+}
+
+.dashboard-body-stats span {
+  font-size: 11px;
+}
+
+.dashboard-body-stats strong.positive,
+.dashboard-empty-state > i {
+  color: var(--nico-green-bright);
+}
+
+.dashboard-inline-action {
+  color: var(--nico-steel);
+  font-size: 12px;
+}
+
+.dashboard-activity-row {
+  min-height: 40px;
+  font-size: 12px;
+}
+
+.dashboard-quick-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.dashboard-quick-actions .accion-rapida {
+  display: inline-flex;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 13px;
+  border-color: rgba(199, 203, 209, .12);
+  border-radius: 8px;
+  background: transparent;
+  font-size: 12px;
+}
+
+.dashboard-quick-actions .accion-rapida i {
+  color: var(--nico-steel);
+  font-size: 14px;
+}
+
+.dashboard-quick-actions .accion-rapida:hover {
+  border-color: rgba(165, 29, 58, .48);
+}
+
+.dashboard-quick-actions .accion-rapida:hover i {
+  color: var(--nico-burgundy-bright);
+}
+
+@media (max-width: 680px) {
+  .dashboard-layout {
+    padding: 0 12px 22px;
+  }
+
+  .dashboard-header {
+    padding-bottom: 13px;
+  }
+
+  .dashboard-main-column {
+    gap: 12px;
+  }
+
+  .dashboard-workout-card {
+    min-height: 0;
+    padding: 22px 18px;
+    border-radius: 14px;
+  }
+
+  .dashboard-workout-day {
+    margin-top: 21px;
+  }
+
+  .dashboard-workout-card h1 {
+    font-size: clamp(27px, 8vw, 36px);
+  }
+
+  .dashboard-primary-action {
+    width: 100%;
+  }
+
+  .dashboard-overview-grid,
+  .dashboard-detail-grid {
+    gap: 12px;
+  }
+
+  .dashboard-section {
+    padding: 15px 14px;
+  }
+
+  .dashboard-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-body-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 13px;
+  }
+
+  .dashboard-quick-actions {
+    justify-content: stretch;
+  }
+
+  .dashboard-quick-actions .accion-rapida {
+    flex: 1;
+    padding-inline: 8px;
+  }
+}
