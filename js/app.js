@@ -88,7 +88,8 @@ const APP = {
       return;
     }
 
-    const progresoVista = id === "historial" ? "historial" : id === "estadisticas" ? "estadisticas" : null;
+    const vistasProgreso = ["estadisticas", "historial", "peso", "fotos"];
+    const progresoVista = vistasProgreso.includes(id) ? id : null;
     const paginaId = progresoVista ? "progreso" : id;
 
     document
@@ -98,8 +99,15 @@ const APP = {
     if (page) page.classList.add("active");
 
     if (progresoVista) {
-      document.getElementById("progresoResumenView").hidden = progresoVista !== "estadisticas";
-      document.getElementById("progresoHistorialView").hidden = progresoVista !== "historial";
+      const vistas = {
+        estadisticas: "progresoResumenView",
+        historial: "progresoHistorialView",
+        peso: "progresoPesoView",
+        fotos: "progresoFotosView",
+      };
+      Object.entries(vistas).forEach(([vista, elementoId]) => {
+        document.getElementById(elementoId).hidden = progresoVista !== vista;
+      });
       document.querySelectorAll("[data-progress-view]").forEach((tab) => {
         tab.classList.toggle("active", tab.dataset.progressView === progresoVista);
       });
@@ -113,7 +121,6 @@ const APP = {
     const btns = document.querySelectorAll(".nav-btn");
     if (map[navId] !== undefined && btns[map[navId]])
       btns[map[navId]].classList.add("active");
-    else if (btns[4]) btns[4].classList.add("active");
 
     document
       .querySelectorAll(".side-menu .menu-item")
@@ -122,7 +129,7 @@ const APP = {
     if (seccionProgreso) {
       seccionProgreso.classList.toggle(
         "active",
-        ["estadisticas", "historial", "agenda", "records", "fotos", "comparador", "objetivos"].includes(id),
+        ["estadisticas", "historial", "peso", "fotos", "agenda", "records", "comparador", "objetivos"].includes(id),
       );
       if (seccionProgreso.classList.contains("active")) seccionProgreso.open = true;
     }
