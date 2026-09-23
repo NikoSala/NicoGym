@@ -108,6 +108,9 @@ const APP = {
       case "biblioteca":
         ExerciseLibrary.render();
         break;
+      case "entrenador-ia":
+        EntrenadorIA.render();
+        break;
       case "semana":
         Semana.render();
         break;
