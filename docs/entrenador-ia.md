@@ -1,6 +1,6 @@
 # Conectar el Entrenador IA de NicoGym
 
-La app publicada en GitHub Pages es estática. Por seguridad, la llamada a OpenAI se hace desde el Cloudflare Worker de `worker/coach.js`; nunca pongas `OPENAI_API_KEY` en el código de NicoGym.
+La app publicada en GitHub Pages es estática. Por seguridad, la llamada a OpenAI se hace desde el Cloudflare Worker de `worker/coach.js`; nunca pongas `OPENAI_API_KEY` en el código de NicoGym. Esta activación del servidor es una tarea técnica única; no forma parte del uso normal de NicoGym.
 
 ## 1. Crear el Worker
 
@@ -30,10 +30,12 @@ Guarda el valor generado en el secreto `APP_ACCESS_TOKEN`. La limitación de pet
 2. En NicoGym abre **Más → Entrenador IA**.
 3. Introduce esa URL y el mismo valor de `APP_ACCESS_TOKEN` que guardaste en Cloudflare.
 
-La URL y la clave de acceso se conservan solo en `sessionStorage` de esa sesión del navegador. Pulsa **Desconectar** para borrarlas antes de cerrar una sesión compartida.
+La dirección y la clave de acceso son ajustes técnicos de conexión, no la clave de OpenAI. Se conservan solo en `sessionStorage` de esa pestaña. Para usar la app sin repetir esos datos tras cerrar el navegador, quien publica NicoGym debe preconfigurar el endpoint y resolver la autenticación en el despliegue; no incluyas secretos en el JavaScript público.
 
 ## Datos y alcance
 
-Al enviar una consulta se transmiten a OpenAI el mensaje, las rutinas actuales, el catálogo de ejercicios, hasta cuatro entrenamientos recientes y las últimas tres mediciones de peso/cintura. NicoGym no envía fotos, nombre ni notas de las sesiones. La conversación no se guarda en el estado de NicoGym y la solicitud al API indica `store: false`.
+El nivel se estima en el móvil según los entrenamientos y semanas activas registrados en el último año. Es orientativo y puedes elegir o corregir el nivel. El perfil (nivel, objetivo, días, duración y material) se guarda en una clave local independiente de `STATE`; no se sincroniza ni se incluye en los backups existentes.
+
+Al enviar una consulta se comparten con OpenAI el mensaje, ese perfil, la rutina semanal y el catálogo de ejercicios. El historial se resume localmente en cantidades para estimar el nivel; NicoGym no envía sesiones individuales, cargas, mediciones de peso/cintura, fotos, nombre ni notas. Se requiere marcar la casilla de consentimiento en la pantalla. La conversación no se guarda en el estado de NicoGym y la solicitud al API indica `store: false`.
 
 El asistente puede revisar el entrenamiento y redactar propuestas basadas en ejercicios existentes. No cambia ni guarda rutinas, no diagnostica lesiones y no genera dietas: NicoGym aún no tiene un módulo de nutrición.
