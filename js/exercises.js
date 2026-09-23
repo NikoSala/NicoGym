@@ -1375,7 +1375,75 @@ function getExerciseDatabase() {
         Pecho: 35,
       },
     },
-
+    {
+      id: "flexiones-suelo", nombre: "Flexiones en el suelo", grupo: "Pecho", categoria: "Empuje",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Push-Up.gif",
+      descripcion: "Desde una posicion de plancha, baja el pecho al suelo y empuja para volver arriba.",
+      consejos: "Mantén el cuerpo alineado y controla la bajada.", errores: "No dejes caer la cadera ni abras demasiado los codos.",
+      musculosPrincipales: ["Pectoral"], musculosSecundarios: ["Tríceps", "Deltoides anterior", "Core"],
+      series: 3, reps: "8-15", dia: null, dificultad: "facil", material: ["Peso corporal"], tipoCarga: "peso_corporal",
+      intensidadMuscular: { Pecho: 85, "Tríceps": 50 },
+    },
+    {
+      id: "cruce-poleas", nombre: "Cruce de poleas", grupo: "Pecho", categoria: "Aislamiento",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Crossover.gif",
+      descripcion: "Junta las manos delante del pecho con una ligera flexion de codos.", consejos: "Controla el estiramiento y aprieta el pecho al juntar las manos.", errores: "No uses impulso ni conviertas el movimiento en un press.",
+      musculosPrincipales: ["Pectoral"], musculosSecundarios: ["Deltoides anterior"], series: 3, reps: "10-15", dia: null, dificultad: "media", material: ["Poleas"], tipoCarga: "cable", intensidadMuscular: { Pecho: 90 },
+    },
+    {
+      id: "jalon-polea-al-pecho", nombre: "Jalón al pecho en polea", grupo: "Espalda", categoria: "Jalón",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Lat-Pulldown.gif",
+      descripcion: "Sentado, lleva la barra desde la polea alta hacia la parte superior del pecho.", consejos: "Inicia el tiron juntando las escapulas y mantén el torso estable.", errores: "No tires detras de la nuca ni te balancees.",
+      musculosPrincipales: ["Dorsal ancho"], musculosSecundarios: ["Bíceps", "Trapecio"], series: 3, reps: "8-12", dia: null, dificultad: "facil", material: ["Polea alta"], tipoCarga: "cable", intensidadMuscular: { Espalda: 90, "Bíceps": 40 },
+    },
+    {
+      id: "remo-sentado-polea", nombre: "Remo sentado en polea", grupo: "Espalda", categoria: "Remo",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Cable-Row.gif",
+      descripcion: "Desde la polea baja, lleva el agarre al abdomen y regresa estirando los brazos.", consejos: "Mantén la espalda neutra y los hombros bajos.", errores: "No redondees la espalda ni te impulses con el torso.",
+      musculosPrincipales: ["Dorsal ancho", "Romboides"], musculosSecundarios: ["Bíceps", "Trapecio"], series: 3, reps: "8-12", dia: null, dificultad: "facil", material: ["Polea baja"], tipoCarga: "cable", intensidadMuscular: { Espalda: 90, "Bíceps": 40 },
+    },
+    {
+      id: "face-pull-polea", nombre: "Face pull en polea", grupo: "Hombro", categoria: "Tirón",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Face-Pull.gif",
+      descripcion: "Tira de la cuerda hacia la cara con los codos abiertos y junta las escapulas.", consejos: "Usa una carga ligera y mantén los codos elevados.", errores: "No arquees la espalda ni tires hacia el pecho.",
+      musculosPrincipales: ["Deltoides posterior"], musculosSecundarios: ["Trapecio", "Romboides"], series: 3, reps: "12-15", dia: null, dificultad: "facil", material: ["Polea", "Cuerda"], tipoCarga: "cable", intensidadMuscular: { Hombro: 75, Trapecio: 60 },
+    },
+    {
+      id: "sentadilla-barra", nombre: "Sentadilla con barra", grupo: "Pierna", categoria: "Compuesto",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/BARBELL-SQUAT.gif",
+      descripcion: "Flexiona caderas y rodillas con control y vuelve a subir manteniendo el tronco firme.", consejos: "Mantén las rodillas alineadas con los pies.", errores: "No redondees la espalda ni rebotes al fondo.",
+      musculosPrincipales: ["Cuádriceps", "Glúteos"], musculosSecundarios: ["Isquiotibiales", "Core"], series: 3, reps: "6-10", dia: null, dificultad: "media", material: ["Barra", "Rack"], tipoCarga: "barra_larga", intensidadMuscular: { Pierna: 90, "Glúteos": 75 },
+    },
+    {
+      id: "extension-cuadriceps-maquina", nombre: "Extensión de cuádriceps en máquina", grupo: "Pierna", categoria: "Aislamiento",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/LEG-EXTENSION.gif",
+      descripcion: "Sentado, extiende las rodillas de forma controlada y baja el peso lentamente.", consejos: "Ajusta el respaldo y mantén la espalda apoyada.", errores: "No balancees el cuerpo ni bloquees bruscamente las rodillas.",
+      musculosPrincipales: ["Cuádriceps"], musculosSecundarios: [], series: 3, reps: "10-15", dia: null, dificultad: "facil", material: ["Máquina"], tipoCarga: "maquina", intensidadMuscular: { Pierna: 90 },
+    },
+    {
+      id: "curl-femoral-sentado", nombre: "Curl femoral sentado", grupo: "Pierna", categoria: "Aislamiento",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/08/Seated-Leg-Curl.gif",
+      descripcion: "Flexiona las rodillas llevando los talones hacia abajo y regresa lentamente.", consejos: "Mantén la cadera apoyada y controla ambas fases.", errores: "No levantes la cadera ni uses impulso.",
+      musculosPrincipales: ["Isquiotibiales"], musculosSecundarios: ["Gemelos"], series: 3, reps: "10-15", dia: null, dificultad: "facil", material: ["Máquina"], tipoCarga: "maquina", intensidadMuscular: { Pierna: 85 },
+    },
+    {
+      id: "hip-thrust-barra", nombre: "Hip thrust con barra", grupo: "Glúteo", categoria: "Compuesto",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Hip-Thrust.gif",
+      descripcion: "Con la espalda alta apoyada en un banco, eleva la cadera hasta extenderla y baja con control.", consejos: "Contrae los glúteos arriba y mantén las costillas recogidas.", errores: "No hiperextiendas la zona lumbar.",
+      musculosPrincipales: ["Glúteos"], musculosSecundarios: ["Isquiotibiales"], series: 3, reps: "8-12", dia: null, dificultad: "media", material: ["Barra", "Banco"], tipoCarga: "barra_larga", intensidadMuscular: { "Glúteos": 90, Pierna: 45 },
+    },
+    {
+      id: "plancha-frontal", nombre: "Plancha frontal", grupo: "Abdominales", categoria: "Core",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/plank.gif",
+      descripcion: "Apoyado sobre antebrazos y pies, mantén el cuerpo alineado y el abdomen activo.", consejos: "Respira con normalidad y mantén la cadera estable.", errores: "No hundas la zona lumbar ni eleves demasiado la cadera.",
+      musculosPrincipales: ["Core", "Recto abdominal"], musculosSecundarios: ["Glúteos", "Hombros"], series: 3, reps: "20-45 s", dia: null, dificultad: "facil", material: ["Peso corporal"], tipoCarga: "peso_corporal", intensidadMuscular: { Abdominales: 85 },
+    },
+    {
+      id: "dead-bug", nombre: "Dead bug", grupo: "Abdominales", categoria: "Core",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/05/Dead-Bug.gif",
+      descripcion: "Boca arriba, extiende un brazo y la pierna contraria manteniendo la zona lumbar estable.", consejos: "Muévete despacio y conserva la espalda baja apoyada.", errores: "No arquees la espalda al extender las extremidades.",
+      musculosPrincipales: ["Core", "Recto abdominal"], musculosSecundarios: ["Oblicuos"], series: 3, reps: "8-12 por lado", dia: null, dificultad: "facil", material: ["Peso corporal"], tipoCarga: "peso_corporal", intensidadMuscular: { Abdominales: 80 },
+    },
   ];
 
   return exerciseDatabase;
