@@ -56,7 +56,19 @@ const ROUTINES = {
 // ==========================================
 
 function getRutinaDelDia(dia) {
+  const personalizadas = STATE.rutinasPersonalizadas;
+  if (personalizadas && Object.prototype.hasOwnProperty.call(personalizadas, dia)) {
+    return Array.isArray(personalizadas[dia]) ? personalizadas[dia] : [];
+  }
   return ROUTINES[dia] || [];
+}
+
+function getResumenRutinaDelDia(dia) {
+  const ejercicios = getEjerciciosPorDia(dia);
+  const grupos = [...new Set(ejercicios.map((ej) => ej.grupo).filter(Boolean))];
+  return ejercicios.length
+    ? `${grupos.join(" + ")} · ${ejercicios.length} ejercicios`
+    : "Sin ejercicios asignados";
 }
 
 // ==========================================
@@ -81,3 +93,32 @@ function getEjerciciosPorDia(dia) {
     })
     .filter(Boolean);
 }
+
+const DAY_KEYS_ROUTINE = ["lunes", "martes", "miercoles", "jueves", "viernes"];
+
+const RutinaEditor = {
+  toggle(ejercicioId, dia) {
+    if (!DAY_KEYS_ROUTINE.includes(dia)) return;
+    if (STATE.entrenamientoPendiente?.dia === dia) {
+      UI.toast("Pausa o termina ese entrenamiento antes de editar su rutina", "error");
+      return;
+    }
+    const ejercicio = getExerciseDatabase().find((ej) => ej.id === ejercicioId);
+    if (!ejercicio) return;
+
+    const actual = Object.prototype.hasOwnProperty.call(STATE.rutinasPersonalizadas, dia)
+      ? STATE.rutinasPersonalizadas[dia]
+      : (ROUTINES[dia] || []);
+    const existe = actual.some(([id]) => id === ejercicioId);
+    STATE.rutinasPersonalizadas[dia] = existe
+      ? actual.filter(([id]) => id !== ejercicioId)
+      : [...actual, [ejercicioId, Number(ejercicio.series) || 3, String(ejercicio.reps || "12")]];
+
+    Object.keys(STATE.checks).forEach((clave) => {
+      if (clave.startsWith(`${dia}-`)) delete STATE.checks[clave];
+    });
+    Storage._save();
+    ExerciseLibrary.render();
+    UI.toast(existe ? "Ejercicio quitado de la rutina" : "Ejercicio añadido a la rutina", "success");
+  },
+};

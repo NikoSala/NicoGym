@@ -771,7 +771,7 @@ const APP = {
     const progreso = this._calcularProgresoGlobal();
 
     document.getElementById("meTitulo").textContent =
-      `${CONFIG.NOMBRES_DIAS[ej.dia]} · ${CONFIG.TIPOS_RUTINA[ej.dia] || "Entrenamiento"}`;
+      `${CONFIG.NOMBRES_DIAS[ej.dia]} · ${getResumenRutinaDelDia(ej.dia)}`;
 
     document.getElementById("meProgresoTexto").textContent =
       `${idxEjercicioActual + 1} / ${total}`;
@@ -1391,7 +1391,7 @@ const APP = {
       entrenamiento = {
         fecha: hoy,
         dia,
-        tipo: CONFIG.TIPOS_RUTINA[dia] || dia.toUpperCase(),
+        tipo: getResumenRutinaDelDia(dia),
         ejercicios: [],
       };
       STATE.historialEntrenos.push(entrenamiento);
@@ -1625,7 +1625,7 @@ const APP = {
       STATE.historialEntrenos.push({
         fecha: hoy,
         dia: ej.dia,
-        tipo: CONFIG.TIPOS_RUTINA[ej.dia] || ej.dia.toUpperCase(),
+        tipo: getResumenRutinaDelDia(ej.dia),
         ejercicios: [registroCardio],
       });
     }

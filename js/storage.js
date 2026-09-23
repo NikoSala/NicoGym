@@ -120,6 +120,30 @@ const Storage = {
     if (typeof STATE.config.temporizadorDescanso !== "boolean")
       STATE.config.temporizadorDescanso = false;
     if (
+      !STATE.rutinasPersonalizadas ||
+      typeof STATE.rutinasPersonalizadas !== "object" ||
+      Array.isArray(STATE.rutinasPersonalizadas)
+    ) STATE.rutinasPersonalizadas = {};
+    ["lunes", "martes", "miercoles", "jueves", "viernes"].forEach((dia) => {
+      const rutina = STATE.rutinasPersonalizadas[dia];
+      if (rutina === undefined) return;
+      if (!Array.isArray(rutina)) {
+        delete STATE.rutinasPersonalizadas[dia];
+        return;
+      }
+      const idsValidos = new Set(getExerciseDatabase().map((ej) => ej.id));
+      STATE.rutinasPersonalizadas[dia] = rutina.filter((item, indice, lista) =>
+        Array.isArray(item) &&
+        typeof item[0] === "string" &&
+        idsValidos.has(item[0]) &&
+        lista.findIndex((otro) => Array.isArray(otro) && otro[0] === item[0]) === indice
+      ).map(([id, series, reps]) => [
+        id,
+        Number.isFinite(Number(series)) && Number(series) > 0 ? Number(series) : 3,
+        String(reps || "12"),
+      ]);
+    });
+    if (
       STATE.entrenamientoPendiente !== null &&
       (typeof STATE.entrenamientoPendiente !== "object" ||
         Array.isArray(STATE.entrenamientoPendiente))
@@ -327,6 +351,7 @@ const Storage = {
           evolution: "object",
           config: "object",
           ajustes: "object",
+          rutinasPersonalizadas: "object",
         };
         for (const [campo, tipo] of Object.entries(campos)) {
           if (datosEstado[campo] === undefined) continue;

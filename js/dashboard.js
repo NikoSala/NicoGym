@@ -103,7 +103,7 @@ const Dashboard = {
         <section class="dashboard-workout-card dashboard-workout-paused">
           <div class="dashboard-workout-topline"><span class="dashboard-kicker">ENTRENAMIENTO EN CURSO</span><span class="dashboard-status-pill">Pausado</span></div>
           <div class="dashboard-workout-day">${CONFIG.NOMBRES_DIAS[entrenamientoPendiente.dia] || entrenamientoPendiente.dia}</div>
-          <h1>${CONFIG.TIPOS_RUTINA[entrenamientoPendiente.dia] || "Entrenamiento"}</h1>
+          <h1>${getResumenRutinaDelDia(entrenamientoPendiente.dia)}</h1>
           <div class="dashboard-workout-meta"><span><i class="fa-solid fa-dumbbell"></i> ${totalEjerciciosHoy} ejercicios</span><span><i class="fa-solid fa-chart-simple"></i> ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} completados</span></div>
           <div class="dashboard-progress"><span style="width:${progresoEntreno}%"></span></div>
           <button class="dashboard-primary-action" onclick="APP.iniciarEntreno('${entrenamientoPendiente.dia}')"><i class="fa-solid fa-play"></i> CONTINUAR</button>
@@ -122,7 +122,7 @@ const Dashboard = {
           <section class="dashboard-workout-card">
             <div class="dashboard-workout-topline"><span class="dashboard-kicker">ENTRENAMIENTO DE HOY</span><span class="dashboard-status-pill">${entrenadoHoy ? "Completado" : "Pendiente"}</span></div>
             <div class="dashboard-workout-day">${UI.getDiaSemanaNombre(hoy)}</div>
-            <h1>${CONFIG.TIPOS_RUTINA[dia]}</h1>
+            <h1>${getResumenRutinaDelDia(dia)}</h1>
             <div class="dashboard-workout-meta"><span><i class="fa-solid fa-dumbbell"></i> ${totalEjerciciosHoy} ejercicios</span><span><i class="fa-solid fa-list-check"></i> ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} completados</span></div>
             <div class="dashboard-progress"><span style="width:${progresoEntreno}%"></span></div>
             <div class="dashboard-workout-progress-label">${progresoEntreno}% de la sesión</div>

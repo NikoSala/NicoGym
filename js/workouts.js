@@ -61,7 +61,7 @@ const Rutinas = {
                                 <span style="font-size:40px;display:block;margin-bottom:8px;">${iconos[idx]}</span>
                                 <div style="font-size:20px;font-weight:700;color:var(--text);">${nombres[idx]}</div>
                                 <div style="font-size:13px;color:var(--text-secondary);margin:4px 0;">
-                                ${CONFIG.TIPOS_RUTINA[dia]}
+                                ${getResumenRutinaDelDia(dia)}
                                </div>
                                 <div style="font-size:12px;color:var(--text-secondary);">
                                     🏋️ ${ejercicios.length} ejercicios

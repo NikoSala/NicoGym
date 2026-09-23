@@ -27,6 +27,7 @@ const STATE = {
   pesosAjustados: {},
   diasEspeciales: {}, // Formato: { "2026-08-27": "vacaciones" | "lesionado" }
   objetivos: [],
+  rutinasPersonalizadas: {},
 };
 
 let diaActivo = "lunes";

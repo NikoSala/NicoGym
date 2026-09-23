@@ -131,7 +131,7 @@ const Agenda = {
 
     // --- Continúa con la lógica existente ---
     if (eventos.some((evento) => evento.tipo === "completado")) elementos.push('<div class="agenda-detail-item"><span>✅</span><span>Entrenamiento completado</span></div>');
-    else if (eventos.some((evento) => evento.tipo === "entreno") && estadoEspecial === 'normal') elementos.push(`<div class="agenda-detail-item"><span>💪</span><span>Entrenamiento previsto: ${CONFIG.TIPOS_RUTINA[dia]}</span></div><button class="btn btn-primary btn-block" onclick="APP.navegar('rutinas')">Ir a entrenar</button>`);
+    else if (eventos.some((evento) => evento.tipo === "entreno") && estadoEspecial === 'normal') elementos.push(`<div class="agenda-detail-item"><span>💪</span><span>Entrenamiento previsto: ${getResumenRutinaDelDia(dia)}</span></div><button class="btn btn-primary btn-block" onclick="APP.navegar('rutinas')">Ir a entrenar</button>`);
     else if (eventos.some((evento) => evento.tipo === "entreno") && estadoEspecial === 'vacaciones') elementos.push('<div class="agenda-detail-item"><span>🏖️</span><span>Vacaciones - No entrenar</span></div>');
     else if (eventos.some((evento) => evento.tipo === "entreno") && estadoEspecial === 'lesionado') elementos.push('<div class="agenda-detail-item"><span>🤕</span><span>Lesionado - Descanso recomendado</span></div>');
     else if (fecha.getDay() === 0 || fecha.getDay() === 6) elementos.push('<div class="agenda-detail-item"><span>😌</span><span>Día de descanso</span></div>');

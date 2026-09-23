@@ -14,31 +14,26 @@ const Semana = {
         key: "lunes",
         nombre: "LUNES",
         icono: "🔵",
-        grupo: "Pecho + Hombro + Tríceps · 6 ejercicios",
       },
       {
         key: "martes",
         nombre: "MARTES",
         icono: "🟢",
-        grupo: "Espalda + Bíceps · 6 ejercicios",
       },
       {
         key: "miercoles",
         nombre: "MIÉRCOLES",
         icono: "🟣",
-        grupo: "Pierna completa · 6 ejercicios",
       },
       {
         key: "jueves",
         nombre: "JUEVES",
         icono: "🟠",
-        grupo: "Bíceps + Tríceps · 6 ejercicios",
       },
       {
         key: "viernes",
         nombre: "VIERNES",
         icono: "🔵",
-        grupo: "Hombro + Pecho · 6 ejercicios",
       },
     ];
 
@@ -78,7 +73,7 @@ const Semana = {
       html += `<article class="${claseDia}${claseDescanso}">`;
       html += `<div class="rd-header">`;
       html += `<div><span class="rd-dia">${dia.icono} ${dia.nombre}</span>`;
-      html += `<div class="rd-grupo">${dia.grupo}</div></div>`;
+      html += `<div class="rd-grupo">${getResumenRutinaDelDia(dia.key)}</div></div>`;
       html += `<span class="rd-estado ${completado ? "completado" : esHoy ? "actual" : esDescanso ? "reposo" : "pendiente"}">${completado ? "HECHO" : esHoy ? "HOY" : esDescanso ? "DESCANSO" : "PENDIENTE"}</span>`;
       html += `</div>`;
 
