@@ -1595,7 +1595,7 @@
 .stats-chart-card .chart-row { margin:9px 0; grid-template-columns:minmax(48px,74px) 1fr 58px; }
 .stats-chart-card .chart-track { height:8px; background:rgba(255,255,255,.075); }
 .stats-chart-card .chart-bar { min-width:3px; background:linear-gradient(90deg,#8f1530,var(--primary),#d6d9df); }
-.stats-chart-card .weight-bar { background:linear-gradient(90deg,#6b4d7c,#b99cc8,#d6d9df); }
+.stats-chart-card .weight-bar { background:linear-gradient(90deg,var(--nico-burgundy),var(--nico-gold),var(--nico-steel)); }
 .stats-empty { display:flex; align-items:center; justify-content:center; gap:8px; min-height:72px; padding:12px; border:1px dashed rgba(255,255,255,.14); border-radius:10px; color:var(--text-secondary); font-size:11px; text-align:center; }
 .stats-empty i { color:var(--primary); }
 .stats-note { margin:11px 0 0; color:var(--text-muted); font-size:10px; line-height:1.45; }
@@ -3517,7 +3517,7 @@ body {
 
 .btn-primary,
 .dia-entrenar-btn:not(.completado) {
-  background: linear-gradient(135deg, var(--nico-green), #084C35) !important;
+  background: linear-gradient(135deg, var(--nico-green), #0B6B47) !important;
   border-color: var(--nico-green-bright) !important;
   box-shadow: 0 8px 20px rgba(11, 107, 71, .26), inset 0 1px 0 rgba(255, 255, 255, .10);
 }
@@ -3531,7 +3531,7 @@ body {
 .dia-entrenar-btn.completado {
   background: var(--nico-green-bright) !important;
   border-color: var(--nico-green-bright) !important;
-  color: #07130D !important;
+  color: var(--nico-charcoal) !important;
 }
 
 .input,
@@ -3550,7 +3550,7 @@ textarea:focus {
 }
 
 .day-tabs .dtab.active {
-  background: linear-gradient(135deg, var(--nico-green), #084C35);
+  background: linear-gradient(135deg, var(--nico-green), #0B6B47);
   border-color: var(--nico-green-bright);
   box-shadow: 0 8px 22px rgba(11, 107, 71, .28), inset 0 1px 0 rgba(255, 255, 255, .12);
 }
@@ -3588,7 +3588,7 @@ textarea:focus {
 
 .toast-success {
   background: var(--nico-green-bright);
-  color: #07130D;
+  color: var(--nico-charcoal);
 }
 
 .toast-info {
@@ -4225,6 +4225,609 @@ textarea:focus {
 }
 
 /* =========================================================
+   FASE 4 · PESO, PROGRESO, HISTORIAL Y FOTOS
+   ========================================================= */
+
+.peso-page-header,
+.history-page-header,
+.photos-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 var(--space-md);
+  padding: 2px 2px 0;
+}
+
+.peso-page-header h1,
+.history-page-header h1,
+.photos-page-header h1 {
+  margin: 3px 0 5px;
+  color: var(--text);
+  font-size: clamp(22px, 4vw, 30px);
+  line-height: 1.05;
+  letter-spacing: -.03em;
+}
+
+.peso-page-header p,
+.history-page-header p,
+.photos-page-header p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.peso-page-kicker,
+.history-page-kicker,
+.photos-page-kicker {
+  color: var(--nico-green-bright);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.peso-page-icon,
+.history-page-icon,
+.photos-page-icon {
+  color: var(--nico-burgundy-bright);
+  font-size: 22px;
+}
+
+.peso-current-card {
+  position: relative;
+  overflow: hidden;
+  border-left: 4px solid var(--nico-burgundy-bright);
+  background:
+    radial-gradient(circle at 100% 0, rgba(125, 16, 40, .20), transparent 42%),
+    linear-gradient(145deg, rgba(24, 28, 34, .98), rgba(14, 17, 21, .98));
+}
+
+.peso-current-heading,
+.peso-section-heading,
+.history-list-heading,
+.photos-section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.peso-current-heading strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--text);
+  font-size: clamp(34px, 9vw, 52px);
+  line-height: .95;
+  letter-spacing: -.04em;
+}
+
+.peso-current-date {
+  color: var(--text-secondary);
+  font-size: 11px;
+  text-align: right;
+}
+
+.peso-current-details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.peso-current-details > div,
+.peso-composition-main,
+.peso-composition-secondary > div {
+  padding: 10px;
+  border: 1px solid rgba(199, 203, 209, .12);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, .16);
+}
+
+.peso-current-details span,
+.peso-composition-main span,
+.peso-composition-secondary span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 9px;
+  line-height: 1.25;
+}
+
+.peso-current-details strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.peso-current-details strong.positive,
+.peso-history-item .positive {
+  color: var(--nico-green-bright);
+}
+
+.peso-current-details strong.negative,
+.peso-history-item .negative {
+  color: var(--nico-danger);
+}
+
+.peso-form-card,
+.peso-composition-card,
+.peso-history-card {
+  margin-bottom: 0;
+}
+
+.peso-section-heading h2,
+.history-list-heading h2,
+.photos-section-heading h2 {
+  margin-top: 3px;
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.peso-section-heading > i,
+.photos-section-heading > i {
+  color: var(--nico-steel);
+}
+
+.peso-composition-primary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.peso-composition-main strong {
+  display: block;
+  margin-top: 7px;
+  color: var(--nico-steel);
+  font-size: 22px;
+}
+
+.peso-composition-main:first-child strong {
+  color: var(--nico-gold);
+}
+
+.peso-composition-secondary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.peso-composition-secondary strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.peso-history-item {
+  padding: 13px 0;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.peso-history-item:last-child {
+  border-bottom: 0;
+}
+
+.peso-history-item:hover {
+  transform: none;
+  border-color: rgba(255, 255, 255, .08);
+  box-shadow: none;
+}
+
+.peso-history-item .med-fecha {
+  color: var(--text);
+}
+
+.peso-history-item > div:first-child > span:last-child {
+  color: var(--nico-steel);
+  font-size: 15px;
+}
+
+.peso-history-item .med-resumen {
+  gap: 6px 12px;
+  color: var(--text-secondary);
+}
+
+.peso-history-item .med-resumen .valor {
+  color: var(--nico-steel);
+}
+
+.history-page-header {
+  margin-bottom: var(--space-md);
+}
+
+.history-page-icon {
+  color: var(--nico-steel);
+}
+
+.history-summary-card,
+.history-list-card {
+  margin-bottom: 0;
+}
+
+.history-list-heading {
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.history-list-count {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid rgba(101, 193, 140, .30);
+  border-radius: var(--radius-full);
+  color: var(--nico-green-bright);
+  background: rgba(11, 107, 71, .12);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.history-timeline {
+  position: relative;
+  margin-top: 8px;
+}
+
+.history-timeline-item {
+  position: relative;
+  padding: 16px 0 16px 18px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.history-timeline-item::before {
+  content: '';
+  position: absolute;
+  top: 22px;
+  bottom: -17px;
+  left: 2px;
+  width: 1px;
+  background: rgba(165, 29, 58, .38);
+}
+
+.history-timeline-item:last-child::before {
+  display: none;
+}
+
+.history-timeline-item::after {
+  content: '';
+  position: absolute;
+  top: 19px;
+  left: -2px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--nico-burgundy-bright);
+  border-radius: 50%;
+  background: var(--nico-charcoal);
+}
+
+.history-session-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.history-session-heading strong,
+.history-session-heading span {
+  display: block;
+}
+
+.history-session-heading strong {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.history-session-heading span {
+  margin-top: 3px;
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.history-session-heading > i {
+  color: var(--nico-steel);
+}
+
+.history-session-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 12px 0;
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.history-session-metrics strong {
+  color: var(--nico-green-bright);
+  font-size: 12px;
+}
+
+.history-exercise-list {
+  display: grid;
+  gap: 6px;
+}
+
+.history-exercise-list > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 8px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, .14);
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.history-exercise-list span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-exercise-list strong {
+  flex-shrink: 0;
+  color: var(--nico-steel);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.history-empty-session {
+  color: var(--text-muted) !important;
+}
+
+.stats-body-card {
+  margin-bottom: 12px;
+}
+
+.stats-body-primary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.stats-body-primary > div {
+  padding: 12px 10px;
+  border: 1px solid rgba(199, 203, 209, .12);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, .15);
+}
+
+.stats-body-primary span,
+.stats-body-secondary span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 9px;
+}
+
+.stats-body-primary strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--nico-steel);
+  font-size: 19px;
+}
+
+.stats-body-primary > div:first-child strong {
+  color: var(--nico-gold);
+}
+
+.stats-body-secondary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 10px;
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.stats-body-secondary span {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.stats-body-secondary strong {
+  color: var(--text-secondary);
+}
+
+.stats-chart-card .weight-bar {
+  background: linear-gradient(90deg, var(--nico-burgundy), var(--nico-gold), var(--nico-steel));
+}
+
+.stats-chart-card .chart-bar {
+  background: linear-gradient(90deg, var(--nico-burgundy), var(--nico-green), var(--nico-steel));
+}
+
+.photos-page-icon {
+  color: var(--nico-burgundy-bright);
+}
+
+.photos-upload-card,
+.photos-compare-card {
+  margin-bottom: 0;
+}
+
+.photos-date-field {
+  display: grid;
+  gap: 5px;
+  margin: 14px 0 10px;
+}
+
+.photos-date-field label {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.photos-section-heading {
+  align-items: center;
+}
+
+.photos-section-heading > i {
+  color: var(--nico-steel);
+}
+
+.foto-grid-upload {
+  gap: 8px;
+}
+
+.foto-grid-upload .equip-card {
+  min-height: 126px;
+  padding: 10px;
+  border-color: rgba(199, 203, 209, .14);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, .16);
+}
+
+.foto-grid-upload .equip-card .label {
+  color: var(--nico-steel);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.photos-compare-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.photos-compare-result {
+  margin-top: 12px !important;
+}
+
+.photos-compare-result > div {
+  border-color: rgba(165, 29, 58, .28) !important;
+  background: linear-gradient(145deg, rgba(24, 28, 34, .96), rgba(14, 17, 21, .96)) !important;
+}
+
+.photos-compare-result h4 {
+  color: var(--nico-burgundy-bright) !important;
+}
+
+@media (min-width: 760px) {
+  #pesoContainer,
+  #historialContainer,
+  #estadisticasContainer,
+  #fotosContainer {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  #pesoContainer {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+    gap: var(--space-md);
+    align-items: start;
+  }
+
+  #pesoContainer .peso-page-header,
+  #pesoContainer .peso-current-card,
+  #pesoContainer .peso-form-card {
+    grid-column: 1 / -1;
+  }
+
+  #pesoContainer .peso-composition-card,
+  #pesoContainer .peso-history-card {
+    min-width: 0;
+  }
+
+  #historialContainer {
+    display: grid;
+    grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr);
+    gap: var(--space-md);
+    align-items: start;
+  }
+
+  #historialContainer .history-page-header,
+  #historialContainer .history-list-card {
+    grid-column: 1 / -1;
+  }
+
+  #estadisticasContainer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-md);
+  }
+
+  #estadisticasContainer > .stats-hero,
+  #estadisticasContainer > .stats-focus-card,
+  #estadisticasContainer > .stats-body-card,
+  #estadisticasContainer > .stats-kpis {
+    grid-column: 1 / -1;
+  }
+
+  #estadisticasContainer > .stats-week-card,
+  #estadisticasContainer > .stats-chart-card {
+    margin-bottom: 0;
+  }
+
+  #fotosContainer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-md);
+    align-items: start;
+  }
+
+  #fotosContainer .photos-page-header {
+    grid-column: 1 / -1;
+  }
+
+  #fotosContainer .photos-upload-card,
+  #fotosContainer .photos-compare-card {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .peso-current-details {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .peso-current-details > div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .peso-composition-secondary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .peso-composition-secondary > div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .history-exercise-list > div {
+    display: grid;
+    gap: 3px;
+  }
+
+  .history-exercise-list strong {
+    white-space: normal;
+  }
+
+  .stats-body-primary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stats-body-primary > div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .photos-compare-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
    FASE 3 · EXPERIENCIA DE ENTRENAMIENTO
    Capa visual sobre el flujo guiado existente.
    ========================================================= */
@@ -4463,7 +5066,7 @@ textarea:focus {
 
 .me-workout-reps-input {
   border-color: rgba(101, 193, 140, .28);
-  background: #0B1110;
+  background: var(--nico-charcoal);
 }
 
 .me-workout-reps-input:focus {
@@ -4479,7 +5082,7 @@ textarea:focus {
   order: 3;
   min-height: 64px;
   border-color: var(--nico-green-bright) !important;
-  background: linear-gradient(135deg, var(--nico-green), #084C35) !important;
+  background: linear-gradient(135deg, var(--nico-green), #0B6B47) !important;
   box-shadow: 0 10px 24px rgba(11, 107, 71, .26) !important;
 }
 
@@ -4505,7 +5108,7 @@ textarea:focus {
 
 .me-workout-set-card.completed .me-workout-set-number {
   background: var(--nico-green-bright);
-  color: #07130D;
+  color: var(--nico-charcoal);
 }
 
 .me-workout-set-number {
@@ -4984,7 +5587,7 @@ textarea:focus {
 }
 
 .dashboard-primary-action:hover {
-  background: #0D7A51;
+  background: #0B6B47;
   box-shadow: 0 10px 24px rgba(11, 107, 71, .32);
   transform: translateY(-1px);
 }

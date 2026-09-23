@@ -26,17 +26,21 @@ const Historial = {
     const ultimaFecha = ultima ? UI.formatearFecha(ultima.fecha) : "--";
 
     container.innerHTML = `
-      <section class="card">
-        <div class="card-title">📚 Historial de entrenamientos</div>
+      <section class="history-page-header">
+        <div><span class="history-page-kicker">ENTRENAMIENTOS</span><h1>Tu historial</h1><p>Cada sesión cuenta para construir tu progreso.</p></div>
+        <i class="fa-solid fa-clock-rotate-left history-page-icon"></i>
+      </section>
+      <section class="card history-summary-card">
+        <div class="card-title">Resumen acumulado</div>
         <div class="dash-grid">
           <div class="dash-stat"><div class="num primary">${sesiones.length}</div><div class="label">Sesiones</div></div>
           <div class="dash-stat"><div class="num green">${Math.round(totalVolumen).toLocaleString("es-ES")}</div><div class="label">Volumen total (kg)</div></div>
           <div class="dash-stat"><div class="num orange">${ultimaFecha}</div><div class="label">Última sesión</div></div>
         </div>
       </section>
-      <section class="card">
-        <div class="card-title">Sesiones guardadas</div>
-        <div id="historialSesiones">
+      <section class="card history-list-card">
+        <div class="history-list-heading"><div><span class="history-page-kicker">REGISTRO</span><h2>Sesiones guardadas</h2></div><span class="history-list-count">${sesiones.length}</span></div>
+        <div id="historialSesiones" class="history-timeline">
           ${sesiones.length ? sesiones.map((sesion) => this._renderSesion(sesion)).join("") : '<div class="agenda-empty">Todavía no hay entrenamientos registrados.</div>'}
         </div>
       </section>
@@ -52,18 +56,18 @@ const Historial = {
     const nombreDia = CONFIG.NOMBRES_DIAS[sesion.dia] || sesion.dia || "Sesión";
 
     return `
-      <article class="historial-sesion" style="padding:12px 0;border-bottom:1px solid var(--border);">
-        <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;">
-          <strong>${nombreDia}</strong>
-          <span style="font-size:11px;color:var(--text-secondary);">${UI.formatearFecha(sesion.fecha)}</span>
+      <article class="historial-sesion history-timeline-item">
+        <div class="history-session-heading">
+          <div><strong>${nombreDia}</strong><span>${UI.formatearFecha(sesion.fecha)}</span></div>
+          <i class="fa-solid fa-dumbbell"></i>
         </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin:6px 0;color:var(--text-secondary);font-size:11px;">
-          <span>${ejercicios.length} ejercicios</span>
-          <span>${ejercicios.reduce((total, ejercicio) => total + (Number(ejercicio.series) || 0), 0)} series</span>
-          <span>${Math.round(volumen).toLocaleString("es-ES")} kg de volumen</span>
+        <div class="history-session-metrics">
+          <span><strong>${ejercicios.length}</strong> ejercicios</span>
+          <span><strong>${ejercicios.reduce((total, ejercicio) => total + (Number(ejercicio.series) || 0), 0)}</strong> series</span>
+          <span><strong>${Math.round(volumen).toLocaleString("es-ES")}</strong> kg volumen</span>
         </div>
-        <div style="font-size:12px;color:var(--text-secondary);">
-          ${ejercicios.length ? ejercicios.map((ejercicio) => `<div style="padding:3px 0;">${ejercicio.nombre} · ${ejercicio.peso || "--"} kg · ${ejercicio.reps || "--"} reps</div>`).join("") : '<div>Solo cardio o sesión sin ejercicios de fuerza.</div>'}
+        <div class="history-exercise-list">
+          ${ejercicios.length ? ejercicios.map((ejercicio) => `<div><span>${ejercicio.nombre}</span><strong>${ejercicio.peso || "--"} kg · ${ejercicio.reps || "--"} reps</strong></div>`).join("") : '<div class="history-empty-session">Solo cardio o sesión sin ejercicios de fuerza.</div>'}
         </div>
         ${notas ? `<div style="margin-top:8px;padding:8px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);font-size:12px;"><strong>Nota:</strong> ${this._escapar(notas)}</div>` : ""}
       </article>

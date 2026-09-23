@@ -113,10 +113,15 @@
                 const mensajeFotos = '';
 
                 c.innerHTML = `
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-camera"></i> Subir fotos</div>
+                    <section class="photos-page-header">
+                        <div><span class="photos-page-kicker">PROGRESO VISUAL</span><h1>Fotos de progreso</h1><p>Compara tus cambios con el paso del tiempo.</p></div>
+                        <i class="fa-solid fa-camera photos-page-icon"></i>
+                    </section>
+                    <div class="card photos-upload-card">
+                        <div class="photos-section-heading"><div><span class="photos-page-kicker">NUEVA MEDICIÓN</span><h2>Guardar fotos</h2></div><i class="fa-solid fa-plus"></i></div>
                         ${mensajeFotos}
-                        <div style="display:flex;gap:6px;margin-bottom:8px">
+                        <div class="photos-date-field">
+                            <label for="fechaFotos">Fecha de la medición</label>
                             <input type="date" id="fechaFotos" class="input" value="${UI.getHoy()}">
                         </div>
                         <div class="foto-grid-upload">
@@ -128,9 +133,9 @@
                         <button class="btn btn-primary btn-block" onclick="Fotos._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar fotos</button>
                     </div>
 
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-code-compare"></i> Comparar</div>
-                        <div style="display:flex;gap:6px;margin-bottom:8px">
+                    <div class="card photos-compare-card">
+                        <div class="photos-section-heading"><div><span class="photos-page-kicker">COMPARADOR</span><h2>Antes y después</h2></div><i class="fa-solid fa-code-compare"></i></div>
+                        <div class="photos-compare-fields">
                             <select id="compararDia1" class="input" style="flex:1;">
                                 <option value="">Día 1</option>
                                 ${fechas.map(f => `<option value="${f}">${UI.formatearFecha(f)}</option>`).join('')}
@@ -141,7 +146,7 @@
                             </select>
                         </div>
                         <button class="btn btn-primary btn-block" onclick="Fotos._comparar()"><i class="fa-solid fa-eye"></i> Comparar</button>
-                        <div id="comparadorResultado" style="margin-top:8px"></div>
+                        <div id="comparadorResultado" class="photos-compare-result"></div>
                     </div>
                 `;
                 document.getElementById('fechaFotos').value = UI.getHoy();

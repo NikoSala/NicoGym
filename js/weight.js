@@ -14,6 +14,15 @@ const Peso = {
         ? STATE.mediciones[STATE.mediciones.length - 1]
         : null;
     const primero = STATE.mediciones.length > 0 ? STATE.mediciones[0] : null;
+    const anterior = STATE.mediciones.length > 1
+      ? STATE.mediciones[STATE.mediciones.length - 2]
+      : null;
+    const cambioAnterior = anterior && ultimo
+      ? Number((Number(ultimo.peso) - Number(anterior.peso)).toFixed(1))
+      : null;
+    const cambioInicio = primero && ultimo
+      ? Number((Number(ultimo.peso) - Number(primero.peso)).toFixed(1))
+      : null;
 
     let titulo = "Nueva medición";
     let descripcion = "Registra todos tus datos corporales.";
@@ -21,7 +30,28 @@ const Peso = {
     const mostrarCamposCompletos = true;
 
     let html = `
-                    <div class="card">
+            <section class="peso-page-header">
+              <div>
+                <span class="peso-page-kicker">PROGRESO CORPORAL</span>
+                <h1>Tu peso y composición</h1>
+                <p>Registra una medición para entender tu evolución.</p>
+              </div>
+              <i class="fa-solid fa-scale-balanced peso-page-icon"></i>
+            </section>
+
+            <section class="peso-current-card card">
+              <div class="peso-current-heading">
+                <div><span class="peso-page-kicker">PESO ACTUAL</span><strong>${ultimo ? `${ultimo.peso} kg` : "--"}</strong></div>
+                <span class="peso-current-date">${ultimo ? UI.formatearFecha(ultimo.fecha) : "Sin mediciones"}</span>
+              </div>
+              <div class="peso-current-details">
+                <div><span>Desde anterior</span><strong class="${cambioAnterior !== null && cambioAnterior < 0 ? "positive" : cambioAnterior > 0 ? "negative" : ""}">${cambioAnterior === null ? "--" : `${cambioAnterior > 0 ? "+" : ""}${cambioAnterior.toFixed(1)} kg`}</strong></div>
+                <div><span>Objetivo</span><strong>${CONFIG.PESO_OBJETIVO} kg</strong></div>
+                <div><span>Desde inicio</span><strong>${cambioInicio === null ? "--" : `${cambioInicio > 0 ? "+" : ""}${cambioInicio.toFixed(1)} kg`}</strong></div>
+              </div>
+            </section>
+
+            <section class="card peso-form-card">
                         <div class="card-title"><i class="fa-solid fa-plus"></i> ${titulo}</div>
                         <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">${descripcion}</div>
                         ${mensajeAdicional}
@@ -43,30 +73,23 @@ const Peso = {
                         <button class="btn btn-primary btn-block" onclick="Peso._guardar()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                     </div>
 
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-chart-simple"></i> Resumen</div>
-                        <div class="peso-grid">
-                            <div class="peso-stat"><div class="num primary">${ultimo ? ultimo.peso : "--"}</div><div class="label">Peso</div></div>
-                            <div class="peso-stat"><div class="num green">${ultimo ? ultimo.grasaPorcentaje : "--"}%</div><div class="label">Grasa</div></div>
-                            <div class="peso-stat"><div class="num orange">${ultimo ? ultimo.masaMuscular : "--"}</div><div class="label">Músculo</div></div>
-                        </div>
-                        ${
-                          primero && ultimo
-                            ? `
-                            <div style="display:flex;justify-content:space-between;padding:6px 10px;background:rgba(0,0,0,0.1);border-radius:var(--radius-sm);margin-top:6px;font-size:12px;flex-wrap:wrap;gap:4px;">
-                                <span>📉 Desde inicio: <strong>${(primero.peso - ultimo.peso).toFixed(1)} kg</strong></span>
-                                <span>📏 Cintura: <strong>${mostrarMedida(ultimo.cintura)} cm</strong></span>
-                                <span>📊 Grasa visceral: <strong>${mostrarMedida(ultimo.grasaVisceral)}</strong></span>
-                            </div>
-                        `
-                            : ""
-                        }
-                    </div>
+                    <section class="card peso-composition-card">
+                      <div class="peso-section-heading"><div><span class="peso-page-kicker">COMPOSICIÓN</span><h2>Lo más importante</h2></div><i class="fa-solid fa-chart-simple"></i></div>
+                      <div class="peso-composition-primary">
+                        <div class="peso-composition-main"><span>Grasa corporal</span><strong>${mostrarMedida(ultimo?.grasaPorcentaje)}%</strong></div>
+                        <div class="peso-composition-main"><span>Masa muscular</span><strong>${mostrarMedida(ultimo?.masaMuscular)} kg</strong></div>
+                      </div>
+                      <div class="peso-composition-secondary">
+                        <div><span>Masa magra</span><strong>${mostrarMedida(ultimo?.masaMagra)} kg</strong></div>
+                        <div><span>Grasa visceral</span><strong>${mostrarMedida(ultimo?.grasaVisceral)}</strong></div>
+                        <div><span>Cintura</span><strong>${mostrarMedida(ultimo?.cintura)} cm</strong></div>
+                      </div>
+                    </section>
 
-                    <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Historial</div>
+                    <section class="card peso-history-card">
+                      <div class="peso-section-heading"><div><span class="peso-page-kicker">MEDICIONES</span><h2>Historial</h2></div><i class="fa-solid fa-clock-rotate-left"></i></div>
                         <div id="historialMediciones"></div>
-                    </div>
+                    </section>
                 `;
     c.innerHTML = html;
     this._renderHistorial();
@@ -164,7 +187,7 @@ const Peso = {
         const diff =
           i < rev.length - 1 ? (m.peso - rev[i + 1].peso).toFixed(1) : null;
         return `
-                        <div class="historial-medicion-card" onclick="Peso._toggleDetalle(${i})">
+                        <div class="historial-medicion-card peso-history-item" onclick="Peso._toggleDetalle(${i})">
                             <div style="display:flex;justify-content:space-between;align-items:center;">
                                 <span class="med-fecha">${UI.formatearFecha(m.fecha)}</span>
                                 <span style="font-weight:600;">${m.peso} kg</span>

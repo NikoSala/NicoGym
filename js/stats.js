@@ -101,6 +101,21 @@ const Estadisticas = {
         <div><p>EN QUÉ FIJARTE AHORA</p><strong>${mensajePrincipal}</strong></div>
         <span class="stats-focus-detail">${etiquetaVolumen}</span>
       </section>
+      <section class="stats-body-card card">
+        <div class="stats-section-heading"><div><p>CUERPO</p><h2>Última medición</h2><span class="stats-section-copy">Una lectura rápida de tus datos corporales.</span></div><i class="fa-solid fa-scale-balanced"></i></div>
+        ${ultima ? `
+          <div class="stats-body-primary">
+            <div><span>Peso</span><strong>${ultima.peso} kg</strong></div>
+            <div><span>Grasa corporal</span><strong>${ultima.grasaPorcentaje > 0 ? `${ultima.grasaPorcentaje}%` : '--'}</strong></div>
+            <div><span>Masa muscular</span><strong>${ultima.masaMuscular > 0 ? `${ultima.masaMuscular} kg` : '--'}</strong></div>
+          </div>
+          <div class="stats-body-secondary">
+            <span>Cintura <strong>${ultima.cintura > 0 ? `${ultima.cintura} cm` : '--'}</strong></span>
+            <span>Masa magra <strong>${ultima.masaMagra > 0 ? `${ultima.masaMagra} kg` : '--'}</strong></span>
+            <span>Grasa visceral <strong>${ultima.grasaVisceral > 0 ? ultima.grasaVisceral : '--'}</strong></span>
+          </div>
+        ` : `<div class="stats-empty"><i class="fa-solid fa-scale-balanced"></i><span>Aún no hay mediciones corporales.</span></div>`}
+      </section>
       <section class="stats-kpis" aria-label="Indicadores principales">
         <div class="stats-kpi ${tono(cambioPeso)}"><span class="stats-kpi-icon"><i class="fa-solid fa-scale-balanced"></i></span><div><span class="stats-kpi-label">Cambio de peso</span><strong>${ev.currentWeight ? delta(cambioPeso, ' kg') : '--'}</strong><small>desde el inicio</small></div></div>
         <div class="stats-kpi ${tono(cambioCintura)}"><span class="stats-kpi-icon"><i class="fa-solid fa-ruler-horizontal"></i></span><div><span class="stats-kpi-label">Cintura</span><strong>${ev.currentWaist ? delta(cambioCintura, ' cm') : '--'}</strong><small>desde el inicio</small></div></div>
