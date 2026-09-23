@@ -133,7 +133,7 @@ const Dashboard = {
     const bloqueCuerpo = `
       <section class="dashboard-section dashboard-body-card">
         <div class="dashboard-section-heading">
-          <div><span class="dashboard-kicker">RESUMEN DE PROGRESO</span><h2>Tu evolución</h2></div>
+          <div><span class="dashboard-kicker">RESUMEN DE PROGRESO</span><h2>Tu cuerpo</h2></div>
         </div>
         <div class="dashboard-body-stats">
           <button onclick="APP.navegar('peso')"><strong>${peso} kg</strong><span>Peso actual</span></button>
@@ -148,7 +148,7 @@ const Dashboard = {
       .slice(0, 3);
     const bloqueActividad = `
       <section class="dashboard-section dashboard-activity-card">
-        <div class="dashboard-section-heading"><div><span class="dashboard-kicker">ACTIVIDAD RECIENTE</span><h2>Últimos entrenamientos</h2></div><button class="dashboard-inline-action" onclick="APP.navegar('historial')">Ver todo <i class="fa-solid fa-arrow-right"></i></button></div>
+        <div class="dashboard-section-heading"><div><span class="dashboard-kicker">ACTIVIDAD RECIENTE</span><h2>Sesiones</h2></div><button class="dashboard-inline-action" onclick="APP.navegar('historial')">Todo <i class="fa-solid fa-arrow-right"></i></button></div>
         ${sesionesRecientes.length ? sesionesRecientes.map((sesion) => `
           <div class="dashboard-activity-row"><span>${UI.formatearFecha(sesion.fecha)}</span><strong>${CONFIG.NOMBRES_DIAS[sesion.dia] || sesion.dia || "Entrenamiento"}</strong></div>
         `).join("") : '<p class="dashboard-muted-note">Completa una sesión para verla aquí.</p>'}

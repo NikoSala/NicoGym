@@ -6898,3 +6898,118 @@ textarea:focus {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* Presentación móvil del resumen en dos paneles compactos */
+@media (max-width: 680px) {
+  .dashboard-overview-grid {
+    gap: 8px;
+  }
+
+  .dashboard-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 0;
+    padding: 10px 8px;
+    overflow: hidden;
+    border: 1px solid rgba(199, 203, 209, .10);
+    border-radius: 14px;
+    background: rgba(17, 20, 25, .72);
+  }
+
+  .dashboard-detail-grid > .dashboard-section {
+    min-width: 0;
+    padding: 3px 8px 5px;
+    border: 0;
+    background: transparent;
+  }
+
+  .dashboard-detail-grid > .dashboard-activity-card {
+    border-left: 1px solid rgba(199, 203, 209, .10);
+  }
+
+  .dashboard-detail-grid .dashboard-section-heading {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .dashboard-detail-grid .dashboard-section-heading h2 {
+    margin-top: 3px;
+    font-size: 15px;
+  }
+
+  .dashboard-detail-grid .dashboard-kicker {
+    font-size: 8px;
+    letter-spacing: .08em;
+  }
+
+  .dashboard-detail-grid .dashboard-inline-action {
+    margin-top: 2px;
+    padding: 0;
+    font-size: 10px;
+  }
+
+  .dashboard-body-card .dashboard-body-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 4px;
+  }
+
+  .dashboard-body-card .dashboard-body-stats > button,
+  .dashboard-body-card .dashboard-body-stats > div {
+    min-width: 0;
+    padding: 2px 4px;
+    border: 0;
+  }
+
+  .dashboard-body-card .dashboard-body-stats > div {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(199, 203, 209, .08);
+  }
+
+  .dashboard-body-card .dashboard-body-stats strong {
+    font-size: 17px;
+  }
+
+  .dashboard-body-card .dashboard-body-stats span {
+    font-size: 9px;
+  }
+
+  .dashboard-activity-card .dashboard-activity-row {
+    min-height: 34px;
+    gap: 4px;
+    padding: 6px 0;
+    font-size: 9px;
+  }
+
+  .dashboard-activity-card .dashboard-activity-row strong {
+    max-width: 58%;
+    overflow: hidden;
+    font-size: 9px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dashboard-activity-card .dashboard-activity-row:nth-of-type(n + 4) {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .dashboard-detail-grid {
+    padding-inline: 5px;
+  }
+
+  .dashboard-detail-grid > .dashboard-section {
+    padding-inline: 5px;
+  }
+
+  .dashboard-header .dashboard-quick-actions .accion-rapida {
+    gap: 5px;
+    padding-inline: 6px;
+    font-size: 10px;
+  }
+}
