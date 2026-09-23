@@ -88,23 +88,44 @@ const APP = {
       return;
     }
 
+    const progresoVista = id === "historial" ? "historial" : id === "estadisticas" ? "estadisticas" : null;
+    const paginaId = progresoVista ? "progreso" : id;
+
     document
       .querySelectorAll(".page")
       .forEach((p) => p.classList.remove("active"));
-    const page = document.getElementById(`page-${id}`);
+    const page = document.getElementById(`page-${paginaId}`);
     if (page) page.classList.add("active");
+
+    if (progresoVista) {
+      document.getElementById("progresoResumenView").hidden = progresoVista !== "estadisticas";
+      document.getElementById("progresoHistorialView").hidden = progresoVista !== "historial";
+      document.querySelectorAll("[data-progress-view]").forEach((tab) => {
+        tab.classList.toggle("active", tab.dataset.progressView === progresoVista);
+      });
+    }
 
     document
       .querySelectorAll(".nav-btn")
       .forEach((b) => b.classList.remove("active"));
+    const navId = progresoVista ? "estadisticas" : id;
     const map = { inicio: 0, rutinas: 1, semana: 2, estadisticas: 3 };
     const btns = document.querySelectorAll(".nav-btn");
-    if (map[id] !== undefined && btns[map[id]])
-      btns[map[id]].classList.add("active");
+    if (map[navId] !== undefined && btns[map[navId]])
+      btns[map[navId]].classList.add("active");
+    else if (btns[4]) btns[4].classList.add("active");
 
     document
       .querySelectorAll(".side-menu .menu-item")
       .forEach((m) => m.classList.toggle("active", m.dataset.page === id));
+    const seccionProgreso = document.querySelector('[data-menu-group="progreso"]');
+    if (seccionProgreso) {
+      seccionProgreso.classList.toggle(
+        "active",
+        ["estadisticas", "historial", "agenda", "records", "fotos", "comparador", "objetivos"].includes(id),
+      );
+      if (seccionProgreso.classList.contains("active")) seccionProgreso.open = true;
+    }
 
     if (document.getElementById("sideMenu").classList.contains("open"))
       UI.toggleMenu();

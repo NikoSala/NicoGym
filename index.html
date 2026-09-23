@@ -28,7 +28,7 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" /></noscript>
     <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <link rel="preload" as="image" href="img/logo-nicogym-600.jpg" fetchpriority="high" />
-    <link rel="stylesheet" href="css/styles.css?v=20260923g" />
+    <link rel="stylesheet" href="css/styles.css?v=20260923h" />
   </head>
   <body>
     <!-- LOADING SCREEN -->
@@ -79,98 +79,26 @@
     <!-- SIDE MENU -->
     <div class="side-overlay" id="sideOverlay" onclick="UI.toggleMenu()"></div>
     <nav class="side-menu" id="sideMenu" aria-label="Menú principal">
-      <button
-        class="menu-item active"
-        data-page="inicio"
-        onclick="APP.navegar('inicio')"
-      >
-        <i class="fa-solid fa-house"></i> Inicio
-      </button>
-      <button
-        class="menu-item"
-        data-page="rutinas"
-        onclick="APP.navegar('rutinas')"
-      >
-        <i class="fa-solid fa-dumbbell"></i> Entrenar
-      </button>
-      <button class="menu-item" data-page="biblioteca" onclick="APP.navegar('biblioteca')">
-        <i class="fa-solid fa-book-open"></i> Ejercicios
-      </button>
-      <button
-        class="menu-item"
-        data-page="semana"
-        onclick="APP.navegar('semana')"
-      >
-        <i class="fa-solid fa-calendar-week"></i> Rutina
-      </button>
-      <button class="menu-item" data-page="peso" onclick="APP.navegar('peso')">
-        <i class="fa-solid fa-scale-balanced"></i> Peso
-      </button>
-      <button
-        class="menu-item"
-        data-page="agenda"
-        onclick="APP.navegar('agenda')"
-      >
-        <i class="fa-solid fa-calendar-check"></i> Agenda
-      </button>
-      <button
-        class="menu-item"
-        data-page="records"
-        onclick="APP.navegar('records')"
-      >
-        <i class="fa-solid fa-trophy"></i> Récords
-      </button>
-      <button
-        class="menu-item"
-        data-page="historial"
-        onclick="APP.navegar('historial')"
-      >
-        <i class="fa-solid fa-clock-rotate-left"></i> Historial
-      </button>
-      <button
-        class="menu-item"
-        data-page="estadisticas"
-        onclick="APP.navegar('estadisticas')"
-      >
-        <i class="fa-solid fa-chart-bar"></i> Estadísticas
-      </button>
-      <div class="menu-divider"></div>
-      <button
-        class="menu-item"
-        data-page="fotos"
-        onclick="APP.navegar('fotos')"
-      >
-        <i class="fa-solid fa-camera"></i> Fotos
-      </button>
-      <button
-        class="menu-item"
-        data-page="comparador"
-        onclick="APP.navegar('comparador')"
-      >
-        <i class="fa-solid fa-code-compare"></i> Comparador
-      </button>
-      <button
-        class="menu-item"
-        data-page="objetivos"
-        onclick="APP.navegar('objetivos')"
-      >
-        <i class="fa-solid fa-bullseye"></i> Objetivos
-      </button>
-      <button
-        class="menu-item"
-        data-page="ajustes"
-        onclick="APP.navegar('ajustes')"
-      >
-        <i class="fa-solid fa-gear"></i> Ajustes
-      </button>
-      <button
-        class="menu-item"
-        onclick="APP.confirmarReset()"
-        style="color: var(--danger)"
-      >
-        <i class="fa-solid fa-trash"></i> Reset
-      </button>
-      <div class="menu-footer">NicoGym 3.2</div>
+      <div class="menu-section-label">PRINCIPAL</div>
+      <button class="menu-item active" data-page="inicio" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i> Inicio</button>
+      <button class="menu-item" data-page="rutinas" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i> Entrenar</button>
+      <button class="menu-item" data-page="semana" onclick="APP.navegar('semana')"><i class="fa-solid fa-calendar-week"></i> Plan semanal</button>
+      <button class="menu-item" data-page="biblioteca" onclick="APP.navegar('biblioteca')"><i class="fa-solid fa-book-open"></i> Ejercicios</button>
+      <button class="menu-item" data-page="peso" onclick="APP.navegar('peso')"><i class="fa-solid fa-scale-balanced"></i> Peso y medidas</button>
+
+      <details class="menu-group" data-menu-group="progreso">
+        <summary><i class="fa-solid fa-chart-line"></i><span>Progreso</span><i class="fa-solid fa-chevron-down menu-group-chevron"></i></summary>
+        <div class="menu-submenu">
+          <button class="menu-item" data-page="estadisticas" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-bar"></i> Resumen</button>
+          <button class="menu-item" data-page="historial" onclick="APP.navegar('historial')"><i class="fa-solid fa-clock-rotate-left"></i> Entrenamientos</button>
+          <button class="menu-item" data-page="agenda" onclick="APP.navegar('agenda')"><i class="fa-solid fa-calendar-check"></i> Agenda</button>
+          <button class="menu-item" data-page="records" onclick="APP.navegar('records')"><i class="fa-solid fa-trophy"></i> Récords</button>
+          <button class="menu-item" data-page="fotos" onclick="APP.navegar('fotos')"><i class="fa-solid fa-camera"></i> Fotos</button>
+          <button class="menu-item" data-page="comparador" onclick="APP.navegar('comparador')"><i class="fa-solid fa-code-compare"></i> Comparar entrenamientos</button>
+          <button class="menu-item" data-page="objetivos" onclick="APP.navegar('objetivos')"><i class="fa-solid fa-bullseye"></i> Objetivos</button>
+        </div>
+      </details>
+<div class="menu-footer">NicoGym 3.2</div>
     </nav>
 
     <!-- PAGES -->
@@ -203,15 +131,16 @@
     <div class="page" id="page-records">
       <div id="recordsContainer"></div>
     </div>
-
-    <div class="page" id="page-historial">
-      <div id="historialContainer"></div>
+    <div class="page" id="page-progreso">
+      <div class="progress-page-shell">
+        <nav class="progress-view-tabs" aria-label="Vistas de progreso">
+          <button type="button" class="active" data-progress-view="estadisticas" onclick="APP.navegar('estadisticas')"><i class="fa-solid fa-chart-line"></i> Resumen</button>
+          <button type="button" data-progress-view="historial" onclick="APP.navegar('historial')"><i class="fa-solid fa-clock-rotate-left"></i> Entrenamientos</button>
+        </nav>
+        <section class="progress-page-view" id="progresoResumenView"><div id="estadisticasContainer"></div></section>
+        <section class="progress-page-view" id="progresoHistorialView" hidden><div id="historialContainer"></div></section>
+      </div>
     </div>
-
-    <div class="page" id="page-estadisticas">
-      <div id="estadisticasContainer"></div>
-    </div>
-
     <div class="page" id="page-fotos">
       <div id="fotosContainer"></div>
     </div>
@@ -238,7 +167,7 @@
         <i class="fa-solid fa-dumbbell"></i>Entrenar
       </button>
       <button class="nav-btn" onclick="APP.navegar('semana')">
-        <i class="fa-solid fa-calendar-week"></i>Rutina
+        <i class="fa-solid fa-calendar-week"></i>Plan
       </button>
       <button class="nav-btn" onclick="APP.navegar('estadisticas')">
         <i class="fa-solid fa-chart-line"></i>Progreso
@@ -324,8 +253,8 @@
     <script src="js/modal.js"></script>
     <script src="js/records.js"></script>
     <script src="js/progression.js"></script>
-    <script src="js/app.js?v=20260923e"></script>
-    <script src="js/dashboard.js?v=20260923c"></script>
+    <script src="js/app.js?v=20260923f"></script>
+    <script src="js/dashboard.js?v=20260923d"></script>
     <script src="js/workouts.js?v=20260923a"></script>
     <script src="js/week.js?v=20260923a"></script>
     <script src="js/weight.js?v=20260826"></script>
