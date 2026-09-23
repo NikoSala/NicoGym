@@ -143,20 +143,13 @@ const Dashboard = {
     }
 
     const bloqueSemana = `
-      <section class="dashboard-week-card card semaforo-${semaforo.clase}">
+      <section class="dashboard-section dashboard-week-section semaforo-${semaforo.clase}">
         <div class="dashboard-section-heading">
-          <div>
-            <span class="dashboard-kicker">ESTA SEMANA</span>
-            <h2>Tu ritmo</h2>
-          </div>
-          <span class="dashboard-week-score">${porcentajeConsistencia}%</span>
+          <div><span class="dashboard-kicker">ESTA SEMANA</span><h2>Tu ritmo</h2></div>
+          <strong class="dashboard-week-score">${entrenamientosSemana}/${entrenamientosObjetivoSemana}</strong>
         </div>
-        <div class="dashboard-week-status"><span class="semaforo-luz"></span><strong>${semaforo.titulo}</strong><span>${semaforo.texto}</span></div>
+        <div class="dashboard-week-status"><span class="semaforo-luz"></span><strong>${semaforo.titulo}</strong><span>${porcentajeConsistencia}%</span></div>
         <div class="semaforo-track"><span style="width:${porcentajeConsistencia}%"></span></div>
-        <div class="dashboard-week-footer">
-          <span>${entrenamientosSemana}/${entrenamientosObjetivoSemana} entrenos</span>
-          <span>Objetivo semanal</span>
-        </div>
         <div class="dashboard-week-days" aria-label="Días de la semana">
           ${diasSemana.map((diaSemana) => `
             <button class="dashboard-week-day${diaSemana.esHoy ? " actual" : ""}${diaSemana.completado ? " hecho" : ""}${diaSemana.descanso ? " descanso" : ""}" onclick="APP.navegar('agenda'); setTimeout(() => Agenda.seleccionar('${diaSemana.fechaKey}'), 100);" aria-label="${diaSemana.diaNombre}">
@@ -183,9 +176,6 @@ const Dashboard = {
         </button>
       </div>
     `;
-    
-    // ===== MINI CALENDARIO =====
-    const miniCalendario = this._renderMiniCalendario();
     
     const bloqueEntrenamiento = hayEntrenamientoPendiente
       ? `
@@ -220,17 +210,16 @@ const Dashboard = {
         `;
 
     const bloqueCuerpo = `
-      <section class="dashboard-body-card card card-accent">
+      <section class="dashboard-section dashboard-body-card">
         <div class="dashboard-section-heading">
-          <div><span class="dashboard-kicker">PROGRESO CORPORAL</span><h2>Tu evolución</h2></div>
-          <button class="dashboard-inline-action" onclick="APP.navegar('peso')">Ver peso <i class="fa-solid fa-arrow-right"></i></button>
+          <div><span class="dashboard-kicker">RESUMEN DE PROGRESO</span><h2>Tu evolución</h2></div>
         </div>
         ${ultimaMedicion ? `
           <div class="dashboard-body-stats">
-            <div><strong>${peso} kg</strong><span>Peso actual</span></div>
-            <div><strong class="${cambioPeso !== null && cambioPeso < 0 ? "positive" : ""}">${cambioPesoTexto}</strong><span>Desde última medición</span></div>
-            <div><strong>${cinturaTexto}</strong><span>Cintura</span></div>
-            <div><strong>${obj} kg</strong><span>Objetivo · ${pctObjetivo}%</span></div>
+            <button onclick="APP.navegar('peso')"><strong>${peso} kg</strong><span>Peso actual</span></button>
+            <button onclick="APP.navegar('peso')"><strong class="${cambioPeso !== null && cambioPeso < 0 ? "positive" : ""}">${cambioPesoTexto}</strong><span>Última medición</span></button>
+            <button onclick="APP.navegar('peso')"><strong>${cinturaTexto}</strong><span>Cintura</span></button>
+            <div><strong>${STATE.diasEntrenados.length || 0}</strong><span>Entrenamientos</span></div>
           </div>
         ` : `
           <div class="dashboard-empty-state"><i class="fa-solid fa-scale-balanced"></i><div><strong>Aún no hay mediciones</strong><span>Registra tu peso para empezar a ver tu evolución.</span></div><button class="dashboard-inline-action" onclick="APP.navegar('peso')">Registrar peso</button></div>
@@ -238,34 +227,35 @@ const Dashboard = {
       </section>
     `;
 
+    const sesionesRecientes = [...STATE.historialEntrenos]
+      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+      .slice(0, 3);
     const bloqueActividad = `
-      <section class="dashboard-activity-card card">
-        <div class="dashboard-section-heading"><div><span class="dashboard-kicker">ACTIVIDAD</span><h2>Tu recorrido</h2></div><i class="fa-solid fa-arrow-trend-up dashboard-heading-icon"></i></div>
-        <div class="dashboard-activity-row"><span>Último entrenamiento</span><strong>${ultimoEntreno}</strong></div>
-        <div class="dashboard-activity-row"><span>Sesiones registradas</span><strong>${STATE.historialEntrenos.length || 0}</strong></div>
-        <div class="dashboard-activity-row"><span>Objetivos activos</span><strong>${STATE.objetivos?.length || 0}</strong></div>
-        ${STATE.historialEntrenos.length === 0 ? '<p class="dashboard-muted-note">Cuando completes tu primera sesión aparecerá aquí.</p>' : ""}
+      <section class="dashboard-section dashboard-activity-card">
+        <div class="dashboard-section-heading"><div><span class="dashboard-kicker">ACTIVIDAD RECIENTE</span><h2>Últimos entrenamientos</h2></div><button class="dashboard-inline-action" onclick="APP.navegar('historial')">Ver todo <i class="fa-solid fa-arrow-right"></i></button></div>
+        ${sesionesRecientes.length ? sesionesRecientes.map((sesion) => `
+          <div class="dashboard-activity-row"><span>${UI.formatearFecha(sesion.fecha)}</span><strong>${CONFIG.NOMBRES_DIAS[sesion.dia] || sesion.dia || "Entrenamiento"}</strong></div>
+        `).join("") : '<p class="dashboard-muted-note">Completa una sesión para verla aquí.</p>'}
       </section>
     `;
 
     c.innerHTML = `
       <div class="dashboard-layout">
         <header class="dashboard-header">
-          <div class="dashboard-brand-line"><span class="dashboard-brand-dot"></span><span>NicoGym</span></div>
-          <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
-          <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
-          <p class="frase-motivadora">${fraseMotivadora}</p>
+          <div>
+            <div class="dashboard-brand-line"><span class="dashboard-brand-dot"></span><span>NicoGym</span></div>
+            <div class="saludo">${saludo}, <span>${STATE.nombre}</span></div>
+            <div class="saludo-dia">${UI.getDiaSemanaNombre(hoy)} · ${hoy.toLocaleDateString("es-ES", { day: "numeric", month: "long" })}</div>
+          </div>
+          <button class="dashboard-settings-action" onclick="APP.navegar('ajustes')" aria-label="Abrir ajustes"><i class="fa-solid fa-gear"></i></button>
         </header>
         <main class="dashboard-main-column">
           ${bloqueEntrenamiento}
           ${bloqueSemana}
           ${bloqueCuerpo}
-        </main>
-        <aside class="dashboard-side-column">
-          ${miniCalendario}
           ${bloqueActividad}
           ${accionesRapidas}
-        </aside>
+        </main>
       </div>
     `;
   },

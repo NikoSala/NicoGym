@@ -1623,6 +1623,263 @@
     filter: drop-shadow(0 0 6px var(--warning));
 }
 
+/* Dashboard: lectura rápida y foco en el entrenamiento de hoy */
+.dashboard-layout {
+  display: block;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 0 22px;
+}
+
+.dashboard-header .dashboard-brand-line {
+  margin-bottom: 12px;
+}
+
+.dashboard-header .saludo {
+  margin-bottom: 4px;
+  font-size: clamp(24px, 5vw, 32px);
+}
+
+.dashboard-header .saludo-dia {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.dashboard-settings-action {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(199, 203, 209, .18);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.dashboard-settings-action:hover {
+  border-color: var(--nico-burgundy-bright);
+  color: var(--nico-steel);
+}
+
+.dashboard-main-column,
+.dashboard-side-column {
+  display: grid;
+  gap: 24px;
+}
+
+.dashboard-side-column {
+  display: none;
+}
+
+.dashboard-workout-card {
+  min-height: 290px;
+  padding: 24px;
+  border: 1px solid rgba(165, 29, 58, .5);
+  border-left: 4px solid var(--nico-burgundy);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, rgba(125, 16, 40, .34), var(--nico-surface) 72%);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, .26);
+}
+
+.dashboard-workout-card::after {
+  display: none;
+}
+
+.dashboard-workout-paused {
+  border-left-color: var(--nico-gold);
+  background: linear-gradient(145deg, rgba(125, 16, 40, .38), var(--nico-surface) 72%);
+}
+
+.dashboard-workout-rest {
+  min-height: 220px;
+  border-left-color: var(--nico-steel);
+  background: var(--nico-surface);
+}
+
+.dashboard-kicker {
+  color: var(--nico-steel);
+  font-size: 10px;
+}
+
+.dashboard-workout-day {
+  margin-top: 27px;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.dashboard-workout-card h1 {
+  margin: 7px 0 16px;
+  font-size: clamp(28px, 7vw, 42px);
+}
+
+.dashboard-primary-action {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 20px;
+  border-color: var(--nico-burgundy);
+  background: var(--nico-burgundy);
+  color: var(--nico-steel);
+  font-size: 13px;
+}
+
+.dashboard-primary-action:hover {
+  border-color: var(--nico-burgundy-bright);
+  background: var(--nico-burgundy-bright);
+}
+
+.dashboard-section {
+  padding: 0 0 22px;
+  border-bottom: 1px solid rgba(199, 203, 209, .12);
+}
+
+.dashboard-section-heading {
+  margin-bottom: 13px;
+}
+
+.dashboard-section-heading h2 {
+  font-size: 17px;
+}
+
+.dashboard-week-score {
+  color: var(--nico-steel);
+  font-size: 18px;
+}
+
+.dashboard-week-status {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.dashboard-week-status strong {
+  color: var(--text);
+}
+
+.dashboard-week-days {
+  gap: 5px;
+  margin-top: 13px;
+}
+
+.dashboard-week-day {
+  min-height: 47px;
+  padding: 6px 2px;
+  border-color: rgba(199, 203, 209, .12);
+  background: rgba(17, 20, 25, .72);
+}
+
+.dashboard-week-day.actual {
+  border-color: var(--nico-burgundy-bright);
+}
+
+.dashboard-week-day.actual span,
+.dashboard-week-day.hecho strong {
+  color: var(--nico-green-bright);
+}
+
+.dashboard-body-card,
+.dashboard-activity-card {
+  margin: 0;
+}
+
+.dashboard-body-stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.dashboard-body-stats > div,
+.dashboard-body-stats > button {
+  min-width: 0;
+  padding: 11px 10px;
+  border: 1px solid rgba(199, 203, 209, .12);
+  border-radius: var(--radius-sm);
+  background: var(--nico-surface);
+  color: var(--text);
+  text-align: left;
+}
+
+.dashboard-body-stats > button {
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+.dashboard-body-stats > button:hover {
+  border-color: var(--nico-burgundy-bright);
+}
+
+.dashboard-body-stats strong {
+  font-size: 17px;
+}
+
+.dashboard-inline-action {
+  color: var(--nico-steel);
+}
+
+.dashboard-activity-row {
+  min-height: 40px;
+  padding: 8px 0;
+  border-top-color: rgba(199, 203, 209, .10);
+}
+
+.dashboard-activity-row strong {
+  color: var(--nico-steel);
+}
+
+.dashboard-quick-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.dashboard-quick-actions .accion-rapida {
+  min-height: 48px;
+  grid-template-columns: auto 1fr;
+  justify-content: start;
+  padding: 10px 12px;
+  border-color: rgba(199, 203, 209, .12);
+  background: transparent;
+  text-align: left;
+}
+
+.dashboard-quick-actions .accion-rapida i {
+  color: var(--nico-steel);
+}
+
+.dashboard-quick-actions .accion-rapida:hover {
+  border-color: var(--nico-burgundy-bright);
+}
+
+.dashboard-quick-actions .accion-rapida:hover i {
+  color: var(--nico-burgundy-bright);
+}
+
+@media (max-width: 560px) {
+  .dashboard-header {
+    padding-bottom: 18px;
+  }
+
+  .dashboard-workout-card {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .dashboard-body-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-quick-actions .accion-rapida {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding: 9px 4px;
+    text-align: center;
+  }
+}
+
 @keyframes bellImportant {
     0%, 70%, 100% {
         transform: rotate(0deg);
