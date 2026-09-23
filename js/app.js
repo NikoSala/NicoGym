@@ -5,6 +5,7 @@ const APP = {
   _cardioMostrado: false,
   pesoSesionEntreno: 0,
   init() {
+    this._borrarDatosEntrenadorRetirado();
     const loading = document.getElementById("loadingScreen");
     loading.style.display = "flex";
 
@@ -25,6 +26,14 @@ const APP = {
     });
 
     return this;
+  },
+
+  _borrarDatosEntrenadorRetirado() {
+    try {
+      localStorage.removeItem("nicoGymAiProfileV1");
+      sessionStorage.removeItem("nicoGymAiEndpoint");
+      sessionStorage.removeItem("nicoGymAiAccessToken");
+    } catch (_) {}
   },
 
   _cargarAjustesBasicos() {
@@ -107,9 +116,6 @@ const APP = {
         break;
       case "biblioteca":
         ExerciseLibrary.render();
-        break;
-      case "entrenador-ia":
-        EntrenadorIA.render();
         break;
       case "semana":
         Semana.render();
