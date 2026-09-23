@@ -93,6 +93,9 @@
       >
         <i class="fa-solid fa-dumbbell"></i> Entrenar
       </button>
+      <button class="menu-item" data-page="biblioteca" onclick="APP.navegar('biblioteca')">
+        <i class="fa-solid fa-book-open"></i> Ejercicios
+      </button>
       <button
         class="menu-item"
         data-page="semana"
@@ -179,6 +182,10 @@
       <div id="progresoRutinaContainer"></div>
       <div class="day-tabs" id="dayTabs"></div>
       <div id="dayPanelsContainer"></div>
+    </div>
+
+    <div class="page" id="page-biblioteca">
+      <div id="bibliotecaContainer"></div>
     </div>
 
     <div class="page" id="page-semana">
@@ -307,6 +314,7 @@
     <script src="js/config.js"></script>
     <script src="js/exercise-names.js"></script>
     <script src="js/exercises.js"></script>
+    <script src="js/exercise-library.js"></script>
     <script src="js/helpers.js"></script>
     <script src="js/routines.js"></script>
     <script src="js/cargas.js"></script>

@@ -105,6 +105,9 @@ const APP = {
       case "rutinas":
         Rutinas.render();
         break;
+      case "biblioteca":
+        ExerciseLibrary.render();
+        break;
       case "semana":
         Semana.render();
         break;
