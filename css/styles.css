@@ -7045,6 +7045,11 @@ textarea:focus {
 .library-day-toggle.active { color:#fff; background:rgba(125,16,40,.46); border-color:rgba(165,29,58,.72); }
 .library-day-toggle:focus-visible, .library-card-main:focus-visible { outline:2px solid var(--secondary); outline-offset:2px; }
 .library-empty { grid-column:1/-1; padding:24px 0; color:var(--text-secondary); text-align:center; }
+.library-pagination { display:flex; align-items:center; justify-content:center; gap:14px; padding:18px 0 28px; color:var(--text-secondary); font-size:13px; }
+.library-page-button { min-width:96px; min-height:42px; padding:0 14px; border:1px solid rgba(199,203,209,.14); border-radius:12px; background:var(--surface,#111419); color:var(--text); font:inherit; font-weight:600; cursor:pointer; }
+.library-page-button:not(:disabled):hover { border-color:rgba(165,29,58,.7); background:rgba(125,16,40,.18); }
+.library-page-button:disabled { opacity:.42; cursor:default; }
+.library-grid { scroll-margin-top:84px; }
 .library-detail { max-height:min(75vh,760px); overflow:auto; padding-right:3px; }
 .library-detail-image { width:100%; max-height:230px; object-fit:cover; margin-bottom:16px; border-radius:14px; background:#090b0e; }
 .library-detail h2 { margin:6px 0 12px; font-size:23px; }

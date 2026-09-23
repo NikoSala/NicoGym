@@ -2,6 +2,7 @@
 const ExerciseLibrary = {
   grupoActivo: "Todos",
   busqueda: "",
+  pagina: 1,
 
   _escapar(valor) {
     return String(valor ?? "").replace(/[&<>"']/g, (caracter) => ({
@@ -30,6 +31,10 @@ const ExerciseLibrary = {
       const texto = `${ej.nombre} ${ej.grupo || ""} ${(ej.material || []).join(" ")} ${(ej.musculosPrincipales || []).join(" ")}`.toLocaleLowerCase("es");
       return coincideGrupo && texto.includes(this.busqueda.trim().toLocaleLowerCase("es"));
     });
+    const tamanoPagina = window.matchMedia?.("(max-width: 650px)").matches ? 8 : 12;
+    const totalPaginas = Math.max(1, Math.ceil(filtrados.length / tamanoPagina));
+    this.pagina = Math.min(Math.max(1, this.pagina), totalPaginas);
+    const visibles = filtrados.slice((this.pagina - 1) * tamanoPagina, this.pagina * tamanoPagina);
 
     container.innerHTML = `
       <header class="library-header">
@@ -40,7 +45,7 @@ const ExerciseLibrary = {
       <div class="library-filters" aria-label="Filtrar por grupo muscular">
         ${["Todos", ...grupos].map((grupo) => `<button type="button" class="library-filter ${this.grupoActivo === grupo ? "active" : ""}" data-group="${this._escapar(grupo)}">${this._escapar(grupo)}</button>`).join("")}
       </div>
-      <div class="library-grid">${filtrados.map((ej) => {
+      <div class="library-grid" id="libraryGrid">${visibles.map((ej) => {
         const indice = ejercicios.indexOf(ej);
         const media = ej.urlGif ? `<img src="${this._escapar(ej.urlGif)}" alt="Demostración de ${this._escapar(ej.nombre)}" loading="lazy" onerror="this.parentElement.classList.add('is-placeholder');this.remove()">` : "";
         const dias = DAY_KEYS_ROUTINE.map((dia, diaIndex) => {
@@ -50,11 +55,13 @@ const ExerciseLibrary = {
           return `<button type="button" class="library-day-toggle ${seleccionado ? "active" : ""}" data-day="${dia}" data-exercise-id="${this._escapar(ej.id)}" aria-label="${seleccionado ? "Quitar" : "Añadir"} ${this._escapar(ej.nombre)} ${seleccionado ? "de" : "a"} ${this._escapar(diaNombre)}" aria-pressed="${seleccionado}" title="${this._escapar(diaNombre)}">${etiqueta}</button>`;
         }).join("");
         return `<article class="library-card"><button type="button" class="library-card-main" data-exercise="${indice}" aria-label="Ver detalles de ${this._escapar(ej.nombre)}"><span class="library-card-media ${media ? "" : "is-placeholder"}">${media}<i class="fa-solid fa-dumbbell" aria-hidden="true"></i></span><span class="library-card-copy"><span class="library-card-group">${this._escapar(ej.grupo || ej.categoria || "Ejercicio")}</span><strong>${this._escapar(ej.nombre)}</strong><span class="library-card-meta">${this._escapar((ej.musculosPrincipales || []).slice(0, 2).join(" · ") || ej.categoria || "Ver detalles")}</span></span><i class="fa-solid fa-chevron-right library-card-arrow" aria-hidden="true"></i></button><div class="library-routine-edit"><span>Añadir a</span><div class="library-day-toggles" aria-label="Días de rutina">${dias}</div></div></article>`;
-      }).join("") || `<p class="library-empty">No hay ejercicios que coincidan con la búsqueda.</p>`}</div>`;
+      }).join("") || `<p class="library-empty">No hay ejercicios que coincidan con la búsqueda.</p>`}</div>
+      ${totalPaginas > 1 ? `<nav class="library-pagination" aria-label="Páginas de ejercicios"><button type="button" class="library-page-button" data-page="${this.pagina - 1}" ${this.pagina === 1 ? "disabled" : ""}>Anterior</button><span>Página ${this.pagina} de ${totalPaginas}</span><button type="button" class="library-page-button" data-page="${this.pagina + 1}" ${this.pagina === totalPaginas ? "disabled" : ""}>Siguiente</button></nav>` : ""}`;
 
     const search = document.getElementById("librarySearch");
-    search?.addEventListener("input", (event) => { this.busqueda = event.target.value; this.render(); const input = document.getElementById("librarySearch"); input?.focus(); input?.setSelectionRange(this.busqueda.length, this.busqueda.length); });
-    container.querySelectorAll(".library-filter").forEach((button) => button.addEventListener("click", () => { this.grupoActivo = button.dataset.group; this.render(); }));
+    search?.addEventListener("input", (event) => { this.busqueda = event.target.value; this.pagina = 1; this.render(); const input = document.getElementById("librarySearch"); input?.focus(); input?.setSelectionRange(this.busqueda.length, this.busqueda.length); });
+    container.querySelectorAll(".library-filter").forEach((button) => button.addEventListener("click", () => { this.grupoActivo = button.dataset.group; this.pagina = 1; this.render(); }));
+    container.querySelectorAll(".library-page-button").forEach((button) => button.addEventListener("click", () => { this.pagina = Number(button.dataset.page); this.render(); document.getElementById("libraryGrid")?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
     container.querySelectorAll(".library-card-main").forEach((button) => button.addEventListener("click", () => this._ver(ejercicios[Number(button.dataset.exercise)])));
     container.querySelectorAll(".library-day-toggle").forEach((button) => button.addEventListener("click", () => RutinaEditor.toggle(button.dataset.exerciseId, button.dataset.day)));
   },
