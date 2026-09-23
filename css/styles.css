@@ -3399,6 +3399,228 @@
   box-shadow: 0 10px 24px rgba(229, 169, 22, .30);
 }
 
+/* NicoGym: base visual consolidada sobre la identidad existente. */
+:root {
+  --nico-charcoal: #090B0E;
+  --nico-surface: #111419;
+  --nico-surface-raised: #191D23;
+  --nico-border: #2A2E35;
+  --nico-burgundy: #7D1028;
+  --nico-burgundy-bright: #A51D3A;
+  --nico-steel: #C7CBD1;
+  --nico-green: #0B6B47;
+  --nico-green-bright: #65C18C;
+  --nico-gold: #D6A94A;
+  --nico-warning: #F2B84B;
+  --nico-danger: #C63B4F;
+  --nico-info: #AAB7C9;
+
+  --bg: var(--nico-charcoal);
+  --bg-card: var(--nico-surface);
+  --bg-card-hover: var(--nico-surface-raised);
+  --primary: var(--nico-green);
+  --primary-dim: rgba(11, 107, 71, .16);
+  --primary-glow: rgba(101, 193, 140, .24);
+  --secondary: var(--nico-steel);
+  --secondary-dim: rgba(199, 203, 209, .10);
+  --secondary-glow: rgba(229, 231, 235, .18);
+  --success: var(--nico-green-bright);
+  --warning: var(--nico-warning);
+  --danger: var(--nico-danger);
+  --info: var(--nico-info);
+  --text: #F1F1F1;
+  --text-secondary: #A5AAB3;
+  --text-muted: #6F7680;
+  --border: var(--nico-border);
+
+  --radius: 16px;
+  --radius-sm: 11px;
+  --radius-full: 9999px;
+  --shadow: 0 12px 38px rgba(0, 0, 0, .42);
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, .24);
+  --transition: .22s cubic-bezier(.2, .75, .25, 1);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-size-xs: 10px;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 18px;
+  --font-size-xl: 27px;
+  --space-xs: 6px;
+  --space-sm: 12px;
+  --space-md: 18px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+}
+
+html,
+body {
+  background:
+    radial-gradient(circle at 50% -10%, rgba(11, 107, 71, .10), transparent 34%),
+    linear-gradient(180deg, var(--nico-charcoal) 0%, #080A0D 100%);
+}
+
+.page::before {
+  opacity: .035;
+  filter: saturate(1.05) drop-shadow(0 0 26px rgba(125, 16, 40, .18));
+}
+
+.top-bar {
+  background: rgba(9, 11, 14, .88);
+  border-bottom-color: rgba(199, 203, 209, .10);
+  box-shadow: var(--shadow-soft);
+}
+
+.top-bar::after {
+  background: linear-gradient(90deg, transparent, rgba(11, 107, 71, .80), rgba(165, 29, 58, .45), transparent);
+}
+
+.top-bar .top-left .header-logo {
+  filter: drop-shadow(0 7px 14px rgba(0, 0, 0, .55)) drop-shadow(0 0 14px rgba(125, 16, 40, .18));
+}
+
+.side-menu .menu-item.active {
+  background: linear-gradient(90deg, rgba(11, 107, 71, .24), rgba(11, 107, 71, .07));
+  border-color: rgba(101, 193, 140, .38);
+  box-shadow: inset 3px 0 0 var(--nico-green-bright), 0 8px 20px rgba(0, 0, 0, .18);
+}
+
+.side-menu .menu-item.active i,
+.card-title i,
+.section-title,
+.text-primary {
+  color: var(--nico-green-bright);
+}
+
+.card,
+.ex-card,
+.historial-medicion-card,
+.record-card,
+.progreso-rutina-bar,
+.rutina-dia,
+.update-banner {
+  background: linear-gradient(145deg, rgba(24, 28, 34, .96), rgba(14, 17, 21, .96));
+  border-color: var(--nico-border);
+  box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, .025);
+}
+
+.card-accent {
+  border-left-color: var(--nico-green-bright) !important;
+}
+
+.card:hover,
+.historial-medicion-card:hover,
+.ex-card:hover,
+.record-card:hover {
+  border-color: rgba(101, 193, 140, .42);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .30), 0 0 0 1px rgba(11, 107, 71, .10);
+}
+
+.btn-primary,
+.dia-entrenar-btn:not(.completado) {
+  background: linear-gradient(135deg, var(--nico-green), #084C35) !important;
+  border-color: var(--nico-green-bright) !important;
+  box-shadow: 0 8px 20px rgba(11, 107, 71, .26), inset 0 1px 0 rgba(255, 255, 255, .10);
+}
+
+.btn-primary:hover,
+.dia-entrenar-btn:not(.completado):hover {
+  box-shadow: 0 12px 26px rgba(11, 107, 71, .34), 0 0 0 1px rgba(101, 193, 140, .12);
+}
+
+.btn-success,
+.dia-entrenar-btn.completado {
+  background: var(--nico-green-bright) !important;
+  border-color: var(--nico-green-bright) !important;
+  color: #07130D !important;
+}
+
+.input,
+select,
+textarea {
+  background: #0E1115 !important;
+  border-color: #30343B !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--nico-green-bright) !important;
+  box-shadow: 0 0 0 3px rgba(11, 107, 71, .20) !important;
+}
+
+.day-tabs .dtab.active {
+  background: linear-gradient(135deg, var(--nico-green), #084C35);
+  border-color: var(--nico-green-bright);
+  box-shadow: 0 8px 22px rgba(11, 107, 71, .28), inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+
+.day-tabs .dtab.completado {
+  border-color: rgba(101, 193, 140, .65);
+  color: var(--nico-green-bright);
+  background: rgba(101, 193, 140, .07);
+}
+
+.ex-head {
+  background: linear-gradient(90deg, rgba(11, 107, 71, .12), transparent 55%);
+}
+
+.check-box {
+  accent-color: var(--nico-green-bright);
+}
+
+.progreso-rutina-fill,
+.me-progreso-fill,
+.chart-bar {
+  background: linear-gradient(90deg, var(--nico-green), var(--nico-green-bright), var(--nico-steel)) !important;
+}
+
+.bottom-nav .nav-btn.active {
+  color: var(--nico-green-bright) !important;
+  border-top-color: var(--nico-green-bright);
+  background: linear-gradient(180deg, rgba(11, 107, 71, .16), transparent);
+}
+
+.bottom-nav .nav-btn.active i {
+  color: var(--nico-green-bright);
+  filter: drop-shadow(0 0 7px rgba(101, 193, 140, .30));
+}
+
+.toast-success {
+  background: var(--nico-green-bright);
+  color: #07130D;
+}
+
+.toast-info {
+  border-color: rgba(199, 203, 209, .30);
+}
+
+.me-progresion-card.ok {
+  border-color: rgba(101, 193, 140, .45);
+  background: rgba(101, 193, 140, .07);
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .btn {
+    min-height: 40px;
+  }
+
+  .bottom-nav .nav-btn {
+    min-height: 44px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
 .me-workout-title,
 .me-workout-load-value,
 .me-workout-save-main {
