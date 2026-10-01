@@ -78,12 +78,18 @@ const ExerciseLibrary = {
     if (!container) return;
     const catalogo = getExerciseDatabase();
     const ejerciciosPorNombre = new Map();
+    const gifsIncluidos = new Set();
     catalogo.forEach((ej) => {
       const clave = (ej.nombre || "").trim().toLocaleLowerCase("es");
       const actual = ejerciciosPorNombre.get(clave);
       const tieneGif = /\.gif(?:$|[?#])/i.test(ej.urlGif || "");
       const actualTieneGif = /\.gif(?:$|[?#])/i.test(actual?.urlGif || "");
-      if (!actual || (tieneGif && !actualTieneGif)) ejerciciosPorNombre.set(clave, ej);
+      const gifClave = tieneGif ? ej.urlGif.trim().split(/[?#]/, 1)[0].toLocaleLowerCase("es") : "";
+      if (gifClave && gifsIncluidos.has(gifClave)) return;
+      if (!actual || (tieneGif && !actualTieneGif)) {
+        ejerciciosPorNombre.set(clave, ej);
+        if (gifClave) gifsIncluidos.add(gifClave);
+      }
     });
     const ejercicios = [...ejerciciosPorNombre.values()];
     const asignados = new Set(DAY_KEYS_ROUTINE.flatMap((dia) => getRutinaDelDia(dia).map(([id]) => id)));

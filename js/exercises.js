@@ -378,7 +378,7 @@ function getExerciseDatabase() {
       grupo: "Espalda",
       categoria: "Remo",
       urlGif:
-        "https://fitcron.com/wp-content/uploads/2021/04/03271301-Dumbbell-Incline-Row_Back_720.gif",
+        "https://res.cloudinary.com/peloton-cycle/image/fetch/https%3A/images.ctfassets.net/6ilvqec50fal/lf5jdLu9SwCB3y9VNEQRN/4a0b4f01432a88d66778db5b602f2973/Chest-supported_row_GIF.gif",
       descripcion:
         "Tumbado boca abajo en banco inclinado, tira las mancuernas hacia arriba manteniendo la espalda recta.",
       consejos:
