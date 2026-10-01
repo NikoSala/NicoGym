@@ -164,6 +164,15 @@ const RutinaEditor = {
     return new Set((ejercicio.musculosPrincipales || []).map(normalizar));
   },
 
+  _nombreNormalizado(ejercicio) {
+    return String(ejercicio?.nombre || "")
+      .toLocaleLowerCase("es")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  },
+
   _comparteMusculoPrincipal(ejercicioA, ejercicioB) {
     const musculosA = this._musculosPrincipales(ejercicioA);
     const musculosB = this._musculosPrincipales(ejercicioB);
@@ -178,16 +187,31 @@ const RutinaEditor = {
     if (!ejercicioActual) return [];
     const grupoActual = this._grupoPrincipal(ejercicioActual);
     const categoriasCompatibles = this._categoriasCompatibles(ejercicioActual);
-    const idsAsignados = new Set(getRutinaDelDia(dia).map(([id]) => id));
+    const rutina = getRutinaDelDia(dia);
+    const idsAsignados = new Set(rutina.map(([id]) => id));
+    const nombresAsignados = new Set(
+      rutina
+        .map(([id]) => catalogo.find((ej) => ej.id === id))
+        .filter(Boolean)
+        .map((ej) => this._nombreNormalizado(ej)),
+    );
+    const nombresAlternativas = new Set();
 
     return catalogo
-      .filter((ej) =>
-        ej.id !== ejercicioId &&
-        !idsAsignados.has(ej.id) &&
-        this._grupoPrincipal(ej) === grupoActual &&
-        categoriasCompatibles.includes(ej.categoria) &&
-        this._comparteMusculoPrincipal(ejercicioActual, ej),
-      )
+      .filter((ej) => {
+        const nombre = this._nombreNormalizado(ej);
+        if (
+          ej.id === ejercicioId ||
+          idsAsignados.has(ej.id) ||
+          nombresAsignados.has(nombre) ||
+          nombresAlternativas.has(nombre) ||
+          this._grupoPrincipal(ej) !== grupoActual ||
+          !categoriasCompatibles.includes(ej.categoria) ||
+          !this._comparteMusculoPrincipal(ejercicioActual, ej)
+        ) return false;
+        nombresAlternativas.add(nombre);
+        return true;
+      })
       .sort((a, b) =>
         Number(a.categoria !== ejercicioActual.categoria) -
           Number(b.categoria !== ejercicioActual.categoria) ||
@@ -241,7 +265,16 @@ const RutinaEditor = {
       UI.toast("Elige una opción del mismo músculo y movimiento compatible", "error");
       return false;
     }
-    if (rutina.some(([id]) => id === reemplazoId)) {
+    const nombresAsignados = new Set(
+      rutina
+        .map(([id]) => catalogo.find((ej) => ej.id === id))
+        .filter(Boolean)
+        .map((ej) => this._nombreNormalizado(ej)),
+    );
+    if (
+      rutina.some(([id]) => id === reemplazoId) ||
+      nombresAsignados.has(this._nombreNormalizado(reemplazo))
+    ) {
       UI.toast("Ese ejercicio ya está en la rutina de este día", "info");
       return false;
     }
