@@ -1314,7 +1314,8 @@ function getExerciseDatabase() {
       nombre: "Remo con barra",
       grupo: "Espalda",
       categoria: "Remo",
-      urlGif: "img/logo-nicogym-600.jpg",
+      urlGif:
+        "https://fitcron.com/wp-content/uploads/2021/04/00271301-Barbell-Bent-Over-Row_Back-FIX_720.gif",
       descripcion: "Inclinado hacia delante con la espalda neutra, sujeta la barra y lleva el peso hacia el abdomen manteniendo los codos cerca del cuerpo.",
       consejos: "• Mantén la espalda neutra.\n• Lleva el codo hacia atrás.\n• No redondees la espalda.",
       errores: "• Redondees la espalda.\n• Utilices impulso.\n• Levantes el torso de forma excesiva.",
@@ -1336,7 +1337,7 @@ function getExerciseDatabase() {
       nombre: "Remo con mancuerna a una mano",
       grupo: "Espalda",
       categoria: "Remo",
-      urlGif: "img/logo-nicogym-600.jpg",
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
       descripcion: "Con una mano apoyada en un banco o muslo, tira de la mancuerna hacia el abdomen manteniendo la columna estable y activando la espalda y el bíceps.",
       consejos: "• Mantén la espalda recta.\n• Lleva el codo hacia atrás.\n• Activa la escápula al final del movimiento.",
       errores: "• Redondees la espalda.\n• Muevas el torso.\n• Utilices impulso.",
