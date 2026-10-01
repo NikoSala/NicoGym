@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1150" height="760" viewBox="0 0 1150 760">
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#15171c"/><stop offset="1" stop-color="#090a0d"/></linearGradient>
+    <linearGradient id="hero"><stop stop-color="#321c24"/><stop offset="1" stop-color="#17191f"/></linearGradient>
+    <linearGradient id="red"><stop stop-color="#b62d49"/><stop offset="1" stop-color="#78172e"/></linearGradient>
+  </defs>
+  <rect width="1150" height="760" rx="22" fill="url(#bg)"/>
+  <rect width="1150" height="58" rx="22" fill="#111318"/>
+  <path d="M0 58h1150M184 58v702" stroke="#2c2e35"/>
+  <rect x="25" y="15" width="30" height="30" rx="9" fill="url(#red)"/>
+  <text x="40" y="36" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="white">N</text>
+  <text x="65" y="29" font-family="Arial" font-size="14" font-weight="bold" fill="#f3f3f4">NICO<tspan fill="#d8ac53">GYM</tspan></text>
+  <text x="65" y="43" font-family="Arial" font-size="8" letter-spacing="1.5" fill="#777">TRAINING • PROGRESS</text>
+  <text x="1095" y="35" text-anchor="end" font-family="Arial" font-size="10" fill="#999">JUEVES, 1 DE OCTUBRE</text>
+  <rect x="22" y="86" width="145" height="39" rx="10" fill="#351822"/>
+  <rect x="22" y="96" width="3" height="19" rx="2" fill="#ba3552"/>
+  <text x="41" y="110" font-family="Arial" font-size="12" fill="#f0d4da">▦  Panel</text>
+  <text x="41" y="158" font-family="Arial" font-size="12" fill="#92949b">⚒  Entrenar</text>
+  <text x="41" y="200" font-family="Arial" font-size="12" fill="#92949b">▤  Plan semanal</text>
+  <text x="41" y="242" font-family="Arial" font-size="12" fill="#92949b">▧  Ejercicios</text>
+  <text x="41" y="294" font-family="Arial" font-size="12" fill="#92949b">↗  Progreso</text>
+  <text x="41" y="336" font-family="Arial" font-size="12" fill="#92949b">◷  Historial</text>
+  <text x="41" y="378" font-family="Arial" font-size="12" fill="#92949b">⚖  Peso y medidas</text>
+  <text x="41" y="420" font-family="Arial" font-size="12" fill="#92949b">◎  Objetivos</text>
+  <text x="215" y="97" font-family="Arial" font-size="10" font-weight="bold" letter-spacing="1.8" fill="#bd596d">TU ESPACIO DE ENTRENAMIENTO</text>
+  <text x="215" y="130" font-family="Arial" font-size="23" font-weight="bold" fill="#f4f3f4">Hola, Nico</text>
+  <text x="215" y="151" font-family="Arial" font-size="11" fill="#94969d">Un paso más hacia tu objetivo. Esto es lo que tienes hoy.</text>
+  <rect x="210" y="170" width="914" height="268" rx="20" fill="url(#hero)" stroke="#58303a"/>
+  <rect x="210" y="170" width="5" height="268" rx="3" fill="url(#red)"/>
+  <circle cx="1000" cy="315" r="120" fill="none" stroke="#b12c48" stroke-opacity=".11"/>
+  <circle cx="1000" cy="315" r="88" fill="none" stroke="#d0d0d0" stroke-opacity=".06"/>
+  <text x="240" y="204" font-family="Arial" font-size="10" font-weight="bold" letter-spacing="1.5" fill="#bda7ad">ENTRENAMIENTO DE HOY</text>
+  <rect x="1004" y="188" width="93" height="25" rx="12" fill="#27242a"/>
+  <circle cx="1018" cy="200" r="3" fill="#d6aa4e"/>
+  <text x="1027" y="204" font-family="Arial" font-size="9" font-weight="bold" fill="#ddd">PENDIENTE</text>
+  <text x="240" y="255" font-family="Arial" font-size="13" font-weight="bold" fill="#d6aa4e">JUEVES · DÍA B</text>
+  <text x="240" y="296" font-family="Arial" font-size="31" font-weight="bold" fill="#f4f3f3">Espalda y bíceps</text>
+  <text x="240" y="322" font-family="Arial" font-size="12" fill="#aaa8ad">6 ejercicios  ·  18 series  ·  ~55 min</text>
+  <rect x="240" y="346" width="530" height="6" rx="3" fill="#3c3c42"/>
+  <rect x="240" y="346" width="148" height="6" rx="3" fill="#d4a84c"/>
+  <text x="240" y="370" font-family="Arial" font-size="10" fill="#999">28% completado</text>
+  <rect x="240" y="389" width="180" height="37" rx="10" fill="url(#red)"/>
+  <text x="330" y="413" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" letter-spacing=".5" fill="white">▶  EMPEZAR SESIÓN</text>
+  <text x="438" y="412" font-family="Arial" font-size="10" fill="#aaa">Continuar donde lo dejaste →</text>
+  <rect x="210" y="456" width="563" height="195" rx="17" fill="#14161b" stroke="#30323a"/>
+  <text x="234" y="487" font-family="Arial" font-size="9" font-weight="bold" letter-spacing="1.5" fill="#8e9097">TU CONSTANCIA</text>
+  <text x="234" y="512" font-family="Arial" font-size="17" font-weight="bold" fill="#f2f1f2">Semana actual</text>
+  <text x="744" y="508" text-anchor="end" font-family="Arial" font-size="10" fill="#d3a94f">2 de 5 sesiones</text>
+  <g font-family="Arial" text-anchor="middle" font-size="9" fill="#878890"><text x="270" y="540">LUN</text><text x="342" y="540">MAR</text><text x="414" y="540">MIÉ</text><text x="486" y="540">JUE</text><text x="558" y="540">VIE</text><text x="630" y="540">SÁB</text><text x="702" y="540">DOM</text></g>
+  <g><rect x="242" y="551" width="56" height="76" rx="10" fill="#271a20" stroke="#6f293b"/><rect x="314" y="551" width="56" height="76" rx="10" fill="#271a20" stroke="#6f293b"/><rect x="386" y="551" width="56" height="76" rx="10" fill="#2b191f" stroke="#ab334e"/><rect x="458" y="551" width="56" height="76" rx="10" fill="#1b1d22" stroke="#35373e"/><rect x="530" y="551" width="56" height="76" rx="10" fill="#1b1d22" stroke="#35373e"/><rect x="602" y="551" width="56" height="76" rx="10" fill="#14161b" stroke="#292b31"/><rect x="674" y="551" width="56" height="76" rx="10" fill="#14161b" stroke="#292b31"/></g>
+  <g font-family="Arial" text-anchor="middle"><text x="270" y="586" font-size="18" fill="#d5a84e">✓</text><text x="342" y="586" font-size="18" fill="#d5a84e">✓</text><circle cx="414" cy="580" r="3" fill="#c84260"/><text x="270" y="609" font-size="9" fill="#c7b3b7">Pierna</text><text x="342" y="609" font-size="9" fill="#c7b3b7">Pecho</text><text x="414" y="609" font-size="9" fill="#f1cfd6">Hoy</text><text x="486" y="590" font-size="16" fill="#777">·</text><text x="558" y="590" font-size="16" fill="#777">·</text><text x="630" y="590" font-size="16" fill="#666">–</text><text x="702" y="590" font-size="16" fill="#666">–</text><text x="486" y="609" font-size="9" fill="#777">Jue</text><text x="558" y="609" font-size="9" fill="#777">Vie</text><text x="630" y="609" font-size="9" fill="#666">Desc.</text><text x="702" y="609" font-size="9" fill="#666">Desc.</text></g>
+  <rect x="792" y="456" width="332" height="195" rx="17" fill="#14161b" stroke="#30323a"/>
+  <text x="817" y="487" font-family="Arial" font-size="9" font-weight="bold" letter-spacing="1.5" fill="#8e9097">TUS MÉTRICAS</text>
+  <text x="817" y="512" font-family="Arial" font-size="17" font-weight="bold" fill="#f2f1f2">Progreso reciente</text>
+  <rect x="817" y="528" width="132" height="49" rx="10" fill="#1b1d22"/><rect x="959" y="528" width="140" height="49" rx="10" fill="#1b1d22"/>
+  <text x="830" y="548" font-family="Arial" font-size="8" fill="#8a8c94">PESO ACTUAL</text><text x="830" y="567" font-family="Arial" font-size="15" font-weight="bold" fill="#f2f1f2">82,4 kg</text>
+  <text x="972" y="548" font-family="Arial" font-size="8" fill="#8a8c94">ESTA SEMANA</text><text x="972" y="567" font-family="Arial" font-size="15" font-weight="bold" fill="#ddb557">2 entrenos</text>
+  <text x="817" y="601" font-family="Arial" font-size="9" fill="#888a92">EVOLUCIÓN DE PESO</text>
+  <path d="M819 632 C844 620 868 630 894 614 S943 623 963 607 S1014 617 1035 597 S1073 604 1097 586" fill="none" stroke="#c99d49" stroke-width="2.5"/>
+  <path d="M819 632 C844 620 868 630 894 614 S943 623 963 607 S1014 617 1035 597 S1073 604 1097 586L1097 637L819 637Z" fill="#c99d49" opacity=".08"/>
+  <rect x="210" y="670" width="914" height="63" rx="14" fill="#14161b" stroke="#30323a"/>
+  <text x="234" y="696" font-family="Arial" font-size="9" font-weight="bold" letter-spacing="1.4" fill="#898b93">ACTIVIDAD RECIENTE</text>
+  <text x="234" y="718" font-family="Arial" font-size="12" font-weight="bold" fill="#e4e2e3">Pierna y core</text>
+  <text x="425" y="711" font-family="Arial" font-size="10" fill="#92939a">Ayer · 52 min · 6 ejercicios</text>
+  <text x="1090" y="709" font-family="Arial" font-size="17" fill="#aaa">›</text>
+</svg>
