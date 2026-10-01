@@ -7386,10 +7386,6 @@ input:focus, select:focus, textarea:focus {
 /* Jerarquía editorial y tarjetas de acción con presencia de gimnasio. */
 .dashboard-layout { width: min(100%, 1320px); max-width: 1320px; padding-inline: clamp(16px, 3vw, 38px); }
 .dashboard-main-column { gap: 20px; }
-.dashboard-intro { padding: 3px 0 2px; }
-.dashboard-intro .dashboard-kicker { color: #bb6577; }
-.dashboard-intro h1 { margin: 4px 0 3px; font-size: clamp(25px, 3.6vw, 34px); font-weight: 800; letter-spacing: -.045em; }
-.dashboard-intro p { color: var(--text-secondary); font-size: 13px; }
 .dashboard-workout-card {
   position: relative;
   overflow: hidden;
@@ -7449,8 +7445,6 @@ input:focus, select:focus, textarea:focus {
   .page { padding-top: 13px; }
   .bottom-nav { box-shadow: 0 -10px 28px rgba(0, 0, 0, .18); }
   .card { padding: 15px; }
-  .dashboard-intro { padding-inline: 2px; }
-  .dashboard-intro p { max-width: 34ch; font-size: 12px; }
   .dashboard-workout-card { min-height: 270px; border-radius: 20px; }
   .dashboard-section { padding: 16px; }
 }
