@@ -378,7 +378,7 @@ function getExerciseDatabase() {
       grupo: "Espalda",
       categoria: "Remo",
       urlGif:
-        "https://res.cloudinary.com/peloton-cycle/image/fetch/https%3A/images.ctfassets.net/6ilvqec50fal/lf5jdLu9SwCB3y9VNEQRN/4a0b4f01432a88d66778db5b602f2973/Chest-supported_row_GIF.gif",
+        "https://d3d2ynhodh9o1z.cloudfront.net/exercises/dumbbell-incline-row.gif",
       descripcion:
         "Tumbado boca abajo en banco inclinado, tira las mancuernas hacia arriba manteniendo la espalda recta.",
       consejos:
