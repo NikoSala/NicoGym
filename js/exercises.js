@@ -373,25 +373,25 @@ function getExerciseDatabase() {
     },
 
     {
-      id: "remo-banco-inclinado",
-      nombre: "Remo en banco inclinado con mancuernas",
+      id: "remo-t-bar",
+      nombre: "Remo en T con barra",
       grupo: "Espalda",
       categoria: "Remo",
       urlGif:
-        "https://d3d2ynhodh9o1z.cloudfront.net/exercises/dumbbell-incline-row.gif",
+        "https://fitnessprogramer.com/wp-content/uploads/2021/04/t-bar-rows.gif",
       descripcion:
-        "Tumbado boca abajo en banco inclinado, tira las mancuernas hacia arriba manteniendo la espalda recta.",
+        "Coloca un extremo de la barra en un soporte de landmine o una esquina segura. Inclínate con la espalda neutra, sujeta el agarre y lleva la barra hacia el torso; bájala con control.",
       consejos:
-        "• Mantén la espalda recta.\n• Controla el movimiento.\n• Siente la contracción de la espalda.",
-      errores: "• No uses demasiado peso.\n• No pierdas el control.",
+        "Mantén la espalda neutra y el abdomen activo. Lleva los codos hacia atrás y controla la subida y la bajada.",
+      errores: "No redondees la espalda ni uses impulso para mover la barra.",
       musculosPrincipales: ["Dorsal ancho", "Romboides", "Trapecio medio"],
-      musculosSecundarios: ["Deltoides posterior"],
+      musculosSecundarios: ["Bíceps", "Deltoides posterior", "Erectores espinales"],
       series: 4,
       reps: "8-12",
       dia: null,
       dificultad: "media",
-      material: ["Banco inclinado", "Mancuernas"],
-      tipoCarga: "dos_mancuernas",
+      material: ["Barra", "Discos"],
+      tipoCarga: "barra_larga",
       intensidadMuscular: {
         Espalda: 80,
         Bíceps: 50,
