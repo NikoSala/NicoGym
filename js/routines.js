@@ -97,6 +97,104 @@ function getEjerciciosPorDia(dia) {
 const DAY_KEYS_ROUTINE = ["lunes", "martes", "miercoles", "jueves", "viernes"];
 
 const RutinaEditor = {
+  _categoriasCompatibles(ejercicio) {
+    const categoria = ejercicio.categoria;
+    if (
+      categoria === "Aislamiento" &&
+      this._musculosPrincipales(ejercicio).has("deltoide posterior")
+    ) return ["Aislamiento", "Remo"];
+
+    const familias = {
+      Press: ["Press", "Empuje"],
+      Empuje: ["Empuje", "Press"],
+      Apertura: ["Apertura"],
+      Aislamiento: ["Aislamiento"],
+      Curl: ["Curl"],
+      Remo: ["Remo", "Tirón"],
+      Tirón: ["Tirón", "Remo"],
+      Sentadilla: ["Sentadilla", "Zancada", "Unilateral"],
+      Zancada: ["Zancada", "Sentadilla", "Unilateral"],
+      Unilateral: ["Unilateral", "Zancada", "Sentadilla"],
+      "Peso muerto": ["Peso muerto", "Bisagra de cadera"],
+      "Bisagra de cadera": ["Bisagra de cadera", "Peso muerto", "Glúteos"],
+      Glúteos: ["Glúteos", "Bisagra de cadera"],
+      Gemelo: ["Gemelo"],
+      Core: ["Core", "Agarre y core"],
+      "Agarre y core": ["Agarre y core", "Core"],
+      Estabilidad: ["Estabilidad", "Unilateral"],
+      Compuesto: ["Compuesto", "Press", "Empuje"],
+    };
+    return familias[categoria] || [categoria];
+  },
+
+  _grupoPrincipal(ejercicio) {
+    const grupo = String(ejercicio.grupo || "").split("/")[0].trim();
+    const normalizado = ExerciseLibrary._gruposMusculares({
+      grupo,
+      musculosPrincipales: [],
+    })[0];
+    return normalizado || grupo.toLocaleLowerCase("es").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  },
+
+  _musculosPrincipales(ejercicio) {
+    const normalizar = (musculo) => {
+      const nombre = String(musculo || "")
+        .toLocaleLowerCase("es")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+      if (/deltoid.*(medio|lateral)/.test(nombre)) return "deltoide lateral";
+      if (/deltoid.*posterior/.test(nombre)) return "deltoide posterior";
+      if (/deltoid.*anterior/.test(nombre)) return "deltoide anterior";
+      if (/deltoid/.test(nombre)) return "deltoide";
+      if (/pectoral/.test(nombre)) return "pectoral";
+      if (/triceps/.test(nombre)) return "triceps";
+      if (/biceps/.test(nombre)) return "biceps";
+      if (/braquiorradial|antebrazo/.test(nombre)) return "antebrazo";
+      if (/braquial/.test(nombre)) return "braquial";
+      if (/dorsal/.test(nombre)) return "dorsal";
+      if (/romboid/.test(nombre)) return "romboides";
+      if (/trapec/.test(nombre)) return "trapecio";
+      if (/glute/.test(nombre)) return "gluteo";
+      if (/cuadriceps/.test(nombre)) return "cuadriceps";
+      if (/isquio|femoral/.test(nombre)) return "isquiotibiales";
+      if (/gemelo|soleo/.test(nombre)) return "gemelos";
+      if (/abdominal|oblicuo|core/.test(nombre)) return "core";
+      return nombre;
+    };
+    return new Set((ejercicio.musculosPrincipales || []).map(normalizar));
+  },
+
+  _comparteMusculoPrincipal(ejercicioA, ejercicioB) {
+    const musculosA = this._musculosPrincipales(ejercicioA);
+    const musculosB = this._musculosPrincipales(ejercicioB);
+    return !musculosA.size || !musculosB.size ||
+      [...musculosA].some((musculo) => musculosB.has(musculo));
+  },
+
+  alternativas(ejercicioId, dia) {
+    if (!DAY_KEYS_ROUTINE.includes(dia)) return [];
+    const catalogo = getExerciseDatabase();
+    const ejercicioActual = catalogo.find((ej) => ej.id === ejercicioId);
+    if (!ejercicioActual) return [];
+    const grupoActual = this._grupoPrincipal(ejercicioActual);
+    const categoriasCompatibles = this._categoriasCompatibles(ejercicioActual);
+    const idsAsignados = new Set(getRutinaDelDia(dia).map(([id]) => id));
+
+    return catalogo
+      .filter((ej) =>
+        ej.id !== ejercicioId &&
+        !idsAsignados.has(ej.id) &&
+        this._grupoPrincipal(ej) === grupoActual &&
+        categoriasCompatibles.includes(ej.categoria) &&
+        this._comparteMusculoPrincipal(ejercicioActual, ej),
+      )
+      .sort((a, b) =>
+        Number(a.categoria !== ejercicioActual.categoria) -
+          Number(b.categoria !== ejercicioActual.categoria) ||
+        a.nombre.localeCompare(b.nombre, "es"),
+      );
+  },
+
   toggle(ejercicioId, dia) {
     if (!DAY_KEYS_ROUTINE.includes(dia)) return;
     if (STATE.entrenamientoPendiente?.dia === dia) {
@@ -120,5 +218,41 @@ const RutinaEditor = {
     Storage._save();
     ExerciseLibrary.render();
     UI.toast(existe ? "Ejercicio quitado de la rutina" : "Ejercicio añadido a la rutina", "success");
+  },
+
+  reemplazar(ejercicioId, reemplazoId, dia) {
+    if (!DAY_KEYS_ROUTINE.includes(dia)) return false;
+    if (STATE.entrenamientoPendiente?.dia === dia) {
+      UI.toast("Pausa o termina ese entrenamiento antes de editar su rutina", "error");
+      return false;
+    }
+
+    const rutina = getRutinaDelDia(dia).map(([id, series, reps]) => [id, series, reps]);
+    const indice = rutina.findIndex(([id]) => id === ejercicioId);
+    const catalogo = getExerciseDatabase();
+    const ejercicioActual = catalogo.find((ej) => ej.id === ejercicioId);
+    const reemplazo = catalogo.find((ej) => ej.id === reemplazoId);
+    if (indice < 0 || !ejercicioActual || !reemplazo) return false;
+    if (
+      this._grupoPrincipal(ejercicioActual) !== this._grupoPrincipal(reemplazo) ||
+      !this._categoriasCompatibles(ejercicioActual).includes(reemplazo.categoria) ||
+      !this._comparteMusculoPrincipal(ejercicioActual, reemplazo)
+    ) {
+      UI.toast("Elige una opción del mismo músculo y movimiento compatible", "error");
+      return false;
+    }
+    if (rutina.some(([id]) => id === reemplazoId)) {
+      UI.toast("Ese ejercicio ya está en la rutina de este día", "info");
+      return false;
+    }
+
+    rutina[indice] = [reemplazoId, rutina[indice][1], rutina[indice][2]];
+    STATE.rutinasPersonalizadas[dia] = rutina;
+    Object.keys(STATE.checks).forEach((clave) => {
+      if (clave.startsWith(`${dia}-`)) delete STATE.checks[clave];
+    });
+    Storage._save();
+    ExerciseLibrary.render();
+    return true;
   },
 };

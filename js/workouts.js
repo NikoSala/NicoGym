@@ -6,6 +6,7 @@ const Rutinas = {
     const tc = document.getElementById("dayTabs");
     const pc = document.getElementById("dayPanelsContainer");
     if (!tc) return;
+    const diaSeleccionadoAntes = diaActivo;
 
     const dias = ["lunes", "martes", "miercoles", "jueves", "viernes"];
     const nombres = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
@@ -66,6 +67,22 @@ const Rutinas = {
                                 <div style="font-size:12px;color:var(--text-secondary);">
                                     🏋️ ${ejercicios.length} ejercicios
                                 </div>
+                                <div class="routine-exercise-list" aria-label="Ejercicios de ${nombres[idx]}">
+                                  ${ejercicios.map((ej, ejercicioIndex) => {
+                                    const bloqueado = STATE.entrenamientoPendiente?.dia === dia;
+                                    const tieneAlternativas = !bloqueado && RutinaEditor.alternativas(ej.id, dia).length > 0;
+                                    const etiquetaCambio = tieneAlternativas || bloqueado ? "Cambiar" : "Sin opciones";
+                                    return `
+                                      <div class="routine-exercise-row">
+                                        <div class="routine-exercise-info">
+                                          <span class="routine-exercise-number">${ejercicioIndex + 1}</span>
+                                          <span class="routine-exercise-copy"><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong><small>${ExerciseLibrary._escapar(ej.grupo)} · ${ej.series} × ${ExerciseLibrary._escapar(ej.reps)}</small></span>
+                                        </div>
+                                        <button type="button" class="routine-exercise-change" data-cambiar-ejercicio="${ExerciseLibrary._escapar(ej.id)}" aria-label="${tieneAlternativas || bloqueado ? `Cambiar ${ExerciseLibrary._escapar(ej.nombre)}` : `Sin alternativas compatibles para ${ExerciseLibrary._escapar(ej.nombre)}`}" ${tieneAlternativas && !bloqueado ? "" : "disabled"}>${etiquetaCambio}</button>
+                                      </div>
+                                    `;
+                                  }).join("")}
+                                </div>
                                 ${
                                   yaCompletado
                                     ? `
@@ -91,11 +108,18 @@ const Rutinas = {
       }
 
       panel.innerHTML = panelContent;
+      panel.querySelectorAll("[data-cambiar-ejercicio]").forEach((button) => {
+        button.addEventListener("click", () =>
+          this.abrirSelectorCambio(dia, button.dataset.cambiarEjercicio),
+        );
+      });
       pc.appendChild(panel);
     });
 
     const diaActual = UI.getDiaNombre();
-    diaActivo = diaActual === "domingo" ? "lunes" : diaActual;
+    diaActivo = DAY_KEYS_ROUTINE.includes(diaSeleccionadoAntes)
+      ? diaSeleccionadoAntes
+      : diaActual === "domingo" ? "lunes" : diaActual;
     const idxActivo = dias.indexOf(diaActivo);
     if (idxActivo >= 0) {
       const tabs = tc.querySelectorAll(".dtab");
@@ -105,6 +129,64 @@ const Rutinas = {
     }
 
     this._actualizarProgreso();
+  },
+
+  abrirSelectorCambio(dia, ejercicioId) {
+    if (STATE.entrenamientoPendiente?.dia === dia) {
+      UI.toast("Pausa o termina ese entrenamiento antes de editar su rutina", "error");
+      return;
+    }
+    const ejercicioActual = getExerciseDatabase().find((ej) => ej.id === ejercicioId);
+    const alternativas = RutinaEditor.alternativas(ejercicioId, dia);
+    if (!ejercicioActual || alternativas.length === 0) {
+      UI.toast("No hay alternativas disponibles de este grupo muscular", "info");
+      return;
+    }
+
+    Modal.abrir(`
+      <h3>Cambiar ejercicio</h3>
+      <p class="routine-replacement-description">${ExerciseLibrary._escapar(ejercicioActual.nombre)} · mismo músculo y movimiento parecido</p>
+      <label class="routine-replacement-search-label" for="buscarReemplazo">Buscar alternativa</label>
+      <input class="input" id="buscarReemplazo" type="search" placeholder="Nombre o material">
+      <div class="routine-replacement-list" id="alternativasEjercicio"></div>
+    `);
+
+    const busqueda = document.getElementById("buscarReemplazo");
+    const lista = document.getElementById("alternativasEjercicio");
+    const renderAlternativas = () => {
+      const consulta = busqueda.value.trim().toLocaleLowerCase("es");
+      const visibles = alternativas.filter((ej) =>
+        `${ej.nombre} ${ej.grupo} ${(ej.material || []).join(" ")}`
+          .toLocaleLowerCase("es")
+          .includes(consulta),
+      );
+      lista.innerHTML = visibles.length
+        ? visibles.map((ej) => `
+            <button type="button" class="routine-replacement-option" data-reemplazo-id="${ExerciseLibrary._escapar(ej.id)}" aria-label="Elegir ${ExerciseLibrary._escapar(ej.nombre)}">
+              <span class="routine-replacement-media"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i>${ej.urlGif ? `<img src="${ExerciseLibrary._escapar(ej.urlGif)}" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()">` : ""}</span>
+              <span><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong><small>${ExerciseLibrary._escapar(ej.grupo)} · ${ExerciseLibrary._escapar(ej.categoria)}${ej.material?.length ? ` · ${ExerciseLibrary._escapar(ej.material.join(", "))}` : ""}</small></span>
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </button>
+          `).join("")
+        : '<p class="routine-replacement-empty">No hay ejercicios que coincidan.</p>';
+
+      lista.querySelectorAll("[data-reemplazo-id]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const reemplazoId = button.dataset.reemplazoId;
+          if (!RutinaEditor.reemplazar(ejercicioId, reemplazoId, dia)) return;
+          Modal.cerrar();
+          this.render();
+          this._seleccionarDia(dia);
+          [...document.getElementById(`dp-${dia}`).querySelectorAll("[data-cambiar-ejercicio]")]
+            .find((control) => control.dataset.cambiarEjercicio === reemplazoId)
+            ?.focus();
+          UI.toast("Ejercicio cambiado; se conservaron las series y repeticiones", "success");
+        });
+      });
+    };
+
+    busqueda.addEventListener("input", renderAlternativas);
+    renderAlternativas();
   },
 
   _seleccionarDia(dia) {
