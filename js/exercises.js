@@ -1467,6 +1467,7 @@ function getExerciseDatabase() {
     "Dumbbell-Straight-Leg-Deadlift": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Dumbbell-Straight-Leg-Deadlift.gif",
     "Dumbbell-Single-Leg-Deadlift": "https://fitnessprogramer.com/wp-content/uploads/2022/09/Dumbbell-Single-Leg-Deadlift.gif",
     "Standing-Calf-Raise-With-Dumbbell": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Calf-Raise.gif",
+    "Dumbbell-Seated-One-Leg-Calf-Raise": "https://fitcron.com/wp-content/uploads/2021/04/04001301-Dumbbell-Seated-One-Leg-Calf-Raise_calves_720.gif",
     "Farmers-walk_Cardio": "https://fitnessprogramer.com/wp-content/uploads/2022/02/Farmers-walk_Cardio.gif",
     "Dumbbell-Side-Bend": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Dumbbell-Side-Bend.gif",
     "Spider-Curl-Dumbbell": "https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/biceps/dumbbell-reverse-spider-curl.gif",
@@ -1500,7 +1501,8 @@ function getExerciseDatabase() {
       ["peso-muerto-sumo-mancuerna","Peso muerto sumo con mancuerna","Pierna","Bisagra de cadera","Dumbbell-Sumo-Deadlift","una_mancuerna",["Glúteos","Isquiotibiales"],["Mancuerna"]],
       ["peso-muerto-pierna-recta-mancuernas","Peso muerto con piernas semirrígidas","Pierna","Bisagra de cadera","Dumbbell-Straight-Leg-Deadlift","dos_mancuernas",["Isquiotibiales","Glúteos"],["Mancuernas"]],
       ["peso-muerto-una-pierna-mancuerna","Peso muerto a una pierna con mancuerna","Pierna","Unilateral","Dumbbell-Single-Leg-Deadlift","una_mancuerna",["Isquiotibiales","Glúteos"],["Mancuerna"]],
-      ["gemelos-de-pie-unilateral","Elevación unilateral de gemelos con mancuerna","Gemelos","Aislamiento","Standing-Calf-Raise-With-Dumbbell","una_mancuerna",["Gemelos"],["Mancuerna"]],
+      ["gemelos-de-pie-unilateral","Elevación unilateral de gemelos de pie con mancuerna","Pierna","Gemelo","Standing-Calf-Raise-With-Dumbbell","una_mancuerna",["Gemelos","Sóleo"],["Mancuerna"]],
+      ["gemelos-sentado-unilateral","Elevación unilateral de gemelos sentado con mancuerna","Pierna","Gemelo","Dumbbell-Seated-One-Leg-Calf-Raise","una_mancuerna",["Gemelos","Sóleo"],["Banco","Mancuerna"]],
       ["paseo-granjero-mancuernas","Paseo del granjero con mancuernas","Antebrazo","Agarre y core","Farmers-walk_Cardio","dos_mancuernas",["Agarre","Core","Trapecio"],["Mancuernas"]],
       ["flexion-lateral-mancuerna","Flexión lateral con mancuerna","Abdominales","Core","Dumbbell-Side-Bend","una_mancuerna",["Oblicuos"],["Mancuerna"]],
       ["curl-arana-banco-inclinado","Curl araña en banco inclinado","Bíceps","Aislamiento","Spider-Curl-Dumbbell","dos_mancuernas",["Bíceps"],["Banco inclinado","Mancuernas"]],
@@ -1522,5 +1524,36 @@ function getExerciseDatabase() {
       intensidadMuscular: { [grupo]: 80 },
     })),
   );
+
+  const detallesGemelos = {
+    "gemelos-de-pie-unilateral": {
+      descripcion: "De pie, sujeta una mancuerna con una mano y apóyate con la otra para mantener el equilibrio. Eleva el talón de una pierna hasta ponerte de puntillas y baja lentamente.",
+      consejos: "• Apóyate ligeramente para no perder el equilibrio.\n• Completa todo el recorrido.\n• Haz una pausa breve arriba y cambia de pierna.",
+      errores: "• No rebotes en la parte baja.\n• No acortes el recorrido.\n• No te impulses con el brazo de apoyo.",
+      musculosPrincipales: ["Gemelos"],
+      musculosSecundarios: ["Sóleo"],
+      series: 3,
+      reps: "12-20 por lado",
+      dificultad: "facil",
+      material: ["Mancuerna"],
+      intensidadMuscular: { Gemelos: 90, Sóleo: 65 },
+    },
+    "gemelos-sentado-unilateral": {
+      descripcion: "Sentado en un banco, coloca una mancuerna sobre el muslo, justo encima de la rodilla. Eleva el talón de una pierna apoyando el antepié y baja con control antes de cambiar de lado.",
+      consejos: "• Mantén la mancuerna estable sobre el muslo.\n• Sube el talón todo lo posible sin despegar el antepié.\n• Pausa arriba y controla la bajada.",
+      errores: "• No rebotes ni uses impulso.\n• No muevas la mancuerna hacia la rodilla.\n• No reduzcas el recorrido.",
+      musculosPrincipales: ["Sóleo", "Gemelos"],
+      musculosSecundarios: [],
+      series: 3,
+      reps: "12-20 por lado",
+      dificultad: "facil",
+      material: ["Banco", "Mancuerna"],
+      intensidadMuscular: { Sóleo: 85, Gemelos: 75 },
+    },
+  };
+  exerciseDatabase.forEach((ejercicio) => {
+    if (detallesGemelos[ejercicio.id])
+      Object.assign(ejercicio, detallesGemelos[ejercicio.id]);
+  });
   return exerciseDatabase;
 }

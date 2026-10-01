@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "nicogym-";
-const CACHE_VERSION = "shell-v9";
+const CACHE_VERSION = "shell-v10";
 const SHELL_CACHE = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-v1`;
 const APP_SHELL = [
@@ -12,7 +12,7 @@ const APP_SHELL = [
   "./img/icon-512.png",
   "./js/config.js",
   "./js/exercise-names.js",
-  "./js/exercises.js?v=20260923d",
+  "./js/exercises.js?v=20261001a",
   "./js/exercise-library.js?v=20260923e",
   "./js/helpers.js?v=20261001a",
   "./js/routines.js?v=20261001e",
