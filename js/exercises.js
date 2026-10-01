@@ -1475,7 +1475,7 @@ function getExerciseDatabase() {
     "Alternating-Dumbbell-Arnold-Press": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Arnold-Press.gif",
     "One-Arm-Dumbbell-Row": "https://fitnessprogramer.com/wp-content/uploads/2021/10/Dumbbell-Bent-Over-Reverse-Row.gif",
     "Neutral-Grip-Dumbbell-Floor-Press": "https://fitnessprogramer.com/wp-content/uploads/2021/10/Single-Dumbbell-Close-grip-Press.gif",
-    "Dumbbell-Deadlift": "https://fitnessprogramer.com/wp-content/uploads/2023/09/dumbbell-deadlift.gif",
+    "Dumbbell-Deadlift": "https://fitsmove.com/videos/0300-nUwVh7b.gif",
     "One-Arm-Dumbbell-Lateral-Raise": "https://fitnessprogramer.com/wp-content/uploads/2021/06/Leaning-Single-Arm-Dumbbell-Lateral-Raise.gif",
     "Dumbbell-Side-Lunge": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Side-Lunge-Stretch.gif",
   };
