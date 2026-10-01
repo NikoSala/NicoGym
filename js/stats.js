@@ -69,8 +69,8 @@ const Estadisticas = {
     const pesos = STATE.mediciones.slice(-8);
     const cambioPeso = ev.currentWeight - ev.initialWeight;
     const cambioCintura = ev.currentWaist - ev.initialWaist;
-    const altura = STATE.altura || CONFIG.ALTURA;
-    const imc = ev.currentWeight ? ev.currentWeight / ((altura / 100) ** 2) : 0;
+    const altura = Number(STATE.altura || CONFIG.ALTURA) || 0;
+    const imc = ev.currentWeight && altura > 0 ? ev.currentWeight / ((altura / 100) ** 2) : 0;
     const maxVolumen = Math.max(1, ...semanas.map(s => s.volumen));
     const max1RM = Math.max(1, ...fuerza.map(x => x.oneRM));
     const minPeso = pesos.length ? Math.min(...pesos.map(m => Number(m.peso) || 0)) : 0;

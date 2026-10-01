@@ -164,7 +164,7 @@ const Rutinas = {
         ? visibles.map((ej) => `
             <button type="button" class="routine-replacement-option" data-reemplazo-id="${ExerciseLibrary._escapar(ej.id)}" aria-label="Elegir ${ExerciseLibrary._escapar(ej.nombre)}">
               <span class="routine-replacement-media"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i>${ej.urlGif ? `<img src="${ExerciseLibrary._escapar(ej.urlGif)}" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()">` : ""}</span>
-              <span><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong><small>${ExerciseLibrary._escapar(ej.grupo)} · ${ExerciseLibrary._escapar(ej.categoria)}${ej.material?.length ? ` · ${ExerciseLibrary._escapar(ej.material.join(", "))}` : ""}</small></span>
+              <span><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong><small>${ExerciseLibrary._escapar(ej.grupo)} · ${ExerciseLibrary._escapar(ej.categoria)}${ej.material?.length ? ` · ${ExerciseLibrary._escapar(ej.material.join(", "))}` : ""} · ${ExerciseLibrary.materialDisponible(ej) ? "Disponible" : "No marcado"}</small></span>
               <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
             </button>
           `).join("")

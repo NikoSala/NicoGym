@@ -128,7 +128,7 @@ const Objetivos = {
       <div id="camposTipo">
         <div class="form-field" style="margin-bottom:8px;">
           <label>Peso objetivo (kg)</label>
-          <input type="number" id="objPesoObjetivo" class="input" placeholder="Ej: 75">
+          <input type="number" id="objPesoObjetivo" class="input" min="0.1" max="500" step="0.1" placeholder="Ej: 75">
         </div>
       </div>
       <div class="form-field" style="margin-bottom:8px;">
@@ -218,21 +218,25 @@ const Objetivos = {
         </div>
         <div class="form-field" style="margin-bottom:8px;">
           <label>Peso objetivo (kg)</label>
-          <input type="number" id="objPesoObjetivo" class="input" placeholder="Ej: 10">
+          <input type="number" id="objPesoObjetivo" class="input" min="0.1" max="500" step="0.1" placeholder="Ej: 10">
         </div>
       `;
     }
   },
 
   _guardar() {
-    const nombre = document.getElementById("objNombre").value;
+    const nombre = document.getElementById("objNombre").value.trim();
     const tipo = document.getElementById("objTipo").value;
-    const pesoObjetivo = parseFloat(document.getElementById("objPesoObjetivo").value);
-    const descripcion = document.getElementById("objDescripcion").value;
-    const nombreEjercicio = tipo === 'ejercicio' ? document.getElementById("objNombreEjercicio").value : null;
+    const pesoObjetivo = Number(document.getElementById("objPesoObjetivo").value);
+    const descripcion = document.getElementById("objDescripcion").value.trim();
+    const nombreEjercicio = tipo === 'ejercicio' ? document.getElementById("objNombreEjercicio").value.trim() : null;
 
-    if (!nombre || !pesoObjetivo) {
-      UI.toast("Completa los campos obligatorios", "error");
+    if (!nombre || !Number.isFinite(pesoObjetivo) || pesoObjetivo <= 0 || pesoObjetivo > 500) {
+      UI.toast("Introduce un nombre y un objetivo entre 0 y 500", "error");
+      return;
+    }
+    if (tipo === "ejercicio" && !nombreEjercicio) {
+      UI.toast("Indica el ejercicio de la meta", "error");
       return;
     }
 

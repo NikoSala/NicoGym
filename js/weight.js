@@ -46,7 +46,7 @@ const Peso = {
               </div>
               <div class="peso-current-details">
                 <div><span>Desde anterior</span><strong class="${cambioAnterior !== null && cambioAnterior < 0 ? "positive" : cambioAnterior > 0 ? "negative" : ""}">${cambioAnterior === null ? "--" : `${cambioAnterior > 0 ? "+" : ""}${cambioAnterior.toFixed(1)} kg`}</strong></div>
-                <div><span>Objetivo</span><strong>${CONFIG.PESO_OBJETIVO} kg</strong></div>
+                <div><span>Objetivo</span><strong>${Number(CONFIG.PESO_OBJETIVO) > 0 ? `${CONFIG.PESO_OBJETIVO} kg` : "No definido"}</strong></div>
                 <div><span>Desde inicio</span><strong>${cambioInicio === null ? "--" : `${cambioInicio > 0 ? "+" : ""}${cambioInicio.toFixed(1)} kg`}</strong></div>
               </div>
             </section>
@@ -57,15 +57,15 @@ const Peso = {
                         ${mensajeAdicional}
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
                             <div class="form-field"><label>Fecha</label><input type="date" id="medFecha" class="input" value="${UI.getHoy()}"></div>
-                            <div class="form-field"><label>Peso (kg) *</label><input type="number" id="medPeso" step="0.1" placeholder="${ultimo ? ultimo.peso : "84.3"}" class="input"></div>
+                            <div class="form-field"><label>Peso (kg) *</label><input type="number" id="medPeso" min="0.1" max="500" step="0.1" placeholder="${ultimo ? ultimo.peso : "84.3"}" class="input"></div>
                             ${
                               mostrarCamposCompletos
                                 ? `
-                                <div class="form-field"><label>% Grasa</label><input type="number" id="medGrasa" step="0.1" placeholder="${ultimo ? ultimo.grasaPorcentaje : "27.5"}" class="input"></div>
-                                <div class="form-field"><label>Masa muscular (kg)</label><input type="number" id="medMusculo" step="0.1" placeholder="${ultimo ? ultimo.masaMuscular : "58.2"}" class="input"></div>
-                                <div class="form-field"><label>Masa magra (kg)</label><input type="number" id="medMagra" step="0.1" placeholder="${ultimo ? ultimo.masaMagra : "62.0"}" class="input"></div>
-                                <div class="form-field"><label>Grasa visceral</label><input type="number" id="medVisceral" step="0.5" placeholder="${ultimo ? ultimo.grasaVisceral : "8.0"}" class="input"></div>
-                                <div class="form-field" style="grid-column:span 2;"><label>Cintura (cm)</label><input type="number" id="medCintura" step="0.1" placeholder="${ultimo ? ultimo.cintura : "98"}" class="input"></div>
+                                <div class="form-field"><label>% Grasa</label><input type="number" id="medGrasa" min="0" max="100" step="0.1" placeholder="${ultimo ? ultimo.grasaPorcentaje : "27.5"}" class="input"></div>
+                                <div class="form-field"><label>Masa muscular (kg)</label><input type="number" id="medMusculo" min="0" max="500" step="0.1" placeholder="${ultimo ? ultimo.masaMuscular : "58.2"}" class="input"></div>
+                                <div class="form-field"><label>Masa magra (kg)</label><input type="number" id="medMagra" min="0" max="500" step="0.1" placeholder="${ultimo ? ultimo.masaMagra : "62.0"}" class="input"></div>
+                                <div class="form-field"><label>Grasa visceral</label><input type="number" id="medVisceral" min="0" max="100" step="0.5" placeholder="${ultimo ? ultimo.grasaVisceral : "8.0"}" class="input"></div>
+                                <div class="form-field" style="grid-column:span 2;"><label>Cintura (cm)</label><input type="number" id="medCintura" min="0" max="500" step="0.1" placeholder="${ultimo ? ultimo.cintura : "98"}" class="input"></div>
                             `
                                 : ""
                             }
@@ -102,10 +102,27 @@ const Peso = {
       return;
     }
 
-    const peso = parseFloat(document.getElementById("medPeso").value);
-    if (isNaN(peso) || peso === 0) {
+    const peso = Number(document.getElementById("medPeso").value);
+    if (!Number.isFinite(peso) || peso < 0.1 || peso > 500) {
       UI.toast("Introduce un peso válido", "error");
       return;
+    }
+
+    const rangosMedicion = [
+      ["medGrasa", 0, 100],
+      ["medMusculo", 0, 500],
+      ["medMagra", 0, 500],
+      ["medVisceral", 0, 100],
+      ["medCintura", 0, 500],
+    ];
+    for (const [id, minimo, maximo] of rangosMedicion) {
+      const texto = document.getElementById(id)?.value.trim();
+      if (texto === "") continue;
+      const valor = Number(texto);
+      if (!Number.isFinite(valor) || valor < minimo || valor > maximo) {
+        UI.toast("Revisa los rangos de las medidas", "error");
+        return;
+      }
     }
 
     const ultimo =

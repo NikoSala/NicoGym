@@ -3,7 +3,7 @@
 // ==========================================
 const STATE = {
   schemaVersion: 3,
-  nombre: "Nico",
+  nombre: "",
   altura: CONFIG.ALTURA,
   mediciones: [],
   historialEntrenos: [],
@@ -28,11 +28,7 @@ const STATE = {
   diasEspeciales: {}, // Formato: { "2026-08-27": "vacaciones" | "lesionado" }
   objetivos: [],
   rutinasPersonalizadas: {},
-  materialDisponible: [
-    { id: "mancuernas-ajustables", nombre: "Mancuernas ajustables", detalle: "Hasta 20 kg (según indicas)", activo: true },
-    { id: "banco-ajustable", nombre: "Banco ajustable EverYkip", detalle: "Posiciones de inclinación por confirmar", activo: true },
-    { id: "torre-dominadas-fondos", nombre: "Torre de dominadas y fondos", detalle: "Disponible en casa; actualmente sin usar", activo: false },
-  ],
+  materialDisponible: [],
 };
 
 let diaActivo = "lunes";

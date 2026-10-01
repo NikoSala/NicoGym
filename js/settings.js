@@ -14,9 +14,10 @@
                 c.innerHTML = `
                     <div class="card">
                         <div class="card-title"><i class="fa-solid fa-user"></i> Perfil</div>
-                        <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="input input-sm" id="ajusteNombre" value="${escapeHTML(STATE.nombre)}" style="width:120px;"></div>
-                        <div class="ajustes-item"><span class="aj-label">Altura (cm)</span><input class="input input-sm" type="number" id="ajusteAltura" value="${STATE.altura}" style="width:80px;"></div>
-                        <div class="ajustes-item"><span class="aj-label">Peso objetivo (kg)</span><input class="input input-sm" type="number" id="ajusteObjetivo" value="${CONFIG.PESO_OBJETIVO}" style="width:80px;"></div>
+                        <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="input input-sm" id="ajusteNombre" maxlength="80" value="${escapeHTML(STATE.nombre)}" style="width:120px;"></div>
+                        <div class="ajustes-item"><span class="aj-label">Altura (cm)</span><input class="input input-sm" type="number" id="ajusteAltura" min="80" max="250" step="1" value="${STATE.altura ?? ""}" style="width:80px;"></div>
+                        <div class="ajustes-item"><span class="aj-label">Peso objetivo (kg)</span><input class="input input-sm" type="number" id="ajusteObjetivo" min="1" max="500" step="0.1" value="${CONFIG.PESO_OBJETIVO ?? ""}" style="width:80px;"></div>
+                        <div class="ajustes-item"><label class="aj-label" for="ajusteFechaSinFumar">Inicio sin fumar</label><input class="input input-sm" type="date" id="ajusteFechaSinFumar" max="${UI.getHoy()}" value="${escapeHTML(STATE.ajustes?.fechaInicioNoFumar || "")}"></div>
                         <button class="btn btn-primary btn-block" onclick="Ajustes._guardar()" style="margin-top:10px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                     </div>
 
@@ -94,13 +95,29 @@
             },
 
             _guardar() {
-                const nombre = document.getElementById('ajusteNombre').value || 'Nico';
-                const altura = parseInt(document.getElementById('ajusteAltura').value) || CONFIG.ALTURA;
-                const objetivo = parseInt(document.getElementById('ajusteObjetivo').value) || CONFIG.PESO_OBJETIVO;
+                const nombre = document.getElementById('ajusteNombre').value.trim();
+                const alturaTexto = document.getElementById('ajusteAltura').value.trim();
+                const objetivoTexto = document.getElementById('ajusteObjetivo').value.trim();
+                const fechaInicioNoFumar = document.getElementById('ajusteFechaSinFumar').value;
+                const altura = alturaTexto ? Number(alturaTexto) : null;
+                const objetivo = objetivoTexto ? Number(objetivoTexto) : null;
+                if (altura !== null && (!Number.isFinite(altura) || altura < 80 || altura > 250)) {
+                    UI.toast('La altura debe estar entre 80 y 250 cm', 'error');
+                    return;
+                }
+                if (objetivo !== null && (!Number.isFinite(objetivo) || objetivo <= 0 || objetivo > 500)) {
+                    UI.toast('El peso objetivo debe estar entre 0 y 500 kg', 'error');
+                    return;
+                }
+                if (fechaInicioNoFumar && fechaInicioNoFumar > UI.getHoy()) {
+                    UI.toast('La fecha de inicio sin fumar no puede ser futura', 'error');
+                    return;
+                }
                 STATE.nombre = nombre;
                 STATE.altura = altura;
                 CONFIG.PESO_OBJETIVO = objetivo;
-                STATE.ajustes = { nombre, altura, objetivo };
+                STATE.ajustes = { ...STATE.ajustes, nombre, altura, objetivo, fechaInicioNoFumar: fechaInicioNoFumar || null };
+                Storage._calcularDiasSinFumar();
                 Storage._save();
                 UI.toast('✅ Ajustes guardados', 'success');
                 APP.renderizarTodo();

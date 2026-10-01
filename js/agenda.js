@@ -67,6 +67,7 @@ const Agenda = {
   },
 
   cambiarMes(delta) {
+    this.mesMostrado.setDate(1);
     this.mesMostrado.setMonth(this.mesMostrado.getMonth() + delta);
     this.render();
   },

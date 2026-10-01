@@ -3,6 +3,7 @@ const ExerciseLibrary = {
   grupoActivo: "Todos",
   busqueda: "",
   pagina: 1,
+  soloMaterialDisponible: false,
 
   _escapar(valor) {
     return String(valor ?? "").replace(/[&<>"']/g, (caracter) => ({
@@ -42,6 +43,36 @@ const ExerciseLibrary = {
     return [...grupos];
   },
 
+  materialDisponible(ejercicio) {
+    const normalizar = (texto) => String(texto || "")
+      .toLocaleLowerCase("es")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    const inventario = (STATE.materialDisponible || [])
+      .filter((item) => item && item.activo !== false)
+      .map((item) => normalizar(`${item.nombre || ""} ${item.detalle || ""}`));
+    const materiales = ejercicio?.material || [];
+
+    return materiales.every((material) => {
+      const requerido = normalizar(material);
+      if (/peso corporal|sin equipo/.test(requerido)) return true;
+      const aliases = {
+        mancuerna: /mancuern/,
+        banco: /banco|bench/,
+        barra: /barra|barbell/,
+        polea: /polea|cable/,
+        cuerda: /cuerda|rope/,
+        maquina: /maquina|machine/,
+        rack: /rack|jaula/,
+        kettlebell: /kettlebell|pesa rusa/,
+      };
+      const alias = Object.entries(aliases).find(([clave]) => requerido.includes(clave))?.[1];
+      return inventario.some((disponible) =>
+        alias ? alias.test(disponible) : disponible.includes(requerido),
+      );
+    });
+  },
+
   render() {
     const container = document.getElementById("bibliotecaContainer");
     if (!container) return;
@@ -61,8 +92,9 @@ const ExerciseLibrary = {
     const filtrados = ejercicios.filter((ej) => {
       const gruposEjercicio = this._gruposMusculares(ej);
       const coincideGrupo = this.grupoActivo === "Todos" || gruposEjercicio.includes(this.grupoActivo);
+      const coincideMaterial = !this.soloMaterialDisponible || this.materialDisponible(ej);
       const texto = `${ej.nombre} ${gruposEjercicio.join(" ")} ${(ej.material || []).join(" ")} ${(ej.musculosPrincipales || []).join(" ")}`.toLocaleLowerCase("es");
-      return coincideGrupo && texto.includes(this.busqueda.trim().toLocaleLowerCase("es"));
+      return coincideGrupo && coincideMaterial && texto.includes(this.busqueda.trim().toLocaleLowerCase("es"));
     });
     const tamanoPagina = window.matchMedia?.("(max-width: 650px)").matches ? 8 : 12;
     const totalPaginas = Math.max(1, Math.ceil(filtrados.length / tamanoPagina));
@@ -75,6 +107,7 @@ const ExerciseLibrary = {
         <span class="library-count">${ejercicios.length} ejercicios · ${ejerciciosEnRutina} en rutina</span>
       </header>
       <label class="library-search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input id="librarySearch" type="search" placeholder="Buscar ejercicio o material" value="${this._escapar(this.busqueda)}" aria-label="Buscar ejercicios"></label>
+      <label class="library-availability-filter"><input id="soloMaterialDisponible" type="checkbox" ${this.soloMaterialDisponible ? "checked" : ""}> Solo mi material</label>
       <div class="library-filters" aria-label="Filtrar por grupo muscular">
         ${["Todos", ...grupos].map((grupo) => `<button type="button" class="library-filter ${this.grupoActivo === grupo ? "active" : ""}" data-group="${this._escapar(grupo)}">${this._escapar(grupo)}</button>`).join("")}
       </div>
@@ -93,6 +126,7 @@ const ExerciseLibrary = {
 
     const search = document.getElementById("librarySearch");
     search?.addEventListener("input", (event) => { this.busqueda = event.target.value; this.pagina = 1; this.render(); const input = document.getElementById("librarySearch"); input?.focus(); input?.setSelectionRange(this.busqueda.length, this.busqueda.length); });
+    document.getElementById("soloMaterialDisponible")?.addEventListener("change", (event) => { this.soloMaterialDisponible = event.target.checked; this.pagina = 1; this.render(); });
     container.querySelectorAll(".library-filter").forEach((button) => button.addEventListener("click", () => { this.grupoActivo = button.dataset.group; this.pagina = 1; this.render(); }));
     container.querySelectorAll(".library-page-button").forEach((button) => button.addEventListener("click", () => { this.pagina = Number(button.dataset.page); this.render(); document.getElementById("libraryGrid")?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
     container.querySelectorAll(".library-card-main").forEach((button) => button.addEventListener("click", () => this._ver(ejercicios[Number(button.dataset.exercise)])));

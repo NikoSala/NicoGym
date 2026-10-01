@@ -136,6 +136,7 @@ const Dashboard = {
     c.innerHTML = `
       <div class="dashboard-layout">
         <main class="dashboard-main-column">
+          <div class="dashboard-kicker dashboard-greeting">${STATE.nombre ? `Hola, ${escapeHTML(STATE.nombre)}` : "Tu plan de hoy"}</div>
           ${bloqueEntrenamiento}
           <div class="dashboard-overview-grid">
             ${bloqueSemana}

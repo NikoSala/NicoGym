@@ -11,6 +11,21 @@
             return getExerciseDatabase().find(e => e.nombre === nombre);
         }
 
+        function obtenerSeriesObjetivoEjercicio(ejercicio) {
+            const series = Number(ejercicio?.series);
+            return Number.isInteger(series) && series > 0
+                ? series
+                : PROGRESION?.SERIES_OBJETIVO || 4;
+        }
+
+        function obtenerRepsObjetivoEjercicio(ejercicio) {
+            const primeraRepeticion = String(ejercicio?.reps ?? '').match(/\d+/);
+            const repeticiones = Number(primeraRepeticion?.[0]);
+            return Number.isInteger(repeticiones) && repeticiones > 0 && repeticiones <= 100
+                ? repeticiones
+                : PROGRESION?.REPS_OBJETIVO || 12;
+        }
+
         function parseReps(valor) {
             const texto = String(valor ?? '').trim();
             if (!texto) return { series: [], total: 0, valid: false, error: 'Introduce las repeticiones.' };
@@ -30,7 +45,7 @@
             let cardio = 0;
             ejercicios.forEach(ej => {
                 if (ej.esCaminata) { cardio += CONFIG.MIN_CINTA || 15; return; }
-                const series = PROGRESION?.SERIES_OBJETIVO || ej.series || 4;
+                const series = obtenerSeriesObjetivoEjercicio(ej);
                 const ejecucion = 0.75;
                 const descansos = Math.max(0, series - 1) * ((ej.descanso || 60) / 60);
                 const transicion = 1.5;

@@ -3232,6 +3232,27 @@
   font-weight: 900;
 }
 
+.me-workout-load-manual-label {
+  display: block;
+  margin-top: 9px;
+  color: #c7cbd1;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.me-workout-load-manual-input {
+  width: min(180px, 100%);
+  min-height: 40px;
+  margin-top: 5px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  background: rgba(0,0,0,.2);
+  font: inherit;
+  font-size: 16px;
+}
+
 .me-workout-load-subtitle {
   margin-top: 3px;
 
@@ -7068,6 +7089,8 @@ textarea:focus {
 .library-header p { margin:0; color:var(--text-secondary); font-size:14px; }
 .library-count { color:var(--text-secondary); font-size:12px; white-space:nowrap; }
 .library-search { display:flex; align-items:center; gap:10px; max-width:520px; padding:0 14px; height:46px; color:var(--text-secondary); background:var(--surface,#111419); border:1px solid rgba(199,203,209,.1); border-radius:14px; }
+.library-availability-filter { display:flex; align-items:center; gap:8px; width:max-content; margin-top:10px; color:var(--text-secondary); font-size:12px; cursor:pointer; }
+.library-availability-filter input { width:16px; height:16px; accent-color:var(--primary); }
 .library-search input { width:100%; color:var(--text); background:transparent; border:0; outline:0; font:inherit; font-size:14px; }
 .library-filters { display:flex; gap:8px; overflow-x:auto; padding:16px 0 18px; scrollbar-width:none; }
 .library-filters::-webkit-scrollbar { display:none; }

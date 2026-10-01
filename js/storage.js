@@ -164,8 +164,11 @@ const Storage = {
   },
 
   _calcularDiasSinFumar() {
+    const fechaInicio = STATE.ajustes?.fechaInicioNoFumar || CONFIG.FECHA_INICIO_NO_FUMAR;
+    if (!fechaInicio) return;
     let c = 0;
-    const f = new Date(CONFIG.FECHA_INICIO_NO_FUMAR);
+    const f = new Date(`${fechaInicio}T00:00:00`);
+    if (!Number.isFinite(f.getTime())) return;
     const h = new Date();
     while (f <= h) {
       if (!STATE.diasNoFumar.includes(UI.formatFecha(f))) c++;
@@ -178,10 +181,16 @@ const Storage = {
     try {
       STATE.schemaVersion = CONFIG.STATE_SCHEMA_VERSION;
       localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(STATE));
+      return true;
     } catch (err) {
       console.error("No se pudo guardar el estado local:", err);
+      this._saveFailurePending = true;
+      const limpiarAviso = () => { this._saveFailurePending = false; };
+      if (typeof queueMicrotask === "function") queueMicrotask(limpiarAviso);
+      else Promise.resolve().then(limpiarAviso);
       if (typeof UI !== "undefined" && UI.toast)
         UI.toast("❌ No se pudieron guardar los datos", "error");
+      return false;
     }
   },
 
@@ -255,8 +264,8 @@ const Storage = {
 
     if (!esObjeto(estado)) throw new Error("Estado de backup no válido");
     if (estado.nombre !== undefined) validarTexto(estado.nombre, "nombre", 80);
-    if (estado.altura !== undefined) validarNumero(estado.altura, "altura", 80);
-    if (estado.altura !== undefined && Number(estado.altura) > 250)
+    if (estado.altura !== undefined && estado.altura !== null) validarNumero(estado.altura, "altura", 80);
+    if (estado.altura !== undefined && estado.altura !== null && Number(estado.altura) > 250)
       throw new Error("Altura fuera de rango");
 
     for (const campo of ["mediciones", "historialEntrenos", "diasNoFumar", "diasEntrenados", "records", "objetivos"]) {
@@ -322,10 +331,13 @@ const Storage = {
 
     if (estado.ajustes?.nombre !== undefined)
       validarTexto(estado.ajustes.nombre, "ajustes.nombre", 80);
-    if (estado.ajustes?.altura !== undefined)
+    if (estado.ajustes?.altura !== undefined && estado.ajustes.altura !== null)
       validarNumero(estado.ajustes.altura, "ajustes.altura", 80);
-    if (estado.ajustes?.objetivo !== undefined)
+    if (estado.ajustes?.objetivo !== undefined && estado.ajustes.objetivo !== null)
       validarNumero(estado.ajustes.objetivo, "ajustes.objetivo", 0.1);
+    if (estado.ajustes?.fechaInicioNoFumar) {
+      validarFecha(estado.ajustes.fechaInicioNoFumar, "ajustes.fechaInicioNoFumar");
+    }
     if (estado.evolution) {
       ["initialWeight", "currentWeight", "initialWaist", "currentWaist", "totalWorkouts", "daysWithoutSmoking"]
         .forEach((campo) => validarNumero(estado.evolution[campo], `evolution.${campo}`, 0, true));
@@ -555,7 +567,8 @@ const Storage = {
         CONFIG.TEMPORIZADOR_DESCANSO =
           STATE.config.temporizadorDescanso === true;
         let fotosRestauradas = false;
-        if (fotosProgreso) {
+        const fotosNoIncluidas = datos.fotosProgreso?.disponibles === false;
+        if (fotosProgreso && !fotosNoIncluidas) {
           try {
             await Fotos.restaurarBackup(fotosProgreso);
             fotosRestauradas = true;
@@ -565,10 +578,12 @@ const Storage = {
         }
         this._save();
         UI.toast(
-          fotosProgreso && !fotosRestauradas
+          fotosNoIncluidas
+            ? "✅ Datos importados; se conservaron las fotos actuales porque el backup no las incluía"
+            : fotosProgreso && !fotosRestauradas
             ? "⚠️ Datos importados; no se pudieron restaurar las fotos"
             : "✅ Datos importados correctamente",
-          fotosProgreso && !fotosRestauradas ? "error" : "success",
+          fotosProgreso && !fotosRestauradas && !fotosNoIncluidas ? "error" : "success",
         );
         APP.renderizarTodo();
       } catch (err) {

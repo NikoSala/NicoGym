@@ -4,6 +4,7 @@
         let focoAntesDeLightbox = null;
         const UI = {
             toast(msg, tipo = 'info') {
+                if (tipo !== 'error' && typeof Storage !== 'undefined' && Storage._saveFailurePending) return;
                 const t = document.createElement('div');
                 t.className = `toast-msg toast-${tipo}`;
                 t.setAttribute('role', 'status');
@@ -61,7 +62,7 @@
             actualizarTopBar() {
                 const p = STATE.mediciones.length > 0 ? STATE.mediciones[STATE.mediciones.length - 1].peso : '--';
                 document.getElementById('topPesoDisplay').textContent = p + ' kg';
-                document.getElementById('topObjetivo').textContent = CONFIG.PESO_OBJETIVO;
+                document.getElementById('topObjetivo').textContent = Number(CONFIG.PESO_OBJETIVO) > 0 ? CONFIG.PESO_OBJETIVO : '--';
             }
         };
 

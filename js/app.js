@@ -327,14 +327,14 @@ const APP = {
     if (!tipo || typeof WEIGHTS === "undefined") {
       return `
           <div class="me-input-group">
-            <label>Peso (kg)</label>
+            <label>${tipo ? "Peso (kg)" : "Carga adicional (kg)"}</label>
             <input
               type="number"
               id="mePeso"
               step="0.5"
-              min="0.5"
+              min="${tipo ? "0.5" : "0"}"
               value="${pesoActual || ""}"
-              placeholder="0"
+              placeholder="${tipo ? "0" : "0 = peso corporal"}"
               ${seriesActualesEntreno.length ? "readonly" : ""}
             >
           </div>
@@ -753,6 +753,8 @@ const APP = {
 
     const ej = ejerciciosEntreno[idxEjercicioActual];
     const total = ejerciciosEntreno.length;
+    const seriesObjetivoEjercicio = obtenerSeriesObjetivoEjercicio(ej);
+    const repsObjetivoEjercicio = obtenerRepsObjetivoEjercicio(ej);
 
     // ==========================================
     // CAMINATA
@@ -798,7 +800,7 @@ const APP = {
     const pesoEspecifico = STATE.pesosAjustados?.[ej.nombre];
     pesoActualEntreno = Number.isFinite(pesoEspecifico) && pesoEspecifico > 0
       ? pesoEspecifico
-      : this.pesoSesionEntreno || ej.pesoInicial || 0;
+      : this.pesoSesionEntreno || ej.pesoInicial || Number(registro?.peso) || 0;
 
     ejercicioIniciadoAt = Date.now();
 
@@ -818,7 +820,7 @@ const APP = {
       `${progreso}%`;
 
     document.getElementById("meProgresoInfo").textContent =
-      `${progreso}% · ${seriesActualesEntreno.length}/${PROGRESION.SERIES_OBJETIVO} series`;
+      `${progreso}% · ${seriesActualesEntreno.length}/${seriesObjetivoEjercicio} series`;
 
     document
       .getElementById("meCompletadoMsg")
@@ -833,7 +835,7 @@ const APP = {
     // ==========================================
 
     const seriesHtml = Array.from(
-      { length: PROGRESION.SERIES_OBJETIVO },
+      { length: seriesObjetivoEjercicio },
       (_, i) => {
         const valor = seriesActualesEntreno[i];
 
@@ -994,8 +996,8 @@ const APP = {
             </div>
 
             <div class="me-workout-progress-panel">
-              <div><span>Series completadas</span><strong>${seriesActualesEntreno.length}/${PROGRESION.SERIES_OBJETIVO}</strong></div>
-              <div class="me-workout-progress-track"><span style="width:${Math.min(100, Math.round((seriesActualesEntreno.length / PROGRESION.SERIES_OBJETIVO) * 100))}%"></span></div>
+              <div><span>Series completadas</span><strong>${seriesActualesEntreno.length}/${seriesObjetivoEjercicio}</strong></div>
+              <div class="me-workout-progress-track"><span style="width:${Math.min(100, Math.round((seriesActualesEntreno.length / seriesObjetivoEjercicio) * 100))}%"></span></div>
             </div>
 
             <details class="me-workout-tips">
@@ -1059,19 +1061,22 @@ const APP = {
                 ${etiquetaCarga}
               </div>
               
-              <div class="me-workout-load-value" style="cursor: pointer;" onclick="APP._abrirSelectorPeso('${ej.nombre}')">
-                <span id="mePesoEjercicioDisplay" style="font-size: 24px; font-weight: 900; color: #d7a126;">
-                  ${pesoActualEntreno || '—'}
-                </span> kg
-              </div>
-              
-              <div class="me-workout-load-subtitle">
-                ${ej.tipoCarga === WEIGHTS?.TIPOS?.UNA_MANCUERNA ? "Una mancuerna" : ej.tipoCarga === WEIGHTS?.TIPOS?.BARRA_LARGA ? "Barra" : "Por mancuerna"}
-              </div>
-              
-              <div class="me-workout-load-hint" style="margin-top:4px;font-size:9px;color:var(--text-muted);">
-                <i class="fa-solid fa-pen"></i> Toca para elegir el peso
-              </div>
+              ${ej.tipoCarga ? `
+                <div class="me-workout-load-value" style="cursor: pointer;" onclick="APP._abrirSelectorPeso('${ej.nombre}')">
+                  <span id="mePesoEjercicioDisplay" style="font-size: 24px; font-weight: 900; color: #d7a126;">
+                    ${pesoActualEntreno || '—'}
+                  </span> kg
+                </div>
+                <div class="me-workout-load-subtitle">
+                  ${ej.tipoCarga === WEIGHTS?.TIPOS?.UNA_MANCUERNA ? "Una mancuerna" : ej.tipoCarga === WEIGHTS?.TIPOS?.BARRA_LARGA ? "Barra" : "Por mancuerna"}
+                </div>
+                <div class="me-workout-load-hint" style="margin-top:4px;font-size:9px;color:var(--text-muted);">
+                  <i class="fa-solid fa-pen"></i> Toca para elegir el peso
+                </div>
+              ` : `
+                <label class="me-workout-load-manual-label" for="mePeso">Carga adicional (kg)</label>
+                <input class="me-workout-load-manual-input" type="number" id="mePeso" min="0" max="500" step="0.5" value="${pesoActualEntreno}" placeholder="0 = peso corporal" aria-label="Carga adicional en kilogramos">
+              `}
 
               ${
                 textoCarga
@@ -1105,7 +1110,7 @@ const APP = {
           <div class="me-workout-reps-card">
 
             <div class="me-workout-reps-title">
-              REPETICIONES DE LA SERIE ${Math.min(seriesActualesEntreno.length + 1, PROGRESION.SERIES_OBJETIVO)}
+              REPETICIONES DE LA SERIE ${Math.min(seriesActualesEntreno.length + 1, seriesObjetivoEjercicio)}
             </div>
 
             <div class="me-workout-reps-row">
@@ -1126,7 +1131,7 @@ const APP = {
                 min="1"
                 max="100"
                 step="1"
-                value="${ej.repsSugeridas?.[seriesActualesEntreno.length] || PROGRESION.REPS_OBJETIVO}"
+                value="${ej.repsSugeridas?.[seriesActualesEntreno.length] || repsObjetivoEjercicio}"
               >
 
               <button
@@ -1141,7 +1146,7 @@ const APP = {
             </div>
 
             <div class="me-workout-reps-target">
-              Objetivo: ${PROGRESION.SERIES_OBJETIVO} × ${PROGRESION.REPS_OBJETIVO} reps
+              Objetivo: ${seriesObjetivoEjercicio} × ${escapeHTML(ej.reps || String(repsObjetivoEjercicio))} reps
             </div>
 
           </div>
@@ -1157,15 +1162,15 @@ const APP = {
               <i class="fa-solid fa-check"></i>
               Guardar serie ${Math.min(
                 seriesActualesEntreno.length + 1,
-                PROGRESION.SERIES_OBJETIVO
+                seriesObjetivoEjercicio
               )}
             </span>
 
             <span class="me-workout-save-sub">
               Serie ${Math.min(
                 seriesActualesEntreno.length + 1,
-                PROGRESION.SERIES_OBJETIVO
-              )} de ${PROGRESION.SERIES_OBJETIVO}
+                seriesObjetivoEjercicio
+              )} de ${seriesObjetivoEjercicio}
             </span>
 
           </button>
@@ -1243,7 +1248,7 @@ const APP = {
     let valor = parseInt(input.value, 10);
 
     if (!Number.isFinite(valor)) {
-      valor = PROGRESION.REPS_OBJETIVO;
+      valor = obtenerRepsObjetivoEjercicio(ejerciciosEntreno[idxEjercicioActual]);
     }
 
     valor += delta;
@@ -1399,18 +1404,20 @@ const APP = {
 
   _guardarSerie() {
     const ej = ejerciciosEntreno[idxEjercicioActual];
-    const peso = pesoActualEntreno;
+    const seriesObjetivo = obtenerSeriesObjetivoEjercicio(ej);
+    const pesoManual = Number(document.getElementById("mePeso")?.value || 0);
+    const peso = ej.tipoCarga ? pesoActualEntreno : pesoManual;
     const reps = parseInt(document.getElementById("meRepsSerie")?.value, 10);
 
-    if (!Number.isFinite(peso) || peso <= 0) {
-      UI.toast("Introduce un peso válido", "error");
+    if (!Number.isFinite(peso) || peso < 0 || (ej.tipoCarga && peso === 0)) {
+      UI.toast(ej.tipoCarga ? "Introduce un peso válido" : "Introduce una carga adicional válida", "error");
       return;
     }
     if (!Number.isInteger(reps) || reps < 1 || reps > 100) {
       UI.toast("Introduce entre 1 y 100 repeticiones", "error");
       return;
     }
-    if (seriesActualesEntreno.length >= PROGRESION.SERIES_OBJETIVO) {
+    if (seriesActualesEntreno.length >= seriesObjetivo) {
       UI.toast("Este ejercicio ya está completado", "info");
       return;
     }
@@ -1447,7 +1454,7 @@ const APP = {
         peso,
         reps: "",
         tipoCarga: ej.tipoCarga || null,
-        tipo: ej.tipoCarga || "mancuerna",
+        tipo: ej.tipoCarga || (peso === 0 ? "peso_corporal" : "manual"),
         discos: configuracionCarga
           ? {
               ...(configuracionCarga.discosPorLado || {}),
@@ -1480,23 +1487,23 @@ const APP = {
     const idxEjercicio = ejerciciosDia.findIndex((e) => e.id === ej.id);
     if (
       idxEjercicio >= 0 &&
-      seriesActualesEntreno.length >= PROGRESION.SERIES_OBJETIVO
+      seriesActualesEntreno.length >= seriesObjetivo
     )
       STATE.checks[`${dia}-${idxEjercicio}`] = true;
 
-    if (seriesActualesEntreno.length >= PROGRESION.SERIES_OBJETIVO) {
+    if (seriesActualesEntreno.length >= seriesObjetivo) {
       const totalReps = registro.repsTotales;
       const date = new Date().toLocaleDateString("es-ES", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
       });
-      if (Records.actualizar(ej.nombre, peso, totalReps, date)) {
+      if (peso > 0 && Records.actualizar(ej.nombre, peso, totalReps, date)) {
         recordsConseguidos.push(ej.nombre);
         UI.toast("🏆 ¡Nuevo récord!", "success");
       }
       Storage._save();
-      this._mostrarMensajeCompletado(`${ej.nombre} · 4 series completadas`);
+      this._mostrarMensajeCompletado(`${ej.nombre} · ${seriesObjetivo} series completadas`);
       idxEjercicioActual++;
       seriesActualesEntreno = [];
       
@@ -1516,7 +1523,7 @@ const APP = {
     } else {
       Storage._save();
       UI.toast(
-        `Serie ${seriesActualesEntreno.length}/${PROGRESION.SERIES_OBJETIVO} guardada`,
+        `Serie ${seriesActualesEntreno.length}/${seriesObjetivo} guardada`,
         "success",
       );
       this._guardandoSerie = false;
@@ -1548,9 +1555,13 @@ const APP = {
 
   _calcularProgresoGlobal() {
     const fuerza = ejerciciosEntreno.filter((e) => !e.esCaminata);
+    const seriesObjetivoTotal = fuerza.reduce(
+      (total, ejercicio) => total + obtenerSeriesObjetivoEjercicio(ejercicio),
+      0,
+    );
     const totalObjetivo = Math.max(
       1,
-      fuerza.length * PROGRESION.SERIES_OBJETIVO +
+      seriesObjetivoTotal +
         ejerciciosEntreno.filter((e) => e.esCaminata).length,
     );
     const hoy = UI.getHoy();
@@ -1563,7 +1574,7 @@ const APP = {
       const r = entrenamiento?.ejercicios?.find((x) => x.nombre === ej.nombre);
       const p = r ? parseReps(r.reps) : { valid: false, series: [] };
       if (p.valid)
-        completadas += Math.min(PROGRESION.SERIES_OBJETIVO, p.series.length);
+        completadas += Math.min(obtenerSeriesObjetivoEjercicio(ej), p.series.length);
     });
     if (cardioCompletado) completadas++;
     return Math.min(100, Math.round((completadas / totalObjetivo) * 100));
@@ -1694,6 +1705,18 @@ const APP = {
     const entrenamiento = STATE.historialEntrenos.find(
       (e) => e.fecha === hoyStr && e.dia === dia,
     );
+    const indicePendiente = ejerciciosEntreno.findIndex((ejercicio) => {
+      if (ejercicio.esCaminata) return !cardioCompletado;
+      const registro = entrenamiento?.ejercicios?.find((item) => item.nombre === ejercicio.nombre);
+      const repeticiones = registro ? parseReps(registro.reps) : { valid: false, series: [] };
+      return !repeticiones.valid || repeticiones.series.length < obtenerSeriesObjetivoEjercicio(ejercicio);
+    });
+    if (indicePendiente >= 0) {
+      idxEjercicioActual = indicePendiente;
+      this._mostrarEjercicio();
+      UI.toast("Completa las series de todos los ejercicios antes de finalizar", "error");
+      return;
+    }
     if (!STATE.diasEntrenados.includes(hoyStr))
       STATE.diasEntrenados.push(hoyStr);
     STATE.entrenamientoPendiente = null;

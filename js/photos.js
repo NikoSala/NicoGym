@@ -211,7 +211,6 @@
                     tx.onerror = () => reject(tx.error || new Error('No se pudieron guardar las fotos'));
                     tx.onabort = () => reject(tx.error || new Error('Se canceló el guardado de fotos'));
                 });
-                Storage._save();
                 UI.toast('✅ Fotos guardadas', 'success');
                 this.render();
                 APP.renderizarTodo();
