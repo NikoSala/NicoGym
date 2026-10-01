@@ -228,3 +228,84 @@ input:focus, select:focus, textarea:focus {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+/* Optional layout pass: larger screens get a dashboard with a clear focal column. */
+@media (min-width: 1120px) {
+  .dashboard-main-column {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(350px, .8fr);
+    grid-template-rows: minmax(120px, auto) minmax(120px, auto) minmax(140px, 1fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+  .dashboard-overview-grid, .dashboard-detail-grid { display: contents; }
+  .dashboard-workout-card {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    min-height: 540px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(38px, 5vw, 72px);
+  }
+  .dashboard-workout-card h1 { font-size: clamp(38px, 4.5vw, 64px); line-height: 1.02; }
+  .dashboard-week-section { grid-column: 2; grid-row: 1; align-self: stretch; }
+  .dashboard-body-card { grid-column: 2; grid-row: 2; align-self: stretch; }
+  .dashboard-activity-card { grid-column: 2; grid-row: 3; align-self: stretch; }
+  .dashboard-section { padding: 22px 24px; }
+
+  #page-rutinas .day-tabs {
+    position: sticky;
+    top: 74px;
+    z-index: 40;
+    max-width: 1120px;
+    margin: 0 auto 20px;
+    padding: 9px;
+    border: 1px solid rgba(222, 214, 202, .1);
+    border-radius: 16px;
+    background: rgba(19, 20, 24, .94);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .22);
+    backdrop-filter: blur(14px);
+  }
+  #page-rutinas .day-tabs .dtab { flex: 1 1 0; min-width: 0; padding: 12px 14px; }
+  #dayPanelsContainer { max-width: 1120px; margin-inline: auto; }
+  #dayPanelsContainer .dia-panel > .card { padding: clamp(22px, 3vw, 38px); }
+  #page-progreso .progress-view-tabs {
+    position: sticky;
+    top: 74px;
+    z-index: 30;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(14px);
+  }
+}
+
+@media (min-width: 681px) and (max-width: 1119px) {
+  .dashboard-main-column { gap: 16px; }
+  .dashboard-workout-card { min-height: 300px; }
+  #dayPanelsContainer { max-width: 1000px; margin-inline: auto; }
+}
+
+@media (max-width: 680px) {
+  .dashboard-main-column { display: flex; flex-direction: column; gap: 14px; }
+  .dashboard-overview-grid, .dashboard-detail-grid { display: grid; }
+  .dashboard-workout-card { min-height: 260px; justify-content: center; }
+  #page-rutinas .day-tabs {
+    position: sticky;
+    top: 68px;
+    z-index: 40;
+    justify-content: flex-start;
+    gap: 7px;
+    margin-inline: -4px;
+    padding: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border: 1px solid rgba(222, 214, 202, .09);
+    border-radius: 14px;
+    background: rgba(17, 18, 22, .96);
+    backdrop-filter: blur(12px);
+  }
+  #page-rutinas .day-tabs::-webkit-scrollbar { display: none; }
+  #page-rutinas .day-tabs .dtab { flex: 0 0 auto; min-width: 82px; }
+  #dayPanelsContainer .dia-panel > .card { padding: 17px 14px; }
+}
