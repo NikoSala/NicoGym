@@ -36,12 +36,12 @@ const Objetivos = {
       return `
         <div style="background:rgba(0,0,0,0.15);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border);">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-            <div style="font-weight:700;font-size:13px;">${obj.nombre}</div>
+            <div style="font-weight:700;font-size:13px;">${escapeHTML(obj.nombre)}</div>
             <button class="btn btn-ghost btn-sm" onclick="Objetivos._eliminar(${i})">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
-          <div style="font-size:11px;color:var(--text-secondary);margin-bottom:6px;">${obj.descripcion}</div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-bottom:6px;">${escapeHTML(obj.descripcion)}</div>
           <div style="background:rgba(255,255,255,0.08);border-radius:99px;height:6px;overflow:hidden;">
             <div style="height:100%;background:linear-gradient(90deg,var(--primary),var(--success));width:${progreso.pct}%;border-radius:99px;"></div>
           </div>

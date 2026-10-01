@@ -115,16 +115,26 @@ const APP = {
 
     document
       .querySelectorAll(".nav-btn")
-      .forEach((b) => b.classList.remove("active"));
+      .forEach((b) => {
+        b.classList.remove("active");
+        b.removeAttribute("aria-current");
+      });
     const navId = progresoVista ? "estadisticas" : id;
     const map = { inicio: 0, rutinas: 1, semana: 2, estadisticas: 3 };
     const btns = document.querySelectorAll(".nav-btn");
-    if (map[navId] !== undefined && btns[map[navId]])
+    if (map[navId] !== undefined && btns[map[navId]]) {
       btns[map[navId]].classList.add("active");
+      btns[map[navId]].setAttribute("aria-current", "page");
+    }
 
     document
       .querySelectorAll(".side-menu .menu-item")
-      .forEach((m) => m.classList.toggle("active", m.dataset.page === id));
+      .forEach((m) => {
+        const activo = m.dataset.page === id;
+        m.classList.toggle("active", activo);
+        if (activo) m.setAttribute("aria-current", "page");
+        else m.removeAttribute("aria-current");
+      });
     const seccionProgreso = document.querySelector('[data-menu-group="progreso"]');
     if (seccionProgreso) {
       seccionProgreso.classList.toggle(
@@ -186,7 +196,7 @@ const APP = {
     Modal.abrir(`
       <h3>¿Borrar todos los datos?</h3>
       <p style="color:var(--text-secondary);font-size:12px;margin-top:8px;">
-        Esta acción no se puede deshacer. Escribe BORRAR para confirmar.
+        Se eliminarán historial, rutinas, ajustes y fotos de este navegador. Esta acción no se puede deshacer.
       </p>
       <input class="input" id="resetConfirmacion" autocomplete="off" placeholder="BORRAR" style="margin-top:10px;">
       <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
@@ -900,7 +910,7 @@ const APP = {
       ? `
         <div class="me-workout-previous">
           <div class="me-workout-previous-label"><i class="fa-solid fa-clock-rotate-left"></i> Anterior</div>
-          <strong>${registroAnterior.peso || "--"} kg <span>×</span> ${registroAnterior.reps || "--"}</strong>
+          <strong>${escapeHTML(registroAnterior.peso || "--")} kg <span>×</span> ${escapeHTML(registroAnterior.reps || "--")}</strong>
         </div>
       `
       : "";
@@ -1703,7 +1713,7 @@ const APP = {
                             <div class="me-res-item"><div class="me-res-valor">${Math.round(totalVolumenEntreno)}</div><div class="me-res-label">Volumen (kg)</div></div>
                             <div class="me-res-item"><div class="me-res-valor">${recordsConseguidos.length}</div><div class="me-res-label">Récords</div></div>
                         </div>
-                        ${recordsConseguidos.length ? `<div class="me-records"><div class="me-rec-titulo">🏆 Nuevos récords</div><div class="me-rec-item">${recordsConseguidos.join(", ")}</div></div>` : ""}
+                        ${recordsConseguidos.length ? `<div class="me-records"><div class="me-rec-titulo">🏆 Nuevos récords</div><div class="me-rec-item">${recordsConseguidos.map(escapeHTML).join(", ")}</div></div>` : ""}
                         <button class="btn btn-primary btn-block" onclick="APP._salirEntreno()" style="margin-top:10px;"><i class="fa-solid fa-check"></i> Finalizar entrenamiento</button>
                     </div>`;
     document.getElementById("meProgresoTexto").textContent = "¡Completado!";
@@ -1717,6 +1727,11 @@ const APP = {
   },
   _pausarEntreno() {
     if (!modoEntrenoActivo || !ejerciciosEntreno.length) return;
+
+    if (STATE.diasEntrenados.includes(UI.getHoy())) {
+      this._salirEntreno();
+      return;
+    }
 
     if (temporizadorDescanso) {
       clearInterval(temporizadorDescanso);

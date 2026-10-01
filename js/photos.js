@@ -78,6 +78,20 @@
                 });
             },
 
+            async borrarTodo() {
+                if (typeof indexedDB === 'undefined') return;
+                await this._abrirDB();
+                if (!this.db) throw new Error('No se pudo abrir la base de fotos');
+
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction(this.STORE_NAME, 'readwrite');
+                    tx.objectStore(this.STORE_NAME).clear();
+                    tx.oncomplete = resolve;
+                    tx.onerror = () => reject(tx.error || new Error('No se pudieron borrar las fotos'));
+                    tx.onabort = () => reject(tx.error || new Error('Se canceló el borrado de fotos'));
+                });
+            },
+
             _leerArchivo(file) {
                 if (!file) return Promise.resolve(null);
                 if (file.size > this.MAX_FILE_BYTES)

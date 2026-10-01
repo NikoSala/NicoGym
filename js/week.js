@@ -120,7 +120,7 @@ const Semana = {
 
     if (sesiones.length === 0) {
       Modal.abrir(`
-        <h3>📊 Historial de ${nombreEjercicio}</h3>
+        <h3>📊 Historial de ${escapeHTML(nombreEjercicio)}</h3>
         <div style="text-align:center;padding:16px;color:var(--text-secondary);">
           No hay sesiones registradas para este ejercicio todavía.
         </div>
@@ -146,11 +146,11 @@ const Semana = {
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:6px;font-size:11px;">
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:6px;border-radius:8px;">
               <div style="color:var(--text-muted);font-size:9px;">PESO</div>
-              <div style="font-weight:700;color:var(--text);">${peso} kg</div>
+              <div style="font-weight:700;color:var(--text);">${escapeHTML(peso)} kg</div>
             </div>
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:6px;border-radius:8px;">
               <div style="color:var(--text-muted);font-size:9px;">REPS</div>
-              <div style="font-weight:700;color:var(--text);">${reps}</div>
+              <div style="font-weight:700;color:var(--text);">${escapeHTML(reps)}</div>
             </div>
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:6px;border-radius:8px;">
               <div style="color:var(--text-muted);font-size:9px;">VOLUMEN</div>
@@ -166,7 +166,7 @@ const Semana = {
     }).join('');
 
     Modal.abrir(`
-      <h3>📊 Historial de ${nombreEjercicio}</h3>
+      <h3>📊 Historial de ${escapeHTML(nombreEjercicio)}</h3>
       <div style="max-height:60vh;overflow-y:auto;margin-top:10px;">
         ${historialHtml}
       </div>

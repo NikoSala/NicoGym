@@ -224,14 +224,14 @@ const Comparador = {
             <div style="background:rgba(0,0,0,0.15);border-radius:8px;padding:8px;text-align:center;">
               <div style="font-size:9px;color:var(--text-muted);">${this._etiquetaFecha(f1)}</div>
               ${mejor1.nombre ? `
-                <div style="font-size:11px;font-weight:600;margin-top:3px;">${mejor1.nombre}</div>
+                <div style="font-size:11px;font-weight:600;margin-top:3px;">${escapeHTML(mejor1.nombre)}</div>
                 <div style="font-size:16px;font-weight:800;color:var(--primary);margin-top:2px;">${mejor1.oneRM.toFixed(1)} kg</div>
               ` : '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Sin datos</div>'}
             </div>
             <div style="background:rgba(0,0,0,0.15);border-radius:8px;padding:8px;text-align:center;">
               <div style="font-size:9px;color:var(--text-muted);">${this._etiquetaFecha(f2)}</div>
               ${mejor2.nombre ? `
-                <div style="font-size:11px;font-weight:600;margin-top:3px;">${mejor2.nombre}</div>
+                <div style="font-size:11px;font-weight:600;margin-top:3px;">${escapeHTML(mejor2.nombre)}</div>
                 <div style="font-size:16px;font-weight:800;color:var(--success);margin-top:2px;">${mejor2.oneRM.toFixed(1)} kg</div>
               ` : '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Sin datos</div>'}
             </div>
@@ -274,7 +274,7 @@ const Comparador = {
           <div style="font-size:11px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;">📊 Comparación por ejercicio</div>
           ${comparacionEjercicios.slice(0, 6).map(ej => `
             <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;">
-              <span style="flex:1;">${ej.nombre}</span>
+              <span style="flex:1;">${escapeHTML(ej.nombre)}</span>
               <span style="color:${ej.dif >= 0 ? 'var(--success)' : 'var(--danger)'};font-weight:700;white-space:nowrap;">
                 ${ej.dif >= 0 ? '+' : ''}${ej.dif.toFixed(0)} kg
               </span>

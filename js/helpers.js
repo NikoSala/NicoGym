@@ -1,6 +1,12 @@
 // ==========================================
         // FUNCIONES AUX
         // ==========================================
+        function escapeHTML(valor) {
+            return String(valor ?? '').replace(/[&<>"']/g, caracter => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[caracter]);
+        }
+
         function getEjercicioPorNombre(nombre) {
             return getExerciseDatabase().find(e => e.nombre === nombre);
         }

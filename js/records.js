@@ -64,8 +64,8 @@ const Records = {
             <div class="record-card-compact ${esReciente ? 'record-card-reciente' : ''}" style="animation-delay:${index * 40}ms;">
               <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
                 <span style="font-size:16px;">${esReciente ? '🥇' : '🏆'}</span>
-                <span style="font-size:11px;font-weight:700;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.exerciseName}</span>
-                <span style="font-size:9px;color:var(--text-muted);">${r.date}</span>
+                <span style="font-size:11px;font-weight:700;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHTML(r.exerciseName)}</span>
+                <span style="font-size:9px;color:var(--text-muted);">${escapeHTML(r.date)}</span>
               </div>
               <div style="display:flex;gap:6px;align-items:center;">
                 <div style="flex:1;text-align:center;background:rgba(0,0,0,0.15);border-radius:8px;padding:6px 4px;">
@@ -87,7 +87,7 @@ const Records = {
                     ${Number(diff) > 0 ? '📈' : '📉'} ${Number(diff) > 0 ? '+' : ''}${diff} kg
                   </span>
                 ` : '<span style="font-size:9px;color:var(--text-muted);">🏁 Primer récord</span>'}
-                <button class="btn-historial-compact" onclick="Records._verHistorial('${r.exerciseName}')">
+                <button type="button" class="btn-historial-compact" data-record-index="${index}" aria-label="Ver historial de ${escapeHTML(r.exerciseName)}">
                   📊
                 </button>
               </div>
@@ -96,6 +96,13 @@ const Records = {
         }).join('')}
       </div>
     `;
+
+    c.querySelectorAll("[data-record-index]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const record = sorted[Number(button.dataset.recordIndex)];
+        if (record) this._verHistorial(record.exerciseName);
+      });
+    });
   },
 
   _verHistorial(nombre) {
@@ -105,7 +112,7 @@ const Records = {
 
     if (sesiones.length === 0) {
       Modal.abrir(`
-        <h3>📊 Historial de ${nombre}</h3>
+        <h3>📊 Historial de ${escapeHTML(nombre)}</h3>
         <div style="text-align:center;padding:16px;color:var(--text-secondary);">
           No hay sesiones registradas para este ejercicio.
         </div>
@@ -123,17 +130,17 @@ const Records = {
       return `
         <div style="padding:8px;border-bottom:1px solid var(--border);${index === 0 ? 'background:rgba(255,255,255,0.03);' : ''}">
           <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-weight:600;font-size:12px;">📅 ${fecha}</span>
+            <span style="font-weight:600;font-size:12px;">📅 ${escapeHTML(fecha)}</span>
             ${esRécord ? '<span style="font-size:9px;color:var(--success);background:rgba(214,169,74,0.15);padding:2px 6px;border-radius:99px;">🏆 RÉCORD</span>' : ''}
           </div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px;font-size:10px;">
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:5px;border-radius:6px;">
               <div style="color:var(--text-muted);font-size:8px;">PESO</div>
-              <div style="font-weight:700;color:var(--text);">${peso} kg</div>
+              <div style="font-weight:700;color:var(--text);">${escapeHTML(peso)} kg</div>
             </div>
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:5px;border-radius:6px;">
               <div style="color:var(--text-muted);font-size:8px;">REPS</div>
-              <div style="font-weight:700;color:var(--text);">${reps}</div>
+              <div style="font-weight:700;color:var(--text);">${escapeHTML(reps)}</div>
             </div>
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:5px;border-radius:6px;">
               <div style="color:var(--text-muted);font-size:8px;">VOLUMEN</div>
@@ -145,7 +152,7 @@ const Records = {
     }).join('');
 
     Modal.abrir(`
-      <h3>📊 Historial de ${nombre}</h3>
+      <h3>📊 Historial de ${escapeHTML(nombre)}</h3>
       <div style="max-height:60vh;overflow-y:auto;margin-top:8px;">
         ${historialHtml}
       </div>

@@ -80,7 +80,7 @@ const Dashboard = {
       ? `
         <section class="dashboard-workout-card dashboard-workout-paused">
           <div class="dashboard-workout-topline"><span class="dashboard-kicker">ENTRENAMIENTO EN CURSO</span><span class="dashboard-status-pill">Pausado</span></div>
-          <div class="dashboard-workout-day">${CONFIG.NOMBRES_DIAS[entrenamientoPendiente.dia] || entrenamientoPendiente.dia}</div>
+          <div class="dashboard-workout-day">${escapeHTML(Object.prototype.hasOwnProperty.call(CONFIG.NOMBRES_DIAS, entrenamientoPendiente.dia) ? CONFIG.NOMBRES_DIAS[entrenamientoPendiente.dia] : entrenamientoPendiente.dia)}</div>
           <h1>${getResumenRutinaDelDia(entrenamientoPendiente.dia)}</h1>
           <div class="dashboard-workout-meta"><span><i class="fa-solid fa-dumbbell"></i> ${totalEjerciciosHoy} ejercicios</span><span><i class="fa-solid fa-chart-simple"></i> ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} completados</span></div>
           <div class="dashboard-progress"><span style="width:${progresoEntreno}%"></span></div>
@@ -128,7 +128,7 @@ const Dashboard = {
       <section class="dashboard-section dashboard-activity-card">
         <div class="dashboard-section-heading"><div><span class="dashboard-kicker">ACTIVIDAD RECIENTE</span><h2>Sesiones</h2></div><button class="dashboard-inline-action" onclick="APP.navegar('historial')">Todo <i class="fa-solid fa-arrow-right"></i></button></div>
         ${sesionesRecientes.length ? sesionesRecientes.map((sesion) => `
-          <div class="dashboard-activity-row"><span>${UI.formatearFecha(sesion.fecha)}</span><strong>${CONFIG.NOMBRES_DIAS[sesion.dia] || sesion.dia || "Entrenamiento"}</strong></div>
+          <div class="dashboard-activity-row"><span>${UI.formatearFecha(sesion.fecha)}</span><strong>${escapeHTML(Object.prototype.hasOwnProperty.call(CONFIG.NOMBRES_DIAS, sesion.dia) ? CONFIG.NOMBRES_DIAS[sesion.dia] : sesion.dia || "Entrenamiento")}</strong></div>
         `).join("") : '<p class="dashboard-muted-note">Completa una sesión para verla aquí.</p>'}
       </section>
     `;

@@ -7,9 +7,13 @@
     <meta http-equiv="Expires" content="0" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <title>NicoGym</title>
+    <meta name="theme-color" content="#07110f" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png" />
+    <link rel="apple-touch-icon" href="img/icon-192.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -23,12 +27,14 @@
       rel="preload"
       as="style"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g"
+      crossorigin="anonymous"
       onload="this.onload=null;this.rel='stylesheet'"
     />
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" /></noscript>
-    <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous" /></noscript>
+    <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" integrity="sha384-hbhUBXITXDJbdxAutkRZOGlStNARd6f3N2y0fDfrBwMhXEaeaCrpNu7g24F/vYDq" crossorigin="anonymous"></script>
     <link rel="preload" as="image" href="img/logo-nicogym-600.jpg" fetchpriority="high" />
-    <link rel="stylesheet" href="css/styles.css?v=20260923j" />
+    <link rel="stylesheet" href="css/styles.css?v=20261001a" />
   </head>
   <body>
     <!-- LOADING SCREEN -->
@@ -41,15 +47,14 @@
     <!-- TOP BAR -->
     <header class="top-bar">
       <div class="top-left">
-        <div
+        <button
+          type="button"
           class="logo"
           onclick="APP.navegar('inicio')"
-          style="cursor: pointer"
-          role="button"
           aria-label="Volver al inicio"
         >
           <img src="img/logo-nicogym-600.jpg" alt="NicoGym" class="header-logo" width="600" height="600" decoding="async" />
-        </div>
+        </button>
       </div>
       <div class="top-right">
         <div class="top-stats hidden">
@@ -66,8 +71,11 @@
           <i class="fa-solid fa-gear"></i>
         </button>
         <button
+          id="menuToggle"
           class="btn btn-ghost btn-sm"
           aria-label="Abrir menú"
+          aria-controls="sideMenu"
+          aria-expanded="false"
           onclick="UI.toggleMenu()"
           style="padding: 2px 6px; font-size: 12px; border: none; height: 30px; min-height: 30px;"
         >
@@ -77,10 +85,10 @@
     </header>
 
     <!-- SIDE MENU -->
-    <div class="side-overlay" id="sideOverlay" onclick="UI.toggleMenu()"></div>
-    <nav class="side-menu" id="sideMenu" aria-label="Menú principal">
+    <div class="side-overlay" id="sideOverlay" aria-hidden="true" onclick="UI.toggleMenu()"></div>
+    <nav class="side-menu" id="sideMenu" aria-label="Menú principal" inert>
       <div class="menu-section-label">PRINCIPAL</div>
-      <button class="menu-item active" data-page="inicio" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i> Inicio</button>
+      <button class="menu-item active" data-page="inicio" aria-current="page" onclick="APP.navegar('inicio')"><i class="fa-solid fa-house"></i> Inicio</button>
       <button class="menu-item" data-page="rutinas" onclick="APP.navegar('rutinas')"><i class="fa-solid fa-dumbbell"></i> Entrenar</button>
       <button class="menu-item" data-page="semana" onclick="APP.navegar('semana')"><i class="fa-solid fa-calendar-week"></i> Plan semanal</button>
       <button class="menu-item" data-page="biblioteca" onclick="APP.navegar('biblioteca')"><i class="fa-solid fa-book-open"></i> Ejercicios</button>
@@ -156,7 +164,7 @@
 
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav" aria-label="Navegación principal">
-      <button class="nav-btn active" onclick="APP.navegar('inicio')">
+      <button class="nav-btn active" aria-current="page" onclick="APP.navegar('inicio')">
         <i class="fa-solid fa-house"></i>Inicio
       </button>
       <button class="nav-btn" onclick="APP.navegar('rutinas')">
@@ -178,7 +186,7 @@
       aria-modal="true"
       aria-labelledby="modalGlobalTitle"
     >
-      <div class="modal-panel" id="modalGlobalPanel">
+      <div class="modal-panel" id="modalGlobalPanel" tabindex="-1">
         <button
           class="modal-close"
           aria-label="Cerrar"
@@ -192,8 +200,9 @@
     </div>
 
     <!-- LIGHTBOX -->
-    <div class="lightbox" id="lightbox" onclick="UI.cerrarLightbox()">
-      <img id="lightboxImg" src="" alt="Imagen ampliada" />
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto de progreso ampliada" tabindex="-1">
+      <button type="button" class="lightbox-close" aria-label="Cerrar foto" onclick="UI.cerrarLightbox()">&times;</button>
+      <img id="lightboxImg" src="" alt="Foto de progreso ampliada" />
     </div>
 
     <!-- MODO ENTRENO -->
@@ -202,9 +211,9 @@
         <button
           type="button"
           class="me-logo-btn"
-          onclick="APP._salirEntreno()"
-          aria-label="Guardar y volver al inicio"
-          title="Guardar y volver al inicio"
+          onclick="APP._pausarEntreno()"
+          aria-label="Pausar entrenamiento y volver al inicio"
+          title="Pausar y guardar"
         >
           <img src="img/logo-nicogym-600.jpg" alt="NicoGym" width="600" height="600" loading="lazy" decoding="async" />
         </button>
@@ -233,28 +242,28 @@
     <script src="js/exercise-names.js"></script>
     <script src="js/exercises.js?v=20260923d"></script>
     <script src="js/exercise-library.js?v=20260923e"></script>
-    <script src="js/helpers.js"></script>
+    <script src="js/helpers.js?v=20261001a"></script>
     <script src="js/routines.js?v=20260923a"></script>
     <script src="js/cargas.js"></script>
-    <script src="js/storage.js?v=20260923a"></script>
+    <script src="js/storage.js?v=20261001b"></script>
     <script src="js/state.js?v=20260923a"></script>
-    <script src="js/ui.js"></script>
+    <script src="js/ui.js?v=20261001b"></script>
     <script src="js/modal.js"></script>
-    <script src="js/records.js"></script>
+    <script src="js/records.js?v=20261001a"></script>
     <script src="js/progression.js"></script>
-    <script src="js/app.js?v=20260923g"></script>
-    <script src="js/dashboard.js?v=20260923d"></script>
+    <script src="js/app.js?v=20261001b"></script>
+    <script src="js/dashboard.js?v=20261001a"></script>
     <script src="js/workouts.js?v=20260923a"></script>
-    <script src="js/week.js?v=20260923a"></script>
+    <script src="js/week.js?v=20261001a"></script>
     <script src="js/weight.js?v=20260826"></script>
-    <script src="js/stats.js"></script>
+    <script src="js/stats.js?v=20261001a"></script>
     <script src="js/agenda.js?v=20260923a"></script>
-    <script src="js/photos.js?v=20260825"></script>
-    <script src="js/settings.js"></script>
-    <script src="js/comparador.js"></script>
-    <script src="js/objetivos.js?v=20260829"></script>
-    <script src="js/history.js"></script>
-    <script src="js/init.js?v=20260829"></script>
+    <script src="js/photos.js?v=20261001a"></script>
+    <script src="js/settings.js?v=20261001a"></script>
+    <script src="js/comparador.js?v=20261001a"></script>
+    <script src="js/objetivos.js?v=20261001a"></script>
+    <script src="js/history.js?v=20261001a"></script>
+    <script src="js/init.js?v=20261001a"></script>
 
   </body>
 </html>

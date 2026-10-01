@@ -14,7 +14,7 @@
                 c.innerHTML = `
                     <div class="card">
                         <div class="card-title"><i class="fa-solid fa-user"></i> Perfil</div>
-                        <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="input input-sm" id="ajusteNombre" value="${STATE.nombre}" style="width:120px;"></div>
+                        <div class="ajustes-item"><span class="aj-label">Nombre</span><input class="input input-sm" id="ajusteNombre" value="${escapeHTML(STATE.nombre)}" style="width:120px;"></div>
                         <div class="ajustes-item"><span class="aj-label">Altura (cm)</span><input class="input input-sm" type="number" id="ajusteAltura" value="${STATE.altura}" style="width:80px;"></div>
                         <div class="ajustes-item"><span class="aj-label">Peso objetivo (kg)</span><input class="input input-sm" type="number" id="ajusteObjetivo" value="${CONFIG.PESO_OBJETIVO}" style="width:80px;"></div>
                         <button class="btn btn-primary btn-block" onclick="Ajustes._guardar()" style="margin-top:10px;"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
@@ -43,9 +43,9 @@
                         <div class="ajustes-item">
                             <span class="aj-label">⏱️ Temporizador de descanso</span>
                             <div class="switch-container">
-                                <div class="switch ${temporizadorActivo ? 'active' : ''}" onclick="Ajustes._toggleDescanso()">
+                                    <button type="button" role="switch" aria-label="Temporizador de descanso" aria-checked="${temporizadorActivo}" class="switch ${temporizadorActivo ? 'active' : ''}" onclick="Ajustes._toggleDescanso()">
                                     <div class="switch-thumb"></div>
-                                </div>
+                                    </button>
                                 <span class="switch-label">${temporizadorActivo ? 'Activado' : 'Desactivado'}</span>
                             </div>
                         </div>

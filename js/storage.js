@@ -3,6 +3,7 @@
 // ==========================================
 const Storage = {
   MAX_BACKUP_BYTES: 12 * 1024 * 1024,
+  MAX_IMPORT_BYTES: 50 * 1024 * 1024,
 
   init() {
     const raw = localStorage.getItem(CONFIG.STORAGE_KEY);
@@ -207,24 +208,167 @@ const Storage = {
     return `${year}-W${String(week).padStart(2, "0")}`;
   },
 
-  resetAll() {
-    localStorage.removeItem(CONFIG.STORAGE_KEY);
-    location.reload();
+  async resetAll() {
+    try {
+      if (typeof Fotos !== "undefined") await Fotos.borrarTodo();
+      const clavesApp = Array.from({ length: localStorage.length }, (_, index) =>
+        localStorage.key(index),
+      ).filter((clave) =>
+        clave === CONFIG.STORAGE_KEY ||
+        clave.startsWith(`${CONFIG.STORAGE_KEY}_`) ||
+        clave === "ultimaSemana" ||
+        clave.startsWith("nicoGymAi"),
+      );
+      clavesApp.forEach((clave) => localStorage.removeItem(clave));
+      ["nicoGymAiEndpoint", "nicoGymAiAccessToken"].forEach((clave) =>
+        sessionStorage.removeItem(clave),
+      );
+      location.reload();
+    } catch (err) {
+      console.error("No se pudieron borrar todos los datos:", err);
+      UI.toast("No se pudieron borrar todos los datos. Inténtalo de nuevo.", "error");
+    }
   },
 
-  _sanearImportado(valor) {
-    if (typeof valor === "string")
-      return valor.replace(/<\/?[^>]+>/g, "");
-    if (Array.isArray(valor)) return valor.map((item) => this._sanearImportado(item));
-    if (valor && typeof valor === "object") {
-      return Object.fromEntries(
-        Object.entries(valor).map(([clave, item]) => [
-          clave,
-          this._sanearImportado(item),
-        ]),
-      );
+  _validarEstadoImportado(estado) {
+    const esObjeto = (valor) =>
+      valor && typeof valor === "object" && !Array.isArray(valor);
+    const validarTexto = (valor, campo, maximo) => {
+      if (typeof valor !== "string" || valor.length > maximo)
+        throw new Error(`Texto inválido: ${campo}`);
+    };
+    const validarFecha = (valor, campo) => {
+      if (typeof valor !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(valor))
+        throw new Error(`Fecha inválida: ${campo}`);
+      const fecha = new Date(`${valor}T00:00:00Z`);
+      if (!Number.isFinite(fecha.getTime()) || fecha.toISOString().slice(0, 10) !== valor)
+        throw new Error(`Fecha inválida: ${campo}`);
+    };
+    const validarNumero = (valor, campo, minimo = 0, opcional = false) => {
+      if (opcional && (valor === null || valor === undefined || valor === "")) return;
+      if (
+        typeof valor === "boolean" ||
+        !Number.isFinite(Number(valor)) ||
+        Number(valor) < minimo
+      ) throw new Error(`Número inválido: ${campo}`);
+    };
+
+    if (!esObjeto(estado)) throw new Error("Estado de backup no válido");
+    if (estado.nombre !== undefined) validarTexto(estado.nombre, "nombre", 80);
+    if (estado.altura !== undefined) validarNumero(estado.altura, "altura", 80);
+    if (estado.altura !== undefined && Number(estado.altura) > 250)
+      throw new Error("Altura fuera de rango");
+
+    for (const campo of ["mediciones", "historialEntrenos", "diasNoFumar", "diasEntrenados", "records", "objetivos"]) {
+      if (estado[campo] !== undefined && !Array.isArray(estado[campo]))
+        throw new Error(`Campo inválido: ${campo}`);
     }
-    return valor;
+    for (const campo of ["checks", "evolution", "config", "ajustes", "diasEspeciales", "rutinasPersonalizadas", "pesosAjustados"]) {
+      if (estado[campo] !== undefined && !esObjeto(estado[campo]))
+        throw new Error(`Campo inválido: ${campo}`);
+    }
+
+    (estado.mediciones || []).forEach((medicion, index) => {
+      if (!esObjeto(medicion)) throw new Error(`Medición inválida: ${index + 1}`);
+      validarFecha(medicion.fecha, `mediciones[${index}].fecha`);
+      validarNumero(medicion.peso, `mediciones[${index}].peso`, 0.1);
+      ["grasaPorcentaje", "masaMuscular", "masaMagra", "grasaVisceral", "cintura"]
+        .forEach((campo) => validarNumero(medicion[campo], campo, 0, true));
+    });
+    ["diasNoFumar", "diasEntrenados"].forEach((campo) =>
+      (estado[campo] || []).forEach((fecha, index) =>
+        validarFecha(fecha, `${campo}[${index}]`),
+      ),
+    );
+
+    (estado.historialEntrenos || []).forEach((sesion, index) => {
+      if (!esObjeto(sesion) || (sesion.ejercicios !== undefined && !Array.isArray(sesion.ejercicios)))
+        throw new Error(`Sesión inválida: ${index + 1}`);
+      validarFecha(sesion.fecha, `historialEntrenos[${index}].fecha`);
+      validarTexto(sesion.dia, `historialEntrenos[${index}].dia`, 40);
+      if (sesion.ejercicios === undefined) sesion.ejercicios = [];
+      (sesion.ejercicios || []).forEach((ejercicio, indice) => {
+        if (!esObjeto(ejercicio))
+          throw new Error(`Ejercicio inválido en sesión ${index + 1}`);
+        validarTexto(ejercicio.nombre, `ejercicios[${indice}].nombre`, 120);
+        if (ejercicio.peso !== undefined)
+          validarNumero(ejercicio.peso, "peso del ejercicio", 0, true);
+        if (ejercicio.reps !== undefined && typeof ejercicio.reps !== "string" && typeof ejercicio.reps !== "number")
+          throw new Error("Repeticiones inválidas");
+        if (typeof ejercicio.reps === "string" && ejercicio.reps.length > 400)
+          throw new Error("Repeticiones demasiado largas");
+      });
+    });
+
+    (estado.records || []).forEach((record, index) => {
+      if (!esObjeto(record)) throw new Error(`Récord inválido: ${index + 1}`);
+      validarTexto(record.exerciseName, `records[${index}].exerciseName`, 120);
+      validarNumero(record.weight, "peso del récord", 0);
+      validarNumero(record.reps, "repeticiones del récord", 0);
+      if (typeof record.date !== "string" || record.date.length > 20)
+        throw new Error("Fecha de récord inválida");
+    });
+
+    (estado.objetivos || []).forEach((objetivo, index) => {
+      if (!esObjeto(objetivo)) throw new Error(`Objetivo inválido: ${index + 1}`);
+      validarTexto(objetivo.nombre, `objetivos[${index}].nombre`, 120);
+      validarTexto(objetivo.descripcion || "", `objetivos[${index}].descripcion`, 500);
+      if (!["peso", "ejercicio"].includes(objetivo.tipo))
+        throw new Error(`Tipo de objetivo inválido: ${index + 1}`);
+      validarNumero(objetivo.pesoObjetivo, "peso objetivo", 0.1);
+      if (objetivo.nombreEjercicio !== null && objetivo.nombreEjercicio !== undefined)
+        validarTexto(objetivo.nombreEjercicio, "nombreEjercicio", 120);
+    });
+
+    if (estado.ajustes?.nombre !== undefined)
+      validarTexto(estado.ajustes.nombre, "ajustes.nombre", 80);
+    if (estado.ajustes?.altura !== undefined)
+      validarNumero(estado.ajustes.altura, "ajustes.altura", 80);
+    if (estado.ajustes?.objetivo !== undefined)
+      validarNumero(estado.ajustes.objetivo, "ajustes.objetivo", 0.1);
+    if (estado.evolution) {
+      ["initialWeight", "currentWeight", "initialWaist", "currentWaist", "totalWorkouts", "daysWithoutSmoking"]
+        .forEach((campo) => validarNumero(estado.evolution[campo], `evolution.${campo}`, 0, true));
+    }
+    if (estado.ultimasMediciones !== null && estado.ultimasMediciones !== undefined) {
+      if (!esObjeto(estado.ultimasMediciones))
+        throw new Error("Última medición inválida");
+      ["grasaPorcentaje", "masaMuscular", "masaMagra", "grasaVisceral", "cintura"]
+        .forEach((campo) => validarNumero(estado.ultimasMediciones[campo], campo, 0, true));
+    }
+    if (estado.pesosAjustados) {
+      Object.entries(estado.pesosAjustados).forEach(([ejercicio, peso]) => {
+        validarTexto(ejercicio, "nombre del ejercicio ajustado", 120);
+        validarNumero(peso, "peso ajustado", 0.1);
+      });
+    }
+    if (estado.entrenamientoPendiente !== null && estado.entrenamientoPendiente !== undefined) {
+      const pendiente = estado.entrenamientoPendiente;
+      if (!esObjeto(pendiente) || !["lunes", "martes", "miercoles", "jueves", "viernes"].includes(pendiente.dia))
+        throw new Error("Entrenamiento pendiente inválido");
+      if (pendiente.semana !== undefined && (typeof pendiente.semana !== "string" || !/^\d{4}-W\d{2}$/.test(pendiente.semana)))
+        throw new Error("Semana del entrenamiento pendiente inválida");
+      if (pendiente.idxEjercicioActual !== undefined) validarNumero(pendiente.idxEjercicioActual, "índice del entrenamiento", 0);
+      if (pendiente.idxEjercicioActual !== undefined && !Number.isInteger(Number(pendiente.idxEjercicioActual)))
+        throw new Error("Índice del entrenamiento inválido");
+      if (pendiente.recordsConseguidos !== undefined) {
+        if (!Array.isArray(pendiente.recordsConseguidos))
+          throw new Error("Récords pendientes inválidos");
+        pendiente.recordsConseguidos.forEach((nombre) =>
+          validarTexto(nombre, "nombre del récord pendiente", 120),
+        );
+      }
+      ["totalPesoLevantadoEntreno", "totalVolumenEntreno", "totalSeriesEntreno", "totalRepsEntreno"]
+        .forEach((campo) => validarNumero(pendiente[campo], campo, 0, true));
+    }
+    if (estado.diasEspeciales) {
+      Object.entries(estado.diasEspeciales).forEach(([fecha, estadoDia]) => {
+        validarFecha(fecha, "diasEspeciales");
+        if (!["vacaciones", "lesionado"].includes(estadoDia))
+          throw new Error("Estado de día especial inválido");
+      });
+    }
+    return estado;
   },
 
   _resumenBackup(backup) {
@@ -334,6 +478,10 @@ const Storage = {
       UI.toast("❌ No se seleccionó ningún archivo", "error");
       return;
     }
+    if (file.size > this.MAX_IMPORT_BYTES) {
+      UI.toast("❌ El archivo supera el límite de importación de 50 MB", "error");
+      return;
+    }
     const reader = new FileReader();
     reader.onload = async (e) => {
       try {
@@ -349,7 +497,7 @@ const Storage = {
           if (!Number.isInteger(v) || v < 1 || v > CONFIG.BACKUP_VERSION)
             throw new Error("Versión de backup no compatible");
         }
-        const datosEstado = this._sanearImportado(esNuevo ? datos.state : datos);
+        const datosEstado = this._validarEstadoImportado(esNuevo ? datos.state : datos);
         const campos = {
           mediciones: "array",
           historialEntrenos: "array",
@@ -378,6 +526,22 @@ const Storage = {
           : Array.isArray(datos.fotosProgreso)
             ? datos.fotosProgreso
             : null;
+        if (datos.fotosProgreso !== undefined && !fotosProgreso)
+          throw new Error("Formato de fotos del backup no válido");
+        (fotosProgreso || []).forEach((dia) => {
+          if (!dia || typeof dia !== "object" || Array.isArray(dia))
+            throw new Error("Registro de fotos inválido");
+          if (typeof dia.fecha !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(dia.fecha))
+            throw new Error("Fecha de foto inválida");
+          ["frente", "espalda", "izquierda", "derecha"].forEach((lado) => {
+            const imagen = dia[lado];
+            if (imagen === null || imagen === undefined) return;
+            if (
+              typeof imagen !== "string" || imagen.length > this.MAX_IMPORT_BYTES ||
+              !/^data:image\/(?:jpeg|png|webp);base64,[a-z\d+/]+=*$/i.test(imagen)
+            ) throw new Error(`Imagen de backup inválida: ${lado}`);
+          });
+        });
         const resumen = esNuevo
           ? this._resumenBackup(datos)
           : "Backup antiguo sin resumen disponible.";

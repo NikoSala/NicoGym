@@ -53,12 +53,14 @@ const Historial = {
     );
     const volumen = this._volumenSesion(sesion);
     const notas = sesion.notas?.trim();
-    const nombreDia = CONFIG.NOMBRES_DIAS[sesion.dia] || sesion.dia || "Sesión";
+    const nombreDia = Object.prototype.hasOwnProperty.call(CONFIG.NOMBRES_DIAS, sesion.dia)
+      ? CONFIG.NOMBRES_DIAS[sesion.dia]
+      : sesion.dia || "Sesión";
 
     return `
       <article class="historial-sesion history-timeline-item">
         <div class="history-session-heading">
-          <div><strong>${nombreDia}</strong><span>${UI.formatearFecha(sesion.fecha)}</span></div>
+          <div><strong>${escapeHTML(nombreDia)}</strong><span>${UI.formatearFecha(sesion.fecha)}</span></div>
           <i class="fa-solid fa-dumbbell"></i>
         </div>
         <div class="history-session-metrics">
@@ -67,7 +69,7 @@ const Historial = {
           <span><strong>${Math.round(volumen).toLocaleString("es-ES")}</strong> kg volumen</span>
         </div>
         <div class="history-exercise-list">
-          ${ejercicios.length ? ejercicios.map((ejercicio) => `<div><span>${ejercicio.nombre}</span><strong>${ejercicio.peso || "--"} kg · ${ejercicio.reps || "--"} reps</strong></div>`).join("") : '<div class="history-empty-session">Solo cardio o sesión sin ejercicios de fuerza.</div>'}
+          ${ejercicios.length ? ejercicios.map((ejercicio) => `<div><span>${escapeHTML(ejercicio.nombre)}</span><strong>${escapeHTML(ejercicio.peso || "--")} kg · ${escapeHTML(ejercicio.reps || "--")} reps</strong></div>`).join("") : '<div class="history-empty-session">Solo cardio o sesión sin ejercicios de fuerza.</div>'}
         </div>
         ${notas ? `<div style="margin-top:8px;padding:8px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);font-size:12px;"><strong>Nota:</strong> ${this._escapar(notas)}</div>` : ""}
       </article>
