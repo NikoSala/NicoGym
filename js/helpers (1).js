@@ -18,6 +18,15 @@
                 : PROGRESION?.SERIES_OBJETIVO || 4;
         }
 
+        // En una sesión de entrenamiento empezamos siempre con 3 series.
+        // Las series configuradas en la rutina se conservan intactas y no se modifican.
+        function obtenerSeriesEntrenoEjercicio(ejercicio) {
+            const series = Number(ejercicio?.seriesEntreno);
+            return Number.isInteger(series) && series >= 3
+                ? series
+                : 3;
+        }
+
         function obtenerRepsObjetivoEjercicio(ejercicio) {
             const primeraRepeticion = String(ejercicio?.reps ?? '').match(/\d+/);
             const repeticiones = Number(primeraRepeticion?.[0]);

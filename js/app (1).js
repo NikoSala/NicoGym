@@ -238,7 +238,27 @@ const APP = {
     ) {
       modoEntrenoActivo = true;
 
-      ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
+      const objetivosPendientes = Array.isArray(pendiente.ejerciciosEntreno)
+        ? pendiente.ejerciciosEntreno
+        : [];
+
+      ejerciciosEntreno = ejercicios.map((e) => {
+        const guardado = objetivosPendientes.find(
+          (item) => item.id === e.id || item.nombre === e.nombre,
+        );
+        const seriesGuardadas = Number(guardado?.seriesEntreno);
+
+        return {
+          ...e,
+          // Conservamos las series adicionales de una sesión pausada.
+          // Si no existen, el entrenamiento empieza con 3.
+          seriesEntreno:
+            Number.isInteger(seriesGuardadas) && seriesGuardadas >= 3
+              ? seriesGuardadas
+              : 3,
+        };
+      });
+
       idxEjercicioActual = Math.min(
         Math.max(Number(pendiente.idxEjercicioActual) || 0, 0),
         Math.max(ejerciciosEntreno.length - 1, 0),
@@ -279,7 +299,13 @@ const APP = {
     }
    // Ya no hay selector de peso inicial. Empezamos directamente.
       modoEntrenoActivo = true;
-      ejerciciosEntreno = ejercicios.map((e) => ({ ...e }));
+
+      // La rutina conserva su configuración original, pero cada sesión
+      // comienza con 3 series y puede ampliarse manualmente con + Añadir serie.
+      ejerciciosEntreno = ejercicios.map((e) => ({
+        ...e,
+        seriesEntreno: e.esCaminata ? 0 : 3,
+      }));
 
       if (duplicarUltima) {
         const ultimaSesion = [...STATE.historialEntrenos]
@@ -753,8 +779,6 @@ const APP = {
 
     const ej = ejerciciosEntreno[idxEjercicioActual];
     const total = ejerciciosEntreno.length;
-    const seriesObjetivoEjercicio = obtenerSeriesObjetivoEjercicio(ej);
-    const repsObjetivoEjercicio = obtenerRepsObjetivoEjercicio(ej);
 
     // ==========================================
     // CAMINATA
@@ -792,6 +816,16 @@ const APP = {
     seriesActualesEntreno = parsed.valid
       ? [...parsed.series]
       : [];
+
+    // Si ya hay más series registradas de las configuradas para esta sesión
+    // (por ejemplo, al reanudar una sesión antigua), respetamos las realizadas.
+    const objetivoActual = obtenerSeriesEntrenoEjercicio(ej);
+    if (seriesActualesEntreno.length > objetivoActual) {
+      ej.seriesEntreno = seriesActualesEntreno.length;
+    }
+
+    const seriesObjetivoEjercicio = obtenerSeriesEntrenoEjercicio(ej);
+    const repsObjetivoEjercicio = obtenerRepsObjetivoEjercicio(ej);
 
     // El peso YA ha sido elegido al iniciar la sesión.
     // Ahora buscamos si hubo un ajuste manual para este ejercicio concreto.
@@ -1151,6 +1185,22 @@ const APP = {
 
           </div>
 
+          <!-- AÑADIR SERIE -->
+          <button
+            type="button"
+            class="me-workout-add-series-button"
+            onclick="APP._anadirSerie()"
+            ${seriesObjetivoEjercicio >= 12 ? "disabled" : ""}
+          >
+            <span>
+              <i class="fa-solid fa-plus"></i>
+              Añadir serie
+            </span>
+            <small>
+              ${seriesObjetivoEjercicio} series configuradas
+            </small>
+          </button>
+
           <!-- GUARDAR -->
           <button
             type="button"
@@ -1240,6 +1290,25 @@ const APP = {
     this._mostrarEjercicio();
   },
   
+  _anadirSerie() {
+    const ej = ejerciciosEntreno[idxEjercicioActual];
+
+    if (!ej || ej.esCaminata) return;
+
+    const seriesActuales = obtenerSeriesEntrenoEjercicio(ej);
+    const MAX_SERIES_ENTRENO = 12;
+
+    if (seriesActuales >= MAX_SERIES_ENTRENO) {
+      UI.toast(`Máximo de ${MAX_SERIES_ENTRENO} series por ejercicio`, "info");
+      return;
+    }
+
+    ej.seriesEntreno = seriesActuales + 1;
+    this._mostrarEjercicio();
+
+    UI.toast(`Ahora puedes hacer ${ej.seriesEntreno} series`, "info");
+  },
+
   _ajustarReps(delta) {
     const input = document.getElementById("meRepsSerie");
 
@@ -1404,7 +1473,7 @@ const APP = {
 
   _guardarSerie() {
     const ej = ejerciciosEntreno[idxEjercicioActual];
-    const seriesObjetivo = obtenerSeriesObjetivoEjercicio(ej);
+    const seriesObjetivo = obtenerSeriesEntrenoEjercicio(ej);
     const pesoManual = Number(document.getElementById("mePeso")?.value || 0);
     const peso = ej.tipoCarga ? pesoActualEntreno : pesoManual;
     const reps = parseInt(document.getElementById("meRepsSerie")?.value, 10);
@@ -1556,7 +1625,7 @@ const APP = {
   _calcularProgresoGlobal() {
     const fuerza = ejerciciosEntreno.filter((e) => !e.esCaminata);
     const seriesObjetivoTotal = fuerza.reduce(
-      (total, ejercicio) => total + obtenerSeriesObjetivoEjercicio(ejercicio),
+      (total, ejercicio) => total + obtenerSeriesEntrenoEjercicio(ejercicio),
       0,
     );
     const totalObjetivo = Math.max(
@@ -1574,7 +1643,7 @@ const APP = {
       const r = entrenamiento?.ejercicios?.find((x) => x.nombre === ej.nombre);
       const p = r ? parseReps(r.reps) : { valid: false, series: [] };
       if (p.valid)
-        completadas += Math.min(obtenerSeriesObjetivoEjercicio(ej), p.series.length);
+        completadas += Math.min(obtenerSeriesEntrenoEjercicio(ej), p.series.length);
     });
     if (cardioCompletado) completadas++;
     return Math.min(100, Math.round((completadas / totalObjetivo) * 100));
@@ -1709,7 +1778,7 @@ const APP = {
       if (ejercicio.esCaminata) return !cardioCompletado;
       const registro = entrenamiento?.ejercicios?.find((item) => item.nombre === ejercicio.nombre);
       const repeticiones = registro ? parseReps(registro.reps) : { valid: false, series: [] };
-      return !repeticiones.valid || repeticiones.series.length < obtenerSeriesObjetivoEjercicio(ejercicio);
+      return !repeticiones.valid || repeticiones.series.length < obtenerSeriesEntrenoEjercicio(ejercicio);
     });
     if (indicePendiente >= 0) {
       idxEjercicioActual = indicePendiente;
