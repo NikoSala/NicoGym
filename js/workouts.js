@@ -7,7 +7,7 @@ function estimarDuracionRutina(dia, ejercicios) {
   const minutosDescanso = Math.max(0, totalSeries - 1) * 1.5;
   const minutosCambios = ejercicios.length * 1.5;
   const calentamiento = 8;
-  const cinta = CONFIG.DIAS_CINTA.includes(dia) ? CONFIG.MAX_CINTA : 0;
+  const cinta = CONFIG.CARDIO_POR_DIA?.[dia]?.max || 0;
   const central = Math.ceil((minutosSeries + minutosDescanso + minutosCambios + calentamiento + cinta) / 5) * 5;
   return `${Math.max(25, central - 5)}–${central + 5} min`;
 }
@@ -79,12 +79,12 @@ const Rutinas = {
                                     🏋️ ${ejercicios.length} ejercicios
                                 </div>
                                 <div style="font-size:12px;color:var(--text-secondary);margin:4px 0 10px;">
-                                    ⏱️ Duración orientativa: ${estimarDuracionRutina(dia, ejercicios)} · con calentamiento, pausas y cinta si toca
+                                    ⏱️ Duración orientativa: ${estimarDuracionRutina(dia, ejercicios)} · con calentamiento, pausas y cardio si toca
                                 </div>
                                 <aside class="routine-warmup" aria-label="Calentamiento">
                                     <strong>Calentamiento</strong>
                                     <span>5 min de cinta o bici suave y 1–2 series ligeras del primer ejercicio, aumentando poco a poco la carga. No cuentan como series de trabajo.</span>
-                                    ${CONFIG.DIAS_CINTA.includes(dia) ? `<span>La caminata de ${CONFIG.MIN_CINTA}–${CONFIG.MAX_CINTA} min va al final.</span>` : ""}
+                                    ${CONFIG.CARDIO_POR_DIA?.[dia] ? `<span>Al final: ${CONFIG.CARDIO_POR_DIA[dia].maquina}, ${CONFIG.CARDIO_POR_DIA[dia].min}–${CONFIG.CARDIO_POR_DIA[dia].max} min.${CONFIG.CARDIO_POR_DIA[dia].opcionalExtra ? ' Si acabas pronto y te encuentras bien, puedes alargarlo un poco.' : ''}</span>` : ""}
                                 </aside>
                                 <details class="routine-load-guide">
                                     <summary>Cómo elegir el peso</summary>

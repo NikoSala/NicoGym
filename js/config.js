@@ -21,9 +21,12 @@
                 sabado: 'Descanso',
                 domingo: 'Descanso'
             },
-            DIAS_CINTA: ['lunes', 'viernes'],
-            MIN_CINTA: 8,
-            MAX_CINTA: 10,
+            CARDIO_POR_DIA: {
+                lunes: { maquina: 'Cinta', min: 10, max: 15 },
+                martes: { maquina: 'Bicicleta estática', min: 10, max: 15 },
+                jueves: { maquina: 'Máquina de escaleras', min: 10, max: 15, opcionalExtra: true },
+                viernes: { maquina: 'Elíptica', min: 10, max: 15 }
+            },
             // TEMPORIZADOR DESACTIVADO POR DEFECTO
             TEMPORIZADOR_DESCANSO: false,
             TIEMPO_MSG_COMPLETADO: 1500

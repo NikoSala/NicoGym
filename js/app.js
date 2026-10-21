@@ -244,6 +244,8 @@ const APP = {
           seriesEntreno: e.esCaminata ? 0 : obtenerSeriesObjetivoEjercicio(e),
         };
       });
+      const cardioPendiente = CONFIG.CARDIO_POR_DIA?.[dia];
+      if (cardioPendiente) ejerciciosEntreno.push({ nombre: `Cardio · ${cardioPendiente.maquina}`, dia, esCaminata: true, cardio: cardioPendiente, seriesEntreno: 0 });
 
       idxEjercicioActual = Math.min(
         Math.max(Number(pendiente.idxEjercicioActual) || 0, 0),
@@ -290,6 +292,8 @@ const APP = {
         ...e,
         seriesEntreno: e.esCaminata ? 0 : obtenerSeriesObjetivoEjercicio(e),
       }));
+      const cardioDelDia = CONFIG.CARDIO_POR_DIA?.[dia];
+      if (cardioDelDia) ejerciciosEntreno.push({ nombre: `Cardio · ${cardioDelDia.maquina}`, dia, esCaminata: true, cardio: cardioDelDia, seriesEntreno: 0 });
 
       if (duplicarUltima) {
         const ultimaSesion = [...STATE.historialEntrenos]
@@ -1552,7 +1556,7 @@ const APP = {
       (e) => e.fecha === hoy && e.dia === dia,
     );
     (entrenamiento?.ejercicios || []).forEach((ej) => {
-      if (ej.tipo === "caminata") return;
+      if (ej.tipo === "caminata" || ej.tipo === "cardio") return;
       const parsed = parseReps(ej.reps);
       if (!parsed.valid) return;
       totalPesoLevantadoEntreno +=
@@ -1651,11 +1655,11 @@ const APP = {
                         <div class="me-ej-numero">Ejercicio ${idxEjercicioActual + 1} de ${total}</div>
                         <div class="me-caminata-icon"><i class="fa-solid fa-person-walking"></i></div>
                         <div class="me-caminata-tag">Cardio suave</div>
-                        <div class="me-caminata-title">Caminata en cinta</div>
-                        <div class="me-caminata-time">${CONFIG.MIN_CINTA}–${CONFIG.MAX_CINTA} minutos · andando</div>
-                        <div class="me-caminata-note">Mantén un ritmo cómodo. Con el tiempo iremos aumentando poco a poco el ritmo o la duración.</div>
+                        <div class="me-caminata-title">${ej.cardio?.maquina || 'Cinta'}</div>
+                        <div class="me-caminata-time">${ej.cardio?.min || 10}–${ej.cardio?.max || 15} minutos</div>
+                        <div class="me-caminata-note">Hazlo al final del entrenamiento a un ritmo cómodo.${ej.cardio?.opcionalExtra ? ' Si acabas pronto y te encuentras bien, puedes alargarlo un poco.' : ''}</div>
                         <button class="btn btn-primary btn-block" onclick="APP._completarCaminataComoEjercicio()">
-                            <i class="fa-solid fa-check"></i> He terminado la caminata
+                            <i class="fa-solid fa-check"></i> He terminado el cardio
                         </button>
                         ${this._controlesNavegacion()}
                     </div>`;
@@ -1670,8 +1674,9 @@ const APP = {
     );
     const registroCardio = {
       nombre: ej.nombre,
-      tipo: "caminata",
-      minutos: `${CONFIG.MIN_CINTA}-${CONFIG.MAX_CINTA}`,
+      tipo: "cardio",
+      minutos: `${ej.cardio?.min || 10}-${ej.cardio?.max || 15}`,
+      maquina: ej.cardio?.maquina || 'Cinta',
       notas: "",
     };
     if (entrenamientoExistente) {
@@ -1737,7 +1742,7 @@ const APP = {
                     <div class="me-completado-final">
                         <div class="me-feliz">🏆</div>
                         <div class="me-titulo">¡Entrenamiento completado!</div>
-                        <div class="me-sub">${CONFIG.NOMBRES_DIAS[dia]} · ${tiempoEmpleado} min${CONFIG.DIAS_CINTA.includes(dia) ? " · 🚶 Cinta " + CONFIG.MIN_CINTA + "–" + CONFIG.MAX_CINTA + " min" : ""}</div>
+                        <div class="me-sub">${CONFIG.NOMBRES_DIAS[dia]} · ${tiempoEmpleado} min${CONFIG.CARDIO_POR_DIA?.[dia] ? ` · Cardio: ${CONFIG.CARDIO_POR_DIA[dia].maquina} ${CONFIG.CARDIO_POR_DIA[dia].min}–${CONFIG.CARDIO_POR_DIA[dia].max} min` : ""}</div>
                         <div class="me-resumen-grid">
                             <div class="me-res-item"><div class="me-res-valor">${ejerciciosDia.length}</div><div class="me-res-label">Ejercicios</div></div>
                             <div class="me-res-item"><div class="me-res-valor">${totalSeriesEntreno}</div><div class="me-res-label">Series</div></div>

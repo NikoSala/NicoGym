@@ -76,6 +76,8 @@ const Semana = {
       html += `<div class="rd-grupo">${getResumenRutinaDelDia(dia.key)}</div></div>`;
       html += `<span class="rd-estado ${completado ? "completado" : esHoy ? "actual" : esDescanso ? "reposo" : "pendiente"}">${completado ? "HECHO" : esHoy ? "HOY" : esDescanso ? "DESCANSO" : "PENDIENTE"}</span>`;
       html += `</div>`;
+      const cardio = CONFIG.CARDIO_POR_DIA?.[dia.key];
+      if (cardio) html += `<div class="rd-grupo" style="margin-top:8px;">Al final: ${cardio.maquina} · ${cardio.min}–${cardio.max} min${cardio.opcionalExtra ? ' (puedes alargarlo si acabas pronto)' : ''}</div>`;
 
       if (esDescanso) {
         html += `<div class="rd-ejercicios">`;
