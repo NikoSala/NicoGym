@@ -1080,7 +1080,11 @@ const APP = {
                 ${etiquetaCarga}
               </div>
               
-              ${ej.tipoCarga ? `
+              ${ej.esSerieCalentamiento && seriesActualesEntreno.length === 0 ? `
+                <label class="me-workout-load-manual-label" for="mePesoCalentamiento">Peso de calentamiento (kg)</label>
+                <input class="me-workout-load-manual-input" type="number" id="mePesoCalentamiento" min="0" max="500" step="0.5" value="${pesosSeriesActualesEntreno[0] || 30}" aria-label="Peso de calentamiento en kilogramos">
+                <div class="me-workout-load-hint" style="margin-top:4px;font-size:9px;color:var(--text-muted);">Esta serie queda marcada aparte y no cuenta entre las efectivas.</div>
+              ` : ej.tipoCarga ? `
                 <div class="me-workout-load-value" style="cursor: pointer;" onclick="APP._abrirSelectorPeso('${ej.nombre}')">
                   <span id="mePesoEjercicioDisplay" style="font-size: 24px; font-weight: 900; color: #d7a126;">
                     ${pesoActualEntreno || '—'}
@@ -1418,7 +1422,10 @@ const APP = {
     const ej = ejerciciosEntreno[idxEjercicioActual];
     const seriesObjetivo = obtenerSeriesEntrenoEjercicio(ej);
     const pesoManual = Number(document.getElementById("mePeso")?.value || 0);
-    const peso = ej.tipoCarga ? pesoActualEntreno : pesoManual;
+    const pesoCalentamiento = Number(document.getElementById("mePesoCalentamiento")?.value);
+    const peso = ej.esSerieCalentamiento && seriesActualesEntreno.length === 0
+      ? pesoCalentamiento
+      : ej.tipoCarga ? pesoActualEntreno : pesoManual;
     const reps = parseInt(document.getElementById("meRepsSerie")?.value, 10);
 
     if (!Number.isFinite(peso) || peso < 0 || (ej.tipoCarga && peso === 0)) {

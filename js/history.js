@@ -69,7 +69,7 @@ const Historial = {
           <span><strong>${Math.round(volumen).toLocaleString("es-ES")}</strong> kg volumen</span>
         </div>
         <div class="history-exercise-list">
-          ${ejercicios.length ? ejercicios.map((ejercicio) => `<div><span>${escapeHTML(ejercicio.nombre)}</span><strong>${escapeHTML(ejercicio.peso || "--")} kg · ${escapeHTML(ejercicio.reps || "--")} reps</strong></div>`).join("") : '<div class="history-empty-session">Solo cardio o sesión sin ejercicios de fuerza.</div>'}
+          ${ejercicios.length ? ejercicios.map((ejercicio) => `<div><span>${escapeHTML(ejercicio.nombre)}</span><strong>${this._resumenSeries(ejercicio)}</strong></div>`).join("") : '<div class="history-empty-session">Solo cardio o sesión sin ejercicios de fuerza.</div>'}
         </div>
         ${notas ? `<div style="margin-top:8px;padding:8px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);font-size:12px;"><strong>Nota:</strong> ${this._escapar(notas)}</div>` : ""}
       </article>
@@ -80,7 +80,20 @@ const Historial = {
     return (sesion.ejercicios || []).reduce((total, ejercicio) => {
       if (ejercicio.tipo === "caminata") return total;
       const reps = parseReps(ejercicio.reps);
-      return reps.valid ? total + (Number(ejercicio.peso) || 0) * reps.total : total;
+      if (!reps.valid) return total;
+      const pesos = Array.isArray(ejercicio.pesos) ? ejercicio.pesos : reps.series.map(() => Number(ejercicio.peso) || 0);
+      return total + reps.series.reduce((suma, repeticiones, index) => suma + (Number(pesos[index]) || 0) * repeticiones, 0);
     }, 0);
+  },
+
+  _resumenSeries(ejercicio) {
+    const reps = parseReps(ejercicio.reps);
+    if (!reps.valid) return `${escapeHTML(ejercicio.peso || "--")} kg · ${escapeHTML(ejercicio.reps || "--")} reps`;
+    const pesos = Array.isArray(ejercicio.pesos) ? ejercicio.pesos : reps.series.map(() => Number(ejercicio.peso) || 0);
+    const calentamiento = Math.min(Number(ejercicio.seriesCalentamiento) || 0, reps.series.length);
+    return reps.series.map((repeticiones, index) => {
+      const etiqueta = index < calentamiento ? "Calentamiento" : `Serie ${index - calentamiento + 1}`;
+      return escapeHTML(`${etiqueta}: ${Number(pesos[index]) || 0} kg × ${repeticiones}`);
+    }).join(" · ");
   },
 };
