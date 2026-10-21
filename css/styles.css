@@ -5794,6 +5794,16 @@ textarea:focus {
   background: rgba(101, 193, 140, .09);
 }
 
+.me-workout-set-card.warmup {
+  border-color: rgba(235, 174, 73, .72);
+  background: linear-gradient(145deg, rgba(235, 174, 73, .16), rgba(14, 17, 21, .96));
+}
+
+.me-workout-set-card.warmup .me-workout-set-header,
+.me-workout-set-card.warmup .me-workout-set-number {
+  color: #f2bd5b;
+}
+
 .me-workout-set-card.completed .me-workout-set-header,
 .me-workout-set-card.completed .me-workout-set-check {
   color: var(--nico-green-bright);
@@ -5801,6 +5811,21 @@ textarea:focus {
 
 .me-workout-set-card.completed .me-workout-set-number {
   background: var(--nico-green-bright);
+  color: var(--nico-charcoal);
+}
+
+.me-workout-set-card.warmup.completed {
+  border-color: rgba(235, 174, 73, .72);
+  background: rgba(235, 174, 73, .16);
+}
+
+.me-workout-set-card.warmup.completed .me-workout-set-header,
+.me-workout-set-card.warmup.completed .me-workout-set-check {
+  color: #f2bd5b;
+}
+
+.me-workout-set-card.warmup.completed .me-workout-set-number {
+  background: #f2bd5b;
   color: var(--nico-charcoal);
 }
 

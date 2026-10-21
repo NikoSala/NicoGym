@@ -238,10 +238,11 @@ const APP = {
     ) {
       modoEntrenoActivo = true;
 
-      ejerciciosEntreno = ejercicios.map((e) => {
+      ejerciciosEntreno = ejercicios.map((e, index) => {
         return {
           ...e,
-          seriesEntreno: e.esCaminata ? 0 : obtenerSeriesObjetivoEjercicio(e),
+          esSerieCalentamiento: index === 0,
+          seriesEntreno: e.esCaminata ? 0 : obtenerSeriesObjetivoEjercicio(e) + (index === 0 ? 1 : 0),
         };
       });
       const cardioPendiente = CONFIG.CARDIO_POR_DIA?.[dia];
@@ -264,6 +265,7 @@ const APP = {
       totalRepsEntreno = Number(pendiente.totalRepsEntreno) || 0;
 
       seriesActualesEntreno = [];
+      pesosSeriesActualesEntreno = [];
       pesoActualEntreno = 0;
 
       document.getElementById("modoEntreno").classList.add("open");
@@ -288,9 +290,10 @@ const APP = {
    // Ya no hay selector de peso inicial. Empezamos directamente.
       modoEntrenoActivo = true;
 
-      ejerciciosEntreno = ejercicios.map((e) => ({
+      ejerciciosEntreno = ejercicios.map((e, index) => ({
         ...e,
-        seriesEntreno: e.esCaminata ? 0 : obtenerSeriesObjetivoEjercicio(e),
+        esSerieCalentamiento: index === 0,
+        seriesEntreno: e.esCaminata ? 0 : obtenerSeriesObjetivoEjercicio(e) + (index === 0 ? 1 : 0),
       }));
       const cardioDelDia = CONFIG.CARDIO_POR_DIA?.[dia];
       if (cardioDelDia) ejerciciosEntreno.push({ nombre: `Cardio · ${cardioDelDia.maquina}`, dia, esCaminata: true, cardio: cardioDelDia, seriesEntreno: 0 });
@@ -326,6 +329,7 @@ const APP = {
       totalSeriesEntreno = 0;
       totalRepsEntreno = 0;
       seriesActualesEntreno = [];
+      pesosSeriesActualesEntreno = [];
       pesoActualEntreno = 0;
       
       document.getElementById("modoEntreno").classList.add("open");
@@ -349,7 +353,6 @@ const APP = {
               min="${tipo ? "0.5" : "0"}"
               value="${pesoActual || ""}"
               placeholder="${tipo ? "0" : "0 = peso corporal"}"
-              ${seriesActualesEntreno.length ? "readonly" : ""}
             >
           </div>
         `;
@@ -368,7 +371,6 @@ const APP = {
               min="0.5"
               value="${pesoActual || ""}"
               placeholder="0"
-              ${seriesActualesEntreno.length ? "readonly" : ""}
             >
           </div>
         `;
@@ -424,7 +426,6 @@ const APP = {
           <select
             id="mePeso"
             onchange="APP._actualizarVisualCarga('${tipo}')"
-            ${seriesActualesEntreno.length ? "disabled" : ""}
           >
             ${opciones}
           </select>
@@ -804,6 +805,9 @@ const APP = {
     seriesActualesEntreno = parsed.valid
       ? [...parsed.series]
       : [];
+    pesosSeriesActualesEntreno = Array.isArray(registro?.pesos)
+      ? [...registro.pesos].slice(0, seriesActualesEntreno.length).map(Number)
+      : seriesActualesEntreno.map(() => Number(registro?.peso) || 0);
 
     const seriesObjetivoEjercicio = obtenerSeriesEntrenoEjercicio(ej);
     const repsObjetivoEjercicio = obtenerRepsObjetivoEjercicio(ej);
@@ -813,7 +817,9 @@ const APP = {
     // Si lo hubo, usamos ese; si no, usamos el peso de la sesión.
 
     const pesoEspecifico = STATE.pesosAjustados?.[ej.nombre];
-    pesoActualEntreno = Number.isFinite(pesoEspecifico) && pesoEspecifico > 0
+    pesoActualEntreno = Number.isFinite(pesosSeriesActualesEntreno[seriesActualesEntreno.length]) && pesosSeriesActualesEntreno[seriesActualesEntreno.length] > 0
+      ? pesosSeriesActualesEntreno[seriesActualesEntreno.length]
+      : Number.isFinite(pesoEspecifico) && pesoEspecifico > 0
       ? pesoEspecifico
       : this.pesoSesionEntreno || ej.pesoInicial || Number(registro?.peso) || 0;
 
@@ -855,16 +861,14 @@ const APP = {
         const valor = seriesActualesEntreno[i];
 
         return `
-          <div class="me-workout-set-card ${valor ? "completed" : ""}">
+          <div class="me-workout-set-card ${ej.esSerieCalentamiento && i === 0 ? "warmup" : ""} ${valor ? "completed" : ""}">
             
             <div class="me-workout-set-header">
               <span class="me-workout-set-number">
                 ${i + 1}
               </span>
 
-              <strong>
-                SERIE ${i + 1}
-              </strong>
+              <strong>${ej.esSerieCalentamiento && i === 0 ? "CALENTAMIENTO" : `SERIE ${i + 1 - (ej.esSerieCalentamiento ? 1 : 0)}`}</strong>
 
               ${
                 valor
@@ -878,7 +882,7 @@ const APP = {
             </div>
 
             <div class="me-workout-set-label">
-              reps
+              ${valor ? `${pesosSeriesActualesEntreno[i] || 0} kg · ` : ""}reps
             </div>
 
           </div>
@@ -1125,7 +1129,7 @@ const APP = {
           <div class="me-workout-reps-card">
 
             <div class="me-workout-reps-title">
-              REPETICIONES DE LA SERIE ${Math.min(seriesActualesEntreno.length + 1, seriesObjetivoEjercicio)}
+              ${ej.esSerieCalentamiento && seriesActualesEntreno.length === 0 ? "REPETICIONES · SERIE DE CALENTAMIENTO" : `REPETICIONES DE LA SERIE ${Math.max(1, seriesActualesEntreno.length + (ej.esSerieCalentamiento ? 0 : 1))}`}
             </div>
 
             <div class="me-workout-reps-row">
@@ -1161,7 +1165,7 @@ const APP = {
             </div>
 
             <div class="me-workout-reps-target">
-              Objetivo: ${seriesObjetivoEjercicio} × ${escapeHTML(ej.reps || String(repsObjetivoEjercicio))} reps
+              ${ej.esSerieCalentamiento && seriesActualesEntreno.length === 0 ? "Usa menos peso para calentar; esta serie se guarda aparte de las efectivas." : `Objetivo: ${obtenerSeriesObjetivoEjercicio(ej)} series efectivas × ${escapeHTML(ej.reps || String(repsObjetivoEjercicio))} reps`}
             </div>
 
           </div>
@@ -1175,17 +1179,11 @@ const APP = {
 
             <span class="me-workout-save-main">
               <i class="fa-solid fa-check"></i>
-              Guardar serie ${Math.min(
-                seriesActualesEntreno.length + 1,
-                seriesObjetivoEjercicio
-              )}
+              ${ej.esSerieCalentamiento && seriesActualesEntreno.length === 0 ? "Guardar serie de calentamiento" : `Guardar serie ${Math.max(1, seriesActualesEntreno.length + (ej.esSerieCalentamiento ? 0 : 1))}`}
             </span>
 
             <span class="me-workout-save-sub">
-              Serie ${Math.min(
-                seriesActualesEntreno.length + 1,
-                seriesObjetivoEjercicio
-              )} de ${seriesObjetivoEjercicio}
+              ${ej.esSerieCalentamiento && seriesActualesEntreno.length === 0 ? "Primero, una serie ligera" : `Serie ${Math.max(1, seriesActualesEntreno.length + (ej.esSerieCalentamiento ? 0 : 1))} de ${obtenerSeriesObjetivoEjercicio(ej)}`}
             </span>
 
           </button>
@@ -1440,6 +1438,7 @@ const APP = {
 
     pesoActualEntreno = peso;
     seriesActualesEntreno.push(reps);
+    pesosSeriesActualesEntreno.push(peso);
 
     const hoy = UI.getHoy();
     const dia = ej.dia;
@@ -1492,6 +1491,8 @@ const APP = {
       : null;
 
     registro.reps = seriesActualesEntreno.join(",");
+    registro.pesos = [...pesosSeriesActualesEntreno];
+    registro.seriesCalentamiento = ej.esSerieCalentamiento ? 1 : 0;
     registro.series = seriesActualesEntreno.length;
     registro.repsTotales = seriesActualesEntreno.reduce((a, b) => a + b, 0);
     registro.timestamp = Date.now();
@@ -1506,7 +1507,9 @@ const APP = {
       STATE.checks[`${dia}-${idxEjercicio}`] = true;
 
     if (seriesActualesEntreno.length >= seriesObjetivo) {
-      const totalReps = registro.repsTotales;
+      const totalReps = ej.esSerieCalentamiento
+        ? seriesActualesEntreno.slice(1).reduce((total, serie) => total + serie, 0)
+        : registro.repsTotales;
       const date = new Date().toLocaleDateString("es-ES", {
         day: "2-digit",
         month: "2-digit",
@@ -1520,6 +1523,7 @@ const APP = {
       this._mostrarMensajeCompletado(`${ej.nombre} · ${seriesObjetivo} series completadas`);
       idxEjercicioActual++;
       seriesActualesEntreno = [];
+      pesosSeriesActualesEntreno = [];
       
       if (idxEjercicioActual >= ejerciciosEntreno.length)
         setTimeout(
@@ -1559,9 +1563,9 @@ const APP = {
       if (ej.tipo === "caminata" || ej.tipo === "cardio") return;
       const parsed = parseReps(ej.reps);
       if (!parsed.valid) return;
-      totalPesoLevantadoEntreno +=
-        (Number(ej.peso) || 0) * parsed.series.length;
-      totalVolumenEntreno += (Number(ej.peso) || 0) * parsed.total;
+      const pesos = Array.isArray(ej.pesos) ? ej.pesos : parsed.series.map(() => Number(ej.peso) || 0);
+      totalPesoLevantadoEntreno += pesos.reduce((total, peso) => total + (Number(peso) || 0), 0);
+      totalVolumenEntreno += parsed.series.reduce((total, reps, index) => total + (Number(pesos[index]) || 0) * reps, 0);
       totalSeriesEntreno += parsed.series.length;
       totalRepsEntreno += parsed.total;
     });
@@ -1816,6 +1820,7 @@ const APP = {
     totalSeriesEntreno = 0;
     totalRepsEntreno = 0;
     seriesActualesEntreno = [];
+    pesosSeriesActualesEntreno = [];
     pesoActualEntreno = 0;
 
     if (temporizadorDescanso) {

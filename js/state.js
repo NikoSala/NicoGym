@@ -46,5 +46,6 @@ let totalSeriesEntreno = 0;
 let totalRepsEntreno = 0;
 let msgCompletadoTimeout = null;
 let seriesActualesEntreno = [];
+let pesosSeriesActualesEntreno = [];
 let pesoActualEntreno = 0;
 let ejercicioIniciadoAt = null;

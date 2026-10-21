@@ -6,7 +6,7 @@ function estimarDuracionRutina(dia, ejercicios) {
   const minutosSeries = totalSeries * 0.65;
   const minutosDescanso = Math.max(0, totalSeries - 1) * 1.5;
   const minutosCambios = ejercicios.length * 1.5;
-  const calentamiento = 8;
+  const calentamiento = 1;
   const cinta = CONFIG.CARDIO_POR_DIA?.[dia]?.max || 0;
   const central = Math.ceil((minutosSeries + minutosDescanso + minutosCambios + calentamiento + cinta) / 5) * 5;
   return `${Math.max(25, central - 5)}–${central + 5} min`;
@@ -79,11 +79,11 @@ const Rutinas = {
                                     🏋️ ${ejercicios.length} ejercicios
                                 </div>
                                 <div style="font-size:12px;color:var(--text-secondary);margin:4px 0 10px;">
-                                    ⏱️ Duración orientativa: ${estimarDuracionRutina(dia, ejercicios)} · con calentamiento, pausas y cardio si toca
+                                    ⏱️ Duración orientativa: ${estimarDuracionRutina(dia, ejercicios)} · incluye pausas y cardio si toca
                                 </div>
                                 <aside class="routine-warmup" aria-label="Calentamiento">
                                     <strong>Calentamiento</strong>
-                                    <span>5 min de cinta o bici suave y 1–2 series ligeras del primer ejercicio, aumentando poco a poco la carga. No cuentan como series de trabajo.</span>
+                                    <span>Antes de las series efectivas, haz 1 serie inicial del primer ejercicio con menos peso para calentar. No cuenta como serie de trabajo.</span>
                                     ${CONFIG.CARDIO_POR_DIA?.[dia] ? `<span>Al final: ${CONFIG.CARDIO_POR_DIA[dia].maquina}, ${CONFIG.CARDIO_POR_DIA[dia].min}–${CONFIG.CARDIO_POR_DIA[dia].max} min.${CONFIG.CARDIO_POR_DIA[dia].opcionalExtra ? ' Si acabas pronto y te encuentras bien, puedes alargarlo un poco.' : ''}</span>` : ""}
                                 </aside>
                                 <details class="routine-load-guide">
@@ -99,7 +99,7 @@ const Rutinas = {
                                       <div class="routine-exercise-row">
                                         <div class="routine-exercise-info">
                                           <span class="routine-exercise-number">${ejercicioIndex + 1}</span>
-                                          <span class="routine-exercise-copy"><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong><small>${ExerciseLibrary._escapar(ej.grupo)}</small><span class="routine-prescription">${ej.series} series × ${ExerciseLibrary._escapar(ej.reps)} reps</span></span>
+                                          <span class="routine-exercise-copy"><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong><small>${ExerciseLibrary._escapar(ej.grupo)}</small><span class="routine-prescription">${ejercicioIndex === 0 ? "1 serie ligera de calentamiento + " : ""}${ej.series} series efectivas × ${ExerciseLibrary._escapar(ej.reps)} reps</span></span>
                                         </div>
                                       </div>
                                     `).join("")}
