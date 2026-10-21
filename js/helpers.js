@@ -22,9 +22,9 @@
         // Las series configuradas en la rutina se conservan intactas y no se modifican.
         function obtenerSeriesEntrenoEjercicio(ejercicio) {
             const series = Number(ejercicio?.seriesEntreno);
-            return Number.isInteger(series) && series >= 3
+            return Number.isInteger(series) && series > 0
                 ? series
-                : 3;
+                : obtenerSeriesObjetivoEjercicio(ejercicio);
         }
 
         function obtenerRepsObjetivoEjercicio(ejercicio) {

@@ -56,6 +56,25 @@ const Storage = {
         d.schemaVersion = 3;
         version = 3;
         cambio = true;
+      } else if (version === 3) {
+        // La rutina base se ha renovado para el gimnasio; limpia las antiguas
+        // personalizaciones para que el nuevo plan se aplique al actualizar.
+        d.rutinasPersonalizadas = {};
+        d.schemaVersion = 4;
+        version = 4;
+        cambio = true;
+      } else if (version === 4) {
+        // Aplica el nuevo reparto muscular con ejercicios de máquinas y poleas.
+        d.rutinasPersonalizadas = {};
+        d.schemaVersion = 5;
+        version = 5;
+        cambio = true;
+      } else if (version === 5) {
+        // Aplica los bloques reducidos de cuatro o cinco ejercicios por día.
+        d.rutinasPersonalizadas = {};
+        d.schemaVersion = 6;
+        version = 6;
+        cambio = true;
       } else {
         break;
       }

@@ -1,6 +1,17 @@
 // ==========================================
 // RUTINAS (ENTRENAR)
 // ==========================================
+function estimarDuracionRutina(dia, ejercicios) {
+  const totalSeries = ejercicios.reduce((total, ejercicio) => total + (Number(ejercicio.series) || 0), 0);
+  const minutosSeries = totalSeries * 0.65;
+  const minutosDescanso = Math.max(0, totalSeries - 1) * 1.5;
+  const minutosCambios = ejercicios.length * 1.5;
+  const calentamiento = 8;
+  const cinta = CONFIG.DIAS_CINTA.includes(dia) ? CONFIG.MAX_CINTA : 0;
+  const central = Math.ceil((minutosSeries + minutosDescanso + minutosCambios + calentamiento + cinta) / 5) * 5;
+  return `${Math.max(25, central - 5)}–${central + 5} min`;
+}
+
 const Rutinas = {
   render() {
     const tc = document.getElementById("dayTabs");
@@ -67,21 +78,31 @@ const Rutinas = {
                                 <div style="font-size:12px;color:var(--text-secondary);">
                                     🏋️ ${ejercicios.length} ejercicios
                                 </div>
+                                <div style="font-size:12px;color:var(--text-secondary);margin:4px 0 10px;">
+                                    ⏱️ Duración orientativa: ${estimarDuracionRutina(dia, ejercicios)} · con calentamiento, pausas y cinta si toca
+                                </div>
+                                <aside class="routine-warmup" aria-label="Calentamiento">
+                                    <strong>Calentamiento</strong>
+                                    <span>5 min de cinta o bici suave y 1–2 series ligeras del primer ejercicio, aumentando poco a poco la carga. No cuentan como series de trabajo.</span>
+                                    ${CONFIG.DIAS_CINTA.includes(dia) ? `<span>La caminata de ${CONFIG.MIN_CINTA}–${CONFIG.MAX_CINTA} min va al final.</span>` : ""}
+                                </aside>
+                                <details class="routine-load-guide">
+                                    <summary>Cómo elegir el peso</summary>
+                                    <div class="routine-load-guide-content">
+                                        <p>Elige una carga con la que completes el rango indicado con buena técnica y te queden unas <strong>2–3 repeticiones en reserva</strong> al acabar cada serie.</p>
+                                        <p>Si no llegas al mínimo del rango o pierdes la técnica, baja un punto. Cuando alcances el máximo en todas las series y aún te queden 2–3 repeticiones limpias, sube el mínimo incremento la próxima vez.</p>
+                                        <p>Apunta el peso y los ajustes del asiento por máquina. No hace falta probar tu máximo.</p>
+                                    </div>
+                                </details>
                                 <div class="routine-exercise-list" aria-label="Ejercicios de ${nombres[idx]}">
-                                  ${ejercicios.map((ej, ejercicioIndex) => {
-                                    const bloqueado = STATE.entrenamientoPendiente?.dia === dia;
-                                    const tieneAlternativas = !bloqueado && RutinaEditor.alternativas(ej.id, dia).length > 0;
-                                    const etiquetaCambio = tieneAlternativas || bloqueado ? "Cambiar" : "Sin opciones";
-                                    return `
+                                  ${ejercicios.map((ej, ejercicioIndex) => `
                                       <div class="routine-exercise-row">
                                         <div class="routine-exercise-info">
                                           <span class="routine-exercise-number">${ejercicioIndex + 1}</span>
-                                          <span class="routine-exercise-copy"><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong><small>${ExerciseLibrary._escapar(ej.grupo)} · ${ej.series} × ${ExerciseLibrary._escapar(ej.reps)}</small></span>
+                                          <span class="routine-exercise-copy"><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong><small>${ExerciseLibrary._escapar(ej.grupo)}</small><span class="routine-prescription">${ej.series} series × ${ExerciseLibrary._escapar(ej.reps)} reps</span></span>
                                         </div>
-                                        <button type="button" class="routine-exercise-change" data-cambiar-ejercicio="${ExerciseLibrary._escapar(ej.id)}" aria-label="${tieneAlternativas || bloqueado ? `Cambiar ${ExerciseLibrary._escapar(ej.nombre)}` : `Sin alternativas compatibles para ${ExerciseLibrary._escapar(ej.nombre)}`}" ${tieneAlternativas && !bloqueado ? "" : "disabled"}>${etiquetaCambio}</button>
                                       </div>
-                                    `;
-                                  }).join("")}
+                                    `).join("")}
                                 </div>
                                 ${
                                   yaCompletado
@@ -108,11 +129,6 @@ const Rutinas = {
       }
 
       panel.innerHTML = panelContent;
-      panel.querySelectorAll("[data-cambiar-ejercicio]").forEach((button) => {
-        button.addEventListener("click", () =>
-          this.abrirSelectorCambio(dia, button.dataset.cambiarEjercicio),
-        );
-      });
       pc.appendChild(panel);
     });
 

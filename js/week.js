@@ -79,9 +79,7 @@ const Semana = {
 
       if (esDescanso) {
         html += `<div class="rd-ejercicios">`;
-        if (dia.key === "sabado") {
-          html += `Descanso`;
-        }
+        html += `Descanso`;
         html += `</div>`;
       } else {
         html += `<div class="rd-progreso"><span>Progreso</span><strong>${ejerciciosCompletados}/${ejercicios.length}</strong><i><b style="width:${ejercicios.length ? Math.round((ejerciciosCompletados / ejercicios.length) * 100) : 0}%"></b></i></div>`;

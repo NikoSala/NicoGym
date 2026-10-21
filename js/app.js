@@ -238,24 +238,10 @@ const APP = {
     ) {
       modoEntrenoActivo = true;
 
-      const objetivosPendientes = Array.isArray(pendiente.ejerciciosEntreno)
-        ? pendiente.ejerciciosEntreno
-        : [];
-
       ejerciciosEntreno = ejercicios.map((e) => {
-        const guardado = objetivosPendientes.find(
-          (item) => item.id === e.id || item.nombre === e.nombre,
-        );
-        const seriesGuardadas = Number(guardado?.seriesEntreno);
-
         return {
           ...e,
-          // Conservamos las series adicionales de una sesión pausada.
-          // Si no existen, el entrenamiento empieza con 3.
-          seriesEntreno:
-            Number.isInteger(seriesGuardadas) && seriesGuardadas >= 3
-              ? seriesGuardadas
-              : 3,
+          seriesEntreno: e.esCaminata ? 0 : obtenerSeriesObjetivoEjercicio(e),
         };
       });
 
@@ -300,11 +286,9 @@ const APP = {
    // Ya no hay selector de peso inicial. Empezamos directamente.
       modoEntrenoActivo = true;
 
-      // La rutina conserva su configuración original, pero cada sesión
-      // comienza con 3 series y puede ampliarse manualmente con + Añadir serie.
       ejerciciosEntreno = ejercicios.map((e) => ({
         ...e,
-        seriesEntreno: e.esCaminata ? 0 : 3,
+        seriesEntreno: e.esCaminata ? 0 : obtenerSeriesObjetivoEjercicio(e),
       }));
 
       if (duplicarUltima) {
@@ -817,13 +801,6 @@ const APP = {
       ? [...parsed.series]
       : [];
 
-    // Si ya hay más series registradas de las configuradas para esta sesión
-    // (por ejemplo, al reanudar una sesión antigua), respetamos las realizadas.
-    const objetivoActual = obtenerSeriesEntrenoEjercicio(ej);
-    if (seriesActualesEntreno.length > objetivoActual) {
-      ej.seriesEntreno = seriesActualesEntreno.length;
-    }
-
     const seriesObjetivoEjercicio = obtenerSeriesEntrenoEjercicio(ej);
     const repsObjetivoEjercicio = obtenerRepsObjetivoEjercicio(ej);
 
@@ -1185,22 +1162,6 @@ const APP = {
 
           </div>
 
-          <!-- AÑADIR SERIE -->
-          <button
-            type="button"
-            class="me-workout-add-series-button"
-            onclick="APP._anadirSerie()"
-            ${seriesObjetivoEjercicio >= 12 ? "disabled" : ""}
-          >
-            <span>
-              <i class="fa-solid fa-plus"></i>
-              Añadir serie
-            </span>
-            <small>
-              ${seriesObjetivoEjercicio} series configuradas
-            </small>
-          </button>
-
           <!-- GUARDAR -->
           <button
             type="button"
@@ -1289,26 +1250,6 @@ const APP = {
     document.getElementById("meCompletadoMsg").classList.add("hidden");
     this._mostrarEjercicio();
   },
-  
-  _anadirSerie() {
-    const ej = ejerciciosEntreno[idxEjercicioActual];
-
-    if (!ej || ej.esCaminata) return;
-
-    const seriesActuales = obtenerSeriesEntrenoEjercicio(ej);
-    const MAX_SERIES_ENTRENO = 12;
-
-    if (seriesActuales >= MAX_SERIES_ENTRENO) {
-      UI.toast(`Máximo de ${MAX_SERIES_ENTRENO} series por ejercicio`, "info");
-      return;
-    }
-
-    ej.seriesEntreno = seriesActuales + 1;
-    this._mostrarEjercicio();
-
-    UI.toast(`Ahora puedes hacer ${ej.seriesEntreno} series`, "info");
-  },
-
   _ajustarReps(delta) {
     const input = document.getElementById("meRepsSerie");
 
@@ -1796,7 +1737,7 @@ const APP = {
                     <div class="me-completado-final">
                         <div class="me-feliz">🏆</div>
                         <div class="me-titulo">¡Entrenamiento completado!</div>
-                        <div class="me-sub">${CONFIG.NOMBRES_DIAS[dia]} · ${tiempoEmpleado} min${CONFIG.DIAS_CINTA.includes(dia) ? " · 🚶 Cinta 15–20 min" : ""}</div>
+                        <div class="me-sub">${CONFIG.NOMBRES_DIAS[dia]} · ${tiempoEmpleado} min${CONFIG.DIAS_CINTA.includes(dia) ? " · 🚶 Cinta " + CONFIG.MIN_CINTA + "–" + CONFIG.MAX_CINTA + " min" : ""}</div>
                         <div class="me-resumen-grid">
                             <div class="me-res-item"><div class="me-res-valor">${ejerciciosDia.length}</div><div class="me-res-label">Ejercicios</div></div>
                             <div class="me-res-item"><div class="me-res-valor">${totalSeriesEntreno}</div><div class="me-res-label">Series</div></div>

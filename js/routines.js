@@ -6,48 +6,42 @@
 
 const ROUTINES = {
   lunes: [
-    ["press-plano", 4, 12],
-    ["aperturas", 3, 15],
-    ["press-arnold-mancuernas", 3, 12],
-    ["elevaciones-laterales", 3, 15],
-    ["press-frances-inclinado-alterno", 3, 12],
-    ["extension-triceps-cabeza", 3, 15],
+    ["press-pecho-maquina", 3, "8-12"],
+    ["aperturas-peck-deck", 2, "10-15"],
+    ["press-hombros-maquina", 2, "8-12"],
+    ["elevacion-lateral-polea", 2, "12-15 por lado"],
+    ["extension-triceps-polea", 2, "10-15"],
   ],
 
   martes: [
-    ["barbell-row", 4, 12],
-    ["one-arm-dumbbell-row", 4, 12],
-    ["remo-supinacion", 3, 12],
-    ["dumbbell-pullover", 3, 15],
-    ["alternating-dumbbell-curl", 3, 12],
-    ["hammer-curl", 3, 12],
+    ["jalon-polea-al-pecho", 3, "8-12"],
+    ["remo-sentado-polea", 3, "8-12"],
+    ["remo-pecho-apoyado-maquina", 2, "8-12"],
+    ["curl-biceps-maquina", 2, "10-15"],
+    ["curl-biceps-polea", 2, "10-15"],
   ],
 
   miercoles: [
-    ["sentadilla", 4, 12],
-    ["sentadilla-bulgara", 3, 12],
-    ["peso-muerto-rumano", 4, 12],
-    ["zancada", 3, 12],
-    ["hip-thrust", 3, 15],
-    ["elevacion-gemelos", 4, 20],
+    ["prensa-piernas-maquina", 3, "8-12"],
+    ["extension-cuadriceps-maquina", 3, "10-15"],
+    ["curl-femoral-sentado", 3, "10-15"],
+    ["patada-gluteo-polea", 2, "10-15 por lado"],
+    ["gemelos-prensa-piernas", 3, "12-20"],
   ],
 
   jueves: [
-    ["curl-inclinado-neutro-alterno", 3, 12],
-    ["curl-supinacion-barra", 3, 12],
-    ["curl-concentrado-supinacion", 3, 15],
-    ["press-frances-inclinado-alterno", 3, 12],
-    ["extension-triceps-cabeza", 3, 15],
-    ["press-cerrado-mancuernas", 3, 12],
+    ["curl-biceps-maquina", 3, "10-15"],
+    ["curl-biceps-polea", 3, "10-15"],
+    ["extension-triceps-polea", 3, "10-15"],
+    ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
   ],
 
   viernes: [
-    ["press-alterno-banco", 4, 12],
-    ["aperturas-declinadas", 3, 15],
-    ["press-banca-giro", 3, 12],
-    ["press-militar", 4, 12],
-    ["dumbbell-reverse-fly", 3, 15],
-    ["elevaciones-laterales", 3, 15],
+    ["press-inclinado-maquina", 3, "8-12"],
+    ["aperturas-peck-deck", 2, "10-15"],
+    ["press-hombros-maquina", 2, "8-12"],
+    ["elevacion-lateral-polea", 2, "12-15 por lado"],
+    ["aperturas-inversas-maquina", 2, "12-15"],
   ],
 };
 
