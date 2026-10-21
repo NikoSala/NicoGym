@@ -30,15 +30,15 @@ const ROUTINES = {
   ],
 
   jueves: [
+    ["alternating-dumbbell-curl", 3, "10-15 por lado"],
     ["curl-biceps-maquina", 3, "10-15"],
-    ["curl-biceps-polea", 3, "10-15"],
     ["extension-triceps-polea", 3, "10-15"],
     ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
   ],
 
   viernes: [
     ["press-inclinado-maquina", 3, "8-12"],
-    ["aperturas-peck-deck", 2, "10-15"],
+    ["cruce-poleas", 2, "10-15"],
     ["press-hombros-maquina", 2, "8-12"],
     ["elevacion-lateral-polea", 2, "12-15 por lado"],
     ["aperturas-inversas-maquina", 2, "12-15"],

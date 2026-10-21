@@ -104,7 +104,7 @@ function getExerciseDatabase() {
       grupo: "Bíceps",
       categoria: "Curl",
       urlGif:
-        "https://fitcron.com/wp-content/uploads/2021/04/03181301-Dumbbell-Incline-Curl_Upper-Arms_720.gif",
+        "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Curl.gif",
       descripcion:
         "De pie, sujeta una mancuerna en cada mano con las palmas mirando hacia delante. Flexiona un codo para llevar una mancuerna hacia el hombro mientras mantienes el otro brazo quieto. Baja lentamente y repite con el brazo contrario. Mantén los codos cerca del cuerpo y evita balancear el torso para ayudarte.",
       consejos:
@@ -1557,6 +1557,26 @@ function getExerciseDatabase() {
       Object.assign(ejercicio, detallesGemelos[ejercicio.id]);
   });
 
+  const gifsEjerciciosMaquina = {
+    "press-pecho-maquina": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Chest-Press-Machine.gif",
+    "aperturas-peck-deck": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pec-Deck-Fly.gif",
+    "press-inclinado-maquina": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Chest-Press-Machine.gif",
+    "press-hombros-maquina": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Lever-Shoulder-Press.gif",
+    "elevacion-lateral-polea": "https://fitnessprogramer.com/wp-content/uploads/2021/07/one-arm-Cable-Lateral-Raise.gif",
+    "aperturas-inversas-maquina": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Rear-Delt-Machine-Flys.gif",
+    "extension-triceps-polea": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pushdown.gif",
+    "extension-triceps-polea-sobre-cabeza": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Cable-Rope-Overhead-Triceps-Extension.gif",
+    "extension-triceps-polea-unilateral": "https://fitnessprogramer.com/wp-content/uploads/2022/11/One-arm-triceps-pushdown.gif",
+    "curl-biceps-maquina": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Lever-Preacher-Curl.gif",
+    "curl-biceps-polea": "https://fitnessprogramer.com/wp-content/uploads/2021/02/cable-curl.gif",
+    "curl-biceps-polea-unilateral": "https://fitnessprogramer.com/wp-content/uploads/2021/02/One-Arm-Cable-Curl.gif",
+    "remo-pecho-apoyado-maquina": "https://fitnessprogramer.com/wp-content/uploads/2022/02/Plate-Loaded-Seated-Row.gif",
+    "prensa-piernas-maquina": "https://fitnessprogramer.com/wp-content/uploads/2015/11/Leg-Press.gif",
+    "patada-gluteo-polea": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Cable-Donkey-Kickback.gif",
+    "abductores-maquina": "https://fitnessprogramer.com/wp-content/uploads/2021/02/HiP-ABDUCTION-MACHINE.gif",
+    "gemelos-prensa-piernas": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Leg-Press-Calf-Raise.gif",
+  };
+
   const ejerciciosDeMaquina = [
     ["press-pecho-maquina", "Press de pecho en máquina", "Pecho", "Press", ["Máquina de press de pecho"], ["Pectoral", "Tríceps", "Deltoides anterior"], "Sentado y con la espalda apoyada, empuja las asas al frente y vuelve despacio hasta una posición cómoda.", "Ajusta el asiento para que las asas queden a la altura del pecho. Mantén los hombros apoyados.", "No bloquees los codos ni despegues la espalda del respaldo.", "8-12"],
     ["aperturas-peck-deck", "Aperturas en peck deck", "Pecho", "Apertura", ["Máquina peck deck"], ["Pectoral"], "Con los brazos apoyados en las almohadillas, acerca los codos delante del pecho y regresa controlando el estiramiento.", "Regula el asiento para que los brazos queden a la altura del pecho. Usa un recorrido cómodo.", "No rebotes ni fuerces el estiramiento de los hombros.", "10-15"],
@@ -1578,7 +1598,7 @@ function getExerciseDatabase() {
   ].map(([id, nombre, grupo, categoria, material, musculosPrincipales, descripcion, consejos, errores, reps]) => ({
     id, nombre, grupo, categoria, material, musculosPrincipales, musculosSecundarios: [],
     descripcion, consejos, errores, series: 3, reps, dia: null, dificultad: "facil",
-    tipoCarga: null, intensidadMuscular: { [grupo]: 85 },
+    tipoCarga: null, intensidadMuscular: { [grupo]: 85 }, urlGif: gifsEjerciciosMaquina[id],
   }));
   exerciseDatabase.push(...ejerciciosDeMaquina);
   return exerciseDatabase;
