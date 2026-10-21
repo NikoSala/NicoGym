@@ -135,7 +135,8 @@ const Semana = {
       const reps = registro?.reps || '--';
       const series = registro?.series || 0;
       const repsTotales = registro?.repsTotales || 0;
-      const volumen = (Number(peso) || 0) * repsTotales;
+      const volumen = obtenerVolumenEjercicio(registro || {});
+      const unidadReps = registro?.unidad === "segundos" ? "segundos" : "reps";
 
       return `
         <div style="padding:10px;border-bottom:1px solid var(--border);${index === 0 ? 'background:rgba(255,255,255,0.03);' : ''}">
@@ -145,11 +146,11 @@ const Semana = {
           </div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:6px;font-size:11px;">
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:6px;border-radius:8px;">
-              <div style="color:var(--text-muted);font-size:9px;">PESO</div>
-              <div style="font-weight:700;color:var(--text);">${escapeHTML(peso)} kg</div>
+              <div style="color:var(--text-muted);font-size:9px;">SERIES Y CARGAS</div>
+              <div style="font-weight:700;color:var(--text);">${escapeHTML(obtenerResumenSeries(registro || {}))}</div>
             </div>
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:6px;border-radius:8px;">
-              <div style="color:var(--text-muted);font-size:9px;">REPS</div>
+              <div style="color:var(--text-muted);font-size:9px;">${unidadReps.toUpperCase()}</div>
               <div style="font-weight:700;color:var(--text);">${escapeHTML(reps)}</div>
             </div>
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:6px;border-radius:8px;">
@@ -159,7 +160,7 @@ const Semana = {
           </div>
           <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--text-secondary);">
             <span>Series: ${series}</span>
-            <span>Total reps: ${repsTotales}</span>
+            <span>Total ${unidadReps}: ${repsTotales}</span>
           </div>
         </div>
       `;

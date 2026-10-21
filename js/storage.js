@@ -321,6 +321,18 @@ const Storage = {
         validarTexto(ejercicio.nombre, `ejercicios[${indice}].nombre`, 120);
         if (ejercicio.peso !== undefined)
           validarNumero(ejercicio.peso, "peso del ejercicio", 0, true);
+        if (ejercicio.pesos !== undefined) {
+          if (!Array.isArray(ejercicio.pesos) || ejercicio.pesos.length > 100)
+            throw new Error("Pesos de series invÃ¡lidos");
+          ejercicio.pesos.forEach((peso, serie) => {
+            validarNumero(peso, `peso de la serie ${serie + 1}`, 0);
+            if (Number(peso) > 500) throw new Error("Peso de serie fuera de rango");
+          });
+        }
+        if (ejercicio.seriesCalentamiento !== undefined && ![0, 1].includes(Number(ejercicio.seriesCalentamiento)))
+          throw new Error("Indicador de calentamiento invÃ¡lido");
+        if (ejercicio.unidad !== undefined && !["reps", "segundos"].includes(ejercicio.unidad))
+          throw new Error("Unidad de serie invÃ¡lida");
         if (ejercicio.reps !== undefined && typeof ejercicio.reps !== "string" && typeof ejercicio.reps !== "number")
           throw new Error("Repeticiones inválidas");
         if (typeof ejercicio.reps === "string" && ejercicio.reps.length > 400)

@@ -233,34 +233,6 @@ function getExerciseDatabase() {
     },
 
     {
-      id: "extension-triceps-cabeza",
-      nombre: "Extensión de tríceps sobre la cabeza",
-      grupo: "Tríceps",
-      categoria: "Aislamiento",
-      urlGif:
-        "https://media.tenor.com/V3J-mg9gH0kAAAAM/seated-dumbbell-triceps-extension.gif",
-      descripcion:
-        "Sentado, sujeta una mancuerna con ambas manos por encima de la cabeza y extiende completamente los brazos manteniendo los codos cerca de la cabeza.",
-      consejos:
-        "• Mantén los codos cerca de la cabeza.\n• Controla el movimiento.",
-      errores: "• No separes los codos.\n• No bajes demasiado rápido.",
-      musculosPrincipales: ["Tríceps (cabeza larga)"],
-      musculosSecundarios: [
-        "Tríceps (cabeza lateral)",
-        "Tríceps (cabeza medial)",
-      ],
-      series: 3,
-      reps: "10-15",
-      dia: null,
-      dificultad: "facil",
-      material: ["Mancuerna"],
-      tipoCarga: "una_mancuerna",
-      intensidadMuscular: {
-        Tríceps: 90,
-      },
-    },
-
-    {
       id: "extension-triceps-tumbado",
       nombre: "Extensión de tríceps tumbado con mancuernas",
       grupo: "Tríceps",

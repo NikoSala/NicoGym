@@ -49,6 +49,33 @@
             return { series, total: series.reduce((a, b) => a + b, 0), valid: true };
         }
 
+        function obtenerPesosSeries(ejercicio, series) {
+            const pesosGuardados = Array.isArray(ejercicio?.pesos) ? ejercicio.pesos : [];
+            return series.map((_, indice) => {
+                const peso = Number(pesosGuardados[indice]);
+                return Number.isFinite(peso) ? peso : Number(ejercicio?.peso) || 0;
+            });
+        }
+
+        function obtenerVolumenEjercicio(ejercicio) {
+            const parsed = parseReps(ejercicio?.reps);
+            if (!parsed.valid) return 0;
+            const pesos = obtenerPesosSeries(ejercicio, parsed.series);
+            return parsed.series.reduce((total, reps, indice) => total + pesos[indice] * reps, 0);
+        }
+
+        function obtenerResumenSeries(ejercicio) {
+            const parsed = parseReps(ejercicio?.reps);
+            if (!parsed.valid) return "Sin series registradas";
+            const pesos = obtenerPesosSeries(ejercicio, parsed.series);
+            const calentamiento = Math.min(Number(ejercicio?.seriesCalentamiento) || 0, parsed.series.length);
+            const unidad = ejercicio?.unidad === "segundos" ? "s" : "reps";
+            return parsed.series.map((reps, indice) => {
+                const etiqueta = indice < calentamiento ? "Calentamiento" : `Serie ${indice - calentamiento + 1}`;
+                return `${etiqueta}: ${pesos[indice]} kg × ${reps} ${unidad}`;
+            }).join(" · ");
+        }
+
         function calcularDuracionEstimada(ejercicios) {
             let fuerza = 0;
             let cardio = 0;

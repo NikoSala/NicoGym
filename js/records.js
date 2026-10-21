@@ -124,6 +124,7 @@ const Records = {
       const registro = ent.ejercicios.find(ej => ej.nombre === nombre);
       const peso = registro?.peso || '--';
       const reps = registro?.reps || '--';
+      const unidadReps = registro?.unidad === "segundos" ? "SEGUNDOS" : "REPS";
       const fecha = UI.formatearFecha(ent.fecha);
       const esRécord = STATE.records.find(r => r.exerciseName === nombre && r.date === ent.fecha);
 
@@ -135,16 +136,16 @@ const Records = {
           </div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px;font-size:10px;">
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:5px;border-radius:6px;">
-              <div style="color:var(--text-muted);font-size:8px;">PESO</div>
-              <div style="font-weight:700;color:var(--text);">${escapeHTML(peso)} kg</div>
+              <div style="color:var(--text-muted);font-size:8px;">SERIES Y CARGAS</div>
+              <div style="font-weight:700;color:var(--text);">${escapeHTML(obtenerResumenSeries(registro || {}))}</div>
             </div>
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:5px;border-radius:6px;">
-              <div style="color:var(--text-muted);font-size:8px;">REPS</div>
+              <div style="color:var(--text-muted);font-size:8px;">${unidadReps}</div>
               <div style="font-weight:700;color:var(--text);">${escapeHTML(reps)}</div>
             </div>
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:5px;border-radius:6px;">
               <div style="color:var(--text-muted);font-size:8px;">VOLUMEN</div>
-              <div style="font-weight:700;color:var(--text);">${((Number(peso) || 0) * (Number(reps) || 0)).toFixed(0)} kg</div>
+              <div style="font-weight:700;color:var(--text);">${obtenerVolumenEjercicio(registro || {}).toFixed(0)} kg</div>
             </div>
           </div>
         </div>

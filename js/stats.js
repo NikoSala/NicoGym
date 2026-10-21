@@ -17,8 +17,7 @@ const Estadisticas = {
         if (dia < inicio || dia >= fin) return;
         sesiones++;
         (entreno.ejercicios || []).forEach(ejercicio => {
-          const reps = parseReps(ejercicio.reps);
-          if (reps.valid) volumen += (Number(ejercicio.peso) || 0) * reps.total;
+          volumen += obtenerVolumenEjercicio(ejercicio);
         });
       });
       semanas.push({ inicio, volumen, sesiones });
@@ -29,9 +28,14 @@ const Estadisticas = {
   _fuerzaPorEjercicio() {
     const mapa = {};
     STATE.historialEntrenos.forEach(entreno => (entreno.ejercicios || []).forEach(ejercicio => {
+      if (ejercicio.unidad === "segundos") return;
       const reps = parseReps(ejercicio.reps);
-      if (!reps.valid || !ejercicio.peso) return;
-      const oneRM = PROGRESION.estimar1RM(ejercicio.peso, Math.max(...reps.series));
+      if (!reps.valid) return;
+      const pesos = obtenerPesosSeries(ejercicio, reps.series);
+      if (!pesos.some((peso) => peso > 0)) return;
+      const indiceMejorSerie = reps.series.reduce((mejor, repeticiones, indice) =>
+        PROGRESION.estimar1RM(pesos[indice], repeticiones) > PROGRESION.estimar1RM(pesos[mejor], reps.series[mejor]) ? indice : mejor, 0);
+      const oneRM = PROGRESION.estimar1RM(pesos[indiceMejorSerie], reps.series[indiceMejorSerie]);
       if (!mapa[ejercicio.nombre] || oneRM > mapa[ejercicio.nombre].oneRM) mapa[ejercicio.nombre] = { nombre: ejercicio.nombre, oneRM };
     }));
     return Object.values(mapa).sort((a, b) => b.oneRM - a.oneRM).slice(0, 6);
@@ -47,8 +51,7 @@ const Estadisticas = {
       if (fecha < inicio || fecha >= fin) return;
       sesiones++;
       (entreno.ejercicios || []).forEach(ejercicio => {
-        const reps = parseReps(ejercicio.reps);
-        if (reps.valid) volumen += (Number(ejercicio.peso) || 0) * reps.total;
+        volumen += obtenerVolumenEjercicio(ejercicio);
       });
     });
     const records = STATE.records.filter(record => {

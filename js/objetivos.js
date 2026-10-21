@@ -86,7 +86,11 @@ const Objetivos = {
       (ent.ejercicios || []).forEach(ej => {
         if (ej.nombre === obj.nombreEjercicio && ej.peso) {
           const p = parseReps(ej.reps);
-          if (p.valid) registros.push({ peso: Number(ej.peso), reps: p.total });
+          if (p.valid) {
+            const pesos = obtenerPesosSeries(ej, p.series);
+            const mejorPeso = Math.max(...pesos);
+            registros.push({ peso: mejorPeso, reps: p.total });
+          }
         }
       });
     });

@@ -127,7 +127,7 @@ const Comparador = {
         if (ej.tipo === "caminata") return;
         const p = parseReps(ej.reps);
         if (p.valid) {
-          volumen += (Number(ej.peso) || 0) * p.total;
+          volumen += obtenerVolumenEjercicio(ej);
           series += p.series.length;
           reps += p.total;
           ejercicios++;
@@ -150,14 +150,17 @@ const Comparador = {
     const mejorMarca = (entreno) => {
       let mejor = { nombre: "", oneRM: 0, peso: 0, reps: 0 };
       (entreno.ejercicios || []).forEach(ej => {
-        if (ej.tipo === "caminata" || !ej.peso) return;
+        if (ej.tipo === "caminata" || ej.unidad === "segundos") return;
         const p = parseReps(ej.reps);
         if (p.valid) {
-          const maxReps = Math.max(...p.series);
-          const oneRM = PROGRESION.estimar1RM(ej.peso, maxReps);
-          if (oneRM > mejor.oneRM) {
-            mejor = { nombre: ej.nombre, oneRM, peso: Number(ej.peso), reps: maxReps };
-          }
+          const pesos = obtenerPesosSeries(ej, p.series);
+          if (!pesos.some((peso) => peso > 0)) return;
+          p.series.forEach((reps, indice) => {
+            const oneRM = PROGRESION.estimar1RM(pesos[indice], reps);
+            if (oneRM > mejor.oneRM) {
+              mejor = { nombre: ej.nombre, oneRM, peso: pesos[indice], reps };
+            }
+          });
         }
       });
       return mejor;
@@ -184,8 +187,8 @@ const Comparador = {
       const r2 = (e2.ejercicios || []).find(e => e.nombre === nombre);
       const p1 = r1 ? parseReps(r1.reps) : { valid: false, total: 0 };
       const p2 = r2 ? parseReps(r2.reps) : { valid: false, total: 0 };
-      const v1 = p1.valid ? (Number(r1.peso) || 0) * p1.total : 0;
-      const v2 = p2.valid ? (Number(r2.peso) || 0) * p2.total : 0;
+      const v1 = p1.valid ? obtenerVolumenEjercicio(r1) : 0;
+      const v2 = p2.valid ? obtenerVolumenEjercicio(r2) : 0;
       return { nombre, v1, v2, dif: v2 - v1 };
     }).sort((a, b) => Math.abs(b.dif) - Math.abs(a.dif));
 

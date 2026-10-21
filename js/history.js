@@ -79,21 +79,11 @@ const Historial = {
   _volumenSesion(sesion) {
     return (sesion.ejercicios || []).reduce((total, ejercicio) => {
       if (ejercicio.tipo === "caminata") return total;
-      const reps = parseReps(ejercicio.reps);
-      if (!reps.valid) return total;
-      const pesos = Array.isArray(ejercicio.pesos) ? ejercicio.pesos : reps.series.map(() => Number(ejercicio.peso) || 0);
-      return total + reps.series.reduce((suma, repeticiones, index) => suma + (Number(pesos[index]) || 0) * repeticiones, 0);
+      return total + obtenerVolumenEjercicio(ejercicio);
     }, 0);
   },
 
   _resumenSeries(ejercicio) {
-    const reps = parseReps(ejercicio.reps);
-    if (!reps.valid) return `${escapeHTML(ejercicio.peso || "--")} kg · ${escapeHTML(ejercicio.reps || "--")} reps`;
-    const pesos = Array.isArray(ejercicio.pesos) ? ejercicio.pesos : reps.series.map(() => Number(ejercicio.peso) || 0);
-    const calentamiento = Math.min(Number(ejercicio.seriesCalentamiento) || 0, reps.series.length);
-    return reps.series.map((repeticiones, index) => {
-      const etiqueta = index < calentamiento ? "Calentamiento" : `Serie ${index - calentamiento + 1}`;
-      return escapeHTML(`${etiqueta}: ${Number(pesos[index]) || 0} kg × ${repeticiones}`);
-    }).join(" · ");
+    return escapeHTML(obtenerResumenSeries(ejercicio));
   },
 };

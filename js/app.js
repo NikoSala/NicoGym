@@ -811,6 +811,7 @@ const APP = {
 
     const seriesObjetivoEjercicio = obtenerSeriesEntrenoEjercicio(ej);
     const repsObjetivoEjercicio = obtenerRepsObjetivoEjercicio(ej);
+    const usaSegundos = /\b(?:s|seg(?:undos?)?)\b/i.test(String(ej.reps || ""));
 
     // El peso YA ha sido elegido al iniciar la sesión.
     // Ahora buscamos si hubo un ajuste manual para este ejercicio concreto.
@@ -882,7 +883,7 @@ const APP = {
             </div>
 
             <div class="me-workout-set-label">
-              ${valor ? `${pesosSeriesActualesEntreno[i] || 0} kg · ` : ""}reps
+              ${valor ? `${pesosSeriesActualesEntreno[i] || 0} kg · ` : ""}${usaSegundos ? "segundos" : "reps"}
             </div>
 
           </div>
@@ -1096,6 +1097,8 @@ const APP = {
                 <div class="me-workout-load-hint" style="margin-top:4px;font-size:9px;color:var(--text-muted);">
                   <i class="fa-solid fa-pen"></i> Toca para elegir el peso
                 </div>
+                <label class="me-workout-load-manual-label" for="mePesoSerie" style="margin-top:10px;">Peso de esta serie (kg)</label>
+                <input class="me-workout-load-manual-input" type="number" id="mePesoSerie" min="0.1" max="500" step="0.5" value="${pesoActualEntreno || ""}" aria-label="Peso de esta serie en kilogramos">
               ` : `
                 <label class="me-workout-load-manual-label" for="mePeso">Carga adicional (kg)</label>
                 <input class="me-workout-load-manual-input" type="number" id="mePeso" min="0" max="500" step="0.5" value="${pesoActualEntreno}" placeholder="0 = peso corporal" aria-label="Carga adicional en kilogramos">
@@ -1133,7 +1136,7 @@ const APP = {
           <div class="me-workout-reps-card">
 
             <div class="me-workout-reps-title">
-              ${ej.esSerieCalentamiento && seriesActualesEntreno.length === 0 ? "REPETICIONES · SERIE DE CALENTAMIENTO" : `REPETICIONES DE LA SERIE ${Math.max(1, seriesActualesEntreno.length + (ej.esSerieCalentamiento ? 0 : 1))}`}
+              ${ej.esSerieCalentamiento && seriesActualesEntreno.length === 0 ? `${usaSegundos ? "DURACIÓN" : "REPETICIONES"} · SERIE DE CALENTAMIENTO` : `${usaSegundos ? "DURACIÓN" : "REPETICIONES"} DE LA SERIE ${Math.max(1, seriesActualesEntreno.length + (ej.esSerieCalentamiento ? 0 : 1))}`}
             </div>
 
             <div class="me-workout-reps-row">
@@ -1142,7 +1145,7 @@ const APP = {
                 type="button"
                 class="me-workout-reps-button"
                 onclick="APP._ajustarReps(-1)"
-                aria-label="Restar repetición"
+                aria-label="${usaSegundos ? "Restar un segundo" : "Restar repetición"}"
               >
                 <i class="fa-solid fa-minus"></i>
               </button>
@@ -1161,7 +1164,7 @@ const APP = {
                 type="button"
                 class="me-workout-reps-button"
                 onclick="APP._ajustarReps(1)"
-                aria-label="Añadir repetición"
+                aria-label="${usaSegundos ? "Añadir un segundo" : "Añadir repetición"}"
               >
                 <i class="fa-solid fa-plus"></i>
               </button>
@@ -1169,7 +1172,7 @@ const APP = {
             </div>
 
             <div class="me-workout-reps-target">
-              ${ej.esSerieCalentamiento && seriesActualesEntreno.length === 0 ? "Usa menos peso para calentar; esta serie se guarda aparte de las efectivas." : `Objetivo: ${obtenerSeriesObjetivoEjercicio(ej)} series efectivas × ${escapeHTML(ej.reps || String(repsObjetivoEjercicio))} reps`}
+              ${ej.esSerieCalentamiento && seriesActualesEntreno.length === 0 ? "Usa menos peso para calentar; esta serie se guarda aparte de las efectivas." : `Objetivo: ${obtenerSeriesObjetivoEjercicio(ej)} series efectivas × ${escapeHTML(ej.reps || String(repsObjetivoEjercicio))} ${usaSegundos ? "segundos" : "reps"}`}
             </div>
 
           </div>
@@ -1421,11 +1424,13 @@ const APP = {
   _guardarSerie() {
     const ej = ejerciciosEntreno[idxEjercicioActual];
     const seriesObjetivo = obtenerSeriesEntrenoEjercicio(ej);
+    const usaSegundos = /\b(?:s|seg(?:undos?)?)\b/i.test(String(ej.reps || ""));
     const pesoManual = Number(document.getElementById("mePeso")?.value || 0);
+    const pesoSerie = Number(document.getElementById("mePesoSerie")?.value);
     const pesoCalentamiento = Number(document.getElementById("mePesoCalentamiento")?.value);
     const peso = ej.esSerieCalentamiento && seriesActualesEntreno.length === 0
       ? pesoCalentamiento
-      : ej.tipoCarga ? pesoActualEntreno : pesoManual;
+      : ej.tipoCarga ? pesoSerie : pesoManual;
     const reps = parseInt(document.getElementById("meRepsSerie")?.value, 10);
 
     if (!Number.isFinite(peso) || peso < 0 || (ej.tipoCarga && peso === 0)) {
@@ -1433,7 +1438,7 @@ const APP = {
       return;
     }
     if (!Number.isInteger(reps) || reps < 1 || reps > 100) {
-      UI.toast("Introduce entre 1 y 100 repeticiones", "error");
+      UI.toast(usaSegundos ? "Introduce una duración entre 1 y 100 segundos" : "Introduce entre 1 y 100 repeticiones", "error");
       return;
     }
     if (seriesActualesEntreno.length >= seriesObjetivo) {
@@ -1500,6 +1505,7 @@ const APP = {
     registro.reps = seriesActualesEntreno.join(",");
     registro.pesos = [...pesosSeriesActualesEntreno];
     registro.seriesCalentamiento = ej.esSerieCalentamiento ? 1 : 0;
+    registro.unidad = usaSegundos ? "segundos" : "reps";
     registro.series = seriesActualesEntreno.length;
     registro.repsTotales = seriesActualesEntreno.reduce((a, b) => a + b, 0);
     registro.timestamp = Date.now();
