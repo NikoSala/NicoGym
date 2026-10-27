@@ -22,21 +22,21 @@ const Rutinas = {
     const dias = ["lunes", "martes", "miercoles", "jueves", "viernes"];
     const nombres = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
     const iconos = ["🔵", "🟢", "🟣", "🟠", "🔵"];
+    const rutinaCompletadaHoy = STATE.historialEntrenos.find((sesion) => sesion.fecha === UI.getHoy())?.dia;
 
     tc.innerHTML = "";
     pc.innerHTML = "";
 
     dias.forEach((dia, idx) => {
+      const ejerciciosDelDia = getEjerciciosPorDia(dia);
+      const rutinaCompletadaEstaSemana = ejerciciosDelDia.length > 0 && ejerciciosDelDia.every((_, ejercicioIndex) => STATE.checks[`${dia}-${ejercicioIndex}`] === true);
       const btn = document.createElement("button");
       btn.className = "dtab";
       btn.textContent = `${iconos[idx]} ${nombres[idx]}`;
       btn.dataset.dia = dia;
 
       const esDescanso = ["sabado", "domingo"].includes(dia);
-      const completado =
-        STATE.diasEntrenados.includes(UI.getHoy()) &&
-        dia === UI.getDiaNombre() &&
-        !esDescanso;
+      const completado = rutinaCompletadaHoy === dia || rutinaCompletadaEstaSemana;
 
       if (esDescanso) btn.classList.add("descanso");
       if (completado) btn.classList.add("completado");
@@ -55,8 +55,7 @@ const Rutinas = {
       panel.id = `dp-${dia}`;
 
       const esHoy = dia === UI.getDiaNombre();
-      const yaCompletado =
-        STATE.diasEntrenados.includes(UI.getHoy()) && esHoy && !esDescanso;
+      const yaCompletado = rutinaCompletadaHoy === dia || rutinaCompletadaEstaSemana;
 
       let panelContent = "";
 
@@ -255,9 +254,9 @@ const Rutinas = {
     });
     const pct = Math.round((comp / ejercicios.length) * 100);
 
-    const completado =
-      STATE.diasEntrenados.includes(UI.getHoy()) &&
-      diaActivo === UI.getDiaNombre();
+    const completado = comp === ejercicios.length || STATE.historialEntrenos.some(
+      (sesion) => sesion.fecha === UI.getHoy() && sesion.dia === diaActivo,
+    );
 
     if (completado) {
       c.innerHTML = `<div class="progreso-rutina-bar"><div class="progreso-rutina-completado"><i class="fa-solid fa-circle-check"></i> ¡${CONFIG.NOMBRES_DIAS[diaActivo]} completado!</div></div>`;

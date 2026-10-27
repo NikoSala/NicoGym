@@ -55,12 +55,13 @@ const Semana = {
       const esDescanso = dia.key === "sabado" || dia.key === "domingo";
       const fecha = new Date(hoy);
       fecha.setDate(hoy.getDate() + indice - ((hoyDia + 6) % 7));
-      const completado = !esDescanso && STATE.diasEntrenados.includes(UI.formatFecha(fecha));
       let ejercicios = [];
 
       if (!esDescanso) {
         ejercicios = getEjerciciosPorDia(dia.key);
       }
+      const rutinaCompletada = ejercicios.length > 0 && ejercicios.every((_, ejercicioIndex) => STATE.checks[`${dia.key}-${ejercicioIndex}`] === true);
+      const completado = !esDescanso && (STATE.diasEntrenados.includes(UI.formatFecha(fecha)) || rutinaCompletada);
       const ejerciciosCompletados = ejercicios.reduce(
         (total, _, ejercicioIndex) =>
           total + (STATE.checks[`${dia.key}-${ejercicioIndex}`] ? 1 : 0),

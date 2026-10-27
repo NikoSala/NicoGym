@@ -19,10 +19,11 @@ const Dashboard = {
 
     const hayEntrenamientoPendiente =
       entrenamientoPendiente &&
-      entrenamientoPendiente.dia === diaHoy &&
+      (entrenamientoPendiente.dia === diaHoy || ["sabado", "domingo"].includes(diaHoy)) &&
       Array.isArray(entrenamientoPendiente.ejerciciosEntreno) &&
       entrenamientoPendiente.ejerciciosEntreno.length > 0;
     const ejerciciosHoy = getEjerciciosPorDia(diaHoy);
+    const rutinaCompletadaEstaSemana = ejerciciosHoy.length > 0 && ejerciciosHoy.every((_, idx) => STATE.checks[`${diaHoy}-${idx}`] === true);
 
     let ejerciciosCompletadosHoy = 0;
 
@@ -92,19 +93,22 @@ const Dashboard = {
           <section class="dashboard-workout-card dashboard-workout-rest">
             <span class="dashboard-kicker">HOY</span>
             <div class="dashboard-workout-day">${UI.getDiaSemanaNombre(hoy)}</div>
-            <h1>Día de descanso</h1>
-            <p>Hoy toca recuperar para volver con energía.</p>
+            <h1>${entrenadoHoy ? "Entrenamiento registrado" : "Día comodín"}</h1>
+            <p>${entrenadoHoy ? "Ya has guardado tu entrenamiento de hoy." : "¿Te saltaste algún día? Elige la rutina pendiente que quieres hacer hoy."}</p>
+            ${entrenadoHoy
+              ? `<button class="dashboard-primary-action" onclick="APP.navegar('historial')"><i class="fa-solid fa-clock-rotate-left"></i> VER ENTRENAMIENTO</button>`
+              : `<button class="dashboard-primary-action" onclick="APP.abrirSelectorDiaComodin()"><i class="fa-solid fa-dumbbell"></i> ELEGIR RUTINA</button>`}
           </section>
         `
         : `
           <section class="dashboard-workout-card">
-            <div class="dashboard-workout-topline"><span class="dashboard-kicker">ENTRENAMIENTO DE HOY</span><span class="dashboard-status-pill">${entrenadoHoy ? "Completado" : "Pendiente"}</span></div>
+            <div class="dashboard-workout-topline"><span class="dashboard-kicker">ENTRENAMIENTO DE HOY</span><span class="dashboard-status-pill">${entrenadoHoy || rutinaCompletadaEstaSemana ? "Completado" : "Pendiente"}</span></div>
             <div class="dashboard-workout-day">${UI.getDiaSemanaNombre(hoy)}</div>
             <h1>${getResumenRutinaDelDia(dia)}</h1>
             <div class="dashboard-workout-meta"><span><i class="fa-solid fa-dumbbell"></i> ${totalEjerciciosHoy} ejercicios</span><span><i class="fa-solid fa-list-check"></i> ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} completados</span></div>
             <div class="dashboard-progress"><span style="width:${progresoEntreno}%"></span></div>
             <div class="dashboard-workout-progress-label">${progresoEntreno}% de la sesión</div>
-            <button class="dashboard-primary-action" onclick="${entrenadoHoy ? "APP.navegar('historial')" : `APP.iniciarEntreno('${dia}')`}"><i class="fa-solid ${entrenadoHoy ? "fa-clock-rotate-left" : "fa-play"}"></i> ${entrenadoHoy ? "Ver entrenamiento" : ejerciciosCompletadosHoy > 0 ? "CONTINUAR" : "ENTRENAR"}</button>
+            <button class="dashboard-primary-action" onclick="${entrenadoHoy || rutinaCompletadaEstaSemana ? "APP.navegar('historial')" : `APP.iniciarEntreno('${dia}')`}"><i class="fa-solid ${entrenadoHoy || rutinaCompletadaEstaSemana ? "fa-clock-rotate-left" : "fa-play"}"></i> ${entrenadoHoy ? "Ver entrenamiento" : rutinaCompletadaEstaSemana ? "RUTINA COMPLETADA" : ejerciciosCompletadosHoy > 0 ? "CONTINUAR" : "ENTRENAR"}</button>
           </section>
         `;
 

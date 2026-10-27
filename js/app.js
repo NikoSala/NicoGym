@@ -219,6 +219,26 @@ const APP = {
   // ==========================================
   // MODO ENTRENO GUIADO
   // ==========================================
+  abrirSelectorDiaComodin() {
+    if (STATE.diasEntrenados.includes(UI.getHoy())) {
+      UI.toast("Ya has registrado un entrenamiento hoy", "info");
+      return;
+    }
+    const dias = ["lunes", "martes", "miercoles", "jueves", "viernes"];
+    const disponibles = dias.filter((dia) => {
+      const ejercicios = getEjerciciosPorDia(dia);
+      return ejercicios.length > 0 && !ejercicios.every((_, indice) => STATE.checks[`${dia}-${indice}`] === true);
+    });
+    Modal.abrir(`
+      <h3>Elige la rutina que vas a recuperar</h3>
+      <p class="modal-description">Sábado y domingo son comodines: selecciona el día de rutina que quieres hacer hoy.</p>
+      <div style="display:grid;gap:8px;margin-top:16px;">
+        ${disponibles.map((dia) => `<button class="btn btn-ghost btn-block" type="button" onclick="Modal.cerrar(); APP.iniciarEntreno('${dia}')">${escapeHTML(CONFIG.NOMBRES_DIAS[dia])} · ${escapeHTML(getResumenRutinaDelDia(dia))}</button>`).join("") || '<p>Ya has completado todas las rutinas de esta semana.</p>'}
+      </div>
+      <button class="btn btn-ghost btn-block" type="button" onclick="Modal.cerrar()" style="margin-top:8px;">Cancelar</button>
+    `);
+  },
+
   iniciarEntreno(dia, duplicarUltima = false) {
     const ejercicios = getEjerciciosPorDia(dia);
 
@@ -226,6 +246,7 @@ const APP = {
       UI.toast("No hay ejercicios para este día", "error");
       return;
     }
+    diaActivo = dia;
 
     const pendiente = STATE.entrenamientoPendiente;
     const semanaActual = Storage._getSemanaKey(new Date());
@@ -233,8 +254,7 @@ const APP = {
     if (
       pendiente &&
       pendiente.semana === semanaActual &&
-      pendiente.dia === dia &&
-      pendiente.dia === UI.getDiaNombre()
+      pendiente.dia === dia
     ) {
       modoEntrenoActivo = true;
 
@@ -283,8 +303,8 @@ const APP = {
       UI.toast("✅ Este entrenamiento ya fue completado hoy", "success");
       return;
     }
-    if (["sabado", "domingo"].includes(dia)) {
-      UI.toast("🚶 Este día no tiene entrenamiento guiado", "info");
+    if (!duplicarUltima && ejercicios.every((_, indice) => STATE.checks[`${dia}-${indice}`] === true)) {
+      UI.toast("Esta rutina ya está completada esta semana", "info");
       return;
     }
    // Ya no hay selector de peso inicial. Empezamos directamente.
@@ -1534,22 +1554,34 @@ const APP = {
       }
       Storage._save();
       this._mostrarMensajeCompletado(`${ej.nombre} · ${seriesObjetivo} series completadas`);
-      idxEjercicioActual++;
       seriesActualesEntreno = [];
       pesosSeriesActualesEntreno = [];
-      
-      if (idxEjercicioActual >= ejerciciosEntreno.length)
+
+      const ejerciciosRutina = getEjerciciosPorDia(dia);
+      const rutinaCompleta = ejerciciosRutina.length > 0 && ejerciciosRutina.every((_, indice) => STATE.checks[`${dia}-${indice}`] === true);
+      const indiceCardio = ejerciciosEntreno.findIndex((ejercicio) => ejercicio.esCaminata);
+      if (rutinaCompleta && indiceCardio >= 0 && !cardioCompletado) {
+        idxEjercicioActual = indiceCardio;
+        setTimeout(() => this._mostrarEjercicio(), CONFIG.TIEMPO_MSG_COMPLETADO);
+      } else if (rutinaCompleta) {
         setTimeout(
           () => this._finalizarEntreno(),
           CONFIG.TIEMPO_MSG_COMPLETADO + 300,
         );
-      else if (CONFIG.TEMPORIZADOR_DESCANSO)
+      } else {
+        const siguientePendiente = ejerciciosEntreno.findIndex((ejercicio, indice) => {
+          if (ejercicio.esCaminata) return false;
+          return !STATE.checks[`${dia}-${indice}`];
+        });
+        idxEjercicioActual = siguientePendiente >= 0 ? siguientePendiente : Math.min(idxEjercicioActual + 1, ejerciciosEntreno.length - 1);
+        if (CONFIG.TEMPORIZADOR_DESCANSO)
         setTimeout(() => this._mostrarDescanso(), CONFIG.TIEMPO_MSG_COMPLETADO);
-      else
+        else
         setTimeout(
           () => this._mostrarEjercicio(),
           CONFIG.TIEMPO_MSG_COMPLETADO,
         );
+      }
       this._guardandoSerie = false;
     } else {
       Storage._save();
@@ -1668,6 +1700,7 @@ const APP = {
       `${progreso}% · Último ejercicio`;
     document.getElementById("meCompletadoMsg").classList.add("hidden");
     body.innerHTML = `
+                    ${this._controlesNavegacion()}
                     <div class="me-caminata-card">
                         <div class="me-ej-numero">Ejercicio ${idxEjercicioActual + 1} de ${total}</div>
                         <div class="me-caminata-icon"><i class="fa-solid fa-person-walking"></i></div>
@@ -1678,7 +1711,6 @@ const APP = {
                         <button class="btn btn-primary btn-block" onclick="APP._completarCaminataComoEjercicio()">
                             <i class="fa-solid fa-check"></i> He terminado el cardio
                         </button>
-                        ${this._controlesNavegacion()}
                     </div>`;
     document.getElementById("modoEntreno").scrollTop = 0;
   },
