@@ -40,8 +40,10 @@ html, body { background: var(--bg); color: var(--text); }
 /* Rutinas is a long, vertically scrolling page on both desktop and mobile.
    Keep the document, rather than a viewport-sized wrapper, as its scroll area. */
 html, body { height: auto; min-height: 100%; }
-body { min-height: 100vh; overflow-y: auto; }
-#page-rutinas { min-height: 100vh; height: auto; overflow-y: visible; }
+html { overflow-x: clip; overflow-y: auto; }
+body { min-height: 100vh; overflow-x: clip; overflow-y: visible; }
+#page-rutinas { min-height: 100vh; height: auto; overflow-x: clip; overflow-y: visible; }
+.page { overflow-x: clip; overflow-y: visible; }
 body {
   background-image:
     radial-gradient(ellipse at 82% 0%, rgba(135, 24, 47, .24), transparent 34%),
