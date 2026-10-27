@@ -144,6 +144,8 @@ const Rutinas = {
       if (tabs[idxActivo]) tabs[idxActivo].classList.add("active");
     }
 
+    this._priorizarImagenesDia(diaActivo);
+
     this._actualizarProgreso();
   },
 
@@ -220,7 +222,21 @@ const Rutinas = {
     if (tab) tab.classList.add("active");
 
     diaActivo = dia;
+    this._priorizarImagenesDia(dia);
     this._actualizarProgreso();
+  },
+
+  _priorizarImagenesDia(dia) {
+    const panel = document.getElementById(`dp-${dia}`);
+    if (!panel) return;
+
+    panel.querySelectorAll(".routine-exercise-image-button img").forEach((img, index) => {
+      // Start every image for the selected session now; reserve high priority
+      // for the first two, which are the ones most likely to be seen first.
+      img.loading = "eager";
+      img.decoding = "async";
+      img.fetchPriority = index < 2 ? "high" : "auto";
+    });
   },
 
   _actualizarProgreso() {
