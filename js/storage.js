@@ -75,6 +75,58 @@ const Storage = {
         d.schemaVersion = 6;
         version = 6;
         cambio = true;
+      } else if (version === 6) {
+        // Sustituye el curl en polea del martes por su variante con mancuernas.
+        if (Array.isArray(d.rutinasPersonalizadas?.martes)) {
+          d.rutinasPersonalizadas.martes = d.rutinasPersonalizadas.martes.map((item) =>
+            Array.isArray(item) && item[0] === "curl-biceps-polea"
+              ? ["alternating-dumbbell-curl", item[1], "10-15 por lado"]
+              : item,
+          );
+        }
+        d.schemaVersion = 7;
+        version = 7;
+        cambio = true;
+      } else if (version === 7) {
+        // Cambia el cruce de dos poleas del viernes por aperturas con mancuernas.
+        if (Array.isArray(d.rutinasPersonalizadas?.viernes)) {
+          d.rutinasPersonalizadas.viernes = d.rutinasPersonalizadas.viernes.map((item) =>
+            Array.isArray(item) && item[0] === "cruce-poleas"
+              ? ["aperturas", item[1], "10-15"]
+              : item,
+          );
+        }
+        d.schemaVersion = 8;
+        version = 8;
+        cambio = true;
+      } else if (version === 8) {
+        // El miércoles deja gemelos y patada de glúteo para incluir ambos movimientos de cadera.
+        if (Array.isArray(d.rutinasPersonalizadas?.miercoles)) {
+          d.rutinasPersonalizadas.miercoles = d.rutinasPersonalizadas.miercoles.flatMap((item) => {
+            if (!Array.isArray(item)) return [];
+            if (item[0] === "patada-gluteo-polea") return [];
+            if (item[0] === "gemelos-prensa-piernas") {
+              return [
+                ["abductores-maquina", 3, "12-15"],
+                ["aductores-maquina", 3, "12-15"],
+              ];
+            }
+            return [item];
+          });
+          const ordenMiercoles = new Map([
+            ["prensa-piernas-maquina", 0],
+            ["curl-femoral-sentado", 1],
+            ["extension-cuadriceps-maquina", 2],
+            ["abductores-maquina", 3],
+            ["aductores-maquina", 4],
+          ]);
+          d.rutinasPersonalizadas.miercoles.sort(
+            (a, b) => (ordenMiercoles.get(a[0]) ?? 99) - (ordenMiercoles.get(b[0]) ?? 99),
+          );
+        }
+        d.schemaVersion = 9;
+        version = 9;
+        cambio = true;
       } else {
         break;
       }

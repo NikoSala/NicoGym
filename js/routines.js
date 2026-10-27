@@ -18,15 +18,15 @@ const ROUTINES = {
     ["remo-sentado-polea", 3, "8-12"],
     ["remo-pecho-apoyado-maquina", 2, "8-12"],
     ["curl-biceps-maquina", 2, "10-15"],
-    ["curl-biceps-polea", 2, "10-15"],
+    ["alternating-dumbbell-curl", 3, "10-15 por lado"],
   ],
 
   miercoles: [
     ["prensa-piernas-maquina", 3, "8-12"],
-    ["extension-cuadriceps-maquina", 3, "10-15"],
     ["curl-femoral-sentado", 3, "10-15"],
-    ["patada-gluteo-polea", 2, "10-15 por lado"],
-    ["gemelos-prensa-piernas", 3, "12-20"],
+    ["extension-cuadriceps-maquina", 3, "10-15"],
+    ["abductores-maquina", 3, "12-15"],
+    ["aductores-maquina", 3, "12-15"],
   ],
 
   jueves: [
@@ -38,12 +38,39 @@ const ROUTINES = {
 
   viernes: [
     ["press-inclinado-maquina", 3, "8-12"],
-    ["cruce-poleas", 2, "10-15"],
+    ["aperturas", 3, "10-15"],
     ["press-hombros-maquina", 2, "8-12"],
     ["elevacion-lateral-polea", 2, "12-15 por lado"],
     ["aperturas-inversas-maquina", 2, "12-15"],
   ],
 };
+
+const PREPARACION_EJERCICIOS = {
+  "press-pecho-maquina": "Ajusta el asiento para que las asas queden frente al centro del pecho; apoya la espalda.",
+  "aperturas-peck-deck": "Ajusta el asiento para que los brazos queden a la altura del pecho y apoya la espalda.",
+  "press-hombros-maquina": "Ajusta el asiento para empezar con las asas a la altura de los hombros; apoya la espalda.",
+  "elevacion-lateral-polea": "Polea abajo del todo, tirador individual; colócate de lado y trabaja un brazo cada vez.",
+  "extension-triceps-polea": "Polea alta con barra recta; con tu altura (1,64 m), ponla donde alcances el agarre sin estirarte ni encoger los hombros.",
+  "jalon-polea-al-pecho": "Polea alta con barra larga; ajusta asiento y apoyo de muslos para alcanzar la barra sin despegarte ni estirarte de más.",
+  "remo-sentado-polea": "Polea abajo con agarre estrecho; apoya los pies en la plataforma y siéntate erguido.",
+  "remo-pecho-apoyado-maquina": "Ajusta asiento y apoyo para que las asas queden al alcance con el pecho apoyado.",
+  "curl-biceps-maquina": "Ajusta el asiento para que los codos coincidan con el eje de giro y apóyalos en el soporte.",
+  "alternating-dumbbell-curl": "De pie, una mancuerna en cada mano y los brazos junto al cuerpo.",
+  "prensa-piernas-maquina": "Ajusta respaldo y asiento; apoya toda la espalda y coloca los pies en la plataforma.",
+  "extension-cuadriceps-maquina": "Alinea la rodilla con el eje de la máquina y coloca el rodillo sobre la parte baja de la espinilla.",
+  "curl-femoral-sentado": "Alinea la rodilla con el eje de giro; coloca el rodillo por encima de los talones y apoya la espalda.",
+  "abductores-maquina": "Ajusta los topes para empujar las piernas hacia fuera; mantén la espalda apoyada.",
+  "aductores-maquina": "Ajusta los topes para juntar las piernas hacia dentro; mantén la espalda apoyada.",
+  "gemelos-prensa-piernas": "En la prensa, apoya la parte delantera de los pies en el borde inferior de la plataforma.",
+  "extension-triceps-polea-sobre-cabeza": "Polea alta con cuerda; ponte de espaldas a una distancia que te permita alcanzarla sin encoger los hombros y da un paso al frente para tensar el cable.",
+  "press-inclinado-maquina": "Ajusta asiento y respaldo inclinado para que las asas empiecen a la altura del pecho superior.",
+  "aperturas": "Banco plano y una mancuerna en cada mano; apoya la espalda y mantén los codos ligeramente flexionados.",
+  "aperturas-inversas-maquina": "Siéntate mirando al respaldo; ajusta las asas a la altura de los hombros y apoya el pecho.",
+};
+
+function getPreparacionEjercicio(ejercicio) {
+  return PREPARACION_EJERCICIOS[ejercicio.id] || ejercicio.consejos || "Ajusta el equipo a tu altura y comprueba que el recorrido sea cómodo.";
+}
 
 // ==========================================
 // OBTENER RUTINA DEL DÍA
@@ -81,8 +108,10 @@ function getEjerciciosPorDia(dia) {
       return {
         ...base,
         dia,
-        series,
+        // Plan actual: tres series efectivas por ejercicio.
+        series: 3,
         reps: String(reps),
+        preparacion: getPreparacionEjercicio(base),
       };
     })
     .filter(Boolean);

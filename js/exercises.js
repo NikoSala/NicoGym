@@ -1544,9 +1544,12 @@ function getExerciseDatabase() {
     "curl-biceps-polea-unilateral": "https://fitnessprogramer.com/wp-content/uploads/2021/02/One-Arm-Cable-Curl.gif",
     "remo-pecho-apoyado-maquina": "https://fitnessprogramer.com/wp-content/uploads/2022/02/Plate-Loaded-Seated-Row.gif",
     "prensa-piernas-maquina": "https://fitnessprogramer.com/wp-content/uploads/2015/11/Leg-Press.gif",
+    "extension-cuadriceps-maquina": "https://fitnessprogramer.com/wp-content/uploads/2021/02/LEG-EXTENSION.gif",
+    "curl-femoral-sentado": "https://fitnessprogramer.com/wp-content/uploads/2021/08/Seated-Leg-Curl.gif",
     "patada-gluteo-polea": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Cable-Donkey-Kickback.gif",
     "abductores-maquina": "https://fitnessprogramer.com/wp-content/uploads/2021/02/HiP-ABDUCTION-MACHINE.gif",
     "gemelos-prensa-piernas": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Leg-Press-Calf-Raise.gif",
+    "aductores-maquina": "https://fitcron.com/wp-content/uploads/2021/04/05981301-Lever-Seated-Hip-Adduction_Thighs_720.gif",
   };
 
   const ejerciciosDeMaquina = [
@@ -1565,7 +1568,8 @@ function getExerciseDatabase() {
     ["remo-pecho-apoyado-maquina", "Remo con pecho apoyado en máquina", "Espalda", "Remo", ["Máquina de remo"], ["Dorsal ancho", "Romboides", "Bíceps"], "Con el pecho apoyado, tira de las asas hacia el torso y vuelve hasta estirar los brazos sin perder la postura.", "Mantén el pecho en el soporte y lleva los codos hacia atrás.", "No te separes del apoyo ni encojas los hombros.", "8-12"],
     ["prensa-piernas-maquina", "Prensa de piernas", "Pierna", "Compuesto", ["Máquina de prensa de piernas"], ["Cuádriceps", "Glúteos"], "Desbloquea la plataforma, baja flexionando las rodillas hasta un recorrido cómodo y empuja para volver sin bloquearlas.", "Mantén toda la espalda apoyada y las rodillas alineadas con los pies.", "No despegues la pelvis del respaldo ni bloquees las rodillas.", "8-12"],
     ["patada-gluteo-polea", "Extensión de cadera en polea", "Glúteo", "Aislamiento", ["Polea baja", "Tobillera"], ["Glúteos", "Isquiotibiales"], "Con una tobillera, lleva una pierna hacia atrás desde la cadera y vuelve lentamente sin mover el tronco.", "Sujétate al soporte y usa un recorrido controlado.", "No arquees la zona lumbar ni gires la pelvis.", "10-15 por lado"],
-    ["abductores-maquina", "Abducción de cadera en máquina", "Glúteo", "Aislamiento", ["Máquina de abductores"], ["Glúteo medio", "Glúteo menor"], "Sentado, separa las rodillas contra las almohadillas y vuelve despacio a la posición inicial.", "Ajusta el respaldo y mantén la pelvis estable.", "No rebotes ni uses un recorrido que moleste la cadera.", "12-15"],
+    ["abductores-maquina", "Abducción de cadera en máquina", "Glúteo", "Aislamiento", ["Máquina de abductores/aductores"], ["Glúteo medio", "Glúteo menor"], "Sentado, separa las rodillas contra las almohadillas y vuelve despacio a la posición inicial.", "Ajusta el respaldo y mantén la pelvis estable.", "No rebotes ni uses un recorrido que moleste la cadera.", "12-15"],
+    ["aductores-maquina", "Aducción de cadera en máquina", "Pierna", "Aislamiento", ["Máquina de abductores/aductores"], ["Aductores"], "Sentado, junta las piernas contra las almohadillas y vuelve despacio a la posición inicial.", "Ajusta las almohadillas a la parte interior de los muslos y mantén la espalda apoyada.", "No rebotes ni uses un recorrido que moleste la cadera.", "12-15"],
     ["gemelos-prensa-piernas", "Elevación de gemelos en prensa", "Pierna", "Aislamiento", ["Máquina de prensa de piernas"], ["Gemelos", "Sóleo"], "Con las piernas casi extendidas y los antepiés apoyados, baja los talones y luego empuja la plataforma con las puntas.", "Usa un recorrido cómodo y pausa un instante arriba.", "No bloquees las rodillas ni rebotes en la parte baja.", "12-20"],
   ].map(([id, nombre, grupo, categoria, material, musculosPrincipales, descripcion, consejos, errores, reps]) => ({
     id, nombre, grupo, categoria, material, musculosPrincipales, musculosSecundarios: [],
