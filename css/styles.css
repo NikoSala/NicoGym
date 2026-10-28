@@ -449,6 +449,7 @@
         .dia-panel { display: none; }
         .dia-panel.active { display: block; animation: fadeUp 0.3s ease; }
         .routine-exercise-list { margin: 14px 0 2px; text-align: left; border-top: 1px solid var(--border); }
+        .routine-transition-notice { margin: 8px 0; padding: 9px 10px; border-radius: 8px; color: var(--text-secondary); background: var(--primary-dim); font-size: 11px; line-height: 1.45; text-align: left; }
         .routine-warmup { display: grid; gap: 4px; margin: 12px 0; padding: 10px 12px; border-left: 3px solid var(--primary); border-radius: 8px; color: var(--text-secondary); background: var(--primary-dim); text-align: left; font-size: 11px; line-height: 1.45; }
         .routine-warmup strong { color: var(--text); font-size: 12px; }
         .routine-load-guide { margin: 10px 0; border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); background: rgba(255,255,255,.025); text-align: left; font-size: 11px; line-height: 1.5; }

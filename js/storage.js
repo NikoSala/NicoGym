@@ -156,6 +156,52 @@ const Storage = {
         d.schemaVersion = 11;
         version = 11;
         cambio = true;
+      } else if (version === 11) {
+        const rutinaPropuesta = {
+          martes: [
+            ["prensa-piernas-maquina", 3, "8-12"],
+            ["curl-femoral-sentado", 3, "10-15"],
+            ["extension-cuadriceps-maquina", 3, "10-15"],
+            ["abductores-maquina", 3, "12-15"],
+          ],
+          miercoles: [
+            ["jalon-polea-al-pecho", 3, "8-12"],
+            ["remo-sentado-polea", 3, "8-12"],
+            ["remo-pecho-apoyado-maquina", 3, "8-12"],
+            ["curl-scott-supino-barra-z", 3, "10-15"],
+            ["curl-v-polea-baja", 3, "10-15"],
+          ],
+          jueves: [
+            ["prensa-piernas-maquina", 3, "8-12"],
+            ["curl-femoral-sentado", 3, "10-15"],
+            ["aductores-maquina", 3, "12-15"],
+            ["gemelos-prensa-piernas", 3, "12-20"],
+          ],
+          viernes: [
+            ["press-banca-barra", 3, "8-12"],
+            ["aperturas", 3, "10-15"],
+            ["remo-pecho-apoyado-maquina", 3, "8-12"],
+            ["elevacion-lateral-polea", 3, "12-15 por lado"],
+            ["aperturas-inversas-maquina", 3, "12-15"],
+          ],
+        };
+        d.rutinasPersonalizadas = {
+          ...(d.rutinasPersonalizadas || {}),
+          ...rutinaPropuesta,
+        };
+        d.schemaVersion = 12;
+        version = 12;
+        cambio = true;
+      } else if (version === 12) {
+        d.rutinaNuevaDesde = "2026-11-01";
+        d.schemaVersion = 13;
+        version = 13;
+        cambio = true;
+      } else if (version === 13) {
+        d.rutinaNuevaDesde = "2026-11-01";
+        d.schemaVersion = 14;
+        version = 14;
+        cambio = true;
       } else {
         break;
       }

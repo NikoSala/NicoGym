@@ -14,13 +14,52 @@ const ROUTINES = {
   ],
 
   martes: [
+    ["prensa-piernas-maquina", 3, "8-12"],
+    ["curl-femoral-sentado", 3, "10-15"],
+    ["extension-cuadriceps-maquina", 3, "10-15"],
+    ["abductores-maquina", 3, "12-15"],
+  ],
+
+  miercoles: [
     ["jalon-polea-al-pecho", 3, "8-12"],
     ["remo-sentado-polea", 3, "8-12"],
-    ["remo-pecho-apoyado-maquina", 2, "8-12"],
-    ["curl-scott-supino-barra-z", 2, "10-15"],
+    ["remo-pecho-apoyado-maquina", 3, "8-12"],
+    ["curl-scott-supino-barra-z", 3, "10-15"],
     ["curl-v-polea-baja", 3, "10-15"],
   ],
 
+  jueves: [
+    ["prensa-piernas-maquina", 3, "8-12"],
+    ["curl-femoral-sentado", 3, "10-15"],
+    ["aductores-maquina", 3, "12-15"],
+    ["gemelos-prensa-piernas", 3, "12-20"],
+  ],
+
+  viernes: [
+    ["press-banca-barra", 3, "8-12"],
+    ["aperturas", 3, "10-15"],
+    ["remo-pecho-apoyado-maquina", 3, "8-12"],
+    ["elevacion-lateral-polea", 3, "12-15 por lado"],
+    ["aperturas-inversas-maquina", 3, "12-15"],
+  ],
+};
+
+// Plan que se mantiene durante la semana de transición (hasta el 1 de noviembre de 2026).
+const ROUTINES_ANTERIORES = {
+  lunes: [
+    ["press-pecho-maquina", 3, "8-12"],
+    ["aperturas-peck-deck", 3, "10-15"],
+    ["press-hombros-maquina", 3, "8-12"],
+    ["elevacion-lateral-polea", 3, "12-15 por lado"],
+    ["extension-triceps-polea", 3, "10-15"],
+  ],
+  martes: [
+    ["jalon-polea-al-pecho", 3, "8-12"],
+    ["remo-sentado-polea", 3, "8-12"],
+    ["remo-pecho-apoyado-maquina", 3, "8-12"],
+    ["curl-scott-supino-barra-z", 3, "10-15"],
+    ["curl-v-polea-baja", 3, "10-15"],
+  ],
   miercoles: [
     ["prensa-piernas-maquina", 3, "8-12"],
     ["curl-femoral-sentado", 3, "10-15"],
@@ -28,20 +67,18 @@ const ROUTINES = {
     ["abductores-maquina", 3, "12-15"],
     ["aductores-maquina", 3, "12-15"],
   ],
-
   jueves: [
     ["curl-v-polea-baja", 3, "10-15"],
     ["curl-scott-supino-barra-z", 3, "10-15"],
     ["extension-triceps-polea", 3, "10-15"],
     ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
   ],
-
   viernes: [
     ["press-banca-barra", 3, "8-12"],
     ["aperturas", 3, "10-15"],
-    ["press-hombros-maquina", 2, "8-12"],
-    ["elevacion-lateral-polea", 2, "12-15 por lado"],
-    ["aperturas-inversas-maquina", 2, "12-15"],
+    ["press-hombros-maquina", 3, "8-12"],
+    ["elevacion-lateral-polea", 3, "12-15 por lado"],
+    ["aperturas-inversas-maquina", 3, "12-15"],
   ],
 };
 
@@ -80,6 +117,9 @@ function getPreparacionEjercicio(ejercicio) {
 // ==========================================
 
 function getRutinaDelDia(dia) {
+  const fechaCambio = STATE.rutinaNuevaDesde || "2026-11-01";
+  if (UI.getHoy() < fechaCambio) return ROUTINES_ANTERIORES[dia] || [];
+
   const personalizadas = STATE.rutinasPersonalizadas;
   if (personalizadas && Object.prototype.hasOwnProperty.call(personalizadas, dia)) {
     return Array.isArray(personalizadas[dia]) ? personalizadas[dia] : [];

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "nicogym-";
-const CACHE_VERSION = "shell-v48";
+const CACHE_VERSION = "shell-v51";
 const SHELL_CACHE = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-v1`;
 const MAX_RUNTIME_CACHE_ENTRIES = 120;

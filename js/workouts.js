@@ -80,6 +80,11 @@ const Rutinas = {
                                 <div style="font-size:12px;color:var(--text-secondary);margin:4px 0 10px;">
                                     ⏱️ Duración orientativa: ${estimarDuracionRutina(dia, ejercicios)} · incluye pausas y cardio si toca
                                 </div>
+                                <div class="routine-transition-notice" role="status">
+                                  ${UI.getHoy() < (STATE.rutinaNuevaDesde || "2026-11-01")
+                                    ? "Esta semana se mantiene la rutina anterior. La nueva se activa automáticamente el domingo 1 de noviembre; la empezarás el lunes."
+                                    : "La nueva distribución semanal está activa."}
+                                </div>
                                 <aside class="routine-warmup" aria-label="Calentamiento">
                                     <strong>Calentamiento</strong>
                                     <span>Antes de las series efectivas, haz 1 serie inicial del primer ejercicio con menos peso para calentar. No cuenta como serie de trabajo.</span>
