@@ -1051,6 +1051,15 @@ const APP = {
               </div>
             </details>
 
+            <details class="me-workout-tips">
+              <summary><i class="fa-solid fa-screwdriver-wrench"></i> Preparación y material</summary>
+              <div class="me-workout-tips-content">
+                <p><strong>Preparación:</strong> ${ExerciseLibrary._escapar(ej.preparacion || "Ajusta el equipo a tu altura y comprueba el recorrido.")}</p>
+                <p><strong>Material:</strong> ${ExerciseLibrary._escapar((ej.material || ["No especificado"]).join(", "))}</p>
+                <p>${ExerciseLibrary._escapar(ej.descripcion || "")}</p>
+              </div>
+            </details>
+
             <div class="me-workout-image-card">
 
               ${

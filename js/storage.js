@@ -127,6 +127,35 @@ const Storage = {
         d.schemaVersion = 9;
         version = 9;
         cambio = true;
+      } else if (version === 9) {
+        const reemplazos = {
+          "curl-biceps-maquina": "curl-scott-supino-barra-z",
+          "alternating-dumbbell-curl": "curl-v-polea-baja",
+        };
+        Object.keys(d.rutinasPersonalizadas || {}).forEach((dia) => {
+          if (!Array.isArray(d.rutinasPersonalizadas[dia])) return;
+          d.rutinasPersonalizadas[dia] = d.rutinasPersonalizadas[dia].map((item) =>
+            Array.isArray(item) && reemplazos[item[0]]
+              ? [reemplazos[item[0]], item[1], item[2]]
+              : item,
+          );
+        });
+        d.schemaVersion = 10;
+        version = 10;
+        cambio = true;
+      } else if (version === 10) {
+        const reemplazoPressInclinado = "press-banca-barra";
+        Object.keys(d.rutinasPersonalizadas || {}).forEach((dia) => {
+          if (!Array.isArray(d.rutinasPersonalizadas[dia])) return;
+          d.rutinasPersonalizadas[dia] = d.rutinasPersonalizadas[dia].map((item) =>
+            Array.isArray(item) && item[0] === "press-inclinado-maquina"
+              ? [reemplazoPressInclinado, item[1], item[2]]
+              : item,
+          );
+        });
+        d.schemaVersion = 11;
+        version = 11;
+        cambio = true;
       } else {
         break;
       }

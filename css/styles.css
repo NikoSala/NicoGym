@@ -465,9 +465,6 @@
         .routine-exercise-copy small { color: var(--text-secondary); font-size: 10px; }
         .routine-setup { display: block; margin-top: 3px; color: var(--text-secondary); font-size: 10px; line-height: 1.45; }
         .routine-setup strong { color: var(--text); font-size: inherit; }
-        .routine-exercise-image-button { display: flex; align-items: center; gap: 8px; width: fit-content; max-width: 100%; margin: 5px 0 2px; padding: 4px 8px 4px 4px; border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); background: rgba(255,255,255,.035); font: inherit; font-size: 10px; cursor: zoom-in; text-align: left; }
-        .routine-exercise-image-button img { display: block; width: 64px; height: 48px; border-radius: 5px; object-fit: cover; background: rgba(0,0,0,.2); }
-        .routine-exercise-image-button:hover { border-color: var(--primary); color: var(--text); }
         .routine-replacement-description { margin: 0 0 12px; color: var(--text-secondary); font-size: 12px; }
         .routine-replacement-search-label { display: block; margin-bottom: 5px; color: var(--text-secondary); font-size: 11px; }
         .routine-replacement-list { display: grid; gap: 6px; max-height: 48vh; overflow-y: auto; margin-top: 10px; }

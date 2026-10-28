@@ -17,8 +17,8 @@ const ROUTINES = {
     ["jalon-polea-al-pecho", 3, "8-12"],
     ["remo-sentado-polea", 3, "8-12"],
     ["remo-pecho-apoyado-maquina", 2, "8-12"],
-    ["curl-biceps-maquina", 2, "10-15"],
-    ["alternating-dumbbell-curl", 3, "10-15 por lado"],
+    ["curl-scott-supino-barra-z", 2, "10-15"],
+    ["curl-v-polea-baja", 3, "10-15"],
   ],
 
   miercoles: [
@@ -30,14 +30,14 @@ const ROUTINES = {
   ],
 
   jueves: [
-    ["alternating-dumbbell-curl", 3, "10-15 por lado"],
-    ["curl-biceps-maquina", 3, "10-15"],
+    ["curl-v-polea-baja", 3, "10-15"],
+    ["curl-scott-supino-barra-z", 3, "10-15"],
     ["extension-triceps-polea", 3, "10-15"],
     ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
   ],
 
   viernes: [
-    ["press-inclinado-maquina", 3, "8-12"],
+    ["press-banca-barra", 3, "8-12"],
     ["aperturas", 3, "10-15"],
     ["press-hombros-maquina", 2, "8-12"],
     ["elevacion-lateral-polea", 2, "12-15 por lado"],
@@ -46,6 +46,9 @@ const ROUTINES = {
 };
 
 const PREPARACION_EJERCICIOS = {
+  "press-banca-barra": "Coloca un banco plano centrado bajo la barra; ajusta los soportes para descolgarla sin elevar los hombros y usa los seguros del rack. Túmbate con los ojos bajo la barra y los pies firmes en el suelo.",
+  "curl-scott-supino-barra-z": "Coloca el banco Scott para que el borde quede bajo las axilas; apoya la parte superior de los brazos y sujeta la barra Z con las palmas hacia arriba.",
+  "curl-v-polea-baja": "Engancha el agarre en V a la polea baja; ponte de pie frente a la polea, toma ambas empuñaduras con agarre neutro y mantén los codos junto al torso.",
   "press-pecho-maquina": "Ajusta el asiento para que las asas queden frente al centro del pecho; apoya la espalda.",
   "aperturas-peck-deck": "Ajusta el asiento para que los brazos queden a la altura del pecho y apoya la espalda.",
   "press-hombros-maquina": "Ajusta el asiento para empezar con las asas a la altura de los hombros; apoya la espalda.",
