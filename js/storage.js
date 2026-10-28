@@ -178,7 +178,7 @@ const Storage = {
             ["gemelos-prensa-piernas", 3, "12-20"],
           ],
           viernes: [
-            ["press-banca-barra", 3, "8-12"],
+            ["press-inclinado", 3, "8-12"],
             ["aperturas", 3, "10-15"],
             ["remo-pecho-apoyado-maquina", 3, "8-12"],
             ["elevacion-lateral-polea", 3, "12-15 por lado"],
@@ -201,6 +201,18 @@ const Storage = {
         d.rutinaNuevaDesde = "2026-11-01";
         d.schemaVersion = 14;
         version = 14;
+        cambio = true;
+      } else if (version === 14) {
+        Object.keys(d.rutinasPersonalizadas || {}).forEach((dia) => {
+          if (!Array.isArray(d.rutinasPersonalizadas[dia])) return;
+          d.rutinasPersonalizadas[dia] = d.rutinasPersonalizadas[dia].map((item) =>
+            Array.isArray(item) && item[0] === "press-banca-barra"
+              ? ["press-inclinado", item[1], item[2]]
+              : item,
+          );
+        });
+        d.schemaVersion = 15;
+        version = 15;
         cambio = true;
       } else {
         break;
