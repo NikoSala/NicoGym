@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "nicogym-";
-const CACHE_VERSION = "shell-v53";
+const CACHE_VERSION = "shell-v54";
 const SHELL_CACHE = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-v1`;
 const MAX_RUNTIME_CACHE_ENTRIES = 120;
@@ -15,7 +15,7 @@ const APP_SHELL = [
   "./js/config.js",
   "./js/exercise-names.js",
   "./js/exercises.js?v=20261027d",
-  "./js/exercise-library.js?v=20261001a",
+  "./js/exercise-library.js?v=20261028b",
   "./js/helpers.js?v=20261021d",
   "./js/routines.js?v=20261028a",
   "./js/cargas.js",
@@ -37,7 +37,7 @@ const APP_SHELL = [
   "./js/comparador.js?v=20261021d",
   "./js/objetivos.js?v=20261021d",
   "./js/history.js?v=20261021d",
-  "./js/init.js?v=20261001a",
+  "./js/init.js?v=20261028b",
 ];
 
 self.addEventListener("install", (event) => {

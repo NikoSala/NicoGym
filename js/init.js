@@ -19,8 +19,14 @@ document.addEventListener('DOMContentLoaded', () => APP.init());
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(error => {
-      console.warn('No se pudo registrar el modo sin conexión:', error);
-    });
+    const yaControlada = Boolean(navigator.serviceWorker.controller);
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (yaControlada) window.location.reload();
+    }, { once: true });
+    navigator.serviceWorker.register('./sw.js')
+      .then(registration => registration.update())
+      .catch(error => {
+        console.warn('No se pudo actualizar el modo sin conexión:', error);
+      });
   });
 }

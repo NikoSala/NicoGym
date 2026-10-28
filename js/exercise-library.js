@@ -119,7 +119,7 @@ const ExerciseLibrary = {
       </div>
       <div class="library-grid" id="libraryGrid">${visibles.map((ej) => {
         const indice = ejercicios.indexOf(ej);
-        const media = ej.urlGif ? `<img src="${this._escapar(ej.urlGif)}" alt="Demostración de ${this._escapar(ej.nombre)}" loading="lazy" onerror="this.parentElement.classList.add('is-placeholder');this.remove()">` : "";
+        const media = "";
         const dias = DAY_KEYS_ROUTINE.map((dia, diaIndex) => {
           const seleccionado = getRutinaDelDia(dia).some(([id]) => id === ej.id);
           const etiqueta = ["L", "M", "X", "J", "V"][diaIndex];
@@ -143,7 +143,7 @@ const ExerciseLibrary = {
     if (!ej) return;
     const lista = (items) => items?.length ? `<ul>${items.map((item) => `<li>${this._escapar(item)}</li>`).join("")}</ul>` : "";
     const texto = (value) => value ? `<p>${this._escapar(value)}</p>` : "";
-    const media = ej.urlGif ? `<img class="library-detail-image" src="${this._escapar(ej.urlGif)}" alt="Demostración de ${this._escapar(ej.nombre)}" onerror="this.style.display='none'">` : "";
+    const media = "";
     Modal.abrir(`<article class="library-detail">${media}<span class="library-eyebrow">${this._escapar(this._gruposMusculares(ej).join(" · ") || ej.categoria || "Ejercicio")}</span><h2>${this._escapar(ej.nombre)}</h2>${texto(ej.descripcion)}${ej.musculosPrincipales?.length ? `<h3>Músculos principales</h3><p>${this._escapar(ej.musculosPrincipales.join(" · "))}</p>` : ""}${ej.material?.length ? `<h3>Material</h3><p>${this._escapar(ej.material.join(" · "))}</p>` : ""}${ej.consejos ? `<h3>Consejos</h3>${lista(ej.consejos.split(/\r?\n/).map((x) => x.replace(/^•\s*/, "")).filter(Boolean))}` : ""}${ej.errores ? `<h3>Errores frecuentes</h3>${lista(ej.errores.split(/\r?\n/).map((x) => x.replace(/^•\s*/, "")).filter(Boolean))}` : ""}</article>`);
   },
 };
