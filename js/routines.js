@@ -20,19 +20,12 @@ const ROUTINES = {
     ["abductores-maquina", 3, "12-15"],
   ],
 
-  miercoles: [
-    ["jalon-polea-al-pecho", 3, "8-12"],
-    ["remo-sentado-polea", 3, "8-12"],
-    ["remo-pecho-apoyado-maquina", 3, "8-12"],
-    ["curl-scott-supino-barra-z", 3, "10-15"],
-    ["curl-v-polea-baja", 3, "10-15"],
-  ],
+  miercoles: [],
 
   jueves: [
-    ["prensa-piernas-maquina", 3, "8-12"],
-    ["curl-femoral-sentado", 3, "10-15"],
     ["aductores-maquina", 3, "12-15"],
     ["gemelos-prensa-piernas", 3, "12-20"],
+    ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
   ],
 
   viernes: [
@@ -41,6 +34,16 @@ const ROUTINES = {
     ["remo-pecho-apoyado-maquina", 3, "8-12"],
     ["elevacion-lateral-polea", 3, "12-15 por lado"],
     ["aperturas-inversas-maquina", 3, "12-15"],
+  ],
+
+  sabado: [],
+
+  domingo: [
+    ["jalon-polea-al-pecho", 3, "8-12"],
+    ["remo-sentado-polea", 3, "8-12"],
+    ["remo-pecho-apoyado-maquina", 3, "8-12"],
+    ["curl-scott-supino-barra-z", 3, "10-15"],
+    ["curl-v-polea-baja", 3, "10-15"],
   ],
 };
 
@@ -116,9 +119,9 @@ function getPreparacionEjercicio(ejercicio) {
 // OBTENER RUTINA DEL DÍA
 // ==========================================
 
-function getRutinaDelDia(dia) {
+function getRutinaDelDia(dia, fecha = UI.getHoy()) {
   const fechaCambio = STATE.rutinaNuevaDesde || "2026-11-01";
-  if (UI.getHoy() < fechaCambio) return ROUTINES_ANTERIORES[dia] || [];
+  if (fecha < fechaCambio) return ROUTINES_ANTERIORES[dia] || [];
 
   const personalizadas = STATE.rutinasPersonalizadas;
   if (personalizadas && Object.prototype.hasOwnProperty.call(personalizadas, dia)) {
@@ -127,8 +130,15 @@ function getRutinaDelDia(dia) {
   return ROUTINES[dia] || [];
 }
 
-function getResumenRutinaDelDia(dia) {
-  const ejercicios = getEjerciciosPorDia(dia);
+function esDiaDescansoRutina(dia, fecha = UI.getHoy()) {
+  const inicioNuevaRutina = STATE.rutinaNuevaDesde || "2026-11-01";
+  const diasDescanso = fecha < inicioNuevaRutina
+    ? ["sabado", "domingo"]
+    : ["miercoles", "sabado"];
+  return diasDescanso.includes(dia);
+}
+function getResumenRutinaDelDia(dia, fecha = UI.getHoy()) {
+  const ejercicios = getEjerciciosPorDia(dia, fecha);
   const grupos = [...new Set(ejercicios.map((ej) => ej.grupo).filter(Boolean))];
   return ejercicios.length
     ? `${grupos.join(" + ")} · ${ejercicios.length} ejercicios`
@@ -139,10 +149,10 @@ function getResumenRutinaDelDia(dia) {
 // OBTENER EJERCICIOS COMPLETOS DEL DÍA
 // ==========================================
 
-function getEjerciciosPorDia(dia) {
+function getEjerciciosPorDia(dia, fecha = UI.getHoy()) {
   const db = getExerciseDatabase();
 
-  return getRutinaDelDia(dia)
+  return getRutinaDelDia(dia, fecha)
     .map(([id, series, reps]) => {
       const base = db.find((e) => e.id === id);
 
@@ -160,7 +170,7 @@ function getEjerciciosPorDia(dia) {
     .filter(Boolean);
 }
 
-const DAY_KEYS_ROUTINE = ["lunes", "martes", "miercoles", "jueves", "viernes"];
+const DAY_KEYS_ROUTINE = ["lunes", "martes", "jueves", "viernes", "domingo"];
 
 const RutinaEditor = {
   _categoriasCompatibles(ejercicio) {

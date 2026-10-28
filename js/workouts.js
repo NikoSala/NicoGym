@@ -19,9 +19,9 @@ const Rutinas = {
     if (!tc) return;
     const diaSeleccionadoAntes = diaActivo;
 
-    const dias = ["lunes", "martes", "miercoles", "jueves", "viernes"];
-    const nombres = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
-    const iconos = ["🔵", "🟢", "🟣", "🟠", "🔵"];
+    const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+    const nombres = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+    const iconos = ["🔵", "🟢", "🟣", "🟠", "🔵", "😌", "🟢"];
     const rutinaCompletadaHoy = STATE.historialEntrenos.find((sesion) => sesion.fecha === UI.getHoy())?.dia;
 
     tc.innerHTML = "";
@@ -35,7 +35,7 @@ const Rutinas = {
       btn.textContent = `${iconos[idx]} ${nombres[idx]}`;
       btn.dataset.dia = dia;
 
-      const esDescanso = ["sabado", "domingo"].includes(dia);
+      const esDescanso = esDiaDescansoRutina(dia);
       const completado = rutinaCompletadaHoy === dia || rutinaCompletadaEstaSemana;
 
       if (esDescanso) btn.classList.add("descanso");
@@ -82,7 +82,7 @@ const Rutinas = {
                                 </div>
                                 <div class="routine-transition-notice" role="status">
                                   ${UI.getHoy() < (STATE.rutinaNuevaDesde || "2026-11-01")
-                                    ? "Esta semana se mantiene la rutina anterior. La nueva se activa automáticamente el domingo 1 de noviembre; la empezarás el lunes."
+                                    ? "Esta semana se mantiene la rutina anterior. La nueva se activa automáticamente el domingo 1 de noviembre."
                                     : "La nueva distribución semanal está activa."}
                                 </div>
                                 <aside class="routine-warmup" aria-label="Calentamiento">
@@ -139,7 +139,7 @@ const Rutinas = {
     const diaActual = UI.getDiaNombre();
     diaActivo = DAY_KEYS_ROUTINE.includes(diaSeleccionadoAntes)
       ? diaSeleccionadoAntes
-      : diaActual === "domingo" ? "lunes" : diaActual;
+      : diaActual;
     const idxActivo = dias.indexOf(diaActivo);
     if (idxActivo >= 0) {
       const tabs = tc.querySelectorAll(".dtab");

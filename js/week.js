@@ -10,33 +10,14 @@ const Semana = {
     const hoyDia = hoy.getDay();
 
     const dias = [
-      {
-        key: "lunes",
-        nombre: "LUNES",
-        icono: "🔵",
-      },
-      {
-        key: "martes",
-        nombre: "MARTES",
-        icono: "🟢",
-      },
-      {
-        key: "miercoles",
-        nombre: "MIÉRCOLES",
-        icono: "🟣",
-      },
-      {
-        key: "jueves",
-        nombre: "JUEVES",
-        icono: "🟠",
-      },
-      {
-        key: "viernes",
-        nombre: "VIERNES",
-        icono: "🔵",
-      },
+      { key: "lunes", nombre: "LUNES", icono: "🔵" },
+      { key: "martes", nombre: "MARTES", icono: "🟢" },
+      { key: "miercoles", nombre: "MIÉRCOLES", icono: "😌" },
+      { key: "jueves", nombre: "JUEVES", icono: "🟠" },
+      { key: "viernes", nombre: "VIERNES", icono: "🔵" },
+      { key: "sabado", nombre: "SÁBADO", icono: "😌" },
+      { key: "domingo", nombre: "DOMINGO", icono: "🟢" },
     ];
-
     const diaMap = {
       1: "lunes",
       2: "martes",
@@ -52,13 +33,14 @@ const Semana = {
 
     dias.forEach((dia, indice) => {
       const esHoy = dia.key === diaActualKey;
-      const esDescanso = dia.key === "sabado" || dia.key === "domingo";
       const fecha = new Date(hoy);
       fecha.setDate(hoy.getDate() + indice - ((hoyDia + 6) % 7));
+      const fechaKey = UI.formatFecha(fecha);
+      const esDescanso = esDiaDescansoRutina(dia.key, fechaKey);
       let ejercicios = [];
 
       if (!esDescanso) {
-        ejercicios = getEjerciciosPorDia(dia.key);
+        ejercicios = getEjerciciosPorDia(dia.key, fechaKey);
       }
       const rutinaCompletada = ejercicios.length > 0 && ejercicios.every((_, ejercicioIndex) => STATE.checks[`${dia.key}-${ejercicioIndex}`] === true);
       const completado = !esDescanso && (STATE.diasEntrenados.includes(UI.formatFecha(fecha)) || rutinaCompletada);
@@ -74,7 +56,7 @@ const Semana = {
       html += `<article class="${claseDia}${claseDescanso}">`;
       html += `<div class="rd-header">`;
       html += `<div><span class="rd-dia">${dia.icono} ${dia.nombre}</span>`;
-      html += `<div class="rd-grupo">${getResumenRutinaDelDia(dia.key)}</div></div>`;
+      html += `<div class="rd-grupo">${getResumenRutinaDelDia(dia.key, fechaKey)}</div></div>`;
       html += `<span class="rd-estado ${completado ? "completado" : esHoy ? "actual" : esDescanso ? "reposo" : "pendiente"}">${completado ? "HECHO" : esHoy ? "HOY" : esDescanso ? "DESCANSO" : "PENDIENTE"}</span>`;
       html += `</div>`;
       const cardio = CONFIG.CARDIO_POR_DIA?.[dia.key];

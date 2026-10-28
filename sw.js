@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "nicogym-";
-const CACHE_VERSION = "shell-v54";
+const CACHE_VERSION = "shell-v55";
 const SHELL_CACHE = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-v1`;
 const MAX_RUNTIME_CACHE_ENTRIES = 120;
@@ -12,26 +12,26 @@ const APP_SHELL = [
   "./img/logo-nicogym-600.jpg",
   "./img/icon-192.png",
   "./img/icon-512.png",
-  "./js/config.js",
+  "./js/config.js?v=20261028c",
   "./js/exercise-names.js",
   "./js/exercises.js?v=20261027d",
-  "./js/exercise-library.js?v=20261028b",
+  "./js/exercise-library.js?v=20261028c",
   "./js/helpers.js?v=20261021d",
-  "./js/routines.js?v=20261028a",
+  "./js/routines.js?v=20261028c",
   "./js/cargas.js",
-  "./js/storage.js?v=20261028a",
+  "./js/storage.js?v=20261028c",
   "./js/state.js?v=20260923a",
   "./js/ui.js?v=20261001b",
   "./js/modal.js",
   "./js/records.js?v=20261021d",
   "./js/progression.js",
-  "./js/app.js?v=20261021d",
-  "./js/dashboard.js?v=20261001c",
-  "./js/workouts.js?v=20261028a",
-  "./js/week.js?v=20261021d",
+  "./js/app.js?v=20261028c",
+  "./js/dashboard.js?v=20261028c",
+  "./js/workouts.js?v=20261028c",
+  "./js/week.js?v=20261028c",
   "./js/weight.js?v=20260826",
   "./js/stats.js?v=20261021d",
-  "./js/agenda.js?v=20260923a",
+  "./js/agenda.js?v=20261028c",
   "./js/photos.js?v=20261001a",
   "./js/settings.js?v=20261001a",
   "./js/comparador.js?v=20261021d",

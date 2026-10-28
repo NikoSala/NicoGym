@@ -3,7 +3,7 @@
         // ==========================================
         const CONFIG = {
             VERSION: '3.4',
-            STATE_SCHEMA_VERSION: 15,
+            STATE_SCHEMA_VERSION: 16,
             BACKUP_VERSION: 3,
             ALTURA: null,
             PESO_OBJETIVO: null,
@@ -14,12 +14,12 @@
                 sabado: 'Sábado', domingo: 'Domingo' },
             TIPOS_RUTINA: {
                 lunes: 'Pecho + Hombro + Tríceps · 5 ejercicios',
-                martes: 'Espalda + Bíceps · 5 ejercicios',
-                miercoles: 'Pierna completa · 5 ejercicios',
-                jueves: 'Bíceps + Tríceps · 4 ejercicios',
-                viernes: 'Hombro + Pecho · 5 ejercicios',
+                martes: 'Pierna completa · 4 ejercicios',
+                miercoles: 'Descanso',
+                jueves: 'Pierna + Tríceps · 3 ejercicios',
+                viernes: 'Tren superior · 5 ejercicios',
                 sabado: 'Descanso',
-                domingo: 'Descanso'
+                domingo: 'Espalda + Bíceps · 5 ejercicios'
             },
             CARDIO_POR_DIA: {
                 lunes: { maquina: 'Cinta', min: 10, max: 15 },

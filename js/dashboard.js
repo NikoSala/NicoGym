@@ -19,7 +19,7 @@ const Dashboard = {
 
     const hayEntrenamientoPendiente =
       entrenamientoPendiente &&
-      (entrenamientoPendiente.dia === diaHoy || ["sabado", "domingo"].includes(diaHoy)) &&
+      (entrenamientoPendiente.dia === diaHoy || diaHoy === "sabado") &&
       Array.isArray(entrenamientoPendiente.ejerciciosEntreno) &&
       entrenamientoPendiente.ejerciciosEntreno.length > 0;
     const ejerciciosHoy = getEjerciciosPorDia(diaHoy);
@@ -56,7 +56,7 @@ const Dashboard = {
       const fecha = new Date(inicioSemana);
       fecha.setDate(inicioSemana.getDate() + indice);
       const fechaKey = UI.formatFecha(fecha);
-      const descanso = indice > 4;
+      const descanso = esDiaDescansoRutina(diaNombre, fechaKey);
       const completado = STATE.diasEntrenados.includes(fechaKey);
       return { diaNombre, etiqueta: etiquetasDias[indice], fechaKey, descanso, completado, esHoy: fechaKey === UI.getHoy() };
     });
@@ -88,13 +88,15 @@ const Dashboard = {
           <button class="dashboard-primary-action" onclick="APP.iniciarEntreno('${entrenamientoPendiente.dia}')"><i class="fa-solid fa-play"></i> CONTINUAR</button>
         </section>
       `
-      : dia === "sabado" || dia === "domingo"
+      : esDiaDescansoRutina(dia) && dia !== "sabado"
+        ? `<section class="dashboard-workout-card dashboard-workout-rest"><span class="dashboard-kicker">HOY</span><div class="dashboard-workout-day">${UI.getDiaSemanaNombre(hoy)}</div><h1>Día de descanso</h1><p>Hoy toca recuperar antes de la próxima sesión.</p></section>`
+      : dia === "sabado"
         ? `
           <section class="dashboard-workout-card dashboard-workout-rest">
             <span class="dashboard-kicker">HOY</span>
             <div class="dashboard-workout-day">${UI.getDiaSemanaNombre(hoy)}</div>
             <h1>${entrenadoHoy ? "Entrenamiento registrado" : "Día comodín"}</h1>
-            <p>${entrenadoHoy ? "Ya has guardado tu entrenamiento de hoy." : "¿Te saltaste algún día? Elige la rutina pendiente que quieres hacer hoy."}</p>
+            <p>${entrenadoHoy ? "Ya has guardado tu entrenamiento de hoy." : "¿Te saltaste algún día? Elige una rutina pendiente para recuperar hoy."}</p>
             ${entrenadoHoy
               ? `<button class="dashboard-primary-action" onclick="APP.navegar('historial')"><i class="fa-solid fa-clock-rotate-left"></i> VER ENTRENAMIENTO</button>`
               : `<button class="dashboard-primary-action" onclick="APP.abrirSelectorDiaComodin()"><i class="fa-solid fa-dumbbell"></i> ELEGIR RUTINA</button>`}

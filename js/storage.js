@@ -214,6 +214,48 @@ const Storage = {
         d.schemaVersion = 15;
         version = 15;
         cambio = true;
+      } else if (version === 15) {
+        d.rutinasPersonalizadas = {
+          ...(d.rutinasPersonalizadas || {}),
+          lunes: [
+            ["press-pecho-maquina", 3, "8-12"],
+            ["aperturas-peck-deck", 2, "10-15"],
+            ["press-hombros-maquina", 2, "8-12"],
+            ["elevacion-lateral-polea", 2, "12-15 por lado"],
+            ["extension-triceps-polea", 2, "10-15"],
+          ],
+          martes: [
+            ["prensa-piernas-maquina", 3, "8-12"],
+            ["curl-femoral-sentado", 3, "10-15"],
+            ["extension-cuadriceps-maquina", 3, "10-15"],
+            ["abductores-maquina", 3, "12-15"],
+          ],
+          miercoles: [],
+          jueves: [
+            ["aductores-maquina", 3, "12-15"],
+            ["gemelos-prensa-piernas", 3, "12-20"],
+            ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
+          ],
+          viernes: [
+            ["press-inclinado", 3, "8-12"],
+            ["aperturas", 3, "10-15"],
+            ["remo-pecho-apoyado-maquina", 3, "8-12"],
+            ["elevacion-lateral-polea", 3, "12-15 por lado"],
+            ["aperturas-inversas-maquina", 3, "12-15"],
+          ],
+          sabado: [],
+          domingo: [
+            ["jalon-polea-al-pecho", 3, "8-12"],
+            ["remo-sentado-polea", 3, "8-12"],
+            ["remo-pecho-apoyado-maquina", 3, "8-12"],
+            ["curl-scott-supino-barra-z", 3, "10-15"],
+            ["curl-v-polea-baja", 3, "10-15"],
+          ],
+        };
+        d.rutinaNuevaDesde = "2026-11-01";
+        d.schemaVersion = 16;
+        version = 16;
+        cambio = true;
       } else {
         break;
       }
@@ -292,7 +334,7 @@ const Storage = {
       typeof STATE.rutinasPersonalizadas !== "object" ||
       Array.isArray(STATE.rutinasPersonalizadas)
     ) STATE.rutinasPersonalizadas = {};
-    ["lunes", "martes", "miercoles", "jueves", "viernes"].forEach((dia) => {
+    ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"].forEach((dia) => {
       const rutina = STATE.rutinasPersonalizadas[dia];
       if (rutina === undefined) return;
       if (!Array.isArray(rutina)) {
@@ -526,7 +568,7 @@ const Storage = {
     }
     if (estado.entrenamientoPendiente !== null && estado.entrenamientoPendiente !== undefined) {
       const pendiente = estado.entrenamientoPendiente;
-      if (!esObjeto(pendiente) || !["lunes", "martes", "miercoles", "jueves", "viernes"].includes(pendiente.dia))
+      if (!esObjeto(pendiente) || !["lunes", "martes", "jueves", "viernes", "domingo"].includes(pendiente.dia))
         throw new Error("Entrenamiento pendiente inválido");
       if (pendiente.semana !== undefined && (typeof pendiente.semana !== "string" || !/^\d{4}-W\d{2}$/.test(pendiente.semana)))
         throw new Error("Semana del entrenamiento pendiente inválida");

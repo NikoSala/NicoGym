@@ -122,7 +122,7 @@ const ExerciseLibrary = {
         const media = "";
         const dias = DAY_KEYS_ROUTINE.map((dia, diaIndex) => {
           const seleccionado = getRutinaDelDia(dia).some(([id]) => id === ej.id);
-          const etiqueta = ["L", "M", "X", "J", "V"][diaIndex];
+          const etiqueta = { lunes: "L", martes: "M", jueves: "J", viernes: "V", domingo: "D" }[dia];
           const diaNombre = CONFIG.NOMBRES_DIAS[dia];
           return `<button type="button" class="library-day-toggle ${seleccionado ? "active" : ""}" data-day="${dia}" data-exercise-id="${this._escapar(ej.id)}" aria-label="${seleccionado ? "Quitar" : "Añadir"} ${this._escapar(ej.nombre)} ${seleccionado ? "de" : "a"} ${this._escapar(diaNombre)}" aria-pressed="${seleccionado}" title="${this._escapar(diaNombre)}">${etiqueta}</button>`;
         }).join("");
