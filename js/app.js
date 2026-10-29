@@ -224,14 +224,14 @@ const APP = {
       UI.toast("Ya has registrado un entrenamiento hoy", "info");
       return;
     }
-    const dias = ["lunes", "martes", "jueves", "viernes", "domingo"];
+    const dias = ["lunes", "martes", "jueves", "viernes"];
     const disponibles = dias.filter((dia) => {
       const ejercicios = getEjerciciosPorDia(dia);
       return ejercicios.length > 0 && !ejercicios.every((_, indice) => STATE.checks[`${dia}-${indice}`] === true);
     });
     Modal.abrir(`
       <h3>Elige la rutina que vas a recuperar</h3>
-      <p class="modal-description">El sábado es comodín: selecciona un día de rutina pendiente para recuperar.</p>
+      <p class="modal-description">Miércoles, sábado y domingo son comodines: selecciona una rutina pendiente si quieres entrenar.</p>
       <div style="display:grid;gap:8px;margin-top:16px;">
         ${disponibles.map((dia) => `<button class="btn btn-ghost btn-block" type="button" onclick="Modal.cerrar(); APP.iniciarEntreno('${dia}')">${escapeHTML(CONFIG.NOMBRES_DIAS[dia])} · ${escapeHTML(getResumenRutinaDelDia(dia))}</button>`).join("") || '<p>Ya has completado todas las rutinas de esta semana.</p>'}
       </div>

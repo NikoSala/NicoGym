@@ -36,11 +36,11 @@ const Semana = {
       const fecha = new Date(hoy);
       fecha.setDate(hoy.getDate() + indice - ((hoyDia + 6) % 7));
       const fechaKey = UI.formatFecha(fecha);
-      const esDescanso = esDiaDescansoRutina(dia.key, fechaKey);
+      const esDescanso = esDiaDescansoRutina(dia.key);
       let ejercicios = [];
 
       if (!esDescanso) {
-        ejercicios = getEjerciciosPorDia(dia.key, fechaKey);
+        ejercicios = getEjerciciosPorDia(dia.key);
       }
       const rutinaCompletada = ejercicios.length > 0 && ejercicios.every((_, ejercicioIndex) => STATE.checks[`${dia.key}-${ejercicioIndex}`] === true);
       const completado = !esDescanso && (STATE.diasEntrenados.includes(UI.formatFecha(fecha)) || rutinaCompletada);
@@ -56,7 +56,7 @@ const Semana = {
       html += `<article class="${claseDia}${claseDescanso}">`;
       html += `<div class="rd-header">`;
       html += `<div><span class="rd-dia">${dia.icono} ${dia.nombre}</span>`;
-      html += `<div class="rd-grupo">${getResumenRutinaDelDia(dia.key, fechaKey)}</div></div>`;
+      html += `<div class="rd-grupo">${getResumenRutinaDelDia(dia.key)}</div></div>`;
       html += `<span class="rd-estado ${completado ? "completado" : esHoy ? "actual" : esDescanso ? "reposo" : "pendiente"}">${completado ? "HECHO" : esHoy ? "HOY" : esDescanso ? "DESCANSO" : "PENDIENTE"}</span>`;
       html += `</div>`;
       const cardio = CONFIG.CARDIO_POR_DIA?.[dia.key];

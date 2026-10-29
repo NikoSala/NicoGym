@@ -26,28 +26,22 @@ const ROUTINES = {
     ["aductores-maquina", 3, "12-15"],
     ["gemelos-prensa-piernas", 3, "12-20"],
     ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
+    ["extension-triceps-polea-unilateral", 3, "10-15 por lado"],
   ],
 
   viernes: [
-    ["press-inclinado", 3, "8-12"],
-    ["aperturas", 3, "10-15"],
-    ["remo-pecho-apoyado-maquina", 3, "8-12"],
-    ["elevacion-lateral-polea", 3, "12-15 por lado"],
-    ["aperturas-inversas-maquina", 3, "12-15"],
-  ],
-
-  sabado: [],
-
-  domingo: [
     ["jalon-polea-al-pecho", 3, "8-12"],
     ["remo-sentado-polea", 3, "8-12"],
     ["remo-pecho-apoyado-maquina", 3, "8-12"],
     ["curl-scott-supino-barra-z", 3, "10-15"],
     ["curl-v-polea-baja", 3, "10-15"],
   ],
+
+  sabado: [],
+  domingo: [],
 };
 
-// Plan que se mantiene durante la semana de transición (hasta el 1 de noviembre de 2026).
+// Plan que se mantiene durante la semana de transición (hasta el 28 de octubre de 2026).
 const ROUTINES_ANTERIORES = {
   lunes: [
     ["press-pecho-maquina", 3, "8-12"],
@@ -120,7 +114,7 @@ function getPreparacionEjercicio(ejercicio) {
 // ==========================================
 
 function getRutinaDelDia(dia, fecha = UI.getHoy()) {
-  const fechaCambio = STATE.rutinaNuevaDesde || "2026-11-01";
+  const fechaCambio = STATE.rutinaNuevaDesde || "2026-10-29";
   if (fecha < fechaCambio) return ROUTINES_ANTERIORES[dia] || [];
 
   const personalizadas = STATE.rutinasPersonalizadas;
@@ -131,10 +125,10 @@ function getRutinaDelDia(dia, fecha = UI.getHoy()) {
 }
 
 function esDiaDescansoRutina(dia, fecha = UI.getHoy()) {
-  const inicioNuevaRutina = STATE.rutinaNuevaDesde || "2026-11-01";
+  const inicioNuevaRutina = STATE.rutinaNuevaDesde || "2026-10-29";
   const diasDescanso = fecha < inicioNuevaRutina
     ? ["sabado", "domingo"]
-    : ["miercoles", "sabado"];
+    : ["miercoles", "sabado", "domingo"];
   return diasDescanso.includes(dia);
 }
 function getResumenRutinaDelDia(dia, fecha = UI.getHoy()) {
@@ -170,7 +164,7 @@ function getEjerciciosPorDia(dia, fecha = UI.getHoy()) {
     .filter(Boolean);
 }
 
-const DAY_KEYS_ROUTINE = ["lunes", "martes", "jueves", "viernes", "domingo"];
+const DAY_KEYS_ROUTINE = ["lunes", "martes", "jueves", "viernes"];
 
 const RutinaEditor = {
   _categoriasCompatibles(ejercicio) {
