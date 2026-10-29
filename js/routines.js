@@ -179,7 +179,7 @@ function obtenerEstadoComodinInteligente(diaActual = UI.getDiaNombre()) {
 
   const siguienteEntreno = orden
     .slice(indiceHoy + 1)
-    .find((dia) => DAY_KEYS_ROUTINE.includes(dia));
+    .find((dia) => DAY_KEYS_ROUTINE.includes(dia)) || "lunes";
   const grupos = (dia) => new Set(
     getEjerciciosPorDia(dia).flatMap((ejercicio) => ExerciseLibrary._gruposMusculares(ejercicio)),
   );
