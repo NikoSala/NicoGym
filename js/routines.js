@@ -7,10 +7,10 @@
 const ROUTINES = {
   lunes: [
     ["press-pecho-maquina", 3, "8-12"],
-    ["aperturas-peck-deck", 2, "10-15"],
-    ["press-hombros-maquina", 2, "8-12"],
-    ["elevacion-lateral-polea", 2, "12-15 por lado"],
-    ["extension-triceps-polea", 2, "10-15"],
+    ["remo-sentado-polea", 3, "8-12"],
+    ["press-hombros-maquina", 3, "8-12"],
+    ["curl-v-polea-baja", 3, "10-15"],
+    ["extension-triceps-polea", 3, "10-15"],
   ],
 
   martes: [
@@ -23,18 +23,19 @@ const ROUTINES = {
   miercoles: [],
 
   jueves: [
-    ["aductores-maquina", 3, "12-15"],
-    ["gemelos-prensa-piernas", 3, "12-20"],
+    ["aperturas-peck-deck", 3, "10-15"],
+    ["jalon-polea-al-pecho", 3, "8-12"],
+    ["remo-pecho-apoyado-maquina", 3, "8-12"],
+    ["elevacion-lateral-polea", 3, "12-15 por lado"],
+    ["curl-scott-supino-barra-z", 3, "10-15"],
     ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
-    ["extension-triceps-polea-unilateral", 3, "10-15 por lado"],
   ],
 
   viernes: [
-    ["jalon-polea-al-pecho", 3, "8-12"],
-    ["remo-sentado-polea", 3, "8-12"],
-    ["remo-pecho-apoyado-maquina", 3, "8-12"],
-    ["curl-scott-supino-barra-z", 3, "10-15"],
-    ["curl-v-polea-baja", 3, "10-15"],
+    ["curl-femoral-sentado", 3, "10-15"],
+    ["extension-cuadriceps-maquina", 3, "10-15"],
+    ["aductores-maquina", 3, "12-15"],
+    ["gemelos-prensa-piernas", 3, "12-20"],
   ],
 
   sabado: [],
@@ -166,12 +167,23 @@ function getEjerciciosPorDia(dia, fecha = UI.getHoy()) {
 
 const DAY_KEYS_ROUTINE = ["lunes", "martes", "jueves", "viernes"];
 
+function fechaDeDiaEnSemana(dia) {
+  const orden = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+  const hoy = new Date();
+  const inicio = new Date(hoy);
+  inicio.setHours(0, 0, 0, 0);
+  inicio.setDate(hoy.getDate() - ((hoy.getDay() + 6) % 7));
+  inicio.setDate(inicio.getDate() + orden.indexOf(dia));
+  return UI.formatFecha(inicio);
+}
+
 function obtenerEstadoComodinInteligente(diaActual = UI.getDiaNombre()) {
   const orden = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
   const indiceHoy = orden.indexOf(diaActual);
   const pendientes = DAY_KEYS_ROUTINE
     .filter((dia) => orden.indexOf(dia) < indiceHoy)
     .filter((dia) => {
+      if (STATE.diasEntrenados?.includes(fechaDeDiaEnSemana(dia))) return false;
       const ejercicios = getEjerciciosPorDia(dia);
       return ejercicios.length > 0 && !ejercicios.every((_, indice) => STATE.checks[`${dia}-${indice}`] === true);
     });

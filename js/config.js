@@ -3,7 +3,7 @@
         // ==========================================
         const CONFIG = {
             VERSION: '3.4',
-            STATE_SCHEMA_VERSION: 18,
+            STATE_SCHEMA_VERSION: 19,
             BACKUP_VERSION: 3,
             ALTURA: null,
             PESO_OBJETIVO: null,
@@ -13,11 +13,11 @@
             NOMBRES_DIAS: { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes',
                 sabado: 'Sábado', domingo: 'Domingo' },
             TIPOS_RUTINA: {
-                lunes: 'Pecho + Hombro + Tríceps · 5 ejercicios',
-                martes: 'Pierna completa · 4 ejercicios',
+                lunes: 'Torso A · 5 ejercicios',
+                martes: 'Pierna A · 4 ejercicios',
                 miercoles: 'Descanso',
-                jueves: 'Pierna + Tríceps · 4 ejercicios',
-                viernes: 'Espalda + Bíceps · 5 ejercicios',
+                jueves: 'Torso B · 6 ejercicios',
+                viernes: 'Pierna B · 4 ejercicios',
                 sabado: 'Descanso',
                 domingo: 'Descanso comodín'
             },

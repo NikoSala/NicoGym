@@ -297,6 +297,46 @@ const Storage = {
         d.schemaVersion = 18;
         version = 18;
         cambio = true;
+      } else if (version === 18) {
+        // Activa la distribución Torso/Pierna de cuatro días acordada.
+        d.rutinasPersonalizadas = {
+          lunes: [
+            ["press-pecho-maquina", 3, "8-12"],
+            ["remo-sentado-polea", 3, "8-12"],
+            ["press-hombros-maquina", 3, "8-12"],
+            ["curl-v-polea-baja", 3, "10-15"],
+            ["extension-triceps-polea", 3, "10-15"],
+          ],
+          martes: [
+            ["prensa-piernas-maquina", 3, "8-12"],
+            ["curl-femoral-sentado", 3, "10-15"],
+            ["extension-cuadriceps-maquina", 3, "10-15"],
+            ["abductores-maquina", 3, "12-15"],
+          ],
+          miercoles: [],
+          jueves: [
+            ["aperturas-peck-deck", 3, "10-15"],
+            ["jalon-polea-al-pecho", 3, "8-12"],
+            ["remo-pecho-apoyado-maquina", 3, "8-12"],
+            ["elevacion-lateral-polea", 3, "12-15 por lado"],
+            ["curl-scott-supino-barra-z", 3, "10-15"],
+            ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
+          ],
+          viernes: [
+            ["curl-femoral-sentado", 3, "10-15"],
+            ["extension-cuadriceps-maquina", 3, "10-15"],
+            ["aductores-maquina", 3, "12-15"],
+            ["gemelos-prensa-piernas", 3, "12-20"],
+          ],
+          sabado: [],
+          domingo: [],
+        };
+        d.rutinaNuevaDesde = "2026-10-29";
+        // Los checks usan la posición del ejercicio; el nuevo orden los invalida.
+        d.checks = {};
+        d.schemaVersion = 19;
+        version = 19;
+        cambio = true;
       } else {
         break;
       }
