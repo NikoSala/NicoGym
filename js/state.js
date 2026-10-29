@@ -7,6 +7,7 @@ const STATE = {
   altura: CONFIG.ALTURA,
   mediciones: [],
   historialEntrenos: [],
+  cardioRegistros: [],
   diasNoFumar: [],
   diasEntrenados: [],
   checks: {},

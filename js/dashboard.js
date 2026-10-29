@@ -85,7 +85,7 @@ const Dashboard = {
           <h1>${getResumenRutinaDelDia(entrenamientoPendiente.dia)}</h1>
           <div class="dashboard-workout-meta"><span><i class="fa-solid fa-dumbbell"></i> ${totalEjerciciosHoy} ejercicios</span><span><i class="fa-solid fa-chart-simple"></i> ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} completados</span></div>
           <div class="dashboard-progress"><span style="width:${progresoEntreno}%"></span></div>
-          <button class="dashboard-primary-action" onclick="APP.iniciarEntreno('${entrenamientoPendiente.dia}')"><i class="fa-solid fa-play"></i> CONTINUAR</button>
+          <div class="dashboard-action-row"><button class="dashboard-primary-action" onclick="APP.iniciarEntreno('${entrenamientoPendiente.dia}')"><i class="fa-solid fa-play"></i> CONTINUAR</button><button class="dashboard-cardio-action" type="button" onclick="Dashboard.abrirRegistroCardio()"><i class="fa-solid fa-heart-pulse"></i> CARDIO</button></div>
         </section>
       `
       : esDiaDescansoRutina(dia)
@@ -96,8 +96,8 @@ const Dashboard = {
             <h1>${entrenadoHoy ? "Entrenamiento registrado" : "Día comodín"}</h1>
             <p>${entrenadoHoy ? "Ya has guardado tu entrenamiento de hoy." : "Hoy es descanso; si quieres, puedes recuperar una rutina pendiente."}</p>
             ${entrenadoHoy
-              ? `<button class="dashboard-primary-action" onclick="APP.navegar('historial')"><i class="fa-solid fa-clock-rotate-left"></i> VER ENTRENAMIENTO</button>`
-              : `<button class="dashboard-primary-action" onclick="APP.abrirSelectorDiaComodin()"><i class="fa-solid fa-dumbbell"></i> ELEGIR RUTINA</button>`}
+              ? `<div class="dashboard-action-row"><button class="dashboard-primary-action" onclick="APP.navegar('historial')"><i class="fa-solid fa-clock-rotate-left"></i> VER ENTRENAMIENTO</button><button class="dashboard-cardio-action" type="button" onclick="Dashboard.abrirRegistroCardio()"><i class="fa-solid fa-heart-pulse"></i> CARDIO</button></div>`
+              : `<div class="dashboard-action-row"><button class="dashboard-primary-action" onclick="APP.abrirSelectorDiaComodin()"><i class="fa-solid fa-dumbbell"></i> ELEGIR RUTINA</button><button class="dashboard-cardio-action" type="button" onclick="Dashboard.abrirRegistroCardio()"><i class="fa-solid fa-heart-pulse"></i> CARDIO</button></div>`}
           </section>
         `
         : `
@@ -108,7 +108,7 @@ const Dashboard = {
             <div class="dashboard-workout-meta"><span><i class="fa-solid fa-dumbbell"></i> ${totalEjerciciosHoy} ejercicios</span><span><i class="fa-solid fa-list-check"></i> ${ejerciciosCompletadosHoy}/${totalEjerciciosHoy} completados</span></div>
             <div class="dashboard-progress"><span style="width:${progresoEntreno}%"></span></div>
             <div class="dashboard-workout-progress-label">${progresoEntreno}% de la sesión</div>
-            <button class="dashboard-primary-action" onclick="${entrenadoHoy || rutinaCompletadaEstaSemana ? "APP.navegar('historial')" : `APP.iniciarEntreno('${dia}')`}"><i class="fa-solid ${entrenadoHoy || rutinaCompletadaEstaSemana ? "fa-clock-rotate-left" : "fa-play"}"></i> ${entrenadoHoy ? "Ver entrenamiento" : rutinaCompletadaEstaSemana ? "RUTINA COMPLETADA" : ejerciciosCompletadosHoy > 0 ? "CONTINUAR" : "ENTRENAR"}</button>
+            <div class="dashboard-action-row"><button class="dashboard-primary-action" onclick="${entrenadoHoy || rutinaCompletadaEstaSemana ? "APP.navegar('historial')" : `APP.iniciarEntreno('${dia}')`}"><i class="fa-solid ${entrenadoHoy || rutinaCompletadaEstaSemana ? "fa-clock-rotate-left" : "fa-play"}"></i> ${entrenadoHoy ? "Ver entrenamiento" : rutinaCompletadaEstaSemana ? "RUTINA COMPLETADA" : ejerciciosCompletadosHoy > 0 ? "CONTINUAR" : "ENTRENAR"}</button><button class="dashboard-cardio-action" type="button" onclick="Dashboard.abrirRegistroCardio()"><i class="fa-solid fa-heart-pulse"></i> CARDIO</button></div>
           </section>
         `;
 
@@ -151,6 +151,53 @@ const Dashboard = {
         </main>
       </div>
     `;
+  },
+
+  abrirRegistroCardio() {
+    const inicioSemana = new Date();
+    inicioSemana.setHours(0, 0, 0, 0);
+    inicioSemana.setDate(inicioSemana.getDate() - ((inicioSemana.getDay() + 6) % 7));
+    const fechaMinima = UI.formatFecha(inicioSemana);
+    Modal.abrir(`
+      <h3>Registrar cardio (opcional)</h3>
+      <p class="modal-description">Puedes registrar cardio de cualquier día de esta semana. Si no hiciste, cierra esta ventana y no se guardará nada.</p>
+      <div style="display:grid;gap:10px;margin-top:14px;">
+        <label>Fecha<input id="cardioFecha" type="date" min="${fechaMinima}" max="${UI.getHoy()}" value="${UI.getHoy()}" style="display:block;width:100%;margin-top:4px;"></label>
+        <label>Máquina<select id="cardioMaquina" style="display:block;width:100%;margin-top:4px;">${CONFIG.CARDIO_MAQUINAS.map((maquina) => `<option value="${escapeHTML(maquina)}">${escapeHTML(maquina)}</option>`).join("")}</select></label>
+        <label>Minutos<input id="cardioMinutos" type="number" min="1" max="600" step="1" inputmode="numeric" placeholder="Ej.: 15" style="display:block;width:100%;margin-top:4px;"></label>
+        <label>Distancia en km (opcional)<input id="cardioDistancia" type="number" min="0" max="500" step="0.1" inputmode="decimal" placeholder="Ej.: 2,5" style="display:block;width:100%;margin-top:4px;"></label>
+        <button class="btn btn-primary btn-block" type="button" onclick="Dashboard.guardarRegistroCardio()">Guardar cardio</button>
+        <button class="btn btn-ghost btn-block" type="button" onclick="Modal.cerrar()">Ahora no</button>
+      </div>
+    `);
+  },
+
+  guardarRegistroCardio() {
+    const fecha = document.getElementById("cardioFecha")?.value || "";
+    const maquina = document.getElementById("cardioMaquina")?.value || "";
+    const minutos = Number(document.getElementById("cardioMinutos")?.value);
+    const distanciaValor = document.getElementById("cardioDistancia")?.value;
+    const distancia = distanciaValor ? Number(String(distanciaValor).replace(",", ".")) : null;
+    const inicioSemana = new Date();
+    inicioSemana.setHours(0, 0, 0, 0);
+    inicioSemana.setDate(inicioSemana.getDate() - ((inicioSemana.getDay() + 6) % 7));
+    if (fecha < UI.formatFecha(inicioSemana) || fecha > UI.getHoy()) {
+      UI.toast("Elige una fecha de esta semana", "error");
+      return;
+    }
+    if (!CONFIG.CARDIO_MAQUINAS.includes(maquina) || !Number.isInteger(minutos) || minutos < 1 || minutos > 600) {
+      UI.toast("Indica la máquina y los minutos de cardio", "error");
+      return;
+    }
+    if (distancia !== null && (!Number.isFinite(distancia) || distancia < 0 || distancia > 500)) {
+      UI.toast("Revisa la distancia indicada", "error");
+      return;
+    }
+    STATE.cardioRegistros.push({ fecha, maquina, minutos, distancia });
+    Storage._save();
+    Modal.cerrar();
+    this.render();
+    UI.toast("Registro de cardio guardado", "success");
   },
 
   // ==========================================

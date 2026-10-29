@@ -3,7 +3,7 @@
         // ==========================================
         const CONFIG = {
             VERSION: '3.4',
-            STATE_SCHEMA_VERSION: 17,
+            STATE_SCHEMA_VERSION: 18,
             BACKUP_VERSION: 3,
             ALTURA: null,
             PESO_OBJETIVO: null,
@@ -21,11 +21,7 @@
                 sabado: 'Descanso',
                 domingo: 'Descanso comodín'
             },
-            CARDIO_POR_DIA: {
-                lunes: { maquina: 'Cinta', min: 10, max: 15 },
-                martes: { maquina: 'Bicicleta estática', min: 10, max: 15 },
-                viernes: { maquina: 'Máquina de escaleras', min: 10, max: 15 }
-            },
+            CARDIO_MAQUINAS: ['Cinta', 'Bicicleta estática', 'Elíptica', 'Máquina de escaleras', 'Máquina de remo'],
             // TEMPORIZADOR DESACTIVADO POR DEFECTO
             TEMPORIZADOR_DESCANSO: false,
             TIEMPO_MSG_COMPLETADO: 1500

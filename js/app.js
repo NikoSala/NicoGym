@@ -224,16 +224,19 @@ const APP = {
       UI.toast("Ya has registrado un entrenamiento hoy", "info");
       return;
     }
-    const dias = ["lunes", "martes", "jueves", "viernes"];
-    const disponibles = dias.filter((dia) => {
-      const ejercicios = getEjerciciosPorDia(dia);
-      return ejercicios.length > 0 && !ejercicios.every((_, indice) => STATE.checks[`${dia}-${indice}`] === true);
-    });
+    const estado = obtenerEstadoComodinInteligente();
+    const opcion = (dia, clase = "btn btn-ghost") => `<button class="${clase} btn-block" type="button" onclick="Modal.cerrar(); APP.iniciarEntreno('${dia}')">${escapeHTML(CONFIG.NOMBRES_DIAS[dia])} · ${escapeHTML(getResumenRutinaDelDia(dia))}</button>`;
+    const recomendacion = estado.recomendada
+      ? `<p class="modal-description">Te recomendamos la sesión pendiente más compatible con el siguiente entreno.</p>${opcion(estado.recomendada, "btn btn-primary")}`
+      : estado.pendientes.length
+        ? '<p class="modal-description">Las sesiones pendientes se solapan con el siguiente entreno. Puedes mantener el descanso.</p>'
+        : '<p class="modal-description">No tienes sesiones anteriores pendientes. Puedes disfrutar del descanso.</p>';
+    const otras = estado.pendientes.filter((dia) => dia !== estado.recomendada);
     Modal.abrir(`
-      <h3>Elige la rutina que vas a recuperar</h3>
-      <p class="modal-description">Miércoles, sábado y domingo son comodines: selecciona una rutina pendiente si quieres entrenar.</p>
+      <h3>Comodín inteligente</h3>
+      ${recomendacion}
       <div style="display:grid;gap:8px;margin-top:16px;">
-        ${disponibles.map((dia) => `<button class="btn btn-ghost btn-block" type="button" onclick="Modal.cerrar(); APP.iniciarEntreno('${dia}')">${escapeHTML(CONFIG.NOMBRES_DIAS[dia])} · ${escapeHTML(getResumenRutinaDelDia(dia))}</button>`).join("") || '<p>Ya has completado todas las rutinas de esta semana.</p>'}
+        ${otras.length ? `<details><summary>Ver otras sesiones pendientes</summary><div style="display:grid;gap:8px;margin-top:10px;">${otras.map((dia) => opcion(dia)).join("")}</div></details>` : ""}
       </div>
       <button class="btn btn-ghost btn-block" type="button" onclick="Modal.cerrar()" style="margin-top:8px;">Cancelar</button>
     `);
@@ -265,8 +268,6 @@ const APP = {
           seriesEntreno: e.esCaminata ? 0 : obtenerSeriesObjetivoEjercicio(e) + (index === 0 ? 1 : 0),
         };
       });
-      const cardioPendiente = CONFIG.CARDIO_POR_DIA?.[dia];
-      if (cardioPendiente) ejerciciosEntreno.push({ nombre: `Cardio · ${cardioPendiente.maquina}`, dia, esCaminata: true, cardio: cardioPendiente, seriesEntreno: 0 });
 
       idxEjercicioActual = Math.min(
         Math.max(Number(pendiente.idxEjercicioActual) || 0, 0),
@@ -315,8 +316,6 @@ const APP = {
         esSerieCalentamiento: index === 0,
         seriesEntreno: e.esCaminata ? 0 : obtenerSeriesObjetivoEjercicio(e) + (index === 0 ? 1 : 0),
       }));
-      const cardioDelDia = CONFIG.CARDIO_POR_DIA?.[dia];
-      if (cardioDelDia) ejerciciosEntreno.push({ nombre: `Cardio · ${cardioDelDia.maquina}`, dia, esCaminata: true, cardio: cardioDelDia, seriesEntreno: 0 });
 
       if (duplicarUltima) {
         const ultimaSesion = [...STATE.historialEntrenos]
@@ -1800,7 +1799,7 @@ const APP = {
                     <div class="me-completado-final">
                         <div class="me-feliz">🏆</div>
                         <div class="me-titulo">¡Entrenamiento completado!</div>
-                        <div class="me-sub">${CONFIG.NOMBRES_DIAS[dia]} · ${tiempoEmpleado} min${CONFIG.CARDIO_POR_DIA?.[dia] ? ` · Cardio: ${CONFIG.CARDIO_POR_DIA[dia].maquina} ${CONFIG.CARDIO_POR_DIA[dia].min}–${CONFIG.CARDIO_POR_DIA[dia].max} min` : ""}</div>
+                        <div class="me-sub">${CONFIG.NOMBRES_DIAS[dia]} · ${tiempoEmpleado} min</div>
                         <div class="me-resumen-grid">
                             <div class="me-res-item"><div class="me-res-valor">${ejerciciosDia.length}</div><div class="me-res-label">Ejercicios</div></div>
                             <div class="me-res-item"><div class="me-res-valor">${totalSeriesEntreno}</div><div class="me-res-label">Series</div></div>

@@ -7,8 +7,7 @@ function estimarDuracionRutina(dia, ejercicios) {
   const minutosDescanso = Math.max(0, totalSeries - 1) * 1.5;
   const minutosCambios = ejercicios.length * 1.5;
   const calentamiento = 1;
-  const cinta = CONFIG.CARDIO_POR_DIA?.[dia]?.max || 0;
-  const central = Math.ceil((minutosSeries + minutosDescanso + minutosCambios + calentamiento + cinta) / 5) * 5;
+  const central = Math.ceil((minutosSeries + minutosDescanso + minutosCambios + calentamiento) / 5) * 5;
   return `${Math.max(25, central - 5)}–${central + 5} min`;
 }
 
@@ -78,10 +77,9 @@ const Rutinas = {
                                     🏋️ ${ejercicios.length} ejercicios
                                 </div>
                                 <div style="font-size:12px;color:var(--text-secondary);margin:4px 0 10px;">
-                                    ⏱️ Duración orientativa: ${estimarDuracionRutina(dia, ejercicios)} · incluye pausas y cardio si toca
+                                    ⏱️ Duración orientativa: ${estimarDuracionRutina(dia, ejercicios)} · incluye pausas
                                 </div>
 
-                                ${CONFIG.CARDIO_POR_DIA?.[dia] ? `<div style="margin:8px 0;color:var(--text-secondary);font-size:12px;">Al final: ${CONFIG.CARDIO_POR_DIA[dia].maquina}, ${CONFIG.CARDIO_POR_DIA[dia].min}–${CONFIG.CARDIO_POR_DIA[dia].max} min.${CONFIG.CARDIO_POR_DIA[dia].opcionalExtra ? ' Si acabas pronto y te encuentras bien, puedes alargarlo un poco.' : ''}</div>` : ""}
                                 <details class="routine-load-guide">
                                     <summary>Cómo elegir el peso</summary>
                                     <div class="routine-load-guide-content">

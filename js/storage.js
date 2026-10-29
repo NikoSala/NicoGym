@@ -292,6 +292,11 @@ const Storage = {
         d.schemaVersion = 17;
         version = 17;
         cambio = true;
+      } else if (version === 17) {
+        d.cardioRegistros = Array.isArray(d.cardioRegistros) ? d.cardioRegistros : [];
+        d.schemaVersion = 18;
+        version = 18;
+        cambio = true;
       } else {
         break;
       }
@@ -347,6 +352,7 @@ const Storage = {
         activo: item.activo !== false,
       }));
     if (!Array.isArray(STATE.historialEntrenos)) STATE.historialEntrenos = [];
+    if (!Array.isArray(STATE.cardioRegistros)) STATE.cardioRegistros = [];
     if (!Array.isArray(STATE.diasNoFumar)) STATE.diasNoFumar = [];
     if (!Array.isArray(STATE.diasEntrenados)) STATE.diasEntrenados = [];
     if (!STATE.checks || typeof STATE.checks !== "object") STATE.checks = {};
@@ -504,7 +510,7 @@ const Storage = {
     if (estado.altura !== undefined && estado.altura !== null && Number(estado.altura) > 250)
       throw new Error("Altura fuera de rango");
 
-    for (const campo of ["mediciones", "historialEntrenos", "diasNoFumar", "diasEntrenados", "records", "objetivos"]) {
+    for (const campo of ["mediciones", "historialEntrenos", "cardioRegistros", "diasNoFumar", "diasEntrenados", "records", "objetivos"]) {
       if (estado[campo] !== undefined && !Array.isArray(estado[campo]))
         throw new Error(`Campo inválido: ${campo}`);
     }
@@ -525,6 +531,18 @@ const Storage = {
         validarFecha(fecha, `${campo}[${index}]`),
       ),
     );
+
+    (estado.cardioRegistros || []).forEach((registro, index) => {
+      if (!esObjeto(registro)) throw new Error(`Registro de cardio inválido: ${index + 1}`);
+      validarFecha(registro.fecha, `cardioRegistros[${index}].fecha`);
+      validarTexto(registro.maquina, `cardioRegistros[${index}].maquina`, 80);
+      validarNumero(registro.minutos, `cardioRegistros[${index}].minutos`, 1);
+      if (!Number.isInteger(Number(registro.minutos)) || Number(registro.minutos) > 600)
+        throw new Error(`Duración de cardio inválida: ${index + 1}`);
+      validarNumero(registro.distancia, `cardioRegistros[${index}].distancia`, 0, true);
+      if (registro.distancia !== null && registro.distancia !== undefined && Number(registro.distancia) > 500)
+        throw new Error(`Distancia de cardio inválida: ${index + 1}`);
+    });
 
     (estado.historialEntrenos || []).forEach((sesion, index) => {
       if (!esObjeto(sesion) || (sesion.ejercicios !== undefined && !Array.isArray(sesion.ejercicios)))
@@ -761,6 +779,7 @@ const Storage = {
         const campos = {
           mediciones: "array",
           historialEntrenos: "array",
+          cardioRegistros: "array",
           diasNoFumar: "array",
           diasEntrenados: "array",
           checks: "object",

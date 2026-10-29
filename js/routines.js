@@ -166,6 +166,33 @@ function getEjerciciosPorDia(dia, fecha = UI.getHoy()) {
 
 const DAY_KEYS_ROUTINE = ["lunes", "martes", "jueves", "viernes"];
 
+function obtenerEstadoComodinInteligente(diaActual = UI.getDiaNombre()) {
+  const orden = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+  const indiceHoy = orden.indexOf(diaActual);
+  const pendientes = DAY_KEYS_ROUTINE
+    .filter((dia) => orden.indexOf(dia) < indiceHoy)
+    .filter((dia) => {
+      const ejercicios = getEjerciciosPorDia(dia);
+      return ejercicios.length > 0 && !ejercicios.every((_, indice) => STATE.checks[`${dia}-${indice}`] === true);
+    });
+  if (!pendientes.length) return { pendientes: [], recomendada: null, conflicto: false };
+
+  const siguienteEntreno = orden
+    .slice(indiceHoy + 1)
+    .find((dia) => DAY_KEYS_ROUTINE.includes(dia));
+  const grupos = (dia) => new Set(
+    getEjerciciosPorDia(dia).flatMap((ejercicio) => ExerciseLibrary._gruposMusculares(ejercicio)),
+  );
+  const gruposSiguiente = siguienteEntreno ? grupos(siguienteEntreno) : new Set();
+  const puntuacion = (dia) => [...grupos(dia)].filter((grupo) => gruposSiguiente.has(grupo))
+    .reduce((total, grupo) => total + (grupo === "Pierna" ? 3 : 1), 0);
+  const ordenados = [...pendientes].sort((a, b) =>
+    puntuacion(a) - puntuacion(b) || orden.indexOf(a) - orden.indexOf(b),
+  );
+  const recomendada = ordenados.find((dia) => puntuacion(dia) === 0) || null;
+  return { pendientes: ordenados, recomendada, conflicto: !recomendada };
+}
+
 const RutinaEditor = {
   _categoriasCompatibles(ejercicio) {
     const categoria = ejercicio.categoria;
