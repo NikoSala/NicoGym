@@ -4,6 +4,8 @@
 const Storage = {
   MAX_BACKUP_BYTES: 12 * 1024 * 1024,
   MAX_IMPORT_BYTES: 50 * 1024 * 1024,
+  HISTORY_CLEANUP_KEY: "nicoGym_history_cleanup_before_2026-10-01_v1",
+  HISTORY_CLEANUP_BACKUP_KEY: "nicoGym_history_backup_before_2026-10-01_v1",
 
   init() {
     const raw = localStorage.getItem(CONFIG.STORAGE_KEY);
@@ -39,7 +41,74 @@ const Storage = {
     // Serializar todo el estado puede bloquear el hilo principal si hay mucho
     // historial. Solo se persiste al arrancar cuando realmente cambió algo.
     if (debeGuardar) this._save();
+    this.limpiarHistorialAnterior("2026-10-01");
     return this;
+  },
+
+  limpiarHistorialAnterior(fechaMinima) {
+    try {
+      if (["done", "restored"].includes(localStorage.getItem(this.HISTORY_CLEANUP_KEY))) return { aplicada: false };
+      const original = STATE.historialEntrenos;
+      const fechaValida = (fecha) => {
+        if (typeof fecha !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(fecha)) return false;
+        const fechaLocal = new Date(`${fecha}T00:00:00`);
+        return Number.isFinite(fechaLocal.getTime()) && UI.formatFecha(fechaLocal) === fecha;
+      };
+      // Las fechas de la aplicación son YYYY-MM-DD, generadas en calendario local.
+      // La comparación de cadena evita desplazar una sesión por la zona horaria.
+      const eliminadas = original.filter((sesion) => fechaValida(sesion?.fecha) && sesion.fecha < fechaMinima);
+      if (!localStorage.getItem(this.HISTORY_CLEANUP_BACKUP_KEY)) {
+        localStorage.setItem(this.HISTORY_CLEANUP_BACKUP_KEY, JSON.stringify({
+          version: 1,
+          fechaCorte: fechaMinima,
+          creadoEn: new Date().toISOString(),
+          sesiones: eliminadas,
+        }));
+      }
+      if (eliminadas.length) {
+        const eliminarSet = new Set(eliminadas);
+        STATE.historialEntrenos = original.filter((sesion) => !eliminarSet.has(sesion));
+        if (!this._save()) {
+          STATE.historialEntrenos = original;
+          UI.toast("No se limpió el historial porque no se pudo guardar el cambio. Hay una copia de seguridad.", "error");
+          return { aplicada: false, error: "save" };
+        }
+      }
+      localStorage.setItem(this.HISTORY_CLEANUP_KEY, "done");
+      if (eliminadas.length) {
+        console.info(`Limpieza de historial completada: ${eliminadas.length} sesiones anteriores a ${fechaMinima} respaldadas y retiradas.`);
+        UI.toast(`${eliminadas.length} ${eliminadas.length === 1 ? "sesión antigua respaldada y retirada" : "sesiones antiguas respaldadas y retiradas"}. Se conserva el historial desde octubre de 2026.`, "success");
+      }
+      return { aplicada: true, eliminadas: eliminadas.length };
+    } catch (error) {
+      console.error("No se pudo preparar la limpieza selectiva del historial:", error);
+      if (typeof UI !== "undefined" && UI.toast)
+        UI.toast("No se limpió el historial: no se pudo crear la copia de seguridad.", "error");
+      return { aplicada: false, error: "backup" };
+    }
+  },
+
+  restaurarHistorialAnterior() {
+    try {
+      const raw = localStorage.getItem(this.HISTORY_CLEANUP_BACKUP_KEY);
+      if (!raw) return { restaurada: false, error: "backup-missing" };
+      const backup = JSON.parse(raw);
+      if (backup?.version !== 1 || !Array.isArray(backup.sesiones))
+        return { restaurada: false, error: "backup-invalid" };
+      const original = STATE.historialEntrenos;
+      const claves = new Set(original.map((sesion) => `${sesion.fecha}|${sesion.dia || ""}`));
+      const nuevas = backup.sesiones.filter((sesion) => !claves.has(`${sesion.fecha}|${sesion.dia || ""}`));
+      STATE.historialEntrenos = [...original, ...nuevas].sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
+      if (!this._save()) {
+        STATE.historialEntrenos = original;
+        return { restaurada: false, error: "save" };
+      }
+      localStorage.setItem(this.HISTORY_CLEANUP_KEY, "restored");
+      return { restaurada: true, sesiones: nuevas.length };
+    } catch (error) {
+      console.error("No se pudo restaurar la copia previa del historial:", error);
+      return { restaurada: false, error: "restore" };
+    }
   },
 
   migrate(data) {

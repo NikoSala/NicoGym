@@ -232,6 +232,39 @@ input:focus, select:focus, textarea:focus {
   .side-menu { padding-top: calc(70px + env(safe-area-inset-top)); }
 }
 
+/* Seguimiento y progresión individual por ejercicio. */
+.exercise-progress-summary { display:flex; align-items:flex-start; gap:9px; margin-top:9px; min-width:0; text-align:left; }
+.exercise-progress-badge { flex:0 0 auto; padding:5px 9px; border-radius:999px; border:1px solid currentColor; font-size:10px; font-weight:800; letter-spacing:.06em; }
+.exercise-progress-badge.subir { color:#70a786; background:rgba(57,113,79,.15); }
+.exercise-progress-badge.mantener { color:#aab3bd; background:rgba(123,145,166,.12); }
+.exercise-progress-badge.bajar { color:#d6a550; background:rgba(214,165,80,.12); }
+.exercise-progress-badge.sin-datos { color:#858991; background:rgba(133,137,145,.1); }
+.exercise-progress-summary > div { display:grid; gap:4px; min-width:0; }
+.exercise-progress-last { display:grid; gap:2px; color:var(--text-secondary); font-size:11px; }
+.exercise-progress-last strong { color:var(--text); }
+.exercise-progress-last span { line-height:1.5; }
+.exercise-progress-summary small { color:var(--text-muted); font-size:10px; line-height:1.45; }
+.exercise-technique-check { display:flex; align-items:flex-start; gap:8px; margin-top:12px; color:var(--text-secondary); font-size:12px; line-height:1.4; }
+.exercise-technique-check input { flex:0 0 auto; margin-top:2px; accent-color:var(--nico-green-bright); }
+.exercise-chart-controls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:14px 0 8px; }
+.exercise-chart-controls label { display:grid; gap:6px; color:var(--text-secondary); font-size:11px; font-weight:700; }
+.exercise-chart-controls select { width:100%; min-width:0; padding:10px 12px; }
+.exercise-chart-legend { display:flex; flex-wrap:wrap; gap:8px 14px; min-height:20px; margin:10px 0; color:var(--text-secondary); font-size:10px; }
+.exercise-chart-legend span { display:flex; align-items:center; gap:5px; }
+.exercise-chart-legend i { width:9px; height:9px; border-radius:50%; background:var(--series-color); }
+.exercise-chart-scroll { width:100%; overflow-x:auto; overscroll-behavior-inline:contain; }
+.exercise-chart-svg { display:block; width:100%; min-width:580px; height:auto; }
+.exercise-history-table-wrap { margin-top:16px; overflow-x:auto; }
+.exercise-history-table-wrap h3 { margin:0 0 9px; color:var(--text); font-size:13px; }
+.exercise-history-table { width:100%; border-collapse:collapse; font-size:11px; text-align:left; white-space:nowrap; }
+.exercise-history-table th,.exercise-history-table td { padding:9px 10px; border-bottom:1px solid rgba(222,214,202,.09); color:var(--text-secondary); }
+.exercise-history-table th { color:var(--text); font-size:10px; }
+.routine-exercise-copy .exercise-progress-summary { margin-top:8px; padding-top:7px; border-top:1px solid rgba(222,214,202,.08); }
+@media (max-width:680px) {
+  .exercise-chart-controls { grid-template-columns:1fr; gap:9px; }
+  .exercise-chart-svg { min-width:560px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }

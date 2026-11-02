@@ -84,7 +84,7 @@ const Rutinas = {
                                     <summary>Cómo elegir el peso</summary>
                                     <div class="routine-load-guide-content">
                                         <p>Elige una carga con la que completes el rango indicado con buena técnica y te queden unas <strong>2–3 repeticiones en reserva</strong> al acabar cada serie.</p>
-                                        <p>Si no llegas al mínimo del rango o pierdes la técnica, baja un punto. Cuando alcances el máximo en todas las series y aún te queden 2–3 repeticiones limpias, sube el mínimo incremento la próxima vez.</p>
+                                        <p>El indicador recomienda mantener la carga mientras progresas entre 8 y 12 repeticiones. Solo recomienda subir después de completar 3 × 12 con técnica correcta en dos sesiones seguidas; considera bajar si no alcanzas 8 repeticiones en dos sesiones consecutivas.</p>
                                         <p>Apunta el peso y los ajustes del asiento por máquina. No hace falta probar tu máximo.</p>
                                     </div>
                                 </details>
@@ -93,7 +93,7 @@ const Rutinas = {
                                       <div class="routine-exercise-row">
                                         <div class="routine-exercise-info">
                                           <span class="routine-exercise-number">${ejercicioIndex + 1}</span>
-                                          <span class="routine-exercise-copy"><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong><small>${ExerciseLibrary._escapar(ej.grupo)}</small><span class="routine-setup"><strong>Preparación:</strong> ${ExerciseLibrary._escapar(ej.preparacion || "Ajusta el equipo a tu altura y comprueba el recorrido.")}</span><span class="routine-prescription">Material: ${ExerciseLibrary._escapar((ej.material || ["No especificado"]).join(", "))}</span><span class="routine-prescription">${ejercicioIndex === 0 ? "1 serie ligera de calentamiento + " : ""}${ej.series} series efectivas × ${ExerciseLibrary._escapar(ej.reps)} reps</span></span>
+                                          <span class="routine-exercise-copy"><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong><small>${ExerciseLibrary._escapar(ej.grupo)}</small><span class="routine-setup"><strong>Preparación:</strong> ${ExerciseLibrary._escapar(ej.preparacion || "Ajusta el equipo a tu altura y comprueba el recorrido.")}</span><span class="routine-prescription">Material: ${ExerciseLibrary._escapar((ej.material || ["No especificado"]).join(", "))}</span><span class="routine-prescription">${ejercicioIndex === 0 ? "1 serie ligera de calentamiento + " : ""}${ej.series} series efectivas × 8–12 reps</span>${ExerciseProgression.resumenHTML(ej)}</span>
                                         </div>
                                       </div>
                                     `).join("")}

@@ -810,26 +810,13 @@ const APP = {
       (e) => e.nombre === ej.nombre,
     );
 
-    const registroAnterior = [...STATE.historialEntrenos]
-      .filter((sesion) => sesion.fecha !== hoy && sesion.ejercicios?.length)
-      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
-      .map((sesion) => sesion.ejercicios.find((e) => e.nombre === ej.nombre))
-      .find(Boolean);
+    const historialEjercicio = ExerciseProgression.historial(ej).filter((sesion) => sesion.fecha !== hoy);
+    const registroAnterior = historialEjercicio[historialEjercicio.length - 1]?.registro || null;
 
     const pesoUltimo = Array.isArray(registroAnterior?.pesos) && registroAnterior.pesos.length
       ? Number(registroAnterior.pesos[registroAnterior.pesos.length - 1])
       : Number(registroAnterior?.peso) || 0;
     if (!ej.pesoInicial && pesoUltimo > 0) ej.pesoInicial = pesoUltimo;
-    const numsTope = String(ej.reps || "").match(/\d+/g) || [];
-    const topeReps = numsTope.length ? Number(numsTope[numsTope.length - 1]) : 0;
-    const repsAnteriores = registroAnterior ? parseReps(registroAnterior.reps) : null;
-    const pesosAnteriores = Array.isArray(registroAnterior?.pesos) ? registroAnterior.pesos.map(Number) : [];
-    const offsetCalentamiento = Number(registroAnterior?.seriesCalentamiento) || 0;
-    const repsEfectivasAnteriores = repsAnteriores?.series.slice(offsetCalentamiento) || [];
-    const pesosEfectivosAnteriores = pesosAnteriores.slice(offsetCalentamiento);
-    const progresoListo = Boolean(repsAnteriores?.valid && repsEfectivasAnteriores.length === 3 &&
-      repsEfectivasAnteriores.every((reps) => reps >= topeReps) && pesosEfectivosAnteriores.length === 3 &&
-      pesosEfectivosAnteriores.every((peso) => peso === pesosEfectivosAnteriores[0]));
 
     const parsed = registro
       ? parseReps(registro.reps)
@@ -961,15 +948,12 @@ const APP = {
 
     let etiquetaCarga = "Carga seleccionada";
 
-    const anteriorHtml = registroAnterior
-      ? `
-        <div class="me-workout-previous">
-          <div class="me-workout-previous-label"><i class="fa-solid fa-clock-rotate-left"></i> Anterior</div>
-          <strong>${escapeHTML(registroAnterior.peso || "--")} kg <span>×</span> ${escapeHTML(registroAnterior.reps || "--")}</strong>
-          ${progresoListo ? `<div class="me-workout-progression-hint">✓ Completaste 3 × ${topeReps} con este peso. Puedes subir un poco hoy.</div>` : ""}
-        </div>
-      `
-      : "";
+    const anteriorHtml = `
+      <div class="me-workout-previous">
+        <div class="me-workout-previous-label"><i class="fa-solid fa-clock-rotate-left"></i> Progresión de este ejercicio</div>
+        ${ExerciseProgression.resumenHTML(ej)}
+      </div>
+    `;
 
     const recordActual = Records.getRecord(ej.nombre);
     const recordHtml = recordActual
@@ -1215,8 +1199,9 @@ const APP = {
             </div>
 
             <div class="me-workout-reps-target">
-              ${ej.esSerieCalentamiento && seriesActualesEntreno.length === 0 ? "Usa menos peso para calentar; esta serie se guarda aparte de las efectivas." : `Objetivo: ${obtenerSeriesObjetivoEjercicio(ej)} series efectivas × ${escapeHTML(ej.reps || String(repsObjetivoEjercicio))} ${usaSegundos ? "segundos" : "reps"}`}
+              ${ej.esSerieCalentamiento && seriesActualesEntreno.length === 0 ? "Usa menos peso para calentar; esta serie se guarda aparte de las efectivas." : `Objetivo de progresión: 3 series efectivas × 8–12 ${usaSegundos ? "segundos" : "reps"}`}
             </div>
+            ${!usaSegundos ? `<label class="exercise-technique-check"><input type="checkbox" id="meTecnicaCorrecta" ${registro?.tecnicaCorrecta === true ? "checked" : ""}><span>La técnica ha sido correcta en todas las series</span></label>` : ""}
 
           </div>
 
@@ -1553,6 +1538,7 @@ const APP = {
 
     if (!registro) {
       registro = {
+        exerciseId: ej.id,
         nombre: ej.nombre,
         peso,
         reps: "",
@@ -1574,6 +1560,7 @@ const APP = {
       entrenamiento.ejercicios.push(registro);
     }
 
+    registro.exerciseId = ej.id;
     registro.peso = peso;
     registro.tipoCarga = ej.tipoCarga || null;
     registro.configuracionCarga = configuracionCarga
@@ -1586,6 +1573,7 @@ const APP = {
     registro.unidad = usaSegundos ? "segundos" : "reps";
     registro.series = seriesActualesEntreno.length;
     registro.repsTotales = seriesActualesEntreno.reduce((a, b) => a + b, 0);
+    registro.tecnicaCorrecta = document.getElementById("meTecnicaCorrecta")?.checked === true;
     registro.timestamp = Date.now();
 
     this._recalcularTotalesSesion();
