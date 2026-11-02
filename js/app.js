@@ -41,13 +41,9 @@ const APP = {
     if (a.nombre) STATE.nombre = a.nombre;
     if (a.altura) STATE.altura = a.altura;
     if (a.objetivo) CONFIG.PESO_OBJETIVO = a.objetivo;
-    // Cargar preferencia del temporizador: si no existe, false por defecto
-    if (STATE.config && STATE.config.temporizadorDescanso !== undefined) {
-      CONFIG.TEMPORIZADOR_DESCANSO = STATE.config.temporizadorDescanso;
-    } else {
-      CONFIG.TEMPORIZADOR_DESCANSO = false;
-      if (STATE.config) STATE.config.temporizadorDescanso = false;
-    }
+    // El temporizador de descanso queda activado por defecto en la rutina.
+    CONFIG.TEMPORIZADOR_DESCANSO = true;
+    if (STATE.config) STATE.config.temporizadorDescanso = true;
     const dia = UI.getDiaNombre();
     diaActivo = dia;
   },
@@ -820,6 +816,21 @@ const APP = {
       .map((sesion) => sesion.ejercicios.find((e) => e.nombre === ej.nombre))
       .find(Boolean);
 
+    const pesoUltimo = Array.isArray(registroAnterior?.pesos) && registroAnterior.pesos.length
+      ? Number(registroAnterior.pesos[registroAnterior.pesos.length - 1])
+      : Number(registroAnterior?.peso) || 0;
+    if (!ej.pesoInicial && pesoUltimo > 0) ej.pesoInicial = pesoUltimo;
+    const numsTope = String(ej.reps || "").match(/\d+/g) || [];
+    const topeReps = numsTope.length ? Number(numsTope[numsTope.length - 1]) : 0;
+    const repsAnteriores = registroAnterior ? parseReps(registroAnterior.reps) : null;
+    const pesosAnteriores = Array.isArray(registroAnterior?.pesos) ? registroAnterior.pesos.map(Number) : [];
+    const offsetCalentamiento = Number(registroAnterior?.seriesCalentamiento) || 0;
+    const repsEfectivasAnteriores = repsAnteriores?.series.slice(offsetCalentamiento) || [];
+    const pesosEfectivosAnteriores = pesosAnteriores.slice(offsetCalentamiento);
+    const progresoListo = Boolean(repsAnteriores?.valid && repsEfectivasAnteriores.length === 3 &&
+      repsEfectivasAnteriores.every((reps) => reps >= topeReps) && pesosEfectivosAnteriores.length === 3 &&
+      pesosEfectivosAnteriores.every((peso) => peso === pesosEfectivosAnteriores[0]));
+
     const parsed = registro
       ? parseReps(registro.reps)
       : { valid: true, series: [] };
@@ -842,9 +853,9 @@ const APP = {
     const pesoEspecifico = STATE.pesosAjustados?.[ej.nombre];
     pesoActualEntreno = Number.isFinite(pesosSeriesActualesEntreno[seriesActualesEntreno.length]) && pesosSeriesActualesEntreno[seriesActualesEntreno.length] > 0
       ? pesosSeriesActualesEntreno[seriesActualesEntreno.length]
-      : Number.isFinite(pesoEspecifico) && pesoEspecifico > 0
+      : ej.pesoInicial || (Number.isFinite(pesoEspecifico) && pesoEspecifico > 0
       ? pesoEspecifico
-      : this.pesoSesionEntreno || ej.pesoInicial || Number(registro?.peso) || 0;
+      : this.pesoSesionEntreno || Number(registro?.peso) || 0);
 
     ejercicioIniciadoAt = Date.now();
 
@@ -955,6 +966,7 @@ const APP = {
         <div class="me-workout-previous">
           <div class="me-workout-previous-label"><i class="fa-solid fa-clock-rotate-left"></i> Anterior</div>
           <strong>${escapeHTML(registroAnterior.peso || "--")} kg <span>×</span> ${escapeHTML(registroAnterior.reps || "--")}</strong>
+          ${progresoListo ? `<div class="me-workout-progression-hint">✓ Completaste 3 × ${topeReps} con este peso. Puedes subir un poco hoy.</div>` : ""}
         </div>
       `
       : "";
@@ -1621,7 +1633,7 @@ const APP = {
         });
         idxEjercicioActual = siguientePendiente >= 0 ? siguientePendiente : Math.min(idxEjercicioActual + 1, ejerciciosEntreno.length - 1);
         if (CONFIG.TEMPORIZADOR_DESCANSO)
-        setTimeout(() => this._mostrarDescanso(), CONFIG.TIEMPO_MSG_COMPLETADO);
+        setTimeout(() => this._mostrarDescanso(ej.descanso || 60), CONFIG.TIEMPO_MSG_COMPLETADO);
         else
         setTimeout(
           () => this._mostrarEjercicio(),
@@ -1636,7 +1648,8 @@ const APP = {
         "success",
       );
       this._guardandoSerie = false;
-      this._mostrarEjercicio();
+      if (CONFIG.TEMPORIZADOR_DESCANSO) this._mostrarDescanso(ej.descanso || 60);
+      else this._mostrarEjercicio();
     }
   },
 
@@ -1696,9 +1709,9 @@ const APP = {
     if (msgCompletadoTimeout) clearTimeout(msgCompletadoTimeout);
   },
 
-  _mostrarDescanso() {
+  _mostrarDescanso(duracion) {
     const ej = ejerciciosEntreno[idxEjercicioActual];
-    const descanso = ej.descanso || 60;
+    const descanso = Number(duracion) || ej.descanso || 60;
     tiempoDescanso = descanso;
 
     const body = document.getElementById("meBody");
@@ -1706,7 +1719,7 @@ const APP = {
             <div class="me-descanso me-descanso-modern">
               <div class="me-descanso-kicker"><i class="fa-solid fa-stopwatch"></i> Descanso</div>
               <div class="me-timer" id="meTimer">${tiempoDescanso}</div>
-              <div class="me-timer-label">Recupera antes del siguiente ejercicio</div>
+              <div class="me-timer-label">Recupera antes de la siguiente serie</div>
               <div class="me-descanso-next"><span>Siguiente</span><strong>${ej.nombre}</strong></div>
               <button class="btn btn-primary me-siguiente" onclick="APP._saltarDescanso()">
                 <i class="fa-solid fa-forward"></i> Saltar descanso

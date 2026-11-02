@@ -5931,6 +5931,13 @@ textarea:focus {
   font-weight: 400;
 }
 
+.me-workout-progression-hint {
+  margin-top: 6px;
+  color: var(--nico-gold);
+  font-size: 11px;
+  font-weight: 700;
+}
+
 .me-workout-record strong {
   color: var(--nico-gold);
 }

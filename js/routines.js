@@ -158,6 +158,7 @@ function getEjerciciosPorDia(dia, fecha = UI.getHoy()) {
         dia,
         // Plan actual: tres series efectivas por ejercicio.
         series: 3,
+        descanso: ["press-pecho-maquina", "remo-sentado-polea", "press-hombros-maquina", "prensa-piernas-maquina", "curl-femoral-sentado", "extension-cuadriceps-maquina", "jalon-polea-al-pecho", "remo-pecho-apoyado-maquina"].includes(id) ? 60 : 45,
         reps: String(reps),
         preparacion: getPreparacionEjercicio(base),
       };
