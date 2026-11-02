@@ -52,12 +52,18 @@ const Dashboard = {
     const inicioSemana = new Date(hoy);
     inicioSemana.setHours(0, 0, 0, 0);
     inicioSemana.setDate(hoy.getDate() - ((hoy.getDay() + 6) % 7));
+    const fechaAyer = new Date(hoy);
+    fechaAyer.setDate(fechaAyer.getDate() - 1);
+    const fechaAyerKey = UI.formatFecha(fechaAyer);
     const diasSemana = nombresDias.map((diaNombre, indice) => {
       const fecha = new Date(inicioSemana);
       fecha.setDate(inicioSemana.getDate() + indice);
       const fechaKey = UI.formatFecha(fecha);
       const descanso = esDiaDescansoRutina(diaNombre);
-      const completado = STATE.diasEntrenados.includes(fechaKey);
+      const completado = STATE.diasEntrenados.includes(fechaKey) ||
+        (diaNombre === "lunes" && STATE.historialEntrenos.some(
+          (sesion) => sesion.fecha === fechaAyerKey && sesion.dia === "lunes",
+        ));
       return { diaNombre, etiqueta: etiquetasDias[indice], fechaKey, descanso, completado, esHoy: fechaKey === UI.getHoy() };
     });
     const entrenamientosSemana = diasSemana.filter((diaSemana) => diaSemana.completado).length;

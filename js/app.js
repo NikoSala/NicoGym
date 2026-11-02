@@ -225,7 +225,10 @@ const APP = {
       return;
     }
     const estado = obtenerEstadoComodinInteligente();
-    const opcion = (dia, clase = "btn btn-ghost") => `<button class="${clase} btn-block" type="button" onclick="Modal.cerrar(); APP.iniciarEntreno('${dia}')">${escapeHTML(CONFIG.NOMBRES_DIAS[dia])} · ${escapeHTML(getResumenRutinaDelDia(dia))}</button>`;
+    const opcion = (dia, clase = "btn btn-ghost") => {
+      const fecha = fechaDeDiaEnSemana(dia);
+      return `<button class="${clase} btn-block" type="button" onclick="Modal.cerrar(); APP.iniciarEntreno('${dia}')"><span>${escapeHTML(CONFIG.NOMBRES_DIAS[dia])} · ${escapeHTML(UI.formatearFecha(fecha))}</span><small style="display:block;width:100%;margin-top:4px;color:var(--text-secondary);font-size:12px;">${escapeHTML(getResumenRutinaDelDia(dia))}</small></button>`;
+    };
     const recomendacion = estado.recomendada
       ? `<p class="modal-description">Te recomendamos la sesión pendiente más compatible con el siguiente entreno.</p>${opcion(estado.recomendada, "btn btn-primary")}`
       : estado.pendientes.length

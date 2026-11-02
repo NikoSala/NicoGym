@@ -482,7 +482,21 @@ const Storage = {
     const semanaActual = this._getSemanaKey(hoy);
     const ultimaSemana = localStorage.getItem("ultimaSemana");
     if (diaSemana === 1 && ultimaSemana !== semanaActual) {
-      STATE.checks = {};
+      // El domingo es día comodín: si se completó entonces la rutina del lunes,
+      // conserva esos checks para que esa sesión cuente en la semana que empieza.
+      const ayer = new Date(hoy);
+      ayer.setDate(ayer.getDate() - 1);
+      const fechaAyer = `${ayer.getFullYear()}-${String(ayer.getMonth() + 1).padStart(2, "0")}-${String(ayer.getDate()).padStart(2, "0")}`;
+      const checksLunes = {};
+      const sesionLunesDomingo = STATE.historialEntrenos.find(
+        (sesion) => sesion.fecha === fechaAyer && sesion.dia === "lunes",
+      );
+      if (sesionLunesDomingo) {
+        Object.entries(STATE.checks || {}).forEach(([clave, valor]) => {
+          if (clave.startsWith("lunes-") && valor === true) checksLunes[clave] = true;
+        });
+      }
+      STATE.checks = checksLunes;
       STATE.entrenamientoPendiente = null;
       localStorage.setItem("ultimaSemana", semanaActual);
       this._save();
