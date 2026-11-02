@@ -1451,6 +1451,41 @@ const APP = {
 
   _guardarSerie() {
     const ej = ejerciciosEntreno[idxEjercicioActual];
+    if (!ej || this._guardandoSerie) return;
+    const pesoId = ej.esSerieCalentamiento && seriesActualesEntreno.length === 0
+      ? "mePesoCalentamiento"
+      : ej.tipoCarga ? "mePesoSerie" : "mePeso";
+    const pesoActual = document.getElementById(pesoId)?.value ?? "";
+    const repsActuales = document.getElementById("meRepsSerie")?.value ?? "";
+    const usaSegundos = /\b(?:s|seg(?:undos?)?)\b/i.test(String(ej.reps || ""));
+    Modal.abrir(`
+      <div class="me-set-review">
+        <h2>Revisar serie</h2>
+        <p>${escapeHTML(ej.nombre)} · comprueba los datos antes de guardarlos.</p>
+        <label for="meRevisionPeso">Peso (kg)</label>
+        <input id="meRevisionPeso" type="number" min="0" max="500" step="0.5" value="${escapeHTML(String(pesoActual))}" inputmode="decimal">
+        <label for="meRevisionReps">${usaSegundos ? "Duración (segundos)" : "Repeticiones"}</label>
+        <input id="meRevisionReps" type="number" min="1" max="100" step="1" value="${escapeHTML(String(repsActuales))}" inputmode="numeric">
+        <div class="me-set-review-actions">
+          <button type="button" class="btn btn-ghost" onclick="Modal.cerrar()">Volver</button>
+          <button type="button" class="btn btn-primary" onclick="APP._confirmarGuardarSerie('${pesoId}')">Confirmar serie</button>
+        </div>
+      </div>`);
+  },
+
+  _confirmarGuardarSerie(pesoId) {
+    const peso = document.getElementById("meRevisionPeso")?.value;
+    const reps = document.getElementById("meRevisionReps")?.value;
+    const pesoInput = document.getElementById(pesoId);
+    const repsInput = document.getElementById("meRepsSerie");
+    if (pesoInput) pesoInput.value = peso;
+    if (repsInput) repsInput.value = reps;
+    Modal.cerrar();
+    this._guardarSerieConfirmada();
+  },
+
+  _guardarSerieConfirmada() {
+    const ej = ejerciciosEntreno[idxEjercicioActual];
     const seriesObjetivo = obtenerSeriesEntrenoEjercicio(ej);
     const usaSegundos = /\b(?:s|seg(?:undos?)?)\b/i.test(String(ej.reps || ""));
     const pesoManual = Number(document.getElementById("mePeso")?.value || 0);

@@ -3074,7 +3074,7 @@
 .me-workout-title-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 125px;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: repeat(6, auto);
   column-gap: 16px;
   align-items: center;
   padding: 14px;
@@ -3113,11 +3113,14 @@
 
 .me-workout-tips {
   grid-column: 1;
-  grid-row: 4;
+  grid-row: auto;
   margin-top: 7px;
   color: #d7a126;
   font-size: 11px;
 }
+
+.me-workout-title-card > .me-workout-tips:first-of-type { grid-row: 5; }
+.me-workout-title-card > .me-workout-tips:last-of-type { grid-row: 6; }
 
 .me-workout-tips summary {
   display: inline-flex;
@@ -3156,7 +3159,7 @@
 
 .me-workout-image-card {
   grid-column: 2;
-  grid-row: 1 / -1;
+  grid-row: 1 / 7;
   position: relative;
   min-height: 100px;
   overflow: hidden;
@@ -6026,6 +6029,16 @@ textarea:focus {
     padding: 15px;
   }
 
+  .me-workout-title-card > * {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    min-width: 0;
+  }
+
+  .me-workout-title-card .me-workout-title {
+    overflow-wrap: anywhere;
+  }
+
   .me-workout-image-card {
     grid-column: 1;
     grid-row: auto;
@@ -6083,6 +6096,28 @@ textarea:focus {
   .me-workout-nav-button {
     min-height: 46px;
   }
+}
+
+.me-set-review { display: grid; gap: 10px; }
+.me-set-review h2 { margin: 0; font-size: 20px; }
+.me-set-review p { margin: 0 0 4px; color: var(--text-secondary); }
+.me-set-review label { font-size: 13px; font-weight: 700; }
+.me-set-review input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(255,255,255,.04);
+  color: var(--text);
+  font: inherit;
+  font-size: 16px;
+}
+.me-set-review-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
+.me-set-review-actions button { min-height: 46px; }
+@media (max-width: 420px) {
+  .me-set-review-actions { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
