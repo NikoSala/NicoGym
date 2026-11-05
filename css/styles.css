@@ -5078,6 +5078,48 @@ textarea:focus {
   font-size: 11px;
 }
 
+.history-exercise-list > .history-exercise-item {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(0, 2fr) auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.history-edit-button {
+  flex-shrink: 0;
+}
+
+.history-edit-series {
+  display: grid;
+  gap: 8px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.history-edit-series-row {
+  display: grid;
+  grid-template-columns: auto repeat(2, minmax(90px, 1fr));
+  align-items: end;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, .12);
+}
+
+.history-edit-series-row strong {
+  align-self: center;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.history-edit-series-row label {
+  display: grid;
+  gap: 4px;
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
 .history-exercise-list span {
   min-width: 0;
   overflow: hidden;
