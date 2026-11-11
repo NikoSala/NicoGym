@@ -612,6 +612,38 @@ const Storage = {
         d.schemaVersion = 26;
         version = 26;
         cambio = true;
+      } else if (version === 26) {
+        const reemplazarExtensionJueves = (rutina) => {
+          if (!Array.isArray(rutina)) return rutina;
+          return rutina.map((item) => {
+            if (
+              !Array.isArray(item) ||
+              item[0] !== "extension-triceps-polea-sobre-cabeza"
+            ) {
+              return item;
+            }
+            return ["patada-triceps-polea-baja", item[1], "10-15 por lado"];
+          });
+        };
+        if (Array.isArray(d.rutinasPersonalizadas?.jueves)) {
+          d.rutinasPersonalizadas.jueves = reemplazarExtensionJueves(
+            d.rutinasPersonalizadas.jueves,
+          );
+        }
+        const semanaActual = this._getSemanaKey(new Date());
+        const rutinaTemporalJueves = d.rutinasTemporales?.[semanaActual]?.jueves;
+        if (Array.isArray(rutinaTemporalJueves)) {
+          d.rutinasTemporales[semanaActual].jueves =
+            reemplazarExtensionJueves(rutinaTemporalJueves);
+        }
+        if (d.checks && typeof d.checks === "object") {
+          Object.keys(d.checks).forEach((clave) => {
+            if (clave.startsWith("jueves-")) delete d.checks[clave];
+          });
+        }
+        d.schemaVersion = 27;
+        version = 27;
+        cambio = true;
       } else {
         break;
       }

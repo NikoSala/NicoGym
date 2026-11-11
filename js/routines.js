@@ -27,7 +27,7 @@ const ROUTINES = {
     ["remo-pecho-apoyado-maquina", 3, "8-12"],
     ["aperturas-peck-deck", 3, "10-15"],
     ["curl-inclinado-alterno-supinacion", 3, "10-15"],
-    ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
+    ["patada-triceps-polea-baja", 3, "10-15 por lado"],
   ],
 
   viernes: [
@@ -85,6 +85,7 @@ const PREPARACION_EJERCICIOS = {
   "curl-v-polea-baja": "Engancha una cuerda a la polea baja; ponte de pie frente a la polea, sujeta un extremo con cada mano y mantén los codos junto al torso.",
   "curl-inverso-polea-barra": "Engancha una barra recta a la polea baja; ponte frente a la polea y sujétala con las palmas hacia abajo, aproximadamente al ancho de los hombros.",
   "curl-biceps-agarre-v": "Engancha el agarre en V a la polea baja; ponte de pie frente a la polea, sujeta ambas empuñaduras con las palmas enfrentadas y mantén los codos junto al torso.",
+  "patada-triceps-polea-baja": "Engancha un tirador individual a la polea baja. Ponte frente a ella, inclina el torso un poco desde la cadera, fija el codo junto al cuerpo y extiende el antebrazo hacia atrás.",
   "press-pecho-maquina": "Ajusta el asiento para que las asas queden frente al centro del pecho; apoya la espalda.",
   "aperturas-peck-deck": "Ajusta el asiento para que los brazos queden a la altura del pecho y apoya la espalda.",
   "press-hombros-maquina": "Ajusta el asiento para empezar con las asas a la altura de los hombros; apoya la espalda.",
