@@ -527,6 +527,91 @@ const Storage = {
         d.schemaVersion = 24;
         version = 24;
         cambio = true;
+      } else if (version === 24) {
+        const reemplazarCurlJueves = (rutina) => {
+          if (!Array.isArray(rutina)) return rutina;
+          return rutina.map((item) =>
+            Array.isArray(item) &&
+              ["curl-biceps-agarre-v", "curl-v-polea-baja"].includes(item[0])
+              ? ["curl-inverso-polea-barra", item[1], item[2]]
+              : item,
+          );
+        };
+        if (Array.isArray(d.rutinasPersonalizadas?.jueves)) {
+          d.rutinasPersonalizadas.jueves = reemplazarCurlJueves(
+            d.rutinasPersonalizadas.jueves,
+          );
+        }
+        const semanaActual = this._getSemanaKey(new Date());
+        const rutinaTemporalJueves = d.rutinasTemporales?.[semanaActual]?.jueves;
+        if (Array.isArray(rutinaTemporalJueves)) {
+          d.rutinasTemporales[semanaActual].jueves =
+            reemplazarCurlJueves(rutinaTemporalJueves);
+        }
+        d.schemaVersion = 25;
+        version = 25;
+        cambio = true;
+      } else if (version === 25) {
+        const ordenJueves = [
+          "press-pecho-maquina",
+          "jalon-polea-al-pecho",
+          "remo-sentado-polea",
+          "remo-pecho-apoyado-maquina",
+          "aperturas-peck-deck",
+          "curl-inclinado-alterno-supinacion",
+          "extension-triceps-polea-sobre-cabeza",
+        ];
+        const actualizarRutinaJueves = (rutina) => {
+          if (!Array.isArray(rutina)) return rutina;
+          return rutina
+            .map((item, index) => {
+              const ejercicio = Array.isArray(item) ? item[0] : null;
+              const reemplazo = [
+                "curl-biceps-agarre-v",
+                "curl-v-polea-baja",
+                "curl-inverso-polea-barra",
+              ].includes(ejercicio)
+                ? "curl-inclinado-alterno-supinacion"
+                : ejercicio;
+              return {
+                item: Array.isArray(item)
+                  ? [reemplazo, item[1], item[2]]
+                  : item,
+                indice: index,
+              };
+            })
+            .sort((a, b) => {
+              const indiceA = Array.isArray(a.item)
+                ? ordenJueves.indexOf(a.item[0])
+                : -1;
+              const indiceB = Array.isArray(b.item)
+                ? ordenJueves.indexOf(b.item[0])
+                : -1;
+              const ordenA = indiceA < 0 ? ordenJueves.length : indiceA;
+              const ordenB = indiceB < 0 ? ordenJueves.length : indiceB;
+              return ordenA - ordenB || a.indice - b.indice;
+            })
+            .map(({ item }) => item);
+        };
+        if (Array.isArray(d.rutinasPersonalizadas?.jueves)) {
+          d.rutinasPersonalizadas.jueves = actualizarRutinaJueves(
+            d.rutinasPersonalizadas.jueves,
+          );
+        }
+        const semanaActual = this._getSemanaKey(new Date());
+        const rutinaTemporalJueves = d.rutinasTemporales?.[semanaActual]?.jueves;
+        if (Array.isArray(rutinaTemporalJueves)) {
+          d.rutinasTemporales[semanaActual].jueves =
+            actualizarRutinaJueves(rutinaTemporalJueves);
+        }
+        if (d.checks && typeof d.checks === "object") {
+          Object.keys(d.checks).forEach((clave) => {
+            if (clave.startsWith("jueves-")) delete d.checks[clave];
+          });
+        }
+        d.schemaVersion = 26;
+        version = 26;
+        cambio = true;
       } else {
         break;
       }

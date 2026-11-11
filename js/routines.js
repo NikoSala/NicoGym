@@ -23,10 +23,10 @@ const ROUTINES = {
   miercoles: [],
 
   jueves: [
-    ["aperturas-peck-deck", 3, "10-15"],
     ["jalon-polea-al-pecho", 3, "8-12"],
     ["remo-pecho-apoyado-maquina", 3, "8-12"],
-    ["curl-biceps-agarre-v", 3, "10-15"],
+    ["aperturas-peck-deck", 3, "10-15"],
+    ["curl-inclinado-alterno-supinacion", 3, "10-15"],
     ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
   ],
 
