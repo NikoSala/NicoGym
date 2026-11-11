@@ -101,7 +101,7 @@ function getExerciseDatabase() {
     {
       id: "alternating-dumbbell-curl",
       nombre: "Curl alterno con mancuernas",
-      grupo: "Bíceps",
+      grupo: "Antebrazo",
       categoria: "Curl",
       urlGif:
         "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Curl.gif",
@@ -451,6 +451,29 @@ function getExerciseDatabase() {
       },
     },
 
+    {
+      id: "curl-inverso-polea-barra",
+      nombre: "Curl inverso en polea baja con barra recta",
+      grupo: "Antebrazo",
+      categoria: "Curl",
+      urlGif:
+        "https://fitnessprogramer.com/wp-content/uploads/2022/02/Cable-Reverse-Grip-EZ-bar-Biceps-Curl.gif",
+      descripcion:
+        "De pie frente a la polea baja, sujeta la barra recta con las palmas hacia abajo. Mantén los codos junto al torso y flexiónalos para subir la barra; bájala lentamente sin balancearte.",
+      consejos:
+        "• Usa una barra recta con agarre prono, las palmas hacia abajo y las manos aproximadamente al ancho de los hombros.\n• Mantén las muñecas rectas y los codos cerca del cuerpo.\n• Empieza con una carga ligera y controla la bajada. El GIF muestra una barra EZ; en tu rutina usa la barra recta.",
+      errores:
+        "• No balancees el torso ni adelantes los codos.\n• No dobles las muñecas.\n• No uses una carga que te obligue a perder el control.",
+      musculosPrincipales: ["Braquiorradial", "Braquial"],
+      musculosSecundarios: ["Bíceps", "Antebrazo"],
+      series: 3,
+      reps: "10-15",
+      dia: null,
+      dificultad: "facil",
+      material: ["Polea baja", "Barra recta"],
+      tipoCarga: null,
+      intensidadMuscular: { Bíceps: 60, Antebrazo: 85 },
+    },
     {
       id: "reverse-dumbbell-curl",
       nombre: "Curl inverso con mancuernas",
@@ -1618,15 +1641,35 @@ function getExerciseDatabase() {
     },
     {
       id: "curl-v-polea-baja",
-      nombre: "Curl en V en polea baja",
+      nombre: "Curl de bíceps en polea baja con cuerda",
+      grupo: "Bíceps",
+      categoria: "Curl",
+      nombresHistoricos: ["Curl en V en polea baja"],
+      material: ["Polea baja", "Cuerda"],
+      musculosPrincipales: ["Bíceps"],
+      musculosSecundarios: ["Antebrazo", "Braquial"],
+      descripcion: "De pie frente a la polea baja, sujeta los extremos de la cuerda con las palmas enfrentadas. Flexiona los codos para acercar las manos a los hombros y vuelve a bajar con control.",
+      consejos: "• Engancha una cuerda a la polea baja y sujeta un extremo con cada mano.\n• Mantén las palmas enfrentadas, las muñecas rectas y los codos junto al torso.\n• Conserva el cuerpo erguido y separa ligeramente los extremos de la cuerda al subir.\n• Controla también la bajada.",
+      errores: "• No balancees el torso ni uses las piernas para impulsar el peso.\n• No adelantes los codos ni dobles las muñecas.\n• No dejes que la carga tire de los brazos al bajar.",
+      series: 3,
+      reps: "10-15",
+      dia: null,
+      dificultad: "facil",
+      tipoCarga: null,
+      intensidadMuscular: { Bíceps: 85 },
+      urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/rope-bicep-curls.gif",
+    },
+    {
+      id: "curl-biceps-agarre-v",
+      nombre: "Curl de bíceps en polea baja con agarre en V",
       grupo: "Bíceps",
       categoria: "Curl",
       material: ["Polea baja", "Agarre en V"],
       musculosPrincipales: ["Bíceps"],
-      musculosSecundarios: ["Antebrazo", "Braquial"],
-      descripcion: "De pie frente a la polea baja, toma el agarre en V con ambas manos en posición neutra. Flexiona los codos para llevar el agarre hacia el pecho y vuelve a bajar de forma controlada.",
-      consejos: "• Engancha el agarre en V al cable de la polea baja antes de colocarte.\n• Mantén los codos pegados al cuerpo y las muñecas alineadas con los antebrazos.\n• Conserva el torso erguido y sube el agarre sin balancearte.\n• Controla también la bajada.",
-      errores: "• No balancees el torso ni uses las piernas para impulsar el peso.\n• No adelantes los codos ni encorves la espalda.\n• No dejes que la carga tire de los brazos al bajar.",
+      musculosSecundarios: ["Braquial", "Antebrazo"],
+      descripcion: "De pie frente a la polea baja, sujeta el agarre en V con las palmas enfrentadas. Flexiona los codos para llevarlo hacia el pecho y vuelve a bajar de forma controlada.",
+      consejos: "• Engancha el agarre en V a la polea baja antes de colocarte.\n• Mantén las palmas enfrentadas, las muñecas rectas y los codos junto al torso.\n• Conserva el cuerpo erguido y controla tanto la subida como la bajada.",
+      errores: "• No balancees el torso ni uses las piernas para impulsar el peso.\n• No adelantes los codos ni dobles las muñecas.\n• No dejes que la carga tire de los brazos al bajar.",
       series: 3,
       reps: "10-15",
       dia: null,
@@ -1637,4 +1680,13 @@ function getExerciseDatabase() {
     },
   );
   return exerciseDatabase;
+}
+
+function coincideRegistroEjercicio(registro, ejercicio) {
+  if (registro?.exerciseId && ejercicio?.id)
+    return registro.exerciseId === ejercicio.id;
+  const nombre = ejercicio?.nombre || ejercicio;
+  return registro?.nombre === nombre ||
+    (Array.isArray(ejercicio?.nombresHistoricos) &&
+      ejercicio.nombresHistoricos.includes(registro?.nombre));
 }

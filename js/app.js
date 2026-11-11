@@ -324,7 +324,7 @@ const APP = {
         if (ultimaSesion) {
           ejerciciosEntreno = ejerciciosEntreno.map((ejercicio) => {
             const anterior = ultimaSesion.ejercicios.find(
-              (registro) => registro.nombre === ejercicio.nombre,
+              (registro) => coincideRegistroEjercicio(registro, ejercicio),
             );
             if (!anterior) return ejercicio;
             const reps = parseReps(anterior.reps);
@@ -1076,7 +1076,7 @@ const APP = {
                       type="button"
                       class="me-workout-image-button"
                       onclick="UI.abrirLightbox('${ej.urlGif}')"
-                      aria-label="Ampliar animación del ejercicio"
+                      aria-label="Ampliar imagen del ejercicio"
                     >
                       <i class="fa-solid fa-expand"></i>
                     </button>
@@ -1529,7 +1529,7 @@ const APP = {
       };
       STATE.historialEntrenos.push(entrenamiento);
     }
-    let registro = entrenamiento.ejercicios.find((e) => e.nombre === ej.nombre);
+    let registro = entrenamiento.ejercicios.find((e) => coincideRegistroEjercicio(e, ej));
 
     const configuracionCarga =
       typeof WEIGHTS !== "undefined" && ej.tipoCarga
@@ -1818,7 +1818,7 @@ const APP = {
     );
     const indicePendiente = ejerciciosEntreno.findIndex((ejercicio) => {
       if (ejercicio.esCaminata) return !cardioCompletado;
-      const registro = entrenamiento?.ejercicios?.find((item) => item.nombre === ejercicio.nombre);
+      const registro = entrenamiento?.ejercicios?.find((item) => coincideRegistroEjercicio(item, ejercicio));
       const repeticiones = registro ? parseReps(registro.reps) : { valid: false, series: [] };
       return !repeticiones.valid || repeticiones.series.length < obtenerSeriesEntrenoEjercicio(ejercicio);
     });

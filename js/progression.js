@@ -26,8 +26,7 @@ const ExerciseProgression = {
   },
 
   _coincide(registro, ejercicio) {
-    if (registro?.exerciseId && ejercicio?.id) return registro.exerciseId === ejercicio.id;
-    return registro?.nombre === (ejercicio?.nombre || ejercicio);
+    return coincideRegistroEjercicio(registro, ejercicio);
   },
 
   historial(ejercicio) {

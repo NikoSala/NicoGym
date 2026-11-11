@@ -3,7 +3,7 @@
         // ==========================================
         const CONFIG = {
             VERSION: '3.4',
-            STATE_SCHEMA_VERSION: 19,
+            STATE_SCHEMA_VERSION: 24,
             BACKUP_VERSION: 3,
             ALTURA: null,
             PESO_OBJETIVO: null,

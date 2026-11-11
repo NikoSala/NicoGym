@@ -406,6 +406,127 @@ const Storage = {
         d.schemaVersion = 19;
         version = 19;
         cambio = true;
+      } else if (version === 19) {
+        const jueves = d.rutinasPersonalizadas?.jueves;
+        if (Array.isArray(jueves)) {
+          const yaTieneCurlV = jueves.some(
+            (item) => Array.isArray(item) && item[0] === "curl-biceps-agarre-v",
+          );
+          d.rutinasPersonalizadas.jueves = jueves.flatMap((item) => {
+            if (!Array.isArray(item) || item[0] !== "curl-scott-supino-barra-z")
+              return [item];
+            return yaTieneCurlV
+              ? []
+              : [["curl-biceps-agarre-v", item[1], item[2]]];
+          });
+        }
+        d.schemaVersion = 20;
+        version = 20;
+        cambio = true;
+      } else if (version === 20) {
+        const jueves = d.rutinasPersonalizadas?.jueves;
+        if (Array.isArray(jueves)) {
+          d.rutinasPersonalizadas.jueves = jueves.filter(
+            (item) => !Array.isArray(item) || item[0] !== "elevacion-lateral-polea",
+          );
+        }
+        d.schemaVersion = 21;
+        version = 21;
+        cambio = true;
+      } else if (version === 21) {
+        const sesionLunes = d.historialEntrenos?.find(
+          (sesion) => sesion?.fecha === "2026-11-09" && sesion?.dia === "lunes",
+        );
+        if (Array.isArray(sesionLunes?.ejercicios)) {
+          const reemplazosPorId = {
+            "press-pecho-maquina": {
+              id: "aperturas-peck-deck",
+              nombre: "Aperturas en peck deck",
+            },
+            "remo-sentado-polea": {
+              id: "remo-pecho-apoyado-maquina",
+              nombre: "Remo con pecho apoyado en máquina",
+            },
+          };
+          const reemplazosPorNombre = {
+            "Press de pecho en máquina": reemplazosPorId["press-pecho-maquina"],
+            "Remo sentado en polea": reemplazosPorId["remo-sentado-polea"],
+          };
+          sesionLunes.ejercicios.forEach((ejercicio) => {
+            const reemplazo = reemplazosPorId[ejercicio?.exerciseId] ||
+              reemplazosPorNombre[ejercicio?.nombre];
+            if (!reemplazo) return;
+            ejercicio.exerciseId = reemplazo.id;
+            ejercicio.nombre = reemplazo.nombre;
+          });
+        }
+        d.schemaVersion = 22;
+        version = 22;
+        cambio = true;
+      } else if (version === 22) {
+        const sesionesLunes = (d.historialEntrenos || []).filter(
+          (sesion) =>
+            sesion?.dia === "lunes" &&
+            ["2026-11-09", "2026-11-10"].includes(sesion.fecha),
+        );
+        const reemplazosPorId = {
+          "press-pecho-maquina": {
+            id: "aperturas-peck-deck",
+            nombre: "Aperturas en peck deck",
+          },
+          "remo-sentado-polea": {
+            id: "remo-pecho-apoyado-maquina",
+            nombre: "Remo con pecho apoyado en máquina",
+          },
+        };
+        const reemplazosPorNombre = {
+          "Press de pecho en máquina": reemplazosPorId["press-pecho-maquina"],
+          "Remo sentado en polea": reemplazosPorId["remo-sentado-polea"],
+        };
+        sesionesLunes.forEach((sesion) => {
+          (sesion.ejercicios || []).forEach((ejercicio) => {
+            const reemplazo = reemplazosPorId[ejercicio?.exerciseId] ||
+              reemplazosPorNombre[ejercicio?.nombre];
+            if (!reemplazo) return;
+            ejercicio.exerciseId = reemplazo.id;
+            ejercicio.nombre = reemplazo.nombre;
+          });
+        });
+
+        const semana = this._getSemanaKey(new Date(2026, 10, 9, 12));
+        const juevesPersonalizado = Array.isArray(d.rutinasPersonalizadas?.jueves)
+          ? d.rutinasPersonalizadas.jueves
+          : ROUTINES.jueves;
+        const reemplazosJueves = {
+          "aperturas-peck-deck": "press-pecho-maquina",
+          "remo-pecho-apoyado-maquina": "remo-sentado-polea",
+        };
+        const rutinaJueves = juevesPersonalizado.map(([id, series, reps]) => [
+          reemplazosJueves[id] || id,
+          series,
+          reps,
+        ]);
+        if (!d.rutinasTemporales || typeof d.rutinasTemporales !== "object")
+          d.rutinasTemporales = {};
+        d.rutinasTemporales[semana] = {
+          ...(d.rutinasTemporales[semana] || {}),
+          jueves: rutinaJueves,
+        };
+
+        d.schemaVersion = 23;
+        version = 23;
+        cambio = true;
+      } else if (version === 23) {
+        const semanaActual = this._getSemanaKey(new Date());
+        const semanaAjustada = this._getSemanaKey(new Date(2026, 10, 9, 12));
+        if (semanaActual === semanaAjustada && d.checks && typeof d.checks === "object") {
+          Object.keys(d.checks).forEach((clave) => {
+            if (clave.startsWith("jueves-")) delete d.checks[clave];
+          });
+        }
+        d.schemaVersion = 24;
+        version = 24;
+        cambio = true;
       } else {
         break;
       }
@@ -504,6 +625,35 @@ const Storage = {
         String(reps || "12"),
       ]);
     });
+    const semanaActual = this._getSemanaKey(new Date());
+    const temporales = STATE.rutinasTemporales;
+    STATE.rutinasTemporales = {};
+    if (temporales && typeof temporales === "object" && !Array.isArray(temporales)) {
+      const rutinasSemana = temporales[semanaActual];
+      if (rutinasSemana && typeof rutinasSemana === "object" && !Array.isArray(rutinasSemana)) {
+        const idsValidos = new Set(getExerciseDatabase().map((ej) => ej.id));
+        const diasValidos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+        const rutinasNormalizadas = {};
+        diasValidos.forEach((dia) => {
+          const rutina = rutinasSemana[dia];
+          if (!Array.isArray(rutina)) return;
+          rutinasNormalizadas[dia] = rutina
+            .filter((item, indice, lista) =>
+              Array.isArray(item) &&
+              typeof item[0] === "string" &&
+              idsValidos.has(item[0]) &&
+              lista.findIndex((otro) => Array.isArray(otro) && otro[0] === item[0]) === indice
+            )
+            .map(([id, series, reps]) => [
+              id,
+              Number.isFinite(Number(series)) && Number(series) > 0 ? Number(series) : 3,
+              String(reps || "12"),
+            ]);
+        });
+        if (Object.keys(rutinasNormalizadas).length)
+          STATE.rutinasTemporales[semanaActual] = rutinasNormalizadas;
+      }
+    }
     if (
       STATE.entrenamientoPendiente !== null &&
       (typeof STATE.entrenamientoPendiente !== "object" ||
@@ -637,7 +787,7 @@ const Storage = {
       if (estado[campo] !== undefined && !Array.isArray(estado[campo]))
         throw new Error(`Campo inválido: ${campo}`);
     }
-    for (const campo of ["checks", "evolution", "config", "ajustes", "diasEspeciales", "rutinasPersonalizadas", "pesosAjustados"]) {
+    for (const campo of ["checks", "evolution", "config", "ajustes", "diasEspeciales", "rutinasPersonalizadas", "rutinasTemporales", "pesosAjustados"]) {
       if (estado[campo] !== undefined && !esObjeto(estado[campo]))
         throw new Error(`Campo inválido: ${campo}`);
     }
@@ -912,6 +1062,7 @@ const Storage = {
           ajustes: "object",
           materialDisponible: "array",
           rutinasPersonalizadas: "object",
+          rutinasTemporales: "object",
         };
         for (const [campo, tipo] of Object.entries(campos)) {
           if (datosEstado[campo] === undefined) continue;

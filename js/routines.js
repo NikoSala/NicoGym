@@ -26,8 +26,7 @@ const ROUTINES = {
     ["aperturas-peck-deck", 3, "10-15"],
     ["jalon-polea-al-pecho", 3, "8-12"],
     ["remo-pecho-apoyado-maquina", 3, "8-12"],
-    ["elevacion-lateral-polea", 3, "12-15 por lado"],
-    ["curl-scott-supino-barra-z", 3, "10-15"],
+    ["curl-biceps-agarre-v", 3, "10-15"],
     ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
   ],
 
@@ -83,7 +82,9 @@ const ROUTINES_ANTERIORES = {
 const PREPARACION_EJERCICIOS = {
   "press-inclinado": "Ajusta el banco a unos 30-45° y usa un par de mancuernas. Apoya bien la espalda y los pies; baja las mancuernas con control a los lados de la parte alta del pecho.",
   "curl-scott-supino-barra-z": "Coloca el banco Scott para que el borde quede bajo las axilas; apoya la parte superior de los brazos y sujeta la barra Z con las palmas hacia arriba.",
-  "curl-v-polea-baja": "Engancha el agarre en V a la polea baja; ponte de pie frente a la polea, toma ambas empuñaduras con agarre neutro y mantén los codos junto al torso.",
+  "curl-v-polea-baja": "Engancha una cuerda a la polea baja; ponte de pie frente a la polea, sujeta un extremo con cada mano y mantén los codos junto al torso.",
+  "curl-inverso-polea-barra": "Engancha una barra recta a la polea baja; ponte frente a la polea y sujétala con las palmas hacia abajo, aproximadamente al ancho de los hombros.",
+  "curl-biceps-agarre-v": "Engancha el agarre en V a la polea baja; ponte de pie frente a la polea, sujeta ambas empuñaduras con las palmas enfrentadas y mantén los codos junto al torso.",
   "press-pecho-maquina": "Ajusta el asiento para que las asas queden frente al centro del pecho; apoya la espalda.",
   "aperturas-peck-deck": "Ajusta el asiento para que los brazos queden a la altura del pecho y apoya la espalda.",
   "press-hombros-maquina": "Ajusta el asiento para empezar con las asas a la altura de los hombros; apoya la espalda.",
@@ -117,6 +118,11 @@ function getPreparacionEjercicio(ejercicio) {
 function getRutinaDelDia(dia, fecha = UI.getHoy()) {
   const fechaCambio = STATE.rutinaNuevaDesde || "2026-10-29";
   if (fecha < fechaCambio) return ROUTINES_ANTERIORES[dia] || [];
+
+  const fechaRutina = new Date(`${fecha}T12:00:00`);
+  const semana = Storage._getSemanaKey(fechaRutina);
+  const temporal = STATE.rutinasTemporales?.[semana]?.[dia];
+  if (Array.isArray(temporal)) return temporal;
 
   const personalizadas = STATE.rutinasPersonalizadas;
   if (personalizadas && Object.prototype.hasOwnProperty.call(personalizadas, dia)) {
