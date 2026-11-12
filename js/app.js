@@ -3,6 +3,7 @@
 // ==========================================
 const APP = {
   _cardioMostrado: false,
+  _visibilidadDescansoConfigurada: false,
   pesoSesionEntreno: 0,
   init() {
     this._borrarDatosEntrenadorRetirado();
@@ -16,6 +17,14 @@ const APP = {
 
     this._cargarAjustesBasicos();
     this._cargarDatosCompletos();
+    if (!this._visibilidadDescansoConfigurada) {
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState !== "visible" || !finDescanso) return;
+        this._actualizarDescanso();
+        if (finDescanso) void this._solicitarWakeLock();
+      });
+      this._visibilidadDescansoConfigurada = true;
+    }
 
     requestAnimationFrame(() => {
       loading.classList.add("fade-out");
@@ -1474,6 +1483,7 @@ const APP = {
   },
 
   _confirmarGuardarSerie(pesoId) {
+    this._prepararAvisoSonoro();
     const peso = document.getElementById("meRevisionPeso")?.value;
     const reps = document.getElementById("meRevisionReps")?.value;
     const pesoInput = document.getElementById(pesoId);
@@ -1509,6 +1519,7 @@ const APP = {
       return;
     }
     if (this._guardandoSerie) return;
+    if (CONFIG.TEMPORIZADOR_DESCANSO) void this._solicitarWakeLock(true);
     this._guardandoSerie = true;
 
     pesoActualEntreno = peso;
@@ -1619,9 +1630,14 @@ const APP = {
           if (ejercicio.esCaminata) return false;
           return !STATE.checks[`${dia}-${indice}`];
         });
+        const indiceEjercicioAnterior = idxEjercicioActual;
         idxEjercicioActual = siguientePendiente >= 0 ? siguientePendiente : Math.min(idxEjercicioActual + 1, ejerciciosEntreno.length - 1);
+        const cambioEjercicio = idxEjercicioActual !== indiceEjercicioAnterior;
         if (CONFIG.TEMPORIZADOR_DESCANSO)
-        setTimeout(() => this._mostrarDescanso(ej.descanso || 60), CONFIG.TIEMPO_MSG_COMPLETADO);
+        setTimeout(() => this._mostrarDescanso(
+          cambioEjercicio ? DESCANSO_ENTRE_EJERCICIOS : ej.descanso || 90,
+          cambioEjercicio,
+        ), CONFIG.TIEMPO_MSG_COMPLETADO);
         else
         setTimeout(
           () => this._mostrarEjercicio(),
@@ -1697,17 +1713,18 @@ const APP = {
     if (msgCompletadoTimeout) clearTimeout(msgCompletadoTimeout);
   },
 
-  _mostrarDescanso(duracion) {
+  _mostrarDescanso(duracion, entreEjercicios = false) {
     const ej = ejerciciosEntreno[idxEjercicioActual];
-    const descanso = Number(duracion) || ej.descanso || 60;
+    const descanso = Number(duracion) || ej.descanso || 90;
     tiempoDescanso = descanso;
+    finDescanso = Date.now() + descanso * 1000;
 
     const body = document.getElementById("meBody");
     body.innerHTML = `
             <div class="me-descanso me-descanso-modern">
               <div class="me-descanso-kicker"><i class="fa-solid fa-stopwatch"></i> Descanso</div>
               <div class="me-timer" id="meTimer">${tiempoDescanso}</div>
-              <div class="me-timer-label">Recupera antes de la siguiente serie</div>
+              <div class="me-timer-label">${entreEjercicios ? "Recupera antes del siguiente ejercicio" : "Recupera antes de la siguiente serie"}</div>
               <div class="me-descanso-next"><span>Siguiente</span><strong>${ej.nombre}</strong></div>
               <button class="btn btn-primary me-siguiente" onclick="APP._saltarDescanso()">
                 <i class="fa-solid fa-forward"></i> Saltar descanso
@@ -1716,17 +1733,119 @@ const APP = {
                 `;
 
     if (temporizadorDescanso) clearInterval(temporizadorDescanso);
-    temporizadorDescanso = setInterval(() => {
-      tiempoDescanso--;
-      const el = document.getElementById("meTimer");
-      if (el) el.textContent = tiempoDescanso;
-      if (tiempoDescanso <= 0) {
-        clearInterval(temporizadorDescanso);
-        temporizadorDescanso = null;
-        document.getElementById("meCompletadoMsg").classList.add("hidden");
-        APP._mostrarEjercicio();
+    void this._solicitarWakeLock();
+    temporizadorDescanso = setInterval(() => this._actualizarDescanso(), 1000);
+  },
+
+  async _solicitarWakeLock(anticipado = false) {
+    if (!("wakeLock" in navigator) || document.visibilityState !== "visible") return;
+    if (wakeLockDescanso && !wakeLockDescanso.released) return;
+    if (wakeLockSolicitudPendiente) return;
+    const solicitud = ++wakeLockSolicitud;
+    wakeLockSolicitudPendiente = true;
+    try {
+      const wakeLock = await navigator.wakeLock.request("screen");
+      if (
+        solicitud !== wakeLockSolicitud ||
+        (!finDescanso && !anticipado) ||
+        document.visibilityState !== "visible"
+      ) {
+        if (solicitud === wakeLockSolicitud) wakeLockSolicitudPendiente = false;
+        await wakeLock.release();
+        return;
       }
-    }, 1000);
+      wakeLockSolicitudPendiente = false;
+      wakeLockDescanso = wakeLock;
+      wakeLock.addEventListener("release", () => {
+        if (wakeLockDescanso === wakeLock) wakeLockDescanso = null;
+      });
+    } catch (error) {
+      if (solicitud === wakeLockSolicitud) wakeLockSolicitudPendiente = false;
+      console.warn("No se pudo mantener la pantalla activa durante el descanso:", error);
+    }
+  },
+
+  _liberarWakeLock() {
+    wakeLockSolicitud++;
+    wakeLockSolicitudPendiente = false;
+    if (!wakeLockDescanso) return;
+    const wakeLock = wakeLockDescanso;
+    wakeLockDescanso = null;
+    if (!wakeLock.released) {
+      wakeLock.release().catch((error) => {
+        console.warn("No se pudo liberar el bloqueo de pantalla:", error);
+      });
+    }
+  },
+
+  _actualizarDescanso() {
+    if (!finDescanso) return;
+    tiempoDescanso = Math.max(0, Math.ceil((finDescanso - Date.now()) / 1000));
+    const el = document.getElementById("meTimer");
+    if (el) el.textContent = tiempoDescanso;
+    if (tiempoDescanso > 0) return;
+
+    if (temporizadorDescanso) clearInterval(temporizadorDescanso);
+    temporizadorDescanso = null;
+    finDescanso = 0;
+    this._liberarWakeLock();
+    this._avisarFinDescanso();
+    document.getElementById("meCompletadoMsg")?.classList.add("hidden");
+    this._mostrarEjercicio();
+  },
+
+  _prepararAvisoSonoro() {
+    const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextConstructor) return;
+    try {
+      if (!audioContextDescanso) audioContextDescanso = new AudioContextConstructor();
+    } catch (error) {
+      console.warn("No se pudo preparar el sonido del temporizador:", error);
+      return;
+    }
+    if (audioContextDescanso.state === "suspended") {
+      audioContextDescanso.resume().catch((error) => {
+        console.warn("No se pudo activar el sonido del temporizador:", error);
+      });
+    }
+  },
+
+  _avisarFinDescanso() {
+    if (typeof navigator.vibrate === "function") {
+      try {
+        const vibrado = navigator.vibrate([300, 150, 300]);
+        if (vibrado === false) console.warn("El dispositivo no permitió la vibración del temporizador.");
+      } catch (error) {
+        console.warn("No se pudo activar la vibración del temporizador:", error);
+      }
+    }
+    if (!audioContextDescanso) return;
+    if (audioContextDescanso.state === "suspended") {
+      audioContextDescanso.resume()
+        .then(() => this._reproducirAvisoSonoro())
+        .catch((error) => console.warn("No se pudo reproducir el aviso sonoro:", error));
+      return;
+    }
+    this._reproducirAvisoSonoro();
+  },
+
+  _reproducirAvisoSonoro() {
+    if (!audioContextDescanso || audioContextDescanso.state !== "running") return;
+    try {
+      const ahora = audioContextDescanso.currentTime;
+      const tono = audioContextDescanso.createOscillator();
+      const volumen = audioContextDescanso.createGain();
+      tono.frequency.setValueAtTime(880, ahora);
+      volumen.gain.setValueAtTime(0.0001, ahora);
+      volumen.gain.exponentialRampToValueAtTime(0.2, ahora + 0.02);
+      volumen.gain.exponentialRampToValueAtTime(0.0001, ahora + 0.6);
+      tono.connect(volumen);
+      volumen.connect(audioContextDescanso.destination);
+      tono.start(ahora);
+      tono.stop(ahora + 0.61);
+    } catch (error) {
+      console.warn("No se pudo reproducir el aviso sonoro:", error);
+    }
   },
 
   _saltarDescanso() {
@@ -1734,6 +1853,8 @@ const APP = {
       clearInterval(temporizadorDescanso);
       temporizadorDescanso = null;
     }
+    finDescanso = 0;
+    this._liberarWakeLock();
     document.getElementById("meCompletadoMsg").classList.add("hidden");
     this._mostrarEjercicio();
   },
@@ -1804,6 +1925,8 @@ const APP = {
       clearInterval(temporizadorDescanso);
       temporizadorDescanso = null;
     }
+    finDescanso = 0;
+    this._liberarWakeLock();
     if (msgCompletadoTimeout) clearTimeout(msgCompletadoTimeout);
 
     const tiempoEmpleado = Math.max(
@@ -1871,6 +1994,8 @@ const APP = {
       clearInterval(temporizadorDescanso);
       temporizadorDescanso = null;
     }
+    finDescanso = 0;
+    this._liberarWakeLock();
 
     STATE.entrenamientoPendiente = {
       semana: Storage._getSemanaKey(new Date()),
@@ -1919,6 +2044,8 @@ const APP = {
       clearInterval(temporizadorDescanso);
       temporizadorDescanso = null;
     }
+    finDescanso = 0;
+    this._liberarWakeLock();
     if (msgCompletadoTimeout) clearTimeout(msgCompletadoTimeout);
     document.getElementById("modoEntreno").classList.remove("open");
     APP.renderizarTodo();

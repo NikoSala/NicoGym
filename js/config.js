@@ -3,7 +3,7 @@
         // ==========================================
         const CONFIG = {
             VERSION: '3.4',
-            STATE_SCHEMA_VERSION: 27,
+            STATE_SCHEMA_VERSION: 31,
             BACKUP_VERSION: 3,
             ALTURA: null,
             PESO_OBJETIVO: null,
@@ -16,7 +16,7 @@
                 lunes: 'Torso A · 5 ejercicios',
                 martes: 'Pierna A · 4 ejercicios',
                 miercoles: 'Descanso',
-                jueves: 'Torso B · 6 ejercicios',
+                jueves: 'Torso B · 5 ejercicios',
                 viernes: 'Pierna B · 4 ejercicios',
                 sabado: 'Descanso',
                 domingo: 'Descanso comodín'

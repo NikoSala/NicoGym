@@ -7,27 +7,27 @@
 const ROUTINES = {
   lunes: [
     ["press-pecho-maquina", 3, "8-12"],
-    ["remo-sentado-polea", 3, "8-12"],
+    ["remo-pecho-apoyado-maquina", 3, "8-12"],
     ["press-hombros-maquina", 3, "8-12"],
-    ["curl-v-polea-baja", 3, "10-15"],
+    ["curl-v-polea-baja", 4, "10-15"],
     ["extension-triceps-polea", 3, "10-15"],
   ],
 
   martes: [
     ["prensa-piernas-maquina", 3, "8-12"],
-    ["curl-femoral-sentado", 3, "10-15"],
     ["extension-cuadriceps-maquina", 3, "10-15"],
+    ["curl-femoral-sentado", 3, "10-15"],
     ["abductores-maquina", 3, "12-15"],
   ],
 
   miercoles: [],
 
   jueves: [
-    ["jalon-polea-al-pecho", 3, "8-12"],
-    ["remo-pecho-apoyado-maquina", 3, "8-12"],
     ["aperturas-peck-deck", 3, "10-15"],
-    ["curl-inclinado-alterno-supinacion", 3, "10-15"],
-    ["patada-triceps-polea-baja", 3, "10-15 por lado"],
+    ["jalon-polea-al-pecho", 3, "8-12"],
+    ["remo-sentado-polea", 3, "8-12"],
+    ["curl-inclinado-alterno-supinacion", 4, "10-15"],
+    ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
   ],
 
   viernes: [
@@ -151,6 +151,16 @@ function getResumenRutinaDelDia(dia, fecha = UI.getHoy()) {
 // OBTENER EJERCICIOS COMPLETOS DEL DÍA
 // ==========================================
 
+const EJERCICIOS_DESCANSO_LARGO = new Set([
+  "press-pecho-maquina",
+  "remo-pecho-apoyado-maquina",
+  "press-hombros-maquina",
+  "prensa-piernas-maquina",
+  "jalon-polea-al-pecho",
+  "remo-sentado-polea",
+]);
+const DESCANSO_ENTRE_EJERCICIOS = 120;
+
 function getEjerciciosPorDia(dia, fecha = UI.getHoy()) {
   const db = getExerciseDatabase();
 
@@ -163,9 +173,8 @@ function getEjerciciosPorDia(dia, fecha = UI.getHoy()) {
       return {
         ...base,
         dia,
-        // Plan actual: tres series efectivas por ejercicio.
-        series: 3,
-        descanso: ["press-pecho-maquina", "remo-sentado-polea", "press-hombros-maquina", "prensa-piernas-maquina", "curl-femoral-sentado", "extension-cuadriceps-maquina", "jalon-polea-al-pecho", "remo-pecho-apoyado-maquina"].includes(id) ? 60 : 45,
+        series: Number(series) || 3,
+        descanso: EJERCICIOS_DESCANSO_LARGO.has(id) ? 120 : 90,
         reps: String(reps),
         preparacion: getPreparacionEjercicio(base),
       };

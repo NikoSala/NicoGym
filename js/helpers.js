@@ -84,11 +84,11 @@
                 const series = obtenerSeriesObjetivoEjercicio(ej);
                 const ejecucion = 0.75;
                 const descansos = Math.max(0, series - 1) * ((ej.descanso || 60) / 60);
-                const transicion = 1.5;
-                fuerza += series * ejecucion + descansos + transicion;
+                fuerza += series * ejecucion + descansos;
             });
             const calentamiento = fuerza > 0 ? 5 : 0;
-            return Math.max(1, Math.round(calentamiento + fuerza + cardio));
+            const transiciones = Math.max(0, ejercicios.length - 1) * 2;
+            return Math.max(1, Math.round(calentamiento + fuerza + cardio + transiciones));
         }
 
         function getProximoDomingo(desde, cadaSemanas) {

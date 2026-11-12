@@ -644,6 +644,119 @@ const Storage = {
         d.schemaVersion = 27;
         version = 27;
         cambio = true;
+      } else if (version === 27) {
+        const rutinasActualizadas = {
+          lunes: [
+            ["press-pecho-maquina", 3, "8-12"],
+            ["remo-sentado-polea", 3, "8-12"],
+            ["press-hombros-maquina", 3, "8-12"],
+            ["curl-v-polea-baja", 4, "10-15"],
+            ["extension-triceps-polea", 3, "10-15"],
+          ],
+          martes: [
+            ["prensa-piernas-maquina", 3, "8-12"],
+            ["extension-cuadriceps-maquina", 3, "10-15"],
+            ["curl-femoral-sentado", 3, "10-15"],
+            ["abductores-maquina", 3, "12-15"],
+          ],
+          jueves: [
+            ["press-pecho-maquina", 3, "8-12"],
+            ["jalon-polea-al-pecho", 3, "8-12"],
+            ["remo-sentado-polea", 3, "8-12"],
+            ["curl-inclinado-alterno-supinacion", 4, "10-15"],
+            ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
+          ],
+          viernes: [
+            ["curl-femoral-sentado", 3, "10-15"],
+            ["extension-cuadriceps-maquina", 3, "10-15"],
+            ["aductores-maquina", 3, "12-15"],
+            ["gemelos-prensa-piernas", 3, "12-20"],
+          ],
+        };
+        Object.keys(rutinasActualizadas).forEach((dia) => {
+          if (Array.isArray(d.rutinasPersonalizadas?.[dia])) {
+            d.rutinasPersonalizadas[dia] = rutinasActualizadas[dia];
+          }
+        });
+
+        const semanaActual = this._getSemanaKey(new Date());
+        if (!d.rutinasTemporales || typeof d.rutinasTemporales !== "object")
+          d.rutinasTemporales = {};
+        d.rutinasTemporales[semanaActual] = {
+          ...(d.rutinasTemporales[semanaActual] || {}),
+          jueves: rutinasActualizadas.jueves,
+        };
+        if (d.checks && typeof d.checks === "object") {
+          Object.keys(d.checks).forEach((clave) => {
+            if (clave.startsWith("jueves-")) delete d.checks[clave];
+          });
+        }
+        d.schemaVersion = 28;
+        version = 28;
+        cambio = true;
+      } else if (version === 28) {
+        const juevesPermanente = [
+          ["jalon-polea-al-pecho", 3, "8-12"],
+          ["remo-pecho-apoyado-maquina", 3, "8-12"],
+          ["aperturas-peck-deck", 3, "10-15"],
+          ["curl-inclinado-alterno-supinacion", 4, "10-15"],
+          ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
+        ];
+        if (Array.isArray(d.rutinasPersonalizadas?.jueves)) {
+          d.rutinasPersonalizadas.jueves = juevesPermanente;
+        }
+        d.schemaVersion = 29;
+        version = 29;
+        cambio = true;
+      } else if (version === 29) {
+        const cambiarRemo = (rutina, anterior, nuevo) =>
+          rutina.map((item) =>
+            Array.isArray(item)
+              ? [item[0] === anterior ? nuevo : item[0], item[1], item[2]]
+              : item,
+          );
+        if (Array.isArray(d.rutinasPersonalizadas?.lunes)) {
+          d.rutinasPersonalizadas.lunes = cambiarRemo(
+            d.rutinasPersonalizadas.lunes,
+            "remo-sentado-polea",
+            "remo-pecho-apoyado-maquina",
+          );
+        }
+        if (Array.isArray(d.rutinasPersonalizadas?.jueves)) {
+          d.rutinasPersonalizadas.jueves = cambiarRemo(
+            d.rutinasPersonalizadas.jueves,
+            "remo-pecho-apoyado-maquina",
+            "remo-sentado-polea",
+          );
+        }
+        d.schemaVersion = 30;
+        version = 30;
+        cambio = true;
+      } else if (version === 30) {
+        const ordenJueves = [
+          "aperturas-peck-deck",
+          "jalon-polea-al-pecho",
+          "remo-sentado-polea",
+          "curl-inclinado-alterno-supinacion",
+          "extension-triceps-polea-sobre-cabeza",
+        ];
+        if (Array.isArray(d.rutinasPersonalizadas?.jueves)) {
+          d.rutinasPersonalizadas.jueves = d.rutinasPersonalizadas.jueves
+            .map((item, indice) => ({ item, indice }))
+            .sort((a, b) => {
+              const idA = Array.isArray(a.item) ? a.item[0] : null;
+              const idB = Array.isArray(b.item) ? b.item[0] : null;
+              const ordenA = ordenJueves.indexOf(idA);
+              const ordenB = ordenJueves.indexOf(idB);
+              return (ordenA < 0 ? ordenJueves.length : ordenA) -
+                (ordenB < 0 ? ordenJueves.length : ordenB) ||
+                a.indice - b.indice;
+            })
+            .map(({ item }) => item);
+        }
+        d.schemaVersion = 31;
+        version = 31;
+        cambio = true;
       } else {
         break;
       }
