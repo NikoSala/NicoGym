@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "nicogym-";
-const CACHE_VERSION = "shell-v85";
+const CACHE_VERSION = "shell-v86";
 const SHELL_CACHE = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-v1`;
 const MAX_RUNTIME_CACHE_ENTRIES = 120;
@@ -19,7 +19,7 @@ const APP_SHELL = [
   "./js/helpers.js?v=20261112a",
   "./js/routines.js?v=20261112e",
   "./js/cargas.js",
-  "./js/storage.js?v=20261112d",
+  "./js/storage.js?v=20261112e",
   "./js/state.js?v=20261112c",
   "./js/ui.js?v=20261001b",
   "./js/modal.js",
