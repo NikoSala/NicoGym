@@ -1389,13 +1389,17 @@ function getExerciseDatabase() {
     {
       id: "jalon-polea-al-pecho", nombre: "Jalón al pecho en polea", grupo: "Espalda", categoria: "Jalón",
       urlGif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Lat-Pulldown.gif",
-      descripcion: "Sentado en la máquina de jalón, coloca los muslos bajo los soportes y sujeta las empuñaduras anchas con las palmas enfrentadas. Mantén el pecho elevado y el torso estable, con una ligera inclinación hacia atrás. Lleva los codos hacia abajo y ligeramente hacia los lados, acercando las empuñaduras a la parte superior del pecho. Controla la subida hasta extender los brazos sin perder la tensión muscular. No utilices impulso ni tires detrás de la nuca.", consejos: "Inicia el tiron juntando las escapulas y mantén el torso estable.", errores: "No tires detras de la nuca ni te balancees.",
+      descripcion: "Sentado en la máquina de jalón, coloca los muslos bajo los soportes y sujeta las empuñaduras anchas con las palmas enfrentadas. Mantén el pecho elevado y el torso estable, con una ligera inclinación hacia atrás. Lleva los codos hacia abajo y ligeramente hacia los lados, acercando las empuñaduras a la parte superior del pecho. Controla la subida hasta extender los brazos sin perder la tensión muscular. No utilices impulso ni tires detrás de la nuca.",
+      consejos: "• Sujeta las empuñaduras anchas con las palmas enfrentadas y mantén las muñecas neutras.\n• Mantén el pecho elevado y lleva los codos hacia abajo y hacia los lados.\n• Controla la subida sin perder la tensión.",
+      errores: "• No gires las manos para convertir el agarre en pronado.\n• No te balancees ni tires detrás de la nuca.\n• No encojas los hombros ni uses impulso.",
       musculosPrincipales: ["Dorsal ancho"], musculosSecundarios: ["Bíceps", "Trapecio"], series: 3, reps: "8-12", dia: null, dificultad: "facil", material: ["Polea alta"], tipoCarga: null, intensidadMuscular: { Espalda: 90, "Bíceps": 40 },
     },
     {
       id: "remo-sentado-polea", nombre: "Remo sentado en polea", grupo: "Espalda", categoria: "Remo",
       urlGif: "https://fitcron.com/wp-content/uploads/2021/04/26611301-Cable-Seated-Row-with-V-bar_Back_720.gif",
-      descripcion: "Sentado frente a la polea, sujeta el accesorio en V con las palmas enfrentadas. Mantén el torso estable y la espalda neutra. Lleva los codos hacia atrás, cerca del cuerpo, acercando el agarre hacia la zona del abdomen. Aprieta la musculatura de la espalda y regresa lentamente a la posición inicial, controlando la extensión de los brazos.", consejos: "Mantén la espalda neutra y los hombros bajos.", errores: "No redondees la espalda ni te impulses con el torso.",
+      descripcion: "Sentado frente a la polea, sujeta el accesorio en V con las palmas enfrentadas. Mantén el torso estable y la espalda neutra. Lleva los codos hacia atrás, cerca del cuerpo, acercando el agarre hacia la zona del abdomen. Aprieta la musculatura de la espalda y regresa lentamente a la posición inicial, controlando la extensión de los brazos.",
+      consejos: "• Sujeta el accesorio en V con las palmas enfrentadas.\n• Mantén los codos cerca del cuerpo y los hombros bajos.\n• Controla la vuelta sin balancear el torso.",
+      errores: "• No redondees la espalda.\n• No abras los codos ni eleves los hombros en exceso.\n• No te impulses inclinando el torso.",
       musculosPrincipales: ["Dorsal ancho", "Romboides"], musculosSecundarios: ["Bíceps", "Trapecio"], series: 3, reps: "8-12", dia: null, dificultad: "facil", material: ["Polea baja"], tipoCarga: null, intensidadMuscular: { Espalda: 90, "Bíceps": 40 },
     },
     {
