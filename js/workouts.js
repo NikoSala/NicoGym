@@ -21,7 +21,11 @@ const Rutinas = {
     const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
     const nombres = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
     const iconos = ["🔵", "🟢", "🟣", "🟠", "🔵", "😌", "🟢"];
-    const rutinaCompletadaHoy = STATE.historialEntrenos.find((sesion) => sesion.fecha === UI.getHoy())?.dia;
+    const rutinasCompletadasHoy = new Set(
+      STATE.historialEntrenos
+        .filter((sesion) => sesion.fecha === UI.getHoy())
+        .map((sesion) => sesion.dia),
+    );
 
     tc.innerHTML = "";
     pc.innerHTML = "";
@@ -35,7 +39,7 @@ const Rutinas = {
       btn.dataset.dia = dia;
 
       const esDescanso = esDiaDescansoRutina(dia);
-      const completado = rutinaCompletadaHoy === dia || rutinaCompletadaEstaSemana;
+      const completado = rutinasCompletadasHoy.has(dia) || rutinaCompletadaEstaSemana;
 
       if (esDescanso) btn.classList.add("descanso");
       if (completado) btn.classList.add("completado");
@@ -54,7 +58,7 @@ const Rutinas = {
       panel.id = `dp-${dia}`;
 
       const esHoy = dia === UI.getDiaNombre();
-      const yaCompletado = rutinaCompletadaHoy === dia || rutinaCompletadaEstaSemana;
+      const yaCompletado = rutinasCompletadasHoy.has(dia) || rutinaCompletadaEstaSemana;
 
       let panelContent = "";
 
