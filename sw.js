@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "nicogym-";
-const CACHE_VERSION = "shell-v88";
+const CACHE_VERSION = "shell-v89";
 const SHELL_CACHE = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-v1`;
 const MAX_RUNTIME_CACHE_ENTRIES = 120;
@@ -7,7 +7,7 @@ const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./css/styles.css?v=20261105a",
+  "./css/styles.css?v=20261116a",
   "./css/visual-refresh.css?v=20261102a",
   "./img/logo-nicogym-600.jpg",
   "./img/icon-192.png",
@@ -27,7 +27,7 @@ const APP_SHELL = [
   "./js/progression.js?v=20261111a",
   "./js/app.js?v=20261112e",
   "./js/dashboard.js?v=20261029e",
-  "./js/workouts.js?v=20261116b",
+  "./js/workouts.js?v=20261116c",
   "./js/week.js?v=20261029d",
   "./js/weight.js?v=20260826",
   "./js/stats.js?v=20261102a",
