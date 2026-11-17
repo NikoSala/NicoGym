@@ -4,6 +4,175 @@
 
 let exerciseDatabase = null;
 
+const CONSEJOS_EQUIPO_EJERCICIO = {
+  "press-pecho-maquina": "• Ajusta el asiento para que las asas queden frente al centro del pecho; apoya la cabeza, la espalda y los pies.\n• Empuja al frente sin despegar la espalda y vuelve hasta que los codos queden algo detrás del torso, sin forzar el hombro.\n• Mantén las muñecas rectas y exhala al empujar.",
+  "aperturas-peck-deck": "• Ajusta el asiento para que las asas o almohadillas queden a la altura del pecho; apoya la espalda y coloca los codos ligeramente flexionados.\n• Cierra los brazos delante del pecho y vuelve despacio hasta sentir un estiramiento cómodo.\n• Mantén el torso pegado al respaldo; no rebotes ni fuerces los hombros hacia atrás.",
+  "press-inclinado-maquina": "• Ajusta el asiento para que las asas comiencen a la altura de la parte alta del pecho; apoya la espalda y los pies.\n• Empuja en diagonal hacia arriba y vuelve con control hasta un estiramiento cómodo.\n• Mantén el abdomen firme y no arquees la zona lumbar para terminar la repetición.",
+  "press-hombros-maquina": "• Ajusta el asiento para que las asas empiecen a la altura de los hombros; apoya toda la espalda y deja los pies firmes.\n• Empuja hacia arriba siguiendo el recorrido de la máquina y baja hasta una posición cómoda.\n• Mantén las muñecas sobre los codos y evita arquear la zona lumbar o encoger los hombros.",
+  "elevacion-lateral-polea": "• Coloca la polea abajo del todo y engancha un tirador individual; ponte de lado, con el cable pasando por delante del cuerpo.\n• Separa el brazo hasta la altura del hombro con el codo ligeramente doblado; inclínate solo lo necesario para mantener tensión.\n• Mantén la espalda neutra y el torso quieto; no te balancees.",
+  "aperturas-inversas-maquina": "• Siéntate mirando hacia el respaldo y ajusta el asiento para que las asas queden a la altura de los hombros; apoya el pecho.\n• Abre los brazos hacia los lados con los codos suavemente flexionados y regresa despacio.\n• Mantén la espalda apoyada y los hombros lejos de las orejas; no uses impulso.",
+  "extension-triceps-polea": "• Coloca la polea arriba y engancha una barra recta; ponte cerca, con los pies estables y el torso erguido.\n• Mantén los codos pegados a los costados y empuja la barra hacia abajo; deja que los antebrazos suban al volver.\n• Conserva la espalda neutra y no balancees el cuerpo para mover el peso.",
+  "extension-triceps-polea-sobre-cabeza": "• Pon la polea alta con cuerda y colócate de espaldas; da un paso al frente hasta notar tensión sin que el cable te tire.\n• Inclina el torso apenas hacia delante, mantén el abdomen firme y los codos apuntando al frente junto a la cabeza.\n• Estira los codos y vuelve despacio; no arquees la espalda ni abras los codos en exceso.",
+  "extension-triceps-polea-unilateral": "• Coloca la polea arriba y usa un tirador individual; ponte de frente con los pies estables.\n• Mantén el codo del brazo que trabaja junto al costado y extiende el antebrazo hacia abajo; vuelve lentamente.\n• Mantén hombros y espalda quietos, sin girar el tronco; repite con el otro brazo.",
+  "patada-triceps-polea-baja": "• Coloca la polea abajo con un tirador individual; ponte de frente y sujétate con la mano libre si lo necesitas.\n• Inclina el torso desde la cadera con la espalda recta; fija el codo junto al cuerpo y extiende el antebrazo hacia atrás.\n• Usa poco peso y mueve solo el antebrazo; no gires ni arquees la espalda.",
+  "curl-biceps-maquina": "• Ajusta el asiento para que los codos queden alineados con el eje de giro; apoya la parte superior de los brazos en el cojín.\n• Sujeta las asas con las muñecas rectas y flexiona los codos; baja hasta casi estirarlos, sin golpearlos.\n• Mantén la espalda y los brazos apoyados; no levantes los hombros para ayudar.",
+  "curl-biceps-polea": "• Coloca la polea abajo y engancha la barra recta; ponte frente a ella con los pies separados y el torso erguido.\n• Mantén los codos junto al cuerpo, flexiónalos para subir la barra y baja despacio sin dejar que la carga tire de ti.\n• Conserva la espalda recta y no te balancees hacia atrás.",
+  "curl-biceps-polea-unilateral": "• Coloca la polea abajo y engancha un tirador; ponte de frente, estable, con el brazo extendido hacia la polea.\n• Flexiona el codo para acercar la mano al hombro y regresa con control; trabaja ambos lados.\n• Mantén el hombro bajo y el torso quieto, sin girar la espalda.",
+  "remo-pecho-apoyado-maquina": "• Ajusta asiento y apoyo para alcanzar las asas con los brazos estirados; apoya el pecho en el cojín y los pies en el suelo.\n• Tira de las asas hacia los costados del torso llevando los codos atrás; vuelve hasta extender los brazos sin perder el apoyo.\n• Mantén el cuello relajado y el pecho pegado al soporte; no arquees la espalda.",
+  "prensa-piernas-maquina": "• Ajusta el respaldo y el asiento para que puedas apoyar toda la espalda y la pelvis; coloca los pies a la anchura de las caderas en la plataforma.\n• Desbloquea la prensa, baja hasta donde la pelvis siga pegada al respaldo y empuja con todo el pie.\n• Mantén las rodillas en la dirección de los pies y no las bloquees al subir.",
+  "patada-gluteo-polea": "• Coloca la polea abajo y sujeta una tobillera; ponte de frente y agárrate al soporte para mantener el equilibrio.\n• Inclina un poco el torso desde la cadera, con la espalda recta; lleva la pierna hacia atrás sin girar la pelvis.\n• Regresa despacio y usa un recorrido cómodo; no arquees la zona lumbar.",
+  "abductores-maquina": "• Siéntate con la espalda apoyada y coloca la parte exterior de las rodillas contra las almohadillas; ajusta el inicio a un rango cómodo.\n• Separa las piernas despacio y vuelve controlando el peso, sin dejar que las placas choquen.\n• Mantén la pelvis y el tronco quietos; no rebotes ni fuerces la apertura.",
+  "aductores-maquina": "• Siéntate con la espalda apoyada y coloca la parte interior de las rodillas contra las almohadillas; empieza con las piernas abiertas solo hasta donde sea cómodo.\n• Junta las piernas lentamente y vuelve controlando el peso, sin dejar que las placas choquen.\n• Mantén la pelvis apoyada y no rebotes al abrir.",
+  "gemelos-prensa-piernas": "• Coloca los antepiés en la parte baja de la plataforma, con los talones libres; apoya la espalda y la pelvis en el respaldo.\n• Empuja con las puntas para subir los talones y bájalos despacio hasta un estiramiento cómodo.\n• Mantén las rodillas ligeramente flexionadas, sin bloquearlas ni rebotar.",
+  "cruce-poleas": "• Coloca las dos poleas a una altura similar a los hombros y usa un tirador en cada mano; sitúate en medio y adelanta un pie.\n• Inclina el torso ligeramente hacia delante con la espalda recta y los codos un poco flexionados; junta las manos delante del pecho.\n• Abre los brazos despacio hasta un estiramiento cómodo, sin dejar que los cables te arrastren ni arquear la espalda.",
+  "jalon-polea-al-pecho": "• Coloca la barra en la polea alta y ajusta el apoyo de muslos para que te sujete sin apretarte; agarra la barra algo más ancho que los hombros.\n• Siéntate erguido con el pecho elevado y una pequeña inclinación hacia atrás desde la cadera; lleva los codos hacia abajo y la barra hacia la parte alta del pecho.\n• Sube despacio hasta estirar los brazos; no tires detrás de la nuca ni te balancees.",
+  "remo-sentado-polea": "• Engancha el agarre en V a la polea baja y apoya los pies en la plataforma con las rodillas algo flexionadas.\n• Siéntate alto, con la espalda neutra; tira del agarre hacia el ombligo llevando los codos junto al cuerpo.\n• Estira los brazos al volver sin encorvarte ni balancear el torso hacia delante y atrás.",
+  "face-pull-polea": "• Coloca la polea a la altura de la cara y engancha una cuerda; da un paso atrás para tensar el cable y planta bien los pies.\n• Mantén el torso erguido y la espalda neutra; tira de la cuerda hacia la cara separando sus extremos y llevando los codos hacia los lados.\n• Vuelve despacio sin encoger los hombros ni arquear la espalda; empieza con poco peso.",
+  "extension-cuadriceps-maquina": "• Ajusta el respaldo para que la rodilla coincida con el eje de giro de la máquina; coloca el rodillo delante de la parte baja de la espinilla, justo sobre el tobillo.\n• Extiende las rodillas sin dar una patada y baja lentamente hasta la posición inicial.\n• Mantén la espalda y la pelvis apoyadas; no bloquees las rodillas con fuerza.",
+  "curl-femoral-sentado": "• Ajusta el asiento para alinear las rodillas con el eje de giro; coloca el rodillo sobre la parte baja de las pantorrillas, por encima de los talones.\n• Apoya la espalda y las caderas, baja el soporte sobre los muslos y flexiona las rodillas llevando los talones hacia abajo y atrás.\n• Vuelve despacio sin despegar la pelvis ni dar tirones.",
+  "curl-inverso-polea-barra": "• Coloca la polea abajo y engancha la barra recta; ponte de frente y agárrala con las palmas hacia abajo.\n• Mantén los codos junto al torso y las muñecas rectas; flexiona los codos y baja la barra lentamente.\n• Mantén la espalda erguida y usa una carga ligera, sin balancearte.",
+  "curl-v-polea-baja": "• Engancha la cuerda a la polea baja y ponte frente a ella, con un pie ligeramente adelantado.\n• Sujeta un extremo con cada mano, palmas enfrentadas; mantén los codos junto al cuerpo y flexiónalos para subir.\n• Conserva el torso erguido y la espalda quieta; controla también la bajada.",
+  "curl-biceps-agarre-v": "• Engancha el agarre en V a la polea baja y ponte frente a ella con los pies estables.\n• Sujeta las asas con las palmas enfrentadas, muñecas rectas y codos junto al torso; flexiona para subir y baja despacio.\n• Mantén la espalda erguida y no uses impulso de cadera.",
+};
+
+function consejosDetalladosEjercicio(ejercicio) {
+  const consejoEquipo = CONSEJOS_EQUIPO_EJERCICIO[ejercicio.id];
+  if (consejoEquipo) return consejoEquipo;
+
+  const nombre = `${ejercicio.id} ${ejercicio.nombre}`.toLocaleLowerCase("es");
+  const grupo = String(ejercicio.grupo || "").toLocaleLowerCase("es");
+
+  if (/press cubano/.test(nombre)) {
+    return "• Siéntate o ponte de pie con poco peso, abdomen firme y espalda neutra; mantén los codos flexionados a la altura de los hombros.\n• Gira los antebrazos hacia arriba sin forzar los hombros y termina con un empuje corto, siguiendo el movimiento del ejercicio.\n• Hazlo despacio y con un recorrido cómodo; no arquees la espalda ni uses impulso.";
+  }
+  if (/rotacion-muneca/.test(nombre)) {
+    return "• Siéntate y apoya el antebrazo en el muslo o en un banco, dejando la mano libre; sujeta una mancuerna ligera por un extremo.\n• Gira lentamente la palma hacia arriba y hacia abajo usando el antebrazo, sin mover el codo.\n• Mantén la espalda recta y detén el giro antes de que la muñeca o el codo molesten.";
+  }
+  if (/curl.*muñeca|curl.*muneca/.test(nombre)) {
+    return "• Siéntate y apoya el antebrazo en el muslo o en un banco, dejando libre la mano; mantén el codo quieto.\n• Mueve solo la muñeca en un recorrido corto y cómodo, subiendo y bajando la mancuerna lentamente.\n• Usa poco peso y mantén la espalda recta, sin balancear el brazo.";
+  }
+  if (/pullover/.test(nombre)) {
+    return "• Túmbate con la espalda apoyada en el banco y los pies firmes; sujeta una mancuerna sobre el pecho con los brazos ligeramente flexionados.\n• Lleva la mancuerna detrás de la cabeza solo hasta donde puedas mantener las costillas controladas y vuelve sobre el pecho.\n• Mantén la zona lumbar estable; no conviertas el movimiento en un arco de espalda.";
+  }
+  if (/shrug|encogimiento/.test(nombre)) {
+    return "• Ponte de pie con una mancuerna a cada lado, brazos largos y espalda recta; deja los hombros relajados al empezar.\n• Eleva los hombros hacia las orejas sin girarlos y haz una pausa breve; bájalos lentamente.\n• Mantén el cuello largo y no dobles los codos ni balancees el torso.";
+  }
+  if (/elevacion-y-|elevacion-t-|elevación y|elevación t/.test(nombre)) {
+    const forma = /elevacion-y-|elevación y/.test(nombre) ? "en forma de Y, por encima de la cabeza" : "en forma de T, hacia los lados";
+    return `• Ajusta un banco inclinado y túmbate boca abajo con el pecho apoyado; deja los brazos colgando y usa mancuernas muy ligeras.\n• Eleva los brazos ${forma}, con los pulgares orientados según resulte cómodo, y bájalos despacio.\n• Mantén el cuello alineado y el torso pegado al banco; no arquees la espalda ni encogas los hombros.`;
+  }
+  if (/remo renegado/.test(nombre)) {
+    return "• Coloca dos mancuernas firmes en el suelo y apoya las manos sobre ellas, con los pies algo separados en posición de plancha.\n• Aprieta abdomen y glúteos para mantener la espalda recta; lleva una mancuerna hacia las costillas sin girar la pelvis y alterna.\n• Si cuesta mantener el cuerpo estable, separa más los pies o reduce el peso.";
+  }
+  if (/remo.*(inclinado|apoyado|una.mano)|one-arm-dumbbell-row/.test(nombre)) {
+    return "• Apoya una mano y una rodilla en el banco, o el pecho si el banco es inclinado; coloca la espalda recta y casi paralela al suelo.\n• Deja colgar la mancuerna y llévala hacia la cadera con el codo cerca del cuerpo; baja despacio sin girar el torso.\n• Mantén el cuello alineado con la espalda y cambia de lado al terminar.";
+  }
+  if (/remo/.test(nombre)) {
+    return "• Separa los pies al ancho de las caderas y flexiona un poco las rodillas; inclina el torso desde la cadera con la espalda recta.\n• Lleva el agarre hacia el abdomen acercando los codos al cuerpo; aprieta suavemente la espalda y baja con control.\n• Mantén el abdomen firme y el cuello alineado; no redondees la espalda ni uses impulso.";
+  }
+  if (/curl/.test(nombre) && /scott|predicador|preacher|araña|arana|spider/.test(nombre)) {
+    if (/araña|arana|spider/.test(nombre)) {
+      return "• Ajusta el banco inclinado y túmbate boca abajo con el pecho apoyado; deja los brazos colgando y la espalda relajada.\n• Flexiona los codos para llevar las mancuernas hacia los hombros y estira los brazos de forma controlada.\n• Mantén el pecho en el banco y los hombros quietos; no balancees el cuerpo.";
+    }
+    return "• Ajusta el banco Scott para que el borde del apoyo quede bajo las axilas; siéntate y apoya por completo la parte superior de los brazos.\n• Flexiona los codos para subir las mancuernas o la barra y baja hasta casi estirar los brazos, sin bloquearlos.\n• Mantén la espalda recta y los brazos en el apoyo; usa un peso que no te obligue a levantar los hombros.";
+  }
+  if (/curl/.test(nombre) && /horizontal/.test(nombre)) {
+    return "• Túmbate boca arriba en un banco plano, con la espalda y los pies apoyados; sujeta las mancuernas con los brazos junto al cuerpo.\n• Flexiona los codos para acercar las manos al pecho y gira las muñecas según indica el ejercicio; vuelve lentamente.\n• Mantén los codos estables y los hombros apoyados; no arquees la espalda ni uses impulso.";
+  }
+  if (/curl/.test(nombre) && /inclinad/.test(nombre)) {
+    return "• Ajusta el banco inclinado y apoya la espalda; deja los brazos colgando a los lados, sin llevar los hombros hacia delante.\n• Mantén los codos quietos, flexiónalos para subir el peso y bájalo lentamente hasta casi estirar los brazos.\n• Mantén la espalda pegada al banco y evita balancear el cuerpo.";
+  }
+  if (/curl/.test(nombre) && /concentrado|aislado/.test(nombre)) {
+    return "• Siéntate en el borde del banco, separa las piernas y apoya el codo del brazo que trabaja en la cara interna del muslo.\n• Flexiona el codo para subir la mancuerna y bájala lentamente; mantén el hombro quieto.\n• Inclina el torso solo un poco y conserva la espalda larga, sin encorvarte ni usar impulso.";
+  }
+  if (/curl/.test(nombre) && /invers|pronaci/.test(nombre)) {
+    return "• Ponte de pie o siéntate estable y sujeta las mancuernas o la barra con las palmas hacia abajo; mantén las muñecas rectas.\n• Deja los codos cerca del cuerpo, flexiónalos para subir y baja lentamente.\n• Mantén la espalda erguida y usa poco peso para evitar que las muñecas o el torso se muevan.";
+  }
+  if (/curl/.test(nombre) && /martillo|neutro/.test(nombre)) {
+    return "• Ponte de pie o siéntate con la espalda recta y una mancuerna en cada mano; deja las palmas enfrentadas.\n• Mantén los codos junto al cuerpo, sube las mancuernas hacia los hombros y bájalas lentamente.\n• No balancees el torso ni adelantes los codos; si alternas, mantén quieto el otro brazo.";
+  }
+  if (/curl/.test(nombre)) {
+    return "• Ponte de pie con los pies firmes, abdomen suave y espalda recta; sujeta las mancuernas o la barra con las palmas hacia delante.\n• Mantén los codos cerca del torso, flexiónalos para acercar el peso a los hombros y baja despacio.\n• Mantén quietos los hombros y la espalda; no te inclines hacia atrás para ayudarte.";
+  }
+  if (/tr[ií]ceps/.test(`${nombre} ${grupo}`)) {
+    if (/tate/.test(nombre)) {
+      return "• Túmbate en un banco con los pies apoyados y la espalda estable; coloca las mancuernas sobre el pecho con los codos flexionados y algo abiertos.\n• Lleva las mancuernas hacia la parte alta del pecho acercando los antebrazos, y empuja de vuelta con control.\n• Usa poco peso al practicar; mantén las muñecas rectas y no arquees la zona lumbar.";
+    }
+    if (/jm-press/.test(nombre)) {
+      return "• Túmbate en un banco con los pies firmes y la espalda estable; sujeta la barra con un agarre algo más estrecho que en el press banca.\n• Baja la barra con control hacia la parte alta del pecho, flexionando los codos sin abrirlos mucho, y vuelve a empujar.\n• Empieza con poco peso y no rebotes la barra ni arquees la zona lumbar.";
+    }
+    if (/extension-horizontal-concentrada-interna/.test(nombre)) {
+      return "• Túmbate en un banco plano con los pies apoyados; sujeta una mancuerna sobre el pecho y estabiliza suavemente el codo con la mano libre.\n• Flexiona el codo para bajar la mancuerna hacia la parte interior del pecho y vuelve a extender el brazo sin bloquearlo.\n• Mantén el hombro quieto y la espalda apoyada; cambia de brazo al terminar.";
+    }
+    if (/press/.test(nombre) && /suelo|floor/.test(nombre)) {
+      return "• Túmbate en el suelo con las rodillas flexionadas y los pies apoyados; sujeta las mancuernas sobre el pecho.\n• Baja los codos hasta tocar suavemente el suelo y vuelve a empujar sin rebotar.\n• Mantén las muñecas rectas y la espalda relajada contra el suelo, sin arquear la zona lumbar.";
+    }
+    if (/sobre la cabeza|cabeza|overhead/.test(nombre)) {
+      return "• Siéntate o ponte de pie con la espalda recta y el abdomen firme; sujeta una mancuerna sobre la cabeza con ambas manos.\n• Mantén los codos apuntando hacia delante y cerca de la cabeza; flexiónalos para bajar la mancuerna detrás de la cabeza y vuelve a extenderlos.\n• Usa un recorrido cómodo y no arquees la zona lumbar ni abras mucho los codos.";
+    }
+    if (/patada/.test(nombre)) {
+      return "• Apoya una mano en un banco y coloca la espalda casi paralela al suelo; sujeta la mancuerna con el codo doblado junto al torso.\n• Mantén el codo elevado y quieto mientras estiras el antebrazo hacia atrás; vuelve lentamente.\n• No gires el cuerpo ni muevas el hombro; usa un peso que puedas controlar.";
+    }
+    if (/inclinad/.test(nombre)) {
+      return "• Ajusta el banco inclinado y túmbate boca arriba con toda la espalda apoyada y los pies firmes; sujeta las mancuernas sobre los hombros.\n• Mantén los codos apuntando hacia arriba; flexiónalos para bajar el peso junto a la cabeza y extiéndelos para volver.\n• Mantén los codos relativamente quietos y no arquees la zona lumbar.";
+    }
+    return "• Túmbate en un banco, o apoya el pecho en un banco inclinado si el ejercicio lo indica; mantén los pies firmes y la espalda estable.\n• Deja los codos apuntando hacia arriba y cerca de la cabeza; flexiónalos para bajar el peso y extiéndelos para volver.\n• Mueve principalmente los antebrazos, mantén las muñecas rectas y evita arquear la espalda.";
+  }
+  if (/remo.*ment[oó]n/.test(nombre)) {
+    return "• Ponte de pie con los pies al ancho de las caderas, rodillas suaves y espalda recta; sujeta las mancuernas delante de los muslos.\n• Lleva los codos hacia arriba y hacia los lados, deslizando las mancuernas cerca del cuerpo solo hasta una altura cómoda.\n• Baja despacio y mantén los hombros relajados; no te balancees ni fuerces una elevación alta.";
+  }
+  if (/press/.test(nombre) && /hombro|shoulder/.test(`${nombre} ${grupo}`)) {
+    return "• Siéntate con la espalda apoyada en un banco y los pies firmes; coloca las mancuernas a la altura de los hombros.\n• Empuja hacia arriba siguiendo una trayectoria cómoda y baja con control hasta la altura inicial.\n• Mantén el abdomen activo, las muñecas sobre los codos y la zona lumbar apoyada, sin arquearla.";
+  }
+  if (/press/.test(nombre) && /suelo|floor/.test(nombre)) {
+    return "• Túmbate en el suelo con las rodillas flexionadas y los pies apoyados; sujeta las mancuernas sobre el pecho con las palmas enfrentadas si así lo indica el ejercicio.\n• Baja los codos hasta tocar suavemente el suelo y vuelve a empujar sin rebotar.\n• Mantén la espalda relajada contra el suelo y las muñecas rectas; no arquees la zona lumbar.";
+  }
+  if (/apertura|fly|cruce/.test(nombre)) {
+    return "• Túmbate en el banco adecuado para el ejercicio, con la espalda y los pies apoyados; sujeta las mancuernas con los codos ligeramente flexionados.\n• Abre los brazos en arco hasta un estiramiento cómodo y vuelve a juntarlos sobre el pecho sin doblar más los codos.\n• Mantén la espalda apoyada y el movimiento lento; no rebotes ni bajes más de lo que permitan los hombros.";
+  }
+  if (/press/.test(nombre) && /inclinado/.test(nombre)) {
+    return "• Ajusta el banco a una inclinación suave, aproximadamente 30–45°, y apoya la espalda y los pies.\n• Empieza con las mancuernas a los lados de la parte alta del pecho; empuja hacia arriba y bájalas despacio.\n• Mantén las muñecas rectas y no arquees la zona lumbar para completar el movimiento.";
+  }
+  if (/press|flexiones/.test(nombre)) {
+    return "• Colócate tumbado en el banco o en posición de flexión, según el ejercicio; apoya bien los pies y mantén el abdomen firme.\n• Baja el peso o el pecho con control, con las muñecas alineadas sobre los antebrazos, y empuja para volver.\n• Mantén la espalda estable y no rebotes ni arquees la zona lumbar.";
+  }
+  if (/elevacion|elevación/.test(nombre) && /hombro|shoulder/.test(`${nombre} ${grupo}`)) {
+    return "• Ponte de pie con los pies firmes, rodillas suaves y espalda recta; sujeta las mancuernas con los brazos relajados.\n• Eleva los brazos en la dirección indicada por el ejercicio hasta una altura cómoda, con los codos ligeramente doblados; baja despacio.\n• Mantén el torso quieto y los hombros lejos de las orejas; usa poco peso y no te balancees.";
+  }
+  if (/sentadilla/.test(nombre)) {
+    return "• Coloca los pies aproximadamente al ancho de los hombros y las puntas ligeramente hacia fuera; sujeta la carga cerca del cuerpo.\n• Lleva la cadera hacia atrás y abajo mientras flexionas las rodillas, manteniendo el pecho abierto y la espalda recta.\n• Empuja el suelo con todo el pie para subir; mantén las rodillas en la dirección de los pies y baja solo hasta donde controles.";
+  }
+  if (/zancada|lunge|step-up|subida al banco/.test(nombre)) {
+    return "• Ponte erguido con una mancuerna en cada mano si corresponde; deja espacio suficiente delante o detrás para mover una pierna.\n• Da el paso o sube al banco con control, mantén el torso alto y la espalda recta, y flexiona la rodilla siguiendo la dirección del pie.\n• Empuja con el pie de apoyo para volver; usa un escalón estable y empieza sin peso si necesitas practicar el equilibrio.";
+  }
+  if (/peso muerto|deadlift/.test(nombre)) {
+    return "• Coloca los pies estables y la carga cerca de las piernas; flexiona un poco las rodillas y lleva la cadera hacia atrás.\n• Inclina el torso desde la cadera manteniendo la espalda recta y el cuello alineado; baja la carga pegada al cuerpo.\n• Empuja el suelo y lleva la cadera hacia delante para subir; no redondees ni hiperextiendas la espalda.";
+  }
+  if (/hip thrust|puente de gl[uú]teo|glute bridge/.test(nombre)) {
+    return "• Para el hip thrust, apoya la parte alta de la espalda en un banco estable; para el puente, túmbate en el suelo. Coloca los pies firmes y la carga acolchada sobre la cadera.\n• Eleva la cadera apretando los glúteos hasta que el torso y los muslos queden alineados; baja despacio.\n• Mantén las costillas recogidas y la espalda neutra; no arquees la zona lumbar al subir.";
+  }
+  if (/gemelo|calf/.test(nombre)) {
+    return "• Ponte de pie o siéntate estable, con la espalda recta y las puntas de los pies apoyadas; sujétate si necesitas equilibrio.\n• Sube los talones lo más alto que puedas sin rebotar, haz una pausa breve y bájalos despacio.\n• Mantén las rodillas suaves y los tobillos alineados; usa un recorrido cómodo.";
+  }
+  if (/plancha/.test(nombre)) {
+    return "• Apoya los antebrazos y las puntas de los pies; coloca los codos debajo de los hombros.\n• Aprieta abdomen y glúteos para formar una línea recta desde la cabeza hasta los talones, sin hundir ni elevar la cadera.\n• Respira con normalidad y mantén el cuello alineado; apoya las rodillas para hacer una versión más sencilla.";
+  }
+  if (/dead bug/.test(nombre)) {
+    return "• Túmbate boca arriba con las rodillas sobre las caderas y los brazos apuntando al techo; apoya suavemente la zona lumbar en el suelo.\n• Aleja despacio un brazo y la pierna contraria sin permitir que la espalda se arquee; vuelve y alterna.\n• Exhala al extender y reduce el recorrido si notas que la zona lumbar se despega.";
+  }
+  if (/paseo del granjero|farmer/.test(nombre)) {
+    return "• Sujeta una mancuerna a cada lado del cuerpo, ponte erguido y coloca los hombros relajados, sin encogerlos.\n• Camina con pasos cortos y controlados, mirando al frente y manteniendo el abdomen firme.\n• Mantén la espalda recta y las mancuernas cerca de los muslos; elige una distancia despejada y suelta la carga con cuidado.";
+  }
+  if (/flexi[oó]n lateral|side bend/.test(nombre)) {
+    return "• Ponte de pie con los pies separados al ancho de las caderas y sujeta una mancuerna en una mano; deja la otra mano libre.\n• Desliza la mancuerna por el costado inclinándote suavemente hacia ese lado y vuelve al centro sin girar el torso.\n• Mantén la espalda recta y el abdomen activo; usa poco peso y evita inclinarte hacia delante o atrás.";
+  }
+  if (/press/.test(nombre)) {
+    return "• Colócate de forma estable con los pies firmes y la espalda apoyada si usas banco; prepara el peso a la altura indicada por el ejercicio.\n• Empuja el peso siguiendo un recorrido cómodo y vuelve lentamente, manteniendo las muñecas alineadas con los antebrazos.\n• Mantén el abdomen activo y evita arquear la espalda o bloquear las articulaciones.";
+  }
+
+  return "• Colócate con los pies firmes y la espalda en una posición natural; ajusta el banco o el apoyo para que el movimiento empiece sin forzar las articulaciones.\n• Haz el recorrido lentamente y con un peso que puedas controlar; respira al hacer el esfuerzo.\n• Mantén el torso estable y detén el recorrido si aparece dolor o no puedes conservar la postura.";
+}
+
 function getExerciseDatabase() {
   if (exerciseDatabase) return exerciseDatabase;
 
@@ -1685,6 +1854,9 @@ function getExerciseDatabase() {
       urlGif: "https://fitcron.com/wp-content/uploads/2021/04/18611301-Cable-Curl-with-Multipurpose-V-bar_Forearms_720.gif",
     },
   );
+  exerciseDatabase.forEach((ejercicio) => {
+    ejercicio.consejos = consejosDetalladosEjercicio(ejercicio);
+  });
   return exerciseDatabase;
 }
 

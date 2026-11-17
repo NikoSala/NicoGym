@@ -93,12 +93,11 @@ const Rutinas = {
                                     </div>
                                 </details>
                                 <div class="routine-exercise-list" aria-label="Ejercicios de ${nombres[idx]}">
-                                  ${ejercicios.map((ej, ejercicioIndex) => `
+                                  ${ejercicios.map((ej) => `
                                       <div class="routine-exercise-row">
                                         <div class="routine-exercise-info">
-                                          <span class="routine-exercise-number">${ejercicioIndex + 1}</span>
                                           ${ej.urlGif ? `<button class="routine-exercise-gif" type="button" data-routine-gif="${ExerciseLibrary._escapar(ej.urlGif)}" aria-label="Ampliar GIF de ${ExerciseLibrary._escapar(ej.nombre)}" title="Ampliar GIF"><img src="${ExerciseLibrary._escapar(ej.urlGif)}" alt="GIF de ${ExerciseLibrary._escapar(ej.nombre)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='img/logo-nicogym-600.jpg';this.alt='GIF no disponible';"></button>` : ""}
-                                          <span class="routine-exercise-copy"><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong><small>${ExerciseLibrary._escapar(ej.grupo)}</small><span class="routine-setup"><strong>Preparación:</strong> ${ExerciseLibrary._escapar(ej.preparacion || "Ajusta el equipo a tu altura y comprueba el recorrido.")}</span><span class="routine-prescription">Material: ${ExerciseLibrary._escapar((ej.material || ["No especificado"]).join(", "))}</span><span class="routine-prescription">${ejercicioIndex === 0 ? "1 serie ligera de calentamiento + " : ""}${ej.series} series efectivas × 8–12 reps</span>${ExerciseProgression.resumenHTML(ej)}</span>
+                                          <span class="routine-exercise-copy"><strong>${ExerciseLibrary._escapar(ej.nombre)}</strong></span>
                                         </div>
                                       </div>
                                     `).join("")}
