@@ -757,6 +757,103 @@ const Storage = {
         d.schemaVersion = 31;
         version = 31;
         cambio = true;
+      } else if (version === 31) {
+        const reemplazarEjercicio = (rutina, anterior, nuevo) =>
+          rutina.map((item) =>
+            Array.isArray(item) && item[0] === anterior
+              ? [nuevo, item[1], item[2]]
+              : item,
+          );
+        if (Array.isArray(d.rutinasPersonalizadas?.lunes)) {
+          d.rutinasPersonalizadas.lunes = reemplazarEjercicio(
+            d.rutinasPersonalizadas.lunes,
+            "remo-pecho-apoyado-maquina",
+            "remo-sentado-polea",
+          );
+        }
+        if (Array.isArray(d.rutinasPersonalizadas?.jueves)) {
+          d.rutinasPersonalizadas.jueves = reemplazarEjercicio(
+            d.rutinasPersonalizadas.jueves,
+            "remo-sentado-polea",
+            "dominadas-asistidas",
+          );
+        }
+        const semanaActual = this._getSemanaKey(new Date());
+        const temporalesSemana = d.rutinasTemporales?.[semanaActual];
+        if (Array.isArray(temporalesSemana?.lunes)) {
+          temporalesSemana.lunes = reemplazarEjercicio(
+            temporalesSemana.lunes,
+            "remo-pecho-apoyado-maquina",
+            "remo-sentado-polea",
+          );
+        }
+        if (Array.isArray(temporalesSemana?.jueves)) {
+          temporalesSemana.jueves = reemplazarEjercicio(
+            temporalesSemana.jueves,
+            "remo-sentado-polea",
+            "dominadas-asistidas",
+          );
+        }
+        if (d.checks && typeof d.checks === "object") {
+          Object.keys(d.checks).forEach((clave) => {
+            if (clave.startsWith("lunes-") || clave.startsWith("jueves-")) {
+              delete d.checks[clave];
+            }
+          });
+        }
+        d.schemaVersion = 32;
+        version = 32;
+        cambio = true;
+      } else if (version === 32) {
+        const reemplazarEjercicio = (rutina, anterior, nuevo) =>
+          rutina.map((item) =>
+            Array.isArray(item) && item[0] === anterior
+              ? [nuevo, item[1], item[2]]
+              : item,
+          );
+        const semanaActual = this._getSemanaKey(new Date());
+        if (!d.rutinasTemporales || typeof d.rutinasTemporales !== "object")
+          d.rutinasTemporales = {};
+        // Conserva la rutina de esta semana; el intercambio permanente empieza la próxima.
+        const temporalesSemana = d.rutinasTemporales[semanaActual] || {};
+        const rutinaSemanaActual = (dia, rutinaFutura, idFuturo, idActual) => {
+          if (Array.isArray(temporalesSemana[dia])) return temporalesSemana[dia];
+          if (Array.isArray(d.rutinasPersonalizadas?.[dia]))
+            return d.rutinasPersonalizadas[dia];
+          return reemplazarEjercicio(rutinaFutura || [], idFuturo, idActual);
+        };
+        d.rutinasTemporales[semanaActual] = {
+          ...temporalesSemana,
+          lunes: rutinaSemanaActual(
+            "lunes",
+            ROUTINES.lunes,
+            "jalon-polea-al-pecho",
+            "press-hombros-maquina",
+          ),
+          jueves: rutinaSemanaActual(
+            "jueves",
+            ROUTINES.jueves,
+            "press-hombros-maquina",
+            "jalon-polea-al-pecho",
+          ),
+        };
+        if (Array.isArray(d.rutinasPersonalizadas?.lunes)) {
+          d.rutinasPersonalizadas.lunes = reemplazarEjercicio(
+            d.rutinasPersonalizadas.lunes,
+            "press-hombros-maquina",
+            "jalon-polea-al-pecho",
+          );
+        }
+        if (Array.isArray(d.rutinasPersonalizadas?.jueves)) {
+          d.rutinasPersonalizadas.jueves = reemplazarEjercicio(
+            d.rutinasPersonalizadas.jueves,
+            "jalon-polea-al-pecho",
+            "press-hombros-maquina",
+          );
+        }
+        d.schemaVersion = 33;
+        version = 33;
+        cambio = true;
       } else {
         break;
       }

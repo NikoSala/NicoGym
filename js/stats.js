@@ -10,6 +10,9 @@ const Estadisticas = {
     if (!activos.length) return `<section class="card stats-chart-card exercise-chart-card"><div class="stats-section-heading"><div><p>RENDIMIENTO</p><h2>Progresión por ejercicio</h2></div></div><div class="stats-empty">No hay ejercicios en las rutinas actuales.</div></section>`;
     if (!activos.some((ej) => ej.id === this.ejercicioSeleccionado)) this.ejercicioSeleccionado = activos[0].id;
     const seleccionado = activos.find((ej) => ej.id === this.ejercicioSeleccionado) || activos[0];
+    const esAsistencia = seleccionado.progresionCargaInversa === true;
+    const etiquetaCarga = esAsistencia ? "Asistencia" : "Peso utilizado";
+    const encabezadoCarga = esAsistencia ? "Asistencia por serie" : "Peso por serie";
     const historial = ExerciseProgression.historial(seleccionado);
     const colores = ["#c33251", "#d6a94a", "#aab3bd", "#78a9bd", "#b28aae", "#e0a579"];
     const ancho = 760, alto = 300, izquierda = 58, derecha = 18, arriba = 22, abajo = 58;
@@ -25,7 +28,7 @@ const Estadisticas = {
     const lineas = Array.from({ length: seriesCount }, (_, serie) => {
       const pts = historial.map((sesion, i) => ({ x: x(i), y: y((this.metricaEjercicio === "peso" ? sesion.pesos : sesion.reps)[serie]), value: (this.metricaEjercicio === "peso" ? sesion.pesos : sesion.reps)[serie] })).filter((p) => Number.isFinite(p.value));
       const segmentos = pts.slice(1).map((p, i) => `<line x1="${pts[i].x}" y1="${pts[i].y}" x2="${p.x}" y2="${p.y}" stroke="${colores[serie % colores.length]}" stroke-width="2.5" stroke-linecap="round" opacity=".82"/>`).join("");
-      const puntos = pts.map((p) => `<circle cx="${p.x}" cy="${p.y}" r="4.5" fill="${colores[serie % colores.length]}" stroke="#17181c" stroke-width="2"><title>Serie ${serie + 1}: ${p.value}${this.metricaEjercicio === "peso" ? " kg" : " reps"}</title></circle>`).join("");
+      const puntos = pts.map((p) => `<circle cx="${p.x}" cy="${p.y}" r="4.5" fill="${colores[serie % colores.length]}" stroke="#17181c" stroke-width="2"><title>Serie ${serie + 1}: ${p.value}${this.metricaEjercicio === "peso" ? (esAsistencia ? " kg de asistencia" : " kg") : " reps"}</title></circle>`).join("");
       return `${segmentos}${puntos}`;
     }).join("");
     const lineasGuia = Array.from({ length: 5 }, (_, i) => {
@@ -35,16 +38,16 @@ const Estadisticas = {
     const tickStep = Math.max(1, Math.ceil(historial.length / 6));
     const fechas = historial.map((sesion, i) => i % tickStep === 0 || i === historial.length - 1
       ? `<text x="${x(i)}" y="${alto - 26}" text-anchor="middle" fill="#a7a19a" font-size="10">${escapeHTML(UI.formatearFecha(sesion.fecha))}</text>` : "").join("");
-    const unidades = this.metricaEjercicio === "peso" ? "kg" : "reps";
+    const unidades = this.metricaEjercicio === "peso" ? (esAsistencia ? "kg de asistencia" : "kg") : "reps";
     const leyenda = Array.from({ length: seriesCount }, (_, i) => `<span><i style="--series-color:${colores[i % colores.length]}"></i> Serie ${i + 1}</span>`).join("");
-    const tabla = historial.slice().reverse().map((sesion) => `<tr><td>${escapeHTML(UI.formatearFecha(sesion.fecha))}</td><td>${sesion.pesos.map((peso, i) => `S${i + 1}: ${peso} kg`).join(" · ") || "—"}</td><td>${sesion.reps.map((reps, i) => `S${i + 1}: ${reps}`).join(" · ") || "—"}</td><td>${sesion.reps.length}</td></tr>`).join("");
+    const tabla = historial.slice().reverse().map((sesion) => `<tr><td>${escapeHTML(UI.formatearFecha(sesion.fecha))}</td><td>${sesion.pesos.map((peso, i) => `S${i + 1}: ${peso} ${esAsistencia ? "kg asistencia" : "kg"}`).join(" · ") || "—"}</td><td>${sesion.reps.map((reps, i) => `S${i + 1}: ${reps}`).join(" · ") || "—"}</td><td>${sesion.reps.length}</td></tr>`).join("");
 
     return `<section class="card stats-chart-card exercise-chart-card">
       <div class="stats-section-heading"><div><p>RENDIMIENTO</p><h2><i class="fa-solid fa-chart-line"></i> Progresión por ejercicio</h2><span class="stats-section-copy">Una gráfica dinámica con el historial del ejercicio elegido.</span></div></div>
-      <div class="exercise-chart-controls"><label>Ejercicio<select id="exerciseChartSelect" onchange="Estadisticas.actualizarGrafico()">${activos.map((ej) => `<option value="${escapeHTML(ej.id)}" ${ej.id === seleccionado.id ? "selected" : ""}>${escapeHTML(ej.nombre)}</option>`).join("")}</select></label><label>Métrica<select id="exerciseChartMetric" onchange="Estadisticas.actualizarGrafico()"><option value="peso" ${this.metricaEjercicio === "peso" ? "selected" : ""}>Peso utilizado (kg)</option><option value="repeticiones" ${this.metricaEjercicio === "repeticiones" ? "selected" : ""}>Repeticiones</option></select></label></div>
+      <div class="exercise-chart-controls"><label>Ejercicio<select id="exerciseChartSelect" onchange="Estadisticas.actualizarGrafico()">${activos.map((ej) => `<option value="${escapeHTML(ej.id)}" ${ej.id === seleccionado.id ? "selected" : ""}>${escapeHTML(ej.nombre)}</option>`).join("")}</select></label><label>Métrica<select id="exerciseChartMetric" onchange="Estadisticas.actualizarGrafico()"><option value="peso" ${this.metricaEjercicio === "peso" ? "selected" : ""}>${etiquetaCarga} (kg)</option><option value="repeticiones" ${this.metricaEjercicio === "repeticiones" ? "selected" : ""}>Repeticiones</option></select></label></div>
       <div class="exercise-chart-legend">${leyenda}</div>
       ${historial.length ? `<div class="exercise-chart-scroll"><svg class="exercise-chart-svg" viewBox="0 0 ${ancho} ${alto}" role="img" aria-label="Evolución de ${escapeHTML(seleccionado.nombre)} por sesión, en ${unidades}">${lineasGuia}${lineas}${fechas}<text x="${izquierda}" y="15" fill="#c7cbd1" font-size="11">${unidades}</text></svg></div>` : `<div class="stats-empty"><i class="fa-solid fa-chart-line"></i><span>Aún no hay registros de ${escapeHTML(seleccionado.nombre)}.</span></div>`}
-      <div class="exercise-history-table-wrap"><h3>Historial de ${escapeHTML(seleccionado.nombre)}</h3><table class="exercise-history-table"><thead><tr><th>Fecha</th><th>Peso por serie</th><th>Repeticiones</th><th>Series</th></tr></thead><tbody>${tabla || `<tr><td colspan="4">Sin sesiones guardadas.</td></tr>`}</tbody></table></div>
+      <div class="exercise-history-table-wrap"><h3>Historial de ${escapeHTML(seleccionado.nombre)}</h3><table class="exercise-history-table"><thead><tr><th>Fecha</th><th>${encabezadoCarga}</th><th>Repeticiones</th><th>Series</th></tr></thead><tbody>${tabla || `<tr><td colspan="4">Sin sesiones guardadas.</td></tr>`}</tbody></table></div>
     </section>`;
   },
 
@@ -82,7 +85,7 @@ const Estadisticas = {
   _fuerzaPorEjercicio() {
     const mapa = {};
     STATE.historialEntrenos.forEach(entreno => (entreno.ejercicios || []).forEach(ejercicio => {
-      if (ejercicio.unidad === "segundos") return;
+      if (ejercicio.tipo === "asistencia" || ejercicio.unidad === "segundos") return;
       const reps = parseReps(ejercicio.reps);
       if (!reps.valid) return;
       const pesos = obtenerPesosSeries(ejercicio, reps.series);

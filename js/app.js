@@ -368,19 +368,22 @@ const APP = {
     
   _renderSelectorCarga(ej, pesoActual) {
     const tipo = ej.tipoCarga;
+    const etiquetaCargaManual = ej.etiquetaCargaManual || "Carga adicional";
+    const textoCargaManualCero = ej.textoCargaManualCero || "0 = peso corporal";
 
     if (!tipo || typeof WEIGHTS === "undefined") {
       return `
           <div class="me-input-group">
-            <label>${tipo ? "Peso (kg)" : "Carga adicional (kg)"}</label>
+            <label>${tipo ? "Peso (kg)" : `${etiquetaCargaManual} (kg)`}</label>
             <input
               type="number"
               id="mePeso"
               step="0.5"
               min="${tipo ? "0.5" : "0"}"
               value="${pesoActual || ""}"
-              placeholder="${tipo ? "0" : "0 = peso corporal"}"
+              placeholder="${tipo ? "0" : textoCargaManualCero}"
             >
+            ${ej.progresionCargaInversa ? "<small>Más asistencia hace las repeticiones más fáciles.</small>" : ""}
           </div>
         `;
     }
@@ -795,6 +798,8 @@ const APP = {
 
     const ej = ejerciciosEntreno[idxEjercicioActual];
     const total = ejerciciosEntreno.length;
+    const etiquetaCargaManual = ej.etiquetaCargaManual || "Carga adicional";
+    const textoCargaManualCero = ej.textoCargaManualCero || "0 = peso corporal";
 
     // ==========================================
     // CAMINATA
@@ -955,7 +960,7 @@ const APP = {
         )
       : "";
 
-    let etiquetaCarga = "Carga seleccionada";
+    let etiquetaCarga = ej.progresionCargaInversa ? "Asistencia seleccionada" : "Carga seleccionada";
 
     const anteriorHtml = `
       <div class="me-workout-previous">
@@ -1136,8 +1141,9 @@ const APP = {
                 <label class="me-workout-load-manual-label" for="mePesoSerie" style="margin-top:10px;">Peso de esta serie (kg)</label>
                 <input class="me-workout-load-manual-input" type="number" id="mePesoSerie" min="0.1" max="500" step="0.5" value="${pesoActualEntreno || ""}" aria-label="Peso de esta serie en kilogramos">
               ` : `
-                <label class="me-workout-load-manual-label" for="mePeso">Carga adicional (kg)</label>
-                <input class="me-workout-load-manual-input" type="number" id="mePeso" min="0" max="500" step="0.5" value="${pesoActualEntreno}" placeholder="0 = peso corporal" aria-label="Carga adicional en kilogramos">
+                <label class="me-workout-load-manual-label" for="mePeso">${ExerciseLibrary._escapar(etiquetaCargaManual)} (kg)</label>
+                <input class="me-workout-load-manual-input" type="number" id="mePeso" min="0" max="500" step="0.5" value="${pesoActualEntreno}" placeholder="${ExerciseLibrary._escapar(textoCargaManualCero)}" aria-label="${ExerciseLibrary._escapar(etiquetaCargaManual)} en kilogramos">
+                ${ej.progresionCargaInversa ? `<div class="me-workout-load-hint">Más kilos de asistencia hacen las repeticiones más fáciles.</div>` : ""}
               `}
 
               ${
@@ -1507,7 +1513,14 @@ const APP = {
     const reps = parseInt(document.getElementById("meRepsSerie")?.value, 10);
 
     if (!Number.isFinite(peso) || peso < 0 || (ej.tipoCarga && peso === 0)) {
-      UI.toast(ej.tipoCarga ? "Introduce un peso válido" : "Introduce una carga adicional válida", "error");
+      UI.toast(
+        ej.tipoCarga
+          ? "Introduce un peso válido"
+          : ej.progresionCargaInversa
+            ? "Introduce una asistencia válida"
+            : "Introduce una carga adicional válida",
+        "error",
+      );
       return;
     }
     if (!Number.isInteger(reps) || reps < 1 || reps > 100) {
@@ -1554,7 +1567,9 @@ const APP = {
         peso,
         reps: "",
         tipoCarga: ej.tipoCarga || null,
-        tipo: ej.tipoCarga || (peso === 0 ? "peso_corporal" : "manual"),
+        tipo: ej.progresionCargaInversa
+          ? "asistencia"
+          : ej.tipoCarga || (peso === 0 ? "peso_corporal" : "manual"),
         discos: configuracionCarga
           ? {
               ...(configuracionCarga.discosPorLado || {}),
@@ -1574,6 +1589,9 @@ const APP = {
     registro.exerciseId = ej.id;
     registro.peso = peso;
     registro.tipoCarga = ej.tipoCarga || null;
+    registro.tipo = ej.progresionCargaInversa
+      ? "asistencia"
+      : ej.tipoCarga || (peso === 0 ? "peso_corporal" : "manual");
     registro.configuracionCarga = configuracionCarga
       ? { ...configuracionCarga }
       : null;
@@ -1605,7 +1623,7 @@ const APP = {
         month: "2-digit",
         year: "numeric",
       });
-      if (peso > 0 && Records.actualizar(ej.nombre, peso, totalReps, date)) {
+      if (peso > 0 && !ej.progresionCargaInversa && Records.actualizar(ej.nombre, peso, totalReps, date)) {
         recordsConseguidos.push(ej.nombre);
         UI.toast("🏆 ¡Nuevo récord!", "success");
       }
@@ -1672,8 +1690,12 @@ const APP = {
       const parsed = parseReps(ej.reps);
       if (!parsed.valid) return;
       const pesos = Array.isArray(ej.pesos) ? ej.pesos : parsed.series.map(() => Number(ej.peso) || 0);
-      totalPesoLevantadoEntreno += pesos.reduce((total, peso) => total + (Number(peso) || 0), 0);
-      totalVolumenEntreno += parsed.series.reduce((total, reps, index) => total + (Number(pesos[index]) || 0) * reps, 0);
+      const esAsistencia = ej.tipo === "asistencia"
+        || getExerciseDatabase().find((exercise) => exercise.id === ej.exerciseId)?.progresionCargaInversa;
+      if (!esAsistencia) {
+        totalPesoLevantadoEntreno += pesos.reduce((total, peso) => total + (Number(peso) || 0), 0);
+        totalVolumenEntreno += parsed.series.reduce((total, reps, index) => total + (Number(pesos[index]) || 0) * reps, 0);
+      }
       totalSeriesEntreno += parsed.series.length;
       totalRepsEntreno += parsed.total;
     });

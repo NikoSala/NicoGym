@@ -33,6 +33,7 @@ const CONSEJOS_EQUIPO_EJERCICIO = {
   "curl-inverso-polea-barra": "• Coloca la polea abajo y engancha la barra recta; ponte de frente y agárrala con las palmas hacia abajo.\n• Mantén los codos junto al torso y las muñecas rectas; flexiona los codos y baja la barra lentamente.\n• Mantén la espalda erguida y usa una carga ligera, sin balancearte.",
   "curl-v-polea-baja": "• Engancha la cuerda a la polea baja y ponte frente a ella, con un pie ligeramente adelantado.\n• Sujeta un extremo con cada mano, palmas enfrentadas; mantén los codos junto al cuerpo y flexiónalos para subir.\n• Conserva el torso erguido y la espalda quieta; controla también la bajada.",
   "curl-biceps-agarre-v": "• Engancha el agarre en V a la polea baja y ponte frente a ella con los pies estables.\n• Sujeta las asas con las palmas enfrentadas, muñecas rectas y codos junto al torso; flexiona para subir y baja despacio.\n• Mantén la espalda erguida y no uses impulso de cadera.",
+  "dominadas-asistidas": "• Selecciona la asistencia antes de subir: más kilos seleccionados hacen la dominada más fácil. Sujétate a las barras y coloca las rodillas en la almohadilla.\n• Usa las palmas hacia fuera, con las manos al ancho de los hombros o algo más. Desde los brazos extendidos de forma cómoda, tira llevando los codos hacia abajo hasta subir.\n• Baja despacio sin balancearte y espera a que la almohadilla se estabilice antes de bajarte.",
 };
 
 function consejosDetalladosEjercicio(ejercicio) {
@@ -1852,6 +1853,28 @@ function getExerciseDatabase() {
       tipoCarga: null,
       intensidadMuscular: { Bíceps: 85 },
       urlGif: "https://fitcron.com/wp-content/uploads/2021/04/18611301-Cable-Curl-with-Multipurpose-V-bar_Forearms_720.gif",
+    },
+    {
+      id: "dominadas-asistidas",
+      nombre: "Dominadas asistidas",
+      grupo: "Espalda",
+      categoria: "Dominada",
+      urlGif: "https://static.exercisedb.dev/media/kiJ4Z2K.gif",
+      descripcion: "En la máquina de asistencia, sujétate a la barra con las palmas hacia fuera y apoya las rodillas en la almohadilla. Tira llevando los codos hacia abajo y sube con control; vuelve despacio.",
+      consejos: "• Selecciona la asistencia antes de subir: más kilos seleccionados hacen la dominada más fácil. Sujétate a las barras y coloca las rodillas en la almohadilla.\n• Usa las palmas hacia fuera, con las manos al ancho de los hombros o algo más. Desde los brazos extendidos de forma cómoda, tira llevando los codos hacia abajo hasta subir.\n• Baja despacio sin balancearte y espera a que la almohadilla se estabilice antes de bajarte.",
+      errores: "• No te impulses con las piernas ni te balancees.\n• No tires detrás de la nuca ni fuerces los hombros al colgarte.\n• No selecciones menos asistencia de la que puedes controlar; desmonta solo cuando la almohadilla esté quieta.",
+      musculosPrincipales: ["Dorsal ancho", "Bíceps"],
+      musculosSecundarios: ["Romboides", "Trapecio", "Antebrazo"],
+      series: 3,
+      reps: "8-12",
+      dia: null,
+      dificultad: "media",
+      material: ["Máquina de dominadas asistidas"],
+      tipoCarga: null,
+      progresionCargaInversa: true,
+      etiquetaCargaManual: "Asistencia",
+      textoCargaManualCero: "0 = sin asistencia",
+      intensidadMuscular: { Espalda: 90, Bíceps: 55 },
     },
   );
   exerciseDatabase.forEach((ejercicio) => {

@@ -150,7 +150,7 @@ const Comparador = {
     const mejorMarca = (entreno) => {
       let mejor = { nombre: "", oneRM: 0, peso: 0, reps: 0 };
       (entreno.ejercicios || []).forEach(ej => {
-        if (ej.tipo === "caminata" || ej.unidad === "segundos") return;
+        if (ej.tipo === "asistencia" || ej.tipo === "caminata" || ej.unidad === "segundos") return;
         const p = parseReps(ej.reps);
         if (p.valid) {
           const pesos = obtenerPesosSeries(ej, p.series);

@@ -116,6 +116,7 @@ const Semana = {
       const series = registro?.series || 0;
       const repsTotales = registro?.repsTotales || 0;
       const volumen = obtenerVolumenEjercicio(registro || {});
+      const esAsistencia = registro?.tipo === "asistencia";
       const unidadReps = registro?.unidad === "segundos" ? "segundos" : "reps";
 
       return `
@@ -135,7 +136,7 @@ const Semana = {
             </div>
             <div style="text-align:center;background:rgba(0,0,0,0.15);padding:6px;border-radius:8px;">
               <div style="color:var(--text-muted);font-size:9px;">VOLUMEN</div>
-              <div style="font-weight:700;color:var(--text);">${volumen.toFixed(0)} kg</div>
+              <div style="font-weight:700;color:var(--text);">${esAsistencia ? "No aplica" : `${volumen.toFixed(0)} kg`}</div>
             </div>
           </div>
           <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--text-secondary);">

@@ -58,6 +58,7 @@
         }
 
         function obtenerVolumenEjercicio(ejercicio) {
+            if (ejercicio?.tipo === "asistencia") return 0;
             const parsed = parseReps(ejercicio?.reps);
             if (!parsed.valid) return 0;
             const pesos = obtenerPesosSeries(ejercicio, parsed.series);
@@ -70,9 +71,10 @@
             const pesos = obtenerPesosSeries(ejercicio, parsed.series);
             const calentamiento = Math.min(Number(ejercicio?.seriesCalentamiento) || 0, parsed.series.length);
             const unidad = ejercicio?.unidad === "segundos" ? "s" : "reps";
+            const etiquetaPeso = ejercicio?.tipo === "asistencia" ? "kg asistencia" : "kg";
             return parsed.series.map((reps, indice) => {
                 const etiqueta = indice < calentamiento ? "Calentamiento" : `Serie ${indice - calentamiento + 1}`;
-                return `${etiqueta}: ${pesos[indice]} kg × ${reps} ${unidad}`;
+                return `${etiqueta}: ${pesos[indice]} ${etiquetaPeso} × ${reps} ${unidad}`;
             }).join(" · ");
         }
 

@@ -100,16 +100,18 @@ const Historial = {
       : Array.from({ length: cantidadSeries }, () => 1);
     const pesos = obtenerPesosSeries(ejercicio, repeticiones);
     const unidad = ejercicio.unidad === "segundos" ? "segundos" : "repeticiones";
+    const etiquetaPeso = ejercicio.tipo === "asistencia" ? "Asistencia (kg)" : "Peso (kg)";
+    const etiquetaCambios = ejercicio.tipo === "asistencia" ? "la asistencia" : "el peso";
 
     Modal.abrir(`
       <h3>Editar ${escapeHTML(ejercicio.nombre)}</h3>
-      <p style="font-size:12px;color:var(--text-secondary);margin:8px 0 12px;">${escapeHTML(UI.formatearFecha(sesion.fecha))} · Modifica el peso y las ${unidad} de cada serie.</p>
+      <p style="font-size:12px;color:var(--text-secondary);margin:8px 0 12px;">${escapeHTML(UI.formatearFecha(sesion.fecha))} · Modifica ${etiquetaCambios} y las ${unidad} de cada serie.</p>
       <form id="historyExerciseEditForm" novalidate>
         <div class="history-edit-series">
           ${repeticiones.map((reps, indice) => `
             <div class="history-edit-series-row">
               <strong>Serie ${indice + 1}</strong>
-              <label>Peso (kg)<input class="input" type="number" min="0" max="500" step="0.1" inputmode="decimal" data-edit-weight value="${this._escapar(pesos[indice])}" required></label>
+              <label>${etiquetaPeso}<input class="input" type="number" min="0" max="500" step="0.1" inputmode="decimal" data-edit-weight value="${this._escapar(pesos[indice])}" required></label>
               <label>${unidad === "segundos" ? "Segundos" : "Repeticiones"}<input class="input" type="number" min="1" max="100" step="1" inputmode="numeric" data-edit-reps value="${this._escapar(reps)}" required></label>
             </div>
           `).join("")}
@@ -150,7 +152,7 @@ const Historial = {
       pesos.some((peso) => !Number.isFinite(peso) || peso < 0 || peso > 500) ||
       repeticiones.some((reps) => !Number.isInteger(reps) || reps < 1 || reps > 100)
     ) {
-      UI.toast("Revisa los pesos (0–500 kg) y las repeticiones de cada serie", "error");
+      UI.toast("Revisa las cargas (0–500 kg) y las repeticiones de cada serie", "error");
       return;
     }
 

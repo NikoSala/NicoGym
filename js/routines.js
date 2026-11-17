@@ -7,8 +7,8 @@
 const ROUTINES = {
   lunes: [
     ["press-pecho-maquina", 3, "8-12"],
-    ["remo-pecho-apoyado-maquina", 3, "8-12"],
-    ["press-hombros-maquina", 3, "8-12"],
+    ["remo-sentado-polea", 3, "8-12"],
+    ["jalon-polea-al-pecho", 3, "8-12"],
     ["curl-v-polea-baja", 4, "10-15"],
     ["extension-triceps-polea", 3, "10-15"],
   ],
@@ -24,8 +24,8 @@ const ROUTINES = {
 
   jueves: [
     ["aperturas-peck-deck", 3, "10-15"],
-    ["jalon-polea-al-pecho", 3, "8-12"],
-    ["remo-sentado-polea", 3, "8-12"],
+    ["press-hombros-maquina", 3, "8-12"],
+    ["dominadas-asistidas", 3, "8-12"],
     ["curl-inclinado-alterno-supinacion", 4, "10-15"],
     ["extension-triceps-polea-sobre-cabeza", 3, "10-15"],
   ],
@@ -106,6 +106,7 @@ const PREPARACION_EJERCICIOS = {
   "press-inclinado-maquina": "Ajusta asiento y respaldo inclinado para que las asas empiecen a la altura del pecho superior.",
   "aperturas": "Banco plano y una mancuerna en cada mano; apoya la espalda y mantén los codos ligeramente flexionados.",
   "aperturas-inversas-maquina": "Siéntate mirando al respaldo; ajusta las asas a la altura de los hombros y apoya el pecho.",
+  "dominadas-asistidas": "Selecciona la asistencia antes de subir. Sujétate a las barras, coloca las rodillas en la almohadilla y usa un agarre con las palmas hacia fuera, al ancho de los hombros o algo más.",
 };
 
 function getPreparacionEjercicio(ejercicio) {
